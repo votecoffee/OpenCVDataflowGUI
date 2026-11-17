@@ -18,8 +18,9 @@ CPU execution. There are no model downloads during graph loading or execution.
 
 Select rows `[N,C]` or channels-first `[C,N]`, optionally preceded by one batch
 dimension of size one. SSD uses `[N,7]`, `[1,N,7]` or `[1,1,N,7]`; negative image
-IDs mark unused rows, and positive IDs reject as another batch. Multi-image
-batches remain future work. Empty detections use low-score/padding rows; the
+IDs mark unused rows, and positive IDs reject as another batch. Use the
+[batch inference adapter](batch-inference.md) and unpack one image before decoding.
+Empty detections use low-score/padding rows; the
 current `tensor_v1` contract requires nonempty arrays.
 
 Select network-pixel or normalized coordinates explicitly. **Grid decode:
@@ -27,9 +28,11 @@ yolox** requires XYWH/objectness network-pixel rows and an exact declared stride
 grid, normally `[8,16,32]`. It adds grid offsets to XY and exponentiates sizes.
 Stride divisibility and total row count are checked before grid allocation;
 scored log-sizes and resulting coordinates are bounded. Other raw anchor heads,
-distributional box regression, rotated boxes, segmentation/keypoint heads and
+distributional box regression, segmentation/keypoint heads and
 quantized integer tensors need their own adapters. The decoder does not infer
 an export schema from a model's name or tensor dimensions.
+Oriented boxes have their own [rotated decoder](rotated-detection.md), including
+explicit angle conventions, overlap policy and source affine poses.
 
 **Probability** validates class/objectness scores in `[0,1]`. **Sigmoid** explicitly
 converts logits; no implicit softmax is applied. Score-head formats select the
@@ -48,7 +51,8 @@ stretch/letterbox dimensions and padding. Known ticket, spatial-grid and recipe
 revision mismatches between the three inputs reject before decoding. Unknown
 metadata remains usable for custom adapters; `report.context_checks` identifies
 which identity checks were fully available. Matching metadata is not proof of
-image content or model revision. Versioned inference receipts remain S2-05 work.
+image content or model revision. Use [model contracts](model-contracts.md) for
+versioned model/preprocessing/execution receipts.
 
 Coordinates are continuous **source pixel edges**. A box can reach image width
 or height; its size is right minus left, without an extra pixel. Regions/masks

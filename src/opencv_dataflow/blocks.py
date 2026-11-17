@@ -815,6 +815,7 @@ def builtin_registry():
     from .restoration import RESTORATION_BLOCKS
     from .ridge_response import RidgeResponse
     from .ros2_blocks import ROS2_BLOCKS
+    from .rotated_detection import DecodeRotatedDetections
     from .rotating_panorama import StitchRotatingPanorama
     from .run_contours import RunContours
     from .scan_stitching import StitchScanSequence
@@ -1141,6 +1142,7 @@ def builtin_registry():
         *BATCH_INFERENCE_BLOCKS,
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,
+        DecodeRotatedDetections,
         FitFeatureCovariance,
         EvaluateImageFeatures,
         SolveLinearSystem,

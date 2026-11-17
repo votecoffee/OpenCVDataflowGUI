@@ -8482,6 +8482,52 @@ Input `region` — Optional region intersected with the mask. Does not crop or a
 | `maximum_results` | `1000` | Value must be a whole number between 1 and 10000. Reject excess retained results instead of emitting an incomplete collection. |
 | `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Reject larger source images before selection; collection axes are limited to 16384. |
 
+## Decode rotated detections (`ml.decode_rotated_detections`)
+
+ML / Object detection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tensors` (data), `preprocessing` (data).
+
+Input `image` — Original image whose source coordinates and ticket own the detections.
+
+Input `tensors` — Single-image tensor_v1 outputs from the matching inference activation.
+
+Input `preprocessing` — Matching inference resize/letterbox maps. Known frame/ticket/recipe mismatches reject.
+
+Input `mask` — Optional image-grid selection; only detections whose unclipped center is selected survive.
+
+Input `region` — Optional region intersected with the mask. Does not crop or alter network inference.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` | Exact tensor name; empty selects the first named output. |
+| `format` | `"xywh_scores_angle"` | `xywh_scores_angle`, `xywha_scores`, `xywha_objectness`, `xywha_score_class` Explicit center XYWH, angle and scores; scores-angle places angle last. |
+| `layout` | `"rows"` | `rows`, `channels_first` Rows [N,C] or channels-first [C,N], optionally with one leading batch of size one. SSD is fixed. |
+| `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Box coordinates relative to the network input; normalized values scale by its width/height. |
+| `score_activation` | `"probability"` | `probability`, `sigmoid` Probability validates [0,1]; sigmoid explicitly converts class/objectness logits. |
+| `labels` | `[]` | Optional zero-based string table. Score-head formats require one entry per class channel. |
+| `accepted_class_ids` | `[]` | Empty keeps all classes. Otherwise keep these adjusted, zero-based IDs. |
+| `class_id_offset` | `0` | Value must be a whole number between -1000 and 1000. Offset explicit-ID rows only; score-head channels use zero-based IDs. |
+| `confidence_threshold` | `0.25` | Value must be a finite number between 0 and 1. Keep scores strictly above this value. Objectness heads multiply class and objectness. |
+| `objectness_threshold` | `0.0` | Value must be a finite number between 0 and 1. Objectness-head gate before combined-score filtering; other formats ignore it. |
+| `nms_enabled` | `true` | Disable when the model already performs suppression, or to inspect duplicate proposals. |
+| `class_agnostic_nms` | `false` | Otherwise suppress separately per class, including boxes with negative coordinates. |
+| `nms_iou` | `0.45` | Value must be a finite number between 0 and 1. Unclipped network-rectangle IoU; shared affine maps preserve polygon IoU. |
+| `nms_eta` | `1.0` | Value must be a finite number between 0.001 and 1. Native adaptive IoU factor in (0,1]; one keeps a fixed threshold. |
+| `nms_top_k` | `0` | Value must be a whole number between 0 and 100000. Native pre-NMS score cap per class, or globally in class-agnostic mode; zero is unlimited. |
+| `border_policy` | `"clip"` | `clip`, `discard`, `keep` Clip polygons, discard crossings or keep them; invisible boxes drop. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 100000. Fail the inspection below this many retained detections. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 100000. Zero disables the upper count judgment; positive values bound retained detections. |
+| `maximum_raw_rows` | `100000` | Value must be a whole number between 1 and 100000. Reject larger tensors before row processing; tensor_v1 also caps total values. |
+| `maximum_candidates` | `2000` | Value must be a whole number between 1 and 10000. Reject excess valid candidates before quadratic NMS; never silently truncate. |
+| `maximum_results` | `1000` | Value must be a whole number between 1 and 10000. Reject excess retained results instead of emitting an incomplete collection. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Reject larger source images before selection; collection axes are limited to 16384. |
+| `angle_unit` | `"degrees"` | `degrees`, `radians` Units of the model's raw angle column, before direction conversion. |
+| `angle_direction` | `"image_clockwise"` | `image_clockwise`, `counterclockwise` Positive image-clockwise angles, or reverse counterclockwise angles. |
+| `angle_period` | `"180"` | `180`, `360` 180: unoriented width axis; 360: caller asserts a directed model angle. |
+| `nms_method` | `"polygon_iou"` | `polygon_iou`, `opencv` Polygon IoU corrects nested-box overlap; OpenCV preserves native behavior. |
+| `maximum_pair_comparisons` | `2000000` | Value must be a whole number between 1 and 2e+07. Reject quadratic work above the sum of group n*(n-1)/2. |
+
 ## DNN ONNX inference (`ml.dnn`)
 
 ML / DNN inference
@@ -9225,7 +9271,7 @@ Inputs: `image` (image), `features` (data).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `index` | `0` | Zero-based rank in a blob/line/contour collection or pattern matches. |
-| `angle_mode` | `"fixed"` | `fixed`, `feature` Fixed uses angle_degrees. Feature uses the measured principal/line axis. |
+| `angle_mode` | `"fixed"` | `fixed`, `feature` Fixed uses angle_degrees. Feature prefers a supplied pose, then an axis. |
 | `angle_degrees` | `0.0` |  |
 | `pose_offset_x` | `0.0` | Local x offset in feature/model pixels; follows rotation and scale. |
 | `pose_offset_y` | `0.0` | Local y offset in feature/model pixels; follows rotation and scale. |

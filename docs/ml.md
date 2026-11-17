@@ -91,6 +91,12 @@ The generic inference block does not guess an export schema. See
 [detection contracts](object-detection.md) and [control/real-photo projects](<../examples/opencv tools/dnn_detection/README.md>).
 Segmentation adapters remain separate roadmap work.
 
+**Decode rotated detections** handles explicit oriented score/objectness/class
+heads, angle units/directions, corrected or native rotated suppression and exact
+source polygons/affine poses. Sort/filter collections and retain their supplied
+poses for local inspection regions. See [contracts](rotated-detection.md) and
+[twelve controls](<../examples/opencv tools/rotated_detection/README.md>).
+
 **Multi-input ONNX inference** now binds up to four explicitly named float32
 tensors. **Image to DNN tensor** prepares each image independently; **Create
 float32 tensor** adapts numeric data or constants. Declared shapes, complete

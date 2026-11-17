@@ -55,3 +55,5 @@ For paired images, numeric auxiliaries, four named inputs and explicit ticket/re
 For native image batches with dynamic dimensions, explicit tails and per-image tickets, try [batch inference](batch_inference/README.md).
 
 For model/settings revisions, portable bundles, receipt verbosity and target fallback, try [model contracts](model_contracts/README.md).
+
+For oriented boxes, rotated IoU, affine poses and local inspection regions, try [rotated detection](rotated_detection/README.md).

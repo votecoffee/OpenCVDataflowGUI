@@ -154,7 +154,7 @@ class PoseFromFeature(Block):
     parameter_help = {
         **POSE_HELP,
         "index": "Zero-based rank in a blob/line/contour collection or pattern matches.",
-        "angle_mode": "Fixed uses angle_degrees. Feature uses the measured principal/line axis.",
+        "angle_mode": "Fixed uses angle_degrees. Feature prefers a supplied pose, then an axis.",
     }
 
     def process(self, inputs):
@@ -175,7 +175,13 @@ class PoseFromFeature(Block):
             validate_collection(features)
             if not index < len(features["items"]):
                 raise ValueError("Feature index is outside available collection")
-            metrics = features["items"][index]["metrics"]
+            item = features["items"][index]
+            if p["angle_mode"] == "feature" and "pose" in item:
+                # Preserve a supplied affine/model frame instead of reconstructing
+                # a rigid frame from its width-axis angle alone.
+                pose = pose_for_image(item["pose"], image)
+                return offset_pose(pose, *(p[k] for k in POSE_OFFSETS))
+            metrics = item["metrics"]
             angle = finite(p["angle_degrees"], "Fixed angle")
             if p["angle_mode"] == "feature":
                 if metrics.get("angle") is None:

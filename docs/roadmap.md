@@ -43,13 +43,13 @@ The mosaic project was refreshed without changing its images; regeneration now
 runs in a temporary folder, compares normalized project text/exact image bytes,
 and verifies the source collection stays untouched. **100 focused rechecks**
 passed before the clean full rerun above. This closes the twentieth increment
-ending with S1-173. The next targeted cycle is at **17/20**, covering paced file
+ending with S1-173. The next targeted cycle is at **18/20**, covering paced file
 replay (S1-11), bounded live network acquisition (S1-12), media-time sampling
 (S1-110), actual variable/unreliable video timing (S1-123), and whole
 selections through nonlinear correction (S1-69), candidate visible support (S1-61),
 HDR moving-region rejection (S1-150), unordered rotating views (S1-104), and
 explicit camera refinement with reserved observations (S1-147), and review-only
-stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04), and revisioned model/preprocessing/execution receipts (S2-05).
+stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04), and revisioned model/preprocessing/execution receipts (S2-05), and rotated detection/affine poses (S2-09).
 
 The previous broad checkpoint was `1e1cccb`: **4,801 passed, 31 skipped** in
 298.51 seconds with the offscreen suite, Python 3.14.3, OpenCV 5.0.0 and contrib
@@ -161,6 +161,48 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Rotated detection and affine poses (S2-09)** adds
+`ml.decode_rotated_detections` under OpenCV DNN. Explicit center/size/angle
+score/objectness/class-ID heads, row/channel layouts, radians/degrees,
+clockwise/counterclockwise angles and 180/360-degree semantics remain declared.
+Class-aware/agnostic suppression operates on unclipped network rectangles;
+source footprints preserve the exact affine image instead of fitting new boxes.
+Non-uniform resize can produce parallelograms, with full model-frame poses retained
+through collection sort/filter, Pose from feature and local inspection regions.
+Source encoding/depth, tickets, recipe/pyramid context and processing start survive.
+Masks/regions select original centers; polygon clipping preserves predicted poses.
+
+Default polygon IoU corrects the installed native full-containment shortcut;
+optional `NMSBoxesRotated` retains OpenCV behavior. Nested controls retain the
+small inner proposal only in corrected mode; crossing thin proposals survive
+oriented suppression. Conservative bounds skip disjoint pairs, and explicit
+candidate/result/pixel/raw-row/pair budgets reject excess work. Native exceptions
+emit no current outputs and valid subsequent input recovers. Drawable outlines,
+axis markers and labels feed explicit filmstrip overlays; Off/Lean skips drawings.
+
+**152 focused checks passed**, including independent source corners/IoU, all
+head/layout/unit conventions, corrected/native overlap, class filters, border
+policies, count failures, precision guards, known provenance conflicts, source
+pixels, supplied-pose offsets and pyramid rescaling, JSON/XML, exact regeneration
+and existing pose/axis-detection/catalog/reference regressions. Twelve original
+MIT projects have native image-dependent score heads and analytic corner truth;
+positions/angles remain fixed controls rather than learned recognition.
+All **24 installed Debug/Lean example outcomes** matched (20 passes, four
+intentional count-failure judgments), with source-corner/ticket and affine ROI
+checks. Two installed model-contract/pretrained-photo regression spot checks
+also passed. Five packaged/installed runtime modules match source. Thirteen
+strict JSON files, four model/image hashes, 853 local links, fourteen original
+text contracts, generated references/counts, Ruff and repository hygiene passed.
+Application refreshed and root README reviewed unchanged. No broad suite or
+physical-equipment/accelerator qualification repeated.
+See [contracts](rotated-detection.md) and
+[twelve projects](<../examples/opencv tools/rotated_detection/README.md>).
+
+Current ML/DNN scope is **15/62 (24.2%)**, overall **241/470 (51.3%)**; core
+remains **173/175 (98.9%)**. Targeted cycle **18/20**, no broad suite repeated.
+Next: semantic segmentation (S2-10). Arbitrary rotated exports, industrial accuracy,
+physical pose calibration and throughput remain application-specific work.
+
 **Revisioned model/preprocessing/execution receipts (S2-05)** extend all three
 inference interfaces with project-contained model/settings bundles, optional
 upstream preparation declarations, strict byte/configuration checks and hidden
@@ -196,9 +238,9 @@ no broad suite or physical-equipment/accelerator qualification repeated.
 See [contracts](model-contracts.md) and
 [ten projects](<../examples/opencv tools/model_contracts/README.md>).
 
-Current ML/DNN scope is **14/62 (22.6%)**, overall **240/470 (51.1%)**; core
-remains **173/175 (98.9%)**. Targeted cycle **17/20**. Next: rotated detection
-and oriented suppression (S2-09). Native accelerator placement, arbitrary exports,
+At that S2-05 checkpoint ML/DNN reached **14/62 (22.6%)**, overall
+**240/470 (51.1%)**; core remained **173/175 (98.9%)**, targeted cycle **17/20**.
+The next increment above qualifies rotated detection (S2-09). Native placement, arbitrary exports,
 signed provenance and general recognition accuracy remain separate qualification.
 
 **Ordered batched/dynamic-shape image inference (S2-04)** adds `ml.dnn_batch`

@@ -288,6 +288,7 @@ BINDINGS = {
     "inspect.thin_mask": "ximgproc.thinning",
     "inspect.watershed": "watershed",
     "ml.decode_detections": "dnn.NMSBoxes",
+    "ml.decode_rotated_detections": "dnn.NMSBoxesRotated rotatedRectangleIntersection boxPoints",
     "ml.dnn_batch": (
         "dnn.readNetFromONNX dnn.blobFromImages dnn.Net.setInput dnn.Net.forward "
         "dnn.getAvailableTargets"

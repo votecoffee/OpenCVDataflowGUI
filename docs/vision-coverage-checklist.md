@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 14 | 8 | 40 | 62 | 22.6% |
+| 2. ML and DNN | 15 | 8 | 39 | 62 | 24.2% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 240 | 40 | 190 | 470 | 51.1% |
+| **Overall** | 241 | 40 | 189 | 470 | 51.3% |
 
 <!-- coverage-summary:end -->
 
@@ -321,7 +321,7 @@ fixture or result needed to close the item.
 | S2-06 | Image classification | Tensor softmax and top-K label decoding | Complete | ml.classify. Decode class scores, confidence, and labels. |
 | S2-07 | Image embeddings | Output tensor vectorization and optional normalization | Complete | ml.tensor_vector. Carry a normalized image feature vector to search and matching. |
 | S2-08 | Object detection and NMS | dnn.NMSBoxes, common detection tensor adapters | Complete | ml.decode_detections qualifies explicit XYWH score/objectness, XYXY/class and SSD rows; optional YOLOX stride decoding, normalized units, inverse rounded preprocessing, class filters and per-class/agnostic native NMS. Center selections, unclipped suppression/border policy, source ticket/frame/recipe guards, bounded complete box collections and result graphics are checked. Nine original image-dependent ONNX control projects and a pinned Apache-2 YOLOX-S/CC0 coffee example verify native CPU inference, independent box references and batched-NMS parity. Export guessing, multi-image batches, rotated/segmentation/quantized heads, general semantic accuracy and accelerators remain outside this baseline. See [contracts](object-detection.md). |
-| S2-09 | Rotated object detection | dnn.NMSBoxesRotated, oriented box adapter | Planned | Decode angle, dimensions and pose, and verify rotated suppression on overlapping parts. |
+| S2-09 | Rotated object detection | dnn.NMSBoxesRotated, oriented box adapter | Complete | ml.decode_rotated_detections qualifies explicit angle/score/objectness/ID schemas, units/direction/period, class-aware or agnostic native/corrected-containment IoU and bounded work. Unclipped network suppression preserves affine polygon overlap; exact mapped/clipped source footprints and full poses retain prediction identity, source context and model-frame units. Collections sort/filter and supplied feature poses retain scale/shear for local regions. Twelve original image-dependent ONNX projects, independent corners/IoU, nested/crossing controls, native exceptions/recovery, depth/pyramid/recipe/timing metadata, JSON/XML and filmstrip graphics are checked. Arbitrary rotated exports, learned industrial accuracy and physical part-pose calibration remain outside this baseline. See [contracts](rotated-detection.md). |
 | S2-10 | Semantic segmentation | Per-pixel argmax, resize, remap | Planned | Decode a known model into a label plane and masks on the source grid, including ignored classes. |
 | S2-11 | Instance segmentation | Box and mask tensor decoding, NMS, resize | Planned | Emit a distinct source-aligned mask and confidence for each retained detection. |
 | S2-12 | Keypoint and heatmap decoding | Heatmap peaks, minMaxLoc, subpixel refinement | Planned | Recover ordered image-space landmarks and their confidence from a pinned model and a known landmark fixture. |
