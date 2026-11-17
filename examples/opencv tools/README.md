@@ -53,3 +53,5 @@ For detector head formats, source boxes, class-aware NMS and a pinned real-photo
 For paired images, numeric auxiliaries, four named inputs and explicit ticket/reference roles, try [multi-input inference](multi_input_inference/README.md).
 
 For native image batches with dynamic dimensions, explicit tails and per-image tickets, try [batch inference](batch_inference/README.md).
+
+For model/settings revisions, portable bundles, receipt verbosity and target fallback, try [model contracts](model_contracts/README.md).

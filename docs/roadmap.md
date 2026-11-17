@@ -43,13 +43,13 @@ The mosaic project was refreshed without changing its images; regeneration now
 runs in a temporary folder, compares normalized project text/exact image bytes,
 and verifies the source collection stays untouched. **100 focused rechecks**
 passed before the clean full rerun above. This closes the twentieth increment
-ending with S1-173. The next targeted cycle is at **16/20**, covering paced file
+ending with S1-173. The next targeted cycle is at **17/20**, covering paced file
 replay (S1-11), bounded live network acquisition (S1-12), media-time sampling
 (S1-110), actual variable/unreliable video timing (S1-123), and whole
 selections through nonlinear correction (S1-69), candidate visible support (S1-61),
 HDR moving-region rejection (S1-150), unordered rotating views (S1-104), and
 explicit camera refinement with reserved observations (S1-147), and review-only
-stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04).
+stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04), and revisioned model/preprocessing/execution receipts (S2-05).
 
 The previous broad checkpoint was `1e1cccb`: **4,801 passed, 31 skipped** in
 298.51 seconds with the offscreen suite, Python 3.14.3, OpenCV 5.0.0 and contrib
@@ -161,6 +161,46 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Revisioned model/preprocessing/execution receipts (S2-05)** extend all three
+inference interfaces with project-contained model/settings bundles, optional
+upstream preparation declarations, strict byte/configuration checks and hidden
+Receipt outputs. Summary/Detailed/Off controls avoid unnecessary tensor hashing;
+bound model bytes are still verified once per activation before cache reuse.
+Same-size/restored-timestamp changes reject. Recipes use their effective settings
+against the active contract. The additive `export-model` CLI and Python export
+function publish a fresh two-file bundle without processing; explicit new
+revisions can reuse verified model bytes. Save As copies both assets without
+overwriting conflicts; JSON/XML omit native state.
+
+Receipts record actual tensor shapes/preparation, loaded bytes, environment/build,
+native cache reuse, requested/selected execution, target availability IDs and
+application-selected fallback. Detailed mode adds dtype/order-qualified input and
+output hashes. Batch rows retain call/row/group references with source tickets.
+Native per-layer placement remains explicitly unverified; CPU fallback is opt-in
+for unavailable targets and never silently retries arbitrary native failures.
+Ten original MIT projects demonstrate six valid controls and four contained
+errors, including byte/settings/upstream-preparation drift and strict target policy.
+**185 targeted checks passed**, including independent tensor hashes/arithmetic,
+same-size/restored-mtime tampering with receipts Off, settings/new-revision export,
+strict JSON/path limits, explicit availability/fallback, row/ticket ownership,
+cache/native errors, Save As conflicts, XML and existing single/multi/batch/detector
+and CLI workflows. Old example regeneration checks compare reopened definitions
+with new optional defaults while preserving every original source/asset byte.
+All **20 installed Debug/Lean example outcomes** matched (12 pass, eight contained
+invalid activations), plus two installed batch/pretrained-photo regression passes.
+Installed CLI bundle export also passed without processing. Six packaged/installed
+runtime modules match source; 17 strict JSON files, 15 model/manifest/image hashes,
+851 local links, 20 original text contracts, generated references/counts, Ruff and
+repository hygiene passed. Application refreshed, root README reviewed unchanged;
+no broad suite or physical-equipment/accelerator qualification repeated.
+See [contracts](model-contracts.md) and
+[ten projects](<../examples/opencv tools/model_contracts/README.md>).
+
+Current ML/DNN scope is **14/62 (22.6%)**, overall **240/470 (51.1%)**; core
+remains **173/175 (98.9%)**. Targeted cycle **17/20**. Next: rotated detection
+and oriented suppression (S2-09). Native accelerator placement, arbitrary exports,
+signed provenance and general recognition accuracy remain separate qualification.
+
 **Ordered batched/dynamic-shape image inference (S2-04)** adds `ml.dnn_batch`
 and `ml.unpack_inference` under OpenCV DNN. Existing ticketed image groups feed
 bounded NCHW calls with declared exact names/axes, independently prepared image
@@ -196,9 +236,10 @@ The application was refreshed and root README reviewed unchanged.
 See [contracts](batch-inference.md) and
 [ten projects](<../examples/opencv tools/batch_inference/README.md>).
 
-ML/DNN is **13/62 (21.0%)**, overall **239/470 (50.9%)**; core remains
-**173/175 (98.9%)**. Targeted cycle **16/20**, no broad suite repeated.
-Next: revisioned model/preprocessing/execution receipts (S2-05). This is the
+At that S2-04 checkpoint ML/DNN reached **13/62 (21.0%)**, overall
+**239/470 (50.9%)**; core remained **173/175 (98.9%)**. Targeted cycle was
+**16/20**, without a broad suite. The following increment above qualifies S2-05.
+This is the
 declared single-input float32 CPU batch baseline, without arbitrary exports,
 paired multi-input batches, model semantic-order guarantees or accelerator
 qualification. Native allocated work and padding effects remain model-dependent.

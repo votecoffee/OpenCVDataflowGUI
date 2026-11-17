@@ -141,7 +141,7 @@ def _parser():
     p = sub.add_parser("examples", help="Find public project examples in a source checkout")
     p.add_argument("--root", type=Path, required=True)
     p.add_argument("--query", default="")
-    for name in ("inspect", "validate", "apply", "run", "export"):
+    for name in ("inspect", "validate", "apply", "run", "export", "export-model"):
         p = sub.add_parser(name)
         p.add_argument("project", type=Path)
         if name == "apply":
@@ -162,6 +162,14 @@ def _parser():
         if name == "export":
             p.add_argument("--format", choices=("html", "xml"), required=True)
             p.add_argument("--output", type=Path, required=True)
+        if name == "export-model":
+            p.add_argument("--block", required=True)
+            p.add_argument(
+                "--output", type=Path, required=True, help="New self-contained bundle folder"
+            )
+            p.add_argument(
+                "--preprocessing", type=Path, help="Optional expected per-input preprocessing JSON"
+            )
     p = sub.add_parser("new", help="Build a new project from an operation list")
     p.add_argument("--operations", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
@@ -200,6 +208,7 @@ def _dispatch(args):
                 "apply",
                 "run",
                 "export",
+                "export-model",
                 "compatibility",
             ],
         }, 0
@@ -219,6 +228,15 @@ def _dispatch(args):
         else ProjectSession.open(args.project, registry)
     )
     with session:
+        if args.command == "export-model":
+            from .model_contracts import export_contract
+
+            document = export_contract(
+                session.graph.blocks[args.block], args.output,
+                preprocessing=_read(args.preprocessing) if args.preprocessing else None,
+            )
+            return {"directory": str(args.output.resolve()), "contract": document,
+                    "processing_executed": False}, 0
         if args.command == "inspect":
             return session.inspect(), 0
         if args.command == "validate":

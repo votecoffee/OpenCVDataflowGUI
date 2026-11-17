@@ -1,0 +1,109 @@
+{
+  "model": "onnx_inference_contract_v1",
+  "schema_version": 1,
+  "block_type": "ml.dnn_multi",
+  "configuration": {
+    "fallback_policy": "error",
+    "output_names": [
+      "scores"
+    ],
+    "engine": "classic",
+    "backend": "opencv",
+    "target": "cpu",
+    "fusion": true,
+    "max_output_elements": 1000000,
+    "active_inputs": 2,
+    "primary_input": "input_1",
+    "ticket_policy": "same_ticket",
+    "maximum_input_elements": 2000000,
+    "maximum_total_elements": 4000000,
+    "input_1_name": "left",
+    "input_1_shape": [
+      1,
+      3,
+      8,
+      8
+    ],
+    "input_1_tensor": "",
+    "input_1_role": "current",
+    "input_2_name": "right",
+    "input_2_shape": [
+      1,
+      1,
+      8,
+      8
+    ],
+    "input_2_tensor": "",
+    "input_2_role": "current",
+    "input_3_name": "aux1",
+    "input_3_shape": [
+      1,
+      3,
+      -1,
+      -1
+    ],
+    "input_3_tensor": "",
+    "input_3_role": "reference",
+    "input_4_name": "aux2",
+    "input_4_shape": [
+      1,
+      3,
+      -1,
+      -1
+    ],
+    "input_4_tensor": "",
+    "input_4_role": "reference"
+  },
+  "preprocessing": {
+    "left": {
+      "model": "dnn_image_preprocessing_v1",
+      "schema_version": 1,
+      "settings": {
+        "width": 8,
+        "height": 8,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "layout": "nchw"
+      },
+      "revision": "8d18eddbbb30d6bb97e7e7efc8c1ef267d83ec5f40ecc6745ab53b71999d3733"
+    },
+    "right": {
+      "model": "dnn_image_preprocessing_v1",
+      "schema_version": 1,
+      "settings": {
+        "width": 8,
+        "height": 8,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0
+        ],
+        "std": [
+          1
+        ],
+        "layout": "nchw"
+      },
+      "revision": "174eb39a3992b7b84f3a6fc16ff9a33b641dc62454faa960886be645b366fea9"
+    }
+  },
+  "artifact": {
+    "file": "model.onnx",
+    "sha256": "eef4b2928dea580fa7201ef8807f2b3197e4c426ba414a630fd0212703183410",
+    "bytes": 419
+  },
+  "revision": "32122cb63fa5ff415278bebadab60c5ea0e9bb4ae3916ac75e31134fafca0dca"
+}

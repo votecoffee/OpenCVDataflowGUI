@@ -70,6 +70,7 @@
 | Object detection heads, class-aware NMS and source box geometry | [DNN detection](object-detection.md) |
 | Independent image/tensor preparation, named model inputs and ticket roles | [Multi-input inference](multi-input-inference.md) |
 | Image batches, dynamic sizes, tails and ordered per-image inference results | [Batch inference](batch-inference.md) |
+| Pinned ONNX model/settings bundles and execution/fallback evidence | [Model contracts](model-contracts.md) |
 | PLC, robot and messaging interfaces | [Industrial integration](industrial-integration.md), [ROS 2 Lyrical / Fast DDS](ros2.md) |
 | scikit-image tools | [scikit-image](scikit-image.md) |
 | Medical images, physical geometry and SimpleITK | [SimpleITK](simpleitk.md), [medical roadmap](simpleitk-roadmap.md), [labeled MRI examples](<../examples/SimpleITK Tools/README.md>) |

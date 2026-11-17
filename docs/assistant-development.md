@@ -56,6 +56,10 @@ depends on the assistant host refreshing its skill catalog.
 5. Hand back the project, plugin/asset requirements, a concise plan, expected outcomes
    and the report/previews. The user opens the saved project normally in the GUI.
 
+Use `export-model program.json --block <id> --output <new-folder>` for a pinned
+ONNX model/settings bundle without running processing. See
+[model contracts](model-contracts.md) for the Python API and execution receipts.
+
 The [API reference](../skills/opencv-dataflow-apps/references/api.md) contains exact
 commands, response fields, operation schemas and Python examples. A complete
 [authoring example](../examples/user_tools/assistant_workflow/README.md) also develops

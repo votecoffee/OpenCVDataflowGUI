@@ -1,0 +1,116 @@
+{
+  "license": "MIT - original arithmetic controls",
+  "cases": {
+    "pinned_single": {
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "red"
+    },
+    "detailed_hashes": {
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "red"
+    },
+    "receipts_off": {
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "red"
+    },
+    "settings_mismatch": {
+      "error": "settings differ",
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "red"
+    },
+    "checksum_mismatch": {
+      "error": "checksum differs",
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "red"
+    },
+    "pinned_multi": {
+      "block": "multi",
+      "scores": [
+        0.44878431372549016,
+        -0.1786666666666667,
+        -0.2570980392156863
+      ],
+      "label": "red"
+    },
+    "wrong_preprocessing": {
+      "error": "preprocessing differs",
+      "block": "multi",
+      "scores": [
+        0.44878431372549016,
+        -0.1786666666666667,
+        -0.2570980392156863
+      ],
+      "label": "red"
+    },
+    "pinned_batch": {
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "green"
+    },
+    "cpu_fallback": {
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "red"
+    },
+    "strict_target": {
+      "error": "unavailable",
+      "block": "infer",
+      "scores": [
+        0.7843137254901961,
+        0.1568627450980392,
+        0.0784313725490196
+      ],
+      "label": "red"
+    }
+  },
+  "asset_sha256": {
+    "assets/0.png": "ee2b9713302eb3085d4669d95c2fa07925a187719ec1c332a14764022f0f8cdb",
+    "assets/1.png": "ef3b4f652f81d02ccbdabed690d99df12351f2d81ba83452f1d500bb80b4051e",
+    "assets/2.png": "3824f7f2b4f7dded488c020156c910ed2e9058c8087715e2bfabc34beb825a94",
+    "bundles/batch/contract.json": "6cce4a9094869c1f0ea23a60114050210e2c821249da016f40241f902cc2e924",
+    "bundles/batch/model.onnx": "be76b5ab1b8494d37ad455e03ea953f47a848fc2895735b68be7214c0ba14837",
+    "bundles/checksum_mismatch/contract.json": "2f452849476fcde8d4e728dc944cdda084e546947d22d961c42a80d2a0d0f05d",
+    "bundles/checksum_mismatch/model.onnx": "8146552ce37363ed1c45627e4a1ec8917a101addcd5b9b1c88b0f27426fb5a54",
+    "bundles/cpu_fallback/contract.json": "ded0aec97c4e376f5352e0aa85bb562f58f97a22de9597df7af9e61046ab7cbb",
+    "bundles/cpu_fallback/model.onnx": "be76b5ab1b8494d37ad455e03ea953f47a848fc2895735b68be7214c0ba14837",
+    "bundles/multi/contract.json": "18030ae74298bdfaa05f4f7f823ff4eefc1cb0eb5157f1c5fa42441ba7a84043",
+    "bundles/multi/model.onnx": "eef4b2928dea580fa7201ef8807f2b3197e4c426ba414a630fd0212703183410",
+    "bundles/single/contract.json": "2f452849476fcde8d4e728dc944cdda084e546947d22d961c42a80d2a0d0f05d",
+    "bundles/single/model.onnx": "be76b5ab1b8494d37ad455e03ea953f47a848fc2895735b68be7214c0ba14837",
+    "bundles/strict_target/contract.json": "6959f71d88725e5c9ef1d6d40815e10b5928b576f9f797f3804e960b89608438",
+    "bundles/strict_target/model.onnx": "be76b5ab1b8494d37ad455e03ea953f47a848fc2895735b68be7214c0ba14837"
+  }
+}

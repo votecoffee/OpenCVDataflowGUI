@@ -11,6 +11,7 @@ from .ml_common import tensor_record
 from .multi_inference import PREPROCESS_FIELDS, PrepareImageTensor, read_tensor, shape
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import (
+    NO_VALUE,
     FlowGroup,
     ValuePacket,
     check_spatial,
@@ -44,7 +45,11 @@ class BatchImageInference(DNNInference):
         Port("masks", "any", required=False, required_when_connected=True),
         Port("regions", "any", required=False, required_when_connected=True),
     )
-    outputs = (Port("results", "any"), Port("info", "data"))
+    outputs = (
+        Port("results", "any"),
+        Port("info", "data"),
+        Port("receipt", "data", required=False),
+    )
     defaults = {
         **copy.deepcopy(DNNInference.defaults),
         "input_name": "image",
@@ -121,6 +126,7 @@ class BatchImageInference(DNNInference):
         PrepareImageTensor(parameters=preparation).validate_parameters()
 
     def process(self, inputs):
+        self.begin_inference()
         try:
             return self.infer_group(inputs)
         except Exception:
@@ -212,6 +218,7 @@ class BatchImageInference(DNNInference):
                 ((p["input_name"], blob),),
                 ((p["input_name"], tuple(actual)),),
                 array_outputs=True,
+                preprocessing={p["input_name"]: geometries[0]["preprocessing_contract"]},
             )
             arrays = tensors
             if not arrays or any(a.ndim < 1 or a.shape[0] != submitted for a in arrays.values()):
@@ -236,6 +243,16 @@ class BatchImageInference(DNNInference):
                                 for name, a in arrays.items()
                             },
                             "preprocessing": geometries[index],
+                            "receipt": {
+                                "model": "onnx_image_execution_receipt_v1",
+                                "schema_version": 1,
+                                "group_index": start + index,
+                                "native_call_index": len(calls) - 1,
+                                "native_row_index": index,
+                                "call": copy.deepcopy(self._receipt_calls[-1]),
+                            }
+                            if self._receipt_calls
+                            else NO_VALUE,
                         },
                         copy.deepcopy(context),
                     )
@@ -274,9 +291,14 @@ class UnpackImageInference(Block):
         Port("preprocessing", "data"),
         Port("index", "integer"),
         Port("label", "text"),
+        Port("receipt", "data", required=False),
     )
     defaults = {}
     input_help = {"result": "One result from Select group entry or Unbatch serial entries."}
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_outputs.remove("receipt")
 
     def process(self, inputs):
         row = inputs["result"]
@@ -302,7 +324,7 @@ class UnpackImageInference(Block):
         context = copy.deepcopy(self.input_payloads.get("result", {}))
         check_spatial(context, list(row["image"].shape[1::-1]))
         return Result(
-            {port.name: row[port.name] for port in self.outputs},
+            {port.name: row.get(port.name, NO_VALUE) for port in self.outputs},
             payloads={port.name: copy.deepcopy(context) for port in self.outputs},
             message=f"Row {row['index']}: {row['label']}",
         )

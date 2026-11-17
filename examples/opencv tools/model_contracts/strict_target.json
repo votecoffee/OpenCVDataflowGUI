@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundles/strict_target/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 8,
+        "height": 8,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "scores"
+        ],
+        "engine": "classic",
+        "backend": "cuda",
+        "target": "cuda",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "classify",
+      "type": "ml.classify",
+      "name": "Classify DNN tensor",
+      "parameters": {
+        "output_name": "scores",
+        "labels": [
+          "red",
+          "green",
+          "blue"
+        ],
+        "softmax": true,
+        "top_k": 5,
+        "minimum_confidence": 0.0,
+        "accepted_labels": [
+          "red"
+        ]
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "tensors"
+      ],
+      "exposed_outputs": [
+        "predictions",
+        "label",
+        "confidence"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original ONNX contracts - MIT",
+      "description": "Original MIT arithmetic ONNX models, color images, graphs and independent references by OpenCVDataflowGUI contributors. Reuses our batch/multi-input controls. No learned weights, customer or third-party assets. Contract pins model bytes and processing settings; Detailed adds tensor hashes. Off still checks the contract. Invalid controls emit no inference results. CPU fallback only applies when the requested CUDA target is unavailable. Native per-layer placement remains unverified. See README and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "tensors",
+      "target": "classify",
+      "input": "tensors"
+    }
+  ]
+}

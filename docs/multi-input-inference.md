@@ -103,7 +103,8 @@ merge the ticket ledger; use a shared ticket identity upstream when one ledger
 entry must cover both acquisitions. Ordered single-input image sets now use the
 separate [batch inference adapter](batch-inference.md), including dynamic sizes
 and per-image results. General paired multi-input image batching is outside
-that adapter; revisioned model/preprocessing receipts remain S2-05.
+that adapter. [Revisioned model/preprocessing receipts](model-contracts.md) can
+also pin upstream image preparation declarations by native input name.
 
 ## Qualification
 

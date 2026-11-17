@@ -102,6 +102,11 @@ their own qualification.
 
 ## Examples and qualification
 
+Use [model contracts and receipts](model-contracts.md) to pin bundled model bytes
+and settings, record every native call and retain per-image receipt references.
+Summary/Detailed/Off and explicit unavailable-target fallback are shared with the
+other inference interfaces.
+
 [Ten original MIT projects](<../examples/opencv tools/batch_inference/README.md>)
 include native dynamic RGB/grayscale pooling, fixed two-row reshaping, mixed-size
 inputs, source-size inference, serial downstream execution and four deliberate

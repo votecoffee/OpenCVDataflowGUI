@@ -5878,7 +5878,7 @@ P4	method	cv2.gapi_wip_GOutputs.getGOpaque	alias	cv2.gapi.wip.GOutputs.getGOpaqu
 P4	method	cv2.gapi_wip_GOutputs.getGScalar	alias	cv2.gapi.wip.GOutputs.getGScalar
 P4	class	cv2.gapi_wip_gst_GStreamerPipeline	alias	cv2.gapi.wip.gst.GStreamerPipeline
 P4	class	cv2.gapi_wip_IStreamSource	alias	cv2.gapi.wip.IStreamSource
-P4	function	cv2.getBuildInformation	no static reference	-
+P4	function	cv2.getBuildInformation	literal reference	-
 P4	function	cv2.getNumThreads	literal reference	-
 P4	function	cv2.getTickCount	no static reference	-
 P4	function	cv2.ipp.getIppVersion	no static reference	-

@@ -25,6 +25,9 @@ PREPROCESS_FIELDS = (
     "std",
 )
 NETWORK_FIELDS = (
+    "contract_path",
+    "receipt_mode",
+    "fallback_policy",
     "model_path",
     "output_names",
     "engine",
@@ -252,6 +255,7 @@ class MultiInputInference(DNNInference):
         Port("tensors", "data"),
         Port("preprocessing", "data", required=False),
         Port("input_info", "data"),
+        Port("receipt", "data", required=False),
     )
     defaults = {
         **{k: copy.deepcopy(DNNInference.defaults[k]) for k in NETWORK_FIELDS},
@@ -365,6 +369,7 @@ class MultiInputInference(DNNInference):
             )
 
     def process(self, inputs):
+        self.begin_inference()
         # Bad or missing inputs also discard a previously prepared native network.
         try:
             return self.infer_complete(inputs)
@@ -437,7 +442,16 @@ class MultiInputInference(DNNInference):
             if any(t != identities[0] for t in identities[1:]):
                 raise ValidationError("Current model inputs belong to different tickets")
         token = tuple((name, tuple(a.shape)) for name, a in arrays)
-        tensors, filename = self.infer_tensors(arrays, token)
+        tensors, filename = self.infer_tensors(
+            arrays,
+            token,
+            preprocessing={
+                p[record["slot"] + "_name"]: (record["preprocessing"] or {}).get(
+                    "preprocessing_contract"
+                )
+                for record in records
+            },
+        )
         primary = next(r for r in records if r["slot"] == p["primary_input"])
         context = copy.deepcopy(self.input_payloads.get(p["primary_input"], {}))
         context.pop("tensor_preprocessing", None)

@@ -98,7 +98,11 @@ bindings, Current/Reference roles and ticket policies remain explicit. Primary
 input owns result coordinates and optional preprocessing. Shared recipe rules
 still apply. See [contracts](multi-input-inference.md) and
 [nine numerical examples](<../examples/opencv tools/multi_input_inference/README.md>).
-Revisioned execution receipts remain separate roadmap work.
+All three inference interfaces support pinned model/settings bundles and
+Summary/Detailed/Off execution receipts. Byte/settings mismatches reject;
+opt-in unavailable-target CPU fallback is reported. `export-model` publishes a
+new bundle without processing images. See [contracts](model-contracts.md) and
+[ten controls](<../examples/opencv tools/model_contracts/README.md>).
 
 **Batched ONNX image inference** accepts ordered image groups, chunks them into
 native NCHW calls and preserves a result row for each real image. Declared shapes,

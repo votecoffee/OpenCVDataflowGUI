@@ -253,7 +253,7 @@ def test_nonfinite_image_rejects_after_warm_model_and_later_input_recovers():
 def test_scalar_per_image_vector_output_is_sliced_to_single_image_rows(monkeypatch):
     block = model()
 
-    def native_rows(inputs, token, *, array_outputs):
+    def native_rows(inputs, token, *, array_outputs, preprocessing):
         assert array_outputs
         blob = inputs[0][1]
         return {"scores": blob.mean(axis=(1, 2, 3))}, "scalar.onnx"
@@ -480,7 +480,13 @@ def test_regenerate_exact_assets_and_projects_without_modifying_originals(tmp_pa
         assert hashlib.sha256((BASE / "assets" / name).read_bytes()).hexdigest() == digest
         assert hashlib.sha256((tmp_path / "assets" / name).read_bytes()).hexdigest() == digest
     for path in BASE.glob("*.json"):
-        assert json.loads((tmp_path / path.name).read_bytes()) == json.loads(path.read_bytes())
+        expected = json.loads(path.read_bytes())
+        if "blocks" in expected:
+            # Old projects acquire newly declared optional defaults when reopened.
+            restored = Graph.load(path, builtin_registry())
+            expected = restored.to_dict()
+            restored.close()
+        assert json.loads((tmp_path / path.name).read_bytes()) == expected
     assert all(
         hashlib.sha256((BASE / name).read_bytes()).hexdigest() == digest
         for name, digest in before.items()

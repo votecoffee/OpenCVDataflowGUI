@@ -161,7 +161,13 @@ def test_asset_model_hashes_and_full_regeneration_keep_original_collection(tmp_p
         assert hashlib.sha256((BASE / "assets" / name).read_bytes()).hexdigest() == digest
         assert hashlib.sha256((tmp_path / "assets" / name).read_bytes()).hexdigest() == digest
     for path in BASE.glob("*.json"):
-        assert json.loads((tmp_path / path.name).read_bytes()) == json.loads(path.read_bytes())
+        expected = json.loads(path.read_bytes())
+        if "blocks" in expected:
+            # Old projects acquire newly declared optional defaults when reopened.
+            restored = Graph.load(path, builtin_registry())
+            expected = restored.to_dict()
+            restored.close()
+        assert json.loads((tmp_path / path.name).read_bytes()) == expected
     assert all(
         hashlib.sha256((BASE / name).read_bytes()).hexdigest() == digest
         for name, digest in before.items()

@@ -8490,7 +8490,10 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `model_path` | `""` | Local ONNX model; relative paths resolve beside the project. |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local ONNX path; Contract path instead uses its bundled model. |
 | `width` | `224` |  |
 | `height` | `224` |  |
 | `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` |
@@ -8521,7 +8524,10 @@ Input `regions` — Optional same-order, same-label region group on the correspo
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `model_path` | `""` | Local ONNX model; relative paths resolve beside the project. |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local ONNX path; Contract path instead uses its bundled model. |
 | `width` | `224` | Value must be a whole number between 1 and 4096. Configured mode: network width. Source mode uses each source width (up to 4096). |
 | `height` | `224` | Value must be a whole number between 1 and 4096. Configured mode: network height. Source mode uses source height (up to 4096). |
 | `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` Explicit network channel order; this does not rescale source intensity units. |
@@ -8562,7 +8568,10 @@ Input `input_4` — Connect prepared images or float32 tensor records/maps.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `model_path` | `""` | Local ONNX model; relative paths resolve beside the project. |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local ONNX path; Contract path instead uses its bundled model. |
 | `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
 | `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` OpenCV 5 engine. Non-CPU targets require classic. |
 | `backend` | `"opencv"` | `opencv`, `cuda`, `default` Shared native inference setting. |
