@@ -21,7 +21,7 @@ ten real captures, spatially held-out refinement comparisons and two native
 Two [retained triangle CAD training projects](known_part_jaw/mesh_training/README.md)
 add original-frame STL/PLY import, native **Cloud / mesh_fit** review and restored
 reference geometry. Mesh fit is diagnostic-only; the existing point gate still
-decides acceptance. The pinned dev11 jaw plugin needs no environment install.
+decides acceptance. The pinned dev12 jaw plugin needs no environment install.
 The [ray-evidence study](known_part_jaw/RAY_STUDY.md) adds 100 fixed
 hypotheses, eight analytic controls and two native six-cloud reviews. Training
 now shows testable coverage beside conditional support; neither changes

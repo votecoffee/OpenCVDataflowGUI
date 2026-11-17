@@ -72,6 +72,8 @@ draft = add_proposals(recipe, [selected])  # rejects failed/stale/conflicting se
 
 `add_proposals` rechecks source contact coordinates, current pad/stroke/model
 checks and unique names; the original recipe is unchanged if validation fails.
+Dev12 also checks the exact source-contact span, rejecting a changed span even
+when its unchanged frame and current contact tolerance would otherwise pass.
 The UI additionally binds the result to the unchanged training draft. A changed
 source, settings or name requires rechecking; adding never runs a robot.
 

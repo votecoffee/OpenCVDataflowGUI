@@ -31,7 +31,7 @@ environment. NumPy, SciPy and OpenCV must already be available.
 
 | Package | Version | Wheel SHA-256 |
 | --- | --- | --- |
-| `opencv-simple-bin-picking` | `0.1.0.dev11` | `7960114b4f4dd01c1f111d47a7630b8585bb51c2b355d2e0577867b5cbcf38c5` |
+| `opencv-simple-bin-picking` | `0.1.0.dev12` | `5dde99817bfaa1ce39e6c813c3d556cc02e46dcbfd76bf2b6490e109cac94b40` |
 | `opencv-simple-3d-locate` | `0.1.0.dev20` | `c124a55e5105c087e1a849ad47d648d9801c4caeaa76ce4e8fcc0f77d846c2f9` |
 
 Opening a project does not load Python code automatically. If a different
@@ -161,7 +161,7 @@ preview before Stage; runtime pose and clearance acceptance are unchanged.
 `native-verification.json` records actual offscreen app thumbnail/popout orbit,
 RGB preservation, review without replanning and portable Save As for all fourteen
 projects. This is software acceptance, not hardware qualification. The bundled
-BinPicking wheel passed 151 checks against the checkout host, including existing
+BinPicking wheel passed 152 checks against the checkout host, including existing
 suction and mocked simulation checks. The locator wheel passed 25 focused checks
 for capture binding, block execution and separate-depth behavior. All 61 packaged
 source modules and both MIT notices match the source publication after newline
@@ -171,7 +171,7 @@ assets after portable Save As.
 From an environment with the app, NumPy, SciPy and OpenCV:
 
 ```powershell
-python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev11-py3-none-any.whl --source tless/source
+python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev12-py3-none-any.whl --source tless/source
 python build_native_training.py C:\path\to\new-output C:\path\to\new-output\native_training
 python verify.py C:\path\to\new-output C:\path\to\new-checks
 python build_capture_controls.py . C:\path\to\new-capture-checks --verify-existing
