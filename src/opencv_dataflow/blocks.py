@@ -822,6 +822,7 @@ def builtin_registry():
     from .scanline_motion import EstimateScanlineMotion
     from .segmentation import SEGMENTATION_BLOCKS
     from .selection_remap import RemapSelection, RemapSelectionPacked
+    from .semantic_segmentation import DecodeSegmentation
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shadow_compensation import CompensateReferenceShadows
     from .shape_fitting import (
@@ -1143,6 +1144,7 @@ def builtin_registry():
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,
         DecodeRotatedDetections,
+        DecodeSegmentation,
         FitFeatureCovariance,
         EvaluateImageFeatures,
         SolveLinearSystem,

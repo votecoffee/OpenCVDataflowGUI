@@ -1,0 +1,181 @@
+{
+  "license": "MIT - original color arithmetic and numerical references",
+  "cases": {
+    "multiclass": {
+      "passed": true,
+      "expected_labels": "expected_multiclass.png",
+      "selected_pixels": 2748,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1068,
+        792,
+        888
+      ]
+    },
+    "letterbox": {
+      "resize": "letterbox",
+      "passed": true,
+      "expected_labels": "expected_letterbox.png",
+      "selected_pixels": 2680,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1000,
+        792,
+        888
+      ]
+    },
+    "channels_last": {
+      "output": "channels_last",
+      "layout": "NHWC",
+      "passed": true,
+      "expected_labels": "expected_channels_last.png",
+      "selected_pixels": 2748,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1068,
+        792,
+        888
+      ]
+    },
+    "probabilities": {
+      "output": "probabilities",
+      "activation": "probability",
+      "passed": true,
+      "expected_labels": "expected_probabilities.png",
+      "selected_pixels": 2748,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1068,
+        792,
+        888
+      ]
+    },
+    "binary": {
+      "output": "binary",
+      "format": "binary",
+      "activation": "sigmoid",
+      "passed": true,
+      "expected_labels": "expected_binary.png",
+      "selected_pixels": 864,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        864
+      ]
+    },
+    "class_ids": {
+      "output": "class_ids",
+      "format": "class_ids",
+      "layout": "NHW",
+      "passed": true,
+      "expected_labels": "expected_class_ids.png",
+      "selected_pixels": 2748,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1068,
+        792,
+        888
+      ]
+    },
+    "low_resolution": {
+      "output": "low_resolution",
+      "passed": true,
+      "expected_labels": "expected_low_resolution.png",
+      "selected_pixels": 3584,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1248,
+        1056,
+        1280
+      ]
+    },
+    "linear_scores": {
+      "resampling": "scores_linear",
+      "passed": true,
+      "expected_labels": "expected_linear_scores.png",
+      "selected_pixels": 3053,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1159,
+        896,
+        998
+      ]
+    },
+    "selected_roi": {
+      "roi": true,
+      "passed": true,
+      "expected_labels": "expected_selected_roi.png",
+      "selected_pixels": 1432,
+      "roi_pixels": 2240,
+      "class_counts": [
+        0,
+        0,
+        792,
+        640
+      ]
+    },
+    "confidence_gate": {
+      "minimum_confidence": 0.8,
+      "passed": true,
+      "expected_labels": "expected_confidence_gate.png",
+      "selected_pixels": 2400,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        792,
+        720,
+        888
+      ]
+    },
+    "empty": {
+      "empty": true,
+      "passed": false,
+      "expected_labels": "expected_empty.png",
+      "selected_pixels": 0,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "area_failure": {
+      "maximum_fraction": 0.05,
+      "passed": false,
+      "expected_labels": "expected_area_failure.png",
+      "selected_pixels": 2748,
+      "roi_pixels": 5088,
+      "class_counts": [
+        0,
+        1068,
+        792,
+        888
+      ]
+    }
+  },
+  "asset_sha256": {
+    "color_segmentation.onnx": "74f113630a11f19097c03c43d93cc4f4f81199dc343bbd0cbdd6ae326535e9b4",
+    "colors.png": "d541a42ea7b2d32de6678e3554397cbe6f07f3e7b5b5f2acfa9f6448c4451cc3",
+    "empty.png": "c75f41659a4e8f78deaafe38f7a394de85e81647a118959f55c88e4c5946d43d",
+    "expected_area_failure.png": "ee4fa26a80c28e065491bea4af5e8969838ae7b544b1835d318d270eca8491ee",
+    "expected_binary.png": "d4a565faa122f6113524c2b175dc8c6b6b139e9e9e558e13d2fa25a3ed5293d6",
+    "expected_channels_last.png": "ee4fa26a80c28e065491bea4af5e8969838ae7b544b1835d318d270eca8491ee",
+    "expected_class_ids.png": "ee4fa26a80c28e065491bea4af5e8969838ae7b544b1835d318d270eca8491ee",
+    "expected_confidence_gate.png": "ff5243d76fae6832a894a18777bcec34ae0b8a9ceaeebb2ae32beffd0c63f7c4",
+    "expected_empty.png": "7184838f16b04eadc4901975699816c5552e0539b93ca3b205a110cb62e54ffe",
+    "expected_letterbox.png": "a5371ba34c7da95a7d6f4c1f6da646d2f0046f94459568cecc48cf606036dfbe",
+    "expected_linear_scores.png": "a54eaaaa16bc1b66abedd213a7cdddad083619f510057eed5eeedd99feed1293",
+    "expected_low_resolution.png": "86628cf0e0faa126055f34e14d95e38bfca30bbcc5f1294a5ba1c84a992df1ee",
+    "expected_multiclass.png": "ee4fa26a80c28e065491bea4af5e8969838ae7b544b1835d318d270eca8491ee",
+    "expected_probabilities.png": "ee4fa26a80c28e065491bea4af5e8969838ae7b544b1835d318d270eca8491ee",
+    "expected_selected_roi.png": "5d55417079473ec83e424b74b2e991cf61ea268bb6f2e76edc3549284a233be2"
+  }
+}

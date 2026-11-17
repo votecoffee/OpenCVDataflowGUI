@@ -50,20 +50,20 @@ def preprocessing_geometry(value, image):
     return size, reverse
 
 
-def check_context(block):
+def check_context(block, *, kind="Detection"):
     contexts = [
         block.input_payloads.get(name, {}) for name in ("image", "tensors", "preprocessing")
     ]
     require_same_frame(
         [ValuePacket(None, p) for p in contexts],
-        message="Detection tensors/preprocessing use another image frame",
+        message=f"{kind} tensors/preprocessing use another image frame",
     )
     tickets = [p["ticket"] for p in contexts if "ticket" in p]
     if tickets and any(ticket_key(t) != ticket_key(tickets[0]) for t in tickets[1:]):
-        raise ValidationError("Detection inputs belong to different acquisition tickets")
+        raise ValidationError(f"{kind} inputs belong to different acquisition tickets")
     recipes = [p["recipe_ref"] for p in contexts if "recipe_ref" in p]
     if recipes and any(r != recipes[0] for r in recipes[1:]):
-        raise ValidationError("Detection inputs belong to different recipe revisions")
+        raise ValidationError(f"{kind} inputs belong to different recipe revisions")
     return {
         "ticket_checked": len(tickets) == 3,
         "frame_checked": all(p.get("spatial", {}).get("root_id") is not None for p in contexts),

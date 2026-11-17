@@ -43,13 +43,13 @@ The mosaic project was refreshed without changing its images; regeneration now
 runs in a temporary folder, compares normalized project text/exact image bytes,
 and verifies the source collection stays untouched. **100 focused rechecks**
 passed before the clean full rerun above. This closes the twentieth increment
-ending with S1-173. The next targeted cycle is at **18/20**, covering paced file
+ending with S1-173. The next targeted cycle is at **19/20**, covering paced file
 replay (S1-11), bounded live network acquisition (S1-12), media-time sampling
 (S1-110), actual variable/unreliable video timing (S1-123), and whole
 selections through nonlinear correction (S1-69), candidate visible support (S1-61),
 HDR moving-region rejection (S1-150), unordered rotating views (S1-104), and
 explicit camera refinement with reserved observations (S1-147), and review-only
-stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04), and revisioned model/preprocessing/execution receipts (S2-05), and rotated detection/affine poses (S2-09).
+stabilization border fills (S1-148), and controlled motion-kernel estimation (S1-84), and shared capture-setting negotiation/readback (S1-115), and controlled curved-QR decoding (S1-121), and image detection/decoding (S2-08), and complete named multi-input inference (S2-03), and ordered batched/dynamic-shape image inference (S2-04), and revisioned model/preprocessing/execution receipts (S2-05), and rotated detection/affine poses (S2-09), and source-grid semantic segmentation (S2-10).
 
 The previous broad checkpoint was `1e1cccb`: **4,801 passed, 31 skipped** in
 298.51 seconds with the offscreen suite, Python 3.14.3, OpenCV 5.0.0 and contrib
@@ -161,6 +161,53 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Source-grid semantic segmentation (S2-10)** adds `ml.decode_segmentation`
+under OpenCV DNN. Explicit multiclass logits/probabilities, binary foreground
+scores and decoded class IDs use six declared layouts and a single-image batch.
+Nearest winner labels or native linear raw-score sampling map full-network heads
+through exact rounded resize/letterbox transforms to source-size labels/masks.
+Ignored/unknown/below-confidence pixels become -1, class zero remains a valid
+semantic ID, and ignored winners never promote a runner-up. ID-only heads have
+no invented confidence. Class statistics and count/ROI-fraction limits retain
+complete current outputs on normal `segmentation.area` failures.
+
+Source encoding/depth, ticket/frame, recipe, pyramid and processing start survive;
+known conflicts reject. Mask/region selections gate outputs after full-image
+inference. Tensor, image and mapped-score limits bound decoding work, including
+flat-value validation before conversion and a qualified head above two million
+values. Optional semantic color maps and drawable outlines/holes feed filmstrip
+overlays; contour/vertex limits flag graphics truncation without changing masks.
+Off/Lean avoids optional graphics. Base execution owns timing/history/diagnostics;
+native errors emit no result and a valid next invocation recovers.
+
+**214 focused checks passed**, covering independent nearest/linear pixel
+references, layouts and score meanings, extreme logits, binary thresholds,
+ignored classes/ROI/confidence, count/fraction failures, unknown IDs without
+confidence, malformed heads, resource guards, context conflicts, original RGB
+uint16/pyramid/recipe/timing data, JSON/XML/Save As, exact regeneration, mask-to-blob
+handoff and existing inference/detection/catalog/reference regressions. Twelve
+original MIT color-arithmetic ONNX projects use source-grid PNG truth calculated
+without executing inference or the decoder. Their numerical masks qualify this
+adapter, not learned recognition accuracy. A scalar float-map reference also
+caught and corrected the older 1/32-phase assumption for this CPU implementation.
+
+All **24 installed Debug/Lean example outcomes** matched (20 passes, four
+intentional area-failure judgments), including class counts/fractions, source
+tickets and absent ID confidence. Two installed model-contract/rotated-pose
+regressions passed; six packaged/installed modules match source. Strict JSON,
+15 model/image/reference hashes, local links, 14 original text contracts,
+generated parameters/binding inventory/coverage, Ruff and repository hygiene
+passed. Application refreshed, root README reviewed unchanged; no broad suite or
+physical-equipment/accelerator qualification repeated. See
+[contracts](semantic-segmentation.md) and
+[twelve projects](<../examples/opencv tools/semantic_segmentation/README.md>).
+
+Current ML/DNN scope is **16/62 (25.8%)**, overall **242/470 (51.5%)**; core
+remains **173/175 (98.9%)**. Targeted cycle **19/20**. Next: instance segmentation
+(S2-11), followed by the scheduled broad checkpoint after roughly 20 increments.
+Arbitrary/cropped/multilabel/promptable exports and industrial accuracy remain
+separate qualified capabilities.
+
 **Rotated detection and affine poses (S2-09)** adds
 `ml.decode_rotated_detections` under OpenCV DNN. Explicit center/size/angle
 score/objectness/class-ID heads, row/channel layouts, radians/degrees,
@@ -198,9 +245,9 @@ physical-equipment/accelerator qualification repeated.
 See [contracts](rotated-detection.md) and
 [twelve projects](<../examples/opencv tools/rotated_detection/README.md>).
 
-Current ML/DNN scope is **15/62 (24.2%)**, overall **241/470 (51.3%)**; core
-remains **173/175 (98.9%)**. Targeted cycle **18/20**, no broad suite repeated.
-Next: semantic segmentation (S2-10). Arbitrary rotated exports, industrial accuracy,
+At the S2-09 checkpoint ML/DNN reached **15/62 (24.2%)**, overall
+**241/470 (51.3%)**; core remained **173/175 (98.9%)**, targeted cycle **18/20**.
+The next increment above qualifies semantic segmentation (S2-10). Arbitrary rotated exports, industrial accuracy,
 physical pose calibration and throughput remain application-specific work.
 
 **Revisioned model/preprocessing/execution receipts (S2-05)** extend all three

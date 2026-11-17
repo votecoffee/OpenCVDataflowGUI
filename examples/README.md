@@ -126,6 +126,8 @@ For pinned model/settings bundles, execution receipts and explicit target fallba
 
 For oriented detector heads, exact source footprints, suppression choices and pose-relative regions, try [rotated detection](<opencv tools/rotated_detection/README.md>).
 
+For per-pixel labels, selected masks, confidence and source-grid mapping, try [semantic segmentation](<opencv tools/semantic_segmentation/README.md>).
+
 For detector inference, decoded box collections and suppression, try [DNN detection](<opencv tools/dnn_detection/README.md>).
 
 For wrapped-label decoding, sampled modules and source-geometry limits, try [curved QR](<opencv tools/curved_qr/README.md>).

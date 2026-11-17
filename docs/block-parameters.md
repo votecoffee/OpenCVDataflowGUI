@@ -8528,6 +8528,45 @@ Input `region` — Optional region intersected with the mask. Does not crop or a
 | `nms_method` | `"polygon_iou"` | `polygon_iou`, `opencv` Polygon IoU corrects nested-box overlap; OpenCV preserves native behavior. |
 | `maximum_pair_comparisons` | `2000000` | Value must be a whole number between 1 and 2e+07. Reject quadratic work above the sum of group n*(n-1)/2. |
 
+## Decode semantic segmentation (`ml.decode_segmentation`)
+
+ML / Semantic segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tensors` (data), `preprocessing` (data).
+
+Input `image` — Original acquisition image, returned with its pixel format and depth.
+
+Input `mask` — Source-grid output selection intersected with Region after inference.
+
+Input `region` — Optional circle/rectangle/polygon/raster selection in the source image frame.
+
+Input `tensors` — One image's dequantized outputs with explicit axes/score meaning.
+
+Input `preprocessing` — Matching inference sizes and inverse resize/padding maps.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` | Named tensor_v1 output; empty selects the first output. |
+| `format` | `"multiclass"` | `multiclass`, `binary`, `class_ids` Multiclass exclusive scores, one binary foreground score, or decoded class IDs. |
+| `layout` | `"NCHW"` | `NCHW`, `NHWC`, `CHW`, `HWC`, `NHW`, `HW` Explicit axes; N must equal one. HW/NHW denote a single-channel plane. |
+| `score_activation` | `"softmax"` | `softmax`, `probability`, `sigmoid` Exclusive logits: softmax. Binary logits: sigmoid. Probability validates input. |
+| `resampling` | `"labels_nearest"` | `labels_nearest`, `scores_linear` Nearest winner labels, or linear raw scores before activation and decision. |
+| `class_count` | `0` | Value must be a whole number between 0 and 256. Zero infers channels; binary has two classes. IDs require 1..256. |
+| `labels` | `[]` | Class names including background; empty uses numeric IDs. |
+| `selected_class_ids` | `[1]` | Integer IDs for Mask/area judgment; empty selects all nonignored. |
+| `ignored_class_ids` | `[]` | Integer IDs converted to -1 after winner selection; no runner-up reassignment. |
+| `minimum_confidence` | `0.0` | Value must be a finite number between 0 and 1. Winning confidence >= threshold; lower pixels become -1. IDs require zero. |
+| `binary_threshold` | `0.5` | Value must be a finite number between 0 and 1. Foreground probability >= threshold selects class 1; otherwise class 0. |
+| `minimum_pixels` | `1` | Value must be a whole number between 0 and 1.67772e+07. Fewest selected pixels to pass; zero allows an empty mask. |
+| `maximum_pixels` | `0` | Value must be a whole number between 0 and 1.67772e+07. Most selected pixels permitted; zero disables this limit. |
+| `minimum_fraction` | `0.0` | Value must be a finite number between 0 and 1. Minimum selected pixels divided by the full ROI/mask area. |
+| `maximum_fraction` | `1.0` | Value must be a finite number between 0 and 1. Maximum selected/ROI fraction; ignored/low confidence stays in denominator. |
+| `maximum_tensor_elements` | `8000000` | Value must be a whole number between 1 and 8e+06. Reject larger heads before conversion; inference has its own output limit. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Source-grid pixel budget; maximum axis is 16384 pixels. |
+| `maximum_resample_elements` | `32000000` | Value must be a whole number between 1 and 6.4e+07. Bound channels x source pixels before allocating mapped scores. |
+| `graphics_maximum_contours` | `2000` | Value must be a whole number between 1 and 20000. Limit optional outlines, including holes; numerical masks remain complete. |
+| `graphics_maximum_points` | `100000` | Value must be a whole number between 1 and 1e+06. Limit outline vertices; report truncation without changing the mask. |
+
 ## DNN ONNX inference (`ml.dnn`)
 
 ML / DNN inference

@@ -69,6 +69,7 @@
 | ML/DNN and optional dependencies | [ML](ml.md) |
 | Object detection heads, class-aware NMS and source box geometry | [DNN detection](object-detection.md) |
 | Oriented heads, rotated overlap and exact affine source poses | [Rotated detection](rotated-detection.md) |
+| Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |
 | Independent image/tensor preparation, named model inputs and ticket roles | [Multi-input inference](multi-input-inference.md) |
 | Image batches, dynamic sizes, tails and ordered per-image inference results | [Batch inference](batch-inference.md) |
 | Pinned ONNX model/settings bundles and execution/fallback evidence | [Model contracts](model-contracts.md) |

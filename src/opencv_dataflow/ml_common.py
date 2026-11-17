@@ -44,13 +44,13 @@ def tensor_record(value, max_elements):
     }
 
 
-def selected_tensor(tensors, name=""):
+def selected_tensor(tensors, name="", *, max_elements=2_000_000):
     if not isinstance(tensors, dict) or not tensors:
         raise ValueError("Connect the DNN tensors output")
     value = tensors.get(name) if name else next(iter(tensors.values()))
     if not isinstance(value, dict) or value.get("model") != "tensor_v1":
         raise ValueError("Select an existing tensor output name")
-    values = array(value.get("values"), "Tensor")
+    values = array(value.get("values"), "Tensor", max_elements)
     shape = value.get("shape")
     if (
         not isinstance(shape, list)

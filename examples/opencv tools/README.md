@@ -57,3 +57,5 @@ For native image batches with dynamic dimensions, explicit tails and per-image t
 For model/settings revisions, portable bundles, receipt verbosity and target fallback, try [model contracts](model_contracts/README.md).
 
 For oriented boxes, rotated IoU, affine poses and local inspection regions, try [rotated detection](rotated_detection/README.md).
+
+For per-pixel score/ID heads, source-grid masks, confidence and area checks, try [semantic segmentation](semantic_segmentation/README.md).
