@@ -77,3 +77,5 @@ For source-box labels, IoU matches, precision/recall/AP and duplicate/miss/error
 For explicit Classic/New/Auto loading, frozen snapshots and native rejection controls, try [ONNX engine dispatch](dnn_engines/README.md).
 
 For a pinned pretrained SSD model, separate output heads, source-image graphics and a hand-marked real photograph, try [SSD detection](ssd_detection/README.md).
+
+For pinned raw/decoded YOLO layouts, portrait/landscape letterboxing, class-aware suppression and duplicate validation, try [YOLO detection](yolo_detection/README.md).

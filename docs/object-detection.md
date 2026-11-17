@@ -143,5 +143,25 @@ retains its [CC0 source record](../examples/assets/photograph-sources.md).
 This is inference/postprocessing qualification, not an accuracy benchmark for
 industrial parts or a qualification of every YOLO/SSD export or accelerator.
 
+[Twelve YOLO projects](<../examples/opencv tools/yolo_detection/README.md>) now
+qualify the pinned YOLOX baseline in sealed model/settings bundles. The original
+raw grid export runs under explicit Classic CPU. A reproducible local derivative
+appends standard ONNX grid/size decoding, objectness multiplication and transpose,
+retaining every learned initializer. Its `[1,8400,84]` and `[1,84,8400]` outputs
+exercise decoded rows and channels under explicit New CPU. This derivative is
+YOLOX, not a YOLOv8 model or qualification of that model family. Source and derived
+bytes have separate pinned digests and a prominent modification record; graph
+loading/execution never performs conversion or downloads.
+
+An independent native preprocessing/grid/batched-NMS reference checks source boxes,
+class IDs, scores and original row identities. A portrait crop exercises horizontal
+padding and unequal rounded scales, complementing the landscape's vertical padding.
+Hand-marked cup annotations, class-aware/agnostic suppression, duplicate false
+positives, strict confidence/objectness gates, region exclusion, valid empty images,
+bad-layout containment/recovery, graphics/Lean, XML, portable credits/model assets
+and cold-worker teardown define the qualified scope. The photo and its crop share
+one acquisition group and do not establish dataset accuracy. Arbitrary YOLO family,
+anchor, quantization and accelerator contracts remain open.
+
 Native references: [OpenCV NMS implementation](https://github.com/opencv/opencv/blob/5.0.0/modules/dnn/src/nms.cpp),
 [YOLOX grid/score convention](https://github.com/opencv/opencv_zoo/blob/48b10fa505aeb51fbd127fc60a5c660040e823b7/models/object_detection_yolox/yolox.py).

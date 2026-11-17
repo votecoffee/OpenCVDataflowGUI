@@ -242,6 +242,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Image detector evaluation](<opencv tools/detector_evaluation/README.md>) | Edit labeled boxes and inspect IoU matches, misses, false positives, precision/recall/AP and native failure controls. |
 | [ONNX engine dispatch](<opencv tools/dnn_engines/README.md>) | Compare Classic/New/Auto on frozen model bytes; inspect import evidence and an intentional classic rejection. |
 | [Pretrained SSD detection](<opencv tools/ssd_detection/README.md>) | Decode separate box/class/score heads on a credited real photograph; compare source boxes to a hand-marked cup and exercise failed gates. |
+| [YOLO layouts and source boxes](<opencv tools/yolo_detection/README.md>) | Compare pinned raw and derived row/channel outputs, rounded portrait/landscape letterboxing, class-aware NMS, duplicates and validation on a credited photograph. |
 | [KAZE registration](<opencv tools/kaze_registration/README.md>) | Match extended KAZE descriptors with FLANN and recover a known translation. |
 | [Labeled distance transform](<opencv tools/labeled_distance/README.md>) | Partition an image into nearest-seed zones and emit a mask for one zone. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |
