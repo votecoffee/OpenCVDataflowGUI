@@ -1,0 +1,174 @@
+{
+  "derived_review": true,
+  "components": [
+    {
+      "role": "derived_mesh_supported",
+      "rows": [
+        0,
+        256
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_contradiction",
+      "rows": [
+        256,
+        256
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_occluded",
+      "rows": [
+        256,
+        256
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_unknown",
+      "rows": [
+        256,
+        256
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_ambiguous",
+      "rows": [
+        256,
+        256
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_mesh_label_mismatch",
+      "rows": [
+        256,
+        256
+      ],
+      "observations": false
+    }
+  ],
+  "capture_id": "clear",
+  "contact_source": "CAD_taught_not_measured_force_closure",
+  "selected_candidate": null,
+  "unobserved_space": "unknown_not_free",
+  "physical_grasp_qualified": false,
+  "pose_fit": [
+    {
+      "instance_id": "part-1",
+      "inspected_samples": 5025,
+      "counts": {
+        "supported": 4988,
+        "contradiction": 0,
+        "occluded": 0,
+        "unknown": 0,
+        "ambiguous": 37,
+        "label_mismatch": 0
+      },
+      "retained_counts": {
+        "supported": 256,
+        "contradiction": 0,
+        "occluded": 0,
+        "unknown": 0,
+        "ambiguous": 37,
+        "label_mismatch": 0
+      },
+      "rows_per_state_limit": 256,
+      "pose_tolerance_m": 0.003,
+      "nearest_residual_p05_p50_p95_m": [
+        -8.344650304081824e-09,
+        -8.344650304081824e-09,
+        -8.344650304081824e-09
+      ],
+      "farthest_residual_p05_p50_p95_m": [
+        -8.344650304081824e-09,
+        -8.344650304081824e-09,
+        -8.344650304081824e-09
+      ],
+      "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+      "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+      "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+    }
+  ],
+  "pose_fit_legend": {
+    "supported": [
+      65,
+      230,
+      100
+    ],
+    "contradiction": [
+      245,
+      55,
+      210
+    ],
+    "occluded": [
+      70,
+      135,
+      245
+    ],
+    "unknown": [
+      255,
+      165,
+      45
+    ],
+    "ambiguous": [
+      245,
+      230,
+      65
+    ],
+    "label_mismatch": [
+      165,
+      95,
+      235
+    ]
+  },
+  "pose_fit_points": "Predicted CAD samples; not additional sensor returns or free space",
+  "mesh_fit": [
+    {
+      "instance_id": "part-1",
+      "inspected_samples": 11025,
+      "counts": {
+        "supported": 11025,
+        "contradiction": 0,
+        "occluded": 0,
+        "unknown": 0,
+        "ambiguous": 0,
+        "label_mismatch": 0
+      },
+      "retained_counts": {
+        "supported": 256,
+        "contradiction": 0,
+        "occluded": 0,
+        "unknown": 0,
+        "ambiguous": 0,
+        "label_mismatch": 0
+      },
+      "rows_per_state_limit": 256,
+      "pose_tolerance_m": 0.003,
+      "nearest_residual_p05_p50_p95_m": [
+        -8.344650359592976e-09,
+        -8.344650359592976e-09,
+        -8.344650248570673e-09
+      ],
+      "farthest_residual_p05_p50_p95_m": [
+        -8.344650359592976e-09,
+        -8.344650359592976e-09,
+        -8.344650248570673e-09
+      ],
+      "residual_definition": "Predicted camera Z minus observed depth at the same integer pixel",
+      "residual_scope": "Includes occlusion; separate diagnostic population from the point gate",
+      "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays",
+      "model": "jaw_triangle_pose_review_v1",
+      "status": "reviewed",
+      "reason": null,
+      "triangle_count": 12,
+      "grid_stride_pixels": 1,
+      "renderer": "bounded_perspective_first_surface_v1",
+      "acceptance_applied": false,
+      "point_gate_unchanged": true,
+      "row_identity": "Full-image integer pixel ID"
+    }
+  ]
+}

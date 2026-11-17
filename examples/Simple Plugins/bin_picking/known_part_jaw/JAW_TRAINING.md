@@ -64,6 +64,11 @@ display fields.
 
 ## Freeze a reference and preview
 
+Triangle CAD can also be imported using **New from bin + triangle CAD…**.
+Declare units and winding, teach the sampled contacts as usual, then inspect the
+separate first-surface **Mesh fit** layer. The retained mesh reopens with the
+recipe; its review does not change acceptance. [Triangle workflow](JAW_MESH.md).
+
 **Capture connected reference** copies the wired depth, explicit current
 `part_instance_v1` pose records and capture ID, plus any connected camera,
 bin-pose or instance labels. It also works before the target has run successfully.

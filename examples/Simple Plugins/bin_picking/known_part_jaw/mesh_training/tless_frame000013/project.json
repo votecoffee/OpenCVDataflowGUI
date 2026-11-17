@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.simple_jaw_example",
+      "name": "Recorded first return + supplied pose (assisted)",
+      "parameters": {
+        "depth_path": "assets/depth.npy",
+        "records_path": "assets/records.json",
+        "locator_scene_path": "",
+        "locator_depth_path": ""
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "part_instances",
+        "camera",
+        "capture_id",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "jaw",
+      "type": "3d.simple_bin_picking_jaw",
+      "name": "SimpleBinPicking Jaw",
+      "description": "CAD-assisted jaw alternatives. Inspect graphics in native fly-around. No force-closure, held-part transport or robot execution qualification.",
+      "parameters": {
+        "recipe_path": "assets/bin_picking_jaw/bbe79adf2a5048a59fbe118843ee6bc1.sbpj",
+        "sha256": "08b6463f4de46be7bc28dca969740d4f11e1f54077c5ad611902dc8f1f71d47a",
+        "render_graphics": true
+      },
+      "position": [
+        480.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "part_instances",
+        "capture_id",
+        "camera",
+        "bin_pose",
+        "instances"
+      ],
+      "exposed_outputs": [
+        "picks",
+        "candidates",
+        "report",
+        "count",
+        "tcp",
+        "pregrasp",
+        "graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "graphics"
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "depth",
+      "target": "jaw",
+      "input": "depth"
+    },
+    {
+      "source": "capture",
+      "output": "camera",
+      "target": "jaw",
+      "input": "camera"
+    },
+    {
+      "source": "capture",
+      "output": "part_instances",
+      "target": "jaw",
+      "input": "part_instances"
+    },
+    {
+      "source": "capture",
+      "output": "capture_id",
+      "target": "jaw",
+      "input": "capture_id"
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 
 import numpy as np
+
 from opencv_dataflow.assistant_api import ProjectSession
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.payloads import NO_VALUE
@@ -35,6 +36,7 @@ def verify(root, output, *, native=False):
             assert result.passed is (expected["eligible_grasps"] > 0)
             cloud = result.outputs["graphics"]
             pose_fit = result.outputs["pose_fit"]
+            mesh_fit = result.outputs["mesh_fit"]
             assert cloud.colors is not None and cloud.metadata["derived_review"]
             assert cloud.units == "m" and cloud.frame == expected["frame"]
             if not result.passed:
@@ -79,18 +81,20 @@ def verify(root, output, *, native=False):
                     np.testing.assert_array_equal(viewer.cloud.colors, cloud.colors)
                     viewer.close()
                     assert not viewer.orbit_timer.isActive()
-                    if pose_fit is not NO_VALUE:
-                        block.preview_output = "pose_fit"
-                        assert node.thumbnail_value() is pose_fit
-                        window.inspector.preview_choice.setCurrentText("Cloud / pose_fit")
+                    for name, review_cloud in (("pose_fit", pose_fit), ("mesh_fit", mesh_fit)):
+                        if review_cloud is NO_VALUE:
+                            continue
+                        block.preview_output = name
+                        assert node.thumbnail_value() is review_cloud
+                        window.inspector.preview_choice.setCurrentText(f"Cloud / {name}")
                         window.inspector.open_image_popout()
                         viewer = next(
                             v
                             for v in window.inspector.image_popouts.values()
-                            if v.output_name == "pose_fit"
+                            if v.output_name == name
                         )
-                        assert viewer.cloud is pose_fit
-                        np.testing.assert_array_equal(viewer.cloud.colors, pose_fit.colors)
+                        assert viewer.cloud is review_cloud
+                        np.testing.assert_array_equal(viewer.cloud.colors, review_cloud.colors)
                         viewer.flyaround.setChecked(True)
                         yaw = viewer.yaw.value()
                         viewer.advance_orbit()
@@ -134,6 +138,7 @@ def verify(root, output, *, native=False):
                 native_flyaround_colors_preserved=bool(native),
                 review_did_not_replan=bool(native),
                 native_pose_fit_review=bool(native and pose_fit is not NO_VALUE),
+                native_mesh_fit_review=bool(native and mesh_fit is not NO_VALUE),
                 pose_fit_instances=(
                     len(pose_fit.metadata["pose_fit"]) if pose_fit is not NO_VALUE else 0
                 ),
@@ -142,7 +147,7 @@ def verify(root, output, *, native=False):
                 ).hexdigest(),
             )
         )
-    assert len(rows) in (5, 8, 10)
+    assert len(rows) in (5, 8, 10, 12)
     (output / "checks.json").write_text(json.dumps(rows, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(rows, indent=2))
 

@@ -1,0 +1,36 @@
+[
+  {
+    "case": "clear",
+    "eligible": 1,
+    "triangles": 12,
+    "original_part_frame": "box",
+    "original_origin_preserved": true,
+    "actual_triangle_file_import": true,
+    "cancel_preserved": true,
+    "connected_reference_retained": true,
+    "stage_did_not_apply": true,
+    "inspector_apply_reopen": true,
+    "independent_reference_preview": true,
+    "mesh_acceptance_applied": false,
+    "source_cad_sha256": "775586d8461b2b48e50e865f7148575faef5163509a7e561c45bd9f5b9a2d89d",
+    "expected_sha256": "007efcef13e9b9f5d8953bcb189280daef36ebcc9f8b4df4a5b503bfb58874aa",
+    "assistance": "Authored pose"
+  },
+  {
+    "case": "tless_frame000013",
+    "eligible": 0,
+    "triangles": 5700,
+    "original_part_frame": "tless6",
+    "original_origin_preserved": true,
+    "actual_triangle_file_import": true,
+    "cancel_preserved": true,
+    "connected_reference_retained": true,
+    "stage_did_not_apply": true,
+    "inspector_apply_reopen": true,
+    "independent_reference_preview": true,
+    "mesh_acceptance_applied": false,
+    "source_cad_sha256": "f1227fe15e046bc18c1686bd5fb3b849a9996c2de2ca3fc16d34b9ec348f94df",
+    "expected_sha256": "ad6f916bc42d778c98c4bdf055e24e401f41acf283fe6610450a91c45aedd5c7",
+    "assistance": "T-LESS annotated object pose"
+  }
+]

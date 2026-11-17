@@ -18,6 +18,10 @@ cached training layer/count summary. [Pose-fit gallery](known_part_jaw/pose_fit_
 A [frozen CAD/reconstruction study](known_part_jaw/pose_agreement/README.md) adds
 ten real captures, spatially held-out refinement comparisons and two native
 3D replay projects. Its research proposals remain separate from runtime poses.
+Two [retained triangle CAD training projects](known_part_jaw/mesh_training/README.md)
+add original-frame STL/PLY import, native **Cloud / mesh_fit** review and restored
+reference geometry. Mesh fit is diagnostic-only; the existing point gate still
+decides acceptance. The pinned dev9 jaw plugin needs no environment install.
 
 Install the included `opencv-simple-bin-picking` **0.1.0.dev3** in the Python
 environment running this app, from the application repository root:

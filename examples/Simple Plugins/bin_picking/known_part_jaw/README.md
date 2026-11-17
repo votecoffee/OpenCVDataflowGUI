@@ -1,6 +1,6 @@
 # CAD-taught jaw alternatives
 
-Ten offline projects exercise **SimpleBinPicking Jaw** and native CAD-contact teaching. They
+Twelve offline projects exercise **SimpleBinPicking Jaw** and native CAD-contact teaching. They
 retain the CAD surface, two authored part-relative grasp frames, calibrated
 depth/camera, gripper dimensions and TCP mounting in checksummed `.sbpj` files.
 They use the same generic jaw settings. The clear control demonstrates a usable
@@ -31,7 +31,7 @@ environment. NumPy, SciPy and OpenCV must already be available.
 
 | Package | Version | Wheel SHA-256 |
 | --- | --- | --- |
-| `opencv-simple-bin-picking` | `0.1.0.dev8` | `1cc60d7c9fe4ebd92f1446937e01e4396639ce48624e9d80a677b6aaf609251b` |
+| `opencv-simple-bin-picking` | `0.1.0.dev9` | `1e84bf9e47468fffdda8fac8c553c379545a3b6606b0f29ded1612b39d2f2488` |
 | `opencv-simple-3d-locate` | `0.1.0.dev20` | `c124a55e5105c087e1a849ad47d648d9801c4caeaa76ce4e8fcc0f77d846c2f9` |
 
 Opening a project does not load Python code automatically. If a different
@@ -101,6 +101,12 @@ need a supplied pose reference once before they can preview independently.
 Locator-instance conversion is available below. Better general real contact
 proposals, symmetry handling and qualified robot handoff remain follow-ups.
 
+Two [triangle-CAD training projects](mesh_training/README.md) now exercise
+actual STL/PLY import, original-frame selection, Cancel/Stage/Apply and reference
+restore. [Retained mesh workflow](JAW_MESH.md) adds native **Cloud / mesh_fit**
+review; its report-only evidence leaves point acceptance and clearance unchanged.
+The clear control retains one eligible grasp and the real case retains zero.
+
 ## Locator integration and depth diagnostics
 
 The [two real composed locator projects](locator_chain/README.md) run actual
@@ -141,11 +147,11 @@ current pose gates still reject. It changes no runtime recipe or acceptance gate
 
 `verification.json` records saved-project reopen and graphics-off/cache parity.
 `native-verification.json` records actual offscreen app thumbnail/popout orbit,
-RGB preservation, review without replanning and portable Save As for all ten
+RGB preservation, review without replanning and portable Save As for all twelve
 projects. This is software acceptance, not hardware qualification. The bundled
-BinPicking wheel passed 100 checks against the checkout host, including existing
+BinPicking wheel passed 119 checks against the checkout host, including existing
 suction and mocked simulation checks. The locator wheel passed 25 focused checks
-for capture binding, block execution and separate-depth behavior. All 56 packaged
+for capture binding, block execution and separate-depth behavior. All 58 packaged
 source modules and both MIT notices match the source publication after newline
 normalization. Two additional capture controls preserve their outcomes and all
 assets after portable Save As.
@@ -153,7 +159,7 @@ assets after portable Save As.
 From an environment with the app, NumPy, SciPy and OpenCV:
 
 ```powershell
-python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev8-py3-none-any.whl --source tless/source
+python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev9-py3-none-any.whl --source tless/source
 python build_native_training.py C:\path\to\new-output C:\path\to\new-output\native_training
 python verify.py C:\path\to\new-output C:\path\to\new-checks
 python build_capture_controls.py . C:\path\to\new-capture-checks --verify-existing
