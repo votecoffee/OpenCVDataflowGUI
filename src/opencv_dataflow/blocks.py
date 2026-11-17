@@ -873,6 +873,7 @@ def builtin_registry():
     from .tiff_page_access import TiffPageAccess
     from .tiled_mosaic import RegisterScanLayout, RenderMosaicTile
     from .tilted_statistics import TiltedWindowStatistics
+    from .tracking_appearance import DescribeBoxAppearance
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
     from .video_buffer import DecodeVideo
@@ -986,6 +987,7 @@ def builtin_registry():
         EstimateMotionBlur,
         EstimateScanlineMotion,
         TrackImageParts,
+        DescribeBoxAppearance,
         ResampleImageProfile,
         *REFRESH_TRACKING_BLOCKS,
         CaptureBackgroundReference,

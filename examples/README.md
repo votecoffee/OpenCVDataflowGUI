@@ -91,6 +91,8 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimpleClassify](<Simple Plugins/image_classification/README.md>) | Compare two classifier profiles on labeled VegQual produce crops. |
 | [SimplePatternMatch on real PCB photographs](<Simple Plugins/pattern_matching/visa_pcb2/README.md>) | Train on one VisA PCB and transfer its mounting-hole datum to a separate photograph. |
 | [SimplePatternMatch](<Simple Plugins/pattern_matching/asymmetric_brackets/README.md>) | Locate synthetic brackets with direct and wired recipes, and inspect the pose and edge overlays. |
+| [SimplePatternMatch completed results](<Simple Plugins/pattern_matching/completed_runtime/README.md>) | Review retained completed-run inputs, models and search evidence using the explicitly pinned plugin. |
+| [SimplePathWidth completed results](<Simple Plugins/path_width/completed_runtime/README.md>) | Review retained station/trend/profile evidence independently of training, using the explicitly pinned plugin. |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, PCB laminate, and inventory in real totes. |
 | [SimpleFringeScan setup and execution](<Simple Plugins/fringe_scan/README.md>) | Retained native setup, references, ROI and known calibration; three one-block metric/phase execution examples with explicit expected availability judgments and source attribution. |
 | [SimpleDeflectometry initial reviews](<Simple Plugins/deflectometry/README.md>) | Four file-only phase/change reviews, including an attributed CC BY-SA SOFAST camera self-comparison; optional standalone replay is documented separately. |
@@ -244,6 +246,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Pretrained SSD detection](<opencv tools/ssd_detection/README.md>) | Decode separate box/class/score heads on a credited real photograph; compare source boxes to a hand-marked cup and exercise failed gates. |
 | [YOLO layouts and source boxes](<opencv tools/yolo_detection/README.md>) | Compare pinned raw and derived row/channel outputs, rounded portrait/landscape letterboxing, class-aware NMS, duplicates and validation on a credited photograph. |
 | [Overlapping tile detection fusion](<opencv tools/detection_tile_fusion/README.md>) | Parallel crop detectors, exact resized-tile source mapping, duplicate suppression, per-tile failures and hand-marked real-photo validation. |
+| [Detection tracking and appearance](<opencv tools/detection_tracking/README.md>) | Native blob/YOLOX sequences, optional color appearance, identity switches, fragmented tracks and honest miss/expiry controls. |
 | [KAZE registration](<opencv tools/kaze_registration/README.md>) | Match extended KAZE descriptors with FLANN and recover a known translation. |
 | [Labeled distance transform](<opencv tools/labeled_distance/README.md>) | Partition an image into nearest-seed zones and emit a mask for one zone. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |

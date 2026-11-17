@@ -56,6 +56,12 @@ ordinary predictor, clears local points and waits for the next detector match to
 reseed. It does not seed features from a predicted box on replacement background.
 Local points are not replenished between detector refreshes.
 
+Optional appearance gates/updates apply to full detector evidence. A required
+appearance policy accepts identity-bound local-flow geometry without fabricating
+a fresh descriptor or updating the retained template. Reports mark appearance
+unused locally; local source IDs are `local_flow:<track-id>`. Missing descriptors
+on a required full refresh reject.
+
 Global detector assignment corrects the filtered state and reseeds local features.
 This corrects bounded drift; a detector outside the configured association gates
 can establish a new identity instead. There is no guarantee of identity through

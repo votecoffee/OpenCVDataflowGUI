@@ -21,6 +21,7 @@ from .sequence import (
     SequenceStep,
 )
 from .tickets import ticket_key
+from .tracking_appearance import appearance_distance, unit_appearance, updated_appearance
 from .tracking_assignment import associate_costs
 
 _H = np.eye(5, 10)
@@ -145,6 +146,19 @@ def observations(value, image, context, p, mask):
             )
         if p["label_policy"] == "required" and label is None:
             raise ValidationError("Label policy requires a label on every detection")
+        class_id = item.get("class_id")
+        if class_id is not None and (type(class_id) is not int or not 0 <= class_id <= 1_000_000):
+            raise ValidationError("Optional detection class IDs must be nonnegative integers")
+        source_id = item.get("id", index)
+        if type(source_id) not in (int, str) or len(str(source_id)) > 256:
+            raise ValidationError("Detection IDs must be bounded integers or text")
+        appearance = (
+            None
+            if p["appearance_policy"] == "off"
+            else unit_appearance(item.get("appearance"), p["maximum_appearance_dimensions"])
+        )
+        if p["appearance_policy"] == "required" and appearance is None:
+            raise ValidationError("Appearance policy requires a descriptor on every detection")
         reference_size = model_box = None
         if is_collection:
             metrics = item["metrics"]
@@ -236,6 +250,9 @@ def observations(value, image, context, p, mask):
                 "available": available,
                 "score": float(score),
                 "label": label,
+                "class_id": class_id,
+                "source_id": source_id,
+                "appearance": appearance,
                 "index": index,
             }
         )
@@ -275,6 +292,11 @@ class TrackImageParts(SequenceBlock):
         "minimum_confidence": 0.05,
         "confidence_decay_ms": 1000.0,
         "label_policy": "if_both",
+        "appearance_policy": "off",
+        "appearance_weight": 0.5,
+        "maximum_appearance_distance": 0.3,
+        "appearance_update_rate": 0.2,
+        "maximum_appearance_dimensions": 512,
         "association_distance": 50.0,
         "innovation_gate": 18.5,
         "maximum_scale_ratio": 2.0,
@@ -303,6 +325,7 @@ class TrackImageParts(SequenceBlock):
         "clock": ("auto", "explicit", "media", "nominal"),
         "angle_period": ("360", "180"),
         "label_policy": ("if_both", "ignore", "required"),
+        "appearance_policy": ("off", "if_both", "required"),
     }
     parameter_ranges = {
         "nominal_interval_ms": NumericRange(0.001, 1e6),
@@ -321,6 +344,10 @@ class TrackImageParts(SequenceBlock):
         "maximum_scale_ratio": NumericRange(1, 1000),
         "maximum_angle_difference": NumericRange(0, 180),
         "ambiguity_margin": NumericRange(0, 1),
+        "appearance_weight": NumericRange(0, 1),
+        "maximum_appearance_distance": NumericRange(0, 2),
+        "appearance_update_rate": NumericRange(0, 1),
+        "maximum_appearance_dimensions": NumericRange(1, 4096, whole=True),
         **{
             key: NumericRange(1e-6, 1e6)
             for key in (
@@ -393,7 +420,27 @@ class TrackImageParts(SequenceBlock):
         ),
         "confidence_decay_ms": "Exponential prediction confidence time constant.",
         "label_policy": (
-            "Require equal known labels, ignore them, or require a label on every detection."
+            "Require equal known labels/class IDs, ignore them, or require a label on "
+            "every detection."
+        ),
+        "appearance_policy": (
+            "Off preserves motion-only behavior. If both uses available matching feature spaces; "
+            "required rejects detector records missing appearance. Descriptors do not prove "
+            "identity."
+        ),
+        "appearance_weight": (
+            "Blend normalized cosine distance with motion cost after both hard gates; no effect "
+            "when either descriptor is absent. Geometry gates always apply."
+        ),
+        "maximum_appearance_distance": (
+            "Cosine-distance gate [0,2]; zero permits only numerically identical descriptors."
+        ),
+        "appearance_update_rate": (
+            "Normalized exponential update from matched detector evidence; zero freezes an "
+            "established descriptor."
+        ),
+        "maximum_appearance_dimensions": (
+            "Bound each external descriptor before normalization and sequence-state allocation."
         ),
         "association_distance": (
             "Absolute center-distance gate in current pixels, independent of covariance growth."
@@ -488,6 +535,16 @@ class TrackImageParts(SequenceBlock):
         for key in ("emit_tentative", "emit_predictions"):
             if type(p[key]) is not bool:
                 raise ValidationError("Choose a boolean value", key)
+        for key in (
+            "appearance_weight",
+            "maximum_appearance_distance",
+            "appearance_update_rate",
+            "maximum_appearance_dimensions",
+        ):
+            if type(p[key]) not in (int, float) or (
+                key == "maximum_appearance_dimensions" and type(p[key]) is not int
+            ):
+                raise ValidationError("Use typed numeric appearance settings", key)
         for kind in ("position", "scale", "angle"):
             if float(p[f"maximum_{kind}_sigma"]) < float(p[f"initial_{kind}_sigma"]):
                 raise ValidationError(
@@ -497,7 +554,12 @@ class TrackImageParts(SequenceBlock):
                 )
 
     def estimate_state_bytes(self, image):
-        return image.nbytes + int(self.parameters["maximum_tracks"]) * 16384
+        appearance_bytes = (
+            0
+            if self.parameters["appearance_policy"] == "off"
+            else 8 * int(self.parameters["maximum_appearance_dimensions"])
+        )
+        return image.nbytes + int(self.parameters["maximum_tracks"]) * (16384 + appearance_bytes)
 
     def extra_context(self, inputs):
         image_payload = self.input_payloads["image"]
@@ -553,6 +615,9 @@ class TrackImageParts(SequenceBlock):
     def _allow_birth(self, observation):
         return True
 
+    def _detection_parameters(self, parameters):
+        return parameters
+
     def step(self, inputs, state, mask):
         p = dict(self.parameters)
         for key, limits in self.parameter_ranges.items():
@@ -564,7 +629,7 @@ class TrackImageParts(SequenceBlock):
             inputs["detections"],
             ImageArray(image, image_format(image), self.input_payloads["image"]),
             self.input_payloads.get("detections", {}),
-            p,
+            self._detection_parameters(p),
             mask,
         )
         time_ms, dt, clock = self._time(inputs, state, p)
@@ -584,6 +649,14 @@ class TrackImageParts(SequenceBlock):
                 predicted.append((track, native))
         costs = np.zeros((len(predicted), len(found)))
         allowed = np.zeros(costs.shape, bool)
+        distances = np.full(costs.shape, np.nan)
+        # A changed model/preprocessing signature is an error, not a collection of new identities.
+        descriptors = [item["appearance"] for item in found if item["appearance"] is not None]
+        descriptors += [
+            track.get("appearance") for track in tracks if track.get("appearance") is not None
+        ]
+        for descriptor in descriptors[1:]:
+            appearance_distance(descriptors[0], descriptor)
         r = measurement_noise(p)
         for row, (track, native) in enumerate(predicted):
             mean = native.statePre[:, 0]
@@ -596,6 +669,12 @@ class TrackImageParts(SequenceBlock):
                     or item["label"] is None
                     or track["label"] == item["label"]
                 )
+                if (
+                    p["label_policy"] != "ignore"
+                    and track.get("class_id") is not None
+                    and item["class_id"] is not None
+                ):
+                    label_ok &= track["class_id"] == item["class_id"]
                 available = item["available"].copy()
                 if not track["size_known"]:
                     available[2:4] = False
@@ -620,6 +699,14 @@ class TrackImageParts(SequenceBlock):
                     valid &= abs(residual[4]) <= p["maximum_angle_difference"]
                 allowed[row, column] = valid
                 costs[row, column] = max(0, min(1, squared / p["innovation_gate"]))
+                distance = appearance_distance(track.get("appearance"), item["appearance"])
+                if distance is not None:
+                    distances[row, column] = distance
+                    allowed[row, column] &= distance <= p["maximum_appearance_distance"] + 1e-12
+                    relative = min(1, distance / max(p["maximum_appearance_distance"], 1e-12))
+                    costs[row, column] = (1 - p["appearance_weight"]) * costs[row, column] + p[
+                        "appearance_weight"
+                    ] * relative
         matches = associate_costs(costs, allowed)
         retained = []
         associations = []
@@ -649,6 +736,13 @@ class TrackImageParts(SequenceBlock):
                     last_seen_ms=time_ms,
                     score=item["score"],
                     label=item["label"] if item["label"] is not None else track["label"],
+                    class_id=item["class_id"]
+                    if item["class_id"] is not None
+                    else track.get("class_id"),
+                    source_detection_id=item["source_id"],
+                    appearance=updated_appearance(
+                        track.get("appearance"), item["appearance"], p["appearance_update_rate"]
+                    ),
                     size_known=track["size_known"] or bool(item["available"][2]),
                     angle_known=track["angle_known"] or bool(item["available"][4]),
                     ambiguous=bool(ambiguous),
@@ -659,6 +753,10 @@ class TrackImageParts(SequenceBlock):
                         "detection_index": item["index"],
                         "normalized_cost": float(costs[row, column]),
                         "ambiguous": bool(ambiguous),
+                        "appearance_distance": float(distances[row, column])
+                        if np.isfinite(distances[row, column])
+                        else None,
+                        "appearance_used": bool(np.isfinite(distances[row, column])),
                     }
                 )
             else:
@@ -666,6 +764,7 @@ class TrackImageParts(SequenceBlock):
                     mean=native.statePre[:, 0].copy(),
                     covariance=(native.errorCovPre + native.errorCovPre.T) / 2,
                     misses=track["misses"] + 1,
+                    source_detection_id=None,
                 )
             track["mean"][4] = angle_delta(track["mean"][4], 0, float(p["angle_period"]))
             reason = self._expiry(track, track["mean"], track["covariance"], time_ms, image, p)
@@ -706,6 +805,9 @@ class TrackImageParts(SequenceBlock):
                     "last_seen_ms": time_ms,
                     "score": item["score"],
                     "label": item["label"],
+                    "class_id": item["class_id"],
+                    "source_detection_id": item["source_id"],
+                    "appearance": copy.deepcopy(item["appearance"]),
                     "size_known": bool(item["available"][2]),
                     "angle_known": bool(item["available"][4]),
                     "ambiguous": False,
@@ -741,6 +843,12 @@ class TrackImageParts(SequenceBlock):
                 "size_available": track["size_known"],
                 "association_ambiguous": track["ambiguous"],
                 "label": track["label"],
+                "class_id": track.get("class_id"),
+                "source_detection_id": track.get("source_detection_id"),
+                "appearance_available": track.get("appearance") is not None,
+                "appearance_space": track["appearance"]["space"]
+                if track.get("appearance") is not None
+                else None,
                 "center": center,
                 "angle_degrees": angle if track["angle_known"] else None,
                 "size": [float(width), float(height)] if track["size_known"] else None,

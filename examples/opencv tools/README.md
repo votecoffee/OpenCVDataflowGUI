@@ -81,3 +81,5 @@ For a pinned pretrained SSD model, separate output heads, source-image graphics 
 For pinned raw/decoded YOLO layouts, portrait/landscape letterboxing, class-aware suppression and duplicate validation, try [YOLO detection](yolo_detection/README.md).
 
 For parallel crop detectors, shared-ticket source mapping and duplicate suppression, try [tile detection fusion](detection_tile_fusion/README.md).
+
+For optional appearance association and measured identity switches/misses/fragments, try [detection tracking](detection_tracking/README.md).

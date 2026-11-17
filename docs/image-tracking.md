@@ -4,12 +4,14 @@
 center, log width/height and angle through bounded gaps. OpenCV's Float64 Kalman
 filter supplies prediction/correction; a shared maximum-cardinality, minimum-cost
 assignment matches eligible observations globally. This is an image-plane
-constant-velocity baseline, not an occlusion classifier or appearance tracker.
+constant-velocity baseline with optional appearance association. It does not
+classify occlusion or prove physical identity.
 
 ## Connect and run
 
 Connect the current image and its current detections. `inspect.blobs`, measured
 contour collections and shape/texture pattern matches can supply detections.
+`ml.decode_detections` and tile-fusion box collections also connect directly.
 An explicit empty list means a frame with no detections and advances prediction.
 A connected input with no event holds execution and does not advance memory.
 The ordinary graph scheduler clears that activation's displayed result when a
@@ -23,6 +25,8 @@ A custom detector can return a list, or
 - Optional `size`: positive `[width,height]` along the object's local axes.
 - Optional `angle_degrees`: counterclockwise image-pose degrees.
 - Optional `score` in `[0,1]` (default one), and integer/text `label`.
+- Optional nonnegative integer `class_id`, bounded detection `id`, and an
+  `appearance` descriptor under the contract below.
 
 Collections need the current dimensions, coordinate frame and a zero origin.
 Their clockwise principal-axis angles are converted to pose convention; measured
@@ -57,6 +61,50 @@ wrapped angle. Gated matching minimizes total normalized cost after maximizing
 accepted pairs. Near-tied candidates are flagged as ambiguous. Perfectly
 indistinguishable crossings cannot guarantee identity; appearance/label evidence
 and application checks are still needed.
+
+## Optional appearance association
+
+**Appearance policy** defaults to **off**, preserving motion-only behavior and
+avoiding feature parsing/storage. **If both** uses descriptors when both track
+and observation supply them; missing descriptors fall back to geometry and
+retain the established template. **Required** rejects eligible detector records
+without descriptors. Low-score detections excluded by the existing score filter
+need no descriptor. Explicit empty detections remain a valid missed observation.
+
+Each record can carry `appearance = {"space": "model/preprocessing-revision",
+"vector": [0.2, 0.8, ...]}`. Use a stable signature naming model, weights and
+preprocessing. Vectors have 1–4,096 finite nonzero numeric components, with a
+configurable lower ceiling. Normalization is stable for large finite values.
+Different known spaces/dimensions reject and retire sequence history; reset or
+reacquire when changing the descriptor model. Recovery uses a fresh generation.
+
+Cosine distance is in `[0,2]`. Its configured maximum is a hard association gate;
+**Appearance weight** blends normalized appearance and motion costs after all
+hard gates pass. Zero weight still retains the appearance gate. Known class IDs
+join label gating: equal text cannot merge different known classes unless label
+policy is explicitly ignored. Global assignment still maximizes eligible matches
+before minimizing total cost.
+
+**Appearance update rate** applies a normalized exponential update only on matched
+descriptor evidence. Zero freezes an established template; missing/local-flow
+observations and predictions do not manufacture fresh features. Geometry gates
+and expiry remain active: appearance cannot resurrect an expired identity.
+
+`ml.box_appearance`, under **OpenCV → Video Analysis (video) → Object tracking**,
+accepts current-grid box collections with XYWH geometry or blobs/contours with
+measured axis-aligned bounds. It computes a normalized HSV hue/saturation joint
+histogram (up to 512 bins) or grayscale histogram (up to 256). Input is explicitly
+uint8 gray/BGR/RGB/alpha; convert other depths deliberately. Alpha-zero pixels
+are excluded. ROI inset, mask and region restrict support without changing image
+pixels or detections. Box count and summed ROI pixels, including overlap, are
+bounded before native work. Insufficient support either omits appearance while
+retaining the record or rejects, according to policy. Existing descriptors are
+replaced so stale features cannot survive missing support. Sampling ROI outlines
+are optional drawable graphics.
+
+External DNN/user blocks can supply the same field directly. No learned
+re-identification model is qualified by histograms. Similar colors, background,
+illumination changes and occlusions can defeat this appearance baseline.
 
 IDs include a generation and are not reused after expiry, reset, error, stream
 replacement or reopen. Recipe/grid/encoding changes follow common SequenceBlock
@@ -106,3 +154,29 @@ crossing/reordered detections, ambiguous ties, scale/angle/label gates, partial
 measurements, worker memory isolation, XML, invalid input/native errors, graphics
 off and editor controls without executing native work. Synthetic accuracy bounds
 qualify this baseline; they do not establish production tracking performance.
+
+The appearance extension retains `class_id` and current `source_detection_id`;
+predictions have no current source detection ID. `appearance_available` and
+`appearance_space` describe the retained template, not visibility. Association
+reports include cosine distance and whether appearance was used.
+
+[Six detection/appearance projects](<../examples/opencv tools/detection_tracking/README.md>)
+add crossing, hidden swaps, visible detector misses, expiry/re-entry and pinned
+YOLOX on translated CC0 photographs. Independent annotations stay outside the
+graph. The appearance swap has zero ID switches versus two motion-only. Dim-part
+controls retain three misses and one fragment; shorter expiry adds an ID switch.
+Learned cup detections retain identity through a hidden frame. These are
+controlled sequences, not a real-video benchmark or learned re-identification.
+
+For offline reports, import `evaluate_tracking` from
+`opencv_dataflow.tracking_evaluation`. Supply ordered frames, each with explicit
+`truth` and `predictions` lists of `{id, bbox: [x,y,width,height], label?}`. Every
+frame must be annotated; empty truth means no labeled objects, not missing
+annotation. Class-compatible global IoU assignment determines TP/FP/FN. Identity
+switches compare the last match across absence; fragments require labeled misses
+between matches. Callers explicitly choose observed or all tracks: the function
+does not hide predictions or errors. The example evaluator requires current
+events, verifies file hashes and scores observed tracks while reporting
+predictions separately. Precision, recall, MOTA, mean matched IoU and per-frame
+associations are supplied; no HOTA/IDF1 is claimed. Bounds are 10,000 frames, 128
+objects per side/frame, 50,000 records and two million comparisons before matching.

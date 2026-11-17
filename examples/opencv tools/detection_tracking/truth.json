@@ -1,0 +1,696 @@
+{
+  "cases": {
+    "crossing": {
+      "sequence": "crossing",
+      "appearance_policy": "required"
+    },
+    "occluded_swap": {
+      "sequence": "swap",
+      "appearance_policy": "required"
+    },
+    "motion_only": {
+      "sequence": "swap",
+      "appearance_policy": "off"
+    },
+    "detection_gap": {
+      "sequence": "gap",
+      "appearance_policy": "required"
+    },
+    "expire_reentry": {
+      "sequence": "gap",
+      "appearance_policy": "required",
+      "maximum_missed_frames": 1
+    },
+    "yolox_coffee": {
+      "sequence": "coffee",
+      "appearance_policy": "required"
+    }
+  },
+  "sequences": {
+    "crossing": [
+      {
+        "path": "assets/crossing_00.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              14,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              174,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "93bfd6985322cbce34eb366f04dc78f8f517d57990861dd7224db5d84971dd65"
+      },
+      {
+        "path": "assets/crossing_01.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              32,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              156,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "f949af0aed1fc9759f39ee9e6d866fd4327fa0cf94c222bf7f09fb8b6d4c3bdb"
+      },
+      {
+        "path": "assets/crossing_02.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              50,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              138,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "173dc53d3527a27178a746421a81f4174ff454b3102041f796366e5067fd1f87"
+      },
+      {
+        "path": "assets/crossing_03.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              68,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              120,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "8ef451ef30bc65eba84edcd11a9d4fb30bad355ef0b6874c5c06377cd10ad157"
+      },
+      {
+        "path": "assets/crossing_04.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              86,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              102,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "16d210249a6aa0194bd07a19f819f078e684a3d0b2b22c541297a4b89635a82b"
+      },
+      {
+        "path": "assets/crossing_05.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              104,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              84,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "50ad1600029e0fad10db5a60ceb39f1a9aed1b6374f47c953897c7d1a9f4e486"
+      },
+      {
+        "path": "assets/crossing_06.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              122,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              66,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "246bd855fe2db51ac7afb1ab9614cac6c54190000918da028a5606bc5c4b622b"
+      },
+      {
+        "path": "assets/crossing_07.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              140,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              48,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "4054d8374a1d313e8ec3acef7ee14a88e42cc7e05e73a9e73270bac2015967f1"
+      },
+      {
+        "path": "assets/crossing_08.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              158,
+              23,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              30,
+              78,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "7223a6b72f6c563e8a56980c01a746c05ba683f599ea57b01f751d6aa5ca2494"
+      }
+    ],
+    "swap": [
+      {
+        "path": "assets/swap_00.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              44,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              144,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "e3e185caab39a9e1e6990fae5a5e9e38fec03aaffd322f21c6dc484d0e228eb7"
+      },
+      {
+        "path": "assets/swap_01.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              44,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              144,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "e3e185caab39a9e1e6990fae5a5e9e38fec03aaffd322f21c6dc484d0e228eb7"
+      },
+      {
+        "path": "assets/swap_02.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              44,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              144,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "e3e185caab39a9e1e6990fae5a5e9e38fec03aaffd322f21c6dc484d0e228eb7"
+      },
+      {
+        "path": "assets/swap_03.png",
+        "truth": [],
+        "sha256": "f916e1d226a4f5960985a35a41f8eb7d27723c31d86885c947914bf6ec868d98"
+      },
+      {
+        "path": "assets/swap_04.png",
+        "truth": [],
+        "sha256": "f916e1d226a4f5960985a35a41f8eb7d27723c31d86885c947914bf6ec868d98"
+      },
+      {
+        "path": "assets/swap_05.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              144,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              44,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "d508d7844cbe140e2d34874cbe735eee68dacb53e56bd4b79b058fc2de57508f"
+      },
+      {
+        "path": "assets/swap_06.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              144,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              44,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "d508d7844cbe140e2d34874cbe735eee68dacb53e56bd4b79b058fc2de57508f"
+      },
+      {
+        "path": "assets/swap_07.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              144,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              44,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "d508d7844cbe140e2d34874cbe735eee68dacb53e56bd4b79b058fc2de57508f"
+      },
+      {
+        "path": "assets/swap_08.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              144,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          },
+          {
+            "id": "blue",
+            "bbox": [
+              44,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "d508d7844cbe140e2d34874cbe735eee68dacb53e56bd4b79b058fc2de57508f"
+      }
+    ],
+    "gap": [
+      {
+        "path": "assets/gap_00.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "c9b6444d0880976cbf58023ee267a245fc0935210735a0022ebc79c9fffed7c8"
+      },
+      {
+        "path": "assets/gap_01.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "c9b6444d0880976cbf58023ee267a245fc0935210735a0022ebc79c9fffed7c8"
+      },
+      {
+        "path": "assets/gap_02.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "c9b6444d0880976cbf58023ee267a245fc0935210735a0022ebc79c9fffed7c8"
+      },
+      {
+        "path": "assets/gap_03.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "45c3bd8f2501cb2b25d155c2f7beca5520e51b42352f2d8074d80e6413f04242"
+      },
+      {
+        "path": "assets/gap_04.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "45c3bd8f2501cb2b25d155c2f7beca5520e51b42352f2d8074d80e6413f04242"
+      },
+      {
+        "path": "assets/gap_05.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "45c3bd8f2501cb2b25d155c2f7beca5520e51b42352f2d8074d80e6413f04242"
+      },
+      {
+        "path": "assets/gap_06.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "c9b6444d0880976cbf58023ee267a245fc0935210735a0022ebc79c9fffed7c8"
+      },
+      {
+        "path": "assets/gap_07.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "c9b6444d0880976cbf58023ee267a245fc0935210735a0022ebc79c9fffed7c8"
+      },
+      {
+        "path": "assets/gap_08.png",
+        "truth": [
+          {
+            "id": "red",
+            "bbox": [
+              64,
+              52,
+              32,
+              24
+            ],
+            "label": "part"
+          }
+        ],
+        "sha256": "c9b6444d0880976cbf58023ee267a245fc0935210735a0022ebc79c9fffed7c8"
+      }
+    ],
+    "coffee": [
+      {
+        "path": "assets/coffee_00.png",
+        "truth": [
+          {
+            "id": "cup",
+            "label": "cup",
+            "bbox": [
+              170,
+              18,
+              245,
+              292
+            ]
+          }
+        ],
+        "sha256": "884b6c0be0f697ee5cc7604ca3a4a93647598ac120a56b1716bfadde4e9e0ad2"
+      },
+      {
+        "path": "assets/coffee_01.png",
+        "truth": [
+          {
+            "id": "cup",
+            "label": "cup",
+            "bbox": [
+              178,
+              18,
+              245,
+              292
+            ]
+          }
+        ],
+        "sha256": "2e3b06d18adb202ad33f80cbc9150de50a32a59e1aeb84ddfc20c122bdcac438"
+      },
+      {
+        "path": "assets/coffee_02.png",
+        "truth": [
+          {
+            "id": "cup",
+            "label": "cup",
+            "bbox": [
+              186,
+              18,
+              245,
+              292
+            ]
+          }
+        ],
+        "sha256": "5bb6555033e4fcf6fbc805bd2ae712a765a729dc0a20d943977b52c2c8efaf7c"
+      },
+      {
+        "path": "assets/coffee_03.png",
+        "truth": [],
+        "sha256": "20063f3f3bfa2ce20b692a293bc79cf1360006bffbafaa571e18e53ed6bca821"
+      },
+      {
+        "path": "assets/coffee_04.png",
+        "truth": [
+          {
+            "id": "cup",
+            "label": "cup",
+            "bbox": [
+              202,
+              18,
+              245,
+              292
+            ]
+          }
+        ],
+        "sha256": "c791020640a919886d7cc05fc16677569f1e39ac73c24d681f2b35bdf25ebc30"
+      },
+      {
+        "path": "assets/coffee_05.png",
+        "truth": [
+          {
+            "id": "cup",
+            "label": "cup",
+            "bbox": [
+              210,
+              18,
+              245,
+              292
+            ]
+          }
+        ],
+        "sha256": "62e72d2059c3ebd26d68a864938cc48353472779f15dab7817fec8bb2af9a351"
+      }
+    ]
+  },
+  "source_photo_sha256": "cc02f8ca188b167c775a7101b5d767d1e71792cf762c33d6fa15a4599b5a8de7",
+  "scoring": "Observed output tracks only, source-grid IoU >= 0.6; predictions reported separately."
+}

@@ -1,0 +1,498 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "SOURCES.md",
+      "MODEL-LICENSE.txt"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/coffee_00.png",
+        "source_mode": "files",
+        "paths": [
+          "assets/coffee_00.png",
+          "assets/coffee_01.png",
+          "assets/coffee_02.png",
+          "assets/coffee_03.png",
+          "assets/coffee_04.png",
+          "assets/coffee_05.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": ".local/yolox_raw/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 640,
+        "height": 640,
+        "color_format": "rgb",
+        "resize_mode": "letterbox",
+        "padding_value": 114,
+        "scale": 1,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "images",
+        "output_names": [
+          "output"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        380,
+        260
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "ml.decode_detections",
+      "name": "Decode object detections",
+      "parameters": {
+        "output_name": "output",
+        "format": "xywh_objectness",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
+        "layout": "rows",
+        "coordinate_units": "network_pixels",
+        "grid_decode": "yolox",
+        "strides": [
+          8,
+          16,
+          32
+        ],
+        "score_activation": "probability",
+        "labels": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "cup",
+          "42",
+          "43",
+          "44",
+          "45",
+          "46",
+          "47",
+          "48",
+          "49",
+          "50",
+          "51",
+          "52",
+          "53",
+          "54",
+          "55",
+          "56",
+          "57",
+          "58",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79"
+        ],
+        "accepted_class_ids": [
+          41
+        ],
+        "class_id_offset": 0,
+        "confidence_threshold": 0.35,
+        "objectness_threshold": 0.0,
+        "nms_enabled": true,
+        "class_agnostic_nms": false,
+        "nms_iou": 0.45,
+        "nms_eta": 1.0,
+        "nms_top_k": 0,
+        "border_policy": "clip",
+        "minimum_count": 0,
+        "maximum_count": 0,
+        "maximum_raw_rows": 100000,
+        "maximum_candidates": 10000,
+        "maximum_results": 1000,
+        "maximum_image_pixels": 16777216
+      },
+      "position": [
+        780,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "appearance",
+      "type": "ml.box_appearance",
+      "name": "Describe box appearance",
+      "parameters": {
+        "color_model": "hsv_hs",
+        "hue_bins": 16,
+        "saturation_bins": 8,
+        "gray_bins": 32,
+        "roi_inset": 0.1,
+        "minimum_pixels": 16,
+        "insufficient": "omit",
+        "maximum_boxes": 128,
+        "maximum_sample_pixels": 2000000
+      },
+      "position": [
+        1150,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "detections"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "sequence.track_image",
+      "name": "Track image detections",
+      "description": "Associate image detections and predict centers, size and angle through bounded gaps.",
+      "documentation": "<p>OpenCV Kalman prediction with elapsed acquisition time and gated global assignment. Connect current detections, including an explicit empty list for a missed frame. Observed, predicted, tentative and ambiguous states remain explicit. Confidence is a heuristic, not a probability or a safety judgment.</p><p>Use 180 degree angles for undirected shape axes, 360 for directed pattern poses. Clock, size, uncertainty and expiry controls have parameter tooltips. See docs/image-tracking.md for measurement, coordinate and lifecycle contracts.</p>",
+      "parameters": {
+        "warmup": 1,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "clock": "nominal",
+        "nominal_interval_ms": 100.0,
+        "minimum_interval_ms": 0.001,
+        "maximum_interval_ms": 1000.0,
+        "angle_period": "180",
+        "maximum_tracks": 64,
+        "minimum_observations": 1,
+        "emit_tentative": false,
+        "emit_predictions": true,
+        "maximum_missed_frames": 4,
+        "maximum_unobserved_ms": 2000,
+        "offscreen_margin": 100.0,
+        "minimum_detection_score": 0.0,
+        "minimum_confidence": 0,
+        "confidence_decay_ms": 1000.0,
+        "label_policy": "if_both",
+        "appearance_policy": "required",
+        "appearance_weight": 0.9,
+        "maximum_appearance_distance": 0.5,
+        "appearance_update_rate": 0.2,
+        "maximum_appearance_dimensions": 512,
+        "association_distance": 200,
+        "innovation_gate": 1000000.0,
+        "maximum_scale_ratio": 2.0,
+        "maximum_angle_difference": 180,
+        "ambiguity_margin": 0.05,
+        "position_noise": 0.05,
+        "scale_noise": 0.05,
+        "angle_noise": 5.0,
+        "position_acceleration": 500,
+        "scale_acceleration": 0.1,
+        "angular_acceleration": 30.0,
+        "initial_position_sigma": 2.0,
+        "initial_velocity_sigma": 100.0,
+        "initial_scale_sigma": 0.2,
+        "initial_scale_velocity_sigma": 0.5,
+        "initial_angle_sigma": 20.0,
+        "initial_angular_velocity_sigma": 90.0,
+        "initial_width": 20.0,
+        "initial_height": 20.0,
+        "maximum_position_sigma": 10000,
+        "maximum_scale_sigma": 1.0,
+        "maximum_angle_sigma": 90.0
+      },
+      "position": [
+        1550,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "detections",
+        "timestamp_ms"
+      ],
+      "exposed_outputs": [
+        "tracks",
+        "poses",
+        "count",
+        "report",
+        "ready",
+        "activations",
+        "status",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        2000,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        2400,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Tracking controls / source credits",
+      "description": "Original MIT colored-part controls and independent annotations. The dim red part remains visible but falls below the blob threshold, producing a genuine detection gap. Coffee: Rachel Michetti, courtesy Pikolo Espresso Bar, scikit-image CC0; known integer translations and a black occlusion control. YOLOX-S: Megvii / OpenCV Zoo contributors, Apache 2.0, revision 48b10fa505aeb51fbd127fc60a5c660040e823b7; weights unchanged. Run All; green observed, amber predicted. Histograms are appearance evidence, not learned re-identification or proof of identity. See README.md, SOURCES.md and evaluate_examples.py.",
+      "parameters": {},
+      "position": [
+        0,
+        -450
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "tensors",
+      "target": "detect",
+      "input": "tensors"
+    },
+    {
+      "source": "infer",
+      "output": "preprocessing",
+      "target": "detect",
+      "input": "preprocessing"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "appearance",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "collection",
+      "target": "appearance",
+      "input": "detections"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "appearance",
+      "output": "collection",
+      "target": "track",
+      "input": "detections"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "track",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

@@ -359,6 +359,12 @@ class RefreshedImageTracks(TrackImageParts):
     def _allow_birth(self, observation):
         return self._refresh
 
+    def _detection_parameters(self, parameters):
+        # Local optical flow is identity-bound geometry, not fresh appearance evidence.
+        if not self._refresh and parameters["appearance_policy"] == "required":
+            return {**parameters, "appearance_policy": "if_both"}
+        return parameters
+
     def step(self, inputs, state, mask):
         p = dict(self.parameters)
         for name, bounds in self.parameter_ranges.items():
@@ -403,6 +409,8 @@ class RefreshedImageTracks(TrackImageParts):
                         detection = {
                             "center": center.tolist(),
                             "label": track["label"],
+                            "class_id": track.get("class_id"),
+                            "id": f"local_flow:{track['id']}",
                             "score": track["detector_score"] * detail["inlier_fraction"],
                         }
                         if track["size_known"]:

@@ -30,7 +30,7 @@
 | Random TIFF pages, bounded LRU caching and snapshot refresh | [On-demand TIFF pages](tiff-page-access.md) |
 | Reader/encoder availability and native image page inventory | [Codec preflight](codec-preflight.md) |
 | Stored optical-flow fields, native I/O and verified image-pair association | [Flow files](flow-files.md) |
-| Detection association, oriented prediction, uncertainty and expiry | [Image tracking](image-tracking.md) |
+| Detection association, appearance, prediction, expiry and identity metrics | [Image tracking](image-tracking.md) |
 | Periodic full-frame detector scheduling, local motion and freshness | [Detector refresh tracking](refresh-tracking.md) |
 | Common-pitch measured profiles, physical scale and antialiasing | [Profile resampling](profile-resampling.md) |
 | Seeded MIL tracking, loss/reseed and native confidence limits | [MIL tracking](mil-tracking.md) |

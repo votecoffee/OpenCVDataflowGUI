@@ -100,7 +100,8 @@ IMPLEMENTATION_MODULES = {
         "flow_warp frame_interpolation "
         "mil_tracking motion_trajectory motion_trajectory_io neighbor_restoration scanline_motion "
         "stabilization_fill "
-        "image_correlation image_tracking refresh_tracking native_background sequence_tools"
+        "image_correlation image_tracking tracking_appearance refresh_tracking "
+        "native_background sequence_tools"
     ),
     "videoio": (
         "capture_settings network_video paced_video video_buffer video_files "

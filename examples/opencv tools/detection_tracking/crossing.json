@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "SOURCES.md",
+      "MODEL-LICENSE.txt"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/crossing_00.png",
+        "source_mode": "files",
+        "paths": [
+          "assets/crossing_00.png",
+          "assets/crossing_01.png",
+          "assets/crossing_02.png",
+          "assets/crossing_03.png",
+          "assets/crossing_04.png",
+          "assets/crossing_05.png",
+          "assets/crossing_06.png",
+          "assets/crossing_07.png",
+          "assets/crossing_08.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Threshold",
+      "parameters": {
+        "value": 20,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        380,
+        260
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "inspect.blobs",
+      "name": "Find blobs",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 100,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "center",
+        "check_count": false
+      },
+      "position": [
+        780,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "appearance",
+      "type": "ml.box_appearance",
+      "name": "Describe box appearance",
+      "parameters": {
+        "color_model": "hsv_hs",
+        "hue_bins": 16,
+        "saturation_bins": 8,
+        "gray_bins": 32,
+        "roi_inset": 0.1,
+        "minimum_pixels": 16,
+        "insufficient": "omit",
+        "maximum_boxes": 128,
+        "maximum_sample_pixels": 2000000
+      },
+      "position": [
+        1150,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "detections"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "sequence.track_image",
+      "name": "Track image detections",
+      "description": "Associate image detections and predict centers, size and angle through bounded gaps.",
+      "documentation": "<p>OpenCV Kalman prediction with elapsed acquisition time and gated global assignment. Connect current detections, including an explicit empty list for a missed frame. Observed, predicted, tentative and ambiguous states remain explicit. Confidence is a heuristic, not a probability or a safety judgment.</p><p>Use 180 degree angles for undirected shape axes, 360 for directed pattern poses. Clock, size, uncertainty and expiry controls have parameter tooltips. See docs/image-tracking.md for measurement, coordinate and lifecycle contracts.</p>",
+      "parameters": {
+        "warmup": 1,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "clock": "nominal",
+        "nominal_interval_ms": 100.0,
+        "minimum_interval_ms": 0.001,
+        "maximum_interval_ms": 1000.0,
+        "angle_period": "180",
+        "maximum_tracks": 64,
+        "minimum_observations": 1,
+        "emit_tentative": false,
+        "emit_predictions": true,
+        "maximum_missed_frames": 4,
+        "maximum_unobserved_ms": 2000,
+        "offscreen_margin": 100.0,
+        "minimum_detection_score": 0.0,
+        "minimum_confidence": 0,
+        "confidence_decay_ms": 1000.0,
+        "label_policy": "if_both",
+        "appearance_policy": "required",
+        "appearance_weight": 0.9,
+        "maximum_appearance_distance": 0.5,
+        "appearance_update_rate": 0.2,
+        "maximum_appearance_dimensions": 512,
+        "association_distance": 200,
+        "innovation_gate": 1000000.0,
+        "maximum_scale_ratio": 2.0,
+        "maximum_angle_difference": 180,
+        "ambiguity_margin": 0.05,
+        "position_noise": 0.05,
+        "scale_noise": 0.05,
+        "angle_noise": 5.0,
+        "position_acceleration": 500,
+        "scale_acceleration": 0.1,
+        "angular_acceleration": 30.0,
+        "initial_position_sigma": 2.0,
+        "initial_velocity_sigma": 100.0,
+        "initial_scale_sigma": 0.2,
+        "initial_scale_velocity_sigma": 0.5,
+        "initial_angle_sigma": 20.0,
+        "initial_angular_velocity_sigma": 90.0,
+        "initial_width": 20.0,
+        "initial_height": 20.0,
+        "maximum_position_sigma": 10000,
+        "maximum_scale_sigma": 1.0,
+        "maximum_angle_sigma": 90.0
+      },
+      "position": [
+        1550,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "detections",
+        "timestamp_ms"
+      ],
+      "exposed_outputs": [
+        "tracks",
+        "poses",
+        "count",
+        "report",
+        "ready",
+        "activations",
+        "status",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        2000,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        2400,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Tracking controls / source credits",
+      "description": "Original MIT colored-part controls and independent annotations. The dim red part remains visible but falls below the blob threshold, producing a genuine detection gap. Coffee: Rachel Michetti, courtesy Pikolo Espresso Bar, scikit-image CC0; known integer translations and a black occlusion control. YOLOX-S: Megvii / OpenCV Zoo contributors, Apache 2.0, revision 48b10fa505aeb51fbd127fc60a5c660040e823b7; weights unchanged. Run All; green observed, amber predicted. Histograms are appearance evidence, not learned re-identification or proof of identity. See README.md, SOURCES.md and evaluate_examples.py.",
+      "parameters": {},
+      "position": [
+        0,
+        -450
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "appearance",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "collection",
+      "target": "appearance",
+      "input": "detections"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "appearance",
+      "output": "collection",
+      "target": "track",
+      "input": "detections"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "track",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

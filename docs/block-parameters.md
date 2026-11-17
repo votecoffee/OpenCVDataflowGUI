@@ -8455,6 +8455,32 @@ Inputs: `model` (data), `vector` (data).
 | `min_similarity` | `-1.0` | Dot metric only: minimum inner product; -1 disables. |
 | `minimum_results` | `1` |  |
 
+## Describe box appearance (`ml.box_appearance`)
+
+ML / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `detections` (data).
+
+Input `image` — Current uint8 gray/BGR/RGB/alpha image. Primary pixels remain unchanged.
+
+Input `detections` — Current-grid boxes, blobs or contours. Uses axis-aligned bounds; retains records.
+
+Input `mask` — Intersect ROI support with this current-grid mask and region.
+
+Input `region` — Optional selected support within each box, rather than a center-only gate.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `color_model` | `"hsv_hs"` | `hsv_hs`, `gray` HSV hue/saturation joint histogram or grayscale intensity; uint8 input only. |
+| `hue_bins` | `16` | Value must be a whole number between 2 and 64. HSV hue bins over [0,180); used only by hsv_hs. |
+| `saturation_bins` | `8` | Value must be a whole number between 2 and 32. HSV saturation bins over [0,256); product with hue bins at most 512. |
+| `gray_bins` | `32` | Value must be a whole number between 2 and 256. Intensity bins over [0,256); used only by gray. |
+| `roi_inset` | `0.1` | Value must be a finite number between 0 and 0.49. Fraction removed from each box edge before raster sampling; no crop output. |
+| `minimum_pixels` | `16` | Value must be a whole number between 1 and 1e+06. Minimum selected nontransparent pixels for a descriptor. |
+| `insufficient` | `"omit"` | `omit`, `error` Omit appearance (retain box), or reject when ROI support is insufficient. |
+| `maximum_boxes` | `128` | Value must be a whole number between 1 and 128. Reject excess boxes before histogram work; never truncate. |
+| `maximum_sample_pixels` | `2000000` | Value must be a whole number between 1 and 1.67772e+07. Reject excess summed raster ROI pixels, including overlapping boxes. |
+
 ## Classify DNN tensor (`ml.classify`)
 
 ML / Classification
@@ -10823,7 +10849,12 @@ Input `region` — Current-grid selection. Excluded detections act as missed obs
 | `minimum_detection_score` | `0.0` | Value must be a finite number between 0 and 1. Ignore detections below this score; unscored detections use one. |
 | `minimum_confidence` | `0.05` | Value must be a finite number between 0 and 1. Output floor for last score times confirmation and elapsed-time decay; not a probability. |
 | `confidence_decay_ms` | `1000.0` | Value must be a finite number between 0.001 and 1e+09. Exponential prediction confidence time constant. |
-| `label_policy` | `"if_both"` | `if_both`, `ignore`, `required` Require equal known labels, ignore them, or require a label on every detection. |
+| `label_policy` | `"if_both"` | `if_both`, `ignore`, `required` Require equal known labels/class IDs, ignore them, or require a label on every detection. |
+| `appearance_policy` | `"off"` | `off`, `if_both`, `required` Off preserves motion-only behavior. If both uses available matching feature spaces; required rejects detector records missing appearance. Descriptors do not prove identity. |
+| `appearance_weight` | `0.5` | Value must be a finite number between 0 and 1. Blend normalized cosine distance with motion cost after both hard gates; no effect when either descriptor is absent. Geometry gates always apply. |
+| `maximum_appearance_distance` | `0.3` | Value must be a finite number between 0 and 2. Cosine-distance gate [0,2]; zero permits only numerically identical descriptors. |
+| `appearance_update_rate` | `0.2` | Value must be a finite number between 0 and 1. Normalized exponential update from matched detector evidence; zero freezes an established descriptor. |
+| `maximum_appearance_dimensions` | `512` | Value must be a whole number between 1 and 4096. Bound each external descriptor before normalization and sequence-state allocation. |
 | `association_distance` | `50.0` | Value must be a finite number between 0.001 and 1e+06. Absolute center-distance gate in current pixels, independent of covariance growth. |
 | `innovation_gate` | `18.5` | Value must be a finite number between 0.001 and 1e+06. Maximum squared Mahalanobis innovation over available measurement dimensions; not a probability. |
 | `maximum_scale_ratio` | `2.0` | Value must be a finite number between 1 and 1000. Per-axis measured/predicted size ratio gate, applied only when size is present. |
@@ -10992,7 +11023,12 @@ Input `refresh` — Wire cadence Refresh on every image. True requires current d
 | `minimum_detection_score` | `0.0` | Value must be a finite number between 0 and 1. Ignore detections below this score; unscored detections use one. |
 | `minimum_confidence` | `0.05` | Value must be a finite number between 0 and 1. Output floor for last score times confirmation and elapsed-time decay; not a probability. |
 | `confidence_decay_ms` | `1000.0` | Value must be a finite number between 0.001 and 1e+09. Exponential prediction confidence time constant. |
-| `label_policy` | `"if_both"` | `if_both`, `ignore`, `required` Require equal known labels, ignore them, or require a label on every detection. |
+| `label_policy` | `"if_both"` | `if_both`, `ignore`, `required` Require equal known labels/class IDs, ignore them, or require a label on every detection. |
+| `appearance_policy` | `"off"` | `off`, `if_both`, `required` Off preserves motion-only behavior. If both uses available matching feature spaces; required rejects detector records missing appearance. Descriptors do not prove identity. |
+| `appearance_weight` | `0.5` | Value must be a finite number between 0 and 1. Blend normalized cosine distance with motion cost after both hard gates; no effect when either descriptor is absent. Geometry gates always apply. |
+| `maximum_appearance_distance` | `0.3` | Value must be a finite number between 0 and 2. Cosine-distance gate [0,2]; zero permits only numerically identical descriptors. |
+| `appearance_update_rate` | `0.2` | Value must be a finite number between 0 and 1. Normalized exponential update from matched detector evidence; zero freezes an established descriptor. |
+| `maximum_appearance_dimensions` | `512` | Value must be a whole number between 1 and 4096. Bound each external descriptor before normalization and sequence-state allocation. |
 | `association_distance` | `50.0` | Value must be a finite number between 0.001 and 1e+06. Absolute center-distance gate in current pixels, independent of covariance growth. |
 | `innovation_gate` | `18.5` | Value must be a finite number between 0.001 and 1e+06. Maximum squared Mahalanobis innovation over available measurement dimensions; not a probability. |
 | `maximum_scale_ratio` | `2.0` | Value must be a finite number between 1 and 1000. Per-axis measured/predicted size ratio gate, applied only when size is present. |
