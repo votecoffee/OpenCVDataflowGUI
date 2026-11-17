@@ -67,3 +67,5 @@ For ordered keypoints, heatmap fitting, partial results and local inspection pos
 For saved palettes, HOG vocabularies and unknown-sample inspection, try [reusable image clusters](reusable_clusters/README.md).
 
 For native HOG training, held-out labels and unknown-image policies, try [K-nearest classification](knn_classification/README.md).
+
+For native forest weights, feature importance and held-out class votes, try [random forest classification](rtrees_classification/README.md).

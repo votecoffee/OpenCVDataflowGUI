@@ -72,6 +72,7 @@
 | ALIKED presets, subpixel features, fallback/score policies and matching | [ALIKED features](aliked-features.md) |
 | Saved image color palettes, descriptor vocabularies and unknown-sample inspection | [Reusable clusters](reusable-clusters.md) |
 | Native neighbor classes, explicit votes/distances and unknown-image rejection | [K-nearest classification](knn-classification.md) |
+| Native forest training, class votes, importance and portable checked trees | [Random forest classification](rtrees-classification.md) |
 | Object detection heads, class-aware NMS and source box geometry | [DNN detection](object-detection.md) |
 | Oriented heads, rotated overlap and exact affine source poses | [Rotated detection](rotated-detection.md) |
 | Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |

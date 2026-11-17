@@ -499,7 +499,7 @@ P2	method	cv2.dnn.DictValue.getIntValue	no static reference	-
 P2	method	cv2.dnn.DictValue.getRealValue	no static reference	-
 P2	method	cv2.dnn.DictValue.getStringValue	no static reference	-
 P2	method	cv2.dnn.DictValue.isInt	method name only	-
-P2	method	cv2.dnn.DictValue.isReal	no static reference	-
+P2	method	cv2.dnn.DictValue.isReal	method name only	-
 P2	method	cv2.dnn.DictValue.isString	no static reference	-
 P2	function	cv2.dnn.getAvailableTargets	literal reference	-
 P2	function	cv2.dnn.getInferenceEngineBackendType	no static reference	-
@@ -725,15 +725,15 @@ P2	method	cv2.ml.DTrees.getTruncatePrunedTree	no static reference	-
 P2	method	cv2.ml.DTrees.getUse1SERule	no static reference	-
 P2	method	cv2.ml.DTrees.getUseSurrogates	no static reference	-
 P2	method	cv2.ml.DTrees.load	method name only	-
-P2	method	cv2.ml.DTrees.setCVFolds	no static reference	-
+P2	method	cv2.ml.DTrees.setCVFolds	method name only	-
 P2	method	cv2.ml.DTrees.setMaxCategories	no static reference	-
 P2	method	cv2.ml.DTrees.setMaxDepth	method name only	-
 P2	method	cv2.ml.DTrees.setMinSampleCount	method name only	-
-P2	method	cv2.ml.DTrees.setPriors	no static reference	-
+P2	method	cv2.ml.DTrees.setPriors	method name only	-
 P2	method	cv2.ml.DTrees.setRegressionAccuracy	no static reference	-
 P2	method	cv2.ml.DTrees.setTruncatePrunedTree	no static reference	-
 P2	method	cv2.ml.DTrees.setUse1SERule	no static reference	-
-P2	method	cv2.ml.DTrees.setUseSurrogates	no static reference	-
+P2	method	cv2.ml.DTrees.setUseSurrogates	method name only	-
 P2	function	cv2.ml.DTrees_create	no static reference	-
 P2	function	cv2.ml.DTrees_load	no static reference	-
 P2	class	cv2.ml.EM	no static reference	-
@@ -805,8 +805,8 @@ P2	method	cv2.ml.RTrees.getTermCriteria	no static reference	-
 P2	method	cv2.ml.RTrees.getVarImportance	no static reference	-
 P2	method	cv2.ml.RTrees.getVotes	method name only	-
 P2	method	cv2.ml.RTrees.load	method name only	-
-P2	method	cv2.ml.RTrees.setActiveVarCount	no static reference	-
-P2	method	cv2.ml.RTrees.setCalculateVarImportance	no static reference	-
+P2	method	cv2.ml.RTrees.setActiveVarCount	method name only	-
+P2	method	cv2.ml.RTrees.setCalculateVarImportance	method name only	-
 P2	method	cv2.ml.RTrees.setTermCriteria	method name only	-
 P2	function	cv2.ml.RTrees_create	literal reference	-
 P2	function	cv2.ml.RTrees_load	no static reference	-
@@ -814,7 +814,7 @@ P2	class	cv2.ml.StatModel	no static reference	-
 P2	method	cv2.ml.StatModel.calcError	no static reference	-
 P2	method	cv2.ml.StatModel.empty	method name only	-
 P2	method	cv2.ml.StatModel.getVarCount	method name only	-
-P2	method	cv2.ml.StatModel.isClassifier	no static reference	-
+P2	method	cv2.ml.StatModel.isClassifier	method name only	-
 P2	method	cv2.ml.StatModel.isTrained	method name only	-
 P2	method	cv2.ml.StatModel.predict	method name only	-
 P2	method	cv2.ml.StatModel.train	method name only	-
@@ -909,7 +909,7 @@ P2	method	cv2.ml.TrainData.getVarType	no static reference	-
 P2	method	cv2.ml.TrainData.setTrainTestSplit	no static reference	-
 P2	method	cv2.ml.TrainData.setTrainTestSplitRatio	no static reference	-
 P2	method	cv2.ml.TrainData.shuffleTrainTest	no static reference	-
-P2	function	cv2.ml.TrainData_create	no static reference	-
+P2	function	cv2.ml.TrainData_create	literal reference	-
 P2	function	cv2.ml.TrainData_getSubMatrix	no static reference	-
 P2	function	cv2.ml.TrainData_getSubVector	no static reference	-
 P2	class	cv2.MSER	no static reference	-
@@ -2713,7 +2713,7 @@ P3	method	cv2.FileNode.isInt	method name only	-
 P3	method	cv2.FileNode.isMap	method name only	-
 P3	method	cv2.FileNode.isNamed	no static reference	-
 P3	method	cv2.FileNode.isNone	no static reference	-
-P3	method	cv2.FileNode.isReal	no static reference	-
+P3	method	cv2.FileNode.isReal	method name only	-
 P3	method	cv2.FileNode.isSeq	method name only	-
 P3	method	cv2.FileNode.isString	no static reference	-
 P3	method	cv2.FileNode.keys	method name only	-
@@ -2722,7 +2722,7 @@ P3	method	cv2.FileNode.name	method name only	-
 P3	method	cv2.FileNode.rawSize	no static reference	-
 P3	method	cv2.FileNode.real	method name only	-
 P3	method	cv2.FileNode.size	method name only	-
-P3	method	cv2.FileNode.string	no static reference	-
+P3	method	cv2.FileNode.string	method name only	-
 P3	method	cv2.FileNode.type	method name only	-
 P3	class	cv2.FileStorage	literal reference	-
 P3	method	cv2.FileStorage.endWriteStruct	no static reference	-

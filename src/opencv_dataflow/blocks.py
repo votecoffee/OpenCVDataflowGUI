@@ -824,6 +824,7 @@ def builtin_registry():
     from .ros2_blocks import ROS2_BLOCKS
     from .rotated_detection import DecodeRotatedDetections
     from .rotating_panorama import StitchRotatingPanorama
+    from .rtrees_blocks import RTREES_BLOCKS
     from .run_contours import RunContours
     from .scan_stitching import StitchScanSequence
     from .scanline_motion import EstimateScanlineMotion
@@ -1179,6 +1180,7 @@ def builtin_registry():
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,
+        *RTREES_BLOCKS,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
         *DISK_BLOCKS,

@@ -237,6 +237,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [K-means clustering](<opencv tools/kmeans/README.md>) | Cluster image pixels and numeric samples, then inspect the color map, quantized image, and cluster plot. |
 | [Reusable image clusters](<opencv tools/reusable_clusters/README.md>) | Train and reload fixed color palettes/HOG vocabularies; inspect other images, unknown pixels, selections and 16-bit RGB. |
 | [K-nearest image classification](<opencv tools/knn_classification/README.md>) | Train/reload native HOG classifiers, inspect held-out orientations and reject unknown images, vote ties or wrong preprocessing. |
+| [Random forest image classification](<opencv tools/rtrees_classification/README.md>) | Train/reload native forests with weights, importance and bounded OOB stopping; inspect held-out votes and explicit recognition/inspection failures. |
 | [KAZE registration](<opencv tools/kaze_registration/README.md>) | Match extended KAZE descriptors with FLANN and recover a known translation. |
 | [Labeled distance transform](<opencv tools/labeled_distance/README.md>) | Partition an image into nearest-seed zones and emit a mask for one zone. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |

@@ -9284,6 +9284,58 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `background` | `255` | Fill masked or out-of-image pixels with this uint8 intensity. |
 | `minimum_reads` | `1` | Minimum number of regions that produce nonempty text. |
 
+## Load random forest classifier (`ml.rtrees_load`)
+
+ML / Classical classification
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Predict OpenCV random forest classes (`ml.rtrees_predict`)
+
+ML / Classical classification
+
+Inputs: `model` (data), `samples` (data), `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_policy` | `"require_match"` | `require_match`, `dimensions_only` Match saved preprocessing, or explicitly check only dimensions. Stored normalization always applies. |
+| `min_vote_fraction` | `0.0` | Value must be a finite number between 0 and 1. Inclusive minimum winning vote fraction; agreement is not a calibrated probability. |
+| `min_vote_margin` | `0.0` | Value must be a finite number between 0 and 1. Inclusive minimum (winner minus runner-up votes) / actual tree count. |
+| `reject_vote_ties` | `true` | Withhold recognized labels on tied maximum votes; candidate and votes remain visible. |
+| `accepted_labels` | `[]` | Optional allowed trained classes. Known disallowed classes still emit their labels with an inspection failure. |
+
+## Save random forest classifier (`ml.rtrees_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"forest-classifier.json"` |  |
+
+## Train OpenCV random forest classifier (`ml.rtrees_train`)
+
+ML / Classical classification
+
+Inputs: `samples` (any), `labels` (data, optional), `sample_weights` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_depth` | `10` | Value must be a whole number between 1 and 16. Maximum tree depth (root is zero). Bounds model complexity. |
+| `min_sample_count` | `2` | Value must be a whole number between 1 and 2048. Native minimum samples used to split a node. |
+| `active_variables` | `0` | Value must be a whole number between 0 and 65536. Features considered per split; 0 uses the native rounded square root. Positive values must not exceed the descriptor length. |
+| `max_trees` | `64` | Value must be a whole number between 1 and 256. Hard training tree limit; retained even with optional OOB stopping. |
+| `termination` | `"tree_limit"` | `tree_limit`, `tree_limit_or_oob_error` Always keep the tree limit; optionally stop when native OOB error is below the target. |
+| `oob_error` | `0.01` | Value must be a finite number between 0 and 1. OOB error target used only by OOB termination; needs a positive value. The weighted native statistic is not held-out accuracy. |
+| `calculate_importance` | `false` | Compute native permutation importance and OOB statistics. Adds substantial feature-dependent training cost; the work budget is checked first. |
+| `class_priors` | `[]` | Optional positive relative class weights in first-appearance label order. |
+| `normalization` | `"none"` | `none`, `l2` None or per-row L2, stored with the model and applied to queries. |
+| `labels` | `[]` | One class string per training row; a wired Labels input overrides this list. |
+| `sample_weights` | `[]` | [] gives equal weights. Otherwise one positive value per row; the wired Sample weights input overrides this list. |
+
 ## Select instance mask (`ml.select_instance_mask`)
 
 ML / Instance segmentation

@@ -17,6 +17,11 @@ training/reload, neighbor votes/distances and explicit unknown-image rejection.
 It shares descriptor validation and normalization with SVM, preserving saved
 preprocessing contracts. Both run with the base OpenCV installation.
 
+Native [random forest classification](rtrees-classification.md) adds explicit
+tree/split controls, class priors, sample weights, optional feature importance
+and per-class votes. Portable models retain checked native trees and their
+training/preprocessing settings. This also uses the base OpenCV installation.
+
 ## Installation
 
 OpenCV DNN is included in the base OpenCV 5 contrib installation. Bundled control
