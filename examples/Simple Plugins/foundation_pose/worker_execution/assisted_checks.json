@@ -1,0 +1,38 @@
+[
+  {
+    "case": "held_out_frame13",
+    "assisted_initialization": true,
+    "prior_network_proposals": 2,
+    "annotated_poses_as_input": false,
+    "score_calls": 1,
+    "accepted": 0,
+    "graphics_off_candidates_exact": true,
+    "cache": {
+      "recipe_hit": true,
+      "models_hit": true,
+      "recipe_loads": 1,
+      "model_loads": 1
+    },
+    "save_reopen_assets_pinned": true,
+    "native_colored_cloud": true,
+    "source_grid_result_graphics": true
+  },
+  {
+    "case": "different_object_negative",
+    "assisted_initialization": true,
+    "prior_network_proposals": 2,
+    "annotated_poses_as_input": false,
+    "score_calls": 1,
+    "accepted": 0,
+    "graphics_off_candidates_exact": true,
+    "cache": {
+      "recipe_hit": true,
+      "models_hit": true,
+      "recipe_loads": 1,
+      "model_loads": 1
+    },
+    "save_reopen_assets_pinned": true,
+    "native_colored_cloud": true,
+    "source_grid_result_graphics": true
+  }
+]

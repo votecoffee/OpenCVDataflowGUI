@@ -1,0 +1,24 @@
+{
+  "source_commit": "02099e8",
+  "wheel": "opencv_simple_foundation_pose-0.1.0.dev1-py3-none-any.whl",
+  "sha256": "8f7865dda4fa5333fc654291a1b61b686e88fef35323ed62c9ca3003cd9ec957",
+  "runtime_modules": 16,
+  "source_archive_wheel_installed_bytes_exact": true,
+  "license_members": [
+    "opencv_simple_foundation_pose-0.1.0.dev1.dist-info/licenses/LICENSE",
+    "opencv_simple_foundation_pose-0.1.0.dev1.dist-info/licenses/THIRD_PARTY.md",
+    "opencv_simple_foundation_pose-0.1.0.dev1.dist-info/licenses/licenses/Apache-2.0.txt",
+    "opencv_simple_foundation_pose-0.1.0.dev1.dist-info/licenses/licenses/NVIDIA_TAO_MIT.txt"
+  ],
+  "isolated_installed_tests": {
+    "passed": 33,
+    "skipped": 1,
+    "skip": "Optional host module absent from isolated worker environment"
+  },
+  "host_contract_tests": {
+    "installed": 5,
+    "checkout": 5
+  },
+  "no_host_environment_changes": true,
+  "weights_included": false
+}

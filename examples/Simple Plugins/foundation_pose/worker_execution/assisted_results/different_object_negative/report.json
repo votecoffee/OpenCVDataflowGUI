@@ -1,0 +1,213 @@
+{
+  "model": "simple_foundation_pose_v1",
+  "units": "m",
+  "source_frame": "tless_object6",
+  "target_frame": "camera",
+  "passed": false,
+  "accepted_candidates": 0,
+  "candidates": [
+    {
+      "id": 1,
+      "source_to_target": [
+        [
+          -0.35852370302492287,
+          -0.930809011162406,
+          -0.07110090792782296,
+          0.04660035553350516
+        ],
+        [
+          -0.2828939778332759,
+          0.035748536237127995,
+          0.9584847622485027,
+          0.000792823995328794
+        ],
+        [
+          -0.8896245003792123,
+          0.3637535249255552,
+          -0.2761369613602468,
+          0.7602678614202887
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "raw_logit": 45.7694091796875,
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.0045769275906583735,
+        "contradiction": 0.0015256425302194578,
+        "rmse_m": 0.0011810124851763248,
+        "rendered_samples": 8521,
+        "supported_samples": 39,
+        "unknown_samples": 1969,
+        "occluded_samples": 6500,
+        "outside_target_samples": 901
+      }
+    },
+    {
+      "id": 0,
+      "source_to_target": [
+        [
+          0.38247305561122125,
+          0.9235662899973545,
+          -0.027196869524598148,
+          0.048345643677370924
+        ],
+        [
+          0.26901802491286925,
+          -0.08315124611394917,
+          0.9595390416974581,
+          0.0013437327303507428
+        ],
+        [
+          0.8839364592567694,
+          -0.3743142773796103,
+          -0.2802590903902774,
+          0.7620330946519971
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "raw_logit": 45.765220642089844,
+      "fit": {
+        "status": "rejected",
+        "reason": "fit_gates",
+        "coverage": 0.006305464736104624,
+        "contradiction": 0.0024521251751517983,
+        "rmse_m": 0.0019031045958399773,
+        "rendered_samples": 8564,
+        "supported_samples": 54,
+        "unknown_samples": 2010,
+        "occluded_samples": 6479,
+        "outside_target_samples": 914
+      }
+    }
+  ],
+  "execution": {
+    "settings": {
+      "iterations": 2,
+      "refiner_batch": 8,
+      "threads": 4,
+      "inplane_steps": 6,
+      "distance_tolerance": 0.005,
+      "minimum_coverage": 0.7,
+      "maximum_contradiction": 0.1
+    },
+    "backend": {
+      "model": "nvidia/foundationpose",
+      "revision": "18d8309afc9790cddc03a1d50bc69954dc058693",
+      "assets": {
+        "refiner_net.onnx": "4a4445d2506b1bfc0a8d62fa80f8780a7e37bb0df13bb09aa5dd04a03bf0c954",
+        "score_net.onnx": "bb7208919557560ecb0e10a30612821f0025a2578190b17677bdf3653514a48d"
+      },
+      "runtime": "onnxruntime",
+      "version": "1.32.0",
+      "provider": "CPUExecutionProvider",
+      "threads": 4,
+      "compile_seconds": 0.6945380000106525,
+      "score_semantics": "raw_cohort_dependent_logit"
+    },
+    "initialization": "supplied_coarse_poses",
+    "renderer": "bounded_cpu_first_return_triangles_unqualified_vs_cuda",
+    "diameter_m": 0.10826538995626533,
+    "model_center_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "score_calls": 1,
+    "refiner_calls": 2,
+    "candidate_count": 2,
+    "seconds": {
+      "prepare": 0.25931300000229385,
+      "refinement": 3.8009610999870347,
+      "score_prepare_and_fit": 1.7490625000064028,
+      "score_inference": 0.238672299994505,
+      "total": 6.048009399994044
+    }
+  },
+  "qualification": "Experimental CPU renderer/ONNX pilot; accuracy unqualified",
+  "score_semantics": "Raw cohort-dependent ranking logit, not probability",
+  "fit_semantics": "Raw depth in meters. Filtered/model points are not observations",
+  "capture_id": "tless:different_object_negative",
+  "recipe_sha256": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
+  "input_assistance": "Supplied single-instance visible mask; calibrated registered RGB-D",
+  "review": {
+    "selected_candidate_id": 1,
+    "accepted": false,
+    "frame": "camera",
+    "units": "m",
+    "components": {
+      "measured_scene": [
+        0,
+        30000
+      ],
+      "derived_model": [
+        30000,
+        32840
+      ],
+      "derived_pose_axes": [
+        32840,
+        33140
+      ]
+    },
+    "colors": {
+      "agreement": [
+        40,
+        240,
+        80
+      ],
+      "free_space_contradiction": [
+        255,
+        40,
+        70
+      ],
+      "occluded": [
+        120,
+        100,
+        240
+      ],
+      "unknown": [
+        255,
+        160,
+        0
+      ]
+    },
+    "semantics": "Diagnostic cloud includes derived model and axes, even on rejection"
+  },
+  "worker": {
+    "pid": 59388,
+    "cache": {
+      "recipe_hit": false,
+      "models_hit": false,
+      "recipe_loads": 1,
+      "model_loads": 1
+    },
+    "training_load_seconds": 0.9437343000026885,
+    "graphics_seconds": 0.04180890000134241
+  },
+  "request_timing": {
+    "operation": "register",
+    "client_lock_wait_seconds": 4.4000043999403715e-06,
+    "client_process_launch_seconds": 0.13563699999940582,
+    "client_packet_write_seconds": 0.017735900008119643,
+    "client_reply_wait_seconds": 7.44998529998702,
+    "client_packet_read_seconds": 0.028668700004345737,
+    "worker": {
+      "read_seconds": 0.03013519999512937,
+      "calculation_seconds": 7.050534699999844,
+      "write_seconds": 0.016697800005204044
+    },
+    "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+    "client_cleanup_seconds": 0.004818500005058013,
+    "client_total_seconds": 7.636856500001159
+  }
+}

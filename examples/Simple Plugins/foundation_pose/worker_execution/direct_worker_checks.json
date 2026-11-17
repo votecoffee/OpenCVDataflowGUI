@@ -1,0 +1,76 @@
+[
+  {
+    "case": "held_out_frame13",
+    "full_global_rotation_grid": true,
+    "candidate_count": 252,
+    "candidates_exact_to_original": true,
+    "accepted_candidates": 0,
+    "refiner_calls": 64,
+    "score_calls": 1,
+    "worker": {
+      "pid": 43512,
+      "cache": {
+        "recipe_hit": false,
+        "models_hit": false,
+        "recipe_loads": 1,
+        "model_loads": 1
+      },
+      "training_load_seconds": 0.773471000007703,
+      "graphics_seconds": 0.03439319999597501
+    },
+    "request_timing": {
+      "operation": "register",
+      "client_lock_wait_seconds": 6.900008884258568e-06,
+      "client_process_launch_seconds": 2.6999914553016424e-06,
+      "client_packet_write_seconds": 0.0055625999957555905,
+      "client_reply_wait_seconds": 394.06982000000426,
+      "client_packet_read_seconds": 0.03349010000238195,
+      "worker": {
+        "read_seconds": 0.02122320000489708,
+        "calculation_seconds": 394.03633279999485,
+        "write_seconds": 0.011420000009820797
+      },
+      "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+      "client_cleanup_seconds": 0.003993099991930649,
+      "client_total_seconds": 394.1128830999951
+    },
+    "capture_sha256": "3d95a011c077043016207678e502f3839bf352ce4a85542097d5442a293529c9"
+  },
+  {
+    "case": "different_object_negative",
+    "full_global_rotation_grid": true,
+    "candidate_count": 252,
+    "candidates_exact_to_original": true,
+    "accepted_candidates": 0,
+    "refiner_calls": 64,
+    "score_calls": 1,
+    "worker": {
+      "pid": 43512,
+      "cache": {
+        "recipe_hit": true,
+        "models_hit": true,
+        "recipe_loads": 1,
+        "model_loads": 1
+      },
+      "training_load_seconds": 0.0008271000115200877,
+      "graphics_seconds": 0.011712999999872409
+    },
+    "request_timing": {
+      "operation": "register",
+      "client_lock_wait_seconds": 5.299996701069176e-06,
+      "client_process_launch_seconds": 1.8999999156221747e-06,
+      "client_packet_write_seconds": 0.010673800003132783,
+      "client_reply_wait_seconds": 518.6068072999915,
+      "client_packet_read_seconds": 0.034302200001548044,
+      "worker": {
+        "read_seconds": 0.02358589999494143,
+        "calculation_seconds": 518.5712940999947,
+        "write_seconds": 0.011261200008448213
+      },
+      "scope": "Serialized worker request through private packet cleanup; excludes acquisition/GUI",
+      "client_cleanup_seconds": 0.003405900002690032,
+      "client_total_seconds": 518.6552029000013
+    },
+    "capture_sha256": "c4eb23e1b3f2f62f0d850d67353148c0a0b2125ebbc70b6cda1db0a218516bca"
+  }
+]

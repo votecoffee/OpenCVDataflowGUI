@@ -1,0 +1,15 @@
+{
+  "plugin_sha256": "97ad967ecab5fc88e1b6f9cced6c837f4810b2687898687b0b6051c578c177be",
+  "wheel_sha256": "8f7865dda4fa5333fc654291a1b61b686e88fef35323ed62c9ca3003cd9ec957",
+  "source_commit": "02099e8",
+  "actual_installed_host_global_graphs": 2,
+  "actual_assisted_graphs": 2,
+  "global_candidates_exact_to_original": true,
+  "global_rejections_preserved": true,
+  "no_host_environment_changes": true,
+  "heavy_modules_in_host": false,
+  "offscreen_native_flyaround_verified": true,
+  "native_training_editor_implemented": false,
+  "gpu_renderer_qualified": false,
+  "physical_grasp_qualified": false
+}

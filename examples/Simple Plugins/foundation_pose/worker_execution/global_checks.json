@@ -1,0 +1,74 @@
+[
+  {
+    "case": "held_out_frame13",
+    "actual_packaged_saved_graph": true,
+    "complete": true,
+    "program_error": null,
+    "state": "fail",
+    "candidate_count": 252,
+    "all_candidates_exact_to_original": true,
+    "accepted_candidates": 0,
+    "pose_emitted": false,
+    "actual_source_grid_overlay_exact": true,
+    "native_cloud": {
+      "model": "point_cloud_v1",
+      "count": 33140,
+      "units": "m",
+      "frame": "camera",
+      "colors": true,
+      "normals": false,
+      "source_size": null,
+      "pixel_correspondence": false,
+      "bytes": 497100,
+      "minimum": [
+        -0.30248916149139404,
+        -0.2096756100654602,
+        0.6956999897956848
+      ],
+      "maximum": [
+        0.27703502774238586,
+        0.19300995767116547,
+        0.8737000226974487
+      ]
+    },
+    "offscreen_native_flyaround_verified": true,
+    "elapsed_ms": 573115.5754999927,
+    "timing_scope": "Development parallel graphs; not a controlled cycle-time comparison"
+  },
+  {
+    "case": "different_object_negative",
+    "actual_packaged_saved_graph": true,
+    "complete": true,
+    "program_error": null,
+    "state": "fail",
+    "candidate_count": 252,
+    "all_candidates_exact_to_original": true,
+    "accepted_candidates": 0,
+    "pose_emitted": false,
+    "actual_source_grid_overlay_exact": true,
+    "native_cloud": {
+      "model": "point_cloud_v1",
+      "count": 33140,
+      "units": "m",
+      "frame": "camera",
+      "colors": true,
+      "normals": false,
+      "source_size": null,
+      "pixel_correspondence": false,
+      "bytes": 497100,
+      "minimum": [
+        -0.30700117349624634,
+        -0.21371866762638092,
+        0.6793000102043152
+      ],
+      "maximum": [
+        0.27784523367881775,
+        0.1909513920545578,
+        0.880299985408783
+      ]
+    },
+    "offscreen_native_flyaround_verified": true,
+    "elapsed_ms": 576339.2808000062,
+    "timing_scope": "Development parallel graphs; not a controlled cycle-time comparison"
+  }
+]
