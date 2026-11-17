@@ -1,0 +1,2 @@
+* -text whitespace=cr-at-eol
+tless/source/models_cad/*.ply -diff

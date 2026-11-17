@@ -1,0 +1,1850 @@
+{
+  "derived_review": true,
+  "components": [
+    {
+      "role": "measured_scene",
+      "rows": [
+        0,
+        30000
+      ],
+      "observations": true
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30000,
+        30020
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30020,
+        30040
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30040,
+        30060
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30060,
+        30080
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30080,
+        30100
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30100,
+        30120
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30120,
+        30140
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30140,
+        30160
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30160,
+        30180
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30180,
+        30200
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30200,
+        30220
+      ],
+      "observations": false
+    },
+    {
+      "role": "configured_bin",
+      "rows": [
+        30220,
+        30240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_CAD",
+      "rows": [
+        30240,
+        33240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33240,
+        33260
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33260,
+        33280
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33280,
+        33300
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33300,
+        33320
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33320,
+        33340
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33340,
+        33360
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33360,
+        33380
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33380,
+        33400
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33400,
+        33420
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33420,
+        33440
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33440,
+        33460
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33460,
+        33480
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33480,
+        33500
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33500,
+        33520
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33520,
+        33540
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33540,
+        33560
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33560,
+        33580
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33580,
+        33600
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33600,
+        33620
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33620,
+        33640
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33640,
+        33660
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33660,
+        33680
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33680,
+        33700
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33700,
+        33720
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33720,
+        33740
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33740,
+        33760
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33760,
+        33780
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33780,
+        33800
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33800,
+        33820
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33820,
+        33840
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33840,
+        33860
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33860,
+        33880
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33880,
+        33900
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33900,
+        33920
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33920,
+        33940
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        33940,
+        33960
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33960,
+        33980
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        33980,
+        34000
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34000,
+        34020
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34020,
+        34040
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34040,
+        34060
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34060,
+        34080
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34080,
+        34100
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34100,
+        34120
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34120,
+        34140
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34140,
+        34160
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34160,
+        34180
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        34180,
+        34200
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34200,
+        34220
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34220,
+        34240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34240,
+        34260
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34260,
+        34280
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34280,
+        34300
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34300,
+        34320
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34320,
+        34340
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34340,
+        34360
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34360,
+        34380
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34380,
+        34400
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34400,
+        34420
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        34420,
+        34440
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34440,
+        34460
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34460,
+        34480
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34480,
+        34500
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34500,
+        34520
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34520,
+        34540
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34540,
+        34560
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34560,
+        34580
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34580,
+        34600
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34600,
+        34620
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34620,
+        34640
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34640,
+        34660
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34660,
+        34680
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34680,
+        34700
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34700,
+        34720
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34720,
+        34740
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34740,
+        34760
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34760,
+        34780
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34780,
+        34800
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34800,
+        34820
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34820,
+        34840
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34840,
+        34860
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34860,
+        34880
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34880,
+        34900
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34900,
+        34920
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34920,
+        34940
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34940,
+        34960
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34960,
+        34980
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        34980,
+        35000
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35000,
+        35020
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35020,
+        35040
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35040,
+        35060
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35060,
+        35080
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35080,
+        35100
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35100,
+        35120
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35120,
+        35140
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35140,
+        35160
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35160,
+        35180
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35180,
+        35200
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35200,
+        35220
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35220,
+        35240
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35240,
+        35260
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35260,
+        35280
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35280,
+        35300
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35300,
+        35320
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35320,
+        35340
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35340,
+        35360
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35360,
+        35380
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35380,
+        35400
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35400,
+        35420
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35420,
+        35440
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35440,
+        35460
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35460,
+        35480
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35480,
+        35500
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35500,
+        35520
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35520,
+        35540
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35540,
+        35560
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35560,
+        35580
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35580,
+        35600
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35600,
+        35620
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35620,
+        35640
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35640,
+        35660
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35660,
+        35680
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35680,
+        35700
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35700,
+        35720
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35720,
+        35740
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35740,
+        35760
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35760,
+        35780
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35780,
+        35800
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35800,
+        35820
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35820,
+        35840
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35840,
+        35860
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35860,
+        35880
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35880,
+        35900
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35900,
+        35920
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35920,
+        35940
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35940,
+        35960
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35960,
+        35980
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        35980,
+        36000
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36000,
+        36020
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36020,
+        36040
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36040,
+        36060
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36060,
+        36080
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36080,
+        36100
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_swept_envelope",
+      "rows": [
+        36100,
+        36120
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_approach",
+      "rows": [
+        36120,
+        36160
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        36160,
+        36180
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        36180,
+        36200
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        36200,
+        36220
+      ],
+      "observations": false
+    },
+    {
+      "role": "observed_collision_witness",
+      "rows": [
+        36220,
+        36220
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_unknown_queries",
+      "rows": [
+        36220,
+        36253
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36253,
+        36273
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36273,
+        36293
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36293,
+        36313
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36313,
+        36333
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36333,
+        36353
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36353,
+        36373
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36373,
+        36393
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36393,
+        36413
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36413,
+        36433
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36433,
+        36453
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36453,
+        36473
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36473,
+        36493
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36493,
+        36513
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36513,
+        36533
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36533,
+        36553
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36553,
+        36573
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36573,
+        36593
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36593,
+        36613
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36613,
+        36633
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36633,
+        36653
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36653,
+        36673
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36673,
+        36693
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36693,
+        36713
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36713,
+        36733
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36733,
+        36753
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36753,
+        36773
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36773,
+        36793
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36793,
+        36813
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36813,
+        36833
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36833,
+        36853
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36853,
+        36873
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36873,
+        36893
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36893,
+        36913
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36913,
+        36933
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36933,
+        36953
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_closed_finger",
+      "rows": [
+        36953,
+        36973
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36973,
+        36993
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        36993,
+        37013
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37013,
+        37033
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37033,
+        37053
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37053,
+        37073
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37073,
+        37093
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37093,
+        37113
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37113,
+        37133
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37133,
+        37153
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37153,
+        37173
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37173,
+        37193
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_open_finger",
+      "rows": [
+        37193,
+        37213
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37213,
+        37233
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37233,
+        37253
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37253,
+        37273
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37273,
+        37293
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37293,
+        37313
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37313,
+        37333
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37333,
+        37353
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37353,
+        37373
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37373,
+        37393
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37393,
+        37413
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37413,
+        37433
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_palm",
+      "rows": [
+        37433,
+        37453
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_approach",
+      "rows": [
+        37453,
+        37493
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        37493,
+        37513
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        37513,
+        37533
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_TCP_axes",
+      "rows": [
+        37533,
+        37553
+      ],
+      "observations": false
+    },
+    {
+      "role": "observed_collision_witness",
+      "rows": [
+        37553,
+        37553
+      ],
+      "observations": false
+    },
+    {
+      "role": "derived_unknown_queries",
+      "rows": [
+        37553,
+        37681
+      ],
+      "observations": false
+    }
+  ],
+  "capture_id": "unknown",
+  "contact_source": "CAD_taught_not_measured_force_closure",
+  "selected_candidate": null,
+  "unobserved_space": "unknown_not_free",
+  "physical_grasp_qualified": false
+}

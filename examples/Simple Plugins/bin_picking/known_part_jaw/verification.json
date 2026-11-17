@@ -1,0 +1,95 @@
+[
+  {
+    "case": "clear",
+    "eligible": 1,
+    "statuses": [
+      "eligible",
+      "unknown"
+    ],
+    "reasons": [
+      [],
+      [
+        "unobserved_or_occluded_gripper_sweep"
+      ]
+    ],
+    "reopen_exact": true,
+    "cached_graphics_off_exact": true,
+    "pose_assistance": "Authored analytic box pose"
+  },
+  {
+    "case": "obstacle",
+    "eligible": 0,
+    "statuses": [
+      "rejected",
+      "unknown"
+    ],
+    "reasons": [
+      [
+        "observed_gripper_sweep_collision"
+      ],
+      [
+        "unobserved_or_occluded_gripper_sweep"
+      ]
+    ],
+    "reopen_exact": true,
+    "cached_graphics_off_exact": true,
+    "pose_assistance": "Authored analytic box pose"
+  },
+  {
+    "case": "unknown",
+    "eligible": 0,
+    "statuses": [
+      "unknown",
+      "unknown"
+    ],
+    "reasons": [
+      [
+        "unobserved_or_occluded_gripper_sweep"
+      ],
+      [
+        "unobserved_or_occluded_gripper_sweep"
+      ]
+    ],
+    "reopen_exact": true,
+    "cached_graphics_off_exact": true,
+    "pose_assistance": "Authored analytic box pose"
+  },
+  {
+    "case": "frame000003",
+    "eligible": 0,
+    "statuses": [
+      "rejected",
+      "rejected"
+    ],
+    "reasons": [
+      [
+        "insufficient_current_pose_evidence"
+      ],
+      [
+        "insufficient_current_pose_evidence"
+      ]
+    ],
+    "reopen_exact": true,
+    "cached_graphics_off_exact": true,
+    "pose_assistance": "T-LESS annotated object pose; not independent localization"
+  },
+  {
+    "case": "frame000013",
+    "eligible": 0,
+    "statuses": [
+      "rejected",
+      "rejected"
+    ],
+    "reasons": [
+      [
+        "insufficient_current_pose_evidence"
+      ],
+      [
+        "insufficient_current_pose_evidence"
+      ]
+    ],
+    "reopen_exact": true,
+    "cached_graphics_off_exact": true,
+    "pose_assistance": "T-LESS annotated object pose; not independent localization"
+  }
+]

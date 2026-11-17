@@ -1,0 +1,11 @@
+{
+  "version": "0.1.0.dev4",
+  "wheel": "opencv_simple_bin_picking-0.1.0.dev4-py3-none-any.whl",
+  "sha256": "c47d4a1182cb0b9abc5304240499ab9d282f2a78b68e9a3e4c021c8d534bbcaf",
+  "source_revision": "fb05b8b",
+  "modules": 22,
+  "source_matches_after_newline_normalization": true,
+  "byte_exact_modules": 10,
+  "mit_license_matches": true,
+  "dependency_install": false
+}

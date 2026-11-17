@@ -16,7 +16,7 @@ SimpleGDRNPP uses explicit plugin loading and a separately configured worker.
 | **SimpleReferenceInspect** | [Real clear-tote inspection](reference_inspect/armbench_tote/README.md), [posed PCB hard case](reference_inspect/visa_pcb2/README.md), and [generated reference inspection](reference_inspect/README.md). |
 | **Simple3DLocate** | [Real T-LESS clutter with depth verification](3d_locate/real_tless/depth_verified/README.md), plus [generated rigid surfaces](3d_locate/README.md) for controlled regression. |
 | **Simple3DMeasure** | [Real T-LESS measurement review and generated known/raised/missing surfaces](3d_measure/README.md), with native RGB flyaround, retained reference recipes and explicit dimensional qualification limits. |
-| **SimpleBinPicking** | [Suction contact/clearance review](bin_picking/README.md), with five generated controls and three real T-LESS replays; real cases retain zero eligible picks and open grasp qualification. |
+| **SimpleBinPicking** | [Suction contact/clearance review](bin_picking/README.md), plus [CAD-taught jaw alternatives](bin_picking/known_part_jaw/README.md): native colored clearance graphics, clear/obstacle/unknown controls and two rejected real T-LESS pose-assisted cases. |
 | **SimpleGDRNPP (experimental)** | [T-LESS pose reviews and native setup](gdrnpp/README.md), with three retained rejected poses, RGB overlays and native fit-cloud flyaround. |
 
 The [SimpleLaserProfile trainer and examples](laser_profile/README.md) add

@@ -1,0 +1,52 @@
+[
+  {
+    "case": "clear",
+    "passed": true,
+    "eligible": 1,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "1de03747769c3d66d5cf50ae24cc1a92d11fca4405c2a8d41ce7b7633b5f7579"
+  },
+  {
+    "case": "obstacle",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "b6483a264cd1a724ba9bf2da012cf39ba932166ae019c06c6528b520d1b0b2a2"
+  },
+  {
+    "case": "tless/frame000003",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "81fcf1aa4068a18f06cc551659f611445ae0bdaa5df894049bb419becceba16b"
+  },
+  {
+    "case": "tless/frame000013",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "59c30bfcf83e27a1be1f49bde95f173192e40bee281d0910f425affdbd4fbe28"
+  },
+  {
+    "case": "unknown",
+    "passed": false,
+    "eligible": 0,
+    "reopened_exact": true,
+    "portable_save_as_exact": true,
+    "native_flyaround_colors_preserved": true,
+    "review_did_not_replan": true,
+    "expected_sha256": "1e57fe336371eef5c8b4cf99f6744dd2c614a178f41731ab9867bb7c1b787cd1"
+  }
+]
