@@ -1,0 +1,59 @@
+{
+  "plugin_sha256": "62d3a07fb881f34d399c06a09d826231809fbda763836f32a4b8cc522487a277",
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "comparable": 6912,
+      "expected_pass": true,
+      "actual_pass": true,
+      "opened_without_processing": true,
+      "saved_reopened": true,
+      "raw_maps_and_report_exact": true,
+      "graphics_off_exact": true,
+      "compiled_reference_reused": true,
+      "rgb_result_images": 16,
+      "metric_height": false
+    },
+    {
+      "case": "analytic_change",
+      "comparable": 6912,
+      "expected_pass": false,
+      "actual_pass": false,
+      "opened_without_processing": true,
+      "saved_reopened": true,
+      "raw_maps_and_report_exact": true,
+      "graphics_off_exact": true,
+      "compiled_reference_reused": true,
+      "rgb_result_images": 16,
+      "metric_height": false
+    },
+    {
+      "case": "analytic_missing",
+      "comparable": 6212,
+      "expected_pass": false,
+      "actual_pass": false,
+      "opened_without_processing": true,
+      "saved_reopened": true,
+      "raw_maps_and_report_exact": true,
+      "graphics_off_exact": true,
+      "compiled_reference_reused": true,
+      "rgb_result_images": 16,
+      "metric_height": false
+    },
+    {
+      "case": "sofast_self_review",
+      "comparable": 114356,
+      "expected_pass": true,
+      "actual_pass": true,
+      "opened_without_processing": true,
+      "saved_reopened": true,
+      "raw_maps_and_report_exact": true,
+      "graphics_off_exact": true,
+      "compiled_reference_reused": true,
+      "rgb_result_images": 16,
+      "metric_height": false
+    }
+  ],
+  "expected_judgments_matched": true,
+  "scope": "Actual plugin execution, not physical accuracy"
+}

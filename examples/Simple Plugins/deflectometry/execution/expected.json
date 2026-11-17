@@ -1,0 +1,54 @@
+[
+  {
+    "case": "analytic_clean",
+    "training": "reference",
+    "expected_pass": true,
+    "comparable": 6912,
+    "coverage": 1.0,
+    "minimum_coverage": 0.95,
+    "maximum_change_rad": 0.45,
+    "raw_maps_and_report_exact": true,
+    "graphics_off_exact": true,
+    "compiled_reference_reused": true,
+    "saved_reopened": true
+  },
+  {
+    "case": "analytic_change",
+    "training": "reference",
+    "expected_pass": false,
+    "comparable": 6912,
+    "coverage": 1.0,
+    "minimum_coverage": 0.95,
+    "maximum_change_rad": 0.45,
+    "raw_maps_and_report_exact": true,
+    "graphics_off_exact": true,
+    "compiled_reference_reused": true,
+    "saved_reopened": true
+  },
+  {
+    "case": "analytic_missing",
+    "training": "reference",
+    "expected_pass": false,
+    "comparable": 6212,
+    "coverage": 0.8987268518518519,
+    "minimum_coverage": 0.95,
+    "maximum_change_rad": 0.45,
+    "raw_maps_and_report_exact": true,
+    "graphics_off_exact": true,
+    "compiled_reference_reused": true,
+    "saved_reopened": true
+  },
+  {
+    "case": "sofast_self_review",
+    "training": "sofast_reference",
+    "expected_pass": true,
+    "comparable": 114356,
+    "coverage": 0.9999737668220253,
+    "minimum_coverage": 0.95,
+    "maximum_change_rad": 0.45,
+    "raw_maps_and_report_exact": true,
+    "graphics_off_exact": true,
+    "compiled_reference_reused": true,
+    "saved_reopened": true
+  }
+]

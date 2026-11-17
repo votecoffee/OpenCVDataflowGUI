@@ -1,0 +1,19 @@
+{
+  "load_orders": [
+    {
+      "first": "fringe_scan",
+      "second": "deflectometry",
+      "both_registered": true,
+      "untrained_validation_without_processing": true
+    },
+    {
+      "first": "deflectometry",
+      "second": "fringe_scan",
+      "both_registered": true,
+      "untrained_validation_without_processing": true
+    }
+  ],
+  "fringe_plugin_sha256": "b72a80821eea1723ff35d98b3d7c4696945a77d638b9af287d7cea36f72333dd",
+  "deflect_plugin_sha256": "62d3a07fb881f34d399c06a09d826231809fbda763836f32a4b8cc522487a277",
+  "passed": true
+}

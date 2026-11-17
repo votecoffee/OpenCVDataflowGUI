@@ -7,5 +7,7 @@
 *.npz binary
 *.h5 binary
 *.whl binary
+*.sdef binary
+*.py.in text eol=lf
 LICENSE -text whitespace=cr-at-eol
 sofast_source/originals/*.txt binary

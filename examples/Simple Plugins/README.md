@@ -40,12 +40,13 @@ colored fly-around clouds; a CC BY4 external simulated crown remains phase-only.
 Weak/rejected evidence stays visible under identical generic settings.
 File-only reviews remain separate; acquired-camera accuracy is unqualified.
 
-The [SimpleDeflectometry initial result reviews](deflectometry/README.md)
-add three analytic phase-change/missing controls and actual CC BY-SA 4.0
-SOFAST camera images with code-value phase/fit maps. The real example compares
-one exported capture with itself; exposure/response calibration is unknown.
-File-only projects and explicit two-wheel CLI replay are separate. Native
-teaching/execution and physical qualification remain next.
+The [SimpleDeflectometry training and execution examples](deflectometry/README.md)
+add retained source filmstrips, ordered image-file teaching, editable regions,
+independent previews, Stage/Apply and cached phase-reference execution. Four
+projects retain clean/change/missing controls and actual CC BY-SA 4 SOFAST code
+diagnostics. The real self-review has unknown exposure/response calibration;
+physical qualification and absolute screen decoding remain open. Both shared-
+wheel plugins load together in either order; file-only reviews remain separate.
 
 ## Start with real public data
 

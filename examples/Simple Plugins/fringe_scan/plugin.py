@@ -17,7 +17,20 @@ if str(WHEEL) not in sys.path:
 import opencv_simple_fringe_scan  # noqa: E402
 
 if not str(opencv_simple_fringe_scan.__file__).startswith(str(WHEEL)):
-    raise RuntimeError("Another fringe-tool version is loaded; restart and load this plugin first")
+    origin = str(opencv_simple_fringe_scan.__file__)
+    end = origin.lower().rfind(".whl")
+    loaded_wheel = Path(origin[: end + 4]) if end >= 0 else None
+    if (
+        loaded_wheel is None
+        or not loaded_wheel.is_file()
+        or (
+            loaded_wheel.stat().st_size > 2 * 1024 * 1024
+            or hashlib.sha256(loaded_wheel.read_bytes()).hexdigest() != EXPECTED
+        )
+    ):
+        raise RuntimeError(
+            "Another fringe-tool version is loaded; restart and load this plugin first"
+        )
 
 from opencv_simple_fringe_scan.dataflow import register  # noqa: E402
 

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "deflect",
+      "type": "image.simple_deflectometry",
+      "name": "SimpleDeflectometry",
+      "description": "Actual phase-reference execution. Same generic settings/95% coverage/0.45-rad limit in all cases. SOFAST is same-capture code diagnostics; no metric height.",
+      "parameters": {
+        "recipe_path": "assets/reference.sdef",
+        "sha256": "2795a4b065a2f50647d1f91796d7b1862238017116acba1174dfaa951b847132",
+        "source": "capture manifest",
+        "capture_manifest": "../studies/analytic_clean/capture.json",
+        "render_graphics": true
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "maps",
+        "report",
+        "coverage",
+        "count",
+        "changed_pixels",
+        "overlay",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": []
+}

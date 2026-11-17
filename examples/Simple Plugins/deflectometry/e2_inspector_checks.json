@@ -1,0 +1,18 @@
+{
+  "actual_host_inspector": true,
+  "staged_without_mutating_applied": true,
+  "apply_committed": true,
+  "reopened_roi": [
+    10,
+    10,
+    40,
+    30
+  ],
+  "reopened_comparable_pixels": 1200,
+  "reopened_selected_frame": 10,
+  "retained_frames": 12,
+  "cancel_preserved_applied": true,
+  "using_packaged_wheel": true,
+  "host_kind": "installed",
+  "scope": "Offscreen method-based native inspector; no desktop input or physical accuracy proof"
+}

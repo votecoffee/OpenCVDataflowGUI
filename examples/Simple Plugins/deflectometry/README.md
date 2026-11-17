@@ -1,56 +1,57 @@
-# SimpleDeflectometry initial result reviews
+# SimpleDeflectometry training and execution
 
-Open a saved project below in OpenCVDataflowGUI and run its image sources.
-No plugin, installation or hardware is needed for these **file-only reviews**.
-PASS means result images loaded; these graphs do not run the estimator.
+Explicitly load the trusted bundled `plugin.py`, then open an execution project
+below. No host environment installation is needed. These graphs run the actual
+cached phase-comparison tool. The separate saved map reviews remain available.
 
-| Project | Numerical estimator result | Evidence |
-| --- | --- | --- |
-| [Analytic clean](studies/analytic_clean/project.json) | PASS; 6,912 comparable pixels | Independent unchanged phase control. |
-| [Analytic change](studies/analytic_change/project.json) | FAIL at configured phase-change limit | Known localized phase change, no metric shape truth. |
-| [Analytic missing](studies/analytic_missing/project.json) | FAIL; 6,212/6,912 comparable, 89.87% | Missing and clipped regions remain unavailable. |
-| [Real SOFAST self-review](studies/sofast_self_review/project.json) | Diagnostic self-comparison; 114,356/114,359 comparable | Actual camera images, unknown exposure/response, no held-out defect or height truth. |
+| Execution project | Comparable pixels | Expected judgment |
+| --- | ---: | --- |
+| [Analytic clean](execution/analytic_clean.json) | 6,912/6,912 | PASS |
+| [Analytic change](execution/analytic_change.json) | 6,912/6,912 | FAIL at configured phase-change limit |
+| [Analytic missing](execution/analytic_missing.json) | 6,212/6,912 | FAIL coverage; evidence retained |
+| [Real SOFAST self-review](execution/sofast_self_review.json) | 114,356/114,359 | PASS code diagnostics; same recorded capture |
 
-Each project has 16 source-aligned RGB review images: reference/test source,
-X/Y phase, signed changes, magnitude, modulation, fit, quality, overlay and
-overview. Shared fixed scales make comparisons useful; raw numeric arrays stay
-in `result/maps.npz`, alongside the exact sequence/radiometry/decision report.
-Purple means unavailable in phase/change views. The quality legend distinguishes
-reference/test/both unavailable and outside ROI. Overlay red marks a configured
-phase-change exceedance; availability colors remain separate.
+All use identical generic phase-fit settings, 95% comparable coverage and an
+illustrative 0.45-radian phase-vector limit. The three analytic tests share clean
+reference training. The real example is an explicitly uncalibrated code-value
+self-comparison with unknown exposure. It is import/fit/replay evidence, not a
+held-out defect or physical-height test. Credits: **OpenCSP Team**, Sandia NSTTF,
+[OpenCSP](https://opencsp.sandia.gov/), **CC BY-SA 4.0**. See exact original license,
+hashes, transformations and data terms in [DATASET_CREDITS.md](DATASET_CREDITS.md).
 
-All captures use the same generic phase-fit settings, 95% comparable-coverage
-gate and illustrative 0.45-radian phase-vector limit. The SOFAST self-case has
-zero change by construction; its useful result is code-level fit/coverage.
-Wrapped differences remain whole-period ambiguous. There is no metric cloud or
-phase-derived height image. The separate known-plane normal API has mathematical
-controls; it does not reconstruct a measured shape from these phase images.
+## Teach a new application
 
-Real-data attribution: **OpenCSP Team**, Sandia National Laboratories NSTTF,
-[OpenCSP](https://opencsp.sandia.gov/), **CC BY-SA 4.0**. Retained originals,
-exact license, hashes, mask extraction, code-value reduction and limitations
-are documented in [DATASET_CREDITS.md](DATASET_CREDITS.md). These SOFAST assets
-and derived results retain their separate data license.
+1. Save a project, add SimpleDeflectometry, and open **Train reference and
+   inspection region**. Use **Teach from X/Y image files**, import an ordered
+   capture/retained recipe, or capture the connected source bundle.
+2. For image-file teaching, review source order, move misplaced observations,
+   choose positive/negative shifts or edit individual shifts, and declare
+   source response, common exposure and code scale. Then retain the reference.
+3. Select any retained filmstrip frame. Zoom/pan, draw a new inspection rectangle,
+   adjust its handles or import an exact mask. Reopening restores all frames,
+   the selected frame and exact mask; choosing a replacement region is explicit.
+4. Review phase shifts/radiometry and fit controls. Choose minimum comparable
+   coverage and optionally enable a phase-change limit. **Preview reference**
+   shows modulation/fit, availability and source-aligned change layers. Reference
+   health remains separate from independent test-preview outcomes.
+5. Preview another capture or a connected snapshot. This preserves training.
+   Changes clear stale layers and require a fresh reference fit before Stage.
+6. **Stage training** creates a new sealed asset and updates the inspector draft.
+   **Apply configuration** commits it; Cancel preserves applied training.
+7. Choose connected capture or a runtime capture manifest explicitly. Execute,
+   select the source overlay or named result images, and inspect the raw maps/
+   report as needed. Invalid input never silently falls back to teaching frames.
 
-## Execute a fresh comparison
+Overlay red marks configured change exceedances; availability colors distinguish
+reference/test/both missing and outside ROI. Result-image scales are fixed across
+captures. The raw primary image is wrapped phase-change magnitude in radians,
+with NaN for unavailable pixels. Whole-period ambiguity remains. No metric
+height/cloud is produced; known-plane reflection calculations are a separate API.
 
-From the source repository, install the local FringeScan and Deflectometry
-packages as described by the tool README, then run `simple-deflectometry` with
-the reference and test capture manifests. The published host examples also
-include both wheels and an explicit no-install launcher. From this folder,
-using the host's Python:
+Graphics-off leaves numeric maps, report and judgment unchanged. The block caches
+reference fits and phase bases for unchanged sealed recipes and recomputes each
+test capture. Native teaching works without a successful target execution first.
 
-```powershell
-python run_capture.py --fringe-wheel releases/opencv_simple_fringe_scan-0.1.0.dev2-py3-none-any.whl --wheel releases/opencv_simple_deflectometry-0.1.0.dev1-py3-none-any.whl studies/reference/capture.json studies/analytic_change/capture.json --maximum-change-rad 0.45 --output new-change-review
-```
-
-Use a new output folder. `--no-graphics` preserves maps/report without PNGs.
-`verify_package.py` selects both trusted wheels and replays all four cases;
-`build_review_projects.py --verify-only studies` reopens native file-only views.
-Preparation/review never downloads data implicitly. `prepare_sofast.py` accepts
-the pinned official ZIP/license and requires h5py only for numeric mask extraction.
-
-Native retained reference/region teaching, independent popup previews, Apply/Cancel
-and the host execution block are next. Acquired calibrated reference/test pairs,
-response calibration, absolute screen decoding and physical qualification remain
-open. See [the application scope](APPLICATION_PLAN.md) and [validation](E1_VALIDATION.md).
+[E1 file-only reviews](MAP_REVIEWS.md) load retained images without estimation.
+See [recipe/capture contract](RECIPE_CONTRACT.md),
+[remaining work](FUTURE_WORK.md) and [E2 validation](E2_VALIDATION.md).

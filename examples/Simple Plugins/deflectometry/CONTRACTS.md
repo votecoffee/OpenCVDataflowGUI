@@ -1,8 +1,9 @@
 # SimpleDeflectometry E0 contracts — draft v1
 
 The initial API/CLI implements registered temporal X/Y wrapped phase comparison
-and a separate known-plane reflection API. Absolute screen decoding, native
-teaching and shape reconstruction remain implementation targets. Start with
+and a separate known-plane reflection API. Native retained teaching and cached
+execution are delivered in [E2](RECIPE_CONTRACT.md). Absolute screen decoding
+and shape reconstruction remain implementation targets. Start with
 registered monochrome, stationary-surface sequences and imported known geometry.
 Keep specular reflection separate from diffuse projector-camera ray intersection.
 

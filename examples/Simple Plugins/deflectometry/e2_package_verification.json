@@ -1,0 +1,51 @@
+{
+  "wheel": "opencv_simple_deflectometry-0.1.0.dev2-py3-none-any.whl",
+  "sha256": "84bc0ff026977cb47718621d9d54da557e2df62c807bfb5b5a75917a7f009056",
+  "fringe_wheel": "opencv_simple_fringe_scan-0.1.0.dev2-py3-none-any.whl",
+  "fringe_sha256": "5e75af7d9533d277d25001b2f0389094008159fae5e3fefadd0a61abfa2ce780",
+  "runtime_modules": {
+    "opencv_simple_deflectometry": 10,
+    "opencv_simple_fringe_scan": 13
+  },
+  "source_bytes_checked": true,
+  "controls": [
+    {
+      "case": "analytic_clean",
+      "raw_maps": 18,
+      "exact_maps_and_report": true,
+      "expected_pass": true,
+      "comparable": 6912,
+      "actual_cli_reexecuted": true,
+      "metric_height": false
+    },
+    {
+      "case": "analytic_change",
+      "raw_maps": 18,
+      "exact_maps_and_report": true,
+      "expected_pass": false,
+      "comparable": 6912,
+      "actual_cli_reexecuted": true,
+      "metric_height": false
+    },
+    {
+      "case": "analytic_missing",
+      "raw_maps": 18,
+      "exact_maps_and_report": true,
+      "expected_pass": false,
+      "comparable": 6212,
+      "actual_cli_reexecuted": true,
+      "metric_height": false
+    },
+    {
+      "case": "sofast_self_review",
+      "raw_maps": 18,
+      "exact_maps_and_report": true,
+      "expected_pass": true,
+      "comparable": 114356,
+      "actual_cli_reexecuted": true,
+      "metric_height": false
+    }
+  ],
+  "scope": "Software replay, not physical measurement accuracy",
+  "passed": true
+}

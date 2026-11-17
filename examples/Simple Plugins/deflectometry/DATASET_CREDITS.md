@@ -19,6 +19,8 @@ applies to the directory tree. Its original 145 bytes are retained as
 and does not replace data terms. Original tool code and generated analytic
 controls use the tool's MIT license. The retained SOFAST images/mask, transformed
 capture and derived SOFAST result maps/review images retain CC BY-SA 4.0.
+The retained transformed frames/mask inside `execution/assets/sofast_reference.sdef`
+also retain these data terms and upstream provenance.
 
 Retained originals: four coarse-frequency exported X camera PNGs, four Y camera
 PNGs, the corresponding eight command-thumbnail PNGs, two dark/white mask-source
