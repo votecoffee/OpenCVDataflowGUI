@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 30 | 8 | 24 | 62 | 48.4% |
+| 2. ML and DNN | 31 | 7 | 24 | 62 | 50.0% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 256 | 40 | 174 | 470 | 54.5% |
+| **Overall** | 257 | 39 | 174 | 470 | 54.7% |
 
 <!-- coverage-summary:end -->
 
@@ -349,7 +349,7 @@ fixture or result needed to close the item.
 | S2-29 | Prompted image segmentation | Fused image encoding, point/box prompt inputs and native mask candidates | Complete | ml.segmentation_prompts, ml.efficientsam and ml.decode_prompt_masks qualify pinned OpenCV Zoo EfficientSAM-Ti April 2025 on CPU. Explicit source point/background/box coordinates, six completely rebound slots, exact uint8/RGB preprocessing, three array-backed native logits, quality/membership selection and nearest-mask or linear-logit source mapping retain source/request/model identity and ticket/frame/recipe/pyramid context. Mask/region output selection, exact bounded regions, optional logits/graphics and distinct quality/prompt/area failures are exposed. Eight attributed photo/original-shape projects, independent native arrays/masks, exact shape truth (Dice 0.977 box/nearest and 1.0 point/linear), Debug/Lean, changed-request rejection, warm rebinding, XML, portable bundles, editor controls and a cold GUI worker qualify this fused baseline. No split embedding cache, arbitrary SAM export, accelerator or general accuracy claim. See [contracts](prompted-segmentation.md). |
 | S2-30 | Image segmentation over tiles | Per-tile inference and overlap-aware label or score fusion | Complete | ml.decode_segmentation optional class export + ml.fuse_tile_segmentation; bounded probability averaging/label voting, feathering, shared source/ticket/recipe checks and coverage/area failures. Nine controlled native CPU projects match independent/full-frame labels and preserve seam-crossing edges; real-model context/accuracy needs separate qualification. See [contract](tiled-segmentation.md). |
 | S2-31 | Text-region decoding from a probability map | Threshold, contour candidates and rotated rectangles | Complete | ml.text_regions. Verify oriented text boxes and coordinates on the original image. |
-| S2-32 | Text detection with a pinned network | DNN text detector and DB-style score-map decoding | Partial | ml.text_regions decodes probability maps. Qualify a pinned detector with oriented labels and split/merged text fixtures. |
+| S2-32 | Text detection with a pinned network | DNN text detector and DB-style score-map decoding | Complete | Hash-pinned Apache PP-OCRv3 English + ml.dnn / ml.text_regions; observable maps, source-center resize/letterbox mapping, DB rectangle expansion, ROI/count/truncation and resource guards. Eight controlled CPU projects match known glyph polygons/12-degree rotation and joined/separated tokens; native DB overlap reference and Classic/New comparison. Natural-image OCR accuracy needs separate qualification. See [contract](text-detection.md). |
 | S2-33 | OCR recognition across an image batch | Rectified crops, batch inference and CTC sequence mapping | Partial | ml.recognize_text handles rectified regions. Verify batched results retain region order and individual confidence. |
 | S2-34 | OCR vocabulary and constrained decoding | CTC prefix search, alphabet and optional lexicon | Planned | Compare blank handling, repeats and industrial text constraints on known logits and image samples. |
 | S2-35 | Learned single-image super-resolution | dnn_superres.DnnSuperResImpl | Planned | Pin a model and compare detail, noise and dimensional error against interpolation on downsampled images. Check for false or erased defects against a native-resolution reference. |

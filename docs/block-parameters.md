@@ -9671,15 +9671,35 @@ ML / Text inspection
 
 Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tensors` (data), `preprocessing` (data).
 
+Input `image` — Original image, returned unchanged; match inference ticket and frame.
+
+Input `tensors` — One named exclusive float32 probability map, HW or leading singleton axes.
+
+Input `preprocessing` — Matching positive resize/letterbox geometry from DNN inference.
+
+Input `mask` — Optional source-grid selection; region centers must lie inside it.
+
+Input `region` — Optional source-grid region; intersects Mask, applied by region center.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `output_name` | `""` | Probability-map tensor name. Empty selects the first output. |
-| `pixel_threshold` | `0.3` |  |
-| `minimum_confidence` | `0.5` | Minimum mean probability inside each detected contour. |
-| `minimum_area` | `8.0` | Minimum contour area in probability-map pixels. |
-| `padding_ratio` | `1.1` | Multiply the detected rectangle dimensions by this ratio. |
-| `maximum_regions` | `64` |  |
-| `draw_overlay` | `true` |  |
+| `pixel_threshold` | `0.3` | Value must be a finite number between 0 and 1. Strictly greater probability starts an external contour. |
+| `minimum_confidence` | `0.5` | Value must be a finite number between 0 and 1. Minimum mean probability inside each filled contour, inclusive. |
+| `minimum_area` | `8.0` | Value must be a finite number between 0 and 1.67772e+07. Minimum contour area in probability-map pixels, inclusive. |
+| `padding_ratio` | `1.1` | Value must be a finite number between 1 and 4. Rectangle scale only; multiply both detected rectangle dimensions. |
+| `maximum_regions` | `64` | Value must be a whole number between 1 and 256. Retain highest-confidence regions, then order by center y,x. |
+| `draw_overlay` | `true` | Optional raster review; global/per-block graphics settings also apply. |
+| `expansion` | `"rectangle_scale"` | `rectangle_scale`, `db_unclip` Scale the rectangle, or add the DB area/perimeter offset. |
+| `unclip_ratio` | `2.0` | Value must be a finite number between 0 and 10. DB only: add 2 x area x ratio / perimeter to both dimensions. |
+| `minimum_side` | `1.0` | Value must be a finite number between 1 and 4096. Minimum unexpanded rectangle side in probability-map pixels. |
+| `border_policy` | `"keep"` | `keep`, `discard` Keep expanded corners outside the image, or discard the whole region. |
+| `minimum_count` | `0` | Value must be a whole number between 0 and 256. Minimum retained regions to pass; zero permits an empty result. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 256. Maximum retained count; zero disables this limit. |
+| `fail_on_truncation` | `true` | Fail if accepted regions are truncated; retain current results. |
+| `maximum_candidates` | `2000` | Value must be a whole number between 1 and 20000. Reject more external contours before scoring. |
+| `maximum_tensor_elements` | `4194304` | Value must be a whole number between 4 and 1.67772e+07. Bound map samples before conversion; maximum axis is 4096. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Source-grid pixel limit; maximum source axis is 16384. |
 
 ## Unpack image inference result (`ml.unpack_inference`)
 

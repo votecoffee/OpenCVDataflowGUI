@@ -80,6 +80,7 @@
 | Shared-ticket tile boxes, exact source mapping and duplicate suppression | [Tile detection fusion](tile-detection-fusion.md) |
 | Oriented heads, rotated overlap and exact affine source poses | [Rotated detection](rotated-detection.md) |
 | Shared-ticket segmentation tiles, overlap weights, valid coverage and source-grid decisions | [Tiled segmentation](tiled-segmentation.md) |
+| Pinned PP-OCRv3, observable maps, DB-style rectangles and source-grid text regions | [Text detection](text-detection.md) |
 | Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |
 | Per-object masks, prototype/ROI heads, overlap and individual inspection | [Instance segmentation](instance-segmentation.md) |
 | Image/point/box prompts, native mask candidates and source-grid inspection | [Prompted segmentation](prompted-segmentation.md) |
