@@ -1,0 +1,54 @@
+{
+  "checked": "2026-11-16",
+  "scope": "Primary API metadata only; no raw-step or calibration claim",
+  "candidates": [
+    {
+      "article": 4950230,
+      "title": "Visualization 1: Instantaneous phase shifting deflectometry",
+      "doi": "10.1364/OE.24.027993.v001",
+      "url": "https://opticapublishing.figshare.com/articles/media/Visualization_1_Instantaneous_phase_shifting_deflectometry/4950230",
+      "license": {
+        "value": 1,
+        "name": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "authors": [
+        "Isaac Trumper",
+        "Heejoo Choi",
+        "Dae Wook Kim"
+      ],
+      "files": [
+        {
+          "name": "oe-24-24-27993-v001.AVI",
+          "bytes": 1168810
+        }
+      ],
+      "metadata_sha256": "62ad43479983bca2a12fbc4ec34084ccf056ac5952e4a4a3e40c252725aae683",
+      "pixels_downloaded": false
+    },
+    {
+      "article": 4950233,
+      "title": "Visualization 2: Instantaneous phase shifting deflectometry",
+      "doi": "10.1364/OE.24.027993.v002",
+      "url": "https://opticapublishing.figshare.com/articles/media/Visualization_2_Instantaneous_phase_shifting_deflectometry/4950233",
+      "license": {
+        "value": 1,
+        "name": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "authors": [
+        "Isaac Trumper",
+        "Heejoo Choi",
+        "Dae Wook Kim"
+      ],
+      "files": [
+        {
+          "name": "oe-24-24-27993-v002.AVI",
+          "bytes": 1072886
+        }
+      ],
+      "metadata_sha256": "01de208c9c58324e84c70fac10dd171d2d8c009b8795d6bf9b6538b684875919",
+      "pixels_downloaded": false
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+line-length = 100
+
+[lint]
+select = ["E", "F", "I"]
+
+[lint.isort]
+known-first-party = ["opencv_simple_deflectometry"]
+known-third-party = ["opencv_simple_fringe_scan"]

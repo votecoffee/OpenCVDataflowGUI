@@ -1,0 +1,108 @@
+{
+  "schema": "simple_deflectometry_capture/v1",
+  "capture_id": "reference",
+  "sequence": {
+    "setup_id": "analytic-phase-control",
+    "pixel_grid": "original-96x72",
+    "exposure_s": 0.01,
+    "axes": {
+      "x": {
+        "frame_ids": [
+          "x:0",
+          "x:1",
+          "x:2",
+          "x:3",
+          "x:4",
+          "x:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      },
+      "y": {
+        "frame_ids": [
+          "y:0",
+          "y:1",
+          "y:2",
+          "y:3",
+          "y:4",
+          "y:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      }
+    }
+  },
+  "source_encoding": "linear",
+  "input_scale": 1,
+  "frames": [
+    {
+      "id": "x:0",
+      "image": "x_00.npy"
+    },
+    {
+      "id": "x:1",
+      "image": "x_01.npy"
+    },
+    {
+      "id": "x:2",
+      "image": "x_02.npy"
+    },
+    {
+      "id": "x:3",
+      "image": "x_03.npy"
+    },
+    {
+      "id": "x:4",
+      "image": "x_04.npy"
+    },
+    {
+      "id": "x:5",
+      "image": "x_05.npy"
+    },
+    {
+      "id": "y:0",
+      "image": "y_00.npy"
+    },
+    {
+      "id": "y:1",
+      "image": "y_01.npy"
+    },
+    {
+      "id": "y:2",
+      "image": "y_02.npy"
+    },
+    {
+      "id": "y:3",
+      "image": "y_03.npy"
+    },
+    {
+      "id": "y:4",
+      "image": "y_04.npy"
+    },
+    {
+      "id": "y:5",
+      "image": "y_05.npy"
+    }
+  ],
+  "provenance": {
+    "kind": "Analytic phase control; not physical shape"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "simple_deflectometry_phase_result/v1",
+  "scope": "Wrapped reference difference",
+  "response": "linear",
+  "exposure_s": 0.01,
+  "photometry_qualified": false,
+  "radiometry_scope": "Caller-declared normalized linear response",
+  "reference_capture_id": "reference",
+  "capture_id": "analytic_missing",
+  "setup_id": "analytic-phase-control",
+  "pixel_grid": "original-96x72",
+  "sequence": {
+    "x": {
+      "frame_ids": [
+        "x:0",
+        "x:1",
+        "x:2",
+        "x:3",
+        "x:4",
+        "x:5"
+      ],
+      "phase_angles": [
+        0.0,
+        1.0471975511965976,
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989
+      ],
+      "period_px": 32,
+      "origin_rad": 0,
+      "direction": 1
+    },
+    "y": {
+      "frame_ids": [
+        "y:0",
+        "y:1",
+        "y:2",
+        "y:3",
+        "y:4",
+        "y:5"
+      ],
+      "phase_angles": [
+        0.0,
+        1.0471975511965976,
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989
+      ],
+      "period_px": 32,
+      "origin_rad": 0,
+      "direction": 1
+    },
+    "setup_id": "analytic-phase-control",
+    "pixel_grid": "original-96x72",
+    "exposure_s": 0.01,
+    "response": "linear"
+  },
+  "phase_settings": {
+    "minimum_amplitude": 0.03,
+    "maximum_relative_rms": 0.15,
+    "input_ceiling": 1.0
+  },
+  "active_pixels": 6912,
+  "reference_valid_pixels": 6912,
+  "test_valid_pixels": 6212,
+  "comparable_pixels": 6212,
+  "coverage": 0.8987268518518519,
+  "denominator": "Retained reference ROI; test masks reduce comparable coverage",
+  "reference_coverage": 1.0,
+  "test_coverage": 0.8987268518518519,
+  "maximum_observed_change_rad": 0.0,
+  "minimum_coverage": 0.95,
+  "maximum_change_rad": 0.45,
+  "changed_pixels": 0,
+  "decision_scope": "Availability and optional user-specified wrapped-phase vector limit",
+  "passed": false,
+  "fail_reasons": [
+    "insufficient_comparable_coverage"
+  ],
+  "whole_period_ambiguity": true,
+  "metric_height": false,
+  "phase_reason_labels": [
+    "valid",
+    "outside_roi",
+    "nonfinite",
+    "input_ceiling",
+    "low_modulation",
+    "poor_sinusoidal_fit"
+  ],
+  "comparison_reason_counts": {
+    "comparable": 6212,
+    "outside_reference_roi": 0,
+    "reference_unavailable": 0,
+    "test_unavailable": 700,
+    "both_unavailable": 0
+  },
+  "no_phase_redundancy": {
+    "x": false,
+    "y": false
+  },
+  "source_records": {
+    "reference": {
+      "kind": "Analytic phase control; not physical shape"
+    },
+    "test": {
+      "kind": "Analytic phase/missing-signal control; no acquired or metric shape truth"
+    }
+  }
+}

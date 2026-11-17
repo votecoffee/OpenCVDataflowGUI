@@ -1,0 +1,47 @@
+[
+  {
+    "case": "analytic_clean",
+    "reference": "reference/capture.json",
+    "capture": "analytic_clean/capture.json",
+    "expected_pass": true,
+    "actual_pass": true,
+    "comparable": 6912,
+    "coverage": 1.0,
+    "independent_phase_truth": true,
+    "physical_height_truth": false
+  },
+  {
+    "case": "analytic_change",
+    "reference": "reference/capture.json",
+    "capture": "analytic_change/capture.json",
+    "expected_pass": false,
+    "actual_pass": false,
+    "comparable": 6912,
+    "coverage": 1.0,
+    "independent_phase_truth": true,
+    "physical_height_truth": false
+  },
+  {
+    "case": "analytic_missing",
+    "reference": "reference/capture.json",
+    "capture": "analytic_missing/capture.json",
+    "expected_pass": false,
+    "actual_pass": false,
+    "comparable": 6212,
+    "coverage": 0.8987268518518519,
+    "independent_phase_truth": true,
+    "physical_height_truth": false
+  },
+  {
+    "case": "sofast_self_review",
+    "reference": "../sofast_source/capture.json",
+    "capture": "../sofast_source/capture.json",
+    "expected_pass": true,
+    "actual_pass": true,
+    "comparable": 114356,
+    "coverage": 0.9999737668220253,
+    "independent_phase_truth": false,
+    "physical_height_truth": false,
+    "scope": "Same real exported capture, code diagnostics"
+  }
+]

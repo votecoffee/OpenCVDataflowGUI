@@ -1,0 +1,11 @@
+.gitattributes text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.toml text eol=lf
+*.npy binary
+*.npz binary
+*.h5 binary
+*.whl binary
+LICENSE -text whitespace=cr-at-eol
+sofast_source/originals/*.txt binary

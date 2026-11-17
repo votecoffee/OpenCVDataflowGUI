@@ -1,0 +1,38 @@
+[
+  {
+    "case": "analytic_clean",
+    "saved_reopened": true,
+    "file_sources_passed": true,
+    "estimator_reexecuted": false,
+    "review_images_exact": 16,
+    "numeric_estimator_pass": true,
+    "metric_cloud": false
+  },
+  {
+    "case": "analytic_change",
+    "saved_reopened": true,
+    "file_sources_passed": true,
+    "estimator_reexecuted": false,
+    "review_images_exact": 16,
+    "numeric_estimator_pass": false,
+    "metric_cloud": false
+  },
+  {
+    "case": "analytic_missing",
+    "saved_reopened": true,
+    "file_sources_passed": true,
+    "estimator_reexecuted": false,
+    "review_images_exact": 16,
+    "numeric_estimator_pass": false,
+    "metric_cloud": false
+  },
+  {
+    "case": "sofast_self_review",
+    "saved_reopened": true,
+    "file_sources_passed": true,
+    "estimator_reexecuted": false,
+    "review_images_exact": 16,
+    "numeric_estimator_pass": true,
+    "metric_cloud": false
+  }
+]
