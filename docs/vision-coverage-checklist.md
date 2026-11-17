@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 165 | 4 | 6 | 175 | 94.3% |
+| 1. Core and baseline 2D | 166 | 3 | 6 | 175 | 94.9% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 228 | 46 | 196 | 470 | 48.5% |
+| **Overall** | 229 | 45 | 196 | 470 | 48.7% |
 
 <!-- coverage-summary:end -->
 
@@ -120,7 +120,7 @@ fixture or result needed to close the item.
 | S1-58 | Deblurring with a known blur kernel | DFT-based Wiener inverse | Complete | cv.wiener_deblur. Gaussian, defocus, line-motion and editable point-spread functions. |
 | S1-59 | Bracketed exposure stack alignment | createAlignMTB | Complete | cv.align_exposures. Recover known shifts and preserve common image support. |
 | S1-60 | Native flat QR decoding | QRCodeDetector.detectAndDecode and detectAndDecodeMulti | Complete | inspect.read_qr. Decode single or multiple flat codes and report image-space outlines. |
-| S1-61 | Visible support for 2D pick candidates | Projected template support, masked comparisons and contour coverage | Partial | inspect.select_pick ranks score, angle and clearance. Verify a visible-support score on clear, touching, and partly covered parts. |
+| S1-61 | Visible support for 2D pick candidates | Projected template support, masked comparisons and contour coverage | Complete | inspect.visible_support samples each candidate on its selected template grid, reports appearance agreement separately from observed/in-frame support, retains detector scores and filters matches for inspect.select_pick. Template/source masks and regions, transform/bounds/pose conventions, explicit template-grid assertion, current tickets/coordinate roots, raw-depth RGB/BGR comparisons and bounded work/graphics are qualified. Four original native-detector projects independently specify clear, touching and 210-sample-covered parts, exact 616/406 sample counts, clearance/downstream picks and a failed count gate that suppresses picking while retaining diagnostics. Numeric projective/rotation/crop references, exception/recovery, XML/offscreen and Debug/Lean checks pass. This is template-appearance evidence, not recovered hidden area, physical occlusion or grasp certification. See [contracts](visible-support.md). |
 | S1-62 | Image and pose-relative selections | Rectangle, circle and polygon rasterization, Boolean masks | Complete | region.shape, mask.shape, region.combine, region.pose, region.fitted_shape. Apply editable and measured selections to image operations. |
 | S1-63 | Object collection filtering and sorting | Contour/component measurements, stable ranking and source overlays | Complete | collection.filter, collection.sort, collection.clip_lines, collection.draw. Retain IDs through size, orientation, shape and position filters. |
 | S1-64 | Stable intensity regions | MSER.detectRegions | Complete | inspect.mser. Stable grayscale and color regions as image coordinates and filterable bounds. |

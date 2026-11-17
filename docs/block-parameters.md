@@ -8003,6 +8003,44 @@ Inputs: `text` (data).
 | `custom_characters` | `""` | Literal allowed characters for the custom character set. |
 | `aggregate` | `"all"` | `all`, `any` Require every input string or at least one. An empty list always fails. |
 
+## Filter candidates by visible support (`inspect.visible_support`)
+
+Inspection / Pick selection
+
+Inputs: `image` (image), `template` (image), `matches` (data), `mask` (image, optional), `region` (data, optional), `template_mask` (image, optional), `template_region` (data, optional).
+
+Input `image` — Current inspection image; unchanged on output.
+
+Input `template` — Expected template on the candidate transform's original source grid.
+
+Input `matches` — Template-instance list or pattern_matches_v1; original scores are retained.
+
+Input `mask` — Optional observed source-image support, intersected with Region.
+
+Input `region` — Optional source-image support; excluded samples still count in the denominator.
+
+Input `template_mask` — Optional uint8 expected-object selection; excludes template background.
+
+Input `template_region` — Optional template-grid region, intersected with Template mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `transform_mode` | `"auto"` | `auto`, `transform`, `bounds`, `pose` Auto prefers the record's transform, then bounds, then pose. |
+| `template_grid_policy` | `"matching_frames"` | `matching_frames`, `assert_pixel_alignment` Match known frames, or assert template pixel alignment. |
+| `template_origin` | `[]` | Pose mode: template [x,y] at the pose origin; empty uses pixel center. |
+| `comparison` | `"grayscale"` | `grayscale`, `all_channels` Grayscale BGR weights, or agreement in every BGR channel; alpha is ignored. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Sample the scene on the template grid; border fill never adds support. |
+| `absolute_tolerance` | `20.0` | Value must be a finite number at least 0. Maximum absolute channel difference, in raw image units. |
+| `minimum_visible_fraction` | `0.85` | Value must be a finite number between 0 and 1. Matching observed samples / all selected template samples. |
+| `minimum_observed_fraction` | `0.95` | Value must be a finite number between 0 and 1. Fully observed samples / all selected template samples. |
+| `minimum_matches` | `1` | Value must be a whole number between 0 and 64. Minimum accepted candidates for the block to pass; zero permits none. |
+| `maximum_candidates` | `64` | Value must be a whole number between 1 and 64. Reject oversized lists; never silently truncate candidates. |
+| `maximum_source_pixels` | `8000000` | Value must be a whole number between 1 and 6.4e+07. Source image pixel limit before comparison allocations. |
+| `maximum_template_pixels` | `262144` | Value must be a whole number between 1 and 1.04858e+06. Full template-grid pixel limit, including masked-out pixels. |
+| `maximum_sample_count` | `16777216` | Value must be a whole number between 1 and 6.71089e+07. Full template pixels times candidate count, before sampling. |
+| `maximum_working_bytes` | `268435456` | Value must be a whole number between 1 and 2.14748e+09. Estimated arrays; excludes native workspaces and runtime copies. |
+| `maximum_graphics_candidates` | `64` | Value must be a whole number between 0 and 64. Limit diagnostic outlines/labels; zero omits drawings. |
+
 ## Voronoi cells (`inspect.voronoi_cells`)
 
 Inspection / Measurements

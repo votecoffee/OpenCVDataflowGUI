@@ -42,3 +42,4 @@ For independent frame sampling with requested/actual time and bracket policies, 
 For live reception, bounded reconnects and sequence resets, try [network video](network_video/README.md).
 For recorded media timing, stride and loop/reset inspection, try [paced video replay](paced_video/README.md).
 For whole selections through lens correction, exact holes and border validity, try [selection remap](selection_remap/README.md).
+For candidate appearance support before clearance/downstream selection, try [visible support](visible_support/README.md).

@@ -75,7 +75,7 @@ IMPLEMENTATION_MODULES = {
         "logpolar_registration mask_boundary mask_resampling point_set_lines polar_image "
         "laplacian_pyramids processing differential_exposure "
         "pixel_moments pyramids raster_hough_lines registration run_contours segmentation "
-        "stack_blur selection_remap "
+        "stack_blur selection_remap visible_support "
         "subpixel_crop "
         "template_instances "
         "tilted_statistics"

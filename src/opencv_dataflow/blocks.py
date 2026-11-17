@@ -928,6 +928,7 @@ def builtin_registry():
     from .video_files import VideoFile, WriteVideo
     from .video_time import VideoAtTime
     from .video_timing import VideoTiming
+    from .visible_support import VisibleSupport
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
     from .voronoi import VoronoiCells
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
@@ -958,6 +959,7 @@ def builtin_registry():
         VideoTiming,
         RemapSelection,
         RemapSelectionPacked,
+        VisibleSupport,
         DecodeVideo,
         TiffFile,
         TiffPageAccess,

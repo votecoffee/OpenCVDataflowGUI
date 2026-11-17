@@ -1,0 +1,126 @@
+{
+  "license": "MIT - original repository fixtures",
+  "image_size": [
+    280,
+    170
+  ],
+  "template_size": [
+    31,
+    21
+  ],
+  "expected_samples": 616,
+  "cases": {
+    "clear": {
+      "positions": [
+        [
+          20,
+          18
+        ],
+        [
+          110,
+          60
+        ],
+        [
+          200,
+          110
+        ]
+      ],
+      "matching_samples": [
+        616,
+        616,
+        616
+      ],
+      "accepted": 3,
+      "selected_pose": [
+        215,
+        120
+      ],
+      "expected_pass": true
+    },
+    "touching": {
+      "positions": [
+        [
+          20,
+          18
+        ],
+        [
+          130,
+          100
+        ],
+        [
+          161,
+          100
+        ]
+      ],
+      "matching_samples": [
+        616,
+        616,
+        616
+      ],
+      "accepted": 3,
+      "selected_pose": [
+        35,
+        28
+      ],
+      "expected_pass": true
+    },
+    "covered": {
+      "positions": [
+        [
+          20,
+          18
+        ],
+        [
+          110,
+          60
+        ],
+        [
+          200,
+          110
+        ]
+      ],
+      "matching_samples": [
+        616,
+        616,
+        406
+      ],
+      "accepted": 2,
+      "selected_pose": [
+        125,
+        70
+      ],
+      "expected_pass": true
+    },
+    "required_three": {
+      "positions": [
+        [
+          20,
+          18
+        ],
+        [
+          110,
+          60
+        ],
+        [
+          200,
+          110
+        ]
+      ],
+      "matching_samples": [
+        616,
+        616,
+        406
+      ],
+      "accepted": 2,
+      "selected_pose": null,
+      "expected_pass": false
+    }
+  },
+  "asset_sha256": {
+    "template.png": "24aa999dcf254f4202c23c71a47ca74394e34a4a001225af8b04951a01188235",
+    "clear.png": "f4dec8d3224c85f72ff38fc9e4004944357409a58d0cc5e9acc44b8813688a79",
+    "touching.png": "4e70717c986259febb44a12c1d465ed1b9487513ef494b1adcc4dee436f2ca6b",
+    "covered.png": "74fb043f267c61af0bbb23c9b837e9cc3e6e7f6068f650bab1749c04a562edb1",
+    "required_three.png": "74fb043f267c61af0bbb23c9b837e9cc3e6e7f6068f650bab1749c04a562edb1"
+  }
+}

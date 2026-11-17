@@ -1,0 +1,384 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/touching.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "template",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/template.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "expected_object",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          12,
+          7,
+          7,
+          5
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": true
+      },
+      "position": [
+        380,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detector",
+      "type": "inspect.template_instances",
+      "name": "Find template instances",
+      "description": "Find all three candidate poses; visibility is a separate qualification.",
+      "parameters": {
+        "method": "ccoeff_normed",
+        "min_score": 0.35,
+        "subpixel": false,
+        "maximum_matches": 3,
+        "minimum_matches": 3,
+        "maximum_iou": 0.15,
+        "draw_overlay": false,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        760,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "matches",
+        "count",
+        "response",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "support",
+      "type": "inspect.visible_support",
+      "name": "Filter candidates by visible support",
+      "description": "Check expected appearance before choosing a pick.",
+      "documentation": "<p>Sample the current scene on each candidate's template grid. Report absolute appearance agreement separately from detector score and real-source support. Lighting, registration and lookalike objects can confound this visibility proxy. See docs/visible-support.md for transforms, masks, units and limitations.</p>",
+      "parameters": {
+        "transform_mode": "auto",
+        "template_grid_policy": "matching_frames",
+        "template_origin": [],
+        "comparison": "grayscale",
+        "interpolation": "linear",
+        "absolute_tolerance": 0.0,
+        "minimum_visible_fraction": 0.85,
+        "minimum_observed_fraction": 0.95,
+        "minimum_matches": 1,
+        "maximum_candidates": 64,
+        "maximum_source_pixels": 8000000,
+        "maximum_template_pixels": 262144,
+        "maximum_sample_count": 16777216,
+        "maximum_working_bytes": 268435456,
+        "maximum_graphics_candidates": 64
+      },
+      "position": [
+        1140,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "template",
+        "matches",
+        "mask",
+        "region",
+        "template_mask",
+        "template_region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "matches",
+        "candidates",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pick",
+      "type": "inspect.select_pick",
+      "name": "Select pick candidate",
+      "parameters": {
+        "footprint": [
+          -15,
+          -10,
+          30,
+          20
+        ],
+        "clearance": 6,
+        "min_score": 0.35,
+        "target_angle": 0.0,
+        "angle_tolerance": 180.0,
+        "angle_period": "360",
+        "ranking": "downstream",
+        "downstream_direction": [
+          0.0,
+          1.0
+        ],
+        "maximum_occupied_pixels": 0,
+        "require_occupancy": false,
+        "draw_overlay": false
+      },
+      "position": [
+        1520,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "matches",
+        "occupancy",
+        "region"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "selected",
+        "candidates",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "input_failure_policies": {
+        "image": "reject_failed",
+        "matches": "reject_failed"
+      }
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1520,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1900,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original object-support controls - MIT",
+      "description": "Original MIT synthetic images, generator, expected sample counts and projects by OpenCVDataflowGUI contributors. No customer or third-party images. Native template matching finds three poses; a template region excludes the 35-pixel background hole. Clear and touching parts have all 616 samples; covering ten columns leaves 406/616 supported samples. Visibility filters before downstream/clearance pick selection. Touching parts still have full appearance support, but clearance rejects both neighbors. Required three intentionally fails the count gate and prevents a pick while preserving current diagnostics. This appearance proxy is not true occlusion, collision or robotic grasp certification. See README and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "template",
+      "output": "image",
+      "target": "expected_object",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detector",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "detector",
+      "input": "template"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "support",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "support",
+      "input": "template"
+    },
+    {
+      "source": "expected_object",
+      "output": "region",
+      "target": "support",
+      "input": "template_region"
+    },
+    {
+      "source": "detector",
+      "output": "matches",
+      "target": "support",
+      "input": "matches"
+    },
+    {
+      "source": "support",
+      "output": "image",
+      "target": "pick",
+      "input": "image"
+    },
+    {
+      "source": "support",
+      "output": "matches",
+      "target": "pick",
+      "input": "matches"
+    },
+    {
+      "source": "support",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "support",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

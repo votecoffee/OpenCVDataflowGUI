@@ -172,3 +172,15 @@ this tool measures locally straight gradient bands, not complete object boundari
 Native references: [OpenCV feature detection](https://docs.opencv.org/4.x/d5/d51/group__features2d__main.html),
 [calibration and robust transforms](https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html),
 [image gradients](https://docs.opencv.org/4.x/d4/d86/group__imgproc__filter.html).
+
+## Qualify visible support before pick selection
+
+Connect template-instance or pattern matches to **Filter candidates by visible
+support**, with the original template image. It retains detector scores and
+filters by independently reported appearance/observed fractions before **Select
+pick candidate** applies clearance, angle and downstream ranking. Optional
+template masks/regions exclude background and holes. Scene masks/regions restrict
+observations without shrinking the expected denominator. This is an appearance
+proxy rather than proof of true occlusion or grasp safety. See
+[contracts](visible-support.md) and
+[four controlled projects](<../examples/opencv tools/visible_support/README.md>).

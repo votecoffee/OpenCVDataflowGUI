@@ -38,6 +38,7 @@
 | Timestamp-paced files, playback policy, loop/reset and Stop/Resume | [Paced video replay](paced-video.md) |
 | Binary corners, endpoints and junctions with signed kernels | [Hit-or-miss morphology](hit-or-miss.md) |
 | Sparse-mask contours with bounded run input and flat native polygons | [Run-linked contours](run-contours.md) |
+| Template appearance support before pick clearance/ranking | [Visible support](visible-support.md) |
 | Whole selections through nonlinear lens correction | [Selection remap](selection-remap.md) |
 | Regions, poses, pyramids and spatial provenance | [Workflow guide](workflow-guide.md), [architecture](architecture.md) |
 | Tickets, branching, batching and joins | [Control flow](control-flow.md), [input coordination](input-coordination.md) |
