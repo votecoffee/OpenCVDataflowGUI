@@ -1,10 +1,21 @@
 {
-  "version": "0.1.0.dev6",
-  "sha256": "c7c8dfff73fdc27ca2386904503c4d17ca696525bbf8d71344cf1a1bebbbcc30",
-  "source_revision": "26472b4",
-  "modules": 26,
-  "source_matches_after_newline_normalization": true,
-  "mit_license_matches": true,
-  "host_environment_install": false,
-  "checkout_host_tests_passed": 94
+  "wheels": [
+    {
+      "wheel": "opencv_simple_3d_locate-0.1.0.dev20-py3-none-any.whl",
+      "source_revision": "71635c0",
+      "modules": 29,
+      "sha256": "c124a55e5105c087e1a849ad47d648d9801c4caeaa76ce4e8fcc0f77d846c2f9",
+      "source_matches_after_newline_normalization": true,
+      "mit_license_matches": true
+    },
+    {
+      "wheel": "opencv_simple_bin_picking-0.1.0.dev7-py3-none-any.whl",
+      "source_revision": "71635c0",
+      "modules": 26,
+      "sha256": "2920315ef4f57a4f65feefa7f3affa0a23738fd5a29cdb0e5d8187d33739e0e7",
+      "source_matches_after_newline_normalization": true,
+      "mit_license_matches": true
+    }
+  ],
+  "host_environment_install": false
 }

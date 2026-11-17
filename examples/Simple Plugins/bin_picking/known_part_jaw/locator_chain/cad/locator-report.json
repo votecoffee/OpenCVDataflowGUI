@@ -428,20 +428,20 @@
       1104
     ],
     "seconds": {
-      "preprocess": 0.05362549998972099,
-      "candidate_search": 0.029813200002536178,
-      "ppf_search": 0.02960920000623446,
+      "preprocess": 0.07206109999970067,
+      "candidate_search": 0.032110000000102445,
+      "ppf_search": 0.03186380000261124,
       "plane_search": 0.0,
       "feature_search": 0.0,
       "region_search": 0.0,
-      "depth_prepare": 0.035860699994373135,
+      "depth_prepare": 0.046230299994931556,
       "depth_verify": 0.0,
       "projective_score_sum": 0.0,
-      "worker_index_prepare_sum": 0.0014983999863034114,
-      "suppression": 8.000002708286047e-06,
-      "pose_alternatives": 1.68999977177009e-05,
-      "refine_verify": 0.28416850000212435,
-      "total": 0.3676075999974273
+      "worker_index_prepare_sum": 0.0005535999953281134,
+      "suppression": 4.4000043999403715e-06,
+      "pose_alternatives": 6.000002031214535e-06,
+      "refine_verify": 0.31199580000247806,
+      "total": 0.41616700000304263
     }
   },
   "assessment": {
@@ -450,5 +450,15 @@
     "rejection_counts": {
       "geometry": 24
     }
+  },
+  "capture_id": "tless_scene2_frame255",
+  "capture_binding": {
+    "model": "locator_capture_binding_v1",
+    "method": "explicit_input_and_matching_cloud_metadata",
+    "cloud_inputs": [
+      "scene",
+      "depth_scene"
+    ],
+    "scope": "Caller declarations; equality does not prove exposure/robot-time synchronization"
   }
 }

@@ -26,14 +26,18 @@ grasp-label accuracy or physical pick success. Real-data pose verification and
 useful CAD contact proposals need further work; thresholds were not relaxed to
 make the examples pass.
 
-The plugin loads its bundled `opencv-simple-bin-picking` **0.1.0.dev6** wheel,
-without installing or updating the app environment. NumPy and SciPy must already
-be available. The complete wheel SHA-256 is
-`c7c8dfff73fdc27ca2386904503c4d17ca696525bbf8d71344cf1a1bebbbcc30`.
-Opening a project does not load Python code automatically. If an older
-BinPicking package is already imported, restart the app and load this plugin
-first; the loader rejects mixed versions. The original suction block remains
-available and is not replaced by this plugin.
+The plugin loads both bundled wheels without installing or updating the app
+environment. NumPy, SciPy and OpenCV must already be available.
+
+| Package | Version | Wheel SHA-256 |
+| --- | --- | --- |
+| `opencv-simple-bin-picking` | `0.1.0.dev7` | `2920315ef4f57a4f65feefa7f3affa0a23738fd5a29cdb0e5d8187d33739e0e7` |
+| `opencv-simple-3d-locate` | `0.1.0.dev20` | `c124a55e5105c087e1a849ad47d648d9801c4caeaa76ce4e8fcc0f77d846c2f9` |
+
+Opening a project does not load Python code automatically. If a different
+BinPicking or Simple3DLocate package is already imported, restart the app and
+load this plugin first; the loader rejects mixed versions. The original suction
+block remains available and is not replaced by this plugin.
 
 ## Assess the result
 
@@ -86,8 +90,8 @@ raw depth and explicit pose reference, so **Preview reference** works on reopen:
 applied training, Stage editing only the draft, Apply, and retained-reference
 preview after reopen. Existing legacy recipes show CAD/grasps immediately but
 need a supplied pose reference once before they can preview independently.
-Explicit locator-instance adapters, better general real contact proposals,
-symmetry handling and qualified robot handoff remain follow-ups.
+Locator-instance conversion is available below. Better general real contact
+proposals, symmetry handling and qualified robot handoff remain follow-ups.
 
 ## Locator integration and depth diagnostics
 
@@ -97,8 +101,10 @@ and into the jaw planner, using the same measured frame and unchanged recipes.
 The reconstructed locator finds one proposal, which the jaw tool rejects; the
 CAD locator finds none and propagates an empty result. No annotated object pose
 enters these chains. Their supplied visible mask is explicit segmentation
-assistance. Simple3DLocate 0.1.0.dev19 was already installed for these checks;
-only the two composed projects require it.
+assistance. Both use the pinned locator wheel above and require embedded report
+capture IDs. [Capture controls](capture_controls/README.md) demonstrate matching
+metadata and rejection of a conflicting pair before model loading or matching.
+The [capture contract](LOCATOR_CAPTURE.md) explains the declaration's limits.
 
 The converter also checks GDRNPP detection and FoundationPose hypothesis report
 contracts. One FoundationPose mask yields at most one part instance. Raw scores
@@ -110,6 +116,10 @@ Valid empty conversion means no accepted part, not a grasp inspection pass.
 sampled-CAD check with a separate triangle renderer under the same 3 mm tolerance.
 Both still reject the pose-assisted frames. This does not establish a root cause
 or qualify the development renderer; no acceptance/clearance gates were relaxed.
+The [source depth conversion audit](depth_conversion/README.md) independently
+checks per-image intrinsics, declared depth scale and measured cloud rays.
+Conversion agrees within float32 roundoff; physical CAD/depth agreement remains
+unresolved.
 
 ## Verification and reproduction
 
@@ -117,16 +127,21 @@ or qualify the development renderer; no acceptance/clearance gates were relaxed.
 `native-verification.json` records actual offscreen app thumbnail/popout orbit,
 RGB preservation, review without replanning and portable Save As for all ten
 projects. This is software acceptance, not hardware qualification. The bundled
-wheel passed 94 checks against the checkout host, including existing suction
-and mocked simulation checks. All 26 packaged source modules and the MIT notice
-were checked against the source publication, allowing newline normalization.
+BinPicking wheel passed 95 checks against the checkout host, including existing
+suction and mocked simulation checks. The locator wheel passed 25 focused checks
+for capture binding, block execution and separate-depth behavior. All 55 packaged
+source modules and both MIT notices match the source publication after newline
+normalization. Two additional capture controls preserve their outcomes and all
+assets after portable Save As.
 
 From an environment with the app, NumPy, SciPy and OpenCV:
 
 ```powershell
-python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev6-py3-none-any.whl --source tless/source
+python build.py C:\path\to\new-output releases/opencv_simple_bin_picking-0.1.0.dev7-py3-none-any.whl --source tless/source
 python build_native_training.py C:\path\to\new-output C:\path\to\new-output\native_training
 python verify.py C:\path\to\new-output C:\path\to\new-checks
+python build_capture_controls.py . C:\path\to\new-capture-checks --verify-existing
+python audit_depth_conversion.py . C:\path\to\new-conversion-audit
 ```
 
 Add `--native` to `verify.py` with Qt available to exercise native preview

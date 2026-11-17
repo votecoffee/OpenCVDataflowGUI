@@ -115,7 +115,17 @@
         "limit_exceeded": false,
         "applied": true
       },
-      "visible_model_points": 600
+      "visible_model_points": 600,
+      "capture_id": "tless_scene2_frame255",
+      "capture_binding": {
+        "model": "locator_capture_binding_v1",
+        "method": "explicit_input_and_matching_cloud_metadata",
+        "cloud_inputs": [
+          "scene",
+          "depth_scene"
+        ],
+        "scope": "Caller declarations; equality does not prove exposure/robot-time synchronization"
+      }
     }
   ],
   "candidate_count": 61,
@@ -542,20 +552,20 @@
       1010
     ],
     "seconds": {
-      "preprocess": 0.051970900007290766,
-      "candidate_search": 0.022788299989770167,
-      "ppf_search": 0.022596499999053776,
+      "preprocess": 0.061766599988914095,
+      "candidate_search": 0.02628020000702236,
+      "ppf_search": 0.026082500000484288,
       "plane_search": 0.0,
       "feature_search": 0.0,
       "region_search": 0.0,
-      "depth_prepare": 0.03565000000526197,
-      "depth_verify": 0.02234829997178167,
+      "depth_prepare": 0.04091330000665039,
+      "depth_verify": 0.03783030000340659,
       "projective_score_sum": 0.0,
-      "worker_index_prepare_sum": 0.0006962999905226752,
-      "suppression": 0.010020400004577823,
-      "pose_alternatives": 0.00027639999461825937,
-      "refine_verify": 0.2221408000041265,
-      "total": 0.2969003000034718
+      "worker_index_prepare_sum": 0.0011765999952331185,
+      "suppression": 0.009742499998537824,
+      "pose_alternatives": 0.000291000003926456,
+      "refine_verify": 0.25817580000148155,
+      "total": 0.34622289999970235
     }
   },
   "assessment": {
@@ -564,5 +574,15 @@
     "rejection_counts": {
       "geometry": 15
     }
+  },
+  "capture_id": "tless_scene2_frame255",
+  "capture_binding": {
+    "model": "locator_capture_binding_v1",
+    "method": "explicit_input_and_matching_cloud_metadata",
+    "cloud_inputs": [
+      "scene",
+      "depth_scene"
+    ],
+    "scope": "Caller declarations; equality does not prove exposure/robot-time synchronization"
   }
 }

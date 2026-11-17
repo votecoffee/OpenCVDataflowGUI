@@ -1,0 +1,33 @@
+{
+  "capture_id": "different_recorded_acquisition",
+  "part_instances": [],
+  "camera": {
+    "model": "camera_model_v1",
+    "camera_matrix": [
+      [
+        1075.65091572,
+        0.0,
+        370.06888344
+      ],
+      [
+        0.0,
+        1073.90347929,
+        300.72159802
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "image_size": [
+      720,
+      540
+    ],
+    "frame": "camera",
+    "units": "m",
+    "lens": "pinhole",
+    "distortion": []
+  },
+  "scope": "Recorded acquisition identity; no annotation object pose supplied"
+}

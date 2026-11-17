@@ -155,7 +155,7 @@ def build(root, locator_examples, raw_source, output):
                     part_frame=locator_recipe.frame,
                     camera_frame="camera",
                     instance_prefix="tless6",
-                    allow_legacy_capture=True,
+                    allow_legacy_capture=False,
                 ),
                 [850, 100],
             )
@@ -170,8 +170,8 @@ def build(root, locator_examples, raw_source, output):
                 ("capture", "locator_depth", "locate", "depth_scene"),
                 ("locator_camera", "camera", "locate", "camera"),
                 ("locate", "report", "instances", "locator_report"),
+                ("capture", "capture_id", "locate", "capture_id"),
                 ("capture", "capture_id", "instances", "capture_id"),
-                ("capture", "capture_id", "instances", "locator_capture_id"),
                 ("instances", "part_instances", "jaw", "part_instances"),
                 ("capture", "capture_id", "jaw", "capture_id"),
                 ("capture", "camera", "jaw", "camera"),
@@ -217,7 +217,8 @@ def build(root, locator_examples, raw_source, output):
                     source_cloud_sha256=copied,
                     depth_png_sha256=hashlib.sha256(depth_path.read_bytes()).hexdigest(),
                     tested_locator_version=importlib.metadata.version("opencv-simple-3d-locate"),
-                    legacy_capture_binding="Explicit recorded pairing; not a freshness proof",
+                    capture_binding=adapted["capture_binding"],
+                    upstream_capture_binding=adapted["upstream_capture_binding"],
                 )
             )
     write_json(output / "checks.json", receipts)

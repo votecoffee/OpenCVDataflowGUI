@@ -76,7 +76,8 @@
       "exposed_inputs": [
         "scene",
         "camera",
-        "depth_scene"
+        "depth_scene",
+        "capture_id"
       ],
       "exposed_outputs": [
         "poses",
@@ -85,7 +86,8 @@
         "report",
         "aligned_model",
         "fit",
-        "overlay"
+        "overlay",
+        "capture_id"
       ],
       "thumbnail": true,
       "preview_output": "fit"
@@ -98,7 +100,7 @@
         "part_frame": "tless_object6",
         "camera_frame": "camera",
         "instance_prefix": "tless6",
-        "allow_legacy_capture": true
+        "allow_legacy_capture": false
       },
       "position": [
         850,
@@ -180,14 +182,14 @@
     {
       "source": "capture",
       "output": "capture_id",
-      "target": "instances",
+      "target": "locate",
       "input": "capture_id"
     },
     {
       "source": "capture",
       "output": "capture_id",
       "target": "instances",
-      "input": "locator_capture_id"
+      "input": "capture_id"
     },
     {
       "source": "instances",

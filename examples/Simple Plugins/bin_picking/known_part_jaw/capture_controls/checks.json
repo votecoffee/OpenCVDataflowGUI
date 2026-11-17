@@ -1,0 +1,19 @@
+[
+  {
+    "case": "metadata_only",
+    "locator_instances": 1,
+    "capture_id": "tless_scene2_frame255",
+    "method": "matching_cloud_metadata",
+    "strict_adapter": true,
+    "eligible_grasps": 0
+  },
+  {
+    "case": "mismatched_pair",
+    "locator_state": "error",
+    "reason": "ValueError: Scene and depth cloud belong to different captures",
+    "model_not_loaded": true,
+    "matching_not_started": true,
+    "no_current_jaw_result": true,
+    "no_current_pose": true
+  }
+]

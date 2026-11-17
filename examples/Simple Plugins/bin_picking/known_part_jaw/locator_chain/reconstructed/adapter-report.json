@@ -2,7 +2,7 @@
   "model": "simple_part_instances_v1",
   "locator_model": "simple_3d_locate_v1",
   "capture_id": "tless_scene2_frame255",
-  "capture_binding": "explicit_legacy_source_capture_declaration",
+  "capture_binding": "embedded_report_capture_id",
   "source_frame": "tless_object6",
   "target_frame": "camera",
   "units": "m",
@@ -20,5 +20,14 @@
   ],
   "identity_scope": "Current acquisition proposals; generated ranks are not tracking identities",
   "qualification": "Conversion only; jaw contact/current-depth/clearance checks still required",
-  "legacy_scope": "Explicit binding is a caller declaration, not proof of acquisition synchrony"
+  "legacy_scope": "Explicit binding is a caller declaration, not proof of acquisition synchrony",
+  "upstream_capture_binding": {
+    "model": "locator_capture_binding_v1",
+    "method": "explicit_input_and_matching_cloud_metadata",
+    "cloud_inputs": [
+      "scene",
+      "depth_scene"
+    ],
+    "scope": "Caller declarations; equality does not prove exposure/robot-time synchronization"
+  }
 }

@@ -21,8 +21,17 @@
       "scene000002_frame000255_full.ply": "71a7fe93a144e1bd197769de5175deb1fe7320dcdc4237d3cc7f0b408d27652e"
     },
     "depth_png_sha256": "217ea1ce3079186c75dca60a750b1f363e296b7a4dbfea0f60f6ee82706565c6",
-    "tested_locator_version": "0.1.0.dev19",
-    "legacy_capture_binding": "Explicit recorded pairing; not a freshness proof"
+    "tested_locator_version": "0.1.0.dev20",
+    "capture_binding": "embedded_report_capture_id",
+    "upstream_capture_binding": {
+      "model": "locator_capture_binding_v1",
+      "method": "explicit_input_and_matching_cloud_metadata",
+      "cloud_inputs": [
+        "scene",
+        "depth_scene"
+      ],
+      "scope": "Caller declarations; equality does not prove exposure/robot-time synchronization"
+    }
   },
   {
     "case": "cad",
@@ -39,7 +48,16 @@
       "scene000002_frame000255_full.ply": "71a7fe93a144e1bd197769de5175deb1fe7320dcdc4237d3cc7f0b408d27652e"
     },
     "depth_png_sha256": "217ea1ce3079186c75dca60a750b1f363e296b7a4dbfea0f60f6ee82706565c6",
-    "tested_locator_version": "0.1.0.dev19",
-    "legacy_capture_binding": "Explicit recorded pairing; not a freshness proof"
+    "tested_locator_version": "0.1.0.dev20",
+    "capture_binding": "embedded_report_capture_id",
+    "upstream_capture_binding": {
+      "model": "locator_capture_binding_v1",
+      "method": "explicit_input_and_matching_cloud_metadata",
+      "cloud_inputs": [
+        "scene",
+        "depth_scene"
+      ],
+      "scope": "Caller declarations; equality does not prove exposure/robot-time synchronization"
+    }
   }
 ]

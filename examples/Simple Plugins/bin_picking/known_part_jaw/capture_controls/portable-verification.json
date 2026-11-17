@@ -1,0 +1,38 @@
+[
+  {
+    "case": "metadata_only",
+    "locator_instances": 1,
+    "capture_id": "tless_scene2_frame255",
+    "method": "matching_cloud_metadata",
+    "strict_adapter": true,
+    "eligible_grasps": 0,
+    "portable_save_as_exact": true,
+    "assets_sha256": {
+      "depth.npy": "2f9a66f927782d833e2a8e10948e69e4fd79eec41f393843eed089f40669f49f",
+      "full.ply": "71a7fe93a144e1bd197769de5175deb1fe7320dcdc4237d3cc7f0b408d27652e",
+      "isolated.ply": "3f07540657aa310ba36ed1d833056439d0a14715a85aa1c8dfa3ec73f4fdc82b",
+      "jaw.sbpj": "6a2e18ac48a0bca67112b6d4339751e6a526831904c413164b538224f6ce3a9c",
+      "locator.s3l": "c9bb37916098f573065822e5e0d604700c7b8bd0056a9be68b5c1dd8a64f2154",
+      "records.json": "0eaf410e7f079ff10d621e80c7c559cd5aa0f71bd5a321ed02735a072ca36651"
+    }
+  },
+  {
+    "case": "mismatched_pair",
+    "locator_state": "error",
+    "reason": "ValueError: Scene and depth cloud belong to different captures",
+    "model_not_loaded": true,
+    "matching_not_started": true,
+    "no_current_jaw_result": true,
+    "no_current_pose": true,
+    "portable_save_as_exact": true,
+    "assets_sha256": {
+      "depth.npy": "2f9a66f927782d833e2a8e10948e69e4fd79eec41f393843eed089f40669f49f",
+      "full.ply": "71a7fe93a144e1bd197769de5175deb1fe7320dcdc4237d3cc7f0b408d27652e",
+      "isolated.ply": "3f07540657aa310ba36ed1d833056439d0a14715a85aa1c8dfa3ec73f4fdc82b",
+      "jaw.sbpj": "6a2e18ac48a0bca67112b6d4339751e6a526831904c413164b538224f6ce3a9c",
+      "locator.s3l": "c9bb37916098f573065822e5e0d604700c7b8bd0056a9be68b5c1dd8a64f2154",
+      "other_capture.json": "c7f0fb82d083437bd2a77b3d44579d2bbca94792af624a256e8be81225455b87",
+      "records.json": "0eaf410e7f079ff10d621e80c7c559cd5aa0f71bd5a321ed02735a072ca36651"
+    }
+  }
+]

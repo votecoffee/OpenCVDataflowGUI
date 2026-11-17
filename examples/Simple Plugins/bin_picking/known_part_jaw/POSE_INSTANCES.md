@@ -37,7 +37,9 @@ the acquisition that actually supplied the locator's scene. That declaration
 must equal the current depth capture ID. The result report explicitly labels
 this weaker binding. Merely wiring a new capture ID beside an unrelated retained
 report does not establish freshness. Prefer provider-native capture metadata
-when available; adding it to Simple3DLocate is a follow-up.
+when available. Simple3DLocate `0.1.0.dev20` now validates and emits its optional
+capture input/scene-depth cloud IDs. Its bound reports use the normal strict
+adapter path, and `0.1.0.dev7` preserves their binding-method details.
 
 ## Labels and empty results
 

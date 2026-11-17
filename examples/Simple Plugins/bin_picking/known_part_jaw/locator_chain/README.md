@@ -6,9 +6,9 @@ not supply annotated object poses. A publisher-provided visible instance mask
 supplies the isolated locator scene; this is assisted segmentation, not an
 independent instance detector.
 
-Load the parent `plugin.py`, with Simple3DLocate installed. Tested against
-`opencv-simple-3d-locate 0.1.0.dev19` in the existing app environment; this plugin
-does not install or replace the locator package.
+Load the parent `plugin.py` first. It loads pinned Simple3DLocate `0.1.0.dev20`
+and BinPicking `0.1.0.dev7` wheels without modifying the app environment. Restart
+if a different package version is already imported.
 
 | Project | Locator matches | Converted instances | Eligible jaw alternatives |
 | --- | --- | --- | --- |
@@ -28,11 +28,17 @@ translation units to m without shifting the original model origin. The jaw
 recipe uses the same original T-LESS object-6 frame, with a supplied camera/world
 calibration. Camera/world calibration is separate from object localization.
 
-Legacy locator reports have no embedded acquisition ID. The graph explicitly
-declares their recorded source identity, and the adapter report identifies that
-weaker binding. This is not an automatic freshness or synchronization proof.
-For a live application, bind the actual acquisition that supplied the locator,
-not an unrelated retained report beside a new depth ID.
+Both cloud metadata records and the explicit locator input declare the same
+capture ID. The locator validates them before loading the model or matching and
+propagates the declaration into reports, poses and fit clouds. The converter
+requires that embedded ID, with legacy binding disabled. Equal caller declarations
+do not prove exposure or robot-time synchronization. Bind the actual acquisition
+that supplied the locator in a live application.
+
+`capture-upgrade.json` records unchanged input/recipe bytes, locator geometry and
+exact jaw outcomes across the metadata upgrade. The separate
+[capture controls](../capture_controls/README.md) exercise metadata-only binding
+and a deliberately mismatched pair. [Contract](../LOCATOR_CAPTURE.md).
 
 Select the locator's **Cloud / fit** or the jaw tool's **Cloud / graphics** for
 native RGB fly-around review. All raw candidates and conversion decisions stay

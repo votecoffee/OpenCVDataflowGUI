@@ -1,0 +1,63 @@
+{
+  "model": "recorded_depth_conversion_audit_v1",
+  "cases": [
+    {
+      "frame": 3,
+      "source_size": [
+        720,
+        540
+      ],
+      "depth_scale_mm_per_sample": 0.1,
+      "per_image_intrinsics_exact": true,
+      "missing_pixels_unchanged": true,
+      "stored_depth_exact_declared_float32_conversion": true,
+      "maximum_float32_depth_roundoff_m": 2.9659271150173083e-08,
+      "raw_depth_sha256": "9540ddfbc5eb52c705b0599743602f401d9490ad1334c59d34364c674712f275",
+      "stored_depth_sha256": "b5de47402176d46303bd6c3bb3aa7cf179270ff5b2ebcf592d551f5d2bfe364d"
+    },
+    {
+      "frame": 13,
+      "source_size": [
+        720,
+        540
+      ],
+      "depth_scale_mm_per_sample": 0.1,
+      "per_image_intrinsics_exact": true,
+      "missing_pixels_unchanged": true,
+      "stored_depth_exact_declared_float32_conversion": true,
+      "maximum_float32_depth_roundoff_m": 2.9659271150173083e-08,
+      "raw_depth_sha256": "a14fed87d6dd90bcf3da9153a3100a81322634853e47278714f21e685cde34d5",
+      "stored_depth_sha256": "7b2b7f60e2fc4a0b162cfb58d9bc9bd8fe26b42cec43e0451addba57e7e55161"
+    },
+    {
+      "frame": 255,
+      "source_size": [
+        720,
+        540
+      ],
+      "depth_scale_mm_per_sample": 0.1,
+      "per_image_intrinsics_exact": true,
+      "missing_pixels_unchanged": true,
+      "stored_depth_exact_declared_float32_conversion": true,
+      "maximum_float32_depth_roundoff_m": 1.1863708504478154e-07,
+      "raw_depth_sha256": "217ea1ce3079186c75dca60a750b1f363e296b7a4dbfea0f60f6ee82706565c6",
+      "stored_depth_sha256": "2f9a66f927782d833e2a8e10948e69e4fd79eec41f393843eed089f40669f49f",
+      "full_cloud": {
+        "measured_points": 382539,
+        "valid_source_rays": 382539,
+        "maximum_xyz_roundoff_mm": [
+          3.0502678441735043e-05,
+          3.0439849297181354e-05,
+          9.765625009094947e-05
+        ],
+        "maximum_reprojection_roundoff_pixels": 3.244365760757262e-05,
+        "source_ray_backprojection_within_float32_roundoff": true,
+        "sha256": "71a7fe93a144e1bd197769de5175deb1fe7320dcdc4237d3cc7f0b408d27652e"
+      }
+    }
+  ],
+  "format_source": "https://github.com/thodan/bop_toolkit/blob/master/docs/bop_datasets_format.md",
+  "scope": "Declared-input conversion only; not physical calibration or CAD/pose accuracy",
+  "conclusion": "Conversions match declarations; CAD/depth disagreement remains unresolved",
+  "no_acceptance_or_clearance_threshold_changed": true
+}

@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.simple_jaw_example",
+      "name": "Recorded metric depth / explicit acquisition ID",
+      "parameters": {
+        "depth_path": "assets/depth.npy",
+        "records_path": "assets/records.json",
+        "locator_scene_path": "assets/isolated.ply",
+        "locator_depth_path": "assets/full.ply"
+      },
+      "position": [
+        0,
+        550
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "part_instances",
+        "camera",
+        "capture_id",
+        "locator_scene",
+        "locator_depth",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "locator_camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 1075.65091572,
+        "fy": 1073.90347929,
+        "cx": 370.06888344,
+        "cy": 300.72159802,
+        "width": 720,
+        "height": 540,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        400
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "locate",
+      "type": "3d.simple_locate",
+      "name": "Simple3DLocate",
+      "parameters": {
+        "recipe_path": "assets/locator.s3l",
+        "sha256": "c9bb37916098f573065822e5e0d604700c7b8bd0056a9be68b5c1dd8a64f2154",
+        "render_overlay": false
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "scene",
+        "camera",
+        "depth_scene",
+        "capture_id"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "pose",
+        "count",
+        "report",
+        "aligned_model",
+        "fit",
+        "overlay",
+        "capture_id"
+      ],
+      "thumbnail": true,
+      "preview_output": "fit"
+    },
+    {
+      "id": "instances",
+      "type": "3d.simple_part_instances",
+      "name": "Simple locator \u2192 part instances",
+      "parameters": {
+        "part_frame": "tless_object6",
+        "camera_frame": "camera",
+        "instance_prefix": "tless6",
+        "allow_legacy_capture": false
+      },
+      "position": [
+        850,
+        100
+      ],
+      "exposed_inputs": [
+        "locator_report",
+        "capture_id",
+        "locator_capture_id",
+        "label_ids"
+      ],
+      "exposed_outputs": [
+        "part_instances",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "jaw",
+      "type": "3d.simple_bin_picking_jaw",
+      "name": "SimpleBinPicking Jaw",
+      "parameters": {
+        "recipe_path": "assets/jaw.sbpj",
+        "sha256": "6a2e18ac48a0bca67112b6d4339751e6a526831904c413164b538224f6ce3a9c",
+        "render_graphics": true
+      },
+      "position": [
+        1250,
+        100
+      ],
+      "exposed_inputs": [
+        "depth",
+        "part_instances",
+        "capture_id",
+        "camera",
+        "bin_pose",
+        "instances"
+      ],
+      "exposed_outputs": [
+        "picks",
+        "candidates",
+        "report",
+        "count",
+        "tcp",
+        "pregrasp",
+        "graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "graphics"
+    },
+    {
+      "id": "other_capture",
+      "type": "input.simple_jaw_example",
+      "name": "Recorded depth + supplied part poses",
+      "parameters": {
+        "depth_path": "assets/depth.npy",
+        "records_path": "assets/other_capture.json",
+        "locator_scene_path": "",
+        "locator_depth_path": "assets/full.ply"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "part_instances",
+        "camera",
+        "capture_id",
+        "locator_scene",
+        "locator_depth",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "locator_scene",
+      "target": "locate",
+      "input": "scene"
+    },
+    {
+      "source": "locator_camera",
+      "output": "camera",
+      "target": "locate",
+      "input": "camera"
+    },
+    {
+      "source": "locate",
+      "output": "report",
+      "target": "instances",
+      "input": "locator_report"
+    },
+    {
+      "source": "capture",
+      "output": "capture_id",
+      "target": "instances",
+      "input": "capture_id"
+    },
+    {
+      "source": "instances",
+      "output": "part_instances",
+      "target": "jaw",
+      "input": "part_instances"
+    },
+    {
+      "source": "capture",
+      "output": "capture_id",
+      "target": "jaw",
+      "input": "capture_id"
+    },
+    {
+      "source": "capture",
+      "output": "camera",
+      "target": "jaw",
+      "input": "camera"
+    },
+    {
+      "source": "capture",
+      "output": "depth",
+      "target": "jaw",
+      "input": "depth"
+    },
+    {
+      "source": "other_capture",
+      "output": "locator_depth",
+      "target": "locate",
+      "input": "depth_scene"
+    }
+  ]
+}

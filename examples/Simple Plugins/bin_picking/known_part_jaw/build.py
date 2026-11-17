@@ -275,10 +275,15 @@ def tless(source, output, registry):
     return reports
 
 
-def build(output, wheel, source=None):
+def build(output, wheel, source=None, locator_wheel=None):
     output.mkdir(parents=True, exist_ok=False)
     (output / "releases").mkdir()
     shutil.copy2(wheel, output / "releases" / wheel.name)
+    if locator_wheel is None:
+        locator_wheel = Path(__file__).with_name("releases") / (
+            "opencv_simple_3d_locate-0.1.0.dev20-py3-none-any.whl"
+        )
+    shutil.copy2(locator_wheel, output / "releases" / locator_wheel.name)
     shutil.copy2(Path(__file__).with_name("plugin.py"), output / "plugin.py")
     registry = builtin_registry()
     load_plugin(output / "plugin.py", registry)
@@ -306,5 +311,6 @@ if __name__ == "__main__":
     parser.add_argument("output", type=Path)
     parser.add_argument("wheel", type=Path)
     parser.add_argument("--source", type=Path)
+    parser.add_argument("--locator-wheel", type=Path)
     args = parser.parse_args()
-    build(args.output, args.wheel, args.source)
+    build(args.output, args.wheel, args.source, args.locator_wheel)

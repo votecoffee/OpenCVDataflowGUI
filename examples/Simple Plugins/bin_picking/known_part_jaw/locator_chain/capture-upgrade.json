@@ -1,0 +1,16 @@
+[
+  {
+    "case": "reconstructed",
+    "jaw_report_exact": true,
+    "assets_byte_exact": true,
+    "locator_geometry_report_exact_excluding_timing": true,
+    "legacy_binding_disabled": true
+  },
+  {
+    "case": "cad",
+    "jaw_report_exact": true,
+    "assets_byte_exact": true,
+    "locator_geometry_report_exact_excluding_timing": true,
+    "legacy_binding_disabled": true
+  }
+]

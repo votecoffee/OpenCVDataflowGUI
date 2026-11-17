@@ -6,38 +6,51 @@ from pathlib import Path
 
 WHEEL = (
     Path(__file__).resolve().parent
-    / "releases/opencv_simple_bin_picking-0.1.0.dev6-py3-none-any.whl"
+    / "releases/opencv_simple_bin_picking-0.1.0.dev7-py3-none-any.whl"
 )
-EXPECTED = "c7c8dfff73fdc27ca2386904503c4d17ca696525bbf8d71344cf1a1bebbbcc30"
+EXPECTED = "2920315ef4f57a4f65feefa7f3affa0a23738fd5a29cdb0e5d8187d33739e0e7"
+LOCATE_WHEEL = (
+    Path(__file__).resolve().parent
+    / "releases/opencv_simple_3d_locate-0.1.0.dev20-py3-none-any.whl"
+)
+LOCATE_EXPECTED = "c124a55e5105c087e1a849ad47d648d9801c4caeaa76ce4e8fcc0f77d846c2f9"
 
 
-def checked(path):
-    return (
-        path.is_file()
-        and path.stat().st_size <= 2 * 1024 * 1024
-        and hashlib.sha256(path.read_bytes()).hexdigest() == EXPECTED
-    )
+def pinned(module_name, wheel, expected):
+    import importlib
+
+    def checked(path):
+        return (
+            path.is_file()
+            and path.stat().st_size <= 2 * 1024 * 1024
+            and hashlib.sha256(path.read_bytes()).hexdigest() == expected
+        )
+
+    if not checked(wheel):
+        raise RuntimeError(f"Bundled {module_name} wheel checksum or size differs")
+    if str(wheel) not in sys.path:
+        sys.path.insert(0, str(wheel))
+    module = importlib.import_module(module_name)
+    origin = str(module.__file__)
+    if not origin.startswith(str(wheel)):
+        end = origin.lower().rfind(".whl")
+        loaded = Path(origin[: end + 4]) if end >= 0 else None
+        if loaded is None or not checked(loaded):
+            raise RuntimeError(
+                f"Another {module_name} version is loaded; restart and load this plugin"
+            )
+    return module
 
 
-if not checked(WHEEL):
-    raise RuntimeError("Bundled jaw wheel checksum or size differs")
-if str(WHEEL) not in sys.path:
-    sys.path.insert(0, str(WHEEL))
-
-import opencv_simple_bin_picking  # noqa: E402
-
-origin = str(opencv_simple_bin_picking.__file__)
-if not origin.startswith(str(WHEEL)):
-    end = origin.lower().rfind(".whl")
-    loaded = Path(origin[: end + 4]) if end >= 0 else None
-    if loaded is None or not checked(loaded):
-        raise RuntimeError("Another BinPicking version is loaded; restart and load this plugin")
+pinned("opencv_simple_bin_picking", WHEEL, EXPECTED)
+pinned("opencv_simple_3d_locate", LOCATE_WHEEL, LOCATE_EXPECTED)
 
 from opencv_dataflow.cloud_io import read_cloud  # noqa: E402
 from opencv_dataflow.core import Block, Port, Result  # noqa: E402
 from opencv_dataflow.images import DepthArray  # noqa: E402
 from opencv_dataflow.payloads import NO_VALUE, frame  # noqa: E402
 from opencv_dataflow.pointclouds import PointCloud  # noqa: E402
+from opencv_simple_3d_locate.dataflow import Simple3DLocate  # noqa: E402
 
 from opencv_simple_bin_picking.jaw_cli import read_json, read_numeric  # noqa: E402
 from opencv_simple_bin_picking.jaw_dataflow import SimpleBinPickingJaw  # noqa: E402
@@ -131,6 +144,9 @@ class RecordedJawExample(Block):
 
 
 def register(registry):
-    registry.register(SimpleBinPickingJaw)
-    registry.register(SimplePartInstances)
-    registry.register(RecordedJawExample)
+    for block in (Simple3DLocate, SimpleBinPickingJaw, SimplePartInstances, RecordedJawExample):
+        previous = registry.types.get(block.type_id)
+        if previous is None:
+            registry.register(block)
+        elif previous is not block:
+            raise RuntimeError(f"Another {block.type_id} is registered; restart before loading")
