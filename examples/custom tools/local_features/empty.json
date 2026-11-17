@@ -1,0 +1,437 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/feature_heads.onnx",
+        "width": 200,
+        "height": 160,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "keypoints",
+          "descriptors",
+          "scores"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_pack",
+      "type": "ml.pack_superpoint_features",
+      "name": "Pack SuperPoint feature tensors",
+      "parameters": {
+        "points_output": "keypoints",
+        "descriptors_output": "descriptors",
+        "scores_output": "scores",
+        "descriptor_layout": "rows",
+        "coordinate_units": "network_pixels",
+        "coordinate_origin": "pixel_centers",
+        "minimum_score": 1.0,
+        "normalize_descriptors": true,
+        "minimum_count": 0,
+        "maximum_features": 1024,
+        "maximum_tensor_elements": 2000000,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_features": 256
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "tensors",
+        "preprocessing",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "indices",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        430
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/feature_heads.onnx",
+        "width": 200,
+        "height": 160,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "query_keypoints",
+          "descriptors",
+          "scores"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        360,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_pack",
+      "type": "ml.pack_superpoint_features",
+      "name": "Pack SuperPoint feature tensors",
+      "parameters": {
+        "points_output": "query_keypoints",
+        "descriptors_output": "descriptors",
+        "scores_output": "scores",
+        "descriptor_layout": "rows",
+        "coordinate_units": "network_pixels",
+        "coordinate_origin": "pixel_centers",
+        "minimum_score": 1.0,
+        "normalize_descriptors": true,
+        "minimum_count": 0,
+        "maximum_features": 1024,
+        "maximum_tensor_elements": 2000000,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_features": 256
+      },
+      "position": [
+        720,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "tensors",
+        "preprocessing",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "indices",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "ml.lightglue_superpoint",
+      "name": "LightGlue SuperPoint feature matcher",
+      "parameters": {
+        "weights_path": "../../../.local/models/superpoint_lightglue.pth",
+        "device": "cpu",
+        "layers": 9,
+        "filter_threshold": 0.1,
+        "depth_confidence": 0.95,
+        "width_confidence": 0.99,
+        "flash": true,
+        "mixed_precision": false,
+        "minimum_matches": 4,
+        "minimum_inliers": 4,
+        "minimum_inlier_ratio": 0.5,
+        "geometry": "ransac",
+        "ransac_threshold": 3.0,
+        "ransac_confidence": 0.995,
+        "ransac_iterations": 2000,
+        "weights_sha256": "6ff7040d0a497fc6639337946d7538dae07428c18f77a067a0b5a960e7cc551a",
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        1100,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "query_features",
+        "reference_features"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "transform",
+        "pose",
+        "count",
+        "inliers",
+        "overlay",
+        "image",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1460,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1820,
+        430
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Local-feature contract controls",
+      "description": "Original MIT texture pair, prescribed random keypoints/descriptors and ONNX arithmetic by OpenCVDataflowGUI contributors. Expected translation +8,+6 pixels. These heads are NOT SuperPoint detection and do not qualify detector accuracy. Matcher: Lindenberger, Sarlin and Pollefeys, LightGlue (ICCV 2023), Apache-2.0, downloaded separately. SuperPoint detector/code/weights have separate restrictive terms and are not included. See README for sources and scope. Empty/minimum_matches intentionally fail.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_infer",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_pack",
+      "input": "image"
+    },
+    {
+      "source": "reference_infer",
+      "output": "tensors",
+      "target": "reference_pack",
+      "input": "tensors"
+    },
+    {
+      "source": "reference_infer",
+      "output": "preprocessing",
+      "target": "reference_pack",
+      "input": "preprocessing"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_infer",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_pack",
+      "input": "image"
+    },
+    {
+      "source": "query_infer",
+      "output": "tensors",
+      "target": "query_pack",
+      "input": "tensors"
+    },
+    {
+      "source": "query_infer",
+      "output": "preprocessing",
+      "target": "query_pack",
+      "input": "preprocessing"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "match",
+      "input": "image"
+    },
+    {
+      "source": "query_pack",
+      "output": "features",
+      "target": "match",
+      "input": "query_features"
+    },
+    {
+      "source": "reference_pack",
+      "output": "features",
+      "target": "match",
+      "input": "reference_features"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "match",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

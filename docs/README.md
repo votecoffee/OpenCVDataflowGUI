@@ -67,6 +67,7 @@
 | Judgments, reasons and ticket histories | [Ticket results](ticket-results.md) |
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |
 | ML/DNN and optional dependencies | [ML](ml.md) |
+| Explicit external SuperPoint tensors, learned matching and extraction limits | [Local features](local-features.md) |
 | Object detection heads, class-aware NMS and source box geometry | [DNN detection](object-detection.md) |
 | Oriented heads, rotated overlap and exact affine source poses | [Rotated detection](rotated-detection.md) |
 | Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |

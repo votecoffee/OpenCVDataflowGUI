@@ -161,9 +161,13 @@ and [twelve original image-dependent controls](<../examples/opencv tools/landmar
 
 ## LightGlue reference matching
 
-This initial adapter uses OpenCV SIFT/RootSIFT descriptors with the official learned
-SIFT LightGlue matcher. It does not pass ORB descriptors to a model trained for a
-different descriptor family. SuperPoint, DISK and ALIKED adapters are future scope.
+The original adapter uses OpenCV SIFT/RootSIFT descriptors with the matching
+learned SIFT checkpoint. A [separate external SuperPoint feature path](local-features.md)
+packs declared 256-value descriptors and uses SuperPoint-trained LightGlue weights.
+Its real detector/extractor qualification remains open; SIFT/ORB records cannot
+substitute for that descriptor family. DISK and ALIKED extraction remain future scope.
+The explicit `prepare_ml_assets.py --superpoint-matcher` option prepares only the
+Apache-2.0 matcher, with a pinned SHA-256; no SuperPoint detector is downloaded.
 
 **LightGlue SIFT features** captures a portable reference feature model containing
 keypoints, RootSIFT descriptors, scales, orientations and coordinate context. It

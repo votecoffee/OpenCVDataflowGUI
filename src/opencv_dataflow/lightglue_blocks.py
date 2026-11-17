@@ -148,6 +148,20 @@ class LightGlueMatch(Block):
     input_help = {
         "reference_features": "Use cached SIFT reference features instead of a reference image.",
     }
+    descriptor_dimension, add_scale_orientation, feature_family = 128, True, "SIFT"
+
+    def extract_features(self, inputs):
+        return sift_features(inputs, self.parameters)
+
+    def feature_arrays(self, features):
+        points, descriptors, scales, oris = validate_features(features)
+        return {
+            "keypoints": points,
+            "descriptors": descriptors,
+            "scales": scales,
+            "oris": oris,
+            "image_size": np.asarray(features["image_size"], np.float32),
+        }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -199,8 +213,8 @@ class LightGlueMatch(Block):
         matcher = LightGlue(
             features=None,
             weights=None,
-            input_dim=128,
-            add_scale_ori=True,
+            input_dim=self.descriptor_dimension,
+            add_scale_ori=self.add_scale_orientation,
             n_layers=layers,
             filter_threshold=threshold,
             depth_confidence=p["depth_confidence"],
@@ -221,7 +235,9 @@ class LightGlueMatch(Block):
         expected = matcher.state_dict()
         missing = set(expected) - renamed.keys() - {"confidence_thresholds"}
         if missing:
-            raise ValueError("Checkpoint is incompatible with SIFT LightGlue weights")
+            raise ValueError(
+                f"Checkpoint is incompatible with {self.feature_family} LightGlue weights"
+            )
         matcher.load_state_dict({k: renamed[k] for k in expected if k in renamed}, strict=False)
         self._matcher = matcher.eval().to(device)
         self._torch, self._device, self._key = torch, device, key
@@ -231,14 +247,7 @@ class LightGlueMatch(Block):
         torch = self._torch
 
         def to_torch(features):
-            points, descriptors, scales, oris = validate_features(features)
-            data = {
-                "keypoints": points,
-                "descriptors": descriptors,
-                "scales": scales,
-                "oris": oris,
-                "image_size": np.asarray(features["image_size"], np.float32),
-            }
+            data = self.feature_arrays(features)
             return {
                 k: torch.from_numpy(np.ascontiguousarray(v))[None].to(self._device)
                 for k, v in data.items()
@@ -253,11 +262,11 @@ class LightGlueMatch(Block):
 
     def process(self, inputs):
         p = self.parameters
-        query = sift_features(inputs, p)
+        query = self.extract_features(inputs)
         if "reference_features" in inputs:
             reference = inputs["reference_features"]
         elif "reference" in inputs:
-            reference = sift_features(
+            reference = self.extract_features(
                 {
                     "image": inputs["reference"],
                     **{
@@ -266,12 +275,11 @@ class LightGlueMatch(Block):
                         if f"reference_{k}" in inputs
                     },
                 },
-                p,
             )
         else:
             raise ValueError("Connect a reference image or cached reference features")
-        points0, *_ = validate_features(reference)
-        points1, *_ = validate_features(query)
+        points0 = self.feature_arrays(reference)["keypoints"]
+        points1 = self.feature_arrays(query)["keypoints"]
         min_matches = integer(p["minimum_matches"], "Minimum matches", 4, 4096)
         min_inliers = integer(p["minimum_inliers"], "Minimum inliers", 4, 4096)
         min_ratio = finite(p["minimum_inlier_ratio"], "Minimum inlier ratio", 0)
@@ -308,15 +316,16 @@ class LightGlueMatch(Block):
             and good >= min_inliers
             and ratio >= min_ratio
         )
-        overlay = overlay_image(inputs["image"])
-        for point, accepted in zip(target, inliers):
-            cv2.circle(
-                overlay,
-                tuple(np.rint(point).astype(int)),
-                3,
-                (70, 220, 100) if accepted else (40, 70, 230),
-                1,
-            )
+        overlay = overlay_image(inputs["image"]) if self.generate_graphics else inputs["image"]
+        if self.generate_graphics:
+            for point, accepted in zip(target, inliers):
+                cv2.circle(
+                    overlay,
+                    tuple(np.rint(point).astype(int)),
+                    3,
+                    (70, 220, 100) if accepted else (40, 70, 230),
+                    1,
+                )
         pose, transform = NO_VALUE, NO_VALUE
         if passed:
             try:

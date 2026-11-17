@@ -733,6 +733,7 @@ def builtin_registry():
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
     from .local_binary_patterns import LocalBinaryPatterns
+    from .local_features import LOCAL_FEATURE_BLOCKS
     from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
     from .logpolar_registration import LogPolarRegistration
@@ -1173,6 +1174,7 @@ def builtin_registry():
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *LIGHTGLUE_BLOCKS,
+        *LOCAL_FEATURE_BLOCKS,
         *GEOMETRY3D_BLOCKS,
         CheckEpipolarCorrespondences,
         *STEREO3D_BLOCKS,

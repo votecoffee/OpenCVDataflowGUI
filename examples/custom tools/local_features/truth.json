@@ -1,0 +1,67 @@
+{
+  "license": "MIT - original contract controls, not a SuperPoint detector",
+  "cases": {
+    "pack_only": {
+      "passed": true,
+      "matcher": false,
+      "translation": [
+        8,
+        6
+      ]
+    },
+    "translation": {
+      "passed": true,
+      "matcher": true,
+      "translation": [
+        8,
+        6
+      ]
+    },
+    "masked": {
+      "passed": true,
+      "matcher": true,
+      "translation": [
+        8,
+        6
+      ]
+    },
+    "score_filter": {
+      "passed": true,
+      "matcher": true,
+      "translation": [
+        8,
+        6
+      ]
+    },
+    "empty": {
+      "passed": false,
+      "matcher": true,
+      "translation": [
+        8,
+        6
+      ]
+    },
+    "minimum_matches": {
+      "passed": false,
+      "matcher": true,
+      "translation": [
+        8,
+        6
+      ]
+    },
+    "comparison": {
+      "passed": true,
+      "matcher": true,
+      "translation": [
+        8,
+        6
+      ]
+    }
+  },
+  "matcher_sha256": "6ff7040d0a497fc6639337946d7538dae07428c18f77a067a0b5a960e7cc551a",
+  "asset_sha256": {
+    "feature_heads.onnx": "00c9a025223d322adba3b7f488d403f5f366a1f0c82b81f0d8dbdb0a2e1a987f",
+    "reference.png": "a67762d5611fe9bfe396f42fba85311f62230627cd6573213de6869ec53d8201",
+    "query.png": "f14d98baa06acd54cdacf3024bfdd2d18fd0dd320c37207f7ae619d0018e49cf"
+  }
+}

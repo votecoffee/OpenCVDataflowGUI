@@ -8907,6 +8907,39 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `edge_threshold` | `10.0` |  |
 | `sigma` | `1.6` |  |
 
+## LightGlue SuperPoint feature matcher (`ml.lightglue_superpoint`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `query_features` (data), `reference_features` (data).
+
+Input `image` — Current query image for source coordinates, unchanged output and diagnostics.
+
+Input `query_features` — Current-image packed SuperPoint descriptors, not SIFT/ORB.
+
+Input `reference_features` — Packed reference descriptors; may use another acquisition ticket.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `weights_path` | `""` | Local superpoint_lightglue.pth matcher; no automatic download. |
+| `device` | `"cpu"` | `cpu`, `cuda`, `auto` CPU, explicitly requested CUDA, or Auto; no unavailable CUDA fallback. |
+| `layers` | `9` | Value must be a whole number between 1 and 9. 1..9 pretrained layers; fewer layers trade accuracy for latency. |
+| `filter_threshold` | `0.1` | Value must be a finite number between 0 and 1. Learned match confidence threshold in [0,1]. |
+| `depth_confidence` | `0.95` | Early stopping confidence, or -1 to disable. |
+| `width_confidence` | `0.99` | Point pruning confidence, or -1 to disable. |
+| `flash` | `true` | Use the upstream attention acceleration when available. |
+| `mixed_precision` | `false` | CUDA mixed precision; CPU requires this disabled. |
+| `minimum_matches` | `8` | Value must be a whole number between 4 and 4096. Minimum learned correspondences for a passing geometric fit. |
+| `minimum_inliers` | `6` | Value must be a whole number between 4 and 4096. Minimum geometric inliers for a passing fit. |
+| `minimum_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. Required inlier fraction among learned matches. |
+| `geometry` | `"ransac"` | `ransac`, `lmeds`, `rho` Native robust homography method; one planar registration only. |
+| `ransac_threshold` | `3.0` | Value must be a finite number between 0.0001 and 1e+06. Geometric reprojection threshold in query source pixels. |
+| `ransac_confidence` | `0.995` | Value must be a finite number between 0.0001 and 0.999999. Robust-fit confidence, strictly below one. |
+| `ransac_iterations` | `2000` | Value must be a whole number between 1 and 100000. Maximum native robust-fit iterations. |
+| `weights_sha256` | `""` | Optional 64-character SHA-256 for the local matcher checkpoint. |
+| `maximum_features` | `1024` | Value must be a whole number between 4 and 4096. Bound each descriptor set before learned attention; no truncation. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound current query image pixels before diagnostics. |
+
 ## Create float32 tensor (`ml.make_tensor`)
 
 ML / Tensor preparation
@@ -8937,6 +8970,38 @@ Input `tensors` — One inference activation's boxes/scores/classes and optional
 | `output_name` | `"packed_boxes"` | New [1,N,6] XYXY/score/class head; retain original heads. |
 | `maximum_rows` | `10000` | Value must be a whole number between 1 and 100000. Reject more boxes before packing. |
 | `maximum_total_elements` | `8000000` | Value must be a whole number between 1 and 8e+06. Bound original heads plus the packed head before copying. |
+
+## Pack SuperPoint feature tensors (`ml.pack_superpoint_features`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `tensors` (data), `preprocessing` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original source image, retained with its depth, format and current ticket.
+
+Input `tensors` — Explicit exported SuperPoint heads; this block does not run a detector.
+
+Input `preprocessing` — Matching inference resize/letterbox inverse and source/network sizes.
+
+Input `mask` — Optional source-grid selection; a connected missing event prevents work.
+
+Input `region` — Optional source-grid shape intersected with Mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `points_output` | `"keypoints"` | Named float32 [K,2] XY tensor, optionally preceded by image batch one. |
+| `descriptors_output` | `"descriptors"` | Named float32 [K,256] or [256,K] tensor, optional image batch one. |
+| `scores_output` | `"scores"` | Float32 [K] or [1,K] probabilities; blank explicitly uses score one. |
+| `descriptor_layout` | `"rows"` | `rows`, `channels_first` Descriptor rows or channels first; never inferred from dimensions. |
+| `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Network pixels or fractions multiplied by full network dimensions. |
+| `coordinate_origin` | `"pixel_centers"` | `pixel_centers`, `pixel_edges` Direct XY denote integer-origin centers or continuous pixel edges. |
+| `minimum_score` | `0.0` | Value must be a finite number between 0 and 1. Keep scores >= this threshold, then source/ROI filtering. |
+| `normalize_descriptors` | `true` | L2-normalize nonzero rows; otherwise verify existing unit norms. |
+| `minimum_count` | `4` | Value must be a whole number between 0 and 4096. Fewest retained features required for a normal inspection pass. |
+| `maximum_features` | `1024` | Value must be a whole number between 1 and 4096. Bound raw rows before filtering; never truncate correspondences. |
+| `maximum_tensor_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Bound each serialized head before conversion. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound source pixels; source axes are limited to 16384. |
+| `graphics_maximum_features` | `256` | Value must be a whole number between 1 and 4096. Bound optional markers without changing numeric results. |
 
 ## Recognize text (CTC ONNX) (`ml.recognize_text`)
 

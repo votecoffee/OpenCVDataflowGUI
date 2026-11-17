@@ -95,7 +95,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimpleFringeScan setup and execution](<Simple Plugins/fringe_scan/README.md>) | Retained native setup, references, ROI and known calibration; three one-block metric/phase execution examples with explicit expected availability judgments and source attribution. |
 | [SimpleDeflectometry initial reviews](<Simple Plugins/deflectometry/README.md>) | Four file-only phase/change reviews, including an attributed CC BY-SA SOFAST camera self-comparison; optional standalone replay is documented separately. |
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
-| [SimpleFoundationPose CPU execution (experimental)](<Simple Plugins/foundation_pose/WORKER_WORKFLOW.md>) | Supplied-mask, single-instance T-LESS controls; global and assisted execution examples retain rejected results with no accepted pose. Setup, model terms and unqualified physical-pick limits are explicit. |
+| [SimpleFoundationPose CPU execution (experimental)](<Simple Plugins/foundation_pose/WORKER_WORKFLOW.md>) | Supplied-mask, single-instance T-LESS controls; global and assisted execution examples retain rejected results with no accepted pose. [Native object setup](<Simple Plugins/foundation_pose/NATIVE_SETUP.md>) adds retained CAD/image/mask teaching; model terms and unqualified physical-pick limits remain explicit. |
 | [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements](<Simple Plugins/gdrnpp/worker_cycles/README.md>) and [same-client resource preparation](<Simple Plugins/gdrnpp/resource_prepare/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
 
 The [SimpleSurfaceEnhance setup/execution examples](<Simple Plugins/surface_enhance/README.md>)
@@ -379,6 +379,7 @@ Project-defined inspection algorithms, region/metrology tools and integrations w
 | [Flat-field illumination correction](<custom tools/flat_field/README.md>) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
 | [Lens map files](<custom tools/lens_map_files/README.md>) | Reload a saved map pair and straighten a synthetic grid using the restored maps. |
 | [LightGlue feature matching](<custom tools/lightglue_match/README.md>) | Match a synthetic textured reference into a scene using SIFT features and LightGlue. |
+| [External local features](<custom tools/local_features/README.md>) | Pack exported feature tensors, test learned matching and compare SIFT on the same pair; prescribed controls do not qualify a SuperPoint detector. |
 | [Line-pair metrology](<custom tools/line_pair_metrology/README.md>) | Detect cropped edges, align fitted lines to the original image, and judge corner angles or parallel gaps. |
 | [Minimum spanning tree](<custom tools/minimum_spanning_tree/README.md>) | Find and overlay the shortest network connecting five detected centers using Delaunay edges. |
 | [Motion deblur](<custom tools/motion_deblur/README.md>) | Restore a frame blurred by an eight-pixel horizontal motion path. |
