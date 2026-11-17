@@ -1,0 +1,76 @@
+{
+  "license": "MIT - original fixtures",
+  "cases": {
+    "horizontal": {
+      "length": 8.0,
+      "angle": 0.0
+    },
+    "diagonal": {
+      "length": 12.0,
+      "angle": 35.0
+    },
+    "vertical": {
+      "length": 16.0,
+      "angle": 90.0
+    },
+    "mild_noise": {
+      "length": 12.0,
+      "angle": 35.0,
+      "noise": 2.0
+    },
+    "highdepth": {
+      "length": 12.0,
+      "angle": 35.0,
+      "highdepth": true
+    },
+    "masked": {
+      "length": 8.0,
+      "angle": 0.0,
+      "mask": true
+    },
+    "ambiguous": {
+      "length": 9.0,
+      "angle": 0.0,
+      "length_step": 2.0,
+      "minimum_margin": 0.1,
+      "passed": false,
+      "status": "ambiguous"
+    },
+    "flat": {
+      "passed": false,
+      "status": "insufficient_contrast"
+    },
+    "sharp": {
+      "passed": false,
+      "status": "weak_fit"
+    },
+    "heavy_noise": {
+      "length": 12.0,
+      "angle": 35.0,
+      "noise": 20.0,
+      "passed": false,
+      "status": "weak_fit"
+    },
+    "validation_mismatch": {
+      "passed": false,
+      "status": "validation_rejected"
+    }
+  },
+  "asset_sha256": {
+    "sharp.png": "11e75fa6a86d0739c32ee02d677b194f19157e78477f3338596e3201de337980",
+    "sharp16.png": "ffbb815998acc135aeb6c4e7747269ae6af18c164100a7ceabb12e192df00039",
+    "horizontal.png": "eb33f08811df5a70fd572250affd90dd6907ab2a5081a7546bc6c2e0bfefa6a2",
+    "diagonal.png": "7e8bb0c7a5287914c28f7204c1291a4c4e9184d85e4e5bef9b18faa3565f967b",
+    "vertical.png": "e7dd8bf791e0147b70eb5e243ba4bd48afbe4a01dbba69f50cbe546b75850582",
+    "mild_noise.png": "728e64d1dd7ee308e60c60ab5732f7f20d95749cef8f54b8168ba0848b5e36f7",
+    "highdepth.png": "27dba93e3a06220d29cddecc41d99496580cb9c64452efa1f8f4d33fae11200e",
+    "masked.png": "eb33f08811df5a70fd572250affd90dd6907ab2a5081a7546bc6c2e0bfefa6a2",
+    "ambiguous.png": "7431bc59f730c1d2f86d341e4445b805f4ac37c7a64d7b9ecc8965863718c832",
+    "flat.png": "a87b1b436aa737b56cda473c0dd3d8eef4d7d529120f97690c0e705a04744119",
+    "heavy_noise.png": "a0ed3de3f197dcaabd405058082bf3558fc61f669d68be37a3c641d253b2710d",
+    "validation_mismatch.png": "d155b8663c95ab9332285ad37c8826edaed47cba79d13c1089dbe946f62656ca"
+  },
+  "length_tolerance_pixels": 1.0,
+  "angle_tolerance_degrees": 5.0,
+  "maximum_restored_mse_ratio": 0.8
+}

@@ -6370,6 +6370,43 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `background_gap` | `1` | Value must be a whole number between 0 and 255. Number of pixel layers to leave unlabeled outside the foreground. |
 | `connectivity` | `"8"` | `4`, `8` Connectivity used to group adjacent peak pixels into one seed. |
 
+## Estimate linear motion blur (`inspect.estimate_motion_blur`)
+
+Image processing / Restoration
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — One spatially uniform linear-motion blur over approximately isotropic texture.
+
+Input `mask` — Only fully selected square tiles contribute to estimation.
+
+Input `region` — Optional region intersected with Mask; no black mask padding in spectra.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel` | `"gray"` | `gray`, `R`, `G`, `B` Luminance or a named stored color channel; alpha is excluded. |
+| `tile_size` | `128` | `64`, `128`, `256`, `512` Value must be a whole number between 64 and 512. Disjoint square tiles, fixed periodic Hann window; current-image pixels. |
+| `minimum_tiles` | `4` | Value must be a whole number between 4 and 64. At least this many fully selected, opaque tiles; split fit/validation. |
+| `maximum_tiles` | `32` | Value must be a whole number between 4 and 64. Evenly subsample this many eligible tiles before alternating groups. |
+| `minimum_length` | `4.0` | Value must be a finite number between 2 and 63. First centered line-path length in current pixels. |
+| `maximum_length` | `24.0` | Value must be a finite number between 2 and 63. Largest searched length; must be at most one quarter of Tile size. |
+| `length_step` | `1.0` | Value must be a finite number between 0.25 and 16. Length grid spacing; last sampled length does not exceed Maximum length. |
+| `angle_start` | `0.0` | Value must be a finite number between -360 and 360. First direction; output angles wrap modulo 180 degrees. |
+| `angle_span` | `180.0` | Value must be a finite number between 0.25 and 180. Search arc in degrees; 180 covers all undirected line orientations. |
+| `angle_step` | `5.0` | Value must be a finite number between 0.25 and 180. Grid spacing clockwise from horizontal in image coordinates. |
+| `model_floors` | `[0.0001, 0.001, 0.01, 0.1]` | 1-8 distinct positive floor ratios <=1; nuisance values, not SNR. |
+| `minimum_frequency` | `0.04` | Value must be a finite number between 0.01 and 0.25. Lower fitted radial frequency, cycles/current pixel. |
+| `maximum_frequency` | `0.45` | Value must be a finite number between 0.05 and 0.49. Upper fitted radial frequency, below axial Nyquist. |
+| `minimum_contrast` | `0.001` | Value must be a finite number between 0 and 1. Minimum mean tile standard deviation divided by working sample scale. |
+| `minimum_score` | `0.6` | Value must be a finite number between 0 and 1. Minimum explained whitened log-power variance in fit and validation. |
+| `minimum_margin` | `0.03` | Value must be a finite number between 0 and 2. Fit score gap to a distinct hypothesis; zero disables ambiguity gating. |
+| `distinct_length` | `2.0` | Value must be a finite number between 0.25 and 63. Length difference making an alternative distinct, in current pixels. |
+| `distinct_angle` | `10.0` | Value must be a finite number between 0.25 and 90. Modulo-180 angle difference making an alternative distinct. |
+| `boundary_policy` | `"reject"` | `reject`, `allow` Reject a best length/partial-arc endpoint, or explicitly allow it. |
+| `maximum_candidates` | `4096` | Value must be a whole number between 1 and 16384. Cap total length/angle/floor trials before spectrum work. |
+| `maximum_search_work` | `64000000` | Value must be a whole number between 1 and 2.56e+08. Cap template pixels plus trial frequency samples before DFT. |
+| `maximum_working_bytes` | `536870912` | Value must be a whole number between 1 and 2.14748e+09. Array estimate, excluding graph copies and native workspaces. |
+
 ## Evaluate image features and matches (`inspect.evaluate_features`)
 
 Inspection / Feature evaluation

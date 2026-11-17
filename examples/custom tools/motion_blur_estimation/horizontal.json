@@ -1,0 +1,333 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/horizontal.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/sharp.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        400
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "estimate",
+      "type": "inspect.estimate_motion_blur",
+      "name": "Estimate linear motion blur",
+      "description": "Estimate a uniform line PSF on isotropic texture.",
+      "documentation": "<p>Compare centered line-PSF spectra on a bounded parameter grid after radial log-power whitening. Fit and validation use disjoint selected tiles. A constant spectral floor is a nuisance parameter, not a measured noise-to-signal ratio. Failed/weak/ambiguous estimates withhold PSF and geometry. The texture and blur assumptions require qualification; this is not arbitrary blind deconvolution. See docs/blur-estimation.md.</p>",
+      "parameters": {
+        "channel": "gray",
+        "tile_size": 128,
+        "minimum_tiles": 4,
+        "maximum_tiles": 32,
+        "minimum_length": 4.0,
+        "maximum_length": 24.0,
+        "length_step": 1.0,
+        "angle_start": 0.0,
+        "angle_span": 180.0,
+        "angle_step": 5.0,
+        "model_floors": [
+          0.0001,
+          0.001,
+          0.01,
+          0.1
+        ],
+        "minimum_frequency": 0.04,
+        "maximum_frequency": 0.45,
+        "minimum_contrast": 0.001,
+        "minimum_score": 0.6,
+        "minimum_margin": 0.03,
+        "distinct_length": 2.0,
+        "distinct_angle": 10.0,
+        "boundary_policy": "reject",
+        "maximum_candidates": 4096,
+        "maximum_search_work": 64000000,
+        "maximum_working_bytes": 536870912
+      },
+      "position": [
+        400,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "psf",
+        "length",
+        "angle",
+        "report",
+        "diagnostic",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restore",
+      "type": "cv.wiener_deblur",
+      "name": "Wiener deblur",
+      "parameters": {
+        "model": "gaussian",
+        "kernel_width": 9,
+        "kernel_height": 9,
+        "sigma_x": 2.0,
+        "sigma_y": 2.0,
+        "motion_length": 8.0,
+        "motion_angle": 0.0,
+        "defocus_radius": 3.0,
+        "custom_psf": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "noise_to_signal": 0.0001,
+        "boundary": "circular",
+        "output_depth": "same"
+      },
+      "position": [
+        800,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "psf"
+      ],
+      "exposed_outputs": [
+        "image",
+        "psf"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restored_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restored",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 10
+      },
+      "position": [
+        1600,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "candidate_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1200,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "candidate",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1600,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original motion-estimation controls - MIT",
+      "description": "Original MIT seeded texture, independent line-path integration, projects and truth by OpenCVDataflowGUI contributors. No customer or third-party images. The estimator sees only one degraded image and selected tiles; Sharp truth is a separate disconnected comparison image. Linear motion, isotropic texture and circular boundaries are controlled assumptions, not facts about real scenes. Fit and validation use disjoint tiles. Flat/sharp/noisy/mixed/ambiguous cases withhold PSF and stop restoration. Frequency floor is a nuisance parameter, not measured SNR. See README/truth.json for numerical limits and attribution.",
+      "parameters": {},
+      "position": [
+        0,
+        -650
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "estimate",
+      "input": "image"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "restore",
+      "input": "image"
+    },
+    {
+      "source": "estimate",
+      "output": "psf",
+      "target": "restore",
+      "input": "psf"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "restored_overlay",
+      "input": "image"
+    },
+    {
+      "source": "estimate",
+      "output": "result_graphics",
+      "target": "restored_overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "restored_overlay",
+      "output": "image",
+      "target": "restored",
+      "input": "image"
+    },
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "candidate_overlay",
+      "input": "image"
+    },
+    {
+      "source": "estimate",
+      "output": "result_graphics",
+      "target": "candidate_overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "candidate_overlay",
+      "output": "image",
+      "target": "candidate",
+      "input": "image"
+    }
+  ]
+}

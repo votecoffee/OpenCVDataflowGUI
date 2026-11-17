@@ -370,6 +370,7 @@ Project-defined inspection algorithms, region/metrology tools and integrations w
 | [Slanted-edge sharpness](<custom tools/slanted_edge_sharpness/README.md>) | Compare original sharp/blurred edges using ESF/SFR, MTF50 and an inclusive inspection limit. |
 | [Trained patterns and oriented edges](<custom tools/trained_patterns/README.md>) | Train geometric and ORB references, match them in a synthetic scene, and measure oriented edges. |
 | [Wiener deblur](<custom tools/wiener_deblur/README.md>) | Recover detail after a known Gaussian blur and measure the change in RMSE. |
+| [Motion blur estimation](<custom tools/motion_blur_estimation/README.md>) | Infer a conditional line PSF, validate on separate tiles and restore only accepted cases. |
 
 ## Control flow tools
 

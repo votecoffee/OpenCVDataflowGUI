@@ -17,3 +17,4 @@ under [Demos](../demos/README.md). Python plugin authoring examples remain in
 [All examples](../README.md)
 
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
+For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).

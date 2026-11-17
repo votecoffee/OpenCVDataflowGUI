@@ -24,6 +24,7 @@
 | HDR brackets, rejected motion and measured-versus-review support | [HDR motion](hdr-motion.md) |
 | Unordered rotating views, explicit camera refinement, reserved validation and source-point mapping | [Rotating panoramas](rotating-panorama.md) |
 | Neighboring-frame border fills, review images and unchanged measured support | [Stabilization border fills](stabilization-fill.md) |
+| Conditional single-image motion PSF estimates and qualified Wiener restoration | [Motion blur estimation](blur-estimation.md) |
 | Pixel formats and high-depth images | [Image formats](image-formats.md) |
 | Ordered multipage buffers, typed page metadata and decode limits | [Multipage TIFF in memory](multipage-memory.md) |
 | Random TIFF pages, bounded LRU caching and snapshot refresh | [On-demand TIFF pages](tiff-page-access.md) |

@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 170 | 3 | 2 | 175 | 97.1% |
+| 1. Core and baseline 2D | 171 | 3 | 1 | 175 | 97.7% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 233 | 45 | 192 | 470 | 49.6% |
+| **Overall** | 234 | 45 | 191 | 470 | 49.8% |
 
 <!-- coverage-summary:end -->
 
@@ -148,7 +148,7 @@ fixture or result needed to close the item.
 | S1-81 | Exposure fusion to display range | createMergeMertens | Complete | cv.fuse_exposures. Fuse aligned brackets without a response curve and compare selected detail. |
 | S1-82 | HDR response and radiance reconstruction | createCalibrateDebevec, createCalibrateRobertson, createMergeDebevec, createMergeRobertson | Complete | cv.calibrate_debevec, cv.calibrate_robertson, cv.merge_debevec, cv.merge_robertson. Compare radiance against a known exposure sequence. |
 | S1-83 | HDR tone mapping | createTonemap, createTonemapDrago, createTonemapReinhard, createTonemapMantiuk | Complete | cv.tonemap_hdr. Convert HDR radiance using the selected operator and verify output range. |
-| S1-84 | Estimate an unknown blur kernel | Blind point-spread estimation and regularized DFT restoration | Planned | Recover motion direction or blur extent from a controlled degraded image and check sensitivity to noise. |
+| S1-84 | Estimate an unknown blur kernel | DFT motion-PSF search and regularized Wiener restoration | Complete | inspect.estimate_motion_blur supplies a conditional centered uniform-line PSF on approximately isotropic texture to cv.wiener_deblur. Bounded length/angle/floor search fits radial-whitened tile power and validates only the selected model on disjoint tiles; weak, mixed, noisy, ambiguous or boundary estimates withhold PSF/length/angle. Eleven original independently integrated projects verify known length/direction, restored MSE, uint16, selection, noise and five rejected conditions in Debug/Lean. Exact line weights/moments, color/depth/alpha and tiny/HDR units, source ticket/start/pyramid provenance, selection, budgets, native failure/recovery and XML/offscreen controls qualify the stated controlled motion scope. This is a Custom algorithm using OpenCV DFT, not an arbitrary blind-deconvolution binding or proof of real scene/camera motion. See [contracts](blur-estimation.md). |
 | S1-85 | Photo detail and edge-aware smoothing | detailEnhance, edgePreservingFilter | Complete | cv.detail_enhance, cv.edge_preserving_photo. Verify the available photo smoothing modes and detail enhancement. |
 | S1-86 | Photo stylization and sketching | stylization, pencilSketch | Complete | cv.stylize_photo, cv.pencil_sketch. Expose image parameters and both sketch outputs. |
 | S1-87 | Seamless image patch composition | seamlessClone | Complete | cv.seamless_clone. Verify masked placement and preserved surroundings on a synthetic patch. |

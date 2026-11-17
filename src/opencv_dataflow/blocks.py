@@ -694,6 +694,7 @@ def builtin_registry():
     from .background_reference import CaptureBackgroundReference, SaveBackgroundReference
     from .basic_processing import BASIC_PROCESSING_BLOCKS
     from .blob_detection import SimpleBlobDetection
+    from .blur_estimation import EstimateMotionBlur
     from .calibration import (
         CalibrationGrid,
         ColorBalance,
@@ -1035,6 +1036,7 @@ def builtin_registry():
         SaveMotionTrajectory,
         RestoreFromNeighbors,
         FillStabilizationBorders,
+        EstimateMotionBlur,
         EstimateScanlineMotion,
         TrackImageParts,
         ResampleImageProfile,
