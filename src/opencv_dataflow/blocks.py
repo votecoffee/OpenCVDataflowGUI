@@ -769,6 +769,7 @@ def builtin_registry():
         MergeRobertson,
         ToneMapHDR,
     )
+    from .hdr_motion import MergeMotionHDR
     from .histogram import Histogram
     from .histogram_comparison import CompareHistograms, HistogramBackProjection
     from .hit_miss import HitOrMiss
@@ -1055,6 +1056,7 @@ def builtin_registry():
         CalibrateRobertson,
         MergeHDR,
         MergeRobertson,
+        MergeMotionHDR,
         ToneMapHDR,
         *SPECTRAL_BLOCKS,
         FourierComponents,

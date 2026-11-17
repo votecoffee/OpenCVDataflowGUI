@@ -2970,6 +2970,43 @@ Input `response` — Optional camera response. If disconnected, assume linear re
 | `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based exposure that defines the output coordinate frame. |
 | `exposure_times` | `[]` | Exposure durations in seconds, in batch order. Times input overrides. |
 
+## Merge HDR with motion rejection (`cv.merge_hdr_motion`)
+
+Image processing / Exposure stacks
+
+Inputs: `exposures` (any), `times` (data, optional), `response` (data, optional), `masks` (any, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `exposures` — Ordered batch of 2–16 aligned uint8 gray, BGR or RGB exposures.
+
+Input `times` — Optional list of exposure durations in seconds, in batch order.
+
+Input `response` — Optional existing Debevec/Robertson response; otherwise assume z/128 linear.
+
+Input `masks` — Optional uint8 mask batch with the same labels/order and per-member image grids.
+
+Input `mask` — Optional reference-domain uint8 selection, intersected with Region.
+
+Input `region` — Optional reference-domain region; does not change exposure registration.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 15. Zero-based exposure that defines the output coordinate frame. |
+| `exposure_times` | `[]` | Exposure durations in seconds, in batch order. Times input overrides. |
+| `absolute_tolerance` | `0.02` | Value must be a finite number at least 0. Allowed radiance span in response units per second. |
+| `relative_tolerance` | `0.05` | Value must be a finite number between 0 and 1. Additional span allowance times the largest channel radiance. |
+| `clip_low` | `4` | Value must be a whole number between 0 and 253. Stored uint8 codes at or below this level are not usable. |
+| `clip_high` | `251` | Value must be a whole number between 2 and 255. Stored uint8 codes at or above this level are not usable. |
+| `clipping_evidence` | `"bounds"` | `bounds`, `ignore` Use clipped-code bounds to detect contradictions, or ignore them. |
+| `minimum_contributors` | `2` | Value must be a whole number between 2 and 16. Required unclipped agreeing exposures per measured pixel. |
+| `minimum_coverage` | `0.8` | Value must be a finite number between 0 and 1. Minimum measured fraction of the selected reference domain. |
+| `weighting` | `"triangle"` | `triangle`, `uniform` Uniform mean or triangular distance from the clipping boundaries. |
+| `fallback` | `"reference"` | `reference`, `zero` Display only: fill unsupported pixels from the reference, or use zero. |
+| `grid_policy` | `"matching_frames"` | `matching_frames`, `assert_pixel_alignment` Require known matching grids, or explicitly assert aligned pixel indices. |
+| `emit_support_masks` | `false` | Optional accepted masks, retaining member labels and tickets. |
+| `maximum_pixels` | `4194304` | Value must be a whole number between 4 and 1.67772e+07. Reference-grid pixel limit before radiance allocation. |
+| `maximum_working_bytes` | `805306368` | Value must be a whole number between 1 and 2.14748e+09. Estimated arrays; excludes runtime copies and native workspaces. |
+| `maximum_graphics_points` | `2048` | Value must be a whole number between 0 and 100000. Bound optional decimated rejected-region drawing points. |
+
 ## Merge HDR radiance (Robertson) (`cv.merge_robertson`)
 
 Image processing / Exposure stacks

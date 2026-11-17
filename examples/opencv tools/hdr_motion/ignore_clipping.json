@@ -1,0 +1,396 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "exposure_0",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/ignore_clipping_0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "exposure_1",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/ignore_clipping_1.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "exposure_2",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/ignore_clipping_2.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        600
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hdr",
+      "type": "cv.merge_hdr_motion",
+      "name": "Merge HDR with motion rejection",
+      "description": "Only Image plus Valid mask is measured HDR; Display fills are review-only.",
+      "documentation": "<p>Response-aware weighted radiance with conservative exposure consistency. Image is zero outside measured support. Display may fill those pixels from the reference, marked separately. Align exposures first. This is a photometric motion proxy, not native Debevec/Robertson merging or radiometric certification. See docs/hdr-motion.md.</p>",
+      "parameters": {
+        "reference_index": 1,
+        "exposure_times": [
+          0.25,
+          0.5,
+          1.0
+        ],
+        "absolute_tolerance": 0.0,
+        "relative_tolerance": 0.0,
+        "clip_low": 4,
+        "clip_high": 251,
+        "clipping_evidence": "ignore",
+        "minimum_contributors": 2,
+        "minimum_coverage": 0.8,
+        "weighting": "triangle",
+        "fallback": "reference",
+        "grid_policy": "assert_pixel_alignment",
+        "emit_support_masks": false,
+        "maximum_pixels": 4194304,
+        "maximum_working_bytes": 805306368,
+        "maximum_graphics_points": 2048
+      },
+      "position": [
+        1140,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "exposures",
+        "times",
+        "response",
+        "masks",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "display",
+        "valid_mask",
+        "report",
+        "motion_mask",
+        "fallback_mask",
+        "contributors",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "conventional",
+      "type": "cv.merge_debevec",
+      "name": "Merge HDR radiance (Debevec)",
+      "parameters": {
+        "reference_index": 1,
+        "exposure_times": [
+          0.25,
+          0.5,
+          1.0
+        ]
+      },
+      "position": [
+        1140,
+        650
+      ],
+      "exposed_inputs": [
+        "exposures",
+        "times",
+        "response"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "statistics",
+      "type": "cv.image_statistics",
+      "name": "Image summary statistics",
+      "parameters": {
+        "channel": "auto",
+        "statistic": "mean",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        1520,
+        650
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "summary",
+        "selected_count",
+        "value",
+        "minimum_location",
+        "maximum_location"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "cv.tonemap_hdr",
+      "name": "Tone map HDR",
+      "parameters": {
+        "method": "linear",
+        "gamma": 1.0,
+        "output_depth": "uint8",
+        "saturation": 1.0,
+        "bias": 0.85,
+        "intensity": 0.0,
+        "light_adaptation": 1.0,
+        "color_adaptation": 0.0,
+        "contrast_scale": 0.7
+      },
+      "position": [
+        1520,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1900,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        2280,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original timed radiance controls - MIT",
+      "description": "Original MIT synthetic radiance scenes, PNGs, generator, projects and independent support truth by OpenCVDataflowGUI contributors. No customer/third-party images. Linear codes are radiance*128*exposure seconds; durations are 0.25, 0.5, 1.0. Motion puts a 12x10 part at three positions. Long exposure clips the third part; default clipping bounds still detect the contradiction. Ignore clipping is an explicit weaker comparison. Missing saturates an 8x8 region in every frame. Aligned applies known shifts and native MTB restores the reference grid; support metadata excludes alignment padding. Image is zero outside measured support. Display/filmstrip fills are reference-only review, not measured HDR. Strict intentionally fails 100% coverage and keeps diagnostics. Units are arbitrary response per second, not absolute radiometry or physical motion proof. See README.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "exposure_0",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "exposure_1",
+      "output": "image",
+      "target": "batch",
+      "input": "item_2"
+    },
+    {
+      "source": "exposure_2",
+      "output": "image",
+      "target": "batch",
+      "input": "item_3"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "hdr",
+      "input": "exposures"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "conventional",
+      "input": "exposures"
+    },
+    {
+      "source": "hdr",
+      "output": "image",
+      "target": "statistics",
+      "input": "image"
+    },
+    {
+      "source": "hdr",
+      "output": "valid_mask",
+      "target": "statistics",
+      "input": "mask"
+    },
+    {
+      "source": "hdr",
+      "output": "display",
+      "target": "review",
+      "input": "image"
+    },
+    {
+      "source": "review",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "hdr",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

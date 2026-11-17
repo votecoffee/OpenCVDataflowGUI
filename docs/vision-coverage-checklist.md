@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 166 | 3 | 6 | 175 | 94.9% |
+| 1. Core and baseline 2D | 167 | 3 | 5 | 175 | 95.4% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 229 | 45 | 196 | 470 | 48.7% |
+| **Overall** | 230 | 45 | 195 | 470 | 48.9% |
 
 <!-- coverage-summary:end -->
 
@@ -234,7 +234,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S1-149 | Multipage images on memory buffer ports | imdecodemulti and imencodemulti | Complete | cv.encode_pages and cv.decode_pages. Ordered mixed-size/depth gray/RGB(A) TIFF pages, immutable per-page ticket/spatial/pyramid/color/label sidecars, raw byte/vector transport, indexed/strided selection and preview, explicit format/depth/compression/predictor/strip/DPI controls. Exact native sample readback before encoding publication; bounded classic/BigTIFF directory, strip/tile, selected-pixel and conversion-workspace preflight. Five original MIT projects and independent integer TIFF/DPI readback. Limited to supported top-left contiguous baseline pages; float64 multichannel cross-reader metadata remains open in S1-125. |
-| S1-150 | Moving-region rejection in HDR brackets | Exposure alignment, consistency masks and supported HDR merge | Planned | Use brackets with one moving part. Report rejected support and verify that static detail remains usable without treating reconstructed pixels as measured. |
+| S1-150 | Moving-region rejection in HDR brackets | Exposure alignment, consistency masks and supported HDR merge | Complete | cv.merge_hdr_motion qualifies response-aware weighted radiance with conservative per-channel consistency, clipped-code bounds, masks/regions and separate measured, motion, contributor and reference-fill outputs. Native MTB emits validated per-member geometric support so padded borders do not become clipping evidence. Six original timed controls specify exact radiance, moving/saturated part unions, weaker clipping-ignore evidence, all-clipped missing support, strict coverage failure and known shifted-frame alignment. Independent scalar weighted/color/response references, exact masks/means, source tickets/grids, metadata guards, native failure/recovery, resource limits, XML/offscreen controls and Debug/Lean checks qualify the workflow. This is a photometric motion proxy with explicit review-only fills; it does not recover clipped radiance, guarantee motion detection, authenticate exposure timing or certify absolute radiometry. See [contracts](hdr-motion.md). |
 | S1-151 | Binary hit-or-miss morphology | morphologyEx with MORPH_HITMISS and a ternary kernel | Complete | cv.hit_or_miss. Visual signed foreground/background/ignore kernels and standard presets; strict binary or explicit nonzero/polarity modes, anchors, repeated erosions, full-footprint/native border support, mask/region center filtering, complete match masks/counts with bounded coordinates/graphics, count judgments/reasons and ticket/spatial/pyramid provenance. Independent Boolean references and six original MIT corner/endpoint/junction/isolation projects; signed editor staging, last-input preview, XML and contained input/native failures. |
 | S1-152 | Memory-efficient contour extraction | findContoursLinkRuns | Complete | inspect.run_contours. Bounded uint8 nonzero masks, horizontal-run preflight, native output contour/vertex budgets, optional rasters, selected center/clip geometry, shifted coordinates and provenance. Raw native run polygons and explicit flat-list hierarchy are qualified; the installed API does not supply the documented CCOMP parents and hole polygons differ from ordinary contours. Solid sparse geometry/reference checks, five original MIT projects and isolated native allocation/timing measurements record those limits. Ordinary nested hierarchy remains available in inspect.contour_hierarchy. |
 

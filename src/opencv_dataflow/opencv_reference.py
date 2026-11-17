@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "cv.merge_hdr_motion": "LUT",
     "inspect.visible_support": "remap perspectiveTransform",
     "cv.remap_selection": "remap",
     "cv.remap_selection_packed": "remap convertMaps",

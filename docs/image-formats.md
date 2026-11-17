@@ -88,3 +88,12 @@ PNG for lossless uint8/uint16 or a suitable TIFF format for floating-point data.
 
 References: [OpenCV decoding](https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html)
 and [color conversions](https://docs.opencv.org/4.x/d8/d01/group__imgproc__color__conversions.html).
+
+## Measured HDR and review fills
+
+**Merge HDR with motion rejection** outputs float32 radiance and an explicit
+Valid mask. Unsupported Image pixels are zero, representing missing data. Its
+separate Display can fill those pixels from a reference exposure for review;
+Fallback mask and payload tags identify these fills. Connect Valid mask to
+measurements and use Display for viewing. See [HDR support contracts](hdr-motion.md)
+and [six timed controls](<../examples/opencv tools/hdr_motion/README.md>).

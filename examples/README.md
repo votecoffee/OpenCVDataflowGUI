@@ -93,6 +93,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimplePatternMatch](<Simple Plugins/pattern_matching/asymmetric_brackets/README.md>) | Locate synthetic brackets with direct and wired recipes, and inspect the pose and edge overlays. |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, PCB laminate, and inventory in real totes. |
 | [SimpleFringeScan setup and execution](<Simple Plugins/fringe_scan/README.md>) | Retained native setup, references, ROI and known calibration; three one-block metric/phase execution examples with explicit expected availability judgments and source attribution. |
+| [SimpleDeflectometry initial reviews](<Simple Plugins/deflectometry/README.md>) | Four file-only phase/change reviews, including an attributed CC BY-SA SOFAST camera self-comparison; optional standalone replay is documented separately. |
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
 | [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements](<Simple Plugins/gdrnpp/worker_cycles/README.md>) and [same-client resource preparation](<Simple Plugins/gdrnpp/resource_prepare/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
 
@@ -121,6 +122,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 
 | Example | Demonstrates |
 | --- | --- |
+| [HDR motion and measured support](<opencv tools/hdr_motion/README.md>) | Timed radiance, clipped moving parts, separate reference fills, coverage failure and native shifted-frame alignment. |
 | [Visible support before picking](<opencv tools/visible_support/README.md>) | Native candidate detection, exact appearance/coverage counts, touching/covered parts and separate clearance/downstream selection. |
 | [Whole nonlinear selections](<opencv tools/selection_remap/README.md>) | Correct RGB16 images and selections together; exact holes, coverage, border validity, packed-map precision and masked measurements. |
 | [25 template instances](<opencv tools/template_instances/README.md>) | Find a repeated fixed-scale template in a 25-part synthetic scene and emit a pose for each match. |

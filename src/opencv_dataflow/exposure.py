@@ -1,5 +1,7 @@
 """Native exposure-stack registration and fusion for static inspection scenes."""
 
+import copy
+
 import cv2
 import numpy as np
 
@@ -57,6 +59,11 @@ class _ExposureStack(ImageTool):
 class AlignExposures(_ExposureStack):
     type_id, title = "cv.align_exposures", "Align exposures (MTB)"
     outputs = (Port("aligned", "any"), Port("image"), Port("info", "data"))
+    output_help = {
+        "aligned": "Ordered images with exposure_support grid metadata for HDR padding exclusion.",
+        "image": "Reference image on the aligned output canvas.",
+        "info": "Reference index, native shifts, common overlap and output rectangle.",
+    }
     defaults = {
         "reference_index": 0, "max_bits": 4, "exclude_range": 4, "border_mode": "crop",
     }
@@ -107,10 +114,17 @@ class AlignExposures(_ExposureStack):
             shifted = aligner.shiftMat(image, shift) if shift != (0, 0) else image
             value = ImageArray(shifted[top:bottom, left:right].copy(), encoding)
             payload = metadata(entry)
+            source_spatial = copy.deepcopy(payload.get("spatial"))
             for key in ("spatial", "pyramid"):
                 payload.pop(key, None)
                 if key in context:
                     payload[key] = context[key]
+            payload["exposure_support"] = {
+                "model": "opencv_mtb_support_v1", "source_size": [width, height],
+                "shift": list(shift), "output_xywh": [left, top, *size],
+                "source_spatial": source_spatial,
+                "spatial": copy.deepcopy(context["spatial"]),
+            }
             packets.append(ValuePacket(value, payload))
         info = {
             "reference_index": reference,
