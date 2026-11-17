@@ -55,3 +55,18 @@ are in [predictions.json](vegqual/result_views/predictions.json).
 These derived views retain the [VegQual attribution](vegqual/SOURCES.md).
 
 Regenerate these previews with the host Python: `python "examples/Simple Plugins/build_result_views.py"`.
+
+## Completed-runtime Results review
+
+The [0.3.2 pinned-plugin examples](completed_runtime/README.md) add an independent
+**Review completed classification…** Results action: exact consumed input/model
+bytes, full ranked candidate table, winner/runner-up gap, confusion, zoom/pan and
+frozen array/model/JSON/PNG exports. Load that folder's **plugin.py first**, then
+open its projects; restart if another classifier version is already imported.
+No environment installation is needed. The explicitly selected plugin replaces
+only the known bundled classifier for this session.
+
+Three projects replay 33 real labeled VegQual frames, with nine frozen exports.
+Both existing recipes and test splits are unchanged; their incorrect predictions
+remain visible. Scores and default charts exactly match the earlier implementation.
+Training remains independent, and Save As carries the model and labeled images.

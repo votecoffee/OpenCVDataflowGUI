@@ -1,0 +1,320 @@
+{
+  "model": "simple_classify_completed_review_v1",
+  "state": "classified",
+  "execution_binding": "4e2b7238d9cb48dca8c6cf4ee3422795",
+  "prediction": {
+    "confusion": 44.89795918367347,
+    "label": "defected_capsicum",
+    "probabilities": [
+      {
+        "label": "defected_capsicum",
+        "score": 49.0
+      },
+      {
+        "label": "fresh_capsicum",
+        "score": 22.0
+      },
+      {
+        "label": "defected_Potato",
+        "score": 15.0
+      },
+      {
+        "label": "fresh_potato",
+        "score": 14.0
+      }
+    ],
+    "score": 49.0
+  },
+  "score_total": 100.0,
+  "runner_up": {
+    "label": "fresh_capsicum",
+    "score": 22.0
+  },
+  "winning_gap_percentage_points": 27.0,
+  "selected": {
+    "rank": 2,
+    "label": "fresh_capsicum",
+    "score": 22.0
+  },
+  "executed_parameters": {
+    "model": "assets/image_classification/vegqual-v4/manifest.json",
+    "render_overlay": true
+  },
+  "profile": "appearance",
+  "score_semantics": "Uncalibrated normalized tree votes",
+  "confusion_semantics": "100 * runner_up_score / winning_score; tie = 100%, lower = more separation",
+  "judgment_scope": "Classification is not a quality acceptance gate; no unknown/reject class is inferred",
+  "spatial_scope": "Whole-image scores have no pixel-level localization; assessment uses its own display grid",
+  "chart_scope": "Raster chart shows at most 20 candidates and ASCII labels; full labels/scores are in this report and the table",
+  "training_health_scope": "Stored held-out report belongs to training; it is not this image's confidence or independent accuracy proof",
+  "source_image": {
+    "shape": [
+      192,
+      182,
+      3
+    ],
+    "dtype": "|u1",
+    "format": "bgr",
+    "sha256": "1a66fb303dccd080959f13907cc6debd62c10c9f30c88ac891d35f1583e4924e"
+  },
+  "classifier_input": {
+    "shape": [
+      192,
+      182,
+      3
+    ],
+    "dtype": "|u1",
+    "format": "bgr"
+  },
+  "asset_sha256": {
+    "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+    "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+  },
+  "assets_available": true,
+  "provenance": {
+    "snapshot_id": "050fdbd99c1b494ea55b8ee820d32aed",
+    "block_id": "classifier",
+    "output_revision": 0,
+    "execution_count": 13,
+    "passed": true,
+    "score": 0.49,
+    "message": "defected_capsicum (49.00%) · confusion 44.90%",
+    "inputs": {
+      "image": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "01.jpg",
+          "session": "0620bbd7f92b444cab60cc64069b5f6d:file:13",
+          "sequence": 13,
+          "source": "test_images"
+        },
+        "spatial": {
+          "root_id": "test_images:image",
+          "root_size": [
+            182,
+            192
+          ],
+          "image_size": [
+            182,
+            192
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:56:31.351385+00:00",
+          "started_ns": 125354314601300,
+          "clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "inferred_start": false,
+          "finished_at": "2026-11-17T22:56:31.352469+00:00",
+          "finished_ns": 125354315685400,
+          "finished_clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "elapsed_ms": 1.0841
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "test_images",
+            "name": "VegQual held-out test images",
+            "type": "input.file",
+            "path": "test_images"
+          },
+          "score": null,
+          "message": "01.jpg · bgr / uint8",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "label": {
+        "classification_completed_review": {
+          "id": "4e2b7238d9cb48dca8c6cf4ee3422795"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "01.jpg",
+          "session": "0620bbd7f92b444cab60cc64069b5f6d:file:13",
+          "sequence": 13,
+          "source": "test_images"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:56:31.353144+00:00",
+          "started_ns": 125354316360600,
+          "clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "inferred_start": true,
+          "finished_at": "2026-11-17T22:56:31.357218+00:00",
+          "finished_ns": 125354320433200,
+          "finished_clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "elapsed_ms": 4.0726
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "classifier",
+            "name": "SimpleClassify — Color and layout",
+            "type": "inspect.simple_classify_image",
+            "path": "classifier"
+          },
+          "score": 0.49,
+          "message": "defected_capsicum (49.00%) · confusion 44.90%",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": []
+        }
+      },
+      "score": {
+        "classification_completed_review": {
+          "id": "4e2b7238d9cb48dca8c6cf4ee3422795"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "01.jpg",
+          "session": "0620bbd7f92b444cab60cc64069b5f6d:file:13",
+          "sequence": 13,
+          "source": "test_images"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:56:31.353144+00:00",
+          "started_ns": 125354316360600,
+          "clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "inferred_start": true,
+          "finished_at": "2026-11-17T22:56:31.357218+00:00",
+          "finished_ns": 125354320433200,
+          "finished_clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "elapsed_ms": 4.0726
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "classifier",
+            "name": "SimpleClassify — Color and layout",
+            "type": "inspect.simple_classify_image",
+            "path": "classifier"
+          },
+          "score": 0.49,
+          "message": "defected_capsicum (49.00%) · confusion 44.90%",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": []
+        }
+      },
+      "confusion": {
+        "classification_completed_review": {
+          "id": "4e2b7238d9cb48dca8c6cf4ee3422795"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "01.jpg",
+          "session": "0620bbd7f92b444cab60cc64069b5f6d:file:13",
+          "sequence": 13,
+          "source": "test_images"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:56:31.353144+00:00",
+          "started_ns": 125354316360600,
+          "clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "inferred_start": true,
+          "finished_at": "2026-11-17T22:56:31.357218+00:00",
+          "finished_ns": 125354320433200,
+          "finished_clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "elapsed_ms": 4.0726
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "classifier",
+            "name": "SimpleClassify — Color and layout",
+            "type": "inspect.simple_classify_image",
+            "path": "classifier"
+          },
+          "score": 0.49,
+          "message": "defected_capsicum (49.00%) · confusion 44.90%",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": []
+        }
+      },
+      "probabilities": {
+        "classification_completed_review": {
+          "id": "4e2b7238d9cb48dca8c6cf4ee3422795"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "01.jpg",
+          "session": "0620bbd7f92b444cab60cc64069b5f6d:file:13",
+          "sequence": 13,
+          "source": "test_images"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:56:31.353144+00:00",
+          "started_ns": 125354316360600,
+          "clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "inferred_start": true,
+          "finished_at": "2026-11-17T22:56:31.357218+00:00",
+          "finished_ns": 125354320433200,
+          "finished_clock_id": "fa692e2157b647ff943ce56bfab6705a",
+          "elapsed_ms": 4.0726
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "classifier",
+            "name": "SimpleClassify — Color and layout",
+            "type": "inspect.simple_classify_image",
+            "path": "classifier"
+          },
+          "score": 0.49,
+          "message": "defected_capsicum (49.00%) · confusion 44.90%",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": []
+        }
+      }
+    }
+  },
+  "identity_scope": "Software completion identifiers do not establish physical exposure identity",
+  "inference_reexecuted": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "export_scope": "Exact inference manifest/model; training image paths are provenance only, not a portable training bundle. Save As preserves full training assets."
+}

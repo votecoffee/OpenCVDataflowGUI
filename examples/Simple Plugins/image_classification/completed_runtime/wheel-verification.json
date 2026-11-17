@@ -1,0 +1,20 @@
+{
+  "version": "0.3.2",
+  "sha256": "994529369244ff6ae07e4c645f3f197cd73ea23cd22391899ebeb883b7619e5d",
+  "core_commit": "b48b849fb3bdc368a7deef57548bb758479c793f",
+  "python_files": {
+    "opencv_simple_classifier/__init__.py": "4e04effe62c01ab2eb9c1882ba05ccf41240ae083f7e8c7f31783b1dc06449a3",
+    "opencv_simple_classifier/completed_review.py": "02fcf20f307cadc358f23c031e1314fe2565da9d82768a8e9bc29fed58fb3f12",
+    "opencv_simple_classifier/dataflow.py": "1eb5dac3c152e6a01d9dc0481488dec8026af3e3697948a2f3db0b79a42be5cb",
+    "opencv_simple_classifier/graphics.py": "ff65b383f0e591055ce78d00570545857eb6bd6dbc21cd0053b11900d5e3a281",
+    "opencv_simple_classifier/model.py": "96dc5e6e16a1618277a81afced27713b89db5485eb0933f19bd152f6573310fb",
+    "opencv_simple_classifier/qt_completed_review.py": "2a6ba279a9125219a326668f54a82f6a259c46cc4163bac15c9e61bd1c545464",
+    "opencv_simple_classifier/qt_review.py": "ed1ff9f2b12ce47d18bd3ad5bee9e11f1809e68cddb392aa06f28080da95c691",
+    "opencv_simple_classifier/qt_training.py": "8c9f0dd941d021f8f2fa6421d589f7c9d0640d580da94eeadd2873e88d350635",
+    "opencv_simple_classifier/surface_texture.py": "13e2096a5d067e7df8e563ab5490945b481d394cf547bdee75a1f019b8d3d7c7"
+  },
+  "source_exact_after_line_ending_normalization": true,
+  "original_mit_notice_preserved": true,
+  "private_repository_references_absent": true,
+  "environment_installation": false
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "test_images",
+      "type": "input.file",
+      "name": "VegQual held-out test images",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "images/test/fresh_potato/01.jpg"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "classifier",
+      "type": "inspect.simple_classify_image",
+      "name": "SimpleClassify \u2014 Rendering disabled control",
+      "parameters": {
+        "model": "assets/image_classification/vegqual-v4-surface/manifest.json",
+        "render_overlay": false
+      },
+      "position": [
+        340.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "label",
+        "score",
+        "confusion",
+        "probabilities"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "test_images",
+      "output": "image",
+      "target": "classifier",
+      "input": "image"
+    }
+  ]
+}

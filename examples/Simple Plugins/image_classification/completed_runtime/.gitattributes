@@ -1,0 +1,7 @@
+*.whl -text
+*.npy -text
+*.npz -text
+*.yml binary
+*.png -text
+*.jpg -text
+**/manifest.json binary
