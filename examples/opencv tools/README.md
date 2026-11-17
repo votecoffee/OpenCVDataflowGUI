@@ -50,3 +50,4 @@ For stabilized borders, neighboring samples and unchanged measured coverage, try
 For requested capture settings, actual backend replies and strict/report-only policies, try [capture negotiation](capture_negotiation/README.md).
 For wrapped QR labels, independent surface/module references and declared decoder misses, try [curved QR](curved_qr/README.md).
 For detector head formats, source boxes, class-aware NMS and a pinned real-photo model, try [DNN detection](dnn_detection/README.md).
+For paired images, numeric auxiliaries, four named inputs and explicit ticket/reference roles, try [multi-input inference](multi_input_inference/README.md).

@@ -752,6 +752,7 @@ def builtin_registry():
     from .motion_trajectory import CaptureMotionTrajectory, ReplayMotionTrajectory
     from .motion_trajectory_io import LoadMotionTrajectory, SaveMotionTrajectory
     from .mqtt import MQTT_BLOCKS
+    from .multi_inference import MULTI_INFERENCE_BLOCKS
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
     from .native_background import NATIVE_BACKGROUND_BLOCKS
@@ -1136,6 +1137,7 @@ def builtin_registry():
         ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
+        *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,
         FitFeatureCovariance,
         EvaluateImageFeatures,

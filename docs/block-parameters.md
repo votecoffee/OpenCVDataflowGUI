@@ -8507,6 +8507,77 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `fusion` | `true` |  |
 | `max_output_elements` | `1000000` | Total tensor values retained per activation (bounded). |
 
+## Multi-input ONNX inference (`ml.dnn_multi`)
+
+ML / DNN inference
+
+Inputs: `input_1` (data), `input_2` (data, optional), `input_3` (data, optional), `input_4` (data, optional).
+
+Input `input_1` — Connect prepared images or float32 tensor records/maps.
+
+Input `input_2` — Connect prepared images or float32 tensor records/maps.
+
+Input `input_3` — Connect prepared images or float32 tensor records/maps.
+
+Input `input_4` — Connect prepared images or float32 tensor records/maps.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Local ONNX model; relative paths resolve beside the project. |
+| `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` OpenCV 5 engine. Non-CPU targets require classic. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` Shared native inference setting. |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` Shared native inference setting. |
+| `fusion` | `true` | Shared native inference setting. |
+| `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. Total tensor values retained per activation (bounded). |
+| `active_inputs` | `2` | Value must be a whole number between 1 and 4. First N slots are required every activation; no last-value cache or partial inference. |
+| `primary_input` | `"input_1"` | `input_1`, `input_2`, `input_3`, `input_4` Owns output ticket, spatial/pyramid context and optional preprocessing. Must be Current. |
+| `ticket_policy` | `"same_ticket"` | `same_ticket`, `same_value`, `unchecked` Current inputs: full ticket identity, explicit kind/value pairing, or unchecked. Reference inputs are exempt. |
+| `maximum_input_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Bound each selected float32 tensor before conversion/allocation. |
+| `maximum_total_elements` | `4000000` | Value must be a whole number between 1 and 8e+06. Combined input element budget; native network workspace is separate. |
+| `input_1_name` | `"left"` | Exact model input name; distinct across all active slots. |
+| `input_1_shape` | `[1, 3, -1, -1]` | Expected axes; -1 permits variation if the model supports it. |
+| `input_1_tensor` | `""` | Empty for a tensor/one-entry map; otherwise select an output name. |
+| `input_1_role` | `"current"` | `current`, `reference` Current checks live tickets; Reference allows cached/constant input. |
+| `input_2_name` | `"right"` | Exact model input name; distinct across all active slots. |
+| `input_2_shape` | `[1, 3, -1, -1]` | Expected axes; -1 permits variation if the model supports it. |
+| `input_2_tensor` | `""` | Empty for a tensor/one-entry map; otherwise select an output name. |
+| `input_2_role` | `"current"` | `current`, `reference` Current checks live tickets; Reference allows cached/constant input. |
+| `input_3_name` | `"aux1"` | Exact model input name; distinct across all active slots. |
+| `input_3_shape` | `[1, 3, -1, -1]` | Expected axes; -1 permits variation if the model supports it. |
+| `input_3_tensor` | `""` | Empty for a tensor/one-entry map; otherwise select an output name. |
+| `input_3_role` | `"reference"` | `current`, `reference` Current checks live tickets; Reference allows cached/constant input. |
+| `input_4_name` | `"aux2"` | Exact model input name; distinct across all active slots. |
+| `input_4_shape` | `[1, 3, -1, -1]` | Expected axes; -1 permits variation if the model supports it. |
+| `input_4_tensor` | `""` | Empty for a tensor/one-entry map; otherwise select an output name. |
+| `input_4_role` | `"reference"` | `current`, `reference` Current checks live tickets; Reference allows cached/constant input. |
+
+## Image to DNN tensor (`ml.image_tensor`)
+
+ML / Tensor preparation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original ticketed image; returned unchanged with source coordinates.
+
+Input `mask` — Excluded source samples become zero before resize/normalization.
+
+Input `region` — Intersect with the mask on the source grid; keep original dimensions.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `224` | Value must be a whole number between 1 and 4096. Network image width after resize, pixels. |
+| `height` | `224` | Value must be a whole number between 1 and 4096. Network image height, pixels. |
+| `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` Explicit network channel order; this does not rescale source intensity units. |
+| `resize_mode` | `"stretch"` | `stretch`, `letterbox` Stretch axes or retain aspect ratio with centered rounded letterbox padding. |
+| `padding_value` | `0.0` | Value must be a finite number between -3.40282e+38 and 3.40282e+38. Letterbox intensity before normalization. |
+| `scale` | `0.00392156862745098` | Value must be a finite number between -3.40282e+38 and 3.40282e+38. Normalization is (pixel - mean) * scale / std, in chosen channel order. |
+| `mean` | `[0.0, 0.0, 0.0]` | One value per network channel, in original intensity units. |
+| `std` | `[1.0, 1.0, 1.0]` | One strictly positive divisor per network channel. |
+| `layout` | `"nchw"` | `nchw`, `nhwc` NCHW [1,C,H,W] or NHWC [1,H,W,C]; never guessed from the model. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Source pixel guard before conversion; graph copies are separate. |
+| `maximum_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Prepared tensor budget checked before resizing/allocation. |
+
 ## K-means samples (`ml.kmeans`)
 
 ML / Clustering
@@ -8572,6 +8643,20 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `contrast_threshold` | `0.0066667` |  |
 | `edge_threshold` | `10.0` |  |
 | `sigma` | `1.6` |  |
+
+## Create float32 tensor (`ml.make_tensor`)
+
+ML / Tensor preparation
+
+Inputs: `data` (data, optional).
+
+Input `data` — Optional scalar or flat numeric list, replacing the Values parameter.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `shape` | `[1, 3]` | Explicit positive axes. Their product must equal the flat value count. |
+| `values` | `[1.0, 1.0, 1.0]` | Fallback scalar/flat numeric list when Data is absent; converted to finite float32. |
+| `maximum_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Bound values before array allocation; graph snapshots are separate. |
 
 ## Recognize text (CTC ONNX) (`ml.recognize_text`)
 

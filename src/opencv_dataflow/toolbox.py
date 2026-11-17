@@ -108,7 +108,7 @@ IMPLEMENTATION_MODULES = {
     ),
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
     "xobjdetect": "hog",
-    "dnn": "detection_decode dnn_blocks ocr",
+    "dnn": "detection_decode dnn_blocks multi_inference ocr",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
     "ml": "svm_blocks",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "

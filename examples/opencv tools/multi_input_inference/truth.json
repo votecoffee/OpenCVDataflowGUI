@@ -1,0 +1,88 @@
+{
+  "license": "MIT - original numerical fixtures",
+  "cases": {
+    "paired_images": {
+      "scores": [
+        0.3567058823529412,
+        -0.11388235294117643,
+        -0.34917647058823525
+      ],
+      "label": "red"
+    },
+    "two_sources": {
+      "scores": [
+        0.5793725490196078,
+        0.10878431372549019,
+        -0.12650980392156863
+      ],
+      "label": "red"
+    },
+    "reference_input": {
+      "scores": [
+        0.5793725490196078,
+        0.10878431372549019,
+        -0.12650980392156863
+      ],
+      "label": "red"
+    },
+    "numeric_aux": {
+      "scores": [
+        0.39215686274509803,
+        0.6274509803921569,
+        0.0784313725490196
+      ],
+      "label": "green"
+    },
+    "nhwc": {
+      "scores": [
+        0.3567058823529412,
+        -0.11388235294117643,
+        -0.34917647058823525
+      ],
+      "label": "red"
+    },
+    "primary_second": {
+      "scores": [
+        0.3567058823529412,
+        -0.11388235294117643,
+        -0.34917647058823525
+      ],
+      "label": "red"
+    },
+    "four_inputs": {
+      "scores": [
+        3.1372549019607843,
+        1.2549019607843137,
+        0.3137254901960784
+      ],
+      "label": "red"
+    },
+    "wrong_shape": {
+      "error": "shape",
+      "scores": [
+        0.39215686274509803,
+        0.6274509803921569,
+        0.0784313725490196
+      ],
+      "label": "red"
+    },
+    "mismatched_tickets": {
+      "error": "different tickets",
+      "scores": [
+        0.5793725490196078,
+        0.10878431372549019,
+        -0.12650980392156863
+      ],
+      "label": "red"
+    }
+  },
+  "asset_sha256": {
+    "four.onnx": "980801f53ed726958ca34cdcd570d3b6ceac8589f813f85e386971ccc0511866",
+    "gains.onnx": "e7cc1679a366c9f24c7709d95dbe7ac7532742a194efac83b5fc96996b903840",
+    "left.png": "c6dceb5eccc5d3de9243c3759f438bab01d8180e77d996de5ebd22f8aa6027b6",
+    "nhwc.onnx": "35a6c8ac36ac908baec09ac1355e70e94155e7b7ee23535b233627a6e0c3ecda",
+    "pair.onnx": "eef4b2928dea580fa7201ef8807f2b3197e4c426ba414a630fd0212703183410",
+    "right.png": "163be1cf40b8866b138f706f16eed746d6e0f586ba357ad068686a94dc133b28",
+    "second_view/left.png": "163be1cf40b8866b138f706f16eed746d6e0f586ba357ad068686a94dc133b28"
+  }
+}

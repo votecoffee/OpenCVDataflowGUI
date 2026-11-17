@@ -89,7 +89,21 @@ class-agnostic native NMS and maps boxes back through preprocessing. It emits
 sortable/filterable source-frame collections and optional drawable labels/boxes.
 The generic inference block does not guess an export schema. See
 [detection contracts](object-detection.md) and [control/real-photo projects](<../examples/opencv tools/dnn_detection/README.md>).
-Segmentation and multi-input adapters remain separate roadmap work.
+Segmentation adapters remain separate roadmap work.
+
+**Multi-input ONNX inference** now binds up to four explicitly named float32
+tensors. **Image to DNN tensor** prepares each image independently; **Create
+float32 tensor** adapts numeric data or constants. Declared shapes, complete
+bindings, Current/Reference roles and ticket policies remain explicit. Primary
+input owns result coordinates and optional preprocessing. Shared recipe rules
+still apply. See [contracts](multi-input-inference.md) and
+[nine numerical examples](<../examples/opencv tools/multi_input_inference/README.md>).
+Image-set batching/dynamic-shape qualification and revisioned execution receipts
+remain separate roadmap work.
+
+Both inference blocks fetch all native terminal outputs once before selecting a
+requested subset/order, accommodating this OpenCV 5 engine's complete-output
+requirement. Unselected output allocations remain part of native network work.
 
 **Tensor to embedding vector** selects a tensor and flattens it or globally averages
 all axes except a configured channel axis. It accepts one-image batches, with

@@ -118,6 +118,8 @@ See the [industrial integration guide](<industrial integration/README.md>) for P
 
 ## OpenCV tools
 
+For independently prepared images/numeric tensors and complete named model bindings, try [multi-input inference](<opencv tools/multi_input_inference/README.md>).
+
 For detector inference, decoded box collections and suppression, try [DNN detection](<opencv tools/dnn_detection/README.md>).
 
 For wrapped-label decoding, sampled modules and source-geometry limits, try [curved QR](<opencv tools/curved_qr/README.md>).

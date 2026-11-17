@@ -6,6 +6,7 @@ import numpy as np
 from .core import Block, Port, Result
 from .images import format_image
 from .ml_common import file_key, local_path, selected_tensor, tensor_record
+from .parameter_validation import ValidationError
 from .processing import finite, image_value, integer, letterbox_bounds
 from .selection import SELECTION_INPUTS, selection_mask
 
@@ -129,47 +130,75 @@ class DNNInference(Block):
     close = reset_runtime
 
     def process(self, inputs):
-        p = self.parameters
-        blob, geometry = preprocess(inputs, p)
-        limit = integer(p["max_output_elements"], "Maximum output elements", 1, 8_000_000)
-        names = p["output_names"]
-        if (
-            not isinstance(names, list)
-            or any(not isinstance(n, str) or not n for n in names)
-            or len(set(names)) != len(names)
-        ):
-            raise ValueError("Output names must be a list of unique nonempty strings")
-        if (p["backend"] == "cuda") != p["target"].startswith("cuda"):
-            raise ValueError("CUDA backend and CUDA target must be selected together")
-        if p["target"] != "cpu" and p["engine"] != "classic":
-            raise ValueError("Select the classic engine for non-CPU targets")
-        if not p["fusion"] and p["engine"] != "classic":
-            raise ValueError("Select the classic engine to disable fusion")
-        if TARGETS[p["target"]] not in cv2.dnn.getAvailableTargets(BACKENDS[p["backend"]]):
-            raise ValueError(f"DNN target {p['target']} is unavailable for backend {p['backend']}")
-        path = local_path(self, p["model_path"])
-        key = (*file_key(path), p["engine"], p["backend"], p["target"], p["fusion"])
-        if key != self._key:
-            net = cv2.dnn.readNetFromONNX(
-                np.frombuffer(path.read_bytes(), np.uint8), ENGINES[p["engine"]]
-            )
-            if p["engine"] == "classic":
-                net.setPreferableBackend(BACKENDS[p["backend"]])
-                net.setPreferableTarget(TARGETS[p["target"]])
-                net.enableFusion(bool(p["fusion"]))
-            self._net, self._key = net, key
-        self._net.setInput(blob, p["input_name"])
-        names = names or list(self._net.getUnconnectedOutLayersNames())
-        values = self._net.forward(names)
-        if isinstance(values, np.ndarray):
-            values = [values]
-        if len(values) != len(names) or sum(v.size for v in values) > limit:
-            raise ValueError("Network output exceeds configured element limit")
-        tensors = {name: tensor_record(value, limit) for name, value in zip(names, values)}
+        blob, geometry = preprocess(inputs, self.parameters)
+        tensors, filename = self.infer_tensors(((self.parameters["input_name"], blob),))
         return Result(
             {"tensors": tensors, "preprocessing": geometry},
-            message=f"{path.name}: {len(tensors)} tensor outputs",
+            message=f"{filename}: {len(tensors)} tensor outputs",
         )
+
+    def infer_tensors(self, inputs, cache_token=()):
+        """Bind every input for this activation; never keep a partially rebound network."""
+        p = self.parameters
+        try:
+            limit = integer(p["max_output_elements"], "Maximum output elements", 1, 8_000_000)
+            names = p["output_names"]
+            if (
+                not isinstance(names, list)
+                or any(not isinstance(n, str) or not n for n in names)
+                or len(set(names)) != len(names)
+            ):
+                raise ValueError("Output names must be a list of unique nonempty strings")
+            if (p["backend"] == "cuda") != p["target"].startswith("cuda"):
+                raise ValueError("CUDA backend and CUDA target must be selected together")
+            if p["target"] != "cpu" and p["engine"] != "classic":
+                raise ValueError("Select the classic engine for non-CPU targets")
+            if not p["fusion"] and p["engine"] != "classic":
+                raise ValueError("Select the classic engine to disable fusion")
+            if TARGETS[p["target"]] not in cv2.dnn.getAvailableTargets(BACKENDS[p["backend"]]):
+                raise ValueError(
+                    f"DNN target {p['target']} is unavailable for backend {p['backend']}"
+                )
+            path = local_path(self, p["model_path"])
+            key = (
+                *file_key(path),
+                p["engine"],
+                p["backend"],
+                p["target"],
+                p["fusion"],
+                cache_token,
+            )
+            if key != self._key:
+                net = cv2.dnn.readNetFromONNX(
+                    np.frombuffer(path.read_bytes(), np.uint8), ENGINES[p["engine"]]
+                )
+                if p["engine"] == "classic":
+                    net.setPreferableBackend(BACKENDS[p["backend"]])
+                    net.setPreferableTarget(TARGETS[p["target"]])
+                    net.enableFusion(bool(p["fusion"]))
+                self._net, self._key = net, key
+            for name, blob in inputs:
+                self._net.setInput(blob, name)
+            available = list(self._net.getUnconnectedOutLayersNames())
+            names = names or available
+            if any(name not in available for name in names):
+                raise ValidationError("Select existing terminal model output names", "output_names")
+            # This OpenCV 5 engine requires the complete terminal-output set even when
+            # callers retain a subset. Preserve requested order after one native forward.
+            values = self._net.forward(available)
+            if isinstance(values, np.ndarray):
+                values = [values]
+            if len(values) != len(available):
+                raise ValueError("Network returned an unexpected number of terminal outputs")
+            by_name = dict(zip(available, values, strict=True))
+            values = [by_name[name] for name in names]
+            if sum(v.size for v in values) > limit:
+                raise ValueError("Network output exceeds configured element limit")
+            tensors = {name: tensor_record(value, limit) for name, value in zip(names, values)}
+            return tensors, path.name
+        except Exception:
+            self.reset_runtime()
+            raise
 
 
 class TensorVector(Block):

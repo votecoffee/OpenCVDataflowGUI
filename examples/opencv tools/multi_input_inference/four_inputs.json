@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "ml.image_tensor",
+      "name": "Image to DNN tensor",
+      "parameters": {
+        "width": 8,
+        "height": 8,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "layout": "nchw",
+        "maximum_image_pixels": 16777216,
+        "maximum_elements": 2000000
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "tensor",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "ml.image_tensor",
+      "name": "Image to DNN tensor",
+      "parameters": {
+        "width": 8,
+        "height": 8,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0,
+          0,
+          0
+        ],
+        "std": [
+          1,
+          1,
+          1
+        ],
+        "layout": "nchw",
+        "maximum_image_pixels": 16777216,
+        "maximum_elements": 2000000
+      },
+      "position": [
+        420,
+        360
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "tensor",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "multi",
+      "type": "ml.dnn_multi",
+      "name": "Multi-input ONNX inference",
+      "parameters": {
+        "model_path": "assets/four.onnx",
+        "output_names": [
+          "scores"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000,
+        "active_inputs": 4,
+        "primary_input": "input_1",
+        "ticket_policy": "same_ticket",
+        "maximum_input_elements": 2000000,
+        "maximum_total_elements": 4000000,
+        "input_1_name": "left",
+        "input_1_shape": [
+          1,
+          3,
+          8,
+          8
+        ],
+        "input_1_tensor": "",
+        "input_1_role": "current",
+        "input_2_name": "right",
+        "input_2_shape": [
+          1,
+          3,
+          8,
+          8
+        ],
+        "input_2_tensor": "",
+        "input_2_role": "current",
+        "input_3_name": "aux1",
+        "input_3_shape": [
+          1,
+          3,
+          8,
+          8
+        ],
+        "input_3_tensor": "",
+        "input_3_role": "current",
+        "input_4_name": "aux2",
+        "input_4_shape": [
+          1,
+          3,
+          8,
+          8
+        ],
+        "input_4_tensor": "",
+        "input_4_role": "current"
+      },
+      "position": [
+        880,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "input_1",
+        "input_2",
+        "input_3",
+        "input_4"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "input_info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "classify",
+      "type": "ml.classify",
+      "name": "Classify DNN tensor",
+      "parameters": {
+        "output_name": "scores",
+        "labels": [
+          "red",
+          "green",
+          "blue"
+        ],
+        "softmax": true,
+        "top_k": 5,
+        "minimum_confidence": 0.0,
+        "accepted_labels": [
+          "red"
+        ]
+      },
+      "position": [
+        1320,
+        0
+      ],
+      "exposed_inputs": [
+        "tensors"
+      ],
+      "exposed_outputs": [
+        "predictions",
+        "label",
+        "confidence"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original multi-input controls - MIT",
+      "description": "Original MIT images, ONNX controls, analytic references and graphs by OpenCVDataflowGUI contributors. No learned models, customer data or third-party assets. Independent image preparation supplies named float32 tensors. The models subtract RGB/gray, multiply channel gains or sum four branches. Cached constants/references explicitly bypass live-ticket matching. Two-source pairing uses matching filename values, without proving exposure synchronization. Wrong-shape and mismatched-ticket projects intentionally contain an invalid inference activation and must emit no predictions. See truth.json and README.",
+      "parameters": {},
+      "position": [
+        0,
+        -510
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "left",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "right",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "tensor",
+      "target": "multi",
+      "input": "input_1"
+    },
+    {
+      "source": "right",
+      "output": "tensor",
+      "target": "multi",
+      "input": "input_2"
+    },
+    {
+      "source": "left",
+      "output": "tensor",
+      "target": "multi",
+      "input": "input_3"
+    },
+    {
+      "source": "right",
+      "output": "tensor",
+      "target": "multi",
+      "input": "input_4"
+    },
+    {
+      "source": "multi",
+      "output": "tensors",
+      "target": "classify",
+      "input": "tensors"
+    }
+  ]
+}
