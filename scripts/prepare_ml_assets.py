@@ -29,6 +29,28 @@ DISK_ASSETS = (
         "b5b21d47ea24f2c5e501aec9c91b9716e4c8c3429a4dc1e615c133c4c9378335",
     ),
 )
+ALIKED_ASSETS = (
+    (
+        "aliked_n16.pth",
+        "https://raw.githubusercontent.com/Shiaoming/ALIKED/main/models/aliked-n16.pth",
+        "5be8704840ed662d9d8c561bf7279c222092674e7eb05fd0feab94899e9d82f2",
+    ),
+    (
+        "aliked_n16rot.pth",
+        "https://raw.githubusercontent.com/Shiaoming/ALIKED/main/models/aliked-n16rot.pth",
+        "ddf3abbf38e86f6a74540d214e1a9712c54b2d8551abc864542199f2347d7332",
+    ),
+    (
+        "aliked_n32.pth",
+        "https://raw.githubusercontent.com/Shiaoming/ALIKED/main/models/aliked-n32.pth",
+        "055283fd1624d3ab46a05c3b617b1a79a3f28d1f551737eef2d653e8c8232890",
+    ),
+    (
+        "aliked_lightglue.pth",
+        "https://github.com/cvg/LightGlue/releases/download/v0.1_arxiv/aliked_lightglue.pth",
+        "d975e965b105311a6143194852297dff4f02aea5cc2e10cecfed966ca0e22503",
+    ),
+)
 
 
 def tiny_onnx(path):
@@ -94,6 +116,11 @@ def main():
     parser.add_argument(
         "--disk", action="store_true", help="Prepare pinned DISK depth/epipolar and matcher weights"
     )
+    parser.add_argument(
+        "--aliked",
+        action="store_true",
+        help="Prepare three ALIKED presets and matching LightGlue weights",
+    )
     args = parser.parse_args()
     args.directory.mkdir(parents=True, exist_ok=True)
     print(tiny_onnx(args.directory / "rgb_average.onnx"))
@@ -107,6 +134,9 @@ def main():
         )
     if args.disk:
         for filename, url, digest in DISK_ASSETS:
+            prepare_lightglue(args.directory / filename, url=url, expected_sha256=digest)
+    if args.aliked:
+        for filename, url, digest in ALIKED_ASSETS:
             prepare_lightglue(args.directory / filename, url=url, expected_sha256=digest)
 
 

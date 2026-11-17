@@ -615,6 +615,7 @@ class WriteResults(Block):
 
 def builtin_registry():
     from .affine_features import AffineFeatures
+    from .aliked_features import ALIKED_BLOCKS
     from .alpha_composition import AlphaOver
     from .analysis_tools import ANALYSIS_BLOCKS
     from .animation_blocks import ANIMATION_BLOCKS
@@ -1177,6 +1178,7 @@ def builtin_registry():
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
         *DISK_BLOCKS,
+        *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
         CheckEpipolarCorrespondences,
         *STEREO3D_BLOCKS,

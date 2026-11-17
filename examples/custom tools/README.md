@@ -22,5 +22,8 @@ try [local features](local_features/README.md).
 For real learned extraction, known transforms and separate PCB photographs,
 try [DISK and LightGlue](disk_matching/README.md).
 
+For ALIKED presets, native subpixel/fallback controls and matching local weights,
+try [ALIKED and LightGlue](aliked_matching/README.md).
+
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
 For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).

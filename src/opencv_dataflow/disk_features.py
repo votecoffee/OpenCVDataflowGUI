@@ -23,18 +23,18 @@ def disk_arrays(value):
     return feature_arrays(value, model=MODEL, dimension=128, probability_scores=False)
 
 
-def prepare_image(inputs, p):
+def prepare_image(inputs, p, *, multiple=16, family="DISK"):
     source = inputs["image"]
     # Check geometry before whole-image conversion or allocation.
     h, w = source.shape[:2]
     if not 1 <= min(h, w) or max(h, w) > 16384 or h * w > p["maximum_image_pixels"]:
-        raise ValidationError("Source exceeds DISK image budget", "maximum_image_pixels")
+        raise ValidationError(f"Source exceeds {family} image budget", "maximum_image_pixels")
     image_value(source, (np.uint8, np.uint16, np.float32))
     pixels = opencv_image(source).astype(np.float32)
     if source.dtype != np.float32:
         pixels /= np.iinfo(source.dtype).max
     if np.any(pixels < 0) or np.any(pixels > 1):
-        raise ValidationError("DISK floating-point RGB/gray/alpha samples must be in [0,1]")
+        raise ValidationError(f"{family} floating-point RGB/gray/alpha samples must be in [0,1]")
     selection = selection_mask(inputs, source)
     if pixels.ndim == 2:
         rgb = np.repeat(pixels[..., None], 3, axis=2)
@@ -45,13 +45,19 @@ def prepare_image(inputs, p):
         rgb = pixels[..., :3][..., ::-1]
     factor = min(1.0, p["resize_long_edge"] / max(h, w)) if p["resize_long_edge"] else 1.0
     nw, nh = max(1, round(w * factor)), max(1, round(h * factor))
-    padded = [((n + 15) // 16) * 16 for n in (nw, nh)] if p["pad_if_not_divisible"] else [nw, nh]
-    if min(padded) < 32 or any(n % 16 for n in padded):
+    padded = (
+        [((n + multiple - 1) // multiple) * multiple for n in (nw, nh)]
+        if p["pad_if_not_divisible"]
+        else [nw, nh]
+    )
+    if min(padded) < 32 or any(n % multiple for n in padded):
         raise ValidationError(
-            "DISK network axes need at least 32 pixels and multiples of 16; use padding"
+            f"{family} needs network axes >=32 and multiples of {multiple}; use padding"
         )
     if padded[0] * padded[1] > p["maximum_network_pixels"]:
-        raise ValidationError("Padded DISK network exceeds pixel budget", "maximum_network_pixels")
+        raise ValidationError(
+            f"Padded {family} network exceeds pixel budget", "maximum_network_pixels"
+        )
     if (nw, nh) != (w, h):
         rgb = cv2.resize(
             rgb,
@@ -72,6 +78,7 @@ class DISKFeatures(Block):
     type_id, title = "ml.disk_features", "DISK learned features"
     category, block_type, subtype = "ML", "ML", "Feature matching"
     preview_safe = process_inputs_readonly = True
+    feature_family, feature_model, score_semantics = "DISK", MODEL, "raw_not_probability"
     inputs = (
         Port("image"),
         Port("mask", required=False, required_when_connected=True),
@@ -151,8 +158,8 @@ class DISKFeatures(Block):
         p = self.parameters if parameters is None else parameters
         for name, limits in self.parameter_ranges.items():
             if type(p[name]) not in (int, float) or limits.whole and type(p[name]) is not int:
-                raise ValidationError("Use typed numeric DISK settings", name)
-        if type(p["pad_if_not_divisible"]) is not bool:
+                raise ValidationError(f"Use typed numeric {self.feature_family} settings", name)
+        if "pad_if_not_divisible" in p and type(p["pad_if_not_divisible"]) is not bool:
             raise ValidationError("Padding is a checkbox", "pad_if_not_divisible")
         if not isinstance(p["weights_path"], str):
             raise ValidationError("Use a local model path", "weights_path")
@@ -165,22 +172,50 @@ class DISKFeatures(Block):
                 "Minimum count exceeds native top-N", "minimum_count", "max_features"
             )
 
+    def model_settings(self):
+        return ()
+
+    def build_model(self, kornia, state):
+        if not isinstance(state, dict) or not isinstance(state.get("extractor"), dict):
+            raise ValidationError("Use a DISK checkpoint with an extractor state dictionary")
+        model = kornia.feature.DISK(desc_dim=128)
+        model.load_state_dict(state["extractor"], strict=True)
+        return model
+
+    def working_image(self, inputs):
+        return prepare_image(inputs, self.parameters)
+
+    def native_arrays(self, rgb):
+        p = self.parameters
+        data = self._model(
+            self._torch.from_numpy(rgb)[None].to(self._device),
+            n=p["max_features"],
+            window_size=p["nms_window_size"],
+            score_threshold=p["detection_threshold"],
+            pad_if_not_divisible=p["pad_if_not_divisible"],
+        )[0]
+        return data.keypoints, data.descriptors, data.detection_scores
+
+    def validate_features(self, data):
+        return disk_arrays(data)
+
     def load_model(self):
         p = self.parameters
         path = local_path(self, p["weights_path"])
         identity = file_key(path)
         if identity[1] > 128 * 1024**2:
-            raise ValidationError("DISK checkpoint exceeds 128 MiB")
-        key = (*identity, p["weights_sha256"].lower(), p["device"])
+            raise ValidationError(f"{self.feature_family} checkpoint exceeds 128 MiB")
+        key = (*identity, p["weights_sha256"].lower(), p["device"], *self.model_settings())
         if key == self._key:
             return
         digest = digest_file(path)
         if p["weights_sha256"] and digest != p["weights_sha256"].lower():
-            raise ValidationError("DISK checkpoint SHA-256 mismatch", "weights_sha256")
+            raise ValidationError(
+                f"{self.feature_family} checkpoint SHA-256 mismatch", "weights_sha256"
+            )
         try:
             import kornia
             import torch
-            from kornia.feature import DISK
         except ImportError as exc:
             raise RuntimeError("Install optional PyTorch and Kornia; see docs/ml.md") from exc
         device = "cuda" if p["device"] == "auto" and torch.cuda.is_available() else p["device"]
@@ -188,34 +223,30 @@ class DISKFeatures(Block):
         if device == "cuda" and not torch.cuda.is_available():
             raise ValidationError("Requested CUDA is unavailable", "device")
         state = torch.load(path, map_location="cpu", weights_only=True)
-        if not isinstance(state, dict) or not isinstance(state.get("extractor"), dict):
-            raise ValidationError("Use a DISK checkpoint with an extractor state dictionary")
-        model = DISK(desc_dim=128)
-        model.load_state_dict(state["extractor"], strict=True)
+        model = self.build_model(kornia, state)
         self._model = model.eval().to(device)
         self._torch, self._device, self._key = torch, device, key
         self._digest, self._version = digest, kornia.__version__
 
     def capture(self, inputs):
         p, source = self.parameters, inputs["image"]
-        rgb, selection, scale, padded = prepare_image(inputs, p)
+        rgb, selection, scale, padded = self.working_image(inputs)
         self.load_model()
         with self._torch.inference_mode():
-            data = self._model(
-                self._torch.from_numpy(rgb)[None].to(self._device),
-                n=p["max_features"],
-                window_size=p["nms_window_size"],
-                score_threshold=p["detection_threshold"],
-                pad_if_not_divisible=p["pad_if_not_divisible"],
-            )[0]
-        xy = data.keypoints.detach().cpu().numpy().astype(np.float64)
-        desc = data.descriptors.detach().cpu().numpy()
-        scores = data.detection_scores.detach().cpu().numpy()
+            points, descriptors, confidence = self.native_arrays(rgb)
+        xy = points.detach().cpu().numpy().astype(np.float64)
+        desc = descriptors.detach().cpu().numpy()
+        scores = confidence.detach().cpu().numpy()
         xy = (xy + 0.5) / scale - 0.5
-        keep = [i for i, point in enumerate(xy) if contains(selection, point)]
+        keep = [
+            i
+            for i, point in enumerate(xy)
+            if contains(selection, point)
+            and ("minimum_score" not in p or scores[i] >= p["minimum_score"])
+        ]
         context = metadata(source)
         record = {
-            "model": MODEL,
+            "model": self.feature_model,
             "image_size": [source.shape[1], source.shape[0]],
             "points": xy[keep].tolist(),
             "descriptors": desc[keep].tolist(),
@@ -223,16 +254,16 @@ class DISKFeatures(Block):
             "coordinate_context": copy.deepcopy(context),
             "raw_indices": keep,
             "extractor": {
-                "family": "DISK",
+                "family": self.feature_family,
                 "weights_sha256": self._digest,
                 "backend": "kornia",
                 "version": self._version,
                 "device": self._device,
             },
         }
-        disk_arrays(record)
+        self.validate_features(record)
         report = {
-            "model": "disk_extraction_v1",
+            "model": self.feature_family.lower() + "_extraction_v1",
             "detector_executed": True,
             "raw_count": len(xy),
             "retained_count": len(keep),
@@ -241,7 +272,7 @@ class DISKFeatures(Block):
             "source_to_network_scale": scale,
             "coordinate_origin": "source_pixel_centers",
             "selection_policy": "post_top_n_center_filter",
-            "detector_scores": "raw_not_probability",
+            "detector_scores": self.score_semantics,
             "weights_sha256": self._digest,
             "device": self._device,
             "kornia": self._version,
@@ -269,9 +300,9 @@ class DISKFeatures(Block):
             outputs,
             payloads={k: copy.deepcopy(metadata(inputs["image"])) for k in outputs},
             passed=passed,
-            message=f"DISK: {count}/{report['raw_count']} features retained",
-            fail_reasons=[] if passed else ["disk.features"],
-            drawings={"DISK features": GraphicDrawing(tuple(objects))}
+            message=f"{self.feature_family}: {count}/{report['raw_count']} features retained",
+            fail_reasons=[] if passed else [self.feature_family.lower() + ".features"],
+            drawings={self.feature_family + " features": GraphicDrawing(tuple(objects))}
             if self.generate_graphics
             else {},
         )

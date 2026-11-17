@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/pcb2-0000.jpg",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_features",
+      "type": "ml.aliked_features",
+      "name": "ALIKED learned features",
+      "parameters": {
+        "weights_path": "../../../.local/models/aliked_n16.pth",
+        "weights_sha256": "5be8704840ed662d9d8c561bf7279c222092674e7eb05fd0feab94899e9d82f2",
+        "device": "cpu",
+        "max_features": 512,
+        "detection_threshold": 0.2,
+        "resize_long_edge": 0,
+        "resize_interpolation": "area",
+        "alpha_policy": "exclude",
+        "minimum_count": 4,
+        "maximum_image_pixels": 4194304,
+        "maximum_network_pixels": 524288,
+        "graphics_maximum_features": 256,
+        "model_name": "aliked-n16",
+        "detection_mode": "top_k",
+        "nms_radius": 2,
+        "minimum_score": 0.0
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/pcb2-0621.jpg",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        430
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_features",
+      "type": "ml.aliked_features",
+      "name": "ALIKED learned features",
+      "parameters": {
+        "weights_path": "../../../.local/models/aliked_n16.pth",
+        "weights_sha256": "5be8704840ed662d9d8c561bf7279c222092674e7eb05fd0feab94899e9d82f2",
+        "device": "cpu",
+        "max_features": 512,
+        "detection_threshold": 0.2,
+        "resize_long_edge": 0,
+        "resize_interpolation": "area",
+        "alpha_policy": "exclude",
+        "minimum_count": 4,
+        "maximum_image_pixels": 4194304,
+        "maximum_network_pixels": 524288,
+        "graphics_maximum_features": 256,
+        "model_name": "aliked-n16",
+        "detection_mode": "top_k",
+        "nms_radius": 2,
+        "minimum_score": 0.0
+      },
+      "position": [
+        380,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "ml.lightglue_aliked",
+      "name": "LightGlue ALIKED feature matcher",
+      "parameters": {
+        "weights_path": "../../../.local/models/aliked_lightglue.pth",
+        "device": "cpu",
+        "layers": 9,
+        "filter_threshold": 0.1,
+        "depth_confidence": 0.95,
+        "width_confidence": 0.99,
+        "flash": true,
+        "mixed_precision": false,
+        "minimum_matches": 8,
+        "minimum_inliers": 6,
+        "minimum_inlier_ratio": 0.5,
+        "geometry": "ransac",
+        "ransac_threshold": 3.0,
+        "ransac_confidence": 0.995,
+        "ransac_iterations": 2000,
+        "weights_sha256": "d975e965b105311a6143194852297dff4f02aea5cc2e10cecfed966ca0e22503",
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        800,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "query_features",
+        "reference_features"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "transform",
+        "pose",
+        "count",
+        "inliers",
+        "overlay",
+        "image",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1200,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1600,
+        430
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "ALIKED / LightGlue and image attribution",
+      "description": "ALIKED: Xiaoming Zhao, Xingming Wu, Weihai Chen, Peter C.Y. Chen, Qingsong Xu and Zhengguo Li (IEEE TIM 2023), BSD-3-Clause; Kornia and LightGlue (Lindenberger, Sarlin, Pollefeys, ICCV 2023), Apache-2.0. Models prepared separately. Original MIT texture controls by OpenCVDataflowGUI contributors. PCB photos: VisA, Zou, Jeong, Pemula, Zhang, Dabeer (ECCV 2022), CC BY 4.0. Prepared public images copied unchanged. Native threshold mode can fall back to mean score; Minimum score is independent. Empty/minimum_matches/strict_score intentionally fail. See README and SOURCES for source links and limits.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_features",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_features",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "match",
+      "input": "image"
+    },
+    {
+      "source": "reference_features",
+      "output": "features",
+      "target": "match",
+      "input": "reference_features"
+    },
+    {
+      "source": "query_features",
+      "output": "features",
+      "target": "match",
+      "input": "query_features"
+    },
+    {
+      "source": "match",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "match",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

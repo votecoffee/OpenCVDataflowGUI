@@ -2659,7 +2659,7 @@ P3	function	cv2.FaceDetectorYN_create	no static reference	-
 P3	class	cv2.FaceRecognizerSF	no static reference	-
 P3	method	cv2.FaceRecognizerSF.alignCrop	no static reference	-
 P3	method	cv2.FaceRecognizerSF.create	method name only	-
-P3	method	cv2.FaceRecognizerSF.feature	no static reference	-
+P3	method	cv2.FaceRecognizerSF.feature	method name only	-
 P3	method	cv2.FaceRecognizerSF.match	method name only	-
 P3	function	cv2.FaceRecognizerSF_create	no static reference	-
 P3	class	cv2.FarnebackOpticalFlow	no static reference	-
