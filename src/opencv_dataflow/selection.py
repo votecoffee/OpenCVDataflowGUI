@@ -44,7 +44,9 @@ def region_matrix(value):
     return matrix
 
 
-def rasterize(region, shape, *, _depth=0, _budget=None):
+def rasterize(region, shape, *, _depth=0, _budget=None, _run_budget=None):
+    if _run_budget is None:
+        _run_budget = [1_000_000]
     if _budget is None:
         _budget = [128]
     _budget[0] -= 1
@@ -58,6 +60,11 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
     ):
         raise ValueError("Region must use image_region_v1 and match image dimensions")
     kind = region["shape"]
+    if kind == "raster":
+        from .raster_regions import raster_mask
+
+        region_size(region)
+        return raster_mask(region, shape, _run_budget)
     if kind == "transformed":
         source = region.get("source")
         source_width, source_height = region_size(source)
@@ -68,7 +75,11 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
         if interpolation not in ("nearest", "linear") or not 0 < threshold <= 1:
             raise ValueError("Region sampling must be nearest/linear with threshold in (0,1]")
         original = rasterize(
-            source, (source_height, source_width), _depth=_depth + 1, _budget=_budget
+            source,
+            (source_height, source_width),
+            _depth=_depth + 1,
+            _budget=_budget,
+            _run_budget=_run_budget,
         )
         # Binary selections never inherit image border replication or interpolation colors.
         samples = original if interpolation == "nearest" else original.astype(np.float32) / 255
@@ -92,11 +103,15 @@ def rasterize(region, shape, *, _depth=0, _budget=None):
             or len(children) != (1 if operation == "invert" else 2)
         ):
             raise ValueError("Composite region needs a supported operation and one/two children")
-        a = rasterize(children[0], shape, _depth=_depth + 1, _budget=_budget)
+        a = rasterize(
+            children[0], shape, _depth=_depth + 1, _budget=_budget, _run_budget=_run_budget
+        )
         if operation == "invert":
             mask = cv2.bitwise_not(a)
         else:
-            b = rasterize(children[1], shape, _depth=_depth + 1, _budget=_budget)
+            b = rasterize(
+                children[1], shape, _depth=_depth + 1, _budget=_budget, _run_budget=_run_budget
+            )
             if operation == "difference":
                 mask = cv2.bitwise_and(a, cv2.bitwise_not(b))
             else:

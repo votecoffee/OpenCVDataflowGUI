@@ -184,6 +184,9 @@ image. The project needs no external images or camera.
 
 This is image-space affine/projective mapping. Lens-distortion/nonlinear remapping
 and calibrated physical-area conversion are not implemented by this block.
+Use [Remap image and selection](selection-remap.md) for a shared nonlinear image/ROI
+warp. Its exact scanline-run raster regions preserve holes and work with the
+selection consumers, composition and affine/projective transforms described here.
 
 ## Resample validity-mask coverage
 

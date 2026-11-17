@@ -1,0 +1,496 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/ramp_rgb16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "profile",
+      "type": "input.calibration",
+      "name": "Load calibration profile",
+      "parameters": {
+        "path": "assets/lens.json",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "maps",
+      "type": "calibration.lens_maps",
+      "name": "Build lens correction maps",
+      "parameters": {
+        "width": 160,
+        "height": 120,
+        "camera_matrix_mode": "custom",
+        "new_camera_matrix": [
+          [
+            110,
+            0,
+            79.5
+          ],
+          [
+            0,
+            115,
+            59.5
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "alpha": 0.0,
+        "center_principal_point": false,
+        "rotation_vector": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_rms_pixels": 1.0
+      },
+      "position": [
+        380,
+        350
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "map_x",
+        "map_y",
+        "rectified_calibration",
+        "valid_roi"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "circle",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          68,
+          56
+        ],
+        "radius": 36,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hole",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          64,
+          46,
+          18,
+          20
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        380,
+        -350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selection",
+      "type": "region.combine",
+      "name": "Combine regions",
+      "parameters": {
+        "operation": "difference"
+      },
+      "position": [
+        760,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "region_a",
+        "region_b"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "remap",
+      "type": "cv.remap_selection",
+      "name": "Remap image and selection",
+      "description": "Carry a whole selection through the image's remap.",
+      "documentation": "<p>Image and selection share the same remap. Border fills never add inspection support. Exact raster regions preserve holes. See docs/selection-remap.md for coverage, conservative negative-kernel support, frames and resource bounds.</p>",
+      "parameters": {
+        "interpolation": "linear",
+        "border": "replicate",
+        "border_value": 0.0,
+        "border_values": [],
+        "selection_rule": "coverage_threshold",
+        "selection_sampling": "linear",
+        "minimum_coverage": 0.5,
+        "emit_region": true,
+        "minimum_selected_pixels": 1,
+        "maximum_region_runs": 100000,
+        "maximum_graphics_points": 4096,
+        "maximum_pixels": 16000000,
+        "maximum_working_bytes": 536870912
+      },
+      "position": [
+        1140,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "region",
+        "coverage",
+        "valid_mask",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "region.measure",
+      "name": "Measure selected region",
+      "parameters": {
+        "min_area": 0,
+        "max_area": 0,
+        "min_coverage": 0.0,
+        "max_coverage": 1.0
+      },
+      "position": [
+        1520,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "area",
+        "coverage",
+        "centroid",
+        "bounds",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "statistics",
+      "type": "cv.image_statistics",
+      "name": "Image summary statistics",
+      "parameters": {
+        "channel": "auto",
+        "statistic": "mean",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        1520,
+        700
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "summary",
+        "selected_count",
+        "value",
+        "minimum_location",
+        "maximum_location"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1520,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1900,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original analytic lens controls - MIT",
+      "description": "Original MIT synthetic RGB16 ramp, Brown5 lens profile and projects by OpenCVDataflowGUI contributors. No customer or third-party images. Circle minus rectangle makes a selection with a hole. Image and selection share one nonlinear remap. truth.json uses analytic distortion and independent four-tap sampling, without executing the blocks. Areas are target pixels, not calibrated mm2. Wide demonstrates rejected border support even with replicated image pixels. Wrong pair intentionally rejects unrelated map components. See README for expected counts and supported semantics.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "profile",
+      "output": "profile",
+      "target": "maps",
+      "input": "calibration"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "circle",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hole",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "selection",
+      "input": "image"
+    },
+    {
+      "source": "circle",
+      "output": "region",
+      "target": "selection",
+      "input": "region_a"
+    },
+    {
+      "source": "hole",
+      "output": "region",
+      "target": "selection",
+      "input": "region_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "remap",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "remap",
+      "input": "region"
+    },
+    {
+      "source": "remap",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    },
+    {
+      "source": "remap",
+      "output": "region",
+      "target": "measure",
+      "input": "region"
+    },
+    {
+      "source": "remap",
+      "output": "image",
+      "target": "statistics",
+      "input": "image"
+    },
+    {
+      "source": "remap",
+      "output": "mask",
+      "target": "statistics",
+      "input": "mask"
+    },
+    {
+      "source": "remap",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "remap",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "maps",
+      "output": "map_x",
+      "target": "remap",
+      "input": "map_x"
+    },
+    {
+      "source": "maps",
+      "output": "map_y",
+      "target": "remap",
+      "input": "map_y"
+    }
+  ]
+}

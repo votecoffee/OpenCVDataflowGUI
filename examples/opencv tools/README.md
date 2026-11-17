@@ -41,3 +41,4 @@ For actual variable or unreliable clocks and independent time comparisons, try [
 For independent frame sampling with requested/actual time and bracket policies, try [video at time](video_time/README.md).
 For live reception, bounded reconnects and sequence resets, try [network video](network_video/README.md).
 For recorded media timing, stride and loop/reset inspection, try [paced video replay](paced_video/README.md).
+For whole selections through lens correction, exact holes and border validity, try [selection remap](selection_remap/README.md).

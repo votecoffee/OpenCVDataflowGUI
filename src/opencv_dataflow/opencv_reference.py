@@ -7,6 +7,8 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "cv.remap_selection": "remap",
+    "cv.remap_selection_packed": "remap convertMaps",
     "input.paced_video_file": "VideoCapture",
     "input.network_video": "VideoCapture.open VideoCapture.read",
     "input.video_at_time": "VideoCapture.set VideoCapture.read",

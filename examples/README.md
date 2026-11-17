@@ -92,7 +92,7 @@ See the [Simple Plugins guide](<Simple Plugins/README.md>) for setup, real-data 
 | [SimplePatternMatch on real PCB photographs](<Simple Plugins/pattern_matching/visa_pcb2/README.md>) | Train on one VisA PCB and transfer its mounting-hole datum to a separate photograph. |
 | [SimplePatternMatch](<Simple Plugins/pattern_matching/asymmetric_brackets/README.md>) | Locate synthetic brackets with direct and wired recipes, and inspect the pose and edge overlays. |
 | [SimpleSegmentation](<Simple Plugins/pixel_segmentation/README.md>) | Train foreground masks for brick mortar, a cup rim, PCB laminate, and inventory in real totes. |
-| [SimpleFringeScan retained reviews](<Simple Plugins/fringe_scan/README.md>) | File-only phase maps and analytic colored-cloud reviews, with explicit calibration and external simulated-data attribution. |
+| [SimpleFringeScan setup and execution](<Simple Plugins/fringe_scan/README.md>) | Retained native setup, references, ROI and known calibration; three one-block metric/phase execution examples with explicit expected availability judgments and source attribution. |
 | [Simple3DMeasure](<Simple Plugins/3d_measure/README.md>) | Review plane measurements on real T-LESS clouds and known/raised/missing generated surfaces with native RGB flyaround. |
 | [SimpleGDRNPP (experimental)](<Simple Plugins/gdrnpp/README.md>) | Review three rejected T-LESS pose results without inference, or explicitly load the isolated-worker setup plugin. [Cold/warm worker measurements](<Simple Plugins/gdrnpp/worker_cycles/README.md>) and [same-client resource preparation](<Simple Plugins/gdrnpp/resource_prepare/README.md>) provide supporting evidence. New-object training and broader pose accuracy remain open. |
 
@@ -121,6 +121,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 
 | Example | Demonstrates |
 | --- | --- |
+| [Whole nonlinear selections](<opencv tools/selection_remap/README.md>) | Correct RGB16 images and selections together; exact holes, coverage, border validity, packed-map precision and masked measurements. |
 | [25 template instances](<opencv tools/template_instances/README.md>) | Find a repeated fixed-scale template in a 25-part synthetic scene and emit a pose for each match. |
 | [3D pose and triangulation](<opencv tools/pose_3d/README.md>) | Project synthetic 3D points into two cameras, recover a pose with PnP, and triangulate points. |
 | [Absolute image error](<opencv tools/absolute_image_error/README.md>) | Compare mean, RMS, and maximum absolute error on two known deviations. |

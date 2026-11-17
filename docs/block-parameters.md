@@ -3433,6 +3433,64 @@ Input `packed_map` — Map from Pack remap coordinates. Match Nearest or Subpixe
 | `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
 | `border_value` | `0.0` |  |
 
+## Remap image and selection (`cv.remap_selection`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `map_x` (image), `map_y` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original image; selection shares its destination-to-source maps.
+
+Input `mask` — Optional uint8 selection, intersected with Region in the source image frame.
+
+Input `region` — Optional source rectangle/circle/polygon/composite/transformed/raster region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Float64 cubic is rejected because native boundary sampling truncates fractions. Use linear or convert to float32. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` Image extrapolation only; filled borders never add selection validity. |
+| `border_value` | `0.0` |  |
+| `border_values` | `[]` | Optional finite per-channel JSON list; empty uses scalar Border value. |
+| `selection_rule` | `"complete_footprint"` | `complete_footprint`, `coverage_threshold` Require the full image footprint inside the selection, or use coverage. |
+| `selection_sampling` | `"linear"` | `nearest`, `linear` Sampling for Coverage; also used by Coverage threshold selection. |
+| `minimum_coverage` | `0.5` | Value must be a finite number between 0 and 1. Coverage threshold only. Zero accepts any positive contribution. |
+| `emit_region` | `true` | Encode an exact raster region. Disable to skip noisy-mask encoding. |
+| `minimum_selected_pixels` | `1` | Value must be a whole number between 0 and 6.4e+07. Minimum supported selected count; zero permits empty masks. |
+| `maximum_region_runs` | `100000` | Value must be a whole number between 1 and 1e+06. Bound exact region encoding; independent of image/mask sampling. |
+| `maximum_graphics_points` | `4096` | Value must be a whole number between 0 and 100000. Bound decimated diagnostic contours; zero omits drawings. |
+| `maximum_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. Source/output pixel limit; axes are also limited to 16384 pixels. |
+| `maximum_working_bytes` | `536870912` | Value must be a whole number between 1 and 2.14748e+09. Estimated arrays; excludes native/RSS and runtime copies. |
+
+## Remap image and selection (packed) (`cv.remap_selection_packed`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `packed_map` (remap_map), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original image; selection shares its destination-to-source maps.
+
+Input `mask` — Optional uint8 selection, intersected with Region in the source image frame.
+
+Input `region` — Optional source rectangle/circle/polygon/composite/transformed/raster region.
+
+Input `packed_map` — Map from Pack remap coordinates. Match Nearest or Subpixel sampling.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Float64 cubic is rejected because native boundary sampling truncates fractions. Use linear or convert to float32. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` Image extrapolation only; filled borders never add selection validity. |
+| `border_value` | `0.0` |  |
+| `border_values` | `[]` | Optional finite per-channel JSON list; empty uses scalar Border value. |
+| `selection_rule` | `"complete_footprint"` | `complete_footprint`, `coverage_threshold` Require the full image footprint inside the selection, or use coverage. |
+| `selection_sampling` | `"linear"` | `nearest`, `linear` Sampling for Coverage; also used by Coverage threshold selection. |
+| `minimum_coverage` | `0.5` | Value must be a finite number between 0 and 1. Coverage threshold only. Zero accepts any positive contribution. |
+| `emit_region` | `true` | Encode an exact raster region. Disable to skip noisy-mask encoding. |
+| `minimum_selected_pixels` | `1` | Value must be a whole number between 0 and 6.4e+07. Minimum supported selected count; zero permits empty masks. |
+| `maximum_region_runs` | `100000` | Value must be a whole number between 1 and 1e+06. Bound exact region encoding; independent of image/mask sampling. |
+| `maximum_graphics_points` | `4096` | Value must be a whole number between 0 and 100000. Bound decimated diagnostic contours; zero omits drawings. |
+| `maximum_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. Source/output pixel limit; axes are also limited to 16384 pixels. |
+| `maximum_working_bytes` | `536870912` | Value must be a whole number between 1 and 2.14748e+09. Estimated arrays; excludes native/RSS and runtime copies. |
+
 ## Render mosaic tile (`cv.render_mosaic_tile`)
 
 Image processing / Geometry

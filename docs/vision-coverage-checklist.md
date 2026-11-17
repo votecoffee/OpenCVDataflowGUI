@@ -14,11 +14,11 @@ native calls or graph blocks implement it.
 
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| 1. Core and baseline 2D | 164 | 5 | 6 | 175 | 93.7% |
+| 1. Core and baseline 2D | 165 | 4 | 6 | 175 | 94.3% |
 | 2. ML and DNN | 10 | 11 | 41 | 62 | 16.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 227 | 47 | 196 | 470 | 48.3% |
+| **Overall** | 228 | 46 | 196 | 470 | 48.5% |
 
 <!-- coverage-summary:end -->
 
@@ -128,7 +128,7 @@ fixture or result needed to close the item.
 | S1-66 | Mean-shift color smoothing | pyrMeanShiftFiltering | Complete | cv.mean_shift_filter. Flatten local color variation while retaining boundaries for segmentation. |
 | S1-67 | Multi-reference color classification | Lab statistics and CIE76/CIEDE2000 distances | Complete | inspect.classify_lab. Rank configured reference colors and reject out-of-tolerance samples. |
 | S1-68 | Compare reference edge maps | distanceTransform and symmetric edge tolerances | Complete | inspect.compare_edge_maps. Report missing and added edges after allowing bounded position error. |
-| S1-69 | Map selections through nonlinear lens correction | remap and lens map validity | Partial | region.transform handles affine/projective mapping and calibration.undistort_lens_points maps points. Carry an entire source selection into the corrected image and verify a masked measurement through a nonlinear warp. |
+| S1-69 | Map selections through nonlinear lens correction | remap and lens map validity | Complete | cv.remap_selection and cv.remap_selection_packed sample the image and entire intersected selection together. Binary masks, exact bounded scanline-run regions with holes, fractional coverage, conservative kernel support and independent real-source validity retain corrected grids and tickets. Five original RGB16 projects check analytic Brown5 distortion, independent four-tap mask hashes/areas/centroids/channel means, packed versus float precision, wider replicated borders and rejected mixed map pairs in Debug/Lean. Existing region consumers and affine transforms accept raster regions. Bounded resources, graphics-off behavior, XML/editor controls and exception containment are qualified. Counts are output pixels, not physical area or reconstructed depth. See [contracts](selection-remap.md). |
 
 ### Geometry, filtering and photo operations
 

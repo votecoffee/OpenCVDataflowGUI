@@ -600,6 +600,10 @@ class Remap(Block):
         x, y = split_remap_fields(inputs)
         return x, y, lens_map_pair(self, list(x.shape[::-1]))
 
+    def border_fill(self, image):
+        value = finite(self.parameters["border_value"], "Border value")
+        return tuple([value] * image.shape[2]) if image.ndim == 3 else value
+
     def process(self, inputs):
         image = image_value(inputs["image"])
         if image.dtype == np.float64 and self.parameters["interpolation"] == "cubic":
@@ -608,8 +612,7 @@ class Remap(Block):
             )
         map1, map2, lens = self.coordinate_maps(inputs)
         payloads = lens_remap_payload(self, list(image.shape[1::-1]), list(map1.shape[1::-1]), lens)
-        value = finite(self.parameters["border_value"], "Border value")
-        fill = tuple([value] * image.shape[2]) if image.ndim == 3 else value
+        fill = self.border_fill(image)
         result = cv2.remap(
             image,
             map1,

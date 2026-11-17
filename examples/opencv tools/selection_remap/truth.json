@@ -1,0 +1,90 @@
+{
+  "license": "MIT - original repository fixtures",
+  "cases": {
+    "lens": {
+      "expected_error": false,
+      "output_size": [
+        160,
+        120
+      ],
+      "selected_pixels": 3780,
+      "valid_pixels": 19200,
+      "mask_sha256": "f37938b4cc4d85c3ef33b2a6864101d997f7571a7c5e3b9b482b8bee4fd05ff5",
+      "centroid": [
+        66.38756613756614,
+        55.54417989417989
+      ],
+      "channel_means": [
+        8242.957313618332,
+        6569.513542866581,
+        5347.426616880629
+      ],
+      "mean_absolute_tolerance": 1.0
+    },
+    "coverage": {
+      "expected_error": false,
+      "output_size": [
+        160,
+        120
+      ],
+      "selected_pixels": 4029,
+      "valid_pixels": 19200,
+      "mask_sha256": "e8400abc96a2be771f118eae568794b81b878d064b898e5c94ddfab8614d9d48",
+      "centroid": [
+        66.03028046661703,
+        55.555969223132294
+      ],
+      "channel_means": [
+        8209.903537705744,
+        6558.549912718515,
+        5327.74357661505
+      ],
+      "mean_absolute_tolerance": 1.0
+    },
+    "packed": {
+      "expected_error": false,
+      "output_size": [
+        160,
+        120
+      ],
+      "selected_pixels": 3820,
+      "valid_pixels": 19200,
+      "mask_sha256": "4e5b5e593ff9dcc85f0c47caaecd22bd2086a2a072fc5143a694b4c9eb17e7f8",
+      "centroid": [
+        66.47853403141362,
+        55.59083769633508
+      ],
+      "channel_means": [
+        8252.204515706806,
+        6574.397087696335,
+        5353.381053664922
+      ],
+      "mean_absolute_tolerance": 1.0
+    },
+    "wide": {
+      "expected_error": false,
+      "output_size": [
+        240,
+        180
+      ],
+      "selected_pixels": 1382,
+      "valid_pixels": 12663,
+      "mask_sha256": "e631c59b02c2100a86e18a7dcdf96e9c69f0a33b328ab596ac5805c86356f7d1",
+      "centroid": [
+        111.67727930535456,
+        87.18813314037627
+      ],
+      "channel_means": [
+        8232.2753471507,
+        6571.370980322102,
+        5342.397303615741
+      ],
+      "mean_absolute_tolerance": 1.0
+    },
+    "wrong_pair": {
+      "expected_error": true,
+      "reason": "mismatched lens-map pair"
+    }
+  },
+  "source_sha256": "44246fb7d6442d64306f4fba9786a30d14ac53a7afb6f4d0261517216a68ff34"
+}

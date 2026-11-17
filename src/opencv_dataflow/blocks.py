@@ -883,6 +883,7 @@ def builtin_registry():
     from .scan_stitching import StitchScanSequence
     from .scanline_motion import EstimateScanlineMotion
     from .segmentation import SEGMENTATION_BLOCKS
+    from .selection_remap import RemapSelection, RemapSelectionPacked
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shadow_compensation import CompensateReferenceShadows
     from .shape_fitting import (
@@ -955,6 +956,8 @@ def builtin_registry():
         NetworkVideo,
         VideoAtTime,
         VideoTiming,
+        RemapSelection,
+        RemapSelectionPacked,
         DecodeVideo,
         TiffFile,
         TiffPageAccess,
