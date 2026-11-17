@@ -8,9 +8,10 @@ from pathlib import Path
 
 import cv2
 import numpy as np
+from scipy.spatial import cKDTree
+
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.plugins import load_plugin
-from scipy.spatial import cKDTree
 
 
 @dataclass(frozen=True)
@@ -175,7 +176,17 @@ def panel(rgb, state, mask, title, text):
     high = np.minimum([x.max() + 19, y.max() + 19], rgb.shape[1::-1])
     crop = rgb[low[1] : high[1], low[0] : high[0]].copy()
     labels = state[low[1] : high[1], low[0] : high[0]]
-    colors = np.array([[0, 0, 0], [100, 230, 65], [210, 55, 245], [245, 135, 70], [45, 165, 255]])
+    colors = np.array(
+        [
+            [0, 0, 0],
+            [100, 230, 65],
+            [210, 55, 245],
+            [245, 135, 70],
+            [45, 165, 255],
+            [65, 230, 245],
+            [235, 95, 165],
+        ]
+    )
     active = labels > 0
     crop[active] = np.rint(crop[active] * 0.35 + colors[labels[active]] * 0.65).astype(np.uint8)
     scale = min(300 / crop.shape[1], 320 / crop.shape[0])
@@ -203,11 +214,11 @@ def panel(rgb, state, mask, title, text):
 
 def replay_project(output, object_id, capture, views):
     """Frozen derived-query review using built-in file inputs, never a pose detector."""
+    from opencv_simple_bin_picking.jaw_fit import POSE_FIT_COLORS
+
     from opencv_dataflow.assistant_api import ProjectSession
     from opencv_dataflow.cloud_io import write_cloud
     from opencv_dataflow.pointclouds import PointCloud
-
-    from opencv_simple_bin_picking.jaw_fit import POSE_FIT_COLORS
 
     folder = output / f"review_object{object_id}"
     (folder / "assets").mkdir(parents=True)
@@ -294,7 +305,6 @@ def summarize(cases):
 def compare(root, source, output):
     from opencv_simple_3d_locate import Camera as RenderCamera
     from opencv_simple_3d_locate import read_ply_mesh
-
     from opencv_simple_bin_picking.jaw import JawPlanner
     from opencv_simple_bin_picking.jaw_persistence import load_jaw_recipe
     from opencv_simple_bin_picking.jaw_specs import PartInstance, PartSurface

@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "sample_single",
+      "type": "input.cloud",
+      "name": "sample single",
+      "parameters": {
+        "path": "assets/sample_single.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "sample_four",
+      "type": "input.cloud",
+      "name": "sample four",
+      "parameters": {
+        "path": "assets/sample_four.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "mesh_single",
+      "type": "input.cloud",
+      "name": "mesh single",
+      "parameters": {
+        "path": "assets/mesh_single.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        800,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "mesh_four",
+      "type": "input.cloud",
+      "name": "mesh four",
+      "parameters": {
+        "path": "assets/mesh_four.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "toward_camera",
+      "type": "input.cloud",
+      "name": "toward camera",
+      "parameters": {
+        "path": "assets/toward_camera.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        400,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "away_camera",
+      "type": "input.cloud",
+      "name": "away camera",
+      "parameters": {
+        "path": "assets/away_camera.ply",
+        "units": "m",
+        "frame": "study_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        800,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": []
+}

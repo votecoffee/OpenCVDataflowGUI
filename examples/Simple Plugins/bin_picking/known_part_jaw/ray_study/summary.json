@@ -1,0 +1,227 @@
+{
+  "cases": 100,
+  "frozen_baseline_reports_exact": 40,
+  "groups": {
+    "before": {
+      "cases": 20,
+      "point_gate_accepted": 0,
+      "single_pixel": {
+        "testable_fraction": 0.7086791474396094,
+        "supported_expected_fraction": 0.5042147193537175,
+        "support_testable_fraction": 0.7384047082008753,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "single_visible_area": {
+        "testable_fraction": 0.5582640284651517,
+        "supported_expected_fraction": 0.3603656162295093,
+        "support_testable_fraction": 0.6795468000688156,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_pixel": {
+        "testable_fraction": 0.6180950814688653,
+        "supported_expected_fraction": 0.4560343778224675,
+        "support_testable_fraction": 0.7652498879405278,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_visible_area": {
+        "testable_fraction": 0.468903639375684,
+        "supported_expected_fraction": 0.31591601736149444,
+        "support_testable_fraction": 0.7127465895375977,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      }
+    },
+    "after": {
+      "cases": 20,
+      "point_gate_accepted": 0,
+      "single_pixel": {
+        "testable_fraction": 0.7963930767248772,
+        "supported_expected_fraction": 0.6480963117722084,
+        "support_testable_fraction": 0.8081573232613415,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "single_visible_area": {
+        "testable_fraction": 0.6498357046581129,
+        "supported_expected_fraction": 0.4812919642106584,
+        "support_testable_fraction": 0.7282261730229148,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_pixel": {
+        "testable_fraction": 0.7090908658082096,
+        "supported_expected_fraction": 0.5994084911087373,
+        "support_testable_fraction": 0.8389013574541831,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_visible_area": {
+        "testable_fraction": 0.562136727870147,
+        "supported_expected_fraction": 0.43407518543075296,
+        "support_testable_fraction": 0.7599099836287996,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      }
+    },
+    "lateral": {
+      "cases": 20,
+      "point_gate_accepted": 0,
+      "single_pixel": {
+        "testable_fraction": 0.6835386641101209,
+        "supported_expected_fraction": 0.14041643847493138,
+        "support_testable_fraction": 0.19277747830411524,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "single_visible_area": {
+        "testable_fraction": 0.6264547973004025,
+        "supported_expected_fraction": 0.09997590379910992,
+        "support_testable_fraction": 0.15812732982404207,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_pixel": {
+        "testable_fraction": 0.6479554698411885,
+        "supported_expected_fraction": 0.12494889546406603,
+        "support_testable_fraction": 0.1807408051817159,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_visible_area": {
+        "testable_fraction": 0.5942207073591294,
+        "supported_expected_fraction": 0.0871564677860279,
+        "support_testable_fraction": 0.14648567222801911,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      }
+    },
+    "toward_camera": {
+      "cases": 20,
+      "point_gate_accepted": 0,
+      "single_pixel": {
+        "testable_fraction": 0.909229880277924,
+        "supported_expected_fraction": 0.004429733489761853,
+        "support_testable_fraction": 0.004759732736957435,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "single_visible_area": {
+        "testable_fraction": 0.8486113229726051,
+        "supported_expected_fraction": 0.008363351638139591,
+        "support_testable_fraction": 0.009146539761438833,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_pixel": {
+        "testable_fraction": 0.8998496104065173,
+        "supported_expected_fraction": 0.003041305837519101,
+        "support_testable_fraction": 0.0033601446331322947,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      },
+      "four_visible_area": {
+        "testable_fraction": 0.8320434002299694,
+        "supported_expected_fraction": 0.005617309341690794,
+        "support_testable_fraction": 0.006328414953923294,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 20
+        }
+      }
+    },
+    "away_camera": {
+      "cases": 20,
+      "point_gate_accepted": 0,
+      "single_pixel": {
+        "testable_fraction": 0.008793993089807928,
+        "supported_expected_fraction": 0.0021341492291703235,
+        "support_testable_fraction": 0.37078333844772376,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 17
+        }
+      },
+      "single_visible_area": {
+        "testable_fraction": 0.012537870931457838,
+        "supported_expected_fraction": 0.0028236379999232873,
+        "support_testable_fraction": 0.40335748930320425,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 17
+        }
+      },
+      "four_pixel": {
+        "testable_fraction": 0.0038947049014290704,
+        "supported_expected_fraction": 0.0011053110532325942,
+        "support_testable_fraction": 0.4435465768799102,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 15
+        }
+      },
+      "four_visible_area": {
+        "testable_fraction": 0.0060628440889116736,
+        "supported_expected_fraction": 0.001899956381367272,
+        "support_testable_fraction": 0.4877256013789725,
+        "valid_metric_cases": {
+          "testable_fraction": 20,
+          "supported_expected_fraction": 20,
+          "support_testable_fraction": 15
+        }
+      }
+    }
+  },
+  "interpretation": "Means are descriptive capture/model averages, not probabilities or accuracy; perturbations are controlled hypotheses, not independently labeled negatives. Conditional support requires observability and sample counts. No gate is selected."
+}

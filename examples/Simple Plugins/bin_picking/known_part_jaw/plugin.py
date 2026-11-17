@@ -6,9 +6,9 @@ from pathlib import Path
 
 WHEEL = (
     Path(__file__).resolve().parent
-    / "releases/opencv_simple_bin_picking-0.1.0.dev9-py3-none-any.whl"
+    / "releases/opencv_simple_bin_picking-0.1.0.dev10-py3-none-any.whl"
 )
-EXPECTED = "1e84bf9e47468fffdda8fac8c553c379545a3b6606b0f29ded1612b39d2f2488"
+EXPECTED = "0ef50388dfbd0a9fd5bfffc9f5d7eafd988f3b5793b0cb06281893c27e0e55ae"
 LOCATE_WHEEL = (
     Path(__file__).resolve().parent
     / "releases/opencv_simple_3d_locate-0.1.0.dev20-py3-none-any.whl"

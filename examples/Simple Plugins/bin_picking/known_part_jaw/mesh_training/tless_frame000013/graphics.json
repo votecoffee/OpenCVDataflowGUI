@@ -1536,7 +1536,72 @@
       "renderer": "bounded_perspective_first_surface_v1",
       "acceptance_applied": false,
       "point_gate_unchanged": true,
-      "row_identity": "Full-image integer pixel ID"
+      "row_identity": "Full-image integer pixel ID",
+      "weighting": {
+        "model": "mesh_ray_weighting_diagnostics_v1",
+        "pixel": {
+          "status": "available",
+          "units": "rays",
+          "rays": 2269,
+          "expected_mass": 2269.0,
+          "testable_mass": 1706.0,
+          "state_mass": {
+            "supported": 963.0,
+            "contradiction": 743.0,
+            "occluded": 249.0,
+            "unknown": 314.0,
+            "ambiguous": 0.0,
+            "label_mismatch": 0.0
+          },
+          "observed_fraction": 0.8616130453944469,
+          "testable_fraction": 0.751873071837814,
+          "supported_expected_fraction": 0.4244160423093874,
+          "support_testable_fraction": 0.5644783118405627,
+          "contradiction_testable_fraction": 0.43552168815943726,
+          "label_mismatch_testable_fraction": 0.0,
+          "occluded_fraction": 0.10973997355663288,
+          "unknown_fraction": 0.13838695460555311,
+          "ambiguous_fraction": 0.0
+        },
+        "visible_area": {
+          "status": "available",
+          "units": "m2",
+          "invalid_weight_rays": 0,
+          "rays": 2269,
+          "expected_mass": 0.011039524021807776,
+          "testable_mass": 0.006255639420539165,
+          "state_mass": {
+            "supported": 0.003833503457652113,
+            "contradiction": 0.002422135962887052,
+            "occluded": 0.0036219743362122057,
+            "unknown": 0.0011619102650564051,
+            "ambiguous": 0.0,
+            "label_mismatch": 0.0
+          },
+          "observed_fraction": 0.8947499672303681,
+          "testable_fraction": 0.5666584363765688,
+          "supported_expected_fraction": 0.3472526034708839,
+          "support_testable_fraction": 0.6128076124505445,
+          "contradiction_testable_fraction": 0.38719238754945556,
+          "label_mismatch_testable_fraction": 0.0,
+          "occluded_fraction": 0.3280915308537994,
+          "unknown_fraction": 0.10525003276963173,
+          "ambiguous_fraction": 0.0
+        },
+        "acceptance_applied": false,
+        "testable_states": [
+          "supported",
+          "contradiction",
+          "label_mismatch"
+        ],
+        "excluded_from_conditional_support": [
+          "occluded",
+          "unknown",
+          "ambiguous"
+        ],
+        "scope": "Same first-surface rays; pixel count versus visible-area midpoint quadrature",
+        "interpretation": "Conditional support requires testable fraction and absolute evidence; neither weighting is a probability, calibrated confidence or acceptance gate"
+      }
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Retain triangle CAD and inspect first-surface agreement
 
-SimpleBinPicking Jaw `0.1.0.dev9` can retain original-frame triangle geometry
+SimpleBinPicking Jaw `0.1.0.dev10` can retain original-frame triangle geometry
 alongside its sampled contact model. **Cloud / mesh_fit** and the trainer's
 **Mesh fit** layer show a bounded first-surface diagnostic. Pose acceptance,
 contact and clearance continue to use the existing retained surface samples.
@@ -55,6 +55,24 @@ is marked derived; measured scene context stays separate. Metadata `mesh_fit`
 records full counts, residual quantiles, triangle count, ray-grid stride,
 availability/reason and **acceptance_applied=false**. Display rows are capped at
 256 per state per instance, so their density is not a percentage.
+
+Version dev10 adds explicit diagnostic denominators in `weighting`. **Testable
+fraction** is the supported, contradictory or label-mismatched ray population
+divided by all expected mesh rays. Foreground occlusion, missing depth and
+ambiguous neighborhoods cannot test the predicted surface. **Support/testable**
+is support divided by that testable population; it is unavailable when no ray
+is testable. A single supported ray can yield 100% conditional support, so always
+read it with testable fraction and absolute ray counts. The trainer shows these
+two values together. They do not alter acceptance.
+
+The `pixel` and `visible_area` summaries classify exactly the same rays. Pixel
+weighting counts camera rays. Visible area estimates surface area by midpoint
+quadrature, `z^2 * stride^2 / (fx * fy * abs(dot(normal, ray)))`, with the full
+perspective ray and outward unit normal. Silhouettes, partial cells and grazing
+incidence can bias this estimate; invalid area weights explicitly make that
+summary unavailable. It is not exact visible CAD area, an uncertainty model or
+a replacement for pixel counts. Both units and denominators are retained, with
+no minimum-coverage or conditional-score acceptance rule implied.
 
 Rasterization uses perspective-correct optical Z. Its grid is at most 640×640;
 triangle/pixel work is capped at four million pairs per pose, reducing grid

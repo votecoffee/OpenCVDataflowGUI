@@ -1,0 +1,32 @@
+[
+  {
+    "block": "sample_single",
+    "path": "assets/sample_single.ply",
+    "sha256": "0ff96dd62b87a4d312de2d7977f386443b6c91e63b4b0c7bf7b46afc45e8737f"
+  },
+  {
+    "block": "sample_four",
+    "path": "assets/sample_four.ply",
+    "sha256": "0ff96dd62b87a4d312de2d7977f386443b6c91e63b4b0c7bf7b46afc45e8737f"
+  },
+  {
+    "block": "mesh_single",
+    "path": "assets/mesh_single.ply",
+    "sha256": "d08fab52fe0d7d9ccfb143836058b7be9cd4d8407b39788a722a5cf06d99f4b9"
+  },
+  {
+    "block": "mesh_four",
+    "path": "assets/mesh_four.ply",
+    "sha256": "d08fab52fe0d7d9ccfb143836058b7be9cd4d8407b39788a722a5cf06d99f4b9"
+  },
+  {
+    "block": "toward_camera",
+    "path": "assets/toward_camera.ply",
+    "sha256": "a6ca3bca306b236d1bec8c0a50e68c7a47e5af90fd5ba032a18efabc13b40c25"
+  },
+  {
+    "block": "away_camera",
+    "path": "assets/away_camera.ply",
+    "sha256": "b38e97fdccb6565b1ddaad4bdac82b883daaac726cc1ae21ad2f452f22a125ed"
+  }
+]

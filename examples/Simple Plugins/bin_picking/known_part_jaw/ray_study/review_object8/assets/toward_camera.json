@@ -1,0 +1,43 @@
+{
+  "capture_id": "scene3_frame261",
+  "summary": {
+    "instance_id": "toward_camera",
+    "inspected_samples": 13058,
+    "counts": {
+      "supported": 60,
+      "contradiction": 12869,
+      "occluded": 122,
+      "unknown": 7,
+      "ambiguous": 0,
+      "label_mismatch": 0
+    },
+    "retained_counts": {
+      "supported": 60,
+      "contradiction": 256,
+      "occluded": 122,
+      "unknown": 7,
+      "ambiguous": 0,
+      "label_mismatch": 0
+    },
+    "rows_per_state_limit": 256,
+    "pose_tolerance_m": 0.003,
+    "nearest_residual_p05_p50_p95_m": [
+      -0.239514299577398,
+      -0.05715879543680924,
+      -0.03176064795533046
+    ],
+    "farthest_residual_p05_p50_p95_m": [
+      -0.239514299577398,
+      -0.05715879543680924,
+      -0.03176064795533046
+    ],
+    "residual_definition": "Predicted camera Z minus observed neighbor Z; all known rays",
+    "residual_scope": "Includes occlusion and discontinuities; not independent pose error",
+    "sampling": "Deterministic per-state subset; counts and quantiles use all tested rays"
+  },
+  "observations": false,
+  "integer_ray_queries": true,
+  "acceptance_applied": false,
+  "classification_neighbors": 1,
+  "qualification": "Frozen diagnostic queries; not accepted poses or sensor data"
+}
