@@ -266,7 +266,13 @@ def test_fixture_hashes_regeneration_and_json_xml_save_as(tmp_path):
     builder.build()
     for path in fresh.rglob("*"):
         if path.is_file():
-            assert path.read_bytes() == (EXAMPLES / path.relative_to(fresh)).read_bytes(), path
+            original = EXAMPLES / path.relative_to(fresh)
+            if path.suffix == ".json" and "blocks" in json.loads(path.read_bytes()):
+                # Reopened projects acquire new optional block defaults without migration.
+                with ProjectSession.open(original) as session:
+                    assert json.loads(path.read_bytes()) == session.graph.to_dict(), path
+            else:
+                assert path.read_bytes() == original.read_bytes(), path
     with pytest.raises(FileExistsError, match="preserved"):
         builder.build()
     with ProjectSession.open(EXAMPLES / "classic_rgb.json") as session:

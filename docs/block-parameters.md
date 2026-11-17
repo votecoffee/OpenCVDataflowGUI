@@ -8488,8 +8488,13 @@ Input `region` — Optional region intersected with the mask. Does not crop or a
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `output_name` | `""` | Exact tensor name; empty selects the first named output. |
-| `format` | `"xywh_scores"` | `xywh_scores`, `xywh_objectness`, `xyxy_score_class`, `ssd` Explicit row schema. XYWH scores suits decoded YOLOv8-style heads; objectness suits YOLOv5/YOLOX. |
+| `output_name` | `""` | Exact packed tensor name; empty selects the first. Ignored for ssd_heads. |
+| `format` | `"xywh_scores"` | `xywh_scores`, `xywh_objectness`, `xyxy_score_class`, `ssd`, `ssd_heads` Explicit row schema. XYWH scores suits decoded YOLOv8-style heads; objectness suits YOLOv5/YOLOX. SSD supports packed rows or explicitly named separate heads. |
+| `boxes_output_name` | `"bboxes"` | SSD heads only: exact boxes tensor, [N,4] or [1,N,4]. |
+| `classes_output_name` | `"labels"` | SSD heads only: exact explicit class-ID tensor, [N] or [1,N]. |
+| `scores_output_name` | `"scores"` | SSD heads only: exact confidence tensor, [N] or [1,N]. |
+| `count_output_name` | `""` | SSD heads only: optional [1] or [1,1] integer count; only the first count rows are active. Empty uses all rows. Storage shapes/row budget are checked first. |
+| `box_coordinate_order` | `"xyxy"` | `xyxy`, `yxyx` SSD heads only: XYXY or top/left/bottom/right (YXYX). |
 | `layout` | `"rows"` | `rows`, `channels_first` Rows [N,C] or channels-first [C,N], optionally with one leading batch of size one. SSD is fixed. |
 | `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Box coordinates relative to the network input; normalized values scale by its width/height. |
 | `grid_decode` | `"none"` | `none`, `yolox` YOLOX expands XY offsets and exponential sizes using the exact network stride grids. |
@@ -8531,8 +8536,13 @@ Input `region` — Source-grid circle/rectangle/polygon/raster selection; inters
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `output_name` | `""` | Exact tensor name; empty selects the first named output. |
-| `format` | `"xywh_scores"` | `xywh_scores`, `xywh_objectness`, `xyxy_score_class`, `ssd` Detection row schema. Prototype mode appends K coefficients after XYWH class scores/objectness. |
+| `output_name` | `""` | Exact packed tensor name; empty selects the first. Ignored for ssd_heads. |
+| `format` | `"xywh_scores"` | `xywh_scores`, `xywh_objectness`, `xyxy_score_class`, `ssd`, `ssd_heads` Detection row schema. Prototype mode appends K coefficients after XYWH class scores/objectness. |
+| `boxes_output_name` | `"bboxes"` | SSD heads only: exact boxes tensor, [N,4] or [1,N,4]. |
+| `classes_output_name` | `"labels"` | SSD heads only: exact explicit class-ID tensor, [N] or [1,N]. |
+| `scores_output_name` | `"scores"` | SSD heads only: exact confidence tensor, [N] or [1,N]. |
+| `count_output_name` | `""` | SSD heads only: optional [1] or [1,1] integer count; only the first count rows are active. Empty uses all rows. Storage shapes/row budget are checked first. |
+| `box_coordinate_order` | `"xyxy"` | `xyxy`, `yxyx` SSD heads only: XYXY or top/left/bottom/right (YXYX). |
 | `layout` | `"rows"` | `rows`, `channels_first` Rows [N,C] or channels-first [C,N], optionally with one leading batch of size one. SSD is fixed. |
 | `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Box coordinates relative to the network input; normalized values scale by its width/height. |
 | `grid_decode` | `"none"` | `none`, `yolox` YOLOX expands XY offsets and exponential sizes using the exact network stride grids. |
@@ -8640,8 +8650,13 @@ Input `region` — Optional region intersected with the mask. Does not crop or a
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `output_name` | `""` | Exact tensor name; empty selects the first named output. |
+| `output_name` | `""` | Exact packed tensor name; empty selects the first. Ignored for ssd_heads. |
 | `format` | `"xywh_scores_angle"` | `xywh_scores_angle`, `xywha_scores`, `xywha_objectness`, `xywha_score_class` Explicit center XYWH, angle and scores; scores-angle places angle last. |
+| `boxes_output_name` | `"bboxes"` | SSD heads only: exact boxes tensor, [N,4] or [1,N,4]. |
+| `classes_output_name` | `"labels"` | SSD heads only: exact explicit class-ID tensor, [N] or [1,N]. |
+| `scores_output_name` | `"scores"` | SSD heads only: exact confidence tensor, [N] or [1,N]. |
+| `count_output_name` | `""` | SSD heads only: optional [1] or [1,1] integer count; only the first count rows are active. Empty uses all rows. Storage shapes/row budget are checked first. |
+| `box_coordinate_order` | `"xyxy"` | `xyxy`, `yxyx` SSD heads only: XYXY or top/left/bottom/right (YXYX). |
 | `layout` | `"rows"` | `rows`, `channels_first` Rows [N,C] or channels-first [C,N], optionally with one leading batch of size one. SSD is fixed. |
 | `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Box coordinates relative to the network input; normalized values scale by its width/height. |
 | `score_activation` | `"probability"` | `probability`, `sigmoid` Probability validates [0,1]; sigmoid explicitly converts class/objectness logits. |

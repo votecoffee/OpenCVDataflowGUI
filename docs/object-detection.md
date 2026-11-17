@@ -15,13 +15,39 @@ CPU execution. There are no model downloads during graph loading or execution.
 | `xywh_objectness` | center X/Y, width/height, objectness, class scores | Decoded YOLOv5-style or raw YOLOX heads |
 | `xyxy_score_class` | left/top/right/bottom, score, class ID | Explicit postprocessed detections |
 | `ssd` | image ID, class ID, score, left/top/right/bottom | Single-image SSD detection output |
+| `ssd_heads` | explicitly named boxes, classes, scores; optional valid count | Separate-head postprocessed SSD exports |
 
 Select rows `[N,C]` or channels-first `[C,N]`, optionally preceded by one batch
 dimension of size one. SSD uses `[N,7]`, `[1,N,7]` or `[1,1,N,7]`; negative image
 IDs mark unused rows, and positive IDs reject as another batch. Use the
 [batch inference adapter](batch-inference.md) and unpack one image before decoding.
-Empty detections use low-score/padding rows; the
-current `tensor_v1` contract requires nonempty arrays.
+Empty detections can use low-score/padding rows or explicitly shaped zero-row
+dynamic outputs; inference and decoding preserve those empty tensor records.
+
+**SSD heads** selects three distinct output names. Boxes must be `[N,4]` or
+`[1,N,4]`, classes and scores `[N]` or `[1,N]`; sizes must agree and batch size
+must be one. Choose **XYXY** or **YXYX** box order explicitly. An optional count
+head must be `[1]` or `[1,1]` with an integer in `0..N`. Only the first count
+rows are active; padding is ignored after storage shapes, finite values and raw-row
+budgets are checked. Without a count head, all rows are active. Packed output name
+and layout settings are unused for this format. No head names or coordinate order
+are guessed. Empty dynamic heads are supported by the bounded `tensor_v1` path.
+The same class-offset/filter, score, source-coordinate, selection, border and NMS
+policies apply to packed and separate-head SSD. The dropdown controls are shared
+with the inspector and saved projects.
+
+For an actual pretrained export, try the
+[pinned SSD example](<../examples/opencv tools/ssd_detection/README.md>).
+Its explicit preparation step creates a sealed local model/preprocessing bundle;
+Save As copies the bundle and model credits/license. The New-engine CPU path,
+native int64 class IDs transported as exact small float32 IDs, independent native
+preprocessing/box references, hand-marked cup annotation, failed gates and clean
+empty results are checked. The export already performs NMS, so additional
+suppression is disabled. This qualifies that export, without claiming arbitrary
+SSD anchors, quantized heads, accelerator execution or detector accuracy.
+The unsupported Classic import can emit a native Windows fault diagnostic on the
+qualified build; its rejection probe runs in a separate process. Sealed settings
+reject engine changes before native import. The New-engine worker exits cleanly.
 
 Select network-pixel or normalized coordinates explicitly. **Grid decode:
 yolox** requires XYWH/objectness network-pixel rows and an exact declared stride

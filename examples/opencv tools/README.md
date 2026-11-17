@@ -75,3 +75,5 @@ For labeled image sets, grouped splits, confusion matrices and explicit wrong/re
 For source-box labels, IoU matches, precision/recall/AP and duplicate/miss/error controls, try [detector evaluation](detector_evaluation/README.md).
 
 For explicit Classic/New/Auto loading, frozen snapshots and native rejection controls, try [ONNX engine dispatch](dnn_engines/README.md).
+
+For a pinned pretrained SSD model, separate output heads, source-image graphics and a hand-marked real photograph, try [SSD detection](ssd_detection/README.md).

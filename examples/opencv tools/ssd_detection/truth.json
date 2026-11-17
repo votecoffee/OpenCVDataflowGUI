@@ -1,0 +1,44 @@
+{
+  "annotation": {
+    "size": [
+      600,
+      400
+    ],
+    "objects": [
+      {
+        "id": "cup",
+        "label": "cup",
+        "bbox": [
+          170,
+          18,
+          245,
+          292
+        ]
+      }
+    ]
+  },
+  "cases": {
+    "coffee": [
+      1,
+      true
+    ],
+    "selected_out": [
+      0,
+      false
+    ],
+    "confidence_fail": [
+      0,
+      false
+    ],
+    "count_fail": [
+      1,
+      false
+    ],
+    "empty": [
+      0,
+      false
+    ]
+  },
+  "annotation_method": "Independently hand-marked outer cup including handle, excluding saucer",
+  "iou_threshold": 0.6
+}

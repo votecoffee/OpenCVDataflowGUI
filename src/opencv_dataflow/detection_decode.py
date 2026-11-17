@@ -79,7 +79,60 @@ def probability(values, mode):
     return values
 
 
+def ssd_head_rows(tensors, p):
+    """Normalize explicitly named single-image SSD heads into DetectionOutput rows."""
+    heads = {}
+    for key in (
+        "boxes_output_name",
+        "classes_output_name",
+        "scores_output_name",
+        "count_output_name",
+    ):
+        name = p[key]
+        if not name:
+            continue
+        record = tensors.get(name) if isinstance(tensors, dict) else None
+        if not isinstance(record, dict) or record.get("dtype") != "float32":
+            raise ValidationError("Select existing dequantized float32 SSD heads", key)
+        try:
+            heads[key] = selected_tensor(tensors, name, allow_empty=True).astype(np.float64)
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValidationError(str(exc), key) from exc
+    boxes = heads["boxes_output_name"]
+    if boxes.ndim == 3 and boxes.shape[0] == 1:
+        boxes = boxes[0]
+    if boxes.ndim != 2 or boxes.shape[1] != 4:
+        raise ValidationError("SSD boxes need [N,4] or [1,N,4]", "boxes_output_name")
+    length = len(boxes)
+    if length > p["maximum_raw_rows"]:
+        raise ValidationError("SSD heads exceed the raw-row budget", "maximum_raw_rows")
+    vectors = []
+    for key in ("classes_output_name", "scores_output_name"):
+        values = heads[key]
+        if values.ndim == 2 and values.shape[0] == 1:
+            values = values[0]
+        if values.shape != (length,):
+            raise ValidationError("SSD classes/scores need matching [N] or [1,N]", key)
+        vectors.append(values)
+    count = length
+    if p["count_output_name"]:
+        values = heads["count_output_name"]
+        if (
+            values.shape not in ((1,), (1, 1))
+            or values.item() != np.floor(values.item())
+            or not 0 <= values.item() <= length
+        ):
+            raise ValidationError("SSD count needs one integer in 0..N", "count_output_name")
+        count = int(values.item())
+    boxes = boxes[:count]
+    if p["box_coordinate_order"] == "yxyx":
+        boxes = boxes[:, [1, 0, 3, 2]]
+    return np.column_stack((np.zeros(count), vectors[0][:count], vectors[1][:count], boxes))
+
+
 def tensor_rows(inputs, p):
+    if p["format"] == "ssd_heads":
+        return ssd_head_rows(inputs["tensors"], p)
     try:
         tensors = inputs["tensors"]
         chosen = tensors.get(p["output_name"]) if p["output_name"] else next(iter(tensors.values()))
@@ -129,10 +182,11 @@ def candidates(values, p, size):
         valid = objectness > p["objectness_threshold"] if start == 5 else np.ones(len(values), bool)
         boxes = values[:, :4].copy()
     else:
-        class_ids = values[:, 1] if kind == "ssd" else values[:, 5]
-        raw_scores = np.where(values[:, 0] >= 0, values[:, 2], 0) if kind == "ssd" else values[:, 4]
+        ssd = kind in ("ssd", "ssd_heads")
+        class_ids = values[:, 1] if ssd else values[:, 5]
+        raw_scores = np.where(values[:, 0] >= 0, values[:, 2], 0) if ssd else values[:, 4]
         confidence = probability(raw_scores, p["score_activation"])
-        boxes = values[:, 3:7].copy() if kind == "ssd" else values[:, :4].copy()
+        boxes = values[:, 3:7].copy() if ssd else values[:, :4].copy()
         valid = np.ones(len(values), bool)
         if kind == "ssd":
             valid &= values[:, 0] >= 0  # Negative image IDs mark unused SSD rows.
@@ -199,6 +253,11 @@ class DecodeDetections(Block):
     defaults = {
         "output_name": "",
         "format": "xywh_scores",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
         "layout": "rows",
         "coordinate_units": "network_pixels",
         "grid_decode": "none",
@@ -223,7 +282,8 @@ class DecodeDetections(Block):
         "maximum_image_pixels": 16_777_216,
     }
     parameter_choices = {
-        "format": ("xywh_scores", "xywh_objectness", "xyxy_score_class", "ssd"),
+        "format": ("xywh_scores", "xywh_objectness", "xyxy_score_class", "ssd", "ssd_heads"),
+        "box_coordinate_order": ("xyxy", "yxyx"),
         "layout": ("rows", "channels_first"),
         "coordinate_units": ("network_pixels", "normalized"),
         "grid_decode": ("none", "yolox"),
@@ -245,10 +305,18 @@ class DecodeDetections(Block):
         "maximum_image_pixels": NumericRange(1, 64_000_000, whole=True),
     }
     parameter_help = {
-        "output_name": "Exact tensor name; empty selects the first named output.",
+        "output_name": "Exact packed tensor name; empty selects the first. Ignored for ssd_heads.",
+        "boxes_output_name": "SSD heads only: exact boxes tensor, [N,4] or [1,N,4].",
+        "classes_output_name": "SSD heads only: exact explicit class-ID tensor, [N] or [1,N].",
+        "scores_output_name": "SSD heads only: exact confidence tensor, [N] or [1,N].",
+        "count_output_name": (
+            "SSD heads only: optional [1] or [1,1] integer count; only the first count rows "
+            "are active. Empty uses all rows. Storage shapes/row budget are checked first."
+        ),
+        "box_coordinate_order": "SSD heads only: XYXY or top/left/bottom/right (YXYX).",
         "format": (
             "Explicit row schema. XYWH scores suits decoded YOLOv8-style heads; objectness "
-            "suits YOLOv5/YOLOX."
+            "suits YOLOv5/YOLOX. SSD supports packed rows or explicitly named separate heads."
         ),
         "layout": (
             "Rows [N,C] or channels-first [C,N], optionally with one leading batch of size "
@@ -343,6 +411,19 @@ class DecodeDetections(Block):
                 raise ValidationError("Use typed numeric decoder settings", name)
         if not isinstance(p["output_name"], str) or len(p["output_name"]) > 256:
             raise ValidationError("Output name must be text up to 256 characters", "output_name")
+        head_keys = (
+            "boxes_output_name",
+            "classes_output_name",
+            "scores_output_name",
+            "count_output_name",
+        )
+        for name in head_keys:
+            if not isinstance(p[name], str) or len(p[name]) > 256:
+                raise ValidationError("Head name must be text up to 256 characters", name)
+        if p["format"] == "ssd_heads":
+            names = [p[name] for name in head_keys if p[name]]
+            if any(not p[name].strip() for name in head_keys[:3]) or len(set(names)) != len(names):
+                raise ValidationError("SSD head names must be nonempty and distinct", *head_keys)
         for name in ("nms_enabled", "class_agnostic_nms"):
             if type(p[name]) is not bool:
                 raise ValidationError("Use a checkbox boolean", name)
@@ -510,6 +591,18 @@ class DecodeDetections(Block):
         report = {
             "model": "object_detection_decode_v1",
             "format": p["format"],
+            "ssd_heads": {
+                key: p[key]
+                for key in (
+                    "boxes_output_name",
+                    "classes_output_name",
+                    "scores_output_name",
+                    "count_output_name",
+                    "box_coordinate_order",
+                )
+            }
+            if p["format"] == "ssd_heads"
+            else None,
             "layout": p["layout"],
             "grid_decode": p["grid_decode"],
             "raw_rows": len(rows),
