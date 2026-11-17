@@ -56,6 +56,7 @@ The `context` argument is a `PluginDialogContext` with the following members.
 | `snapshot_input_data(port)` | Returns a private `ValuePacket` for the latest published value and payload on a wired `data` input. |
 | `snapshot_input_cloud(port)` | Returns a private `ValuePacket` for the latest published point cloud and payload on a wired `cloud` input. |
 | `snapshot_processed_inputs(ports=None)` | Copies selected retained inputs from one completed execution of the dialog's block into a `PluginProcessedInputs` bundle. |
+| `snapshot_processed_execution(input_ports=None, output_ports=None)` | Copies selected retained input/output packets atomically from one completion into `PluginProcessedExecution`. |
 | `snapshot_connected_inputs(ports=None)` | Copies current wired values together into a `PluginConnectedInputs` bundle, even when the dialog's block has never run successfully. |
 | `output_revision` | Number of result publications received by the editor since the popup opened. Starts at zero. |
 | `subscribe_outputs(callback)` | Calls `callback(revision)` on the GUI thread after a publication and returns an unsubscribe function. |
@@ -145,6 +146,43 @@ the Debug profile. Switching profiles alone does not recreate history. Captures
 on another thread, after popup closure, or while the selected block object is
 executing raise `RuntimeError` without waiting for work to finish. During a
 modeless graph run, the editor's last completed publication remains available.
+
+### Review one completed execution without rerunning
+
+For a matcher that declares `matches` and `review` outputs:
+
+```python
+completed = context.snapshot_processed_execution(
+    input_ports=["image"], output_ports=["matches", "review"]
+)
+image = completed.inputs["image"]
+matches = completed.outputs["matches"]
+review = completed.outputs["review"]
+# Values and arbitrary namespaced payloads are private copies from the same run.
+```
+
+`PluginProcessedExecution` extends `PluginProcessedInputs` with `outputs`, `score`
+and `message`. Each input/output entry is a `ValuePacket`; output payloads retain
+the plugin's own completion/model-review tokens unchanged. A ticket, timing span,
+execution count or publication revision alone is not a unique invocation identity.
+Plugins own their immutable completed-model/fit caches and their correlation tokens;
+the context does not reload a recipe, retrain, search, execute, or mutate drafts.
+
+Both subsets default to all available declared ports. Pass `[]` to avoid copying
+an unneeded side, and request only needed outputs to avoid duplicating overlay
+images. `NO_VALUE` outputs and absent optional inputs are omitted by default;
+requesting one explicitly, an unknown name, or a duplicate rejects the whole capture.
+The selected block's execution lock protects the joint copy and status. Captures
+have the same owner-thread, active/closed and previous-completion rules as input
+snapshots. A rejected newer input leaves the earlier completed pair available;
+a processing exception makes it unavailable. The private copy can outlive the popup.
+
+Both input and output preview retention are required. Lean summaries are never
+returned as real output values. Output availability belongs to the completed run,
+so switching to Debug after an unretained completion does not recreate its data;
+run again in Debug. The internal retention marker is not a primary output,
+serialized project field or connection payload. It does not add image copies to
+processing; the API copies only when explicitly called.
 
 ## Capture a connected bundle before training
 

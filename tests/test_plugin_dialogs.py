@@ -194,6 +194,16 @@ def test_modeless_dialog_captures_two_runs_and_stages_during_execution(
         assert bundle.output_revision == revision and bundle.passed
         assert bundle.inputs["image"].payload["ticket"] == image.payload["ticket"]
         assert np.all(bundle.inputs["image"].value == expected)
+        completion = context.snapshot_processed_execution(["image"], ["image"])
+        assert completion.execution_count == revision and completion.output_revision == revision
+        assert (
+            completion.outputs["image"].payload["ticket"]
+            == bundle.inputs["image"].payload["ticket"]
+        )
+        np.testing.assert_array_equal(
+            completion.outputs["image"].value, block.last_result.outputs["image"]
+        )
+        assert np.all(completion.inputs["image"].value == expected)
         if expected == 23:
             reference = image
             reference_bundle = bundle

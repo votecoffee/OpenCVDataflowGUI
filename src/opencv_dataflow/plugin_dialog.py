@@ -61,6 +61,15 @@ class PluginProcessedInputs:
 
 
 @dataclass(frozen=True)
+class PluginProcessedExecution(PluginProcessedInputs):
+    """Selected private input/output packets belonging to one completed execution."""
+
+    outputs: dict[str, ValuePacket]
+    score: float | None
+    message: str
+
+
+@dataclass(frozen=True)
 class PluginConnectedInputs:
     """Private wired values from one editor publication, not a physical exposure."""
 
@@ -128,7 +137,7 @@ class PluginDialogContext:
                     continue
                 try:
                     callback(revision)
-                except (Exception, SystemExit):
+                except Exception, SystemExit:
                     self._output_callbacks.pop(token, None)
                     report_error("Plugin output subscriber failed and was removed")
         finally:
@@ -222,6 +231,17 @@ class PluginDialogContext:
         Call on the context's owning GUI thread before handing the bundle to a worker.
         The snapshot ID identifies this private copy, not a synchronized acquisition.
         """
+        return self._snapshot_processed(ports, (), paired=False)
+
+    def snapshot_processed_execution(self, input_ports=None, output_ports=None):
+        """Copy selected retained inputs and outputs atomically, without running a tool.
+
+        Omitted subsets include all available declared ports. Explicit empty subsets
+        avoid unnecessary copies. Both input and output retention must be available.
+        """
+        return self._snapshot_processed(input_ports, output_ports, paired=True)
+
+    def _snapshot_processed(self, ports, output_ports, *, paired):
         if self._graph is None:
             raise RuntimeError("The plugin dialog has closed")
         if get_ident() != self._thread_id:
@@ -236,6 +256,12 @@ class PluginDialogContext:
                 raise ValueError("No completed block execution is available to capture")
             if not block.run_profile.input_previews:
                 raise ValueError("Processed inputs were not retained. Run again in Debug profile.")
+            result = block.last_result
+            if paired and (
+                not block.run_profile.output_previews
+                or not getattr(result, "_output_values_retained", False)
+            ):
+                raise ValueError("Processed outputs were not retained. Run again in Debug profile.")
             if (block.inputs and not block.last_inputs) or any(
                 port.required and port.name not in block.last_inputs for port in block.inputs
             ):
@@ -254,20 +280,57 @@ class PluginDialogContext:
                 missing = [name for name in names if name not in block.last_inputs]
                 if missing:
                     raise ValueError(f"No processed input is retained for: {', '.join(missing)}")
-            packets = copy.deepcopy(
-                {
-                    name: ValuePacket(block.last_inputs[name], block.input_payloads.get(name, {}))
-                    for name in names
+            inputs = {
+                name: ValuePacket(block.last_inputs[name], block.input_payloads.get(name, {}))
+                for name in names
+            }
+            outputs = {}
+            if paired:
+                declared_outputs = {port.name for port in block.output_ports}
+                if output_ports is None:
+                    selected = tuple(
+                        name
+                        for name, value in result.outputs.items()
+                        if name in declared_outputs and value is not NO_VALUE
+                    )
+                else:
+                    if isinstance(output_ports, str):
+                        raise TypeError("Pass output names as a collection, not a single string")
+                    selected = tuple(output_ports)
+                    if any(
+                        not isinstance(name, str) or name not in declared_outputs
+                        for name in selected
+                    ):
+                        raise ValueError("Processed capture must name declared block outputs")
+                    if len(set(selected)) != len(selected):
+                        raise ValueError("Processed capture output names must be unique")
+                    missing = [
+                        name
+                        for name in selected
+                        if name not in result.outputs or result.outputs[name] is NO_VALUE
+                    ]
+                    if missing:
+                        raise ValueError(
+                            f"No processed output is retained for: {', '.join(missing)}"
+                        )
+                outputs = {
+                    name: ValuePacket(result.outputs[name], result.payloads.get(name, {}))
+                    for name in selected
                 }
-            )
-            return PluginProcessedInputs(
+            inputs, outputs = copy.deepcopy((inputs, outputs))
+            fields = dict(
                 snapshot_id=uuid.uuid4().hex,
                 block_id=block.id,
                 output_revision=self.output_revision,
                 execution_count=block.timing.count,
-                passed=bool(block.last_result.passed),
-                inputs=packets,
+                passed=bool(result.passed),
+                inputs=inputs,
             )
+            if paired:
+                return PluginProcessedExecution(
+                    **fields, outputs=outputs, score=result.score, message=result.message
+                )
+            return PluginProcessedInputs(**fields)
         finally:
             block._execution_lock.release()
 
@@ -318,25 +381,28 @@ class PluginDialogContext:
                     continue
                 packets[name] = ValuePacket(value, result.payloads.get(wire.output, {}))
                 sources[name] = {
-                    "block_id": source.id, "port": wire.output,
-                    "execution_count": source.timing.count, "state": source.state,
+                    "block_id": source.id,
+                    "port": wire.output,
+                    "execution_count": source.timing.count,
+                    "state": source.state,
                     "retained": not bool(source.current_emissions.get(wire.output)),
                 }
-            values, payloads = prepare_inputs(
-                self._block, packets, input_levels=self._input_levels
-            )
+            values, payloads = prepare_inputs(self._block, packets, input_levels=self._input_levels)
             for name, value in values.items():
                 validate_value(declared[name], value)
-            copied = copy.deepcopy({
-                name: ValuePacket(value, payloads[name]) for name, value in values.items()
-            })
+            copied = copy.deepcopy(
+                {name: ValuePacket(value, payloads[name]) for name, value in values.items()}
+            )
             if revision != self.output_revision:
                 raise RuntimeError("Editor publication changed during connected capture; retry")
             return PluginConnectedInputs(
                 snapshot_id=uuid.uuid4().hex,
                 publication_id=f"{self._context_id}:{revision}",
-                block_id=self.block_id, output_revision=revision,
-                inputs=copied, missing_inputs=tuple(missing), sources=sources,
+                block_id=self.block_id,
+                output_revision=revision,
+                inputs=copied,
+                missing_inputs=tuple(missing),
+                sources=sources,
             )
         finally:
             for owner in reversed(locked):
