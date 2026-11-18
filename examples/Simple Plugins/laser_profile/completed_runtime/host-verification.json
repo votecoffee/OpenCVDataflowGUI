@@ -1,0 +1,70 @@
+{
+  "cases": [
+    {
+      "case": "calibrated_step",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "calibrated_unavailable",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "calibrated_missing",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "geometry_rejected",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "graphics_off",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "real_wli1",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "real_wli2",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "real_wli3",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "real_wli4",
+      "numeric_exact": true,
+      "primary_and_graphics_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    }
+  ],
+  "exports_verified": 6,
+  "file_pins_verified": 191,
+  "scope": "Software parity, not physical gauge qualification"
+}

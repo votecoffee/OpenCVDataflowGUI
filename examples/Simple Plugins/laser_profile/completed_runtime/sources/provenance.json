@@ -1,0 +1,100 @@
+{
+  "dataset": "WLI-Set: A Comprehensive Laser Image Dataset for Real-Time Measurement of Wheelset Geometric Parameters",
+  "doi": "10.6084/m9.figshare.25040747.v3",
+  "version": 3,
+  "license": {
+    "value": 1,
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "authors": [
+    {
+      "id": 16488741,
+      "full_name": "zeng song",
+      "first_name": "zeng",
+      "last_name": "song",
+      "is_active": true,
+      "url_name": "zeng_song",
+      "orcid_id": ""
+    }
+  ],
+  "selection": "First, one-third, two-thirds and last sorted original basename; frozen before extraction",
+  "files": {
+    "origin": [
+      45105766,
+      347010080,
+      "577e6d1df49b00774a4489e2f9ea5405"
+    ],
+    "centerline": [
+      45105757,
+      57625487,
+      "6eddb3703c767171b9b22f2862fc7915"
+    ]
+  },
+  "selected_members": {
+    "origin": {
+      "origin/s_multi_10 (1000).jpg": {
+        "original_member": "origin/s_multi_10 (1000).jpg",
+        "crc32": 3191230385,
+        "bytes": 130431
+      },
+      "origin/s_multi_11 (2212).jpg": {
+        "original_member": "origin/s_multi_11 (2212).jpg",
+        "crc32": 2705395961,
+        "bytes": 126254
+      },
+      "origin/s_multi_12 (3211).jpg": {
+        "original_member": "origin/s_multi_12 (3211).jpg",
+        "crc32": 947994859,
+        "bytes": 121160
+      },
+      "origin/s_multi_3 (1789).jpg": {
+        "original_member": "origin/s_multi_3 (1789).jpg",
+        "crc32": 2875684879,
+        "bytes": 123806
+      }
+    },
+    "centerline": {
+      "centerline/s_multi_10 (1000).png": {
+        "original_member": "centerline/s_multi_10 (1000).png",
+        "crc32": 3191111066,
+        "bytes": 10046
+      },
+      "centerline/s_multi_11 (2212).png": {
+        "original_member": "centerline/s_multi_11 (2212).png",
+        "crc32": 968835017,
+        "bytes": 10327
+      },
+      "centerline/s_multi_12 (3211).png": {
+        "original_member": "centerline/s_multi_12 (3211).png",
+        "crc32": 930419079,
+        "bytes": 10938
+      },
+      "centerline/s_multi_3 (1789).png": {
+        "original_member": "centerline/s_multi_3 (1789).png",
+        "crc32": 2209379697,
+        "bytes": 11198
+      }
+    }
+  },
+  "nested_archives": {
+    "centerline": {
+      "member": "centerline/centerline.zip",
+      "crc32": 4072394787,
+      "sha256": "104bb41115b9c95112b990f1777fb78b86c07f6ebf7f812bf7cdffd4d5cce2cd"
+    }
+  },
+  "sha256": {
+    "origin/s_multi_10 (1000).jpg": "b8ea1ec98db9dfa0c0e3408146166faf8f31fd326255b0c56dfad68adcf1aafd",
+    "origin/s_multi_11 (2212).jpg": "05bf70db591f3892fccbb02b3af03b877d04440e063ae62af57d3b95ac0d3571",
+    "origin/s_multi_12 (3211).jpg": "b32e1df856a1e86f91276be8420ab5b7e20c6d9b7ac11098e0944dd7780b728e",
+    "origin/s_multi_3 (1789).jpg": "984b796e310d9c3581ef5cfb1f7957e0b731bf2854d68b4aaf6a05fd22a5f953",
+    "centerline/s_multi_10 (1000).png": "6f6067109246d4be152dbb3696a95fba4b2a81084a0160809d8aa508cf3703ca",
+    "centerline/s_multi_11 (2212).png": "6510383e01285a6a31e00353c938f8f897505f311d37d59c6b1699c872b35253",
+    "centerline/s_multi_12 (3211).png": "1322f93186a915c3c503e387f3329fb3da5cb50f7a941530fa785ba165db3b44",
+    "centerline/s_multi_3 (1789).png": "efd45c9ef0b8d457341b5e2cbeb99eca700958de2a8feea381d006dd1a3bc9d8"
+  },
+  "verification": "Selected ZIP member size/CRC and local SHA-256; whole archive MD5 is publisher metadata, not locally rehashed",
+  "calibration_available": false,
+  "ground_truth": "Publisher industrial-software centerline reference; not physical or subpixel gauge truth"
+}

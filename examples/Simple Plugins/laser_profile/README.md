@@ -1,5 +1,14 @@
 # SimpleLaserProfile training and inspection
 
+[Completed-results reviews](completed_runtime/README.md) add the pinned dev3
+plugin, nine offline projects and six frozen exports. Load that folder's
+`plugin.py` for the independent inspector Results action with synchronized source/
+trend/sample/native-cloud evidence, zoom/pan, availability filters and exact native
+model/array exports. It does not extract, intersect or recalibrate during review.
+Real WLI-Set captures keep their existing pixel-only failures and original
+attribution; generated calibrated controls are separate. No package installation
+is needed. The older dev2 loader and projects below are retained.
+
 Train a single laser stripe from an image, then extract source-pixel centers
 and, with known camera/laser calibration, measured 3D profile points. Existing
 training reopens with its original image, region, settings and stripe overlay.

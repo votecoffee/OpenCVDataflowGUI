@@ -1,0 +1,12 @@
+{
+  "version": "0.1.0.dev3",
+  "sha256": "6e0471de7f32e46f2138bc99194840a593c5bedc78549e4ab9b807cdb977d63b",
+  "size": 45057,
+  "module_count": 13,
+  "modules_match_committed_archive": true,
+  "original_MIT_license_preserved": true,
+  "environment_installs": false,
+  "source_tests": 87,
+  "wheel_tests": 87,
+  "clean_native_exit": true
+}

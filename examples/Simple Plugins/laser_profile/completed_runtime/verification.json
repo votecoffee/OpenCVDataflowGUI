@@ -1,0 +1,441 @@
+{
+  "cases": [
+    {
+      "case": "calibrated_step",
+      "passed": true,
+      "valid": 480,
+      "active": 480,
+      "calibrated": true,
+      "reasons": {
+        "valid": 480
+      },
+      "recipe_sha256": "af5bb5ffbd559d1074a0f23613227d1a5143de6631c5b0b2da06c0e2d1c797c7",
+      "source_sha256": "93d9b04a77a331ba8522f5cabf0e153a1308e657c1d6c8470b7759f87d0698a0",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640
+          ],
+          "encoding": "gray",
+          "sha256": "93d9b04a77a331ba8522f5cabf0e153a1308e657c1d6c8470b7759f87d0698a0"
+        },
+        "cloud": {
+          "units": "m",
+          "frame": "camera",
+          "arrays": {
+            "points": "0c03833101853e8bde5c9692777908926799ce0a384b055516659fd97216b7cf",
+            "pixels": "fb025d5a2906a4453de20cac2b19d7a1af4677b31c054f34d84fcd45293aac87",
+            "colors": "f3ec359af0ff83181f84076b94363a8efc25b985670cc6af3ae7b8ddf6b29831",
+            "normals": null
+          }
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "f1f1c981aaaad3e07d433ca87f05af3497aef7d22a98b0eef612016e6264aa94"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "c54700400ce4e9618820bb3f3178cf8a2ebe06ba3a7328cbab3af72c8470c5ad"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "calibrated_unavailable",
+      "passed": false,
+      "valid": 390,
+      "active": 480,
+      "calibrated": true,
+      "reasons": {
+        "input_ceiling": 30,
+        "missing": 30,
+        "multiple_peaks": 30,
+        "valid": 390
+      },
+      "recipe_sha256": "af5bb5ffbd559d1074a0f23613227d1a5143de6631c5b0b2da06c0e2d1c797c7",
+      "source_sha256": "903e76c61740f6bc972edbd43d855830e7920c0f4bc11ca68ea963ede9a157b0",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640
+          ],
+          "encoding": "gray",
+          "sha256": "903e76c61740f6bc972edbd43d855830e7920c0f4bc11ca68ea963ede9a157b0"
+        },
+        "cloud": {
+          "units": "m",
+          "frame": "camera",
+          "arrays": {
+            "points": "d3e4f7c63e9a4bf2df3e6e24eaf3a1b6c75682aca3f1a424c91e63b81afd7975",
+            "pixels": "8623335cecd145f5e26449a15107fc5a6e68537b491fe7cb06ef07daa1d63861",
+            "colors": "a695dfee988aa4a1b5b0a1250fc99cee2376645c30dbc9d037f585bc3917d898",
+            "normals": null
+          }
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "41128af9e75ccf2198e9aac09289b82ba59aa030b9bb9a35e635335cf4a77d47"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "ecfb12ad416db58ecfef67d5b69405d293a49f1914001f3af032db37a71411c2"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "calibrated_missing",
+      "passed": false,
+      "valid": 0,
+      "active": 480,
+      "calibrated": true,
+      "reasons": {
+        "missing": 480
+      },
+      "recipe_sha256": "af5bb5ffbd559d1074a0f23613227d1a5143de6631c5b0b2da06c0e2d1c797c7",
+      "source_sha256": "7818f5542a0404157573be6cffc0e0c8e68ce3c0f5d17d07ccdd9313fb700baf",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640
+          ],
+          "encoding": "gray",
+          "sha256": "7818f5542a0404157573be6cffc0e0c8e68ce3c0f5d17d07ccdd9313fb700baf"
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "cb41785e8f77e84caa139f0bbcdd4d3d93fccf1459a54e17742ccd7a72a74e17"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "52c68c63603497d2728e741c22686ce597f952fea50d812dd7714b61fd8c337b"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "geometry_rejected",
+      "passed": false,
+      "valid": 0,
+      "active": 480,
+      "calibrated": true,
+      "reasons": {
+        "behind_camera": 480
+      },
+      "recipe_sha256": "2ef3deae570d2e01a0e708943d7724d952280706483486c5026602cca6ad89c0",
+      "source_sha256": "93d9b04a77a331ba8522f5cabf0e153a1308e657c1d6c8470b7759f87d0698a0",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640
+          ],
+          "encoding": "gray",
+          "sha256": "93d9b04a77a331ba8522f5cabf0e153a1308e657c1d6c8470b7759f87d0698a0"
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "8588165952e06ceacffbde7d238efbaecb0898f4abc375e6dff035daf2d92517"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "b96e81847428aa83648d94282ef76099a8505a7b23d64dc4929d38a6a476d4a6"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "graphics_off",
+      "passed": true,
+      "valid": 480,
+      "active": 480,
+      "calibrated": true,
+      "reasons": {
+        "valid": 480
+      },
+      "recipe_sha256": "af5bb5ffbd559d1074a0f23613227d1a5143de6631c5b0b2da06c0e2d1c797c7",
+      "source_sha256": "93d9b04a77a331ba8522f5cabf0e153a1308e657c1d6c8470b7759f87d0698a0",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            480,
+            640
+          ],
+          "encoding": "gray",
+          "sha256": "93d9b04a77a331ba8522f5cabf0e153a1308e657c1d6c8470b7759f87d0698a0"
+        },
+        "cloud": {
+          "units": "m",
+          "frame": "camera",
+          "arrays": {
+            "points": "0c03833101853e8bde5c9692777908926799ce0a384b055516659fd97216b7cf",
+            "pixels": "fb025d5a2906a4453de20cac2b19d7a1af4677b31c054f34d84fcd45293aac87",
+            "colors": null,
+            "normals": null
+          }
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "real_wli1",
+      "passed": false,
+      "valid": 72,
+      "active": 120,
+      "calibrated": false,
+      "reasons": {
+        "input_ceiling": 48,
+        "valid": 72
+      },
+      "recipe_sha256": "1c8f39f26748798cb80ccf1d123b38dcc260a9aba7e0e864c4dc8fe99b2b94e6",
+      "source_sha256": "d9e30c70719223ac912c741d8172e0ae70998e216b0df254e8d21caa4cadb640",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "bgr",
+          "sha256": "d9e30c70719223ac912c741d8172e0ae70998e216b0df254e8d21caa4cadb640"
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "5c28840db99c65a600ceec06439dcc1ae4ce7ca50a737726ada70dfe3f75f41c"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "21b3f55ddae5b67dc3e6d1ebff8ae314eb3d7c1acc83c1eee9d2ead83a3f44d5"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "real_wli2",
+      "passed": false,
+      "valid": 42,
+      "active": 120,
+      "calibrated": false,
+      "reasons": {
+        "input_ceiling": 32,
+        "missing": 41,
+        "multiple_peaks": 3,
+        "too_narrow": 2,
+        "valid": 42
+      },
+      "recipe_sha256": "1c8f39f26748798cb80ccf1d123b38dcc260a9aba7e0e864c4dc8fe99b2b94e6",
+      "source_sha256": "9db550beb66a79e40f9faabc92da7a02e7405406d3fa7251daae08e710a8444d",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "bgr",
+          "sha256": "9db550beb66a79e40f9faabc92da7a02e7405406d3fa7251daae08e710a8444d"
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "4ca0899ac0c47fe8c59faa912edae08d69b4dcc2a0ea0366e9f5340871220bca"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "414e92afedb0f461ac219c642172214cd1c3b6dbf98064554151cf2dcd2cb50f"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "real_wli3",
+      "passed": false,
+      "valid": 2,
+      "active": 120,
+      "calibrated": false,
+      "reasons": {
+        "clipped": 94,
+        "missing": 22,
+        "multiple_peaks": 1,
+        "too_narrow": 1,
+        "valid": 2
+      },
+      "recipe_sha256": "1c8f39f26748798cb80ccf1d123b38dcc260a9aba7e0e864c4dc8fe99b2b94e6",
+      "source_sha256": "445aed6191d88d3a909c5a6fba5375ab7f13df5b45fb994d20e159f2a7c1383d",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "bgr",
+          "sha256": "445aed6191d88d3a909c5a6fba5375ab7f13df5b45fb994d20e159f2a7c1383d"
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "ca524505ce3ad1fce5a69f1b0b0b25f954134977528418fd215363e399847f59"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "7709344ee11f8aad36f8c1000fe22c287c2a8265c745068cd44e71fc09ecdd3f"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    },
+    {
+      "case": "real_wli4",
+      "passed": false,
+      "valid": 7,
+      "active": 120,
+      "calibrated": false,
+      "reasons": {
+        "clipped": 93,
+        "missing": 19,
+        "multiple_peaks": 1,
+        "valid": 7
+      },
+      "recipe_sha256": "1c8f39f26748798cb80ccf1d123b38dcc260a9aba7e0e864c4dc8fe99b2b94e6",
+      "source_sha256": "93a0dfad297c43136fe03bde89ee3bd6c90386598d4fdaee93eb1c0109f3d7f2",
+      "graphics": {
+        "image": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "bgr",
+          "sha256": "93a0dfad297c43136fe03bde89ee3bd6c90386598d4fdaee93eb1c0109f3d7f2"
+        },
+        "overlay": {
+          "dtype": "|u1",
+          "shape": [
+            672,
+            800,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "179843c3462ff4721b883733450cf98f37a285ba5339b58d85ee9b1a5e50f5ca"
+        },
+        "chart": {
+          "dtype": "|u1",
+          "shape": [
+            380,
+            920,
+            3
+          ],
+          "encoding": "rgb",
+          "sha256": "384f558abeb991edc5ae3e2597037eab652e033e29dde73dfb042498aa7e262e"
+        }
+      },
+      "native_results": true,
+      "no_extraction_intersection_calibration_or_reload": true
+    }
+  ],
+  "projects": 9,
+  "frozen_exports": 6,
+  "scope": "Offline software evidence, not gauge qualification"
+}
