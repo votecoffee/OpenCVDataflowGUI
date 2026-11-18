@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/test-2.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundles/vector/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 64,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "measurements"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "ml.decode_regression",
+      "name": "Decode image regression",
+      "parameters": {
+        "output_name": "measurements",
+        "output_index": 0,
+        "layout": "vector",
+        "measurement_name": "bead_width",
+        "units": "mm",
+        "value_scale": 1.0,
+        "value_offset": 0.0,
+        "receipt_policy": "required",
+        "reference_enabled": true,
+        "reference_value": 2.1750000000000003,
+        "reference_ticket_policy": "same_ticket",
+        "check_range": false,
+        "minimum_value": 0.0,
+        "maximum_value": 1.0,
+        "check_absolute_error": true,
+        "maximum_absolute_error": 0.02,
+        "maximum_values": 10000,
+        "maximum_image_pixels": 16777216
+      },
+      "position": [
+        1050,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "tensors",
+        "preprocessing",
+        "receipt",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "image",
+        "value",
+        "reference",
+        "residual",
+        "absolute_error",
+        "measurement",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1400,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1750,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original continuous-image regression controls - MIT",
+      "description": "Original MIT synthetic bead images, native EPS-SVR fit, ONNX exports and projects by OpenCVDataflowGUI contributors. Seven training widths and separate held-out widths/noise seeds. Width labels use an assumed 0.1 mm/pixel; this is not camera calibration or production bead measurement. Global brightness estimates coverage only under the trained lighting/background conditions. The dim control deliberately violates that condition. Continuous measurements are not confidence scores. See README.md, SOURCES.md, truth.json and benchmark.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "convert",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    },
+    {
+      "source": "convert",
+      "output": "image",
+      "target": "net",
+      "input": "image"
+    },
+    {
+      "source": "net",
+      "output": "tensors",
+      "target": "decode",
+      "input": "tensors"
+    },
+    {
+      "source": "net",
+      "output": "preprocessing",
+      "target": "decode",
+      "input": "preprocessing"
+    },
+    {
+      "source": "net",
+      "output": "receipt",
+      "target": "decode",
+      "input": "receipt"
+    },
+    {
+      "source": "decode",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "decode",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

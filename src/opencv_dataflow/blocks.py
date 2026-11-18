@@ -844,6 +844,7 @@ def builtin_registry():
     from .regions import REGION_BLOCKS
     from .registered_replay import ReplayRegisteredViews
     from .registration import REGISTRATION_BLOCKS
+    from .regression import REGRESSION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
     from .ridge_response import RidgeResponse
@@ -1182,6 +1183,7 @@ def builtin_registry():
         ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
+        *REGRESSION_BLOCKS,
         *BATCH_INFERENCE_BLOCKS,
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,

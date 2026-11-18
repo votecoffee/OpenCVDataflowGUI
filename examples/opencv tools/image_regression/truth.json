@@ -1,0 +1,113 @@
+{
+  "asset_sha256": {
+    "assets/batch-a.png": "c6d43413cedd4a926ee96faf4cc63fd1bd1b4ce172efd88023604dddaae7b4b2",
+    "assets/batch-b.png": "a47033c284bcfbf0325b3ac319302e22d0bb92d1ee17b2bdbeaf42845c58c91b",
+    "assets/batch-c.png": "d930621a62de42f657a7d0ae72e9a60344d48e008ae12db6633d5bafce9868fa",
+    "assets/batch.onnx": "a69c0426116a1290951b5595f7c3b91877db10f9921a11d14fe8c96a7549d2f4",
+    "assets/changed.onnx": "5bc274052c6663fc63b4d05267b240dca0fe37430f9dad2aa8616f7eb86392a2",
+    "assets/dim.png": "910f56e80c27ea2e53b5c29cea5aa93bc85f4a75347212e1de42bc8168e1923d",
+    "assets/native-eps-svr.yml": "0a5dd3b776da864f1f6ab405a7208612bb6b2afca3f07ddb6c323344cad95f3b",
+    "assets/nchw.onnx": "0cb33437317cdcf12440d067c8ad71d69c4acbb56c80e3f4facfa1b97a41db3c",
+    "assets/test-0.png": "e272c74451a63069dac8a698fa652f70d7b2c7add0872f2cfce042c0884a6d00",
+    "assets/test-1.png": "eec3f75a157f0acb014e44beeacb7019d0d9bf7b5b9f1c43582dc824a0016f37",
+    "assets/test-2.png": "f9eac6dd60cb423f2764ceb94970149af92d7a1be5e8fef9c585d9ab87aad56b",
+    "assets/test16.png": "2c7d7c42d36fc86ef7cebc3f1a7ef589eae1c6bd47d76888a06461db5e4f9218",
+    "assets/train-0.png": "ad15d32d69e6465bf22bf7155c311fa33617392ff13508aa76a250129d1c9d9e",
+    "assets/train-1.png": "51716e7452ad9c32363e095bdc675f8b8d4b8cc62aef051fe5f717238daf20fa",
+    "assets/train-2.png": "24e9fa235af93922117169035d93dc9db3707c4466ec3278f1560311cbdfb202",
+    "assets/train-3.png": "b132f330a04573a20a31456ac49ef28d4b01153dd8a401937f962cdb47c2f7fa",
+    "assets/train-4.png": "33b03c96c8ea2b352da3a212a766b16dd23a2b6133244b5ff629aa829a4d3e50",
+    "assets/train-5.png": "0babf903395db31c1d307ee71a3427e7061568e16daa74acd390659e0fa4ded7",
+    "assets/train-6.png": "1b47d0f0918ce21e4df2fe8dd39e29e72afa70a767b9168cffa7f4f2fa6ad5a6",
+    "assets/vector.onnx": "086c13d965c7901cdfef3d4d8d3cd95ec2e2ca75ea2e01065f338eda402788fc",
+    "bundles/bad/contract.json": "1c2224f2c45a0c6f44700e5262cac2e93884bddcdac2f85347237a8a47013dcc",
+    "bundles/bad/model.onnx": "f100fc1d5e9e28c3c05513f6f708027fb29f810eb304d9a88dc8edbe8d6ab9ae",
+    "bundles/batch/contract.json": "4433f4df80d116b84717a173c0dcf2175d4ab1313a9f71900ab6b9f0c556ec22",
+    "bundles/batch/model.onnx": "a69c0426116a1290951b5595f7c3b91877db10f9921a11d14fe8c96a7549d2f4",
+    "bundles/changed/contract.json": "d670034d4d9c70a9bba42dd94f14732744d955d99a0d12bea3b1c6d596378cc6",
+    "bundles/changed/model.onnx": "5bc274052c6663fc63b4d05267b240dca0fe37430f9dad2aa8616f7eb86392a2",
+    "bundles/nchw/contract.json": "485df0642a07941fc050a0071e3704b0da7af83ca61d3352cf84bbd383608d42",
+    "bundles/nchw/model.onnx": "0cb33437317cdcf12440d067c8ad71d69c4acbb56c80e3f4facfa1b97a41db3c",
+    "bundles/vector/contract.json": "1c2224f2c45a0c6f44700e5262cac2e93884bddcdac2f85347237a8a47013dcc",
+    "bundles/vector/model.onnx": "086c13d965c7901cdfef3d4d8d3cd95ec2e2ca75ea2e01065f338eda402788fc"
+  },
+  "cases": {
+    "bad_model": {
+      "target": "net"
+    },
+    "batch_rows": {
+      "target": "metrics"
+    },
+    "brightness": {
+      "target": "decode"
+    },
+    "evaluation": {
+      "target": "metrics"
+    },
+    "evaluation_lighting": {
+      "target": "metrics"
+    },
+    "evaluation_mixed": {
+      "target": "metrics"
+    },
+    "high_depth": {
+      "target": "decode"
+    },
+    "low_contrast": {
+      "target": "decode"
+    },
+    "nchw_head": {
+      "target": "decode"
+    },
+    "no_reference": {
+      "target": "decode"
+    },
+    "range_fail": {
+      "target": "decode"
+    },
+    "width_large": {
+      "target": "decode"
+    },
+    "width_middle": {
+      "target": "decode"
+    },
+    "width_small": {
+      "target": "decode"
+    },
+    "wrong_layout": {
+      "target": "decode"
+    }
+  },
+  "test_widths_pixels": [
+    6.5,
+    13.25,
+    21.75
+  ],
+  "training": {
+    "bias": -0.6391026720422709,
+    "c": 1000,
+    "kernel": "linear",
+    "p": 1e-05,
+    "pixel_pitch_mm": 0.1,
+    "svm_type": "EPS_SVR",
+    "targets_mm": [
+      0.4000000059604645,
+      0.800000011920929,
+      1.2000000476837158,
+      1.600000023841858,
+      2.0,
+      2.4000000953674316,
+      2.799999952316284
+    ],
+    "training_widths_pixels": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28
+    ],
+    "weight": 8.156723976135254
+  }
+}

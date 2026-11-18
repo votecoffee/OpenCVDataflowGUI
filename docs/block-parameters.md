@@ -8898,6 +8898,33 @@ Input `region` — Optional source-grid output support, intersected with Mask; t
 | `graphics_maximum_contours` | `2000` | Value must be a whole number between 0 and 20000. Bound optional drawn outlines; numerical masks stay complete. |
 | `graphics_maximum_points` | `100000` | Value must be a whole number between 0 and 1e+06. Bound optional outline vertices; zero suppresses outlines. |
 
+## Decode image regression (`ml.decode_regression`)
+
+ML / Regression
+
+Inputs: `image` (image), `tensors` (data), `preprocessing` (data), `receipt` (data, optional), `reference` (number, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` |  |
+| `output_index` | `0` | Value must be a whole number between 0 and 9999. Zero-based measurement/channel in the selected output. |
+| `layout` | `"vector"` | `vector`, `nchw_scalar` Vector accepts [M] or [1,M]; NCHW scalar requires [1,M,1,1]. Never flatten spatial maps or multiple images. |
+| `measurement_name` | `"measurement"` |  |
+| `units` | `""` |  |
+| `value_scale` | `1.0` | Value must be a finite number between -1e+06 and 1e+06. Decoded value = raw native value * scale + offset; no confidence interpretation. |
+| `value_offset` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. |
+| `receipt_policy` | `"required"` | `required`, `optional` Required retains checked model identity. Optional explicitly permits unidentified tensors. |
+| `reference_enabled` | `false` | Use configured Reference value when no reference connector is wired. |
+| `reference_value` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. |
+| `reference_ticket_policy` | `"same_ticket"` | `same_ticket`, `external` Known reference tickets must match the image, unless External is explicitly chosen. |
+| `check_range` | `false` |  |
+| `minimum_value` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. |
+| `maximum_value` | `1.0` | Value must be a finite number between -1e+12 and 1e+12. |
+| `check_absolute_error` | `false` |  |
+| `maximum_absolute_error` | `1.0` | Value must be a finite number between 0 and 1e+12. Inclusive residual limit when its check is enabled; requires a reference. |
+| `maximum_values` | `10000` | Value must be a whole number between 1 and 10000. Bound selected tensor elements before decoding. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. |
+
 ## Decode rotated detections (`ml.decode_rotated_detections`)
 
 ML / Object detection
@@ -10071,6 +10098,21 @@ Input `region` — Source selection intersected with Mask; independent of the te
 | `aggregate` | `"all"` | `all`, `minimum_reads` Require all selected rows to pass, or only Minimum reads. |
 | `background` | `255.0` | Value must be a finite number between 0 and 65535. Intensity outside selection and at borders, in source units. |
 | `maximum_steps` | `1024` | Value must be a whole number between 1 and 4096. Bound time steps before greedy path decoding. |
+
+## Evaluate regression measurements (`ml.regression_metrics`)
+
+ML / Regression
+
+Inputs: `measurements` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `limit_metric` | `"none"` | `none`, `mae`, `rmse`, `maximum_absolute_error`, `absolute_bias` All metrics are always reported; choose one inclusive inspection limit. |
+| `maximum_error` | `1.0` | Value must be a finite number between 0 and 1e+12. |
+| `identity_policy` | `"same_model_and_decoder"` | `same_model_and_decoder`, `allow_mixed` Names/units must agree. By default model and decoder revisions must also agree. |
+| `require_model_identity` | `true` | Reject records decoded without a model execution receipt. |
+| `duplicate_policy` | `"reject"` | `reject`, `allow` Reject reused measurement IDs. This does not certify independent capture groups. |
+| `maximum_samples` | `10000` | Value must be a whole number between 1 and 10000. |
 
 ## Restore image with ONNX (`ml.restore_image`)
 

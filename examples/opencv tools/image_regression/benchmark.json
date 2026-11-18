@@ -1,0 +1,142 @@
+{
+  "batch_calls": [
+    {
+      "shape": [
+        2,
+        1,
+        32,
+        64
+      ],
+      "values": [
+        [
+          1.324733853340149,
+          0.24076290428638458
+        ],
+        [
+          1.3253743648529053,
+          0.24084143340587616
+        ]
+      ]
+    },
+    {
+      "shape": [
+        1,
+        1,
+        32,
+        64
+      ],
+      "values": [
+        [
+          1.3256250619888306,
+          0.24087215960025787
+        ]
+      ]
+    }
+  ],
+  "groups": {
+    "batch_rows": {
+      "bias": 0.0002444267272949663,
+      "mae": 0.0004218578338623195,
+      "maximum_absolute_error": 0.0006250619888306108,
+      "r2": null,
+      "rmse": 0.0004478413325876173
+    },
+    "evaluation": {
+      "bias": 0.00011618137359603598,
+      "mae": 0.0005935748418173606,
+      "maximum_absolute_error": 0.001064634323120095,
+      "r2": 0.999998704406165,
+      "rmse": 0.0007101984776835755
+    },
+    "evaluation_lighting": {
+      "bias": -0.15439932346344,
+      "mae": 0.15510907967885343,
+      "maximum_absolute_error": 0.4636562585830688,
+      "r2": 0.8159298232820937,
+      "rmse": 0.2676930002976802
+    }
+  },
+  "images": {
+    "batch-a.png": {
+      "mean_level": 61.39453125,
+      "native_svm_value": 1.3247336149215698,
+      "nchw_brightness": 61.39454059302807,
+      "nchw_value": 1.324733853340149,
+      "numpy_value": 1.3247336160354983,
+      "reference_mm": 1.325,
+      "residual_mm": -0.0002661466598510298,
+      "vector_brightness": 61.39454059302807,
+      "vector_value": 1.324733853340149
+    },
+    "batch-b.png": {
+      "mean_level": 61.41455078125,
+      "native_svm_value": 1.325373888015747,
+      "nchw_brightness": 61.41456551849842,
+      "nchw_value": 1.3253743648529053,
+      "numpy_value": 1.3253739838033605,
+      "reference_mm": 1.325,
+      "residual_mm": 0.00037436485290531785,
+      "vector_brightness": 61.41456551849842,
+      "vector_value": 1.3253743648529053
+    },
+    "batch-c.png": {
+      "mean_level": 61.42236328125,
+      "native_svm_value": 1.3256237506866455,
+      "nchw_brightness": 61.42240069806576,
+      "nchw_value": 1.3256250619888306,
+      "numpy_value": 1.3256238872183577,
+      "reference_mm": 1.325,
+      "residual_mm": 0.0006250619888306108,
+      "vector_brightness": 61.42240069806576,
+      "vector_value": 1.3256250619888306
+    },
+    "dim.png": {
+      "mean_level": 46.90771484375,
+      "native_svm_value": 0.8613415956497192,
+      "nchw_brightness": 46.90778374671936,
+      "nchw_value": 0.8613437414169312,
+      "numpy_value": 0.8613416310949972,
+      "reference_mm": 1.325,
+      "residual_mm": -0.4636562585830688,
+      "vector_brightness": 46.90778374671936,
+      "vector_value": 0.8613437414169312
+    },
+    "test-0.png": {
+      "mean_level": 40.333984375,
+      "native_svm_value": 0.6510666608810425,
+      "nchw_brightness": 40.33392369747162,
+      "nchw_value": 0.6510646343231201,
+      "numpy_value": 0.6510666777159192,
+      "reference_mm": 0.65,
+      "residual_mm": 0.001064634323120095,
+      "vector_brightness": 40.33392369747162,
+      "vector_value": 0.6510646343231201
+    },
+    "test-1.png": {
+      "mean_level": 61.3994140625,
+      "native_svm_value": 1.3248897790908813,
+      "nchw_brightness": 61.39943093061447,
+      "nchw_value": 1.3248902559280396,
+      "numpy_value": 1.3248898032959526,
+      "reference_mm": 1.3250000000000002,
+      "residual_mm": -0.00010974407196062685,
+      "vector_brightness": 61.39943093061447,
+      "vector_value": 1.3248902559280396
+    },
+    "test-2.png": {
+      "mean_level": 87.95751953125,
+      "native_svm_value": 2.174407958984375,
+      "nchw_brightness": 87.9570722579956,
+      "nchw_value": 2.174393653869629,
+      "numpy_value": 2.1744079886060836,
+      "reference_mm": 2.1750000000000003,
+      "residual_mm": -0.0006063461303713602,
+      "vector_brightness": 87.9570722579956,
+      "vector_value": 2.174393653869629
+    }
+  },
+  "maximum_onnx_numpy_difference": 1.4334736454735264e-05,
+  "maximum_svm_numpy_difference": 1.3653171215821658e-07,
+  "opencv": "5.0.0",
+  "scope": "Native EPS-SVR, direct ONNX and independent mean/linear/error arithmetic on original held-out synthetic images; not physical accuracy qualification"
+}

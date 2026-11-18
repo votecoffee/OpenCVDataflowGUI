@@ -1,0 +1,36 @@
+{
+  "model": "onnx_inference_contract_v1",
+  "schema_version": 1,
+  "block_type": "ml.dnn",
+  "configuration": {
+    "fallback_policy": "error",
+    "width": 64,
+    "height": 32,
+    "color_format": "gray",
+    "resize_mode": "stretch",
+    "padding_value": 0.0,
+    "scale": 0.00392156862745098,
+    "mean": [
+      0.0
+    ],
+    "std": [
+      1.0
+    ],
+    "input_name": "image",
+    "output_names": [
+      "measurements"
+    ],
+    "engine": "classic",
+    "backend": "opencv",
+    "target": "cpu",
+    "fusion": true,
+    "max_output_elements": 1000000
+  },
+  "preprocessing": {},
+  "artifact": {
+    "file": "model.onnx",
+    "sha256": "5bc274052c6663fc63b4d05267b240dca0fe37430f9dad2aa8616f7eb86392a2",
+    "bytes": 298
+  },
+  "revision": "94fc34516c9a2b999c79aeb560a27ae9ddba0e0e137011b0ecd8178a4cccfd9e"
+}

@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/batch-a.png",
+          "assets/batch-b.png",
+          "assets/batch-c.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "images",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "net",
+      "type": "ml.dnn_batch",
+      "name": "Batched ONNX image inference",
+      "parameters": {
+        "contract_path": "bundles/batch/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 64,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "measurements"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000,
+        "input_shape": [
+          -1,
+          1,
+          32,
+          64
+        ],
+        "batch_size": 2,
+        "tail_policy": "variable",
+        "spatial_mode": "configured",
+        "maximum_images": 64,
+        "maximum_image_pixels": 16777216,
+        "maximum_source_pixels": 32000000,
+        "maximum_tensor_elements": 4000000
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "images",
+        "masks",
+        "regions"
+      ],
+      "exposed_outputs": [
+        "results",
+        "info",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "unbatch",
+      "type": "flow.unbatch",
+      "name": "Unbatch serial entries",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        1050,
+        0
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "unpack",
+      "type": "ml.unpack_inference",
+      "name": "Unpack image inference result",
+      "parameters": {},
+      "position": [
+        1400,
+        0
+      ],
+      "exposed_inputs": [
+        "result"
+      ],
+      "exposed_outputs": [
+        "image",
+        "tensors",
+        "preprocessing",
+        "index",
+        "label",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "ml.decode_regression",
+      "name": "Decode image regression",
+      "parameters": {
+        "output_name": "measurements",
+        "output_index": 0,
+        "layout": "vector",
+        "measurement_name": "bead_width",
+        "units": "mm",
+        "value_scale": 1.0,
+        "value_offset": 0.0,
+        "receipt_policy": "required",
+        "reference_enabled": true,
+        "reference_value": 1.325,
+        "reference_ticket_policy": "same_ticket",
+        "check_range": false,
+        "minimum_value": 0.0,
+        "maximum_value": 1.0,
+        "check_absolute_error": true,
+        "maximum_absolute_error": 0.02,
+        "maximum_values": 10000,
+        "maximum_image_pixels": 16777216
+      },
+      "position": [
+        1750,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "tensors",
+        "preprocessing",
+        "receipt",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "image",
+        "value",
+        "reference",
+        "residual",
+        "absolute_error",
+        "measurement",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measurements",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        2100,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "metrics",
+      "type": "ml.regression_metrics",
+      "name": "Evaluate regression measurements",
+      "parameters": {
+        "limit_metric": "mae",
+        "maximum_error": 0.02,
+        "identity_policy": "same_model_and_decoder",
+        "require_model_identity": true,
+        "duplicate_policy": "reject",
+        "maximum_samples": 10000
+      },
+      "position": [
+        2450,
+        0
+      ],
+      "exposed_inputs": [
+        "measurements"
+      ],
+      "exposed_outputs": [
+        "report",
+        "mae",
+        "rmse",
+        "bias",
+        "maximum_absolute_error",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original continuous-image regression controls - MIT",
+      "description": "Original MIT synthetic bead images, native EPS-SVR fit, ONNX exports and projects by OpenCVDataflowGUI contributors. Seven training widths and separate held-out widths/noise seeds. Width labels use an assumed 0.1 mm/pixel; this is not camera calibration or production bead measurement. Global brightness estimates coverage only under the trained lighting/background conditions. The dim control deliberately violates that condition. Continuous measurements are not confidence scores. See README.md, SOURCES.md, truth.json and benchmark.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "images",
+      "input": "item_1"
+    },
+    {
+      "source": "images",
+      "output": "group",
+      "target": "net",
+      "input": "images"
+    },
+    {
+      "source": "net",
+      "output": "results",
+      "target": "unbatch",
+      "input": "group"
+    },
+    {
+      "source": "unbatch",
+      "output": "value",
+      "target": "unpack",
+      "input": "result"
+    },
+    {
+      "source": "unpack",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    },
+    {
+      "source": "unpack",
+      "output": "tensors",
+      "target": "decode",
+      "input": "tensors"
+    },
+    {
+      "source": "unpack",
+      "output": "preprocessing",
+      "target": "decode",
+      "input": "preprocessing"
+    },
+    {
+      "source": "unpack",
+      "output": "receipt",
+      "target": "decode",
+      "input": "receipt"
+    },
+    {
+      "source": "decode",
+      "output": "measurement",
+      "target": "measurements",
+      "input": "item_1"
+    },
+    {
+      "source": "measurements",
+      "output": "group",
+      "target": "metrics",
+      "input": "measurements"
+    }
+  ]
+}
