@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 49 | 3 | 10 | 62 | 79.0% |
+| 2. ML and DNN | 50 | 3 | 9 | 62 | 80.6% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 275 | 35 | 160 | 470 | 58.5% |
+| **Overall** | 276 | 35 | 159 | 470 | 58.7% |
 
 <!-- coverage-summary:end -->
 
@@ -373,7 +373,7 @@ fixture or result needed to close the item.
 | S2-48 | Rotated crop classification | Model preprocessing from measured image poses | Complete | cv.crop_pose supplies affine pose-local sampling, explicit pixel-center geometry, measured masks/coverage, strict/padded support and moved spatial/pyramid/ticket payload. [Eleven projects](<../examples/opencv tools/rotated_crop_classification/README.md>) compose measured blob axes, crops and a sealed original linear-SVM ONNX classifier in the existing per-part ToolBlock: five known textures pass, an unmarked part fails, no-alignment has zero passes, serial/parallel agree and child tickets retain parent/feature/source maps. Independent moments/bilinear/NumPy-native checks, Debug/Lean, high depth, selections, coverage failures, XML/Save As and cold teardown qualify this controlled CPU baseline. Empty disabled annotations now complete rather than appearing buffered. Scores remain uncalibrated; no production accuracy or directed-axis claim. [Contract](pose-crop-classification.md). |
 | S2-49 | Image-based regression | OpenCV SVM regression or ONNX scalar decoder | Complete | ml.decode_regression interprets explicit single-image vector/NCHW scalar heads with units, scale/offset, current image/frame/ticket association, checked model receipts and value/residual judgments. ml.regression_metrics reports MAE/RMSE/bias/max error/R² with revision/units/dedup controls. [Fifteen original projects](<../examples/opencv tools/image_regression/README.md>) qualify held-out synthetic bead-width proxies, native SVR-to-ONNX and independent numeric references, lighting failure, high depth, wrong heads/bundles/mixed revisions, batch-row receipts, Debug/Lean, exact assets and XML/Save As. Source pixel-hash and capture-independence proof remain explicitly false; no industrial accuracy, calibrated interval or graph-native SVR training claim. [Contract](image-regression.md). |
 | S2-50 | Image-model anomaly maps | Local ONNX grids, sealed known-good banks and native nearest-reference distances | Complete | Explicit NCHW/NHWC cell geometry, model/preprocessing/source identity, Euclidean/Manhattan search, selected support and source-grid thresholds. Twelve original patch-encoder projects train/reload references, localize held-out defects and expose missed weak defects/lighting false rejects; learned industrial backbone accuracy remains unqualified. See [contract](local-anomaly.md). |
-| S2-51 | Detect image defects under input shifts | Model evaluation across exposure, blur and camera pose | Planned | Replay controlled image perturbations and report confidence, localization and false rejects against the reference results. |
+| S2-51 | Detect image defects under input shifts | Controlled exposure/blur/affine pairs, observation capture and mask/decision evaluation | Complete | Eleven original projects preserve source/transform/truth/support identity, compare raw or declared probability scores, source-grid truth and mapped-baseline IoU, and false rejects/accepts. Missing pairs, mixed revisions and cropped truth reject explicitly. Controlled synthetic evaluation is qualified; physical/pretrained-model accuracy remains unqualified. See [contract](input-shifts.md). |
 | S2-52 | Learned instance tracking masks | Image segmentation plus temporal association | Planned | Track per-instance masks through overlapping or occluded video frames with ticket and ID continuity. |
 
 ### Native learned matching and retrieval

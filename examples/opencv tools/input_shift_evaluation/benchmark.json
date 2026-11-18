@@ -1,0 +1,264 @@
+{
+  "cases": {
+    "blur_sensitive": {
+      "false_accept_rate": null,
+      "false_reject_rate": 0.5,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.005545935208154502,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": null
+        },
+        "0:blur": {
+          "anomaly_pixels": 900,
+          "baseline_agreement_iou": 0.0,
+          "expected_pass": true,
+          "passed": false,
+          "score": 0.4450419127115753,
+          "score_delta": 0.4394959775034208,
+          "shared_support_fraction": 0.87890625,
+          "truth_iou": 0.0
+        }
+      }
+    },
+    "clean_stable": {
+      "false_accept_rate": null,
+      "false_reject_rate": 0.0,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.005545935208154502,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": null
+        },
+        "0:exposure": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.035511312150566285,
+          "score_delta": 0.029965376942411782,
+          "shared_support_fraction": 1.0,
+          "truth_iou": null
+        },
+        "0:pose": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.005545935208154502,
+          "score_delta": 0.0,
+          "shared_support_fraction": 0.9375,
+          "truth_iou": null
+        }
+      }
+    },
+    "defect_stable": {
+      "false_accept_rate": 0.0,
+      "false_reject_rate": null,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.9032897689094601,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 1.0
+        },
+        "0:exposure": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.8666223428994684,
+          "score_delta": -0.03666742600999173,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 1.0
+        },
+        "0:pose": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.9032897689094601,
+          "score_delta": 0.0,
+          "shared_support_fraction": 0.9375,
+          "truth_iou": 1.0
+        }
+      }
+    },
+    "exposure_sensitive": {
+      "false_accept_rate": null,
+      "false_reject_rate": 0.5,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.005545935208154502,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": null
+        },
+        "0:exposure": {
+          "anomaly_pixels": 1024,
+          "baseline_agreement_iou": 0.0,
+          "expected_pass": true,
+          "passed": false,
+          "score": 0.4980547144113637,
+          "score_delta": 0.4925087792032092,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 0.0
+        }
+      }
+    },
+    "high_depth": {
+      "false_accept_rate": 0.0,
+      "false_reject_rate": null,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.9032897689094601,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 1.0
+        },
+        "0:exposure": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.8666223428994684,
+          "score_delta": -0.03666742600999173,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 1.0
+        },
+        "0:pose": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.9032897689094601,
+          "score_delta": 0.0,
+          "shared_support_fraction": 0.9375,
+          "truth_iou": 1.0
+        }
+      }
+    },
+    "loose_threshold": {
+      "false_accept_rate": 1.0,
+      "false_reject_rate": null,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": false,
+          "passed": true,
+          "score": 0.9032897689094601,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 0.0
+        },
+        "0:exposure": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": false,
+          "passed": true,
+          "score": 0.8666223428994684,
+          "score_delta": -0.03666742600999173,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 0.0
+        }
+      }
+    },
+    "mixed_parts": {
+      "false_accept_rate": 0.0,
+      "false_reject_rate": 0.0,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.005545935208154502,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": null
+        },
+        "0:pose": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.005545935208154502,
+          "score_delta": 0.0,
+          "shared_support_fraction": 0.9375,
+          "truth_iou": null
+        },
+        "1:baseline": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.9032897689094601,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": 1.0
+        },
+        "1:pose": {
+          "anomaly_pixels": 64,
+          "baseline_agreement_iou": 1.0,
+          "expected_pass": false,
+          "passed": false,
+          "score": 0.9032897689094601,
+          "score_delta": 0.0,
+          "shared_support_fraction": 0.9375,
+          "truth_iou": 1.0
+        }
+      }
+    },
+    "pose_sensitive": {
+      "false_accept_rate": null,
+      "false_reject_rate": 0.5,
+      "records": {
+        "0:baseline": {
+          "anomaly_pixels": 0,
+          "baseline_agreement_iou": null,
+          "expected_pass": true,
+          "passed": true,
+          "score": 0.005545935208154502,
+          "score_delta": 0.0,
+          "shared_support_fraction": 1.0,
+          "truth_iou": null
+        },
+        "0:pose": {
+          "anomaly_pixels": 992,
+          "baseline_agreement_iou": 0.0,
+          "expected_pass": true,
+          "passed": false,
+          "score": 0.6278920240081015,
+          "score_delta": 0.622346088799947,
+          "shared_support_fraction": 0.96875,
+          "truth_iou": 0.0
+        }
+      }
+    }
+  },
+  "limits": "Controlled original synthetic perturbations; paired views are not independent captures",
+  "maximum_native_patch_difference": 0.0
+}

@@ -1,0 +1,1328 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        2800,
+        500
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "metrics",
+      "type": "ml.evaluate_input_shifts",
+      "name": "Evaluate inspection input shifts",
+      "parameters": {
+        "required_variants": [
+          "baseline",
+          "exposure",
+          "pose"
+        ],
+        "score_direction": "lower",
+        "maximum_false_reject_rate": 0.0,
+        "maximum_false_accept_rate": 0.0,
+        "minimum_mean_truth_iou": 0.8,
+        "minimum_mean_agreement_iou": 0.8,
+        "minimum_pair_support_fraction": 0.5,
+        "maximum_score_drop": -1.0,
+        "maximum_total_pixels": 16777216
+      },
+      "position": [
+        3150,
+        500
+      ],
+      "exposed_inputs": [
+        "observations"
+      ],
+      "exposed_outputs": [
+        "report",
+        "false_reject_rate",
+        "false_accept_rate",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/normal.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_truth",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          40,
+          40,
+          1,
+          1
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_baseline_shift",
+      "type": "ml.image_input_shift",
+      "name": "Controlled inspection image shift",
+      "parameters": {
+        "variant": "baseline",
+        "expected_pass": true,
+        "gain": 1.0,
+        "offset": 0.0,
+        "angle_degrees": 0.0,
+        "scale": 1.0,
+        "translation_x": 0.0,
+        "translation_y": 0.0,
+        "interpolation": "linear",
+        "border_value": 0.0,
+        "blur_kernel": 0,
+        "blur_sigma": 0.0,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "truth"
+      ],
+      "exposed_outputs": [
+        "image",
+        "truth",
+        "support",
+        "shift"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_baseline_convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        1050,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_baseline_net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 32,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "local"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        1400,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_baseline_features",
+      "type": "ml.local_features",
+      "name": "Decode local feature grid",
+      "parameters": {
+        "output_name": "local",
+        "layout": "NCHW",
+        "normalization": "none",
+        "maximum_image_pixels": 4194304,
+        "maximum_feature_elements": 262144
+      },
+      "position": [
+        1750,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_baseline_reference",
+      "type": "ml.load_local_anomaly",
+      "name": "Load local anomaly reference",
+      "parameters": {
+        "path": "assets/reference.json"
+      },
+      "position": [
+        1750,
+        220
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_baseline_inspect",
+      "type": "ml.local_anomaly",
+      "name": "Inspect local image anomalies",
+      "parameters": {
+        "distance_threshold": 0.2,
+        "allowed_anomaly_pixels": 0,
+        "minimum_support_fraction": 0.95,
+        "reject_training_image": false,
+        "maximum_distance_work": 64000000,
+        "query_batch_size": 64,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_contours": 200,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        2100,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "features",
+        "model"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "support",
+        "mask",
+        "maximum_distance",
+        "anomaly_pixels",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_baseline_capture",
+      "type": "ml.capture_shift_observation",
+      "name": "Capture shifted inspection result",
+      "parameters": {
+        "model_revision_path": "reference_revision",
+        "decision_revision_path": "decision_revision",
+        "score_kind": "raw",
+        "minimum_truth_retention": 0.95
+      },
+      "position": [
+        2450,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "prediction",
+        "truth",
+        "support",
+        "report",
+        "model_support",
+        "score",
+        "passed"
+      ],
+      "exposed_outputs": [
+        "observation"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_shift",
+      "type": "ml.image_input_shift",
+      "name": "Controlled inspection image shift",
+      "parameters": {
+        "variant": "exposure",
+        "expected_pass": true,
+        "gain": 1.0,
+        "offset": 0.02,
+        "angle_degrees": 0.0,
+        "scale": 1.0,
+        "translation_x": 0.0,
+        "translation_y": 0.0,
+        "interpolation": "linear",
+        "border_value": 0.0,
+        "blur_kernel": 0,
+        "blur_sigma": 0.0,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        700,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "truth"
+      ],
+      "exposed_outputs": [
+        "image",
+        "truth",
+        "support",
+        "shift"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        1050,
+        500
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 32,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "local"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        1400,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_features",
+      "type": "ml.local_features",
+      "name": "Decode local feature grid",
+      "parameters": {
+        "output_name": "local",
+        "layout": "NCHW",
+        "normalization": "none",
+        "maximum_image_pixels": 4194304,
+        "maximum_feature_elements": 262144
+      },
+      "position": [
+        1750,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_reference",
+      "type": "ml.load_local_anomaly",
+      "name": "Load local anomaly reference",
+      "parameters": {
+        "path": "assets/reference.json"
+      },
+      "position": [
+        1750,
+        720
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_inspect",
+      "type": "ml.local_anomaly",
+      "name": "Inspect local image anomalies",
+      "parameters": {
+        "distance_threshold": 0.2,
+        "allowed_anomaly_pixels": 0,
+        "minimum_support_fraction": 0.95,
+        "reject_training_image": false,
+        "maximum_distance_work": 64000000,
+        "query_batch_size": 64,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_contours": 200,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        2100,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "features",
+        "model"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "support",
+        "mask",
+        "maximum_distance",
+        "anomaly_pixels",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_capture",
+      "type": "ml.capture_shift_observation",
+      "name": "Capture shifted inspection result",
+      "parameters": {
+        "model_revision_path": "reference_revision",
+        "decision_revision_path": "decision_revision",
+        "score_kind": "raw",
+        "minimum_truth_retention": 0.95
+      },
+      "position": [
+        2450,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "prediction",
+        "truth",
+        "support",
+        "report",
+        "model_support",
+        "score",
+        "passed"
+      ],
+      "exposed_outputs": [
+        "observation"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        2800,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_exposure_filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        3150,
+        500
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_shift",
+      "type": "ml.image_input_shift",
+      "name": "Controlled inspection image shift",
+      "parameters": {
+        "variant": "pose",
+        "expected_pass": true,
+        "gain": 1.0,
+        "offset": 0.0,
+        "angle_degrees": 0.0,
+        "scale": 1.0,
+        "translation_x": 2,
+        "translation_y": 0.0,
+        "interpolation": "linear",
+        "border_value": 0.0,
+        "blur_kernel": 0,
+        "blur_sigma": 0.0,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        700,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "truth"
+      ],
+      "exposed_outputs": [
+        "image",
+        "truth",
+        "support",
+        "shift"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        1050,
+        1000
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 32,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "local"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        1400,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_features",
+      "type": "ml.local_features",
+      "name": "Decode local feature grid",
+      "parameters": {
+        "output_name": "local",
+        "layout": "NCHW",
+        "normalization": "none",
+        "maximum_image_pixels": 4194304,
+        "maximum_feature_elements": 262144
+      },
+      "position": [
+        1750,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_reference",
+      "type": "ml.load_local_anomaly",
+      "name": "Load local anomaly reference",
+      "parameters": {
+        "path": "assets/reference.json"
+      },
+      "position": [
+        1750,
+        1220
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_inspect",
+      "type": "ml.local_anomaly",
+      "name": "Inspect local image anomalies",
+      "parameters": {
+        "distance_threshold": 0.2,
+        "allowed_anomaly_pixels": 0,
+        "minimum_support_fraction": 0.95,
+        "reject_training_image": false,
+        "maximum_distance_work": 64000000,
+        "query_batch_size": 64,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_contours": 200,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        2100,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "features",
+        "model"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "support",
+        "mask",
+        "maximum_distance",
+        "anomaly_pixels",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_capture",
+      "type": "ml.capture_shift_observation",
+      "name": "Capture shifted inspection result",
+      "parameters": {
+        "model_revision_path": "reference_revision",
+        "decision_revision_path": "decision_revision",
+        "score_kind": "raw",
+        "minimum_truth_retention": 0.95
+      },
+      "position": [
+        2450,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "prediction",
+        "truth",
+        "support",
+        "report",
+        "model_support",
+        "score",
+        "passed"
+      ],
+      "exposed_outputs": [
+        "observation"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        2800,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "s0_pose_filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        3150,
+        1000
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original paired input-shift evaluation - MIT",
+      "description": "Original OpenCVDataflowGUI synthetic patch surfaces/model/reference bank, MIT. Known defect geometry supplies independent masks. Source seeds are disjoint from training. Derived exposure, blur and affine pose images are paired views of the same acquisition, not independent captures. Border support is excluded from inspection and evaluation. Scores are raw distances. See README.md/SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -650
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "metrics",
+      "input": "observations"
+    },
+    {
+      "source": "s0_source",
+      "output": "image",
+      "target": "s0_truth",
+      "input": "image"
+    },
+    {
+      "source": "s0_source",
+      "output": "image",
+      "target": "s0_baseline_shift",
+      "input": "image"
+    },
+    {
+      "source": "s0_truth",
+      "output": "mask",
+      "target": "s0_baseline_shift",
+      "input": "truth"
+    },
+    {
+      "source": "s0_baseline_shift",
+      "output": "image",
+      "target": "s0_baseline_convert",
+      "input": "image"
+    },
+    {
+      "source": "s0_baseline_convert",
+      "output": "image",
+      "target": "s0_baseline_net",
+      "input": "image"
+    },
+    {
+      "source": "s0_baseline_shift",
+      "output": "image",
+      "target": "s0_baseline_features",
+      "input": "image"
+    },
+    {
+      "source": "s0_baseline_net",
+      "output": "tensors",
+      "target": "s0_baseline_features",
+      "input": "tensors"
+    },
+    {
+      "source": "s0_baseline_net",
+      "output": "preprocessing",
+      "target": "s0_baseline_features",
+      "input": "preprocessing"
+    },
+    {
+      "source": "s0_baseline_net",
+      "output": "receipt",
+      "target": "s0_baseline_features",
+      "input": "receipt"
+    },
+    {
+      "source": "s0_baseline_shift",
+      "output": "image",
+      "target": "s0_baseline_inspect",
+      "input": "image"
+    },
+    {
+      "source": "s0_baseline_features",
+      "output": "features",
+      "target": "s0_baseline_inspect",
+      "input": "features"
+    },
+    {
+      "source": "s0_baseline_reference",
+      "output": "model",
+      "target": "s0_baseline_inspect",
+      "input": "model"
+    },
+    {
+      "source": "s0_baseline_shift",
+      "output": "support",
+      "target": "s0_baseline_inspect",
+      "input": "mask"
+    },
+    {
+      "source": "s0_baseline_shift",
+      "output": "image",
+      "target": "s0_baseline_capture",
+      "input": "image"
+    },
+    {
+      "source": "s0_baseline_shift",
+      "output": "truth",
+      "target": "s0_baseline_capture",
+      "input": "truth"
+    },
+    {
+      "source": "s0_baseline_shift",
+      "output": "support",
+      "target": "s0_baseline_capture",
+      "input": "support"
+    },
+    {
+      "source": "s0_baseline_inspect",
+      "output": "mask",
+      "target": "s0_baseline_capture",
+      "input": "prediction"
+    },
+    {
+      "source": "s0_baseline_inspect",
+      "output": "support",
+      "target": "s0_baseline_capture",
+      "input": "model_support"
+    },
+    {
+      "source": "s0_baseline_inspect",
+      "output": "report",
+      "target": "s0_baseline_capture",
+      "input": "report"
+    },
+    {
+      "source": "s0_baseline_inspect",
+      "output": "maximum_distance",
+      "target": "s0_baseline_capture",
+      "input": "score"
+    },
+    {
+      "source": "s0_baseline_capture",
+      "output": "observation",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "s0_source",
+      "output": "image",
+      "target": "s0_exposure_shift",
+      "input": "image"
+    },
+    {
+      "source": "s0_truth",
+      "output": "mask",
+      "target": "s0_exposure_shift",
+      "input": "truth"
+    },
+    {
+      "source": "s0_exposure_shift",
+      "output": "image",
+      "target": "s0_exposure_convert",
+      "input": "image"
+    },
+    {
+      "source": "s0_exposure_convert",
+      "output": "image",
+      "target": "s0_exposure_net",
+      "input": "image"
+    },
+    {
+      "source": "s0_exposure_shift",
+      "output": "image",
+      "target": "s0_exposure_features",
+      "input": "image"
+    },
+    {
+      "source": "s0_exposure_net",
+      "output": "tensors",
+      "target": "s0_exposure_features",
+      "input": "tensors"
+    },
+    {
+      "source": "s0_exposure_net",
+      "output": "preprocessing",
+      "target": "s0_exposure_features",
+      "input": "preprocessing"
+    },
+    {
+      "source": "s0_exposure_net",
+      "output": "receipt",
+      "target": "s0_exposure_features",
+      "input": "receipt"
+    },
+    {
+      "source": "s0_exposure_shift",
+      "output": "image",
+      "target": "s0_exposure_inspect",
+      "input": "image"
+    },
+    {
+      "source": "s0_exposure_features",
+      "output": "features",
+      "target": "s0_exposure_inspect",
+      "input": "features"
+    },
+    {
+      "source": "s0_exposure_reference",
+      "output": "model",
+      "target": "s0_exposure_inspect",
+      "input": "model"
+    },
+    {
+      "source": "s0_exposure_shift",
+      "output": "support",
+      "target": "s0_exposure_inspect",
+      "input": "mask"
+    },
+    {
+      "source": "s0_exposure_shift",
+      "output": "image",
+      "target": "s0_exposure_capture",
+      "input": "image"
+    },
+    {
+      "source": "s0_exposure_shift",
+      "output": "truth",
+      "target": "s0_exposure_capture",
+      "input": "truth"
+    },
+    {
+      "source": "s0_exposure_shift",
+      "output": "support",
+      "target": "s0_exposure_capture",
+      "input": "support"
+    },
+    {
+      "source": "s0_exposure_inspect",
+      "output": "mask",
+      "target": "s0_exposure_capture",
+      "input": "prediction"
+    },
+    {
+      "source": "s0_exposure_inspect",
+      "output": "support",
+      "target": "s0_exposure_capture",
+      "input": "model_support"
+    },
+    {
+      "source": "s0_exposure_inspect",
+      "output": "report",
+      "target": "s0_exposure_capture",
+      "input": "report"
+    },
+    {
+      "source": "s0_exposure_inspect",
+      "output": "maximum_distance",
+      "target": "s0_exposure_capture",
+      "input": "score"
+    },
+    {
+      "source": "s0_exposure_capture",
+      "output": "observation",
+      "target": "batch",
+      "input": "item_2"
+    },
+    {
+      "source": "s0_exposure_inspect",
+      "output": "image",
+      "target": "s0_exposure_overlay",
+      "input": "image"
+    },
+    {
+      "source": "s0_exposure_inspect",
+      "output": "result_graphics",
+      "target": "s0_exposure_overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "s0_exposure_overlay",
+      "output": "image",
+      "target": "s0_exposure_filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "s0_source",
+      "output": "image",
+      "target": "s0_pose_shift",
+      "input": "image"
+    },
+    {
+      "source": "s0_truth",
+      "output": "mask",
+      "target": "s0_pose_shift",
+      "input": "truth"
+    },
+    {
+      "source": "s0_pose_shift",
+      "output": "image",
+      "target": "s0_pose_convert",
+      "input": "image"
+    },
+    {
+      "source": "s0_pose_convert",
+      "output": "image",
+      "target": "s0_pose_net",
+      "input": "image"
+    },
+    {
+      "source": "s0_pose_shift",
+      "output": "image",
+      "target": "s0_pose_features",
+      "input": "image"
+    },
+    {
+      "source": "s0_pose_net",
+      "output": "tensors",
+      "target": "s0_pose_features",
+      "input": "tensors"
+    },
+    {
+      "source": "s0_pose_net",
+      "output": "preprocessing",
+      "target": "s0_pose_features",
+      "input": "preprocessing"
+    },
+    {
+      "source": "s0_pose_net",
+      "output": "receipt",
+      "target": "s0_pose_features",
+      "input": "receipt"
+    },
+    {
+      "source": "s0_pose_shift",
+      "output": "image",
+      "target": "s0_pose_inspect",
+      "input": "image"
+    },
+    {
+      "source": "s0_pose_features",
+      "output": "features",
+      "target": "s0_pose_inspect",
+      "input": "features"
+    },
+    {
+      "source": "s0_pose_reference",
+      "output": "model",
+      "target": "s0_pose_inspect",
+      "input": "model"
+    },
+    {
+      "source": "s0_pose_shift",
+      "output": "support",
+      "target": "s0_pose_inspect",
+      "input": "mask"
+    },
+    {
+      "source": "s0_pose_shift",
+      "output": "image",
+      "target": "s0_pose_capture",
+      "input": "image"
+    },
+    {
+      "source": "s0_pose_shift",
+      "output": "truth",
+      "target": "s0_pose_capture",
+      "input": "truth"
+    },
+    {
+      "source": "s0_pose_shift",
+      "output": "support",
+      "target": "s0_pose_capture",
+      "input": "support"
+    },
+    {
+      "source": "s0_pose_inspect",
+      "output": "mask",
+      "target": "s0_pose_capture",
+      "input": "prediction"
+    },
+    {
+      "source": "s0_pose_inspect",
+      "output": "support",
+      "target": "s0_pose_capture",
+      "input": "model_support"
+    },
+    {
+      "source": "s0_pose_inspect",
+      "output": "report",
+      "target": "s0_pose_capture",
+      "input": "report"
+    },
+    {
+      "source": "s0_pose_inspect",
+      "output": "maximum_distance",
+      "target": "s0_pose_capture",
+      "input": "score"
+    },
+    {
+      "source": "s0_pose_capture",
+      "output": "observation",
+      "target": "batch",
+      "input": "item_3"
+    },
+    {
+      "source": "s0_pose_inspect",
+      "output": "image",
+      "target": "s0_pose_overlay",
+      "input": "image"
+    },
+    {
+      "source": "s0_pose_inspect",
+      "output": "result_graphics",
+      "target": "s0_pose_overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "s0_pose_overlay",
+      "output": "image",
+      "target": "s0_pose_filmstrip",
+      "input": "image"
+    }
+  ]
+}

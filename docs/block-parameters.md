@@ -8641,6 +8641,25 @@ Input `region` — Optional selected support within each box, rather than a cent
 | `maximum_boxes` | `128` | Value must be a whole number between 1 and 128. Reject excess boxes before histogram work; never truncate. |
 | `maximum_sample_pixels` | `2000000` | Value must be a whole number between 1 and 1.67772e+07. Reject excess summed raster ROI pixels, including overlapping boxes. |
 
+## Capture shifted inspection result (`ml.capture_shift_observation`)
+
+ML / Input-shift evaluation
+
+Inputs: `image` (image), `prediction` (image), `truth` (image), `support` (image), `report` (data), `model_support` (image, optional), `score` (number, optional), `passed` (boolean, optional).
+
+Input `passed` — Optional explicit judgment; otherwise use Prediction connection's tool outcome.
+
+Input `image` — Unchanged shifted source, with its evaluation_shift metadata.
+
+Input `model_support` — Optional model-specific scored support, intersected with shift support.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_revision_path` | `"reference_revision"` | Model/reference identity in Report, compared across shifts. |
+| `decision_revision_path` | `"decision_revision"` | Threshold/decoder identity in Report, compared across shifts. |
+| `score_kind` | `"raw"` | `raw`, `probability` Raw units, or declared [0,1] probability. This does not calibrate scores. |
+| `minimum_truth_retention` | `0.95` | Value must be a finite number between 0 and 1. Reject pairs that crop/occlude too much known defect truth. |
+
 ## Cascade object detection (`ml.cascade_detect`)
 
 ML / Cascade detection
@@ -9286,6 +9305,24 @@ Inputs: `records` (any, optional).
 | `records` | `[]` | Records: id, size, truth, predictions, status. Accepts reports/groups too. |
 | `expected_cases` | `[]` | Full expected set with detection_truth; absent IDs count as missing. |
 
+## Evaluate inspection input shifts (`ml.evaluate_input_shifts`)
+
+ML / Input-shift evaluation
+
+Inputs: `observations` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `required_variants` | `["baseline", "exposure", "blur", "pose"]` | Exact variant names for each source; include baseline. |
+| `score_direction` | `"lower"` | `lower`, `higher` |
+| `maximum_false_reject_rate` | `0.0` | Value must be a finite number between 0 and 1. |
+| `maximum_false_accept_rate` | `0.0` | Value must be a finite number between 0 and 1. |
+| `minimum_mean_truth_iou` | `0.8` | Value must be a finite number between 0 and 1. Empty unions have no IoU and are omitted from the mean. |
+| `minimum_mean_agreement_iou` | `0.8` | Value must be a finite number between 0 and 1. |
+| `minimum_pair_support_fraction` | `0.5` | Value must be a finite number between 0 and 1. Minimum shared scored pixels / full source canvas. |
+| `maximum_score_drop` | `-1.0` | Value must be a finite number between -1 and 1e+12. Negative disables the gate. Direction defines worse scores. |
+| `maximum_total_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. |
+
 ## Fuse tile detections (`ml.fuse_tile_detections`)
 
 ML / Object detection
@@ -9428,6 +9465,30 @@ Inputs: `model` (data).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `"hog-detector.json"` |  |
+
+## Controlled inspection image shift (`ml.image_input_shift`)
+
+ML / Input-shift evaluation
+
+Inputs: `image` (image), `truth` (image).
+
+Input `truth` — Independent defect mask. A known-clean sample needs an explicit empty mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `variant` | `"baseline"` | Unique paired case name. Baseline requires neutral gain/offset/pose/blur. |
+| `expected_pass` | `true` | Independent image-level label; retained when geometry changes. |
+| `gain` | `1.0` | Value must be a finite number between 0 and 8. |
+| `offset` | `0.0` | Value must be a finite number between -1 and 1. Full-scale offset after affine sampling and gain; clipped [0,1]. |
+| `angle_degrees` | `0.0` | Value must be a finite number between -180 and 180. |
+| `scale` | `1.0` | Value must be a finite number between 0.1 and 4. |
+| `translation_x` | `0.0` | Value must be a finite number between -16384 and 16384. |
+| `translation_y` | `0.0` | Value must be a finite number between -16384 and 16384. |
+| `interpolation` | `"linear"` | `nearest`, `linear` |
+| `border_value` | `0.0` | Value must be a finite number between 0 and 1. Full-scale affine padding; padded/blur-affected borders are unscored. |
+| `blur_kernel` | `0` | Value must be a whole number between 0 and 31. Zero disables blur; otherwise odd 3..31. Zero sigma selects native sigma. |
+| `blur_sigma` | `0.0` | Value must be a finite number between 0 and 10. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 4.1943e+06. |
 
 ## Image to DNN tensor (`ml.image_tensor`)
 

@@ -1,0 +1,218 @@
+{
+  "asset_sha256": {
+    "assets/changed-reference.json": "ebe93d658bb326f8f07e1f3996c17db9328a74eb823b2e3c8c00de5b2274347e",
+    "assets/defect.png": "a2fdb06be9867f8f8497e966820f9a2651d84edeb05c76c94d7f1d045169b783",
+    "assets/high16.png": "e5f4c5397aa60b854b3079af572c5bdd3bbc817ea177f2f8f4a672661f16439a",
+    "assets/normal.png": "914299cec079b5721c9ef69fdbc623386263980d8df13aaf520403fd45a9a1ba",
+    "assets/reference.json": "8b8a0b3ce1b8f7b557791ee47bfbaed45ba2ca37fa9cde0172697b6867c3a49a",
+    "assets/train-0.png": "56a7c33200111590841f91f4a112bc91842ab2632fdfb4ef53e4a1fd37db0fd0",
+    "assets/train-1.png": "691f168bee79acc261c6b8f13ea229edaecc82018b2faa6f1853b45ee88d30a3",
+    "assets/train-2.png": "9acc3f50b36b486c988cb0bc035c89b9f9c01bc434fff3a35b00aaaadd97cace",
+    "bundle/contract.json": "494f2bc236e047bbc8b13ea8f1a396a520ca760dfccee8a440ed20bb6305274d",
+    "bundle/model.onnx": "ee65cfb0432c86a7bb6464ee5d44317b01ead2656f7813477fc1b39d5a4f4164"
+  },
+  "cases": {
+    "blur_sensitive": {
+      "observation_count": 2,
+      "required_variants": [
+        "baseline",
+        "blur"
+      ],
+      "subjects": [
+        "normal.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "blur": {
+          "blur_kernel": 3,
+          "blur_sigma": 1
+        }
+      }
+    },
+    "clean_stable": {
+      "observation_count": 3,
+      "required_variants": [
+        "baseline",
+        "exposure",
+        "pose"
+      ],
+      "subjects": [
+        "normal.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "exposure": {
+          "offset": 0.02
+        },
+        "pose": {
+          "translation_x": 2
+        }
+      }
+    },
+    "cropped_truth": {
+      "observation_count": 2,
+      "required_variants": [
+        "baseline",
+        "pose"
+      ],
+      "subjects": [
+        "defect.png"
+      ],
+      "target": "s0_pose_capture",
+      "variants": {
+        "baseline": {},
+        "pose": {
+          "translation_x": 20
+        }
+      }
+    },
+    "defect_stable": {
+      "observation_count": 3,
+      "required_variants": [
+        "baseline",
+        "exposure",
+        "pose"
+      ],
+      "subjects": [
+        "defect.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "exposure": {
+          "offset": 0.02
+        },
+        "pose": {
+          "translation_x": 2
+        }
+      }
+    },
+    "exposure_sensitive": {
+      "observation_count": 2,
+      "required_variants": [
+        "baseline",
+        "exposure"
+      ],
+      "subjects": [
+        "normal.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "exposure": {
+          "offset": 0.25
+        }
+      }
+    },
+    "high_depth": {
+      "observation_count": 3,
+      "required_variants": [
+        "baseline",
+        "exposure",
+        "pose"
+      ],
+      "subjects": [
+        "high16.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "exposure": {
+          "offset": 0.02
+        },
+        "pose": {
+          "translation_x": 2
+        }
+      }
+    },
+    "loose_threshold": {
+      "observation_count": 2,
+      "required_variants": [
+        "baseline",
+        "exposure"
+      ],
+      "subjects": [
+        "defect.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "exposure": {
+          "offset": 0.02
+        }
+      }
+    },
+    "missing_variant": {
+      "observation_count": 2,
+      "required_variants": [
+        "baseline",
+        "exposure",
+        "pose"
+      ],
+      "subjects": [
+        "normal.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "exposure": {
+          "offset": 0.02
+        }
+      }
+    },
+    "mixed_parts": {
+      "observation_count": 4,
+      "required_variants": [
+        "baseline",
+        "pose"
+      ],
+      "subjects": [
+        "normal.png",
+        "defect.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "pose": {
+          "translation_x": 2
+        }
+      }
+    },
+    "pose_sensitive": {
+      "observation_count": 2,
+      "required_variants": [
+        "baseline",
+        "pose"
+      ],
+      "subjects": [
+        "normal.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "pose": {
+          "translation_x": 1
+        }
+      }
+    },
+    "wrong_identity": {
+      "observation_count": 2,
+      "required_variants": [
+        "baseline",
+        "exposure"
+      ],
+      "subjects": [
+        "normal.png"
+      ],
+      "target": "metrics",
+      "variants": {
+        "baseline": {},
+        "exposure": {
+          "offset": 0.02
+        }
+      }
+    }
+  }
+}

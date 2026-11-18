@@ -736,6 +736,7 @@ def builtin_registry():
     from .image_stitching import StitchImagePair
     from .image_tracking import TrackImageParts
     from .image_validity import CheckImageValidity, ReplaceNonfiniteSamples
+    from .input_shifts import INPUT_SHIFT_BLOCKS
     from .instance_segmentation import INSTANCE_BLOCKS
     from .judgments import FinalJudgment
     from .knn_blocks import KNN_BLOCKS
@@ -1186,6 +1187,7 @@ def builtin_registry():
         *DNN_BLOCKS,
         *REGRESSION_BLOCKS,
         *LOCAL_ANOMALY_BLOCKS,
+        *INPUT_SHIFT_BLOCKS,
         *BATCH_INFERENCE_BLOCKS,
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,
