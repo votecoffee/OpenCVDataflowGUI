@@ -90,11 +90,9 @@ def test_installer_preserves_different_skills_and_excludes_bytecode(tmp_path):
 
 def test_api_saved_example_opens_in_editor(app, tmp_path):
     from opencv_dataflow.app import MainWindow
-    from opencv_dataflow.plugins import load_plugin
 
     window = MainWindow()
     try:
-        load_plugin(PLUGIN, window.registry)
         with ProjectSession.open(EXAMPLE / "assistant_workflow.json", window.registry) as session:
             session.save(tmp_path / "inspection.json")
         window.replace_graph(Graph.load(tmp_path / "inspection.json", window.registry))
@@ -106,3 +104,18 @@ def test_api_saved_example_opens_in_editor(app, tmp_path):
         window.dirty = False
         window.close()
         app.processEvents()
+
+
+def test_bundled_mean_template_stays_portable():
+    bundled = ROOT / "src/opencv_dataflow/example_plugins/mean_inspection.py"
+    assert bundled.read_text() == PLUGIN.read_text()
+
+
+def test_assistant_project_runs_without_loading_a_plugin():
+    with ProjectSession.open(EXAMPLE / "assistant_workflow.json") as session:
+        assert session.run()["passed"]
+        session.apply(json.loads((EXAMPLE / "fail_edits.json").read_text()))
+        assert not session.run()["passed"]
+        block = session.graph.blocks["mean"]
+        assert block.state == "fail"
+        assert block.last_result.fail_reasons[0]["code"] == "mean_intensity"

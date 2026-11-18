@@ -4,10 +4,11 @@ This example combines a reusable Python plugin with API-authored connections,
 drawable result graphics and an explicit final ticket judgment. The input is an
 original MIT synthetic image; no customer or third-party image assets are needed.
 
-From the source checkout, load
-[`mean_inspection.py`](../../../skills/opencv-dataflow-plugins/assets/mean_inspection.py)
-using **File → Load Python plugin…**, then open
-[`assistant_workflow.json`](assistant_workflow.json) and run once. The mean
+Open
+[`assistant_workflow.json`](assistant_workflow.json) and run once. The bundled
+mean-inspection plugin loads automatically. Its portable
+[plugin source](../../../skills/opencv-dataflow-plugins/assets/mean_inspection.py)
+is also available as a template for your own tools. The mean
 intensity falls inside the configured 20–100 DN range; the measurement and final
 judgment pass. Select **Overlay result graphics** for the annotated result.
 
@@ -23,12 +24,11 @@ Use a new output path; the API preserves existing projects and reports.
 
 ```powershell
 $python = ".\.venv\Scripts\python.exe"
-$plugin = "skills/opencv-dataflow-plugins/assets/mean_inspection.py"
 New-Item -ItemType Directory -Force .local | Out-Null
-& $python -m opencv_dataflow.assistant_cli --plugin $plugin describe example.mean_inspection
-& $python -m opencv_dataflow.assistant_cli --plugin $plugin new --operations examples/user_tools/assistant_workflow/operations.json --output .local/assistant-inspection.json
-& $python -m opencv_dataflow.assistant_cli --plugin $plugin validate .local/assistant-inspection.json
-& $python -m opencv_dataflow.assistant_cli --plugin $plugin run .local/assistant-inspection.json --report .local/assistant-pass.json --artifacts .local/assistant-pass-previews --summary
+& $python -m opencv_dataflow.assistant_cli describe example.mean_inspection
+& $python -m opencv_dataflow.assistant_cli new --operations examples/user_tools/assistant_workflow/operations.json --output .local/assistant-inspection.json
+& $python -m opencv_dataflow.assistant_cli validate .local/assistant-inspection.json
+& $python -m opencv_dataflow.assistant_cli run .local/assistant-inspection.json --report .local/assistant-pass.json --artifacts .local/assistant-pass-previews --summary
 ```
 
 Create `.local` first if it does not already exist. Each command returns one JSON
@@ -39,8 +39,8 @@ diagnostics, and use the preview manifest to find the labeled image.
 accepted mean range to 200–255 DN. Apply to a new copy, then run it:
 
 ```powershell
-& $python -m opencv_dataflow.assistant_cli --plugin $plugin apply .local/assistant-inspection.json --operations examples/user_tools/assistant_workflow/fail_edits.json --output .local/assistant-fail-inspection.json
-& $python -m opencv_dataflow.assistant_cli --plugin $plugin run .local/assistant-fail-inspection.json --report .local/assistant-fail.json
+& $python -m opencv_dataflow.assistant_cli apply .local/assistant-inspection.json --operations examples/user_tools/assistant_workflow/fail_edits.json --output .local/assistant-fail-inspection.json
+& $python -m opencv_dataflow.assistant_cli run .local/assistant-fail-inspection.json --report .local/assistant-fail.json
 ```
 
 The second run returns exit **1**, `passed=false` and a `mean_intensity` failure

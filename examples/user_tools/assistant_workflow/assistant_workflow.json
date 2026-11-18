@@ -101,7 +101,7 @@
       "id": "notes",
       "type": "layout.comment",
       "name": "Assistant authoring example (MIT)",
-      "description": "Original synthetic image from input.demo. No external image assets. Load the mean_inspection.py skill template before opening this project. The sibling operations.json and build_example.py show API authoring.",
+      "description": "Original synthetic image from input.demo. No external image assets. The bundled mean inspection plugin loads automatically. The sibling operations.json and build_example.py show API authoring.",
       "parameters": {},
       "position": [
         0,

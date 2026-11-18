@@ -681,6 +681,7 @@ def builtin_registry():
     from .edge_agreement import CompareEdgeMaps
     from .epipolar import CheckEpipolarCorrespondences
     from .example_plugins import invert as invert_example
+    from .example_plugins import mean_inspection as mean_example
     from .examples3d import StereoDemo
     from .exposure import AlignExposures, FuseExposures
     from .fanuc import FANUC_BLOCKS
@@ -1280,6 +1281,7 @@ def builtin_registry():
     registry.add_provider(BIN_PICKING_TYPES, load_installed_bin_picking)
     register_simple_providers(registry)
     registry.add_provider((invert_example.Invert.type_id,), invert_example.register)
+    registry.add_provider((mean_example.MeanInspection.type_id,), mean_example.register)
     return registry
 
 

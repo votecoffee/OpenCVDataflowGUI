@@ -3,11 +3,9 @@
 import json
 from pathlib import Path
 
-from opencv_dataflow.assistant_api import ProjectSession, make_registry
+from opencv_dataflow.assistant_api import ProjectSession
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[2]
-PLUGIN = ROOT / "skills/opencv-dataflow-plugins/assets/mean_inspection.py"
 
 
 def operations():
@@ -34,7 +32,7 @@ def operations():
                 "name": "Assistant authoring example (MIT)",
                 "description": (
                     "Original synthetic image from input.demo. No external image assets. "
-                    "Load the mean_inspection.py skill template before opening this project. "
+                    "The bundled mean inspection plugin loads automatically. "
                     "The sibling operations.json and build_example.py show API authoring."
                 ),
             },
@@ -82,7 +80,7 @@ def build():
         }
     ]
     (HERE / "fail_edits.json").write_bytes((json.dumps(fail, indent=2) + "\n").encode())
-    with ProjectSession(make_registry([PLUGIN]), directory=HERE) as session:
+    with ProjectSession(directory=HERE) as session:
         session.apply(actions)
         # Stable IDs and fresh destinations are also used when regenerating fixtures.
         content = json.dumps(session.graph.to_dict(), indent=2, allow_nan=False) + "\n"
