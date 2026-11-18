@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/query-texture.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.em_load",
+      "name": "Load image Gaussian mixture",
+      "parameters": {
+        "path": "assets/model-texture.json"
+      },
+      "position": [
+        360,
+        450
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "ml.em_classify_image",
+      "name": "Classify image Gaussian mixture",
+      "parameters": {
+        "min_posterior": 0.0,
+        "check_log_likelihood": true,
+        "min_log_likelihood": 2.0,
+        "accepted_components": [],
+        "max_unknown_fraction": 0.0,
+        "minimum_support_fraction": 0.0,
+        "chunk_size": 4096,
+        "max_work": 128000000,
+        "max_bytes_mb": 256.0
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "labels",
+        "winning_posterior",
+        "log_likelihood",
+        "unknown_mask",
+        "accepted_mask",
+        "valid_mask",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          4,
+          4,
+          40,
+          56
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        400
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          52,
+          4,
+          40,
+          56
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        760
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "support",
+      "type": "region.combine",
+      "name": "Combine regions",
+      "parameters": {
+        "operation": "union"
+      },
+      "position": [
+        360,
+        820
+      ],
+      "exposed_inputs": [
+        "image",
+        "region_a",
+        "region_b"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original image surface mixture controls",
+      "description": "Original MIT synthetic images, truth masks, models and graphs by OpenCVDataflowGUI contributors. Training and held-out images use separate deterministic noise; queries are excluded from fitting. The color anomaly is exactly 120 pixels. Texture decisions refer to supported neighborhood centers and can extend beyond the altered patch. Relative component probability is not calibrated novelty confidence. Explicit density, component and support gates decide pass/fail; regularized covariance is saved in the model. Spherical fits use equivalent diagonal prediction. No production accuracy or radiometric calibration claim. See README.md, benchmark.json and SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -480
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspect",
+      "input": "image"
+    },
+    {
+      "source": "model",
+      "output": "model",
+      "target": "inspect",
+      "input": "model"
+    },
+    {
+      "source": "inspect",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "inspect",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "left",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "right",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "support",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "region",
+      "target": "support",
+      "input": "region_a"
+    },
+    {
+      "source": "right",
+      "output": "region",
+      "target": "support",
+      "input": "region_b"
+    },
+    {
+      "source": "support",
+      "output": "mask",
+      "target": "inspect",
+      "input": "mask"
+    }
+  ]
+}

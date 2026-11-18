@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/train-color.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "ml.em_train_image",
+      "name": "Train image Gaussian mixture",
+      "parameters": {
+        "feature_space": "bgr",
+        "texture_window": 7,
+        "components": 2,
+        "covariance_type": "diagonal",
+        "max_iterations": 100,
+        "epsilon": 1e-06,
+        "max_samples": 20000,
+        "covariance_floor": 0.0001,
+        "initialization": "manual",
+        "initial_means": [
+          [
+            0.1568627450980392,
+            0.27450980392156865,
+            0.7058823529411765
+          ],
+          [
+            0.7058823529411765,
+            0.5882352941176471,
+            0.1568627450980392
+          ]
+        ],
+        "initial_covariances": [],
+        "initial_weights": [],
+        "initial_variance": 0.01,
+        "max_work": 128000000,
+        "max_bytes_mb": 256.0
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "model",
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save",
+      "type": "ml.em_save",
+      "name": "Save image Gaussian mixture",
+      "parameters": {
+        "path": "trained-mixture.json"
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "model"
+      ],
+      "exposed_outputs": [
+        "path"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original image surface mixture controls",
+      "description": "Original MIT synthetic images, truth masks, models and graphs by OpenCVDataflowGUI contributors. Training and held-out images use separate deterministic noise; queries are excluded from fitting. The color anomaly is exactly 120 pixels. Texture decisions refer to supported neighborhood centers and can extend beyond the altered patch. Relative component probability is not calibrated novelty confidence. Explicit density, component and support gates decide pass/fail; regularized covariance is saved in the model. Spherical fits use equivalent diagonal prediction. No production accuracy or radiometric calibration claim. See README.md, benchmark.json and SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -480
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "train",
+      "input": "image"
+    },
+    {
+      "source": "train",
+      "output": "model",
+      "target": "save",
+      "input": "model"
+    }
+  ]
+}

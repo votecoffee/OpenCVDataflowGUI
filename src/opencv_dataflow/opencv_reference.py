@@ -7,6 +7,8 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "ml.em_train_image": "ml.EM_create ml.EM.trainEM ml.EM.trainM",
+    "ml.em_classify_image": "ml.EM.predict ml.EM.read",
     "cv.fit_pca": "PCACompute2",
     "cv.transform_pca": "PCAProject PCABackProject",
     "sequence.track_vit": (

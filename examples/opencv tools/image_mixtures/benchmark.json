@@ -1,0 +1,60 @@
+{
+  "opencv": "5.0.0",
+  "reference": "independent features and native predict2 versus Gaussian formula",
+  "scope": "Original controlled surfaces; texture outputs describe neighborhood centers",
+  "cases": {
+    "color_known": {
+      "supported_pixels": 6144,
+      "unknown_pixels": 0,
+      "minimum_log_density": 5.854152614465189,
+      "native_gaussian_max_error": 1.7763568394002505e-15,
+      "minimum_winning_posterior": 1.0,
+      "fitted_covariance": "diagonal",
+      "prediction_covariance": "diagonal"
+    },
+    "color_defect": {
+      "supported_pixels": 6144,
+      "unknown_pixels": 120,
+      "minimum_log_density": -1959.8879340143544,
+      "native_gaussian_max_error": 2.2737367544323206e-13,
+      "minimum_winning_posterior": 1.0,
+      "fitted_covariance": "diagonal",
+      "prediction_covariance": "diagonal",
+      "edit_pixels": 120,
+      "true_positive": 120,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "spherical_color": {
+      "supported_pixels": 6144,
+      "unknown_pixels": 0,
+      "minimum_log_density": 5.854307665748477,
+      "native_gaussian_max_error": 1.7763568394002505e-15,
+      "minimum_winning_posterior": 1.0,
+      "fitted_covariance": "spherical",
+      "prediction_covariance": "diagonal"
+    },
+    "texture_known": {
+      "supported_pixels": 3400,
+      "unknown_pixels": 0,
+      "minimum_log_density": 6.611084926454059,
+      "native_gaussian_max_error": 1.7763568394002505e-15,
+      "minimum_winning_posterior": 1.0,
+      "fitted_covariance": "diagonal",
+      "prediction_covariance": "diagonal"
+    },
+    "texture_defect": {
+      "supported_pixels": 3400,
+      "unknown_pixels": 192,
+      "minimum_log_density": -8.651692378699387,
+      "native_gaussian_max_error": 1.7763568394002505e-15,
+      "minimum_winning_posterior": 0.864013938904567,
+      "fitted_covariance": "diagonal",
+      "prediction_covariance": "diagonal",
+      "edit_pixels": 256,
+      "true_positive": 192,
+      "false_positive": 0,
+      "false_negative": 64
+    }
+  }
+}

@@ -720,6 +720,7 @@ def builtin_registry():
     from .image_correlation import CompareAlignedImages
     from .image_hash import CompareImageHashes, ComputeImageHash
     from .image_layout import JoinImages, PasteImagePatch, TileImage
+    from .image_mixtures import IMAGE_EM_BLOCKS
     from .image_noise import AddImageNoise, RandomImage
     from .image_norm import MeasureImageNorm
     from .image_quality import CompareImageQuality, MeasureBRISQUE
@@ -1204,6 +1205,7 @@ def builtin_registry():
         KMeansSamples,
         KMeansImage,
         *CLUSTER_MODEL_BLOCKS,
+        *IMAGE_EM_BLOCKS,
         *OCR_BLOCKS,
         RecognizeTextBatch,
         RecognizeConstrainedText,

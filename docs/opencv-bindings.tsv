@@ -285,7 +285,7 @@ P2	method	cv2.ccm.ColorCorrectionModel.getLoss	method name only	-
 P2	method	cv2.ccm.ColorCorrectionModel.getMask	method name only	-
 P2	method	cv2.ccm.ColorCorrectionModel.getRefLinearRGB	no static reference	-
 P2	method	cv2.ccm.ColorCorrectionModel.getSrcLinearRGB	no static reference	-
-P2	method	cv2.ccm.ColorCorrectionModel.getWeights	no static reference	-
+P2	method	cv2.ccm.ColorCorrectionModel.getWeights	method name only	-
 P2	method	cv2.ccm.ColorCorrectionModel.read	method name only	-
 P2	method	cv2.ccm.ColorCorrectionModel.setCcmType	method name only	-
 P2	method	cv2.ccm.ColorCorrectionModel.setColorSpace	method name only	-
@@ -683,7 +683,7 @@ P2	method	cv2.ml.ANN_MLP.getRpropDWMinus	no static reference	-
 P2	method	cv2.ml.ANN_MLP.getRpropDWPlus	no static reference	-
 P2	method	cv2.ml.ANN_MLP.getTermCriteria	no static reference	-
 P2	method	cv2.ml.ANN_MLP.getTrainMethod	no static reference	-
-P2	method	cv2.ml.ANN_MLP.getWeights	no static reference	-
+P2	method	cv2.ml.ANN_MLP.getWeights	method name only	-
 P2	method	cv2.ml.ANN_MLP.load	method name only	-
 P2	method	cv2.ml.ANN_MLP.setActivationFunction	no static reference	-
 P2	method	cv2.ml.ANN_MLP.setAnnealCoolingRatio	no static reference	-
@@ -740,20 +740,20 @@ P2	class	cv2.ml.EM	no static reference	-
 P2	method	cv2.ml.EM.create	method name only	-
 P2	method	cv2.ml.EM.getClustersNumber	no static reference	-
 P2	method	cv2.ml.EM.getCovarianceMatrixType	no static reference	-
-P2	method	cv2.ml.EM.getCovs	no static reference	-
-P2	method	cv2.ml.EM.getMeans	no static reference	-
+P2	method	cv2.ml.EM.getCovs	method name only	-
+P2	method	cv2.ml.EM.getMeans	method name only	-
 P2	method	cv2.ml.EM.getTermCriteria	no static reference	-
-P2	method	cv2.ml.EM.getWeights	no static reference	-
+P2	method	cv2.ml.EM.getWeights	method name only	-
 P2	method	cv2.ml.EM.load	method name only	-
 P2	method	cv2.ml.EM.predict	method name only	-
 P2	method	cv2.ml.EM.predict2	no static reference	-
-P2	method	cv2.ml.EM.setClustersNumber	no static reference	-
-P2	method	cv2.ml.EM.setCovarianceMatrixType	no static reference	-
+P2	method	cv2.ml.EM.setClustersNumber	method name only	-
+P2	method	cv2.ml.EM.setCovarianceMatrixType	method name only	-
 P2	method	cv2.ml.EM.setTermCriteria	method name only	-
 P2	method	cv2.ml.EM.trainE	no static reference	-
-P2	method	cv2.ml.EM.trainEM	no static reference	-
-P2	method	cv2.ml.EM.trainM	no static reference	-
-P2	function	cv2.ml.EM_create	no static reference	-
+P2	method	cv2.ml.EM.trainEM	method name only	-
+P2	method	cv2.ml.EM.trainM	method name only	-
+P2	function	cv2.ml.EM_create	literal reference	-
 P2	function	cv2.ml.EM_load	no static reference	-
 P2	class	cv2.ml.KNearest	no static reference	-
 P2	method	cv2.ml.KNearest.create	method name only	-
@@ -858,7 +858,7 @@ P2	method	cv2.ml.SVMSGD.getShift	no static reference	-
 P2	method	cv2.ml.SVMSGD.getStepDecreasingPower	no static reference	-
 P2	method	cv2.ml.SVMSGD.getSvmsgdType	no static reference	-
 P2	method	cv2.ml.SVMSGD.getTermCriteria	no static reference	-
-P2	method	cv2.ml.SVMSGD.getWeights	no static reference	-
+P2	method	cv2.ml.SVMSGD.getWeights	method name only	-
 P2	method	cv2.ml.SVMSGD.load	method name only	-
 P2	method	cv2.ml.SVMSGD.setInitialStepSize	no static reference	-
 P2	method	cv2.ml.SVMSGD.setMarginRegularization	no static reference	-

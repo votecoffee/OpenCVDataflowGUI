@@ -1,0 +1,99 @@
+{
+  "asset_sha256": {
+    "color-truth.png": "c77ffe1acd1b778bacff5a0023aed58a0f15f500d4cec4301299fb665981c883",
+    "defect-color.png": "1ffc88aaffdd9a9108c327e9f06153635141c1959e0bbd3e7ec7f09adbdedd55",
+    "defect-texture.png": "be23c1dd968d76efcc0b3368de4668605015b9602e4313126075af2aaede341c",
+    "model-color.json": "e72d8d9d8be7587f5233ec5e29c9cdbd36605d51129ba8b408e4a69b501967c2",
+    "model-spherical.json": "c6b79072e8055a7cb569ff1bc6dccbf60358e74c4c0cff0b470d2d171b521108",
+    "model-texture.json": "09e9e1a44579f13bdd1d78f4a00e9faa19f337e5764b2e468a0adf4124dd371f",
+    "query-color.png": "08f803c427f7917ffb40a8290bdcf541473da0ce211f5771c90ad8564ac1d769",
+    "query-texture.png": "fa2de0d46cb5c17666a8755b917a8af7c2a2bac32e6dea03141866819456d5ee",
+    "query16.png": "ebe7b09c75b34c10e2b51093f64e40a2b00e3b1b494b85ce6a11e94e4e80c4f9",
+    "texture-truth.png": "10294a231fae243bdb1f7b6366236a5101d2d100d3695e779dfa432b814626c1",
+    "train-color.png": "3104c2651d0f74469c687af8112e5c1a5de0dd04b59dd8ddee5c4eb5f8e87f1f",
+    "train-texture.png": "894ed6e52b9fc6415a6345f0f02378065792620a7fc8b9a639849846908b18aa"
+  },
+  "cases": {
+    "color_defect": {
+      "image": "defect-color.png",
+      "state": "fail",
+      "target": "inspect"
+    },
+    "color_known": {
+      "image": "query-color.png",
+      "state": "pass",
+      "target": "inspect"
+    },
+    "color_rgb16": {
+      "image": "query16.png",
+      "state": "pass",
+      "target": "inspect"
+    },
+    "component_filter": {
+      "image": "query-color.png",
+      "state": "fail",
+      "target": "inspect"
+    },
+    "density_disabled": {
+      "image": "defect-color.png",
+      "state": "pass",
+      "target": "inspect"
+    },
+    "posterior_maps": {
+      "image": "query-color.png",
+      "state": "pass",
+      "target": "inspect"
+    },
+    "region_color": {
+      "image": "defect-color.png",
+      "state": "pass",
+      "target": "inspect"
+    },
+    "spherical_color": {
+      "image": "query-color.png",
+      "state": "pass",
+      "target": "inspect"
+    },
+    "texture_defect": {
+      "image": "defect-texture.png",
+      "state": "fail",
+      "target": "inspect"
+    },
+    "texture_known": {
+      "image": "query-texture.png",
+      "state": "pass",
+      "target": "inspect"
+    },
+    "texture_support": {
+      "image": "query-texture.png",
+      "state": "fail",
+      "target": "inspect"
+    },
+    "train_color": {
+      "image": "train-color.png",
+      "state": "pass",
+      "target": "save"
+    },
+    "train_texture": {
+      "image": "train-texture.png",
+      "state": "pass",
+      "target": "save"
+    }
+  },
+  "color_defect_pixels": 120,
+  "texture_patch_pixels": 256,
+  "texture_selection": [
+    [
+      4,
+      4,
+      40,
+      56
+    ],
+    [
+      52,
+      4,
+      40,
+      56
+    ]
+  ]
+}

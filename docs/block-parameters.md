@@ -8992,6 +8992,70 @@ Input `prompts` — Current segmentation_prompts_v1 record; points/background/bo
 | `max_output_elements` | `4000000` | Value must be a whole number between 3.14573e+06 and 8e+06. Budget must fit three 1024x1024 logit planes plus three quality values. |
 | `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Source grid limit before 1024x1024 RGB preprocessing; axis limit 16384. |
 
+## Classify image Gaussian mixture (`ml.em_classify_image`)
+
+ML / Image surface models
+
+Inputs: `model` (data), `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8/uint16 or [0,1] float gray/BGR/RGB/alpha; original pixels are retained.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `min_posterior` | `0.0` | Value must be a finite number between 0 and 1. Minimum winning component posterior; novelty can still have posterior 1. |
+| `check_log_likelihood` | `true` | Use absolute mixture density as an additional unknown-pixel gate. |
+| `min_log_likelihood` | `-12.0` | Value must be a finite number between -1e+12 and 1e+12. Inclusive log density in saved feature units, not a probability. |
+| `accepted_components` | `[]` | Empty accepts all; otherwise use canonical model-specific IDs. |
+| `max_unknown_fraction` | `0.0` | Value must be a finite number between 0 and 1. Inclusive unsupported-class fraction among supported pixels. |
+| `minimum_support_fraction` | `0.0` | Value must be a finite number between 0 and 1. Minimum supported/requested fraction after texture erosion. |
+| `chunk_size` | `4096` | Value must be a whole number between 1 and 65536. Posterior/density batch bound; result maps remain full size. |
+| `max_work` | `128000000` | Value must be a whole number between 1 and 1e+09. Bound estimated fitting/prediction work before native EM calls. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.01 and 4096. Estimated array/workspace allowance; not measured process RSS. |
+
+## Load image Gaussian mixture (`ml.em_load`)
+
+ML / Image surface models
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Save image Gaussian mixture (`ml.em_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"image-mixture.json"` |  |
+
+## Train image Gaussian mixture (`ml.em_train_image`)
+
+ML / Image surface models
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8/uint16 or [0,1] float gray/BGR/RGB/alpha; original pixels are retained.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `feature_space` | `"lab"` | `bgr`, `lab`, `gray`, `gray_texture` Normalized BGR/Lab/gray, or local grayscale mean and standard deviation. |
+| `texture_window` | `7` | Value must be a positive odd integer between 3 and 63. Odd square neighborhood; requires fully selected visible support. |
+| `components` | `2` | Value must be a whole number between 1 and 16. Unsupervised components, sorted by fitted means; IDs are model-specific. |
+| `covariance_type` | `"diagonal"` | `diagonal`, `spherical`, `generic` Native fit structure; spherical uses equivalent diagonal scoring. |
+| `max_iterations` | `100` | Value must be a whole number between 1 and 1000. Native count-plus-epsilon stopping limit, not a convergence guarantee. |
+| `epsilon` | `1e-06` | Value must be a finite number between 1e-12 and 1. Native EM convergence tolerance. |
+| `max_samples` | `20000` | Value must be a whole number between 2 and 100000. Evenly spaced supported row-major pixels; rare surfaces may be missed. |
+| `covariance_floor` | `0.0001` | Value must be a finite number between 1e-08 and 1. Explicit post-fit eigenvalue floor in squared feature units. |
+| `initialization` | `"auto"` | `auto`, `manual` Native k-means, or Gaussian responsibilities followed by native trainM. |
+| `initial_means` | `[]` | Manual: component x feature table in normalized feature units. |
+| `initial_covariances` | `[]` | Manual: optional component x feature x feature covariance array. |
+| `initial_weights` | `[]` | Manual: optional positive weights summing to one; empty means uniform. |
+| `initial_variance` | `0.01` | Value must be a finite number between 1e-08 and 1. Manual covariance default when Initial covariances is empty. |
+| `max_work` | `128000000` | Value must be a whole number between 1 and 1e+09. Bound estimated fitting/prediction work before native EM calls. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.01 and 4096. Estimated array/workspace allowance; not measured process RSS. |
+
 ## Evaluate image class predictions (`ml.evaluate_classification`)
 
 ML / Evaluation

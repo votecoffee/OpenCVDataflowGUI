@@ -113,7 +113,7 @@ IMPLEMENTATION_MODULES = {
     "instance_segmentation landmarks multi_inference ocr rotated_detection "
     "semantic_segmentation prompt_segmentation prompt_mask_decode",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
-    "ml": "svm_blocks",
+    "ml": "svm_blocks image_mixtures",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
     "rotating_panorama panorama_points",
     "stereo": "stereo3d",

@@ -1,0 +1,81 @@
+{
+  "features": {
+    "model": "em_image_features_v1",
+    "opencv_version": "5.0.0",
+    "scaling": "unit_BGR_gray;Lab_L/100_ab/128;texture_mean_std",
+    "space": "gray_texture",
+    "texture_window": 7
+  },
+  "model": "opencv_image_em_v1",
+  "native": {
+    "covs": [
+      {
+        "cols": 2,
+        "data": [
+          0.0001,
+          0.0,
+          0.0,
+          0.0001
+        ],
+        "dt": "d",
+        "rows": 2,
+        "type_id": "opencv-matrix"
+      },
+      {
+        "cols": 2,
+        "data": [
+          0.0001,
+          0.0,
+          0.0,
+          0.0001
+        ],
+        "dt": "d",
+        "rows": 2,
+        "type_id": "opencv-matrix"
+      }
+    ],
+    "format": 3,
+    "means": {
+      "cols": 2,
+      "data": [
+        0.4705529758860086,
+        0.0031883818410327757,
+        0.470657409018829,
+        0.1176667260667424
+      ],
+      "dt": "d",
+      "rows": 2,
+      "type_id": "opencv-matrix"
+    },
+    "training_params": {
+      "cov_mat_type": "diagonal",
+      "epsilon": 1e-06,
+      "iterations": 100,
+      "nclusters": 2
+    },
+    "weights": {
+      "cols": 2,
+      "data": [
+        0.49999999999999994,
+        0.49999999999999994
+      ],
+      "dt": "d",
+      "rows": 1,
+      "type_id": "opencv-matrix"
+    }
+  },
+  "revision": "74cca5cbf17d96d7a2ae8fa0ad492430f71adad267016fba34de7e1d36005c61",
+  "training": {
+    "covariance_floor": 0.0001,
+    "covariance_type": "diagonal",
+    "fitted_min_eigenvalues": [
+      3.110059905749226e-08,
+      1.6218503482745556e-07
+    ],
+    "initialization": "manual",
+    "sample_count": 3400,
+    "sampling": "even_supported_row_major",
+    "selected_pixels": 4480,
+    "supported_pixels": 3400
+  }
+}
