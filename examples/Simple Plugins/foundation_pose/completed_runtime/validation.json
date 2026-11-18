@@ -1,0 +1,45 @@
+{
+  "cases": [
+    {
+      "case": "held_out_frame13",
+      "initialization": "supplied_coarse_poses",
+      "candidates": 2,
+      "accepted": 0,
+      "complete_cohort_score_calls": 1,
+      "original_candidates_and_graphics_exact": true,
+      "native_review_after_execution_graph_closed": true,
+      "review_and_export_after_worker_exit": true,
+      "expired_read_preserves_worker": true,
+      "captured_sample_counts": [
+        8891,
+        8890
+      ],
+      "transferred_fit_bytes": 622335,
+      "elapsed_seconds": 9.392860000021756,
+      "scope": "Supplied visible mask; two prior network seeds when assisted. No pose truth input.",
+      "recipe_sha256": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
+      "source": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+    },
+    {
+      "case": "different_object_negative",
+      "initialization": "supplied_coarse_poses",
+      "candidates": 2,
+      "accepted": 0,
+      "complete_cohort_score_calls": 1,
+      "original_candidates_and_graphics_exact": true,
+      "native_review_after_execution_graph_closed": true,
+      "review_and_export_after_worker_exit": true,
+      "expired_read_preserves_worker": true,
+      "captured_sample_counts": [
+        8521,
+        8564
+      ],
+      "transferred_fit_bytes": 597975,
+      "elapsed_seconds": 9.031934400001774,
+      "scope": "Supplied visible mask; two prior network seeds when assisted. No pose truth input.",
+      "recipe_sha256": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
+      "source": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0"
+    }
+  ],
+  "weights_bundled": false
+}

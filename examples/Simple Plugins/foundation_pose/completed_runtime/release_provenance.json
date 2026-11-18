@@ -1,0 +1,32 @@
+{
+  "wheel_sha256": "aa1618f0bb6d0932656a69e26d690c635169a982abc6946e74e597b7025ec4c0",
+  "source_modules": {
+    "opencv_simple_foundation_pose/__init__.py": "2ea97d3cf2c5d24e3387d62563c00aad7219528f218af464ddfeafbc4a448bad",
+    "opencv_simple_foundation_pose/bridge.py": "3535a6f2439054f60369d76f9b3c03aac55f13fd3c77271a47045f54bd71c2dd",
+    "opencv_simple_foundation_pose/capture.py": "040567233e532f19189019fd88f39f8ca8c827c782ca13eea581d63825b4b79f",
+    "opencv_simple_foundation_pose/cli.py": "2c196066e0bdf16862935672be1dfed2e10bff88bb11eb388c1089a9538f6880",
+    "opencv_simple_foundation_pose/completed.py": "a7bc3e68230680c98d3d6331e699f3961edc784e997bb443528e85164c81c5b9",
+    "opencv_simple_foundation_pose/completed_review.py": "0357e58bbe3b87ca2df8bf3f9e524b45c5cb44d269e9b09af59a59c613cfd68f",
+    "opencv_simple_foundation_pose/dataflow.py": "f14e510bc90b1f8e840579b99184125aa9e98d231301cfa8370fb670989fabed",
+    "opencv_simple_foundation_pose/machine.py": "e97e9938bbb6a5629cb173ee07695f59f045fa9a016eddc48808138e9c28b61f",
+    "opencv_simple_foundation_pose/persistence.py": "663cc834f8f8c8b306ee7b770952918037b25950798401e6a1724029f9b72d69",
+    "opencv_simple_foundation_pose/preprocess.py": "e0129ec0e6462a0529fb1895db7d078aeab61ccde00c97cda5809266d639d2ba",
+    "opencv_simple_foundation_pose/process_tree.py": "4e2b39d56d9cda6629702f8134c428c55323806da92d2412f85478f011ee7836",
+    "opencv_simple_foundation_pose/qt_capture.py": "6a4c6006cdefed63d40463a11a0a8a79625a02d2ec6bd0a1aad949c2f066a3df",
+    "opencv_simple_foundation_pose/qt_completed_review.py": "0723aadce67f583985263e66cf78fdca469e5cf547239f13e03f9c60fcdc72f4",
+    "opencv_simple_foundation_pose/qt_mask.py": "d03ef3f31ea61ab7c043eafb04d3a6ca2f3a503822377c1a4093ab84aac90171",
+    "opencv_simple_foundation_pose/qt_setup.py": "662d8f6e515e4923eac06f74e5161f17e00627e8c8db7cf7f29d004de7477432",
+    "opencv_simple_foundation_pose/register.py": "967998e6806d10dae784e54edb21091d0af48312e469f137b8d7420179ef4f94",
+    "opencv_simple_foundation_pose/render.py": "9b62e6825f49a83a3b7fa6019285c9288f1af8109da9ad828676b016bf18194b",
+    "opencv_simple_foundation_pose/review.py": "656269d98b44e9b2e54d70c0f63d22b0cdda6217f6adce7c9888434a726b9626",
+    "opencv_simple_foundation_pose/runtime.py": "67f642b815abfe7a7316c78754dd176b2f0d81567641adea5900535bd84e42e0",
+    "opencv_simple_foundation_pose/selection.py": "0396624e78534bae1af254f94c085a95258b275248500cf76a94437bde4b3d37",
+    "opencv_simple_foundation_pose/specs.py": "4433a1f6b8952870b90320556ab6199b3c02b4a83cf29415f0ff22b21fc0c611",
+    "opencv_simple_foundation_pose/teaching.py": "e921eb5fa4f7443f7372382ab2246b5a068358751e5c27ffa44d46467368d25e",
+    "opencv_simple_foundation_pose/wire.py": "d1a880440800eaf9ce8fc42f30d0d1e98543134d399983c628b6430bc365de2a",
+    "opencv_simple_foundation_pose/worker.py": "909f2810bebbfccf41efc56e0662de4c686f271f2486811586c63e8f219656f7",
+    "opencv_simple_foundation_pose/worker_lease.py": "c0fa656608cb4344979955775965add10547529fb93aea8bcfdcaed9fbddc391"
+  },
+  "weights_bundled": false,
+  "host_environment_modified": false
+}

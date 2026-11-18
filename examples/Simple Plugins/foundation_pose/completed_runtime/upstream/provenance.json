@@ -1,0 +1,12 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC BY 4.0",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "sha256": {
+    "test_primesense/000002/scene_gt.json": "a04b5aabc88dab06280670270b4954e5e353e490f5e661a92b42aa730726316f",
+    "test_primesense/000002/scene_camera.json": "84d4a7b2106ed19c59d11da0fa406a763bd408c8585a77b8f44e5d3d7b300d9b",
+    "test_primesense/000003/scene_gt.json": "a0975e3a1cc508c4c0cfc13a67cf62ae9309bf8adadd40624ac68a8196ca7be3",
+    "test_primesense/000003/scene_camera.json": "e16f55fb52bb03e45c933e781e29d06ce23ea876b34475d24f31be189b540d22"
+  },
+  "scope": "Unmodified original metadata; pose truth is not inference input."
+}

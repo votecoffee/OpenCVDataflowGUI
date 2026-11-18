@@ -1,5 +1,12 @@
 # First CPU FoundationPose replay
 
+The [completed-result examples](completed_runtime/README.md) add a separate
+read-only Results workflow in dev4: exact executed RGB-D/mask/model, complete
+original ranking cohort, stored first-surface fit samples, native colored
+fly-around/sample selection and frozen exports. Two assisted real examples and
+one full 252-candidate replay preserve prior results and all real rejections.
+Six portable projects include immediate file-only cloud/image review.
+
 This experimental pilot runs the actual pinned NVIDIA ONNX refiner/scorer on
 one selected T-LESS instance with a **supplied visible ground-truth mask**.
 It is not unassisted bin detection, a new network training run, GPU/CUDA parity,

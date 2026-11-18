@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.foundation_pose_example_capture",
+      "name": "FoundationPose example capture",
+      "parameters": {
+        "capture_path": "capture.npz",
+        "coarse_path": "coarse.json",
+        "capture_id": "tless:different_object_negative"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "mask",
+        "camera",
+        "capture_id",
+        "coarse_poses",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "pose",
+      "type": "3d.simple_foundation_pose",
+      "name": "SimpleFoundationPose",
+      "description": "ASSISTED replay from two prior network proposals; no annotated pose input. Additional refinement and changed score cohort; not independent global inference.",
+      "parameters": {
+        "recipe_path": "trained.sfp",
+        "sha256": "9dd8370f3f04e0fd18c5898b1f286bbb3c3a253fdfb6d02a0e183db18c963e1d",
+        "mode": "Connected RGB-D",
+        "depth_scale_to_m": 1.0,
+        "render_graphics": true,
+        "timeout_seconds": 1800.0
+      },
+      "position": [
+        460,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "mask",
+        "camera",
+        "capture_id",
+        "coarse_poses"
+      ],
+      "exposed_outputs": [
+        "report",
+        "pose",
+        "poses",
+        "accepted_count",
+        "overlay",
+        "cloud",
+        "candidate_table"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "image",
+      "target": "pose",
+      "input": "image"
+    },
+    {
+      "source": "capture",
+      "output": "depth",
+      "target": "pose",
+      "input": "depth"
+    },
+    {
+      "source": "capture",
+      "output": "mask",
+      "target": "pose",
+      "input": "mask"
+    },
+    {
+      "source": "capture",
+      "output": "camera",
+      "target": "pose",
+      "input": "camera"
+    },
+    {
+      "source": "capture",
+      "output": "capture_id",
+      "target": "pose",
+      "input": "capture_id"
+    },
+    {
+      "source": "capture",
+      "output": "coarse_poses",
+      "target": "pose",
+      "input": "coarse_poses"
+    }
+  ]
+}

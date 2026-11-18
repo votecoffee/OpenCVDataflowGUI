@@ -1,0 +1,14 @@
+{
+  "all_fit_pages_captured": 252,
+  "full_frozen_export_shipped": false,
+  "representative_sample_images": [
+    1,
+    2,
+    252
+  ],
+  "unexercised_in_global_receipt": [
+    "expired_read_preserves_worker"
+  ],
+  "emitted_cloud": "Original saved diagnostic CAD-vertex cloud; current full run matches XYZ/RGB exactly.",
+  "pose_truth_used_for_inference": false
+}

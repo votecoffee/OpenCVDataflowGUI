@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "original_cloud",
+      "type": "input.cloud",
+      "name": "Original emitted cloud: measured scene + diagnostic CAD vertices/axes",
+      "parameters": {
+        "path": "fit.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "samples_0",
+      "type": "input.file",
+      "name": "Original verification sample projection rank_001.png",
+      "parameters": {
+        "path": "rank_001.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        360
+      ],
+      "thumbnail": true,
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "samples_1",
+      "type": "input.file",
+      "name": "Original verification sample projection rank_002.png",
+      "parameters": {
+        "path": "rank_002.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        420,
+        360
+      ],
+      "thumbnail": true,
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "samples_2",
+      "type": "input.file",
+      "name": "Original verification sample projection rank_252.png",
+      "parameters": {
+        "path": "rank_252.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        840,
+        360
+      ],
+      "thumbnail": true,
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    }
+  ],
+  "connections": []
+}

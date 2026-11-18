@@ -1,0 +1,50 @@
+[
+  {
+    "case": "held_out_frame13",
+    "project": "run_project.json",
+    "valid": true,
+    "save_reopen": true,
+    "exact_recipe_bytes": true,
+    "native_clouds": 0
+  },
+  {
+    "case": "held_out_frame13",
+    "project": "review_project.json",
+    "valid": true,
+    "save_reopen": true,
+    "exact_recipe_bytes": false,
+    "native_clouds": 2
+  },
+  {
+    "case": "different_object_negative",
+    "project": "run_project.json",
+    "valid": true,
+    "save_reopen": true,
+    "exact_recipe_bytes": true,
+    "native_clouds": 0
+  },
+  {
+    "case": "different_object_negative",
+    "project": "review_project.json",
+    "valid": true,
+    "save_reopen": true,
+    "exact_recipe_bytes": false,
+    "native_clouds": 2
+  },
+  {
+    "case": "global_cohort",
+    "project": "run_project.json",
+    "valid": true,
+    "save_reopen": true,
+    "exact_recipe_bytes": true,
+    "native_clouds": 0
+  },
+  {
+    "case": "global_cohort",
+    "project": "review_project.json",
+    "valid": true,
+    "save_reopen": true,
+    "exact_recipe_bytes": false,
+    "native_clouds": 1
+  }
+]

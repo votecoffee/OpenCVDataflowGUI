@@ -1,0 +1,57 @@
+{
+  "repeats": 100,
+  "warmup": 5,
+  "alternating_fit_order": true,
+  "fit": [
+    {
+      "case": "different_object_negative",
+      "rank": 1,
+      "original_fit_identical": true,
+      "retained_bytes": 366403,
+      "baseline_median_ms": 0.6282999966060743,
+      "retained_median_ms": 0.6294999911915511
+    },
+    {
+      "case": "different_object_negative",
+      "rank": 2,
+      "original_fit_identical": true,
+      "retained_bytes": 368252,
+      "baseline_median_ms": 0.4950500006088987,
+      "retained_median_ms": 0.4996999923605472
+    },
+    {
+      "case": "held_out_frame13",
+      "rank": 1,
+      "original_fit_identical": true,
+      "retained_bytes": 382313,
+      "baseline_median_ms": 0.5440000095404685,
+      "retained_median_ms": 0.5432000034488738
+    },
+    {
+      "case": "held_out_frame13",
+      "rank": 2,
+      "original_fit_identical": true,
+      "retained_bytes": 382270,
+      "baseline_median_ms": 0.6110499962233007,
+      "retained_median_ms": 0.6083499902160838
+    }
+  ],
+  "receipt": [
+    {
+      "case": "different_object_negative",
+      "candidates": 2,
+      "median_ms": 0.053149997256696224
+    },
+    {
+      "case": "global_cohort",
+      "candidates": 252,
+      "median_ms": 3.3786999993026257
+    },
+    {
+      "case": "held_out_frame13",
+      "candidates": 2,
+      "median_ms": 0.05140001303516328
+    }
+  ],
+  "scope": "Fit kernel and receipt only; excludes neural/render/IPC/GUI/source capture. Exploratory warm timings, not end-to-end latency or accuracy qualification."
+}
