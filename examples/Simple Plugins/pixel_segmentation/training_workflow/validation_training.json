@@ -1,0 +1,58 @@
+[
+  {
+    "case": "pcb",
+    "health": {
+      "training_images": 1,
+      "detail_images": 0,
+      "validation_images": 1,
+      "background_pixels": 39623,
+      "foreground_pixels": 8417,
+      "skipped_drafts": 0
+    },
+    "held_out_metrics": {
+      "precision": 0.9671227483019982,
+      "recall": 0.9988816592110614,
+      "specificity": 0.9702555882091014
+    },
+    "cutoff": 0.55,
+    "minimum_area": 70,
+    "train_stage_apply_reopen": true,
+    "private_annotation_draft": true,
+    "native_edit_undo_save": true,
+    "prediction_hidden_initially": true,
+    "cutoff_heatmap_area_reuse_one_inference": true,
+    "save_as_exact_all_sources": true,
+    "original_model_preserved": true,
+    "pinned_training_sources_preserved": true,
+    "model_sha256": "f2146f5861cab3832e0a608ab708dd7dfa4cd432a4a80236d1c5c4c01c0c5137",
+    "scope": "Fixed existing application settings and example annotations; no general accuracy claim."
+  },
+  {
+    "case": "tote",
+    "health": {
+      "training_images": 2,
+      "detail_images": 0,
+      "validation_images": 2,
+      "background_pixels": 172945,
+      "foreground_pixels": 177250,
+      "skipped_drafts": 0
+    },
+    "held_out_metrics": {
+      "precision": 0.9833535633778394,
+      "recall": 0.96315500274739,
+      "specificity": 0.9939013680815841
+    },
+    "cutoff": 0.5,
+    "minimum_area": 180,
+    "train_stage_apply_reopen": true,
+    "private_annotation_draft": true,
+    "native_edit_undo_save": true,
+    "prediction_hidden_initially": true,
+    "cutoff_heatmap_area_reuse_one_inference": true,
+    "save_as_exact_all_sources": true,
+    "original_model_preserved": true,
+    "pinned_training_sources_preserved": true,
+    "model_sha256": "7b1d427a3712cc65f3a04287bb5de19aec8ce3d570e9f204e646275d2f4c7821",
+    "scope": "Fixed existing application settings and example annotations; no general accuracy claim."
+  }
+]

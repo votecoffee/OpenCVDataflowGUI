@@ -1,0 +1,10 @@
+[
+  {
+    "image": "00000/image.png",
+    "labels": "00000/labels.png"
+  },
+  {
+    "image": "00001/image.png",
+    "labels": "00001/labels.png"
+  }
+]

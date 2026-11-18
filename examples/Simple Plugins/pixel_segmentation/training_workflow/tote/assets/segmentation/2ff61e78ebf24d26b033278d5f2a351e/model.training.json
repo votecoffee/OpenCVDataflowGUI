@@ -1,0 +1,46 @@
+{
+  "schema": "simple_segmentation_training_sources/v1",
+  "model_sha256": "7b1d427a3712cc65f3a04287bb5de19aec8ce3d570e9f204e646275d2f4c7821",
+  "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb",
+  "directory": "model.training",
+  "manifests": {
+    "training": "training/manifest.json",
+    "validation": "validation/manifest.json"
+  },
+  "health": {
+    "training_images": 2,
+    "detail_images": 0,
+    "validation_images": 2,
+    "background_pixels": 172945,
+    "foreground_pixels": 177250,
+    "skipped_drafts": 0
+  },
+  "training_fingerprints": [
+    "56bfbcf614c4764316b10959205b6cc6805bf34a278464d399a921851937b121",
+    "c742709f72147198993cd91cfce5449b300cadf9a29ac894cc949f5662b36c60"
+  ],
+  "saved_masks_only": false,
+  "source_names": {
+    "training": [
+      "P2S0835EOA-blue.png",
+      "9TARTKRF1X-blue.png"
+    ],
+    "validation": [
+      "OAR1KXNIME-blue.png",
+      "EZ5895NGB8-blue.png"
+    ]
+  },
+  "sha256": {
+    "training/00000/image.png": "da1d309bf11554f70c432c4a9dcf6eff03b510c053318b7e0e58775c46ed4938",
+    "training/00000/labels.png": "47cdd08e17986034eb6f949f61812db92eaca097dbde119778000c9f5812da97",
+    "training/00001/image.png": "a72b4cb8ca609879cc76a50b0ce17d5a4817c3a3203ede0cc222b7f28da9fa7d",
+    "training/00001/labels.png": "50212619b82cb67a31e53b989122cc34c859cf1ac7e439c5bd797c379352754d",
+    "training/manifest.json": "2c3eb8de56e4804a2928988c264ff9560f4ca9098a73b0ba5ae769ac13254e40",
+    "validation/00000/image.png": "5202b8fd6b207b4011e3cf51c4eebb9c6c6c953e67af2b90ee41601d9080e42d",
+    "validation/00000/labels.png": "ef3812920f3ebe5526587846525a9b2b94685cf589c1278ae7406dacb98d3e8c",
+    "validation/00001/image.png": "ef3f2b8526ebb9a6da9143a78a16d9c83d6597fa21f25d14e7e26411315cd075",
+    "validation/00001/labels.png": "2fda7ed6205f87c3be387273719c61a5e704465b0fc182ee2f26a4b253310926",
+    "validation/manifest.json": "2c3eb8de56e4804a2928988c264ff9560f4ca9098a73b0ba5ae769ac13254e40"
+  },
+  "pixel_encoding": "Lossless native decoded pixels, full labels before region clipping, optional validity"
+}

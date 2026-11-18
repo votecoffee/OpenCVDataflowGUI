@@ -1,0 +1,39 @@
+{
+  "schema": "simple_segmentation_training_sources/v1",
+  "model_sha256": "f2146f5861cab3832e0a608ab708dd7dfa4cd432a4a80236d1c5c4c01c0c5137",
+  "region_sha256": null,
+  "directory": "model.training",
+  "manifests": {
+    "training": "training/manifest.json",
+    "validation": "validation/manifest.json"
+  },
+  "health": {
+    "training_images": 1,
+    "detail_images": 0,
+    "validation_images": 1,
+    "background_pixels": 39623,
+    "foreground_pixels": 8417,
+    "skipped_drafts": 0
+  },
+  "training_fingerprints": [
+    "16589442fe327503582a546a29a70a4500690a75db6b822ebec20ae2ccff9891"
+  ],
+  "saved_masks_only": false,
+  "source_names": {
+    "training": [
+      "pcb-0000-blue-excess.png"
+    ],
+    "validation": [
+      "pcb-0621-blue-excess.png"
+    ]
+  },
+  "sha256": {
+    "training/00000/image.png": "c83fc0a85443169ae0ba14cd0a83b632bf9afd50c52d8c0a2540deb9e9469ba8",
+    "training/00000/labels.png": "ba66eb56c20d7c662a03a863ba416c60bf0b676c74e02f38beddb94644f7fbc3",
+    "training/manifest.json": "67e56ad0f29ce95272d2edb3f24e0a797cde0f8b59100930cc205b6fdf4aa911",
+    "validation/00000/image.png": "239f50e1aeac979344c74827876de39525411c728e9557f2c055dfdf31feb1b6",
+    "validation/00000/labels.png": "635566796380e948b8c2604acd1563cdf5f1e73288e34b269a8104f11f6fb5f5",
+    "validation/manifest.json": "67e56ad0f29ce95272d2edb3f24e0a797cde0f8b59100930cc205b6fdf4aa911"
+  },
+  "pixel_encoding": "Lossless native decoded pixels, full labels before region clipping, optional validity"
+}

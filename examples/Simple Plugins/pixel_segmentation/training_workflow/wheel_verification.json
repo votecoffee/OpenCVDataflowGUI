@@ -1,0 +1,36 @@
+{
+  "source_implementation_commit": "4df519e",
+  "wheel_sha256": "f703100682e6e0c1cc6a190d82419825e1e39cbaeef18b80a26b3ff981aafcfc",
+  "source_module_sha256": {
+    "opencv_defect_segmentation/__init__.py": "8f20fe994f8981310d96cc4c772f368b3b329ac50d4acc8328431c3146170345",
+    "opencv_defect_segmentation/__main__.py": "031fc2e809178e341a0efbabc2c7bc662ac29eabdd548d6f816fde507a44f142",
+    "opencv_defect_segmentation/annotation.py": "b29f250a333c296473c45e7efeefc6d570cef28396195a1c9e8856a077bdd468",
+    "opencv_defect_segmentation/capture.py": "979c0d486bf7b456d37a5282e7f76f35e965fc5241c6fbe475baf60e0bca2629",
+    "opencv_defect_segmentation/completed_review.py": "ae4f00046d51e305dc74030c9d9d46c45ac3e2d56be58d246c70ba44ae2061f9",
+    "opencv_defect_segmentation/dataflow.py": "f542293dbd0d651bd77564b2cfd5fc5527ad09c172f436900090a02f57f0f9a1",
+    "opencv_defect_segmentation/detail_training.py": "d3f6993832bf216799f3038cfb015b9bfabd60d3b920f85d9e1f806951e01ef9",
+    "opencv_defect_segmentation/evaluation.py": "5915c07e3794dd47c96a8c9ba13b4bc966d3722edc9bfefefa24016c218db396",
+    "opencv_defect_segmentation/graphics.py": "c3d9c8897121b612df1c613f55bd1d89e77e0c1e818c2df8355b7bcae6c6c41d",
+    "opencv_defect_segmentation/image_io.py": "46fe9f4ddb5e5cac5c09ed9f0da9751b416cd3ee2ecdb421ac3876f7581c5f99",
+    "opencv_defect_segmentation/label_audit.py": "0c6511375ee2c10153e3838a5164ab51064df5975f35301787ec003e083c093f",
+    "opencv_defect_segmentation/parts.py": "24147b2c79ee14d94b1ac21681095694d19a4ea04ee72c3aa700cb1debb99e89",
+    "opencv_defect_segmentation/qt_annotation.py": "1abe8e719c0a11899cdd0c0a9066149e12914631be2cb0def443a0708a90d7f2",
+    "opencv_defect_segmentation/qt_completed_review.py": "4dce65f4636fe5158168ec21a52ea3c012a1386fc6961ba42bb8970495658e21",
+    "opencv_defect_segmentation/qt_training.py": "0acb2fef0672fcdf87ec01390c3c5c6953522926b9e6dd2ed50b4ae1b94c4e14",
+    "opencv_defect_segmentation/region_tone.py": "410863fa9f5831dce18b806a086e94ffce0fc2b3dca371983387ea384ffafa79",
+    "opencv_defect_segmentation/registration.py": "ea4712ba1c221211170d29dc59533aabc58b79fae234b9b8c952a40a5957a7ca",
+    "opencv_defect_segmentation/training.py": "f4d7eedb7f924eadffb13ffe04cef3a13fa115b57cf92e0c4c1798ad4d86dc08",
+    "opencv_defect_segmentation/training_sources.py": "896435821b000a0ad2b76dfe738a046f021d8e60f63a015767d0627065d18fd6"
+  },
+  "changed_modules": [
+    "opencv_defect_segmentation/dataflow.py",
+    "opencv_defect_segmentation/qt_training.py",
+    "opencv_defect_segmentation/training.py"
+  ],
+  "added_modules": [
+    "opencv_defect_segmentation/training_sources.py"
+  ],
+  "execution_python_ast_unchanged": true,
+  "source_retention_scope": "Training, restoration and Save As only; source retention does not add inference work.",
+  "host_environment_modified": false
+}

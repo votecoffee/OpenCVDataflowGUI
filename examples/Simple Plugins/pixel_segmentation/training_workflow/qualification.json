@@ -1,0 +1,23 @@
+{
+  "source_checks": 68,
+  "wheel_loaded_checks": 68,
+  "subtests": 12,
+  "packaged_host_checks": 3,
+  "native_training_examples": 2,
+  "earlier_runtime_frames": 8,
+  "earlier_numerical_reports_exact": true,
+  "earlier_default_rasters_exact": true,
+  "original_models_and_applied_sources_preserved": true,
+  "retained_native_training_data": true,
+  "retained_validation_refresh_without_refit": true,
+  "all_source_assets_save_as_exact": true,
+  "hands_on_operator_acceptance": false,
+  "host_environment_modified": false,
+  "scope": "Software training/restoration/annotation workflow; example labels are not a broad accuracy benchmark",
+  "source_and_relocated_host_native_checks": true,
+  "environment": {
+    "python": "3.14.3",
+    "opencv": "5.0.0",
+    "qt": "6.12.0"
+  }
+}

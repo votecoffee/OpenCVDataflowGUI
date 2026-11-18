@@ -1,0 +1,28 @@
+{
+  "case": "pcb",
+  "health": {
+    "training_images": 1,
+    "detail_images": 0,
+    "validation_images": 1,
+    "background_pixels": 39623,
+    "foreground_pixels": 8417,
+    "skipped_drafts": 0
+  },
+  "held_out_metrics": {
+    "precision": 0.9671227483019982,
+    "recall": 0.9988816592110614,
+    "specificity": 0.9702555882091014
+  },
+  "cutoff": 0.55,
+  "minimum_area": 70,
+  "train_stage_apply_reopen": true,
+  "private_annotation_draft": true,
+  "native_edit_undo_save": true,
+  "prediction_hidden_initially": true,
+  "cutoff_heatmap_area_reuse_one_inference": true,
+  "save_as_exact_all_sources": true,
+  "original_model_preserved": true,
+  "pinned_training_sources_preserved": true,
+  "model_sha256": "f2146f5861cab3832e0a608ab708dd7dfa4cd432a4a80236d1c5c4c01c0c5137",
+  "scope": "Fixed existing application settings and example annotations; no general accuracy claim."
+}

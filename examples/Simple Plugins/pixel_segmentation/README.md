@@ -2,6 +2,13 @@
 
 These examples use **SimpleSegmentation** to learn a foreground class from labels. Each includes a saved project, editable labels, and a pinned model.
 
+Dev3 adds [retained training and annotation examples](training_workflow/README.md)
+with an explicit checked plugin. Reopen shows saved annotations and restores
+private editable drafts; native wand/shape/mask tools, zoom/Undo and cached
+score-map review remain available. Train/Stage/Apply and Save As preserve the
+model's native training inputs and evaluated validation split. The real PCB/tote
+examples keep applied sources unchanged during annotation edits.
+
 Dev2 adds [completed-run Results review](completed_runtime/README.md) with a
 checksum-pinned plugin, exact input/model assets, retained votes/coverage and
 selectable reported components. Its real PCB/tote examples also show missing

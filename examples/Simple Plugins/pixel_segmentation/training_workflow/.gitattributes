@@ -1,0 +1,4 @@
+* -text
+LICENSE -diff
+ARMBench-License-CC-BY.txt -diff
+*.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
