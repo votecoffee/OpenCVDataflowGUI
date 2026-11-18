@@ -1,0 +1,12 @@
+*.sbp binary
+*.sbpj binary
+*.npy binary
+*.npz binary
+*.png binary
+*.ply binary
+*.whl binary
+*.json -text
+*.py -text
+*.md -text
+LICENSE -text
+.gitattributes -text

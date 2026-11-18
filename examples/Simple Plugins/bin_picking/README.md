@@ -1,5 +1,14 @@
 # SimpleBinPicking suction planning
 
+[Completed suction and jaw reviews](completed_runtime/README.md) add the pinned
+dev13 plugin, eleven offline projects and six frozen exports. Use the independent
+inspector Results action for native fly-around candidate/contact/clearance layers,
+captured-image zoom, exact executed models and full eligible/rejected/unknown
+decisions. Review/export does not replan, reproject, check collisions or change
+teaching. Real T-LESS replays keep their conservative zero-pick outcomes. The
+new cohort loads without installing packages; physical grasp and robot qualification
+remain separate.
+
 The separate [CAD-taught jaw examples](known_part_jaw/README.md) add a pinned
 explicit-load plugin, clear/obstacle/unknown controls and two real T-LESS
 pose-assisted replays. They use native colored fly-around contact/sweep graphics.

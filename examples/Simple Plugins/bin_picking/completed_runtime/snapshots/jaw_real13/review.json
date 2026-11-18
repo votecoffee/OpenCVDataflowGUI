@@ -1,0 +1,1730 @@
+{
+  "model": "simple_bin_picking_completed_review_v1",
+  "kind": "jaw",
+  "execution_binding": "81f22a5b15f348cdae6cac9a83fa0c32",
+  "completed_result": {
+    "camera_frame": "camera",
+    "candidates": [
+      {
+        "approach_direction": [
+          1.2968249011609313e-10,
+          2.266821367131369e-09,
+          -1.0
+        ],
+        "clearance_status": "not_evaluated",
+        "collision_rows": [],
+        "contact_fraction": 0.0,
+        "contact_identity": "inferred_near_CAD_surface_without_labels",
+        "contact_sides": [
+          0.0,
+          0.0
+        ],
+        "contact_source": "CAD_model_assisted",
+        "grasp_name": "authored_axis_0",
+        "grasp_pose": [
+          [
+            -0.18223630654660355,
+            0.9832547628037474,
+            -1.2968249011609313e-10,
+            0.011743916831464002
+          ],
+          [
+            -0.9832547628037471,
+            -0.18223630654660405,
+            -2.266821367131369e-09,
+            0.08254106554989413
+          ],
+          [
+            -2.252496182709615e-09,
+            -2.8558565126781797e-10,
+            1.0,
+            0.027500011522438084
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "id": 0,
+        "instance_id": "part-1",
+        "model_collision_rows": [
+          20,
+          43,
+          76,
+          194,
+          238,
+          255,
+          260,
+          328,
+          389,
+          498,
+          557,
+          701,
+          881,
+          978,
+          1006,
+          1039,
+          1378,
+          1580,
+          1595,
+          1600,
+          1668,
+          1748,
+          1876,
+          1936,
+          1938,
+          1965,
+          2337,
+          2339,
+          2369,
+          2501,
+          2508,
+          2529,
+          2662,
+          2934,
+          3131,
+          3167,
+          3493,
+          3581,
+          3717,
+          3734,
+          3773,
+          3818,
+          3886,
+          3887,
+          3920,
+          4003,
+          4053,
+          4118,
+          4201,
+          4257,
+          4405,
+          4463,
+          4498,
+          4566,
+          4829,
+          4925,
+          4948,
+          4983,
+          4989,
+          4997,
+          5028,
+          5061,
+          5088,
+          5175,
+          5331,
+          5416,
+          5425,
+          5599,
+          5618,
+          5763,
+          5868,
+          6054,
+          6112,
+          6129,
+          6176,
+          6179,
+          6444,
+          6466,
+          6618,
+          6625,
+          6703,
+          6707,
+          6759,
+          6810,
+          6851,
+          6861,
+          6918,
+          7062,
+          7188,
+          7404,
+          7434,
+          7632,
+          7697,
+          7711,
+          7774,
+          7894,
+          7950,
+          8000,
+          8020,
+          8049,
+          8189,
+          8399,
+          8419,
+          8438,
+          8479,
+          8498,
+          8617,
+          8748,
+          8803,
+          9010,
+          9057,
+          9064,
+          9164,
+          9167,
+          9244,
+          9340,
+          9459,
+          9519,
+          9728,
+          9731,
+          9763,
+          9783,
+          9865,
+          9900,
+          9986,
+          10077,
+          10220,
+          10244
+        ],
+        "opening": 0.1014,
+        "pose_status": "rejected",
+        "pregrasp_pose": [
+          [
+            -0.18223630654660355,
+            0.9832547628037474,
+            -1.2968249011609313e-10,
+            0.011743916827573527
+          ],
+          [
+            -0.9832547628037471,
+            -0.18223630654660405,
+            -2.266821367131369e-09,
+            0.08254106548188948
+          ],
+          [
+            -2.252496182709615e-09,
+            -2.8558565126781797e-10,
+            1.0,
+            0.05750001152243808
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasons": [
+          "insufficient_current_pose_evidence"
+        ],
+        "retract_direction": [
+          -1.2968249011609313e-10,
+          -2.266821367131369e-09,
+          1.0
+        ],
+        "score": 0.0,
+        "span": 0.08940000000000001,
+        "status": "rejected",
+        "tcp_pose": [
+          [
+            -0.18223630654660355,
+            0.9832547628037474,
+            -1.2968249011609313e-10,
+            0.011743916831464002
+          ],
+          [
+            -0.9832547628037471,
+            -0.18223630654660405,
+            -2.266821367131369e-09,
+            0.08254106554989413
+          ],
+          [
+            -2.252496182709615e-09,
+            -2.8558565126781797e-10,
+            1.0,
+            0.027500011522438084
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "unknown_samples": []
+      },
+      {
+        "approach_direction": [
+          1.2968249011609313e-10,
+          2.266821367131369e-09,
+          -1.0
+        ],
+        "clearance_status": "not_evaluated",
+        "collision_rows": [],
+        "contact_fraction": 1.0,
+        "contact_identity": "inferred_near_CAD_surface_without_labels",
+        "contact_sides": [
+          1.0,
+          1.0
+        ],
+        "contact_source": "CAD_model_assisted",
+        "grasp_name": "authored_axis_1",
+        "grasp_pose": [
+          [
+            0.9832547628037474,
+            0.18223630654660355,
+            -1.2968249011609313e-10,
+            0.011743916831464002
+          ],
+          [
+            -0.18223630654660405,
+            0.9832547628037471,
+            -2.266821367131369e-09,
+            0.08254106554989413
+          ],
+          [
+            -2.8558565126781797e-10,
+            2.252496182709615e-09,
+            1.0,
+            0.027500011522438084
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "id": 1,
+        "instance_id": "part-1",
+        "model_collision_rows": [
+          52,
+          344,
+          366,
+          369,
+          462,
+          639,
+          654,
+          821,
+          991,
+          1201,
+          1277,
+          1327,
+          1518,
+          1588,
+          1999,
+          2027,
+          2282,
+          2730,
+          2933,
+          2971,
+          2992,
+          3038,
+          3280,
+          3564,
+          3994,
+          4212,
+          4495,
+          4543,
+          4765,
+          4855,
+          4953,
+          4959,
+          5069,
+          5090,
+          5185,
+          5226,
+          5402,
+          5926,
+          6017,
+          6145,
+          6208,
+          6228,
+          6253,
+          6258,
+          6321,
+          6484,
+          6807,
+          6909,
+          6975,
+          6987,
+          7199,
+          7637,
+          7708,
+          7831,
+          7996,
+          8036,
+          8095,
+          8150,
+          8185,
+          8290,
+          8446,
+          8543,
+          8915,
+          8977,
+          9204,
+          9285,
+          9354,
+          9364,
+          9619,
+          9812,
+          9866,
+          10355,
+          10381,
+          10383,
+          10491,
+          10580,
+          10725,
+          10794,
+          10871,
+          10972,
+          11135,
+          11211,
+          11342,
+          11630,
+          11645,
+          12091,
+          12298,
+          12455,
+          12727,
+          12760,
+          12798,
+          13164,
+          13397,
+          13887,
+          13963,
+          14137,
+          14428,
+          14542,
+          14878,
+          14948,
+          14975,
+          14982,
+          15278,
+          15384,
+          15452,
+          15523,
+          15714,
+          15786,
+          16070,
+          16084,
+          16097,
+          16116,
+          16131,
+          16275,
+          16317,
+          16725,
+          16915,
+          17138,
+          17181,
+          17492,
+          17504,
+          17509,
+          17567,
+          17676,
+          17730,
+          17906,
+          17962,
+          18006
+        ],
+        "opening": 0.062,
+        "pose_status": "rejected",
+        "pregrasp_pose": [
+          [
+            0.9832547628037474,
+            0.18223630654660355,
+            -1.2968249011609313e-10,
+            0.011743916827573527
+          ],
+          [
+            -0.18223630654660405,
+            0.9832547628037471,
+            -2.266821367131369e-09,
+            0.08254106548188948
+          ],
+          [
+            -2.8558565126781797e-10,
+            2.252496182709615e-09,
+            1.0,
+            0.05750001152243808
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reasons": [
+          "insufficient_current_pose_evidence"
+        ],
+        "retract_direction": [
+          -1.2968249011609313e-10,
+          -2.266821367131369e-09,
+          1.0
+        ],
+        "score": 0.0,
+        "span": 0.05,
+        "status": "rejected",
+        "tcp_pose": [
+          [
+            0.9832547628037474,
+            0.18223630654660355,
+            -1.2968249011609313e-10,
+            0.011743916831464002
+          ],
+          [
+            -0.18223630654660405,
+            0.9832547628037471,
+            -2.266821367131369e-09,
+            0.08254106554989413
+          ],
+          [
+            -2.8558565126781797e-10,
+            2.252496182709615e-09,
+            1.0,
+            0.027500011522438084
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "unknown_samples": []
+      }
+    ],
+    "capture_id": "frame000013",
+    "clearance_definition": "Finite gripper boxes, observed points and four-neighbor first-return rays",
+    "contact_band": "Explicit CAD contact tolerance; not observed free space",
+    "contact_source": "CAD-taught finite pad samples; not measured hidden contacts or force closure",
+    "depth_sha256": "f0b6285393ac0f98ff41d5f34288e56391280fd234cc302e1990116261d38cfe",
+    "eligible_grasps": 0,
+    "frame": "world",
+    "held_part_transport_checked": false,
+    "model": "simple_bin_picking_jaw_v1",
+    "overlap_metric": "Contact AABB intersection over smaller volume; higher geometric score wins",
+    "part_frame": "tless6",
+    "pose_evidence": [
+      {
+        "contradiction": 0.22097881229483737,
+        "coverage": 0.28961504028648166,
+        "id": "part-1",
+        "known_samples": 5833,
+        "reason": "insufficient_current_pose_evidence",
+        "samples": 6702,
+        "status": "rejected",
+        "supported_samples": 1941
+      }
+    ],
+    "qualification": "No full-robot, friction/force-closure or physical pick qualification",
+    "recipe_sha256": "1eb1fc1c85ee2a07e2d80c1594ebd41148628226604d95fe9e5621f0278a3079",
+    "robot_execution": false,
+    "units": "m",
+    "unobserved_space": "unknown_not_free"
+  },
+  "executed_parameters": {
+    "recipe_path": "assets/1eb1fc1c85ee2a07e2d80c1594ebd41148628226604d95fe9e5621f0278a3079.sbpj",
+    "render_graphics": true,
+    "sha256": "1eb1fc1c85ee2a07e2d80c1594ebd41148628226604d95fe9e5621f0278a3079"
+  },
+  "executed_configuration": {
+    "bin": {
+      "camera": {
+        "matrix": [
+          [
+            1075.65091572,
+            0.0,
+            377.06888344
+          ],
+          [
+            0.0,
+            1073.90347929,
+            257.72159802
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "image_size": [
+          720,
+          540
+        ],
+        "frame": "camera"
+      },
+      "bin_to_camera": [
+        [
+          0.924448068172083,
+          -0.38123185099850915,
+          0.007618729366129909,
+          -0.0126385
+        ],
+        [
+          -0.363002109171795,
+          -0.886007903747495,
+          -0.2884778383754942,
+          0.0155479
+        ],
+        [
+          0.11672719473084264,
+          0.2639171655675697,
+          -0.957456261000495,
+          0.789463
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "minimum": [
+        -0.3,
+        -0.3,
+        -0.05
+      ],
+      "maximum": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "units": "m",
+      "frame": "world",
+      "depth_scale": 1.0,
+      "settings": {
+        "cup_radius": 5.0,
+        "body_radius": 6.0,
+        "body_length": 25.0,
+        "pregrasp_distance": 30.0,
+        "tcp_offset": 0.0,
+        "surface_tolerance": 1.0,
+        "clearance": 1.0,
+        "min_pick_height": 5.0,
+        "max_tilt_degrees": 25.0,
+        "min_contact_fraction": 0.95,
+        "overlap_threshold": 0.2,
+        "max_candidates": 256,
+        "max_picks": 10,
+        "workers": 1
+      }
+    },
+    "part_frame": "tless6",
+    "grasps": [
+      {
+        "name": "authored_axis_0",
+        "part_from_grasp": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "span": 0.08940000000000001
+      },
+      {
+        "name": "authored_axis_1",
+        "part_from_grasp": [
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "span": 0.05
+      }
+    ],
+    "jaw_settings": {
+      "minimum_opening": 0.0,
+      "maximum_opening": 0.08,
+      "opening_margin": 0.006,
+      "finger_thickness": 0.004,
+      "finger_width": 0.008,
+      "finger_length": 0.03,
+      "pad_height": 0.006,
+      "palm_height": 0.008,
+      "palm_width": 0.09,
+      "palm_depth": 0.02,
+      "pregrasp_distance": 0.03,
+      "clearance": 0.001,
+      "contact_tolerance": 0.001,
+      "pose_tolerance": 0.003,
+      "sample_spacing": 0.003,
+      "minimum_contact_fraction": 0.9,
+      "minimum_pose_support": 0.7,
+      "maximum_pose_contradiction": 0.1,
+      "maximum_contact_angle_degrees": 25.0,
+      "maximum_tilt_degrees": 60.0,
+      "overlap_threshold": 0.2,
+      "max_picks": 16,
+      "workers": 1
+    },
+    "grasp_from_tcp": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "units": "m",
+    "notes": {
+      "dataset": "T-LESS",
+      "license": "CC-BY-4.0",
+      "attribution": "Hodan et al., WACV 2017",
+      "source": "https://cmp.felk.cvut.cz/t-less/",
+      "upstream_sha256": "f1227fe15e046bc18c1686bd5fb3b849a9996c2de2ca3fc16d34b9ec348f94df",
+      "changes": "CAD mm to m; sampled face normals; authored grasps, not grasp truth"
+    }
+  },
+  "selected": {
+    "approach_direction": [
+      1.2968249011609313e-10,
+      2.266821367131369e-09,
+      -1.0
+    ],
+    "clearance_status": "not_evaluated",
+    "collision_rows": [],
+    "contact_fraction": 0.0,
+    "contact_identity": "inferred_near_CAD_surface_without_labels",
+    "contact_sides": [
+      0.0,
+      0.0
+    ],
+    "contact_source": "CAD_model_assisted",
+    "grasp_name": "authored_axis_0",
+    "grasp_pose": [
+      [
+        -0.18223630654660355,
+        0.9832547628037474,
+        -1.2968249011609313e-10,
+        0.011743916831464002
+      ],
+      [
+        -0.9832547628037471,
+        -0.18223630654660405,
+        -2.266821367131369e-09,
+        0.08254106554989413
+      ],
+      [
+        -2.252496182709615e-09,
+        -2.8558565126781797e-10,
+        1.0,
+        0.027500011522438084
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "id": 0,
+    "instance_id": "part-1",
+    "model_collision_rows": [
+      20,
+      43,
+      76,
+      194,
+      238,
+      255,
+      260,
+      328,
+      389,
+      498,
+      557,
+      701,
+      881,
+      978,
+      1006,
+      1039,
+      1378,
+      1580,
+      1595,
+      1600,
+      1668,
+      1748,
+      1876,
+      1936,
+      1938,
+      1965,
+      2337,
+      2339,
+      2369,
+      2501,
+      2508,
+      2529,
+      2662,
+      2934,
+      3131,
+      3167,
+      3493,
+      3581,
+      3717,
+      3734,
+      3773,
+      3818,
+      3886,
+      3887,
+      3920,
+      4003,
+      4053,
+      4118,
+      4201,
+      4257,
+      4405,
+      4463,
+      4498,
+      4566,
+      4829,
+      4925,
+      4948,
+      4983,
+      4989,
+      4997,
+      5028,
+      5061,
+      5088,
+      5175,
+      5331,
+      5416,
+      5425,
+      5599,
+      5618,
+      5763,
+      5868,
+      6054,
+      6112,
+      6129,
+      6176,
+      6179,
+      6444,
+      6466,
+      6618,
+      6625,
+      6703,
+      6707,
+      6759,
+      6810,
+      6851,
+      6861,
+      6918,
+      7062,
+      7188,
+      7404,
+      7434,
+      7632,
+      7697,
+      7711,
+      7774,
+      7894,
+      7950,
+      8000,
+      8020,
+      8049,
+      8189,
+      8399,
+      8419,
+      8438,
+      8479,
+      8498,
+      8617,
+      8748,
+      8803,
+      9010,
+      9057,
+      9064,
+      9164,
+      9167,
+      9244,
+      9340,
+      9459,
+      9519,
+      9728,
+      9731,
+      9763,
+      9783,
+      9865,
+      9900,
+      9986,
+      10077,
+      10220,
+      10244
+    ],
+    "opening": 0.1014,
+    "pose_status": "rejected",
+    "pregrasp_pose": [
+      [
+        -0.18223630654660355,
+        0.9832547628037474,
+        -1.2968249011609313e-10,
+        0.011743916827573527
+      ],
+      [
+        -0.9832547628037471,
+        -0.18223630654660405,
+        -2.266821367131369e-09,
+        0.08254106548188948
+      ],
+      [
+        -2.252496182709615e-09,
+        -2.8558565126781797e-10,
+        1.0,
+        0.05750001152243808
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "reasons": [
+      "insufficient_current_pose_evidence"
+    ],
+    "retract_direction": [
+      -1.2968249011609313e-10,
+      -2.266821367131369e-09,
+      1.0
+    ],
+    "score": 0.0,
+    "span": 0.08940000000000001,
+    "status": "rejected",
+    "tcp_pose": [
+      [
+        -0.18223630654660355,
+        0.9832547628037474,
+        -1.2968249011609313e-10,
+        0.011743916831464002
+      ],
+      [
+        -0.9832547628037471,
+        -0.18223630654660405,
+        -2.266821367131369e-09,
+        0.08254106554989413
+      ],
+      [
+        -2.252496182709615e-09,
+        -2.8558565126781797e-10,
+        1.0,
+        0.027500011522438084
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "unknown_samples": []
+  },
+  "display_mode": "plan",
+  "display_layers": [
+    "scene",
+    "bin",
+    "model",
+    "jaws",
+    "sweep",
+    "poses",
+    "witnesses",
+    "pose_fit",
+    "mesh_fit"
+  ],
+  "input_arrays": {
+    "depth": {
+      "shape": [
+        540,
+        720
+      ],
+      "dtype": "<f4",
+      "sha256": "c93b93303cb93267aac4426238e31feceeff351985da0ce27f90b2eeca0ea3c0",
+      "attributes": {
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 5.0,
+        "metadata": {
+          "spatial": {
+            "root_id": "recorded:frame000013",
+            "root_size": [
+              720,
+              540
+            ],
+            "image_size": [
+              720,
+              540
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "number",
+            "value": 1,
+            "session": "2537edf8ddae48e58f1ab024686f5433",
+            "sequence": 1,
+            "source": "capture"
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-18T00:52:56.622813+00:00",
+            "started_ns": 132339587810600,
+            "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+            "inferred_start": false,
+            "finished_at": "2026-11-18T00:52:56.633915+00:00",
+            "finished_ns": 132339598910400,
+            "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+            "elapsed_ms": 11.0998
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "capture",
+              "name": "Recorded first return + supplied pose (assisted)",
+              "type": "input.simple_jaw_example",
+              "path": "capture"
+            },
+            "score": null,
+            "message": "Recorded first-return inputs with supplied pose assistance; no motion",
+            "data": {},
+            "fail_reasons": []
+          }
+        }
+      }
+    }
+  },
+  "input_data": {
+    "part_instances": [
+      {
+        "model": "part_instance_v1",
+        "id": "part-1",
+        "accepted": true,
+        "capture_id": "frame000013",
+        "pose": {
+          "model": "pose_3d_v1",
+          "source_frame": "tless6",
+          "target_frame": "camera",
+          "units": "m",
+          "source_to_target": [
+            [
+              0.20638019,
+              0.97844221,
+              0.0076188,
+              -0.03303962683
+            ],
+            [
+              0.93732373,
+              -0.19546062,
+              -0.288478,
+              -0.06978034692
+            ],
+            [
+              -0.28076954,
+              0.06667712,
+              -0.957456,
+              0.78628778032
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        }
+      }
+    ],
+    "capture_id": "frame000013",
+    "camera": {
+      "model": "camera_model_v1",
+      "matrix": [
+        [
+          1075.65091572,
+          0.0,
+          377.06888344
+        ],
+        [
+          0.0,
+          1073.90347929,
+          257.72159802
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "image_size": [
+        720,
+        540
+      ],
+      "frame": "camera",
+      "units": "m",
+      "lens": "pinhole",
+      "distortion": []
+    }
+  },
+  "emitted_clouds": [
+    "graphics",
+    "pose_fit"
+  ],
+  "diagnostic_arrays": {
+    "pose_fit": 1,
+    "mesh_fit": 0
+  },
+  "bin_to_camera": [
+    [
+      0.924448068172083,
+      -0.38123185099850915,
+      0.0076187293661299435,
+      -0.0126385
+    ],
+    [
+      -0.363002109171795,
+      -0.8860079037474952,
+      -0.28847783837549407,
+      0.0155479
+    ],
+    [
+      0.11672719473084264,
+      0.2639171655675696,
+      -0.9574562610004951,
+      0.789463
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "provenance": {
+    "snapshot_id": "c75c1ac7e999456c9a3dc4dec948e4a9",
+    "block_id": "jaw",
+    "output_revision": 0,
+    "execution_count": 1,
+    "passed": false,
+    "score": 0.0,
+    "message": "0 geometric jaw alternatives; CAD-assisted contacts, no robot execution",
+    "inputs": {
+      "depth": {
+        "spatial": {
+          "root_id": "recorded:frame000013",
+          "root_size": [
+            720,
+            540
+          ],
+          "image_size": [
+            720,
+            540
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.622813+00:00",
+          "started_ns": 132339587810600,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:52:56.633915+00:00",
+          "finished_ns": 132339598910400,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 11.0998
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "capture",
+            "name": "Recorded first return + supplied pose (assisted)",
+            "type": "input.simple_jaw_example",
+            "path": "capture"
+          },
+          "score": null,
+          "message": "Recorded first-return inputs with supplied pose assistance; no motion",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "part_instances": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "spatial": {
+          "root_id": "capture:image",
+          "root_size": [
+            720,
+            540
+          ],
+          "image_size": [
+            720,
+            540
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.622813+00:00",
+          "started_ns": 132339587810600,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:52:56.633915+00:00",
+          "finished_ns": 132339598910400,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 11.0998
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "capture",
+            "name": "Recorded first return + supplied pose (assisted)",
+            "type": "input.simple_jaw_example",
+            "path": "capture"
+          },
+          "score": null,
+          "message": "Recorded first-return inputs with supplied pose assistance; no motion",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "capture_id": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "spatial": {
+          "root_id": "capture:image",
+          "root_size": [
+            720,
+            540
+          ],
+          "image_size": [
+            720,
+            540
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.622813+00:00",
+          "started_ns": 132339587810600,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:52:56.633915+00:00",
+          "finished_ns": 132339598910400,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 11.0998
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "capture",
+            "name": "Recorded first return + supplied pose (assisted)",
+            "type": "input.simple_jaw_example",
+            "path": "capture"
+          },
+          "score": null,
+          "message": "Recorded first-return inputs with supplied pose assistance; no motion",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "camera": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "spatial": {
+          "root_id": "capture:image",
+          "root_size": [
+            720,
+            540
+          ],
+          "image_size": [
+            720,
+            540
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.622813+00:00",
+          "started_ns": 132339587810600,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:52:56.633915+00:00",
+          "finished_ns": 132339598910400,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 11.0998
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "capture",
+            "name": "Recorded first return + supplied pose (assisted)",
+            "type": "input.simple_jaw_example",
+            "path": "capture"
+          },
+          "score": null,
+          "message": "Recorded first-return inputs with supplied pose assistance; no motion",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "picks": {
+        "bin_picking_completed_review": {
+          "id": "81f22a5b15f348cdae6cac9a83fa0c32"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.635887+00:00",
+          "started_ns": 132339600885000,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:52:56.877735+00:00",
+          "finished_ns": 132339842730300,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 241.8453
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "jaw",
+            "name": "SimpleBinPicking Jaw",
+            "type": "3d.simple_bin_picking_jaw",
+            "path": "jaw"
+          },
+          "score": 0.0,
+          "message": "0 geometric jaw alternatives; CAD-assisted contacts, no robot execution",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "no_geometric_jaw_alternative",
+              "message": "no_geometric_jaw_alternative"
+            }
+          ]
+        }
+      },
+      "candidates": {
+        "bin_picking_completed_review": {
+          "id": "81f22a5b15f348cdae6cac9a83fa0c32"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.635887+00:00",
+          "started_ns": 132339600885000,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:52:56.877735+00:00",
+          "finished_ns": 132339842730300,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 241.8453
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "jaw",
+            "name": "SimpleBinPicking Jaw",
+            "type": "3d.simple_bin_picking_jaw",
+            "path": "jaw"
+          },
+          "score": 0.0,
+          "message": "0 geometric jaw alternatives; CAD-assisted contacts, no robot execution",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "no_geometric_jaw_alternative",
+              "message": "no_geometric_jaw_alternative"
+            }
+          ]
+        }
+      },
+      "report": {
+        "bin_picking_completed_review": {
+          "id": "81f22a5b15f348cdae6cac9a83fa0c32"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.635887+00:00",
+          "started_ns": 132339600885000,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:52:56.877735+00:00",
+          "finished_ns": 132339842730300,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 241.8453
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "jaw",
+            "name": "SimpleBinPicking Jaw",
+            "type": "3d.simple_bin_picking_jaw",
+            "path": "jaw"
+          },
+          "score": 0.0,
+          "message": "0 geometric jaw alternatives; CAD-assisted contacts, no robot execution",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "no_geometric_jaw_alternative",
+              "message": "no_geometric_jaw_alternative"
+            }
+          ]
+        }
+      },
+      "count": {
+        "bin_picking_completed_review": {
+          "id": "81f22a5b15f348cdae6cac9a83fa0c32"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.635887+00:00",
+          "started_ns": 132339600885000,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:52:56.877735+00:00",
+          "finished_ns": 132339842730300,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 241.8453
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "jaw",
+            "name": "SimpleBinPicking Jaw",
+            "type": "3d.simple_bin_picking_jaw",
+            "path": "jaw"
+          },
+          "score": 0.0,
+          "message": "0 geometric jaw alternatives; CAD-assisted contacts, no robot execution",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "no_geometric_jaw_alternative",
+              "message": "no_geometric_jaw_alternative"
+            }
+          ]
+        }
+      },
+      "graphics": {
+        "bin_picking_completed_review": {
+          "id": "81f22a5b15f348cdae6cac9a83fa0c32"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.635887+00:00",
+          "started_ns": 132339600885000,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:52:56.877735+00:00",
+          "finished_ns": 132339842730300,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 241.8453
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "jaw",
+            "name": "SimpleBinPicking Jaw",
+            "type": "3d.simple_bin_picking_jaw",
+            "path": "jaw"
+          },
+          "score": 0.0,
+          "message": "0 geometric jaw alternatives; CAD-assisted contacts, no robot execution",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "no_geometric_jaw_alternative",
+              "message": "no_geometric_jaw_alternative"
+            }
+          ]
+        }
+      },
+      "pose_fit": {
+        "bin_picking_completed_review": {
+          "id": "81f22a5b15f348cdae6cac9a83fa0c32"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "2537edf8ddae48e58f1ab024686f5433",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:52:56.635887+00:00",
+          "started_ns": 132339600885000,
+          "clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:52:56.877735+00:00",
+          "finished_ns": 132339842730300,
+          "finished_clock_id": "cb44171e9a664ac29f51e2520b9c1225",
+          "elapsed_ms": 241.8453
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "jaw",
+            "name": "SimpleBinPicking Jaw",
+            "type": "3d.simple_bin_picking_jaw",
+            "path": "jaw"
+          },
+          "score": 0.0,
+          "message": "0 geometric jaw alternatives; CAD-assisted contacts, no robot execution",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "no_geometric_jaw_alternative",
+              "message": "no_geometric_jaw_alternative"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "scene_row_scope": "Positive finite scaled depth pixels in y/x order; pixels index captured camera depth",
+  "geometry_scope": "Measured points are distinct from configured cups/jaws/CAD/sweeps/TCP and unknown query samples",
+  "score_scope": "Geometric evidence, not pick success probability; selected/rejected/unknown stays unchanged",
+  "unknown_scope": "Unobserved space is unknown, not free; geometric eligibility is not robot/physical grasp qualification",
+  "graphics_scope": "Review derives display geometry from frozen evidence; missing diagnostic arrays stay unavailable",
+  "identity_scope": "Paired software completion and declared capture IDs do not establish physical synchronization",
+  "planning_reexecuted": false,
+  "clearance_reexecuted": false,
+  "depth_reprojected": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "robot_execution": false,
+  "exported_recipe_sha256": "1eb1fc1c85ee2a07e2d80c1594ebd41148628226604d95fe9e5621f0278a3079",
+  "exported_diagnostics": [
+    {
+      "group": "pose_fits",
+      "index": 0,
+      "arrays": {
+        "points": "pose_fits_0_points.npy",
+        "states": "pose_fits_0_states.npy",
+        "model_rows": "pose_fits_0_model_rows.npy"
+      }
+    }
+  ],
+  "projection": {
+    "yaw": 29,
+    "pitch": -20,
+    "scope": "Display projection only"
+  }
+}

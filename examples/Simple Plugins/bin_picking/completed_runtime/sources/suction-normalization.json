@@ -1,0 +1,25 @@
+{
+  "method": "integer_pixel_translation_to_frame3_intrinsics_zero_padding_unknown",
+  "pixel_shifts_xy": {
+    "3": [
+      0,
+      0
+    ],
+    "13": [
+      -3,
+      -3
+    ],
+    "24": [
+      -2,
+      -8
+    ]
+  },
+  "fixture": "supplied_camera_world_extrinsics",
+  "reference": 3,
+  "held_out": [
+    13,
+    24
+  ],
+  "same_recipe_and_thresholds": true,
+  "grasp_labels": "not_provided_no_physical_pick_success_claim"
+}

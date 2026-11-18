@@ -1,0 +1,287 @@
+{
+  "cases": [
+    {
+      "case": "suction_good",
+      "passed": true,
+      "eligible": 10,
+      "candidates": 64,
+      "decisions": [
+        "eligible",
+        "rejected"
+      ],
+      "source_sha256": "c87332823d18280b50cb462ac96a212121a0a50b08c26a39b6d9242287a34127",
+      "recipe_sha256": "0467841bac30e9f7418cbc8ca1d35e0b409f9cec56525efe0b50a36ef13e1722",
+      "graphics": {
+        "graphics": {
+          "points": "afdaa3612c19f988e3afb12f098b95ca0abd406946aaa82087f7a229746fddb2",
+          "colors": "a2cba122ef8bccaf40a367bbf0d0b764bbdb58c3d03831e32aee048e7d63bb19"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 0,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "suction_holes",
+      "passed": false,
+      "eligible": 0,
+      "candidates": 64,
+      "decisions": [
+        "rejected",
+        "unknown"
+      ],
+      "source_sha256": "ef2c91880d4272565075ef8749880e16b050cd1443b590c99077a0e776b32ccd",
+      "recipe_sha256": "0467841bac30e9f7418cbc8ca1d35e0b409f9cec56525efe0b50a36ef13e1722",
+      "graphics": {
+        "graphics": {
+          "points": "f3a82370e0d41ab5f5b1c5564e24031c50fc47ce72c4d5d889bc8b069fb90117",
+          "colors": "747ca62e28ad9bb6ab0d2a49e872e66a92edbb8e9bc97a73db1ad050d3d700fb"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 0,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "suction_missing",
+      "passed": false,
+      "eligible": 0,
+      "candidates": 0,
+      "decisions": [],
+      "source_sha256": "5c9b37300155c1f3338bc88f17d69c51fb248b0de0155630962ca6504d789bba",
+      "recipe_sha256": "0467841bac30e9f7418cbc8ca1d35e0b409f9cec56525efe0b50a36ef13e1722",
+      "graphics": {
+        "graphics": {
+          "points": "461671468fcd177ecc8338dc1eb053ddddc873498ead78ac46af5b7dde7b9337",
+          "colors": "c935c6480ab33f82ae94a224223f0d43371ce15b5265cc1788dc241b6fe00d28"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 0,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "suction_real13",
+      "passed": false,
+      "eligible": 0,
+      "candidates": 256,
+      "decisions": [
+        "rejected",
+        "unknown"
+      ],
+      "source_sha256": "2480a5084c214f8c4f39a4a28409dbf1b5e082f709c1b02c2afbe6ec702c06bd",
+      "recipe_sha256": "18d36c3bd36db91b2fe8386e8d6c96bc886d8cae6503df2a7bad747124ee0499",
+      "graphics": {
+        "graphics": {
+          "points": "a911d3e76d15f22dba6187088b9ae1f61e51b70de53199c8127d154288a497d6",
+          "colors": "936ecfbf26f9112b617be8468a78e464f0bc3d3d870f5a80b2e44ec3d4579ed2"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 0,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "jaw_clear",
+      "passed": true,
+      "eligible": 1,
+      "candidates": 2,
+      "decisions": [
+        "eligible",
+        "unknown"
+      ],
+      "source_sha256": "18b674b12004d171142e1db37d4fb14cf9164a6d40a9b94c10e9326e047ace82",
+      "recipe_sha256": "22e650c581c5d0c226e3bcf728420f21b2d771ebf99146544c1c16477bfd778a",
+      "graphics": {
+        "graphics": {
+          "points": "2e128c8853c0be80d6d7ed94d13c9319c3b96e9aa975393f341c7ae8cbb42763",
+          "colors": "2a23f81d0d8526318964989d289983c4d87813be1e3f3113c211ac22bc53e860"
+        },
+        "pose_fit": {
+          "points": "d282a492356d523d613cce67703f816720dce7e739c0252b9026113a98adf916",
+          "colors": "959d16013d44e4dcb0c6317921bc07db73fdff3465af0d8baaeef0523587baa0"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 1,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "jaw_obstacle",
+      "passed": false,
+      "eligible": 0,
+      "candidates": 2,
+      "decisions": [
+        "rejected",
+        "unknown"
+      ],
+      "source_sha256": "c486f97ecd700f3e8ad2670eabefad8d2cc0b37b5fa71174d643200ef134f295",
+      "recipe_sha256": "22e650c581c5d0c226e3bcf728420f21b2d771ebf99146544c1c16477bfd778a",
+      "graphics": {
+        "graphics": {
+          "points": "c4cfdcd56b74bb1f30938c4959ee75805df0caee178cfefad67ecb922c9f247b",
+          "colors": "6e0b45adb6500247427349d6f7f6c1f36e6103934711229b18a186d6d9d1862f"
+        },
+        "pose_fit": {
+          "points": "d282a492356d523d613cce67703f816720dce7e739c0252b9026113a98adf916",
+          "colors": "959d16013d44e4dcb0c6317921bc07db73fdff3465af0d8baaeef0523587baa0"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 1,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "jaw_unknown",
+      "passed": false,
+      "eligible": 0,
+      "candidates": 2,
+      "decisions": [
+        "unknown"
+      ],
+      "source_sha256": "4d8acb8e51d16b90644cf7f88629f07c31e9b1430923395259c0f87177056440",
+      "recipe_sha256": "22e650c581c5d0c226e3bcf728420f21b2d771ebf99146544c1c16477bfd778a",
+      "graphics": {
+        "graphics": {
+          "points": "95752bb1253829dfa3dc6a290b30ffff15f6773c7823bf60946542e85483f4d1",
+          "colors": "c4907c519fa1c8b1e1a49b223c1eb26d54edfb7fc5ae22fe4bfe43677d6c3f8e"
+        },
+        "pose_fit": {
+          "points": "d282a492356d523d613cce67703f816720dce7e739c0252b9026113a98adf916",
+          "colors": "959d16013d44e4dcb0c6317921bc07db73fdff3465af0d8baaeef0523587baa0"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 1,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "jaw_real3",
+      "passed": false,
+      "eligible": 0,
+      "candidates": 2,
+      "decisions": [
+        "rejected"
+      ],
+      "source_sha256": "bf275f743e6a056073678f851b56f9ee5c3f6c1e15d60851a5f38eb39508be2d",
+      "recipe_sha256": "11961ed8f904eecfcbac1a7ab5e48e206775925e9afa299ca5c281a0c3889769",
+      "graphics": {
+        "graphics": {
+          "points": "76f5fbaf63f323eda1f5f61b9aa0693aec1ba0f314b1b76bbaf07767ca14cf90",
+          "colors": "29020a049630ecdfe09780e81fdfc9151eb4021006b2b49e9117251c5d432f84"
+        },
+        "pose_fit": {
+          "points": "458f1e8d3e63cc73b3e486af29ab22c27087ce77502bd3f52d42034d1dd01dc0",
+          "colors": "9b2bd5881c436fc8c87b47054dea4ca8e2ee90b463e581f2cca5f4d9d53a2ac1"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 1,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "jaw_real13",
+      "passed": false,
+      "eligible": 0,
+      "candidates": 2,
+      "decisions": [
+        "rejected"
+      ],
+      "source_sha256": "c93b93303cb93267aac4426238e31feceeff351985da0ce27f90b2eeca0ea3c0",
+      "recipe_sha256": "1eb1fc1c85ee2a07e2d80c1594ebd41148628226604d95fe9e5621f0278a3079",
+      "graphics": {
+        "graphics": {
+          "points": "0c4e5db55bb474638111e145e9903f5a753efd13a8e610c618c94050783e8246",
+          "colors": "8715da457ada4eca15193f7788a911cda70dbdc9f826633f9e3d271fa09c702b"
+        },
+        "pose_fit": {
+          "points": "734ba4fabfaeed2a5307218f24cf7e1485dc3b43cc93209066e69cca144620a4",
+          "colors": "f84ce6579c79317f337986d11ba1f6c715da9d2cea94e0b964e9878e32455b22"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 1,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "jaw_mesh",
+      "passed": true,
+      "eligible": 1,
+      "candidates": 1,
+      "decisions": [
+        "eligible"
+      ],
+      "source_sha256": "18b674b12004d171142e1db37d4fb14cf9164a6d40a9b94c10e9326e047ace82",
+      "recipe_sha256": "3c375bfe36b5d3a37ef4ca5b495c792a86336757e4ad52590b9fe446371ff560",
+      "graphics": {
+        "graphics": {
+          "points": "85c45baf4ebbd9b08cb09e94b4223869d27ba1def238b7124e58739f9c1e5db7",
+          "colors": "678c4c587423433777c04e64b82e9831449fdc09704a5881c0c9223adc385171"
+        },
+        "pose_fit": {
+          "points": "b50468dd4784b812b9de9167c33be8ae6899e393235509d463b468c321373812",
+          "colors": "48a3448262995a3d868e3398953442577688982f12b113aaaa7876f282bb017a"
+        },
+        "mesh_fit": {
+          "points": "ef62d2394c697dec8649776a8fa9c15bea1c45b0eb5b745f188d51632b91fc31",
+          "colors": "e56c5f99e0dcbb43f48801344d4a2b91472cda5d7eb29d573b53176e8618fe40"
+        }
+      },
+      "diagnostics": {
+        "pose_fit": 1,
+        "mesh_fit": 1
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    },
+    {
+      "case": "jaw_graphics_off",
+      "passed": true,
+      "eligible": 1,
+      "candidates": 2,
+      "decisions": [
+        "eligible",
+        "unknown"
+      ],
+      "source_sha256": "18b674b12004d171142e1db37d4fb14cf9164a6d40a9b94c10e9326e047ace82",
+      "recipe_sha256": "22e650c581c5d0c226e3bcf728420f21b2d771ebf99146544c1c16477bfd778a",
+      "graphics": {},
+      "diagnostics": {
+        "pose_fit": 0,
+        "mesh_fit": 0
+      },
+      "native_flyaround": true,
+      "no_replanning_or_projection": true
+    }
+  ],
+  "projects": 11,
+  "frozen_exports": 6,
+  "scope": "Offline evidence; no physical grasp qualification"
+}

@@ -1,0 +1,12 @@
+{
+  "version": "0.1.0.dev13",
+  "sha256": "87aa7bd5775fd909a6a3dde446021150125d80422b875ac24147d69254502ea9",
+  "size": 111472,
+  "module_count": 34,
+  "all_python_modules_match_committed_archive": true,
+  "original_MIT_license_preserved": true,
+  "source_tests": 171,
+  "wheel_tests": 171,
+  "clean_native_exit": true,
+  "environment_installs": false
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "capture",
+      "type": "input.simple_jaw_example",
+      "name": "Recorded first return + supplied pose (assisted)",
+      "parameters": {
+        "depth_path": "assets/0881ba8bc638615ef662db275665cc162784ba34cac6e949ae6f2ef522e84f72.npy",
+        "records_path": "assets/90641cdeba416afe4f1ea60fbbfcd815c323a3b9c61684059588ca21de2a1ee6.json",
+        "locator_scene_path": "",
+        "locator_depth_path": ""
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "part_instances",
+        "camera",
+        "capture_id",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "jaw",
+      "type": "3d.simple_bin_picking_jaw",
+      "name": "SimpleBinPicking Jaw",
+      "description": "Review completed bin-picking evidence in the inspector. Recorded first surfaces; no robot execution or physical grasp truth.",
+      "parameters": {
+        "recipe_path": "assets/22e650c581c5d0c226e3bcf728420f21b2d771ebf99146544c1c16477bfd778a.sbpj",
+        "sha256": "22e650c581c5d0c226e3bcf728420f21b2d771ebf99146544c1c16477bfd778a",
+        "render_graphics": true
+      },
+      "position": [
+        480,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "part_instances",
+        "capture_id",
+        "camera",
+        "bin_pose",
+        "instances"
+      ],
+      "exposed_outputs": [
+        "picks",
+        "candidates",
+        "report",
+        "count",
+        "tcp",
+        "pregrasp",
+        "graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "graphics"
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "depth",
+      "target": "jaw",
+      "input": "depth"
+    },
+    {
+      "source": "capture",
+      "output": "camera",
+      "target": "jaw",
+      "input": "camera"
+    },
+    {
+      "source": "capture",
+      "output": "part_instances",
+      "target": "jaw",
+      "input": "part_instances"
+    },
+    {
+      "source": "capture",
+      "output": "capture_id",
+      "target": "jaw",
+      "input": "capture_id"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "capture_id": "frame000013",
+  "pose_assistance": "T-LESS annotated object pose; not independent localization",
+  "camera": {
+    "model": "camera_model_v1",
+    "matrix": [
+      [
+        1075.65091572,
+        0.0,
+        377.06888344
+      ],
+      [
+        0.0,
+        1073.90347929,
+        257.72159802
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "image_size": [
+      720,
+      540
+    ],
+    "frame": "camera",
+    "units": "m",
+    "lens": "pinhole",
+    "distortion": []
+  },
+  "part_instances": [
+    {
+      "model": "part_instance_v1",
+      "id": "part-1",
+      "accepted": true,
+      "capture_id": "frame000013",
+      "pose": {
+        "model": "pose_3d_v1",
+        "source_frame": "tless6",
+        "target_frame": "camera",
+        "units": "m",
+        "source_to_target": [
+          [
+            0.20638019,
+            0.97844221,
+            0.0076188,
+            -0.03303962683
+          ],
+          [
+            0.93732373,
+            -0.19546062,
+            -0.288478,
+            -0.06978034692
+          ],
+          [
+            -0.28076954,
+            0.06667712,
+            -0.957456,
+            0.78628778032
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    }
+  ]
+}
