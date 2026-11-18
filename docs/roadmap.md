@@ -52,7 +52,7 @@ package versions** remain unchanged. Score-decay suppression (S2-56) advances th
 targeted cycle to **5/20**, with **217 focused checks**, **77 installed checks**,
 thirteen original projects, **404 matching source/wheel/installed modules** and
 **61 unchanged package versions**. Quantized image inference (S2-57) advances the
-targeted cycle to **6/20**, with **361 focused checks**, **79 installed checks**,
+targeted cycle to **6/20**, with **362 focused checks**, **80 installed checks**,
 thirteen bundled controls and six prepared pretrained projects. All **405 runtime
 modules** match frozen source/wheel/install and **61 package versions** remain
 unchanged. Multi-output super-resolution (S2-58) is next. These
@@ -310,7 +310,7 @@ match independent arithmetic within 3e-6. The deliberately saturated nonbinary
 control permits 0.001 aggregate rounding discrepancy and still fails its fidelity
 criterion. The limitation is explicit instead of replacing ONNX reference results.
 
-**361 focused checks** and **79 installed checks** pass; all **405 module files**
+**362 focused checks** and **80 installed checks** pass; all **405 module files**
 match frozen source/wheel/install and **61 package versions** remain unchanged.
 ML/DNN is **56/62 (90.3%)**, overall **282/470 (60.0%)**, core **173/175 (98.9%)**.
 Targeted cycle **6/20**, without a broad repeat. Existing SSD integer-index paths,

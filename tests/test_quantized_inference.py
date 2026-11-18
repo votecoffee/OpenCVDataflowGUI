@@ -513,3 +513,18 @@ def test_comparison_failed_input_admission_retains_history_and_emits_nothing():
     )
     assert block.execute(args) is None and block.input_rejected and not block.current_emissions
     assert block.last_inputs is previous and block.last_result is r
+
+
+def test_comparison_rejects_oversized_or_nested_values_before_array_conversion(monkeypatch):
+    import opencv_dataflow.tensor_comparison as module
+
+    def forbidden(*a, **k):
+        pytest.fail("Invalid input reached array conversion")
+
+    monkeypatch.setattr(module, "selected_tensor", forbidden)
+    for values in ([1, 2, 3], [[1, 2]], [True], "123"):
+        data = {
+            "scores": {"model": "tensor_v1", "dtype": "float32", "shape": [1, 3], "values": values}
+        }
+        with pytest.raises(ValidationError, match="bounded flat"):
+            module.read_tensor(data, "scores", 2)

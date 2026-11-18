@@ -22,6 +22,13 @@ def read_tensor(tensors, name, limit):
     record = tensors.get(name)
     if not isinstance(record, dict) or record.get("dtype") != "float32":
         raise ValidationError("Compare explicitly dequantized float32 tensor_v1 outputs")
+    values = record.get("values")
+    if (
+        not isinstance(values, list)
+        or not 1 <= len(values) <= limit
+        or any(type(v) not in (int, float) for v in values)
+    ):
+        raise ValidationError("Tensor values require a bounded flat numeric list")
     value = selected_tensor(tensors, name, max_elements=limit).astype(np.float64)
     return name, value
 
