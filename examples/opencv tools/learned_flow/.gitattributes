@@ -1,0 +1,4 @@
+*.json -text
+*.onnx binary
+*-LICENSE.txt -text
+MITLICENSE.txt -text

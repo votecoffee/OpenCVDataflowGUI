@@ -1,0 +1,70 @@
+{
+  "cases": [
+    "plane",
+    "subpixel",
+    "concatenated",
+    "letterbox",
+    "head_units",
+    "selected",
+    "second_mask",
+    "empty",
+    "coverage_alarm",
+    "native_positive",
+    "native_negative",
+    "native_zero"
+  ],
+  "native_motions": {
+    "native_positive": [
+      4,
+      -2
+    ],
+    "native_negative": [
+      -3,
+      2
+    ],
+    "native_zero": [
+      0,
+      0
+    ]
+  },
+  "source_size": [
+    31,
+    23
+  ],
+  "plane_motion": [
+    2.0,
+    -1.0
+  ],
+  "subpixel_motion": [
+    1.5,
+    1.0
+  ],
+  "raft_sha256": "3b479e0447894245b822bf0b7392155d31ccd22bb9b0ee55503066bf6f6f869a",
+  "asset_sha256": {
+    "assets/first.png": "0a79cb1ff9b072ff52f2915542aed448b94d355bdd52aff2d47cc6834aa42ce7",
+    "assets/native_first.png": "e362fc98ec6a1289f02579740aaf811279b267955a9b7f177900cad54ea68013",
+    "assets/native_negative.png": "75443833ddac12786a75284766ac386f289358fdc67b52e3fb32f12dc37674a0",
+    "assets/native_positive.png": "e8e56b60d47452a5465eb6c70ad9709545e9a21b71388306bda0fb260af16950",
+    "assets/native_zero.png": "e362fc98ec6a1289f02579740aaf811279b267955a9b7f177900cad54ea68013",
+    "assets/second.png": "8b8c795f8ab8edd867ed7388a56e33310705fefd1b63dea9e4cc0ecccfa29694",
+    "assets/subpixel.png": "837e4aec65b674e26e2074f37da9377c30d8001ce13efbceae54772a452b2220",
+    "models/concatenated/contract.json": "12399b893ff32e986dfcd6a99da5c613d2f70dda3cbd70ee95b6259d103ea4b1",
+    "models/concatenated/model.onnx": "1b80a614cd16af7652314991c305148e70c136b07aa1a55b50ee09d019d2201e",
+    "models/coverage_alarm/contract.json": "46e98e50bd5ad699847add64fbf68dfe4cd4cb22d8ee8367725508d658fe7024",
+    "models/coverage_alarm/model.onnx": "d5bc9cb9215a3395fff517611819b81d08bf6f73eadfac180fb654576e76e449",
+    "models/empty/contract.json": "b674d26094d7a392cb0d2d6286790b076623d5d9800b31d0275f4909b38bee1c",
+    "models/empty/model.onnx": "d5bc9cb9215a3395fff517611819b81d08bf6f73eadfac180fb654576e76e449",
+    "models/head_units/contract.json": "c123734d62f32e3210527d88c257336f827d1bab01f8db2feb6ec0b7dfee99c9",
+    "models/head_units/model.onnx": "222fb0f4b53d7c478b42c22a69cf279174e7324b59f3a5013d8b06ade4567f25",
+    "models/letterbox/contract.json": "d5d7fbf128b0e2f40909cd1d1b5d9a41b3e12bc3d75ae7d9e034074bd0ac765b",
+    "models/letterbox/model.onnx": "222fb0f4b53d7c478b42c22a69cf279174e7324b59f3a5013d8b06ade4567f25",
+    "models/plane/contract.json": "b674d26094d7a392cb0d2d6286790b076623d5d9800b31d0275f4909b38bee1c",
+    "models/plane/model.onnx": "d5bc9cb9215a3395fff517611819b81d08bf6f73eadfac180fb654576e76e449",
+    "models/second_mask/contract.json": "b674d26094d7a392cb0d2d6286790b076623d5d9800b31d0275f4909b38bee1c",
+    "models/second_mask/model.onnx": "d5bc9cb9215a3395fff517611819b81d08bf6f73eadfac180fb654576e76e449",
+    "models/selected/contract.json": "b674d26094d7a392cb0d2d6286790b076623d5d9800b31d0275f4909b38bee1c",
+    "models/selected/model.onnx": "d5bc9cb9215a3395fff517611819b81d08bf6f73eadfac180fb654576e76e449",
+    "models/subpixel/contract.json": "b674d26094d7a392cb0d2d6286790b076623d5d9800b31d0275f4909b38bee1c",
+    "models/subpixel/model.onnx": "d5bc9cb9215a3395fff517611819b81d08bf6f73eadfac180fb654576e76e449"
+  }
+}

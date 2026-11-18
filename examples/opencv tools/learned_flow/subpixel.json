@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "SOURCES.md",
+      "BSD-3-LICENSE.txt",
+      "MITLICENSE.txt"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "first",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/first.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "second",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/subpixel.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        360
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "estimate",
+      "type": "ml.optical_flow",
+      "name": "Learned optical flow",
+      "parameters": {
+        "contract_path": "models/subpixel/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "first_name": "first",
+        "second_name": "second",
+        "output_names": [],
+        "input_mode": "named",
+        "input_layout": "NCHW",
+        "layout": "NCHW",
+        "width": 31,
+        "height": 23,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "input_interpolation": "linear",
+        "padding_value": 0.0,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "component_order": "xy",
+        "head_scale": [
+          1.0,
+          1.0
+        ],
+        "head_offset": [
+          0.0,
+          0.0
+        ],
+        "head_units": "network_pixels",
+        "invalid_value_enabled": false,
+        "invalid_head_value": 0.0,
+        "maximum_motion": 4096.0,
+        "alignment": "pixel_grid",
+        "resampling": "linear",
+        "check_correspondence": true,
+        "bind_image_content": true,
+        "minimum_valid_pixels": 1,
+        "minimum_valid_fraction": 0.01,
+        "visual_max_motion": 10.0,
+        "arrow_spacing": 24,
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "maximum_source_pixels": 1000000,
+        "maximum_input_elements": 3000000,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        500,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "first",
+        "second",
+        "first_mask",
+        "second_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "flow",
+        "valid_mask",
+        "info",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1000,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Motion direction / sources",
+      "description": "Original MIT affine-ramp controls by OpenCVDataflowGUI contributors. Optional RAFT: Zachary Teed/Jia Deng, Princeton, BSD-3-Clause; ONNX conversion Jeong-gi Kwak/PINTO0309, MIT, via OpenCV Zoo. See SOURCES.md and both notices. T-LESS texture: T. Hodan et al., WACV 2017, CC BY 4.0, https://cmp.felk.cvut.cz/t-less/ . Native pairs are resized/translated copies, not actual recorded motion or occlusion ground truth. Vectors are first-to-second dx,dy in original first-image pixels. Swap inputs for reverse direction. Coverage is not accuracy confidence.",
+      "parameters": {},
+      "position": [
+        0,
+        -900
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "first",
+      "output": "image",
+      "target": "estimate",
+      "input": "first"
+    },
+    {
+      "source": "second",
+      "output": "image",
+      "target": "estimate",
+      "input": "second"
+    },
+    {
+      "source": "estimate",
+      "output": "preview",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

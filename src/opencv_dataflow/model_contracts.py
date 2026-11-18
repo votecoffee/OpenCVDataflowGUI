@@ -155,6 +155,7 @@ def export_contract(block, directory, *, preprocessing=None):
         "ml.restore_image",
         "ml.monocular_depth",
         "ml.stereo_disparity",
+        "ml.optical_flow",
     ):
         raise ValidationError("Choose an ONNX inference block")
     block.validate_parameters()

@@ -734,6 +734,7 @@ def builtin_registry():
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
     from .landmarks import LANDMARK_BLOCKS
     from .laplacian_pyramids import LAPLACIAN_PYRAMID_BLOCKS
+    from .learned_flow import LearnedFlow
     from .learned_restoration import RestoreImage
     from .learned_stereo import LearnedStereo
     from .lens_map_files import LoadLensMaps, SaveLensMaps
@@ -1202,6 +1203,7 @@ def builtin_registry():
         RestoreImage,
         MonocularDepth,
         LearnedStereo,
+        LearnedFlow,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,

@@ -9443,6 +9443,65 @@ Input `region` — Intersects Mask; known coordinate-frame conflicts fail.
 | `maximum_input_elements` | `3000000` | Value must be a whole number between 1 and 1.6e+07. Configured input tensor bound before allocation. |
 | `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. |
 
+## Learned optical flow (`ml.optical_flow`)
+
+ML / Motion estimation
+
+Inputs: `first` (image), `second` (image), `first_mask` (image, optional), `second_mask` (image, optional), `region` (data, optional).
+
+Input `first` — First frame; owns returned image/grid/ticket. Vectors map first to second.
+
+Input `second` — Equal-size second frame. Swap inputs for reverse flow; do not negate vectors.
+
+Input `first_mask` — First-grid write selection; excluded pixels remain model context.
+
+Input `second_mask` — Support at first+flow; all bilinear contributors must be valid.
+
+Input `region` — First-grid selection, intersected with First mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` |  |
+| `first_name` | `"first"` | First binding, or combined binding with first channels then second. |
+| `second_name` | `"second"` | Distinct second binding for Named mode. |
+| `output_names` | `[]` |  |
+| `input_mode` | `"named"` | `named`, `concatenated` |
+| `input_layout` | `"NCHW"` | `NCHW`, `NHWC` |
+| `layout` | `"NCHW"` | `NCHW`, `NHWC`, `CHW`, `HWC` |
+| `width` | `480` | Value must be a whole number between 1 and 4096. |
+| `height` | `360` | Value must be a whole number between 1 and 4096. |
+| `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` |
+| `resize_mode` | `"stretch"` | `stretch`, `letterbox` |
+| `input_interpolation` | `"linear"` | `linear`, `cubic`, `area` |
+| `padding_value` | `0.0` | Value must be a finite number between 0 and 1. |
+| `mean` | `[0.0, 0.0, 0.0]` | Per-frame means in unit source values; subtract before Std division. |
+| `std` | `[1.0, 1.0, 1.0]` | Positive channel divisors; RAFT's raw RGB model uses 1/255 on unit RGB. |
+| `component_order` | `"xy"` | `xy`, `yx` Native channels encode xy or yx; output is always dx,dy. |
+| `head_scale` | `[1.0, 1.0]` | Two fixed nonzero multipliers in decoded xy order, before resampling. |
+| `head_offset` | `[0.0, 0.0]` | Two finite offsets in decoded xy order and declared head units. |
+| `head_units` | `"network_pixels"` | `network_pixels`, `head_pixels`, `source_pixels` Vector units before per-axis conversion to original first-image pixels. |
+| `invalid_value_enabled` | `false` |  |
+| `invalid_head_value` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Either component equal to this enabled sentinel invalidates both. |
+| `maximum_motion` | `4096.0` | Value must be a finite number between 0 and 16384. Per-axis source-pixel bound; reject vectors rather than clipping them. |
+| `alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Same frame rejects known grid conflicts; Pixel grid declares correspondence. |
+| `resampling` | `"linear"` | `linear`, `nearest` |
+| `check_correspondence` | `true` | Require first+flow inside second; Second mask always enforces it. |
+| `bind_image_content` | `true` | Bind exact images/grids and flow direction for existing consumers. |
+| `minimum_valid_pixels` | `1` | Value must be a whole number between 1 and 4e+06. |
+| `minimum_valid_fraction` | `0.01` | Value must be a finite number between 0 and 1. Selected support coverage, not learned confidence or accuracy. |
+| `visual_max_motion` | `10.0` | Value must be a finite number between 0.001 and 1e+06. Magnitude for full display brightness; never clips numerical flow. |
+| `arrow_spacing` | `24` | Value must be a whole number between 1 and 1024. Requested drawing stride, increased automatically to limit 2,048 arrows. |
+| `engine` | `"classic"` | `auto`, `classic`, `new`, `ort` |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
+| `fusion` | `true` |  |
+| `maximum_source_pixels` | `1000000` | Value must be a whole number between 1 and 2.1e+06. |
+| `maximum_input_elements` | `3000000` | Value must be a whole number between 1 and 1.6e+07. Combined two-frame tensor budget before conversion/allocation. |
+| `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. |
+
 ## Pack separate detection heads (`ml.pack_detection_heads`)
 
 ML / Instance segmentation

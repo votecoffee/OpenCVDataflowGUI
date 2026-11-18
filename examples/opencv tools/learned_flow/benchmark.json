@@ -1,0 +1,228 @@
+{
+  "opencv": "5.0.0",
+  "artifact_sha256": "3b479e0447894245b822bf0b7392155d31ccd22bb9b0ee55503066bf6f6f869a",
+  "source_size": [
+    240,
+    180
+  ],
+  "network_size": [
+    480,
+    360
+  ],
+  "direction": "first_to_second",
+  "units": "original_first_pixels",
+  "selected_output": "12006",
+  "scope": "known translations of one licensed image; not recorded optical motion",
+  "cases": {
+    "native_positive": {
+      "truth_motion": [
+        4,
+        -2
+      ],
+      "evaluation_rectangle": [
+        20,
+        20,
+        200,
+        140
+      ],
+      "pixels": 28000,
+      "mean_endpoint_error": 0.018608784792475245,
+      "bad1_fraction": 0.0,
+      "retained_pixels": 28000,
+      "retained_fraction": 1.0,
+      "retained_mean_endpoint_error": 0.018608784792475245,
+      "source_samples": [
+        {
+          "pixel": [
+            0,
+            0
+          ],
+          "vector": [
+            4.049889922142029,
+            -1.9380422234535217
+          ]
+        },
+        {
+          "pixel": [
+            239,
+            179
+          ],
+          "vector": [
+            3.8363512754440308,
+            -1.9124480783939362
+          ]
+        },
+        {
+          "pixel": [
+            120,
+            90
+          ],
+          "vector": [
+            4.003971457481384,
+            -1.9935341775417328
+          ]
+        },
+        {
+          "pixel": [
+            47,
+            62
+          ],
+          "vector": [
+            4.005269765853882,
+            -2.011996328830719
+          ]
+        },
+        {
+          "pixel": [
+            195,
+            141
+          ],
+          "vector": [
+            3.9738041162490845,
+            -1.9863981008529663
+          ]
+        }
+      ]
+    },
+    "native_negative": {
+      "truth_motion": [
+        -3,
+        2
+      ],
+      "evaluation_rectangle": [
+        20,
+        20,
+        200,
+        140
+      ],
+      "pixels": 28000,
+      "mean_endpoint_error": 0.014569835125757595,
+      "bad1_fraction": 0.0,
+      "retained_pixels": 28000,
+      "retained_fraction": 1.0,
+      "retained_mean_endpoint_error": 0.014569835125757595,
+      "source_samples": [
+        {
+          "pixel": [
+            0,
+            0
+          ],
+          "vector": [
+            -3.0582961440086365,
+            2.0322094559669495
+          ]
+        },
+        {
+          "pixel": [
+            239,
+            179
+          ],
+          "vector": [
+            -3.0042489171028137,
+            1.9100215435028076
+          ]
+        },
+        {
+          "pixel": [
+            120,
+            90
+          ],
+          "vector": [
+            -3.011555016040802,
+            1.9949860274791718
+          ]
+        },
+        {
+          "pixel": [
+            47,
+            62
+          ],
+          "vector": [
+            -2.9906160831451416,
+            1.9953040480613708
+          ]
+        },
+        {
+          "pixel": [
+            195,
+            141
+          ],
+          "vector": [
+            -3.002541482448578,
+            1.9891703426837921
+          ]
+        }
+      ]
+    },
+    "native_zero": {
+      "truth_motion": [
+        0,
+        0
+      ],
+      "evaluation_rectangle": [
+        20,
+        20,
+        200,
+        140
+      ],
+      "pixels": 28000,
+      "mean_endpoint_error": 0.002972087534784873,
+      "bad1_fraction": 0.0,
+      "retained_pixels": 28000,
+      "retained_fraction": 1.0,
+      "retained_mean_endpoint_error": 0.002972087534784873,
+      "source_samples": [
+        {
+          "pixel": [
+            0,
+            0
+          ],
+          "vector": [
+            -0.0010158629738725722,
+            0.014307103352621198
+          ]
+        },
+        {
+          "pixel": [
+            239,
+            179
+          ],
+          "vector": [
+            0.00691027264110744,
+            -0.005487312329933047
+          ]
+        },
+        {
+          "pixel": [
+            120,
+            90
+          ],
+          "vector": [
+            -0.0020253288676030934,
+            0.0032311431132256985
+          ]
+        },
+        {
+          "pixel": [
+            47,
+            62
+          ],
+          "vector": [
+            -0.0014079123793635517,
+            -0.00038823317299829796
+          ]
+        },
+        {
+          "pixel": [
+            195,
+            141
+          ],
+          "vector": [
+            0.0012854750384576619,
+            0.002150857006199658
+          ]
+        }
+      ]
+    }
+  }
+}

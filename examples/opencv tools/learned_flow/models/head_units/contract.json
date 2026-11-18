@@ -1,0 +1,110 @@
+{
+  "model": "onnx_inference_contract_v1",
+  "schema_version": 1,
+  "block_type": "ml.optical_flow",
+  "configuration": {
+    "fallback_policy": "error",
+    "first_name": "first",
+    "second_name": "second",
+    "output_names": [],
+    "input_mode": "named",
+    "input_layout": "NCHW",
+    "layout": "NCHW",
+    "width": 16,
+    "height": 16,
+    "color_format": "rgb",
+    "resize_mode": "stretch",
+    "input_interpolation": "linear",
+    "padding_value": 0.0,
+    "mean": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "std": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "component_order": "xy",
+    "head_scale": [
+      0.25806451612903225,
+      0.34782608695652173
+    ],
+    "head_offset": [
+      0.0,
+      0.0
+    ],
+    "head_units": "head_pixels",
+    "invalid_value_enabled": false,
+    "invalid_head_value": 0.0,
+    "maximum_motion": 4096.0,
+    "alignment": "pixel_grid",
+    "resampling": "linear",
+    "check_correspondence": true,
+    "bind_image_content": true,
+    "minimum_valid_pixels": 1,
+    "minimum_valid_fraction": 0.01,
+    "visual_max_motion": 10.0,
+    "arrow_spacing": 24,
+    "engine": "classic",
+    "backend": "opencv",
+    "target": "cpu",
+    "fusion": true,
+    "maximum_source_pixels": 1000000,
+    "maximum_input_elements": 3000000,
+    "max_output_elements": 1000000
+  },
+  "preprocessing": {
+    "first": {
+      "model": "paired_flow_preparation_v1",
+      "source_units": "integer_full_scale_or_float_unit",
+      "width": 16,
+      "height": 16,
+      "color_format": "rgb",
+      "resize_mode": "stretch",
+      "input_interpolation": "linear",
+      "padding_value": 0.0,
+      "mean": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "std": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "input_layout": "NCHW",
+      "frame": "first"
+    },
+    "second": {
+      "model": "paired_flow_preparation_v1",
+      "source_units": "integer_full_scale_or_float_unit",
+      "width": 16,
+      "height": 16,
+      "color_format": "rgb",
+      "resize_mode": "stretch",
+      "input_interpolation": "linear",
+      "padding_value": 0.0,
+      "mean": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "std": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "input_layout": "NCHW",
+      "frame": "second"
+    }
+  },
+  "artifact": {
+    "file": "model.onnx",
+    "sha256": "222fb0f4b53d7c478b42c22a69cf279174e7324b59f3a5013d8b06ade4567f25",
+    "bytes": 467
+  },
+  "revision": "f82359354d8a597bd2b4c014787db31cf49d28553fe7bf619e8a0a904a7fdfca"
+}
