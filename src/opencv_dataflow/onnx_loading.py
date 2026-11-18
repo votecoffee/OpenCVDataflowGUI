@@ -6,6 +6,8 @@ from tempfile import NamedTemporaryFile
 import cv2
 import numpy as np
 
+from .parameter_validation import ValidationError
+
 
 def load_onnx_snapshot(raw, engine):
     """Return the network and portable import evidence, without retaining disk copies.
@@ -26,6 +28,13 @@ def load_onnx_snapshot(raw, engine):
             network = cv2.dnn.readNetFromONNX(str(Path(snapshot.name)), engine)
     else:
         network = cv2.dnn.readNetFromONNX(np.frombuffer(raw, np.uint8), engine)
+    if network.empty():
+        raise ValidationError(
+            "Selected ONNX engine returned an empty network; model operators may be unsupported. "
+            "Inspect native import diagnostics or choose another explicit engine/model.",
+            "model_path",
+            "engine",
+        )
     return network, {
         "model": "onnx_import_v1",
         "transport": "temporary_snapshot_file" if classic else "memory_buffer",

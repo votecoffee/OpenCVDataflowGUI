@@ -1,0 +1,61 @@
+{
+  "activation_scale": 0.05,
+  "asset_sha256": {
+    "assets/float.onnx": "f73d084943e3ff0ef5a9eb614c08bc2428cbebbd7f2a0540d8ef60ebabbc1e3f",
+    "assets/parts.png": "46dd2708ddabc4ed3deb9913d6afc559d9d2a8bc3057a2f9f3033bb0fc818ada",
+    "assets/raw.onnx": "17fb15ea6ce3e2466842b1929710e62254159947d947db33be105fa4ae1b370d",
+    "assets/signed.onnx": "0f006d69ce918a85df1f06927d2c1da27784ffef2596926833d05816dddb890d",
+    "assets/tie.png": "ea6941ef227fe1e0d676f4b64831cf78f9a5fee3149fb403c1aa6697a10f01c4",
+    "assets/unsigned.onnx": "5021c122e82a68395dd6304c7ed87597b2df8b0abf22d26e810e7ae137f5f3f5",
+    "assets/unsupported.onnx": "6ae9fd04c8187b802d8436b47509fbf63177c5e3fa48cee548bb2223aec0af10",
+    "bundle_candidate/contract.json": "0df4d01ade7905512b90994264fa54fa78b969802de43e54072f875b9ccb0ac8",
+    "bundle_candidate/model.onnx": "0f006d69ce918a85df1f06927d2c1da27784ffef2596926833d05816dddb890d",
+    "bundle_reference/contract.json": "05f8f58e346cdfadbd363ec25bdc2acfcf95287e0b711a6ce87a1508d423f763",
+    "bundle_reference/model.onnx": "f73d084943e3ff0ef5a9eb614c08bc2428cbebbd7f2a0540d8ef60ebabbc1e3f"
+  },
+  "bias": [
+    0.10000000149011612,
+    -0.029999999329447746,
+    0.019999999552965164
+  ],
+  "cases": [
+    "signed_new",
+    "unsigned_new",
+    "signed_classic",
+    "unsigned_classic",
+    "signed_auto",
+    "strict_tolerance",
+    "top1_change",
+    "saturation",
+    "high_depth",
+    "selected",
+    "sealed",
+    "raw_output",
+    "unsupported_op"
+  ],
+  "coefficient": [
+    0.8299999833106995,
+    0.7799999713897705,
+    0.9100000262260437
+  ],
+  "real_cases": [
+    "mobilenet_qdq_classic",
+    "mobilenet_qdq_new",
+    "mobilenet_qdq_auto",
+    "mobilenet_qoperator_classic",
+    "mobilenet_qoperator_new",
+    "mobilenet_qoperator_auto"
+  ],
+  "signed_zero_point": -3,
+  "unsigned_zero_point": 123,
+  "weight_scale": [
+    0.019999999552965164,
+    0.029999999329447746,
+    0.02500000037252903
+  ],
+  "weight_zero_point": [
+    -2,
+    1,
+    3
+  ]
+}

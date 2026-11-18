@@ -900,6 +900,7 @@ def builtin_registry():
     from .svm_blocks import SVM_BLOCKS
     from .table_sort import SortNumericTable
     from .template_instances import FindTemplateInstances
+    from .tensor_comparison import CompareImageTensors
     from .text_rules import VerifyText
     from .texture_patterns import MatchTexturePattern, TrainTexturePattern
     from .tiff_files import TiffFile, WriteTiffFile
@@ -1199,6 +1200,7 @@ def builtin_registry():
         DecodeDetections,
         FuseTileDetections,
         SuppressDetections,
+        CompareImageTensors,
         DecodeRotatedDetections,
         DecodeSegmentation,
         FuseTileSegmentation,

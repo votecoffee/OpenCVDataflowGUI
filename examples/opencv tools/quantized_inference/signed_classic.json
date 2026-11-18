@@ -1,0 +1,284 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/parts.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/float.onnx",
+        "width": 16,
+        "height": 16,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00784313725490196,
+        "mean": [
+          127.5,
+          127.5,
+          127.5
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "scores"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "candidate",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/signed.onnx",
+        "width": 16,
+        "height": 16,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00784313725490196,
+        "mean": [
+          127.5,
+          127.5,
+          127.5
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "scores"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        380,
+        330
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "ml.compare_image_tensors",
+      "name": "Compare image model tensors",
+      "parameters": {
+        "reference_output_name": "scores",
+        "candidate_output_name": "scores",
+        "task": "classification",
+        "comparison_space": "native_values",
+        "absolute_tolerance": 0.04,
+        "relative_tolerance": 0,
+        "require_top1": true,
+        "top_k": 3,
+        "minimum_topk_overlap": 1.0,
+        "plot_items": 10,
+        "maximum_elements": 2000000
+      },
+      "position": [
+        820,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "candidate"
+      ],
+      "exposed_outputs": [
+        "image",
+        "report",
+        "maximum_error",
+        "rmse",
+        "top1_equal",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1200,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1580,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Quantized model comparison and sources",
+      "description": "OpenCVDataflowGUI comparison graph, MIT. Original synthetic image and untrained 1x1 CNNs. Q/DQ uses nonzero signed/unsigned activation zero points and per-output-channel signed weight scales/zero points. Independent rounding/clipping arithmetic checks pixels and scores. No learned accuracy claim. See README.md/SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -470
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "reference",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "candidate",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "compare",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "tensors",
+      "target": "compare",
+      "input": "reference"
+    },
+    {
+      "source": "candidate",
+      "output": "tensors",
+      "target": "compare",
+      "input": "candidate"
+    },
+    {
+      "source": "compare",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "compare",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

@@ -71,6 +71,7 @@
 | Native image-embedding galleries, stable IDs and checked persistence | [Native retrieval](native-embedding-index.md) |
 | Per-native-call DNN layer timings, fusion controls and disabled observations | [DNN profiling](dnn-profiling.md) |
 | Linear/Gaussian score decay, hard-NMS comparison and aligned detection indices | [Soft-NMS](soft-nms.md) |
+| Quantized ONNX export qualification and same-image numerical/class fidelity | [Quantized inference](quantized-inference.md) |
 | Explicit external SuperPoint tensors, learned matching and extraction limits | [Local features](local-features.md) |
 | Learned DISK extraction, native controls and matching local weights | [DISK features](disk-features.md) |
 | ALIKED presets, subpixel features, fallback/score policies and matching | [ALIKED features](aliked-features.md) |

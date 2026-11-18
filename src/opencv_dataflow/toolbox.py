@@ -110,6 +110,7 @@ IMPLEMENTATION_MODULES = {
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
     "xobjdetect": "hog hog_detection cascade_detection",
     "dnn": "batch_inference detection_decode detection_fusion dnn_blocks dnn_profiling soft_nms "
+    "tensor_comparison "
     "instance_segmentation instance_tracking landmarks multi_inference ocr rotated_detection "
     "semantic_segmentation prompt_segmentation prompt_mask_decode regression local_anomaly "
     "input_shifts",

@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 55 | 1 | 6 | 62 | 88.7% |
+| 2. ML and DNN | 56 | 1 | 5 | 62 | 90.3% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 281 | 33 | 156 | 470 | 59.8% |
+| **Overall** | 282 | 33 | 155 | 470 | 60.0% |
 
 <!-- coverage-summary:end -->
 
@@ -389,7 +389,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S2-55 | Profile image model layers | dnn.Net.getPerfProfile, getLayerNames, getLayerId and getTickFrequency | Complete | ml.dnn_profile, ml.dnn_multi_profile and ml.dnn_batch_profile collect bounded native layers from the same forward. Thirteen pinned original CPU projects qualify Classic/New/requested Auto, actual ID-to-slot alignment, fusion controls, zero-tick/unavailable/partial states, disabled collection, independent charts/receipts, batch-tail ownership, high depth and sealed JSON/XML relocation. No second forward or per-layer placement claim; non-CPU timings and alternate native overloads remain unqualified. See dnn-profiling.md. |
 | S2-56 | Score-decay suppression for overlapping detections | dnn.softNMSBoxes, dnn.NMSBoxes comparison | Complete | ml.soft_nms qualifies bounded native linear/Gaussian decay, retained Top k, class groups and hard/disabled comparisons. Source indices/IDs/classes and updated scores remain aligned; explicit integer edge rounding leaves original fractional geometry intact. Thirteen image-dependent ONNX projects, independent scalar/native references, threshold ties, sigma/IoU semantics, selections, high depth, metadata/admission, exceptions, Debug/Lean overlays, JSON/XML and cold worker checks qualify the CPU postprocessing baseline. Rotated/mask overlap and learned accuracy remain separate. See soft-nms.md. |
-| S2-57 | Qualify quantized image model inference | ONNX QuantizeLinear/DequantizeLinear models and DNN engine selection | Planned | Compare a pinned integer-quantized vision model with its floating-point reference. Verify scale and zero-point handling, classification or detection tolerances, and diagnostics for an unsupported operator or execution target. |
+| S2-57 | Qualify quantized image model inference | ONNX QuantizeLinear/DequantizeLinear, QOperator and DNN engine selection | Complete | Existing inference adapters qualify pinned MobileNetV2-12 QDQ/QOperator versus FP32 under Classic/New/requested Auto CPU, with model/configuration hashes, same top class and declared logit/top-k fidelity limits. ml.compare_image_tensors adds bounded same-image numeric/class reports and plots. Thirteen original controls check signed/unsigned nonzero zero points, per-channel weights, clipping, ROI, depth, class flips, strict limits, raw-code rejection, unsupported/empty imports, recovery and portable sealed assets. The pinned native half-tie rule differs from ONNX by one code for odd zero points; exact half-tie conformance, arbitrary exports, speed and accelerators remain unqualified. See quantized-inference.md. |
 
 ### Multi-scale image reconstruction
 

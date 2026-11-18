@@ -8708,6 +8708,26 @@ Inputs: `tensors` (data).
 | `minimum_confidence` | `0.0` |  |
 | `accepted_labels` | `[]` |  |
 
+## Compare image model tensors (`ml.compare_image_tensors`)
+
+ML / Model qualification
+
+Inputs: `image` (image), `reference` (data), `candidate` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_output_name` | `""` | Exact reference tensor name; blank selects its first output. |
+| `candidate_output_name` | `""` | Exact candidate tensor name; shapes must match the reference. |
+| `task` | `"classification"` | `classification`, `tensor` Classification accepts [C] or [1,C]; Tensor compares arbitrary matching shapes. |
+| `comparison_space` | `"native_values"` | `native_values`, `softmax` Native values, or independent softmax of classification logits. Not calibrated confidence. |
+| `absolute_tolerance` | `0.05` | Value must be a finite number between 0 and 1e+12. Every element must satisfy abs(candidate-reference) <= atol + rtol*abs(reference). |
+| `relative_tolerance` | `0.01` | Value must be a finite number between 0 and 1e+06. Relative tolerance uses reference magnitude, not candidate magnitude. |
+| `require_top1` | `true` | Classification only: also require the same top class; stable ties use lower index. |
+| `top_k` | `5` | Value must be a whole number between 1 and 1000. Classification overlap uses min(top_k,class count); tensor mode ignores it. |
+| `minimum_topk_overlap` | `0.0` | Value must be a finite number between 0 and 1. Inclusive shared fraction of top-k class indices; zero disables that criterion. |
+| `plot_items` | `10` | Value must be a whole number between 0 and 50. Optional bounded comparison bars; zero disables the plot. Graphics/Lean also apply. |
+| `maximum_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Reject larger tensors before conversion; no sampling or truncation. |
+
 ## Decode object detections (`ml.decode_detections`)
 
 ML / Object detection

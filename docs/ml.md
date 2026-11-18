@@ -39,6 +39,11 @@ controls, per-call source identity and an independent off switch remain explicit
 collections, with a hard/disabled comparison, explicit native integer-box rounding,
 class grouping and aligned source indices/scores. Original geometry is preserved.
 
+[Quantized image inference](quantized-inference.md) qualifies pinned Q/DQ and
+QOperator CPU exports with explicit float boundaries. **Compare image model tensors**
+reports numerical and classification agreement independently. Native rounding and
+engine differences remain explicit; raw 8-bit output codes require dequantization.
+
 ## Installation
 
 Point/box [prompted segmentation](prompted-segmentation.md) uses the pinned

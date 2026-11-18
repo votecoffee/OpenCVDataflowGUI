@@ -336,6 +336,12 @@ class DNNInference(Block):
                 raise ValueError("Network returned an unexpected number of terminal outputs")
             by_name = dict(zip(available, values, strict=True))
             values = [by_name[name] for name in names]
+            if any(value.dtype in (np.dtype("int8"), np.dtype("uint8")) for value in values):
+                raise ValidationError(
+                    "Raw 8-bit quantized outputs require model DequantizeLinear float outputs; "
+                    "integer codes cannot be labelled float32 tensors",
+                    "output_names",
+                )
             if sum(v.size for v in values) > limit:
                 raise ValueError("Network output exceeds configured element limit")
             # Batch adapters split native rows before making portable records, avoiding
