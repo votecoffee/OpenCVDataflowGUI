@@ -738,6 +738,7 @@ def builtin_registry():
     from .image_validity import CheckImageValidity, ReplaceNonfiniteSamples
     from .input_shifts import INPUT_SHIFT_BLOCKS
     from .instance_segmentation import INSTANCE_BLOCKS
+    from .instance_tracking import TrackInstanceMasks
     from .judgments import FinalJudgment
     from .knn_blocks import KNN_BLOCKS
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
@@ -1199,6 +1200,7 @@ def builtin_registry():
         EfficientSAMInference,
         DecodePromptMasks,
         *INSTANCE_BLOCKS,
+        TrackInstanceMasks,
         *LANDMARK_BLOCKS,
         FitFeatureCovariance,
         LoadFeatureCovariance,

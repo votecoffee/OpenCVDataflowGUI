@@ -1,0 +1,1358 @@
+{
+  "cases": {
+    "confirmation": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 0,
+          "matches": [],
+          "observed": 0,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 1,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 2,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 3,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 4,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 5,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 6,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 7,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 8,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        }
+      ],
+      "summary": {
+        "execution_errors": 0,
+        "fn": 2,
+        "fp": 0,
+        "id_switches": 0,
+        "tp": 15
+      }
+    },
+    "crossing": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 0,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 1,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 2,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 3,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 4,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 5,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 6,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 7,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 8,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        }
+      ],
+      "summary": {
+        "execution_errors": 0,
+        "fn": 0,
+        "fp": 0,
+        "id_switches": 0,
+        "tp": 17
+      }
+    },
+    "decode_budget": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 0
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 1
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 2
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 3
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 4
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 5
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 6
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 7
+        },
+        {
+          "error": "ValidationError: Instance count/rasterization exceeds limits",
+          "index": 8
+        }
+      ],
+      "summary": {
+        "execution_errors": 9,
+        "fn": 0,
+        "fp": 0,
+        "id_switches": 0,
+        "tp": 0
+      }
+    },
+    "expiry": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 0,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 1,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 2,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 3,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 4,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 1,
+          "ambiguous": 0,
+          "index": 5,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 1,
+          "ambiguous": 0,
+          "index": 6,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 1,
+          "ambiguous": 0,
+          "index": 7,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 8,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 3,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 9,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 3,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 10,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 3,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        }
+      ],
+      "summary": {
+        "execution_errors": 0,
+        "fn": 0,
+        "fp": 0,
+        "id_switches": 1,
+        "tp": 16
+      }
+    },
+    "gray_appearance": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 0,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 1,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 2,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 3,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 4,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 5,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 6,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 7,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 8,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        }
+      ],
+      "summary": {
+        "execution_errors": 0,
+        "fn": 0,
+        "fp": 0,
+        "id_switches": 0,
+        "tp": 17
+      }
+    },
+    "high_depth": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 0,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 1,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 2,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 3,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 4,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 5,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 6,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 7,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 8,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        }
+      ],
+      "summary": {
+        "execution_errors": 0,
+        "fn": 0,
+        "fp": 0,
+        "id_switches": 0,
+        "tp": 17
+      }
+    },
+    "occlusion": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 0,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 1,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 2,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 3,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 4,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 1,
+          "overlap_pixels": 0,
+          "predicted": 1
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 5,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 6,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 7,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 8,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        }
+      ],
+      "summary": {
+        "execution_errors": 0,
+        "fn": 0,
+        "fp": 0,
+        "id_switches": 0,
+        "tp": 16
+      }
+    },
+    "transparent_overlap": {
+      "claim": "Original CPU mask-association controls; no pretrained video segmentation accuracy claim",
+      "frames": [
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 0,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 1,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 2,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 3,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 4,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 48,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 2,
+          "index": 5,
+          "matches": [],
+          "observed": 0,
+          "overlap_pixels": 0,
+          "predicted": 2
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 6,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 48,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 7,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        },
+        {
+          "active": 2,
+          "ambiguous": 0,
+          "index": 8,
+          "matches": [
+            {
+              "iou": 1.0,
+              "track_id": 2,
+              "truth": "blue"
+            },
+            {
+              "iou": 1.0,
+              "track_id": 1,
+              "truth": "red"
+            }
+          ],
+          "observed": 2,
+          "overlap_pixels": 0,
+          "predicted": 0
+        }
+      ],
+      "summary": {
+        "execution_errors": 0,
+        "fn": 2,
+        "fp": 0,
+        "id_switches": 0,
+        "tp": 16
+      }
+    }
+  },
+  "native": {
+    "maximum_mask_difference": 0.0,
+    "native_frames": 38
+  }
+}

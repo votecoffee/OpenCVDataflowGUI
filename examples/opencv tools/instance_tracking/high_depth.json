@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.video_file",
+      "name": "Video file",
+      "parameters": {
+        "path": "assets/crossing.avi",
+        "path_base": "project",
+        "backend": "auto",
+        "start_frame": 0,
+        "end_frame": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "bgr",
+        "pixel_depth": "uint16"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "working",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "bgr",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 64,
+        "height": 40,
+        "color_format": "bgr",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "detections",
+          "masks"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "instances",
+      "type": "ml.decode_instances",
+      "name": "Decode instance segmentation",
+      "parameters": {
+        "output_name": "detections",
+        "format": "xyxy_score_class",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
+        "layout": "rows",
+        "coordinate_units": "network_pixels",
+        "grid_decode": "none",
+        "strides": [
+          8,
+          16,
+          32
+        ],
+        "score_activation": "probability",
+        "labels": [
+          "part"
+        ],
+        "accepted_class_ids": [],
+        "class_id_offset": 0,
+        "confidence_threshold": 0.25,
+        "objectness_threshold": 0.0,
+        "nms_enabled": false,
+        "class_agnostic_nms": false,
+        "nms_iou": 0.45,
+        "nms_eta": 1.0,
+        "nms_top_k": 0,
+        "border_policy": "clip",
+        "minimum_count": 0,
+        "maximum_count": 0,
+        "maximum_raw_rows": 100000,
+        "maximum_candidates": 10000,
+        "maximum_results": 256,
+        "maximum_image_pixels": 4194304,
+        "mask_mode": "roi",
+        "mask_output_name": "masks",
+        "mask_layout": "NCHW",
+        "mask_class_offset": 0,
+        "mask_activation": "probability",
+        "activation_order": "before_resampling",
+        "mask_interpolation": "nearest",
+        "mask_threshold": 0.5,
+        "crop_to_box": true,
+        "selection_mode": "pixels",
+        "minimum_mask_pixels": 1,
+        "maximum_mask_pixels": 0,
+        "label_overlap": "detection_score",
+        "maximum_mask_elements": 8000000,
+        "maximum_decoded_pixels": 16777216,
+        "maximum_prototype_operations": 128000000,
+        "maximum_region_runs": 200000,
+        "graphics_maximum_contours": 2000,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        1050,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "mask",
+        "labels",
+        "overlap_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "sequence.track_instances",
+      "name": "Track instance masks",
+      "parameters": {
+        "warmup": 1,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "clock": "auto",
+        "nominal_interval_ms": 100.0,
+        "minimum_interval_ms": 0.001,
+        "maximum_interval_ms": 1000.0,
+        "identity_policy": "receipt",
+        "configured_model_revision": "",
+        "appearance": "hsv_hs",
+        "hue_bins": 12,
+        "saturation_bins": 8,
+        "gray_bins": 32,
+        "appearance_weight": 0.5,
+        "maximum_appearance_distance": 0.7,
+        "appearance_update_rate": 0.1,
+        "mask_weight": 0.5,
+        "minimum_mask_iou": 0.0,
+        "maximum_center_distance": 30.0,
+        "velocity_update_rate": 1.0,
+        "class_policy": "same",
+        "ambiguity_policy": "withhold",
+        "minimum_cost_margin": 0.03,
+        "maximum_missed_frames": 3,
+        "maximum_unobserved_ms": 1000.0,
+        "minimum_observations": 1,
+        "maximum_instances": 64,
+        "maximum_tracks": 128,
+        "minimum_mask_area": 1,
+        "maximum_image_pixels": 4194304,
+        "maximum_decoded_pixels": 16777216,
+        "maximum_iou_pixels": 16777216,
+        "maximum_region_runs": 200000,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        1400,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "instances",
+        "receipt",
+        "timestamp_ms"
+      ],
+      "exposed_outputs": [
+        "image",
+        "tracks",
+        "labels",
+        "overlap_count",
+        "count",
+        "report",
+        "ready",
+        "activations",
+        "status",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1750,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        2100,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "ml.select_instance_mask",
+      "name": "Select instance mask",
+      "parameters": {
+        "selection": "id",
+        "index": 0,
+        "instance_id": 1,
+        "missing": "empty",
+        "maximum_region_runs": 200000,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        1750,
+        400
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "region",
+        "item",
+        "found"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original instance-mask tracking controls - MIT",
+      "description": "Original OpenCVDataflowGUI synthetic lossless videos, ONNX masks and visible-mask truth, MIT. Same-class red/blue objects cross, overlap or disappear. Masks depend on current image channels; no pretrained backbone accuracy is claimed. Missing/ambiguous tracks have report predictions but no emitted current masks. Expiry intentionally creates a new ID. See README.md/SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -600
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "working",
+      "input": "image"
+    },
+    {
+      "source": "working",
+      "output": "image",
+      "target": "net",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "instances",
+      "input": "image"
+    },
+    {
+      "source": "net",
+      "output": "tensors",
+      "target": "instances",
+      "input": "tensors"
+    },
+    {
+      "source": "net",
+      "output": "preprocessing",
+      "target": "instances",
+      "input": "preprocessing"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "instances",
+      "output": "collection",
+      "target": "track",
+      "input": "instances"
+    },
+    {
+      "source": "net",
+      "output": "receipt",
+      "target": "track",
+      "input": "receipt"
+    },
+    {
+      "source": "track",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "track",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "track",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "track",
+      "output": "tracks",
+      "target": "selected",
+      "input": "collection"
+    }
+  ]
+}

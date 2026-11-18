@@ -11923,6 +11923,58 @@ Input `region` — Current-grid selection. Excluded detections act as missed obs
 | `maximum_scale_sigma` | `1.0` | Value must be a finite number between 1e-06 and 10. Expire measured-size tracks above this log-size uncertainty. |
 | `maximum_angle_sigma` | `90.0` | Value must be a finite number between 1e-06 and 1e+06. Expire measured-orientation tracks above this angular uncertainty in degrees. |
 
+## Track instance masks (`sequence.track_instances`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `instances` (data), `receipt` (data, optional), `timestamp_ms` (number, optional).
+
+Input `instances` — Current zero-origin instance_masks_v1 collection; row IDs are not track IDs.
+
+Input `mask` — Intersect observed masks with selection; excluded objects become unobserved.
+
+Input `receipt` — Default required identity; association does not authenticate mask inference.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `clock` | `"auto"` | `auto`, `nominal`, `explicit`, `video` |
+| `nominal_interval_ms` | `100.0` | Value must be a finite number between 0.001 and 1e+06. |
+| `minimum_interval_ms` | `0.001` | Value must be a finite number between 0.001 and 1e+06. |
+| `maximum_interval_ms` | `1000.0` | Value must be a finite number between 0.001 and 1e+09. |
+| `identity_policy` | `"receipt"` | `receipt`, `configured` ONNX model/preprocessing receipt, or an explicit custom revision. |
+| `configured_model_revision` | `""` |  |
+| `appearance` | `"hsv_hs"` | `off`, `gray`, `hsv_hs` Masked uint8 histogram working copy; original depth is retained. |
+| `hue_bins` | `12` | Value must be a whole number between 2 and 32. |
+| `saturation_bins` | `8` | Value must be a whole number between 2 and 32. |
+| `gray_bins` | `32` | Value must be a whole number between 2 and 256. |
+| `appearance_weight` | `0.5` | Value must be a finite number between 0 and 1. |
+| `maximum_appearance_distance` | `0.7` | Value must be a finite number between 0 and 1. |
+| `appearance_update_rate` | `0.1` | Value must be a finite number between 0 and 1. |
+| `mask_weight` | `0.5` | Value must be a finite number between 0 and 1. Blend mask IoU and residual center distance before appearance. |
+| `minimum_mask_iou` | `0.0` | Value must be a finite number between 0 and 1. |
+| `maximum_center_distance` | `30.0` | Value must be a finite number between 0.001 and 16384. |
+| `velocity_update_rate` | `1.0` | Value must be a finite number between 0 and 1. |
+| `class_policy` | `"same"` | `same`, `ignore` |
+| `ambiguity_policy` | `"withhold"` | `withhold`, `best` |
+| `minimum_cost_margin` | `0.03` | Value must be a finite number between 0 and 1. Withhold local near-ties; no calibrated identity confidence. |
+| `maximum_missed_frames` | `3` | Value must be a whole number between 0 and 10000. Retain missing tracks in reports; emit current masks only. |
+| `maximum_unobserved_ms` | `1000.0` | Value must be a finite number between 0 and 1e+09. Expire on acquisition time, separately from wall-clock gaps. |
+| `minimum_observations` | `1` | Value must be a whole number between 1 and 10000. |
+| `maximum_instances` | `64` | Value must be a whole number between 1 and 128. |
+| `maximum_tracks` | `128` | Value must be a whole number between 1 and 128. |
+| `minimum_mask_area` | `1` | Value must be a whole number between 1 and 1.67772e+07. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. |
+| `maximum_decoded_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Bound instance count times source pixels before rasterization. |
+| `maximum_iou_pixels` | `16777216` | Value must be a whole number between 1 and 1.28e+08. |
+| `maximum_region_runs` | `200000` | Value must be a whole number between 1 and 1e+06. |
+| `graphics_maximum_points` | `100000` | Value must be a whole number between 1 and 100000. |
+
 ## Track object box (KCF) (`sequence.track_kcf`)
 
 Sequence / Object tracking
