@@ -110,8 +110,20 @@
         "maximum_refinement_offset": 0.75,
         "maximum_fit_rmse": 0.1,
         "coordinate_layout": "rows",
+        "coordinate_columns": 3,
+        "coordinate_xy_columns": [
+          0,
+          1
+        ],
+        "coordinate_score_columns": [
+          2
+        ],
+        "coordinate_score_combination": "minimum",
         "coordinate_units": "normalized",
         "coordinate_origin": "pixel_centers",
+        "object_score_name": "",
+        "object_score_activation": "probability",
+        "minimum_object_confidence": 0.5,
         "minimum_count": 1,
         "require_all": true,
         "points_policy": "complete_only",
@@ -125,6 +137,7 @@
             2
           ]
         ],
+        "rejected_graphics": "show",
         "maximum_tensor_elements": 8000000,
         "maximum_landmarks": 1024,
         "maximum_heatmap_pixels": 1048576,

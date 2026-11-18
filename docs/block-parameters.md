@@ -8777,13 +8777,21 @@ Input `region` — Optional circle/rectangle/polygon/raster selection intersecte
 | `minimum_curvature` | `1e-06` | Value must be a finite number between 1e-12 and 100. Minimum negative Hessian curvature magnitude for an accepted fit. |
 | `maximum_refinement_offset` | `0.75` | Value must be a finite number between 0.01 and 3. Largest absolute fitted shift on either heatmap axis. |
 | `maximum_fit_rmse` | `0.1` | Value must be a finite number between 0 and 100. Maximum fit residual in score/log-score units; zero disables this gate. |
-| `coordinate_layout` | `"rows"` | `rows`, `channels_first` XY/score rows [K,3] or [3,K], optionally with leading image batch one. |
+| `coordinate_layout` | `"rows"` | `rows`, `channels_first`, `flat_rows` Rows [K,C], channels-first [C,K], or one flat K*C row; optional batch one. |
+| `coordinate_columns` | `3` | Value must be a whole number between 3 and 16. Columns per direct landmark; unused auxiliary columns remain only in the input tensor. |
+| `coordinate_xy_columns` | `[0, 1]` | Two distinct direct-row column IDs for X/Y. |
+| `coordinate_score_columns` | `[2]` | Distinct confidence columns, separate from X/Y; each is activated before combining. |
+| `coordinate_score_combination` | `"minimum"` | `minimum`, `product`, `mean` Combine activated scores by minimum, product or mean; not calibrated correctness. |
 | `coordinate_units` | `"network_pixels"` | `network_pixels`, `normalized` Direct coordinates in network pixels, or fractions multiplied by network width/height. |
-| `coordinate_origin` | `"pixel_centers"` | `pixel_centers`, `pixel_edges` Direct X/Y denote integer-origin pixel centers or continuous pixel edges. |
+| `coordinate_origin` | `"pixel_centers"` | `pixel_centers`, `pixel_edges`, `scaled_indices` Pixel centers/edges use resize geometry. Scaled indices uses x*scale+offset without a half-pixel shift, for exports declaring that convention. |
+| `object_score_name` | `""` | Optional scalar float32 object-confidence head in this activation; empty disables. |
+| `object_score_activation` | `"probability"` | `probability`, `sigmoid` Separate object-head activation, independent of point scores. |
+| `minimum_object_confidence` | `0.5` | Value must be a finite number between 0 and 1. Inclusive object gate; low scores reject all points. |
 | `minimum_count` | `1` | Value must be a whole number between 0 and 1024. Fewest accepted landmarks required for a normal pass judgment. |
 | `require_all` | `true` | Also fail if any requested landmark is rejected; identities are never renumbered. |
 | `points_policy` | `"complete_only"` | `complete_only`, `accepted_only` Default suppresses Points unless all requested landmarks are accepted; otherwise use Indices. |
 | `connections` | `[]` | Optional unique [index,index] pairs in configured landmark order for drawable links. |
+| `rejected_graphics` | `"show"` | `show`, `hide` Show diagnostic rejected points, or hide them. Links need two accepted endpoints. |
 | `maximum_tensor_elements` | `8000000` | Value must be a whole number between 1 and 8e+06. Bound serialized values before conversion. |
 | `maximum_landmarks` | `1024` | Value must be a whole number between 1 and 1024. Bound selected landmarks; raw heads allow up to 1024 channels/rows. |
 | `maximum_heatmap_pixels` | `1048576` | Value must be a whole number between 1 and 4.1943e+06. Bound each head plane, including zero-channel heads. |

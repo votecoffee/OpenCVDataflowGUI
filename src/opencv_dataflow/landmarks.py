@@ -109,6 +109,7 @@ class DecodeLandmarks(Block):
         Port("indices", "data"),
         Port("count", "integer"),
         Port("report", "data"),
+        Port("object_confidence", "number", required=False),
     )
     defaults = {
         "output_name": "",
@@ -128,12 +129,20 @@ class DecodeLandmarks(Block):
         "maximum_refinement_offset": 0.75,
         "maximum_fit_rmse": 0.1,
         "coordinate_layout": "rows",
+        "coordinate_columns": 3,
+        "coordinate_xy_columns": [0, 1],
+        "coordinate_score_columns": [2],
+        "coordinate_score_combination": "minimum",
         "coordinate_units": "network_pixels",
         "coordinate_origin": "pixel_centers",
+        "object_score_name": "",
+        "object_score_activation": "probability",
+        "minimum_object_confidence": 0.5,
         "minimum_count": 1,
         "require_all": True,
         "points_policy": "complete_only",
         "connections": [],
+        "rejected_graphics": "show",
         "maximum_tensor_elements": 8_000_000,
         "maximum_landmarks": 1024,
         "maximum_heatmap_pixels": 1_048_576,
@@ -149,13 +158,18 @@ class DecodeLandmarks(Block):
         "ambiguity": ("reject", "first"),
         "refinement": ("none", "quadratic", "log_quadratic"),
         "refinement_failure": ("integer", "reject"),
-        "coordinate_layout": ("rows", "channels_first"),
+        "coordinate_layout": ("rows", "channels_first", "flat_rows"),
+        "coordinate_score_combination": ("minimum", "product", "mean"),
         "coordinate_units": ("network_pixels", "normalized"),
-        "coordinate_origin": ("pixel_centers", "pixel_edges"),
+        "coordinate_origin": ("pixel_centers", "pixel_edges", "scaled_indices"),
+        "object_score_activation": ("probability", "sigmoid"),
+        "rejected_graphics": ("show", "hide"),
         "points_policy": ("complete_only", "accepted_only"),
     }
     parameter_ranges = {
         "minimum_confidence": NumericRange(0, 1),
+        "minimum_object_confidence": NumericRange(0, 1),
+        "coordinate_columns": NumericRange(3, 16, whole=True),
         "refinement_radius": NumericRange(1, 3, whole=True),
         "minimum_curvature": NumericRange(1e-12, 100),
         "maximum_refinement_offset": NumericRange(0.01, 3),
@@ -207,14 +221,28 @@ class DecodeLandmarks(Block):
             "Maximum fit residual in score/log-score units; zero disables this gate."
         ),
         "coordinate_layout": (
-            "XY/score rows [K,3] or [3,K], optionally with leading image batch one."
+            "Rows [K,C], channels-first [C,K], or one flat K*C row; optional batch one."
         ),
+        "coordinate_columns": "Columns per direct landmark; unused auxiliary columns remain "
+        "only in the input tensor.",
+        "coordinate_xy_columns": "Two distinct direct-row column IDs for X/Y.",
+        "coordinate_score_columns": "Distinct confidence columns, separate from X/Y; "
+        "each is activated before combining.",
+        "coordinate_score_combination": "Combine activated scores by minimum, product or mean; "
+        "not calibrated correctness.",
         "coordinate_units": (
             "Direct coordinates in network pixels, or fractions multiplied by network width/height."
         ),
         "coordinate_origin": (
-            "Direct X/Y denote integer-origin pixel centers or continuous pixel edges."
+            "Pixel centers/edges use resize geometry. Scaled indices uses x*scale+offset "
+            "without a half-pixel shift, for exports declaring that convention."
         ),
+        "object_score_name": "Optional scalar float32 object-confidence head in this activation; "
+        "empty disables.",
+        "object_score_activation": "Separate object-head activation, independent of point scores.",
+        "minimum_object_confidence": "Inclusive object gate; low scores reject all points.",
+        "rejected_graphics": "Show diagnostic rejected points, or hide them. "
+        "Links need two accepted endpoints.",
         "minimum_count": "Fewest accepted landmarks required for a normal pass judgment.",
         "require_all": (
             "Also fail if any requested landmark is rejected; identities are never renumbered."
@@ -244,6 +272,12 @@ class DecodeLandmarks(Block):
         "region": "Optional circle/rectangle/polygon/raster selection intersected with Mask.",
     }
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.exposed_outputs = [
+            name for name in self.exposed_outputs if name != "object_confidence"
+        ]
+
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
@@ -256,8 +290,34 @@ class DecodeLandmarks(Block):
                 "maximum_refinement_offset",
                 "refinement_radius",
             )
-        if not isinstance(p["output_name"], str) or len(p["output_name"]) > 256:
-            raise ValidationError("Output name must be bounded text", "output_name")
+        for field in ("output_name", "object_score_name"):
+            if not isinstance(p[field], str) or len(p[field]) > 256:
+                raise ValidationError("Output name must be bounded text", field)
+        xy, scores, columns = (
+            p["coordinate_xy_columns"],
+            p["coordinate_score_columns"],
+            p["coordinate_columns"],
+        )
+        if (
+            not isinstance(xy, list)
+            or len(xy) != 2
+            or any(type(n) is not int or not 0 <= n < columns for n in xy)
+            or xy[0] == xy[1]
+        ):
+            raise ValidationError(
+                "X/Y columns must be two distinct valid integer IDs", "coordinate_xy_columns"
+            )
+        if (
+            not isinstance(scores, list)
+            or not 1 <= len(scores) <= 14
+            or any(type(n) is not int or not 0 <= n < columns for n in scores)
+            or len(set(scores)) != len(scores)
+            or set(scores) & set(xy)
+        ):
+            raise ValidationError(
+                "Score columns must be unique valid IDs separate from X/Y",
+                "coordinate_score_columns",
+            )
         if type(p["require_all"]) is not bool:
             raise ValidationError("Require all is a checkbox", "require_all")
         if (
@@ -303,6 +363,20 @@ class DecodeLandmarks(Block):
         network, reverse = preprocessing_geometry(inputs["preprocessing"], source)
         selection = selection_mask(inputs, source)
         values = tensor(inputs, p)
+        object_confidence, object_ok = NO_VALUE, True
+        if p["object_score_name"]:
+            object_values = tensor(inputs, {**p, "output_name": p["object_score_name"]})
+            if object_values.size != 1:
+                raise ValidationError("Object confidence requires one scalar", "object_score_name")
+            if values.size + 1 > p["maximum_tensor_elements"]:
+                raise ValidationError(
+                    "Combined landmark/object tensors exceed the element budget",
+                    "maximum_tensor_elements",
+                )
+            object_confidence = float(
+                probability(object_values, p["object_score_activation"]).flat[0]
+            )
+            object_ok = object_confidence >= p["minimum_object_confidence"]
         heatmaps = p["format"] == "heatmaps"
         if heatmaps:
             dims = 4 if p["layout"].startswith("N") else 3
@@ -322,12 +396,21 @@ class DecodeLandmarks(Block):
         else:
             if values.ndim == 3 and values.shape[0] == 1:
                 values = values[0]
-            if values.ndim != 2:
-                raise ValidationError("Direct landmarks need one image's XY/score rows")
-            if p["coordinate_layout"] == "channels_first":
-                values = values.T
-            if values.shape[1] != 3:
-                raise ValidationError("Direct rows must contain exactly X, Y and score")
+            if p["coordinate_layout"] == "flat_rows":
+                if values.ndim != 1 and not (values.ndim == 2 and values.shape[0] == 1):
+                    raise ValidationError("Flat landmarks need a vector or a single flat row")
+                if values.size % p["coordinate_columns"]:
+                    raise ValidationError(
+                        "Flat landmark size is not a multiple of Coordinate columns"
+                    )
+                values = values.reshape(-1, p["coordinate_columns"])
+            else:
+                if values.ndim != 2:
+                    raise ValidationError("Direct landmarks need one image's coordinate/score rows")
+                if p["coordinate_layout"] == "channels_first":
+                    values = values.T
+            if values.shape[1] != p["coordinate_columns"]:
+                raise ValidationError("Direct row width differs from Coordinate columns")
             k = len(values)
         channels = list(p["channels"]) if p["channels"] else list(range(k))
         if k > 1024 or len(channels) > p["maximum_landmarks"] or any(n >= k for n in channels):
@@ -364,7 +447,15 @@ class DecodeLandmarks(Block):
                     np.rint(grid[..., 1]).astype(int).clip(0, h - 1),
                 )
                 eligible &= selection[iy, ix] != 0
-        scores = probability(values if heatmaps else values[:, 2], p["score_activation"])
+        components = None
+        if heatmaps:
+            scores = probability(values, p["score_activation"])
+        else:
+            components = probability(
+                values[:, p["coordinate_score_columns"]], p["score_activation"]
+            )
+            combine = {"minimum": np.min, "product": np.prod, "mean": np.mean}
+            scores = combine[p["coordinate_score_combination"]](components, axis=1)
         items = []
         for index, channel in enumerate(channels):
             status, rmse, ambiguous, position, model_position = "direct", None, False, None, None
@@ -393,15 +484,19 @@ class DecodeLandmarks(Block):
                     ):
                         reason = "refinement_rejected"
             else:
-                model_position, confidence = values[channel, :2].copy(), float(scores[channel])
+                model_position = values[channel, p["coordinate_xy_columns"]].copy()
+                confidence = float(scores[channel])
                 if p["coordinate_units"] == "normalized":
                     model_position *= network
                 if p["coordinate_origin"] == "pixel_centers":
                     model_position += 0.5
             if model_position is not None:
+                origin_shift = (
+                    0 if not heatmaps and p["coordinate_origin"] == "scaled_indices" else -0.5
+                )
                 position = model_position * [reverse[0, 0], reverse[1, 1]] + [
-                    reverse[0, 2] - 0.5,
-                    reverse[1, 2] - 0.5,
+                    reverse[0, 2] + origin_shift,
+                    reverse[1, 2] + origin_shift,
                 ]
                 if np.any(np.abs(position) > 1e7) or not np.isfinite(position).all():
                     raise ValidationError("Landmark coordinates exceed finite source limits")
@@ -411,6 +506,8 @@ class DecodeLandmarks(Block):
                     reason = "outside_selection"
                 if not reason and confidence < p["minimum_confidence"]:
                     reason = "low_confidence"
+            if not object_ok:
+                reason = "low_object_confidence"
             items.append(
                 {
                     "index": index,
@@ -425,9 +522,15 @@ class DecodeLandmarks(Block):
                     "ambiguous": bool(ambiguous),
                 }
             )
+            if components is not None:
+                items[-1]["confidence_components"] = components[channel].tolist()
         accepted = [i for i in items if i["accepted"]]
         count = len(accepted)
-        passed = count >= p["minimum_count"] and (not p["require_all"] or count == len(items))
+        passed = (
+            object_ok
+            and count >= p["minimum_count"]
+            and (not p["require_all"] or count == len(items))
+        )
         context = self.input_payloads.get("image", {})
         output_context = {
             key: copy.deepcopy(context[key])
@@ -448,13 +551,17 @@ class DecodeLandmarks(Block):
             else NO_VALUE
         )
         objects = []
+        drawn_points, drawn_links = [], []
         limit = p["graphics_maximum_landmarks"]
         if self.generate_graphics:
             for item in items[:limit]:
+                if not item["accepted"] and p["rejected_graphics"] == "hide":
+                    continue
                 xy = item["position"]
                 if xy is None or not 0 <= xy[0] <= w - 1 or not 0 <= xy[1] <= h - 1:
                     continue
                 color = (70, 220, 130) if item["accepted"] else (60, 80, 240)
+                drawn_points.append(item["index"])
                 objects.extend(
                     (
                         graphic_object("marker", [xy], color),
@@ -473,6 +580,7 @@ class DecodeLandmarks(Block):
                 )
             for a, b in p["connections"]:
                 if max(a, b) < limit and items[a]["accepted"] and items[b]["accepted"]:
+                    drawn_links.append([a, b])
                     objects.append(
                         graphic_object(
                             "polyline", [items[a]["position"], items[b]["position"]], (80, 180, 240)
@@ -489,6 +597,13 @@ class DecodeLandmarks(Block):
             "context_checks": checked,
             "heatmap_mapping": p["heatmap_mapping"] if heatmaps else None,
             "graphics_truncated": self.generate_graphics and len(items) > limit,
+            "drawn_points": drawn_points,
+            "drawn_links": drawn_links,
+            "coordinate_columns": p["coordinate_columns"] if not heatmaps else None,
+            "score_columns": p["coordinate_score_columns"] if not heatmaps else None,
+            "score_combination": p["coordinate_score_combination"] if not heatmaps else None,
+            "object_confidence": None if object_confidence is NO_VALUE else object_confidence,
+            "object_accepted": object_ok,
         }
         outputs = {
             "image": source,
@@ -497,6 +612,7 @@ class DecodeLandmarks(Block):
             "indices": [i["index"] for i in accepted],
             "count": count,
             "report": report,
+            "object_confidence": object_confidence,
         }
         return Result(
             outputs,
@@ -508,8 +624,13 @@ class DecodeLandmarks(Block):
             if passed
             else [
                 {
-                    "code": "landmark.count",
-                    "message": "Required landmarks or minimum accepted count not met",
+                    "code": "landmark.object_confidence" if not object_ok else "landmark.count",
+                    "message": (
+                        f"Object confidence {object_confidence:.6g} below "
+                        f"{p['minimum_object_confidence']:.6g}"
+                        if not object_ok
+                        else "Required landmarks or minimum accepted count not met"
+                    ),
                 }
             ],
             drawings={"Landmarks": GraphicDrawing(tuple(objects))}

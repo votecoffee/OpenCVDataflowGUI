@@ -1,0 +1,3 @@
+*.json -text
+*.onnx -text
+LICENSE.opencv-zoo -text

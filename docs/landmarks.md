@@ -6,6 +6,10 @@ heatmaps** (`ml.decode_landmarks`) and **Pose from ordered landmarks**
 one inference activation. The decoder preserves the image's pixels, depth and
 color encoding and emits drawable result objects separately.
 
+Direct heads also support configurable columns, flat rows, multiple score components,
+a separate object gate and hidden rejected markers; see
+[model-specific skeletons](object-landmarks.md) for the pinned pretrained example.
+
 This is an explicit single-object landmark adapter. It does not discover multiple
 people/parts, associate instances, infer visibility, or guess an export's axes or
 coordinate conventions. A model contract pins inference settings/bytes; the
@@ -16,7 +20,8 @@ decoder settings and names are saved with the project.
 | Format | Shape | Meaning |
 | --- | --- | --- |
 | Heatmaps | NCHW, NHWC, CHW or HWC | One peak per selected channel; N must be 1. |
-| X/Y/score | K by 3 or 3 by K, optionally preceded by batch 1 | One explicit ordered coordinate and confidence per row. |
+| X/Y/score (default) | K by 3 or 3 by K, optionally preceded by batch 1 | One explicit ordered coordinate and confidence per row. |
+| Configured direct columns | K by C, C by K, or one flat K*C row | Selected X/Y columns and activated/combined confidence columns; C is 3–16. |
 
 Use **Output name** to select a float32 `tensor_v1` head; empty selects the first
 output. Choose probability scores or sigmoid logits. A probability must be in
@@ -44,7 +49,9 @@ The matching inference resize/rounded-letterbox inverse maps network edges to
 source edges; subtracting 0.5 produces source centers. Direct X/Y rows declare
 network pixels or normalized fractions multiplied by the full network width and
 height, plus whether their origin denotes pixel centers or edges. These settings
-must match the export. Source-outside coordinates are rejected rather than
+must match the export. **Scaled indices** instead maps zero-origin network coordinates
+by inverse scale/offset without the half-pixel shift. Source-outside coordinates
+are rejected rather than
 clamped into the image.
 
 ## Selection, fitting and partial results
@@ -95,7 +102,11 @@ green/red, with names/confidences. **Connections** joins selected logical pairs
 only when both are accepted. **Graphics maximum landmarks** caps diagnostic
 markers/links without truncating numeric output; `graphics_truncated` reports it.
 Use the normal graphics overlay/filmstrip controls to render these objects.
-Lean or graphics-off execution skips their construction.
+Lean or graphics-off execution skips their construction. **Rejected graphics → Hide**
+also suppresses rejected point markers/labels. The report lists drawn logical
+indices and links. Optional scalar **Object score name** has its own activation
+and threshold; a low object score rejects all points even when Minimum count is zero.
+The hidden-by-default Object confidence output retains that scalar.
 
 Tickets, processing start, recipe, spatial and pyramid metadata follow the
 source image. Known ticket/recipe/frame conflicts reject before work. Pose

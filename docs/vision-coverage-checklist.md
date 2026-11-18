@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 43 | 4 | 15 | 62 | 69.4% |
+| 2. ML and DNN | 44 | 4 | 14 | 62 | 71.0% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 269 | 36 | 165 | 470 | 57.2% |
+| **Overall** | 270 | 36 | 164 | 470 | 57.4% |
 
 <!-- coverage-summary:end -->
 
@@ -362,7 +362,7 @@ fixture or result needed to close the item.
 | S2-42 | Texture and color mixture classification | ml.EM, per-pixel feature mixtures | Complete | ml.em_train_image/ml.em_classify_image plus strict portable save/load support normalized color or selected neighborhood mean/std, native auto/manual-responsibility fitting, covariance structures/explicit floors, canonical model IDs, candidate labels/posteriors, log density and component/support/fraction judgments. Spherical fitting uses equivalent diagonal prediction; native trainE covariance bindings remain unqualified. Thirteen original projects include independent held-out noise and edit masks: all 120 color-edit pixels are rejected with no extras/misses despite posterior 1; density-off deliberately accepts them. Texture reports 192 of 256 edited centers, 64 boundary misses and no extras, with 3,400/4,480 supported/selected centers. Independent native predict2/Gaussian references agree within 2.3e-13. Encoding/depth/alpha, region support, current context, Debug/Lean, bounded failures, exact assets, JSON/XML/Save As and cold one-image Run All are checked. Production accuracy, rare-surface sampling and threshold calibration remain application-specific. See [contract](image-mixtures.md). |
 | S2-43 | Image feature outlier detection | Image descriptors, covariance and Mahalanobis distance | Complete | cv.feature_covariance, cv.save_feature_covariance, cv.load_feature_covariance and inspect.mahalanobis_distance retain descriptor/PCA identity, normalized float64 covariance, explicit regularization, portable models and current-image decisions. [Thirteen projects](<../examples/opencv tools/feature_outliers/README.md>) qualify known-good variation, held-out edits, a documented subtle miss and contained failures; [scope](feature-outliers.md). |
 | S2-44 | Bag-of-visual-words image retrieval | SIFT/ORB quantization and per-image visual-word histograms | Complete | ml.visual_features, ml.bow_train, ml.bow_encode, ml.bow_gallery, ml.bow_rank and portable model I/O provide native SIFT/L2 k-means or ORB/Hamming representative words, compatible normalized signatures, bounded exact gallery ranking and current-image graphics. [Twelve projects](<../examples/opencv tools/visual_words/README.md>) qualify held-out ranks, strict/empty rejection, identities and rearranged-layout limits with independent native/NumPy references, Debug/Lean and JSON/XML/Save As; [scope](visual-words.md). |
-| S2-45 | Object landmark inference with model-specific skeleton | Keypoint decoding, confidence and source-coordinate graph | Planned | Decode and draw a configured skeleton and verify missing landmarks are suppressed. |
+| S2-45 | Object landmark inference with model-specific skeleton | Keypoint decoding, confidence and source-coordinate graph | Complete | ml.decode_landmarks adds configurable/flat direct rows, score-column activation/aggregation, an independent object gate, scaled-index mapping and hidden rejected markers; named/reordered skeleton links require accepted endpoints. [Nine sealed pretrained MediaPipe Pose projects](<../examples/opencv tools/object_landmarks/README.md>) use a public-domain NASA portrait: configured minimum visibility/presence retains 28/33 points and 28/35 links, while presence alone retains 33; blank/object/strict and missing-pose failures are explicit. Independent native/NumPy parity, generic numerical controls, Debug/Lean and JSON/XML/Save As qualify this single-object adapter. Confident unsupported body predictions remain documented, not accuracy or visibility truth; [scope](object-landmarks.md). |
 
 ### Classical detection and model qualification
 
