@@ -262,6 +262,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Learned image super-resolution](<opencv tools/super_resolution/README.md>) | Eight pinned FSRCNN projects compare reconstruction with interpolation and native-resolution geometry, cracks, noise, color, alpha and explicit high-depth conversion. |
 | [Learned image restoration](<opencv tools/learned_restoration/README.md>) | Thirteen arithmetic/pinned DnCNN projects check same-grid denoising, context seams, masks, layouts, depth/alpha and erased faint defects against independent clean images. |
 | [Monocular depth](<opencv tools/monocular_depth/README.md>) | Eleven arithmetic/pinned MiDaS projects check relative versus physical quantities, source support, known XYZ and real T-LESS depth comparisons. |
+| [Learned stereo disparity](<opencv tools/learned_stereo/README.md>) | Twelve arithmetic/pinned HITNET projects check paired bindings, original pixel units, right-mask support, known XYZ and controlled shifts of licensed industrial texture. |
 | [KAZE registration](<opencv tools/kaze_registration/README.md>) | Match extended KAZE descriptors with FLANN and recover a known translation. |
 | [Labeled distance transform](<opencv tools/labeled_distance/README.md>) | Partition an image into nearest-seed zones and emit a mask for one zone. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |

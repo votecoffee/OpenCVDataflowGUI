@@ -1,0 +1,56 @@
+{
+  "cases": [
+    "plane",
+    "subpixel",
+    "concatenated",
+    "letterbox",
+    "head_units",
+    "selected",
+    "right_mask",
+    "empty",
+    "coverage_alarm",
+    "native_8",
+    "native_16",
+    "native_zero"
+  ],
+  "native_cases": [
+    "native_8",
+    "native_16",
+    "native_zero"
+  ],
+  "source_size": [
+    31,
+    23
+  ],
+  "plane_disparity": 3.0,
+  "subpixel_disparity": 1.5,
+  "hitnet_sha256": "8c5505ab77f83c7e9aee6901b2a6647fa1dcfc57e5775c5a903c6b555c210cb2",
+  "asset_sha256": {
+    "assets/left.png": "0a79cb1ff9b072ff52f2915542aed448b94d355bdd52aff2d47cc6834aa42ce7",
+    "assets/native_16.png": "21be8bd2d533e61f03c6967f2e8856e299c1b538e4b7fdfabad6c431068fa86c",
+    "assets/native_8.png": "af285ba5fa90aefada56e4b5a53a58093983b0cf6189b8c4f182a2bae8ced112",
+    "assets/native_left.png": "cc8e9787b31032403f900b27abf8a7e2d08a07a50a3b2797445e937da5dbb1a4",
+    "assets/native_zero.png": "cc8e9787b31032403f900b27abf8a7e2d08a07a50a3b2797445e937da5dbb1a4",
+    "assets/right.png": "1423a5ae4ce8d2fa3c31d663982b6cdd3cb82313af85ec79443edeecdc9dcd18",
+    "assets/right_mask.png": "0a4f0de433f869fe077d04d1374ebee54e593819908139619909fbfccfe45dcc",
+    "assets/subpixel.png": "41e388f430b3f567227bb593eba7aa63ddf74ae4a8e3401b4822b539c9504d3c",
+    "models/concatenated/contract.json": "f9670197a6ce00eb94414f8fcdd3ee95deabb242dcb607ff4213a921ce98f622",
+    "models/concatenated/model.onnx": "b4a3a8976495d33b5e86fd89a502638dd4764e5ae42a369c72a20dc9530bce75",
+    "models/coverage_alarm/contract.json": "6bdb18d8a622c642c0add28c653baedf81fa6edc5908a617aa9336608cc0e766",
+    "models/coverage_alarm/model.onnx": "873885ef6dbefec53db80233a0deeb7cff0489cb8147d5b4a7c6ef968bfa7529",
+    "models/empty/contract.json": "b5c4add9f0eea11831b39a222a92febb6b94b470a8e2c66c78c50ce511d2790b",
+    "models/empty/model.onnx": "873885ef6dbefec53db80233a0deeb7cff0489cb8147d5b4a7c6ef968bfa7529",
+    "models/head_units/contract.json": "8fa71c510682ed890dc40090d0592135c9896e94d01bfd79d8de12cdb546d7a2",
+    "models/head_units/model.onnx": "cc25287302b720283668a99a5627a305c9226214489758f02b9bd70177f97997",
+    "models/letterbox/contract.json": "dc040b262c27dcb1b2b1cff9a1f3cc9fae4f745df6708e31351409932090dcc6",
+    "models/letterbox/model.onnx": "cc25287302b720283668a99a5627a305c9226214489758f02b9bd70177f97997",
+    "models/plane/contract.json": "b5c4add9f0eea11831b39a222a92febb6b94b470a8e2c66c78c50ce511d2790b",
+    "models/plane/model.onnx": "873885ef6dbefec53db80233a0deeb7cff0489cb8147d5b4a7c6ef968bfa7529",
+    "models/right_mask/contract.json": "b5c4add9f0eea11831b39a222a92febb6b94b470a8e2c66c78c50ce511d2790b",
+    "models/right_mask/model.onnx": "873885ef6dbefec53db80233a0deeb7cff0489cb8147d5b4a7c6ef968bfa7529",
+    "models/selected/contract.json": "b5c4add9f0eea11831b39a222a92febb6b94b470a8e2c66c78c50ce511d2790b",
+    "models/selected/model.onnx": "873885ef6dbefec53db80233a0deeb7cff0489cb8147d5b4a7c6ef968bfa7529",
+    "models/subpixel/contract.json": "b5c4add9f0eea11831b39a222a92febb6b94b470a8e2c66c78c50ce511d2790b",
+    "models/subpixel/model.onnx": "873885ef6dbefec53db80233a0deeb7cff0489cb8147d5b4a7c6ef968bfa7529"
+  }
+}

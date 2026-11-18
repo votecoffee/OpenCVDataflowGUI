@@ -9823,6 +9823,68 @@ Inputs: `samples` (data, optional).
 | `seed` | `0` | Value must be a whole number between -2.14748e+09 and 2.14748e+09. Deterministic group hash order; independent of input order or global RNG state. |
 | `require_training_classes` | `true` | Reject missing training classes. Split is not stratified. |
 
+## Learned stereo disparity (`ml.stereo_disparity`)
+
+ML / Depth estimation
+
+Inputs: `left` (image), `right` (image), `left_mask` (image, optional), `right_mask` (image, optional), `region` (data, optional), `rectification` (data, optional).
+
+Input `left` — Rectified left image; owns source grid/ticket and is returned unchanged.
+
+Input `right` — Equal-size rectified right view. Epipolar alignment is caller-supplied.
+
+Input `left_mask` — Write selection on the left grid; excluded pixels remain model context.
+
+Input `right_mask` — Support at x_left - disparity; fractional samples need both neighbors.
+
+Input `region` — Left-grid region, intersected with Left mask.
+
+Input `rectification` — Optional stereo_rectification_v1 for this size, preserved for 3D.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` |  |
+| `left_name` | `"left"` | Left model binding, or the combined binding for concatenated input. |
+| `right_name` | `"right"` | Right binding for Named mode; distinct from Left name. |
+| `output_names` | `[]` |  |
+| `input_mode` | `"named"` | `named`, `concatenated` Two named tensors, or one tensor with left channels followed by right. |
+| `input_layout` | `"NCHW"` | `NCHW`, `NHWC` |
+| `layout` | `"NHW"` | `NHW`, `NCHW`, `NHWC`, `HW`, `CHW`, `HWC` |
+| `width` | `640` | Value must be a whole number between 1 and 4096. |
+| `height` | `480` | Value must be a whole number between 1 and 4096. |
+| `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` |
+| `resize_mode` | `"stretch"` | `stretch`, `letterbox` Apply identical stretch or rounded letterbox to both rectified images. |
+| `input_interpolation` | `"linear"` | `linear`, `cubic`, `area` |
+| `padding_value` | `0.0` | Value must be a finite number between 0 and 1. |
+| `mean` | `[0.0, 0.0, 0.0]` | Per-view channel values in normalized [0,1] source units, before Std division. |
+| `std` | `[1.0, 1.0, 1.0]` | Positive per-view channel divisors; use zero mean/unit std for HITNET. |
+| `head_units` | `"network_pixels"` | `network_pixels`, `head_pixels`, `source_pixels` Affine head quantity before conversion to original left-image pixels. |
+| `head_sign` | `"left_minus_right"` | `left_minus_right`, `right_minus_left` Output always becomes d = x_left - x_right, on the left grid. |
+| `head_scale` | `1.0` | Value must be a finite number between -1e+09 and 1e+09. Fixed nonzero affine head multiplier, before spatial interpolation. |
+| `head_offset` | `0.0` | Value must be a finite number between -1e+09 and 1e+09. Fixed affine offset in declared head units. |
+| `invalid_value_enabled` | `false` |  |
+| `invalid_head_value` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Exact raw sentinel; invalidate all interpolation contributors. |
+| `minimum_disparity` | `0.0` | Value must be a finite number between -16384 and 16384. Inclusive lower bound in source pixels, after unit/sign conversion. |
+| `maximum_disparity` | `4096.0` | Value must be a finite number between -16384 and 16384. Inclusive upper bound in source pixels; outside samples become NaN. |
+| `resampling` | `"linear"` | `linear`, `nearest` |
+| `check_correspondence` | `true` | Reject out-of-source x_right; Right mask always checks it. |
+| `minimum_valid_pixels` | `1` | Value must be a whole number between 1 and 4e+06. |
+| `minimum_valid_fraction` | `0.01` | Value must be a finite number between 0 and 1. Required selected coverage; not confidence or accuracy. |
+| `ticket_policy` | `"same_ticket"` | `same_ticket`, `same_value`, `unchecked` Match session+kind+value, kind+value, or unchecked; unticketed allowed. |
+| `preview_mode` | `"auto_percentile"` | `auto_percentile`, `fixed` Display-only stretch; never changes numerical disparity. |
+| `display_min` | `0.0` |  |
+| `display_max` | `64.0` |  |
+| `engine` | `"new"` | `auto`, `classic`, `new`, `ort` |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
+| `fusion` | `true` |  |
+| `maximum_source_pixels` | `1000000` | Value must be a whole number between 1 and 4e+06. |
+| `maximum_input_elements` | `3000000` | Value must be a whole number between 1 and 1.6e+07. Combined two-view tensor bound before conversion/allocation. |
+| `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. |
+
 ## Learned image super-resolution (`ml.super_resolution`)
 
 ML / Image restoration

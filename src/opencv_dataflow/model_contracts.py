@@ -154,6 +154,7 @@ def export_contract(block, directory, *, preprocessing=None):
         "ml.recognize_constrained_text",
         "ml.restore_image",
         "ml.monocular_depth",
+        "ml.stereo_disparity",
     ):
         raise ValidationError("Choose an ONNX inference block")
     block.validate_parameters()

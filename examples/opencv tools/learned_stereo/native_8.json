@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "SOURCES.md",
+      "MODEL-LICENSE.txt"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/native_left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "paired-image"
+      }
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/native_8.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        360
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "paired-image"
+      }
+    },
+    {
+      "id": "estimate",
+      "type": "ml.stereo_disparity",
+      "name": "Learned stereo disparity",
+      "parameters": {
+        "contract_path": ".local/hitnet/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "left_name": "input",
+        "right_name": "right",
+        "output_names": [
+          "reference_output_disparity"
+        ],
+        "input_mode": "concatenated",
+        "input_layout": "NCHW",
+        "layout": "NHWC",
+        "width": 640,
+        "height": 480,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "input_interpolation": "linear",
+        "padding_value": 0.0,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "head_units": "network_pixels",
+        "head_sign": "left_minus_right",
+        "head_scale": 1.0,
+        "head_offset": 0.0,
+        "invalid_value_enabled": false,
+        "invalid_head_value": 0.0,
+        "minimum_disparity": 0.0,
+        "maximum_disparity": 4096.0,
+        "resampling": "linear",
+        "check_correspondence": true,
+        "minimum_valid_pixels": 1,
+        "minimum_valid_fraction": 0.01,
+        "ticket_policy": "same_ticket",
+        "preview_mode": "auto_percentile",
+        "display_min": 0.0,
+        "display_max": 64.0,
+        "engine": "new",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "maximum_source_pixels": 1000000,
+        "maximum_input_elements": 3000000,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        520,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "left",
+        "right",
+        "left_mask",
+        "right_mask",
+        "region",
+        "rectification"
+      ],
+      "exposed_outputs": [
+        "image",
+        "disparity",
+        "valid_mask",
+        "preview",
+        "info",
+        "rectification"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1000,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Stereo sources and pixel units",
+      "description": "Original MIT paired arithmetic controls by OpenCVDataflowGUI contributors. Optional HITNET ETH3D uses unchanged Apache-2.0 Google Research / PINTO0309 ONNX weights; see MODEL-LICENSE.txt and SOURCES.md. T-LESS scene 6/frame 2 image: T. Hodan et al., WACV 2017, CC BY 4.0, https://cmp.felk.cvut.cz/t-less/ . Native pairs are resized and shifted copies with known artificial disparity, not real stereo acquisitions or measured depth. Disparity is x_left - x_right in original left pixels. Coverage is not matching confidence. The plane project's 0.1 m baseline and camera are synthetic controls.",
+      "parameters": {},
+      "position": [
+        0,
+        -900
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "estimate",
+      "output": "preview",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "estimate",
+      "input": "left"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "estimate",
+      "input": "right"
+    }
+  ]
+}

@@ -85,6 +85,7 @@
 | Pinned learned upscaling, interpolation comparison, source grids and lost-detail checks | [Image super-resolution](super-resolution.md) |
 | Same-grid ONNX restoration, bounded context tiles and independent defect/noise checks | [Learned restoration](learned-restoration.md) |
 | Relative/declared metric monocular depth, source support and known-depth evaluation | [Monocular depth](monocular-depth.md) |
+| Paired ONNX disparity, original pixel units, correspondence support and known stereo planes | [Learned stereo](learned-stereo.md) |
 | Pinned PP-OCRv3, observable maps, DB-style rectangles and source-grid text regions | [Text detection](text-detection.md) |
 | Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |
 | Per-object masks, prototype/ROI heads, overlap and individual inspection | [Instance segmentation](instance-segmentation.md) |
