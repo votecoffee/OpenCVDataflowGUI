@@ -1,5 +1,12 @@
 # Simple3DMeasure
 
+The [dev7 training workflow](training_workflow/README.md) adds precise atomic XYZ
+region bounds, linked datum/target/probe/limit summaries, persistent setup guidance
+and scrollable controls with fixed training actions. Load its pinned plugin first
+and open either real T-LESS capture or the generated missing-surface control.
+It preserves full-precision training definitions and Stage/Apply/Cancel; native
+Results remain independent. No environment installation is needed.
+
 The [dev6 completed-results examples](completed_runtime/README.md) add an independent
 **Review completed 3D measurements…** action on Results. Load that folder's pinned
 `plugin.py` first, then open its projects; restart if another version is already

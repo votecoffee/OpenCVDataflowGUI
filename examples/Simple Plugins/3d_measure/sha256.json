@@ -139,7 +139,7 @@
   "lines/real_sections/frame000024/result.png": "fb7c9eeb2c4de5ded51e7616c1859419f8c6192cb35a6bd02fb4d13e11e3ab87",
   "lines/real_sections/source_provenance.json": "bcc50597270d20f22973d871b63d32eb7f826a0786f1b12cd3e04cdf80fba891",
   "LINES.md": "aee5b13f887a555ea6e5d63045bad1a8e513176c377825d9e3b5f5ce01bff96e",
-  "README.md": "401a9c8c09a4945259e3b1bb058b85a8c2247721b44c5adf3cb13bf922811246",
+  "README.md": "c157ac849651c747409176901eb5c89ffb901dee1d2d0a8ab5ede2ba8f451094",
   "real_tless/ATTRIBUTION.md": "111b0c122fd9ba38c893c88304e89cf77b59f3c336d9be069b77782a32e8d342",
   "real_tless/comparison.json": "9a64d6c45e05238e885cebaf54ef43e6339c12e3ff7e37e8c36bc571147f4781",
   "real_tless/configuration.json": "5a624bcc3e32f7cd807a13a2615e8caa955e744f06d973c0bc4561f347b84a5d",
@@ -268,5 +268,5 @@
   "residuals/tless_frame24/source_identity.json": "69ca845c41621196b40a290b8a2cda0c5d069648b3124756eb8ed65b3e1bbc88",
   "RESIDUALS.md": "d1a68be30d6c9e567f2544506ce0626e774e93dae092eb8acf6fc2e2358ecd81",
   "THIRD_PARTY.md": "efee8ffd05283f2e21aba068e74233b0ebd60eb60ba89783f48c2e7a406766e7",
-  "TRAINING.md": "c3dee153025ede30c17653f9daab285204e9d7ecc7b21fa39e24c1bb521542dd"
+  "TRAINING.md": "562dc7bb0b1b3cb815cb09af93c732f567f1b6091fc37f73955715b91d590b48"
 }

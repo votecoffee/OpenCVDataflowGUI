@@ -1,0 +1,70 @@
+[
+  {
+    "name": "height",
+    "kind": "step_height",
+    "plane": "datum",
+    "other": "top",
+    "value": null,
+    "units": "mm",
+    "lower": 4.9,
+    "upper": 5.1,
+    "status": "unavailable",
+    "reason": "plane_unavailable: top",
+    "angle_degrees": null,
+    "probe_point": null
+  },
+  {
+    "name": "angle",
+    "kind": "plane_angle",
+    "plane": "datum",
+    "other": "top",
+    "value": null,
+    "units": "deg",
+    "lower": null,
+    "upper": 1.0,
+    "status": "unavailable",
+    "reason": "plane_unavailable: top",
+    "angle_degrees": null,
+    "probe_point": null
+  },
+  {
+    "name": "surface",
+    "kind": "surface_range",
+    "plane": "top",
+    "other": null,
+    "value": null,
+    "units": "mm",
+    "lower": null,
+    "upper": 0.4,
+    "status": "unavailable",
+    "reason": "plane_unavailable: top",
+    "angle_degrees": null,
+    "probe_point": null
+  },
+  {
+    "name": "probe",
+    "kind": "point_plane_distance",
+    "plane": "datum",
+    "other": null,
+    "value": 3.0020794416484526,
+    "units": "mm",
+    "lower": null,
+    "upper": null,
+    "status": "measured",
+    "reason": null,
+    "angle_degrees": null,
+    "probe_point": [
+      0.0,
+      0.0,
+      3.0
+    ],
+    "definition": "signed_probe_distance_along_datum_normal",
+    "datum_projection": [
+      -0.0005184476658569016,
+      -0.0002779470912161888,
+      -0.002079384014639807
+    ],
+    "datum_extrapolated": true,
+    "support_assessment": "inlier_axis_aligned_bounds_not_visibility"
+  }
+]

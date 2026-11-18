@@ -1,0 +1,59 @@
+[
+  {
+    "name": "height",
+    "kind": "step_height",
+    "plane": "table",
+    "other": "part_surface",
+    "value": 48.03452313676571,
+    "units": "mm",
+    "lower": null,
+    "upper": null,
+    "status": "measured",
+    "reason": null,
+    "angle_degrees": 1.7039470014387101,
+    "probe_point": [
+      -0.018249537279375172,
+      0.6735449058691954,
+      16.388735227381346
+    ],
+    "definition": "signed_target_inlier_centroid_distance_to_datum_plane",
+    "maximum_angle_degrees": 5.0,
+    "datum_projection": [
+      0.7905294724017934,
+      0.331012748184521,
+      -31.637757057720343
+    ],
+    "datum_extrapolated": true,
+    "support_assessment": "inlier_axis_aligned_bounds_not_visibility"
+  },
+  {
+    "name": "angle",
+    "kind": "plane_angle",
+    "plane": "table",
+    "other": "part_surface",
+    "value": 1.7039470014387101,
+    "units": "deg",
+    "lower": null,
+    "upper": null,
+    "status": "measured",
+    "reason": null,
+    "angle_degrees": 1.7039470014387101,
+    "probe_point": null,
+    "definition": "acute_angle_between_plane_normals"
+  },
+  {
+    "name": "part_surface_range",
+    "kind": "surface_range",
+    "plane": "part_surface",
+    "other": null,
+    "value": 21.051655047517624,
+    "units": "mm",
+    "lower": null,
+    "upper": null,
+    "status": "measured",
+    "reason": null,
+    "angle_degrees": null,
+    "probe_point": null,
+    "definition": "least_squares_plane_residual_range_all_selected_points"
+  }
+]

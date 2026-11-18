@@ -1,0 +1,115 @@
+{
+  "wheel_sha256": "32fca513e9839ca7d78053bca447359289193950d8a3daec6eb53b00a05cfc6a",
+  "source_commit": "3e98506",
+  "source_modules_exact": [
+    {
+      "module": "opencv_simple_3d_measure/__init__.py",
+      "sha256": "f12cbe06ae63e11f46ceee1387c8335a2adf2c4a53a32a316060f65649f9b6fe"
+    },
+    {
+      "module": "opencv_simple_3d_measure/cli.py",
+      "sha256": "bcec5ffcced8a2f19b4e9432c10a7264188d6e562ff2a42a70b2fbea6d48c8d2"
+    },
+    {
+      "module": "opencv_simple_3d_measure/completed_review.py",
+      "sha256": "9b612ab55fa4d43475d2fe735178d3ef2d42d80d532a910b519a9a68541af58a"
+    },
+    {
+      "module": "opencv_simple_3d_measure/dataflow.py",
+      "sha256": "be829dd85ee1b3df953e6413fe62c88cc4ee240132be0c5b4afc648212e10e9a"
+    },
+    {
+      "module": "opencv_simple_3d_measure/fitting.py",
+      "sha256": "c8614ac35c3731d2983b39bbe36e12a68712c6724dfe6002deb48a6c98c1dc3a"
+    },
+    {
+      "module": "opencv_simple_3d_measure/flatness.py",
+      "sha256": "30568a5cf38e82e448b9a5620a9c0c35ebc48137e587aaa592139a50ff0eb017"
+    },
+    {
+      "module": "opencv_simple_3d_measure/graphics.py",
+      "sha256": "1728e8b4301c6351a0ca58db3a74bc326d512aaee1e4ce92d2a8e6b19cba762f"
+    },
+    {
+      "module": "opencv_simple_3d_measure/line_fitting.py",
+      "sha256": "76dc1cac6a1fa6c8c76cd112c734f62c0acd072a65d19de196dd057e082bc2f2"
+    },
+    {
+      "module": "opencv_simple_3d_measure/measure.py",
+      "sha256": "5fe9a8bf67586725b9f47fe24dee582b57c72df2a86bf8a3f4d4ac289149b70c"
+    },
+    {
+      "module": "opencv_simple_3d_measure/persistence.py",
+      "sha256": "f0127d5f48b70d2e327465f3dc35e537e35ce86e98f8412df1b398a6674b7554"
+    },
+    {
+      "module": "opencv_simple_3d_measure/qt_bounds.py",
+      "sha256": "515dac7b3de2b4923241bfe51e965926d0f949c73b299aaa52ac1b0a001d6013"
+    },
+    {
+      "module": "opencv_simple_3d_measure/qt_completed_review.py",
+      "sha256": "7e532caac54783d1d1460e4dd4ab4118a3afb1356bc4067467532525fa4291c0"
+    },
+    {
+      "module": "opencv_simple_3d_measure/qt_measurement.py",
+      "sha256": "5bf475b17e1ad4457580a574be5db4bd46c9ce9a809947753bf47946a16bb38e"
+    },
+    {
+      "module": "opencv_simple_3d_measure/qt_reference.py",
+      "sha256": "915a0f6e20bfcfc74a566cd15cf00538edae5d9dd11ae8a29dbeb5b47c4ca58d"
+    },
+    {
+      "module": "opencv_simple_3d_measure/qt_residuals.py",
+      "sha256": "448a11fba28e307e5d387e6857b45048c1dc146f53fcf15c3b1a82874770ba12"
+    },
+    {
+      "module": "opencv_simple_3d_measure/qt_review.py",
+      "sha256": "b6c04ef53c802df40f56f83f73f6277d47b91f64aa2e6c0d7afe4add4b2ef6a5"
+    },
+    {
+      "module": "opencv_simple_3d_measure/qt_training.py",
+      "sha256": "bdc0be654c236b2205314ee1e8d99d47bb8020da625bba91046f2fc12549dd1d"
+    },
+    {
+      "module": "opencv_simple_3d_measure/reference.py",
+      "sha256": "047dbbd76f5ee906df28cec4ad16769d92229e1e87052ca7946a8a7e5a59814e"
+    },
+    {
+      "module": "opencv_simple_3d_measure/residuals.py",
+      "sha256": "82ad0d88113e5144dc188d5b355b3d59f8a3e174e03b764c44b5ba4b84a2a409"
+    },
+    {
+      "module": "opencv_simple_3d_measure/specs.py",
+      "sha256": "4ca4316ad2d70ff6efb5a9a580bef21aed369be9bd068b8ce08f0f0a26a9dcf8"
+    },
+    {
+      "module": "opencv_simple_3d_measure/teaching.py",
+      "sha256": "83167d25a6acdc583baa4eca9056f45bc5e1a431a3a242d7cb0178540bec4ff7"
+    }
+  ],
+  "unchanged_runtime_module_ast": [
+    "__init__.py",
+    "cli.py",
+    "completed_review.py",
+    "dataflow.py",
+    "fitting.py",
+    "flatness.py",
+    "graphics.py",
+    "line_fitting.py",
+    "measure.py",
+    "persistence.py",
+    "qt_completed_review.py",
+    "qt_reference.py",
+    "qt_residuals.py",
+    "qt_review.py",
+    "reference.py",
+    "residuals.py",
+    "specs.py",
+    "teaching.py"
+  ],
+  "source_tests_passed": 85,
+  "wheel_tests_passed": 85,
+  "wheel_test_process_exit": 0,
+  "test_harness": "Explicit QApplication lifetime and native widget cleanup before interpreter exit",
+  "default_host_installation_modified": false
+}

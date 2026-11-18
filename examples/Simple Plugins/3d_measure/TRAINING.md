@@ -75,3 +75,21 @@ interrupting an already-running NumPy fit remains future work. Additional
 primitives, oriented regions and sections remain in the roadmap.
 See [line-specific definitions and observed-support limits](LINES.md).
 See [minimum-zone definitions, dependencies and numerical limits](FLATNESS.md).
+
+With dev7, **Edit XYZ bounds…** opens a unit/frame-labeled editor for all six
+region boundaries. Update validates the complete volume before changing it;
+Cancel keeps the old definition. Full-precision untouched coordinates, probe
+points, fitting bands and limits survive reopening. Boundary changes use the
+same Undo/Redo and stale-fit rules as face-handle edits.
+
+The measurement table now includes datum, target/probe and acceptance limits.
+Select a row to highlight its datum region and read the full definition below
+the table. The persistent numbered guide identifies the next setup step and
+unavailable reference measurements. Source units/frame remain explicit; import
+fallback fields never relabel or rescale a retained reference.
+
+The window uses the available screen size, scrollable setup/region controls,
+and a fixed Train/Review/Stage/Cancel footer. On narrow screens the outer content
+can also scroll horizontally to reach the native cloud toolbar. A compact shared
+host toolbar remains a follow-up. Native orbit/zoom/pan, face handles, source-row
+picking, reference colors and independent completed review are unchanged.

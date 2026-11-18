@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-18",
+  "source_commit": "3e98506",
+  "package": "opencv-simple-3d-measure",
+  "version": "0.1.0.dev7",
+  "source_tests": 85,
+  "wheel_tests": 85,
+  "native_host_workflows": 3,
+  "native_cases": [
+    "real13",
+    "real24",
+    "missing"
+  ],
+  "runtime_baseline_projects_exact": 8,
+  "old_frozen_exports_verified": 5,
+  "original_recipe_execution": "Exact measurements, reports and default point/color arrays with unchanged recipes",
+  "retraining_comparison": "Same reference, definitions, settings and bands; values within 1e-9 declared units, status/reason preserved",
+  "display_cloud": "Host native PointCloud uses float32; retained recipe XYZ remains full precision",
+  "desktop_input_used": false,
+  "window_capture_used": false,
+  "physical_accuracy_qualified": false,
+  "remaining": [
+    "Hands-on training acceptance",
+    "Independent gauge and sensor qualification",
+    "Compact shared cloud toolbar for narrow screens",
+    "Oriented regions/additional measurement primitives",
+    "Background reference restore/import",
+    "Finer cancellation inside running fits"
+  ],
+  "host_existing_checks": 8,
+  "host_new_package_checks": 4,
+  "host_total_checks": 12
+}
