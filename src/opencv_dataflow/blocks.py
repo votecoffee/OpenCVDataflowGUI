@@ -734,6 +734,7 @@ def builtin_registry():
     from .label_measurement import MaskFromLabelCollection, MeasureLabelRegions
     from .landmarks import LANDMARK_BLOCKS
     from .laplacian_pyramids import LAPLACIAN_PYRAMID_BLOCKS
+    from .learned_restoration import RestoreImage
     from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .line_pair import MeasureLinePair
@@ -1196,6 +1197,7 @@ def builtin_registry():
         RecognizeTextBatch,
         RecognizeConstrainedText,
         SuperResolution,
+        RestoreImage,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,

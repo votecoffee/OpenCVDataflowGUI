@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "MODEL-LICENSE.txt",
+      "SOURCES.md"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restore",
+      "type": "ml.restore_image",
+      "name": "Restore image with ONNX",
+      "parameters": {
+        "contract_path": "models/residual/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "input_name": "input",
+        "output_names": [],
+        "color_format": "gray",
+        "input_layout": "NCHW",
+        "output_layout": "NCHW",
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "output_mode": "noise_residual",
+        "blend": 1.0,
+        "processing_mode": "whole",
+        "tile_width": 32,
+        "tile_height": 28,
+        "halo": 1,
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "maximum_source_pixels": 4000000,
+        "maximum_tiles": 256,
+        "maximum_processed_pixels": 16000000,
+        "max_output_elements": 8000000
+      },
+      "position": [
+        440,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "processed_mask",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        -340
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "input_error",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "mse",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        920,
+        -350
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "restored_error",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "mse",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        920,
+        300
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Restoration sources / inspection fidelity",
+      "description": "Original MIT clean/noisy geometric and arithmetic controls by OpenCVDataflowGUI contributors. Averaging fixtures are not learned denoisers. Optional native examples use unchanged MIT Kai Zhang KAIR DnCNN-25 weights, release v1.0, with an explicit deterministic ONNX export. See SOURCES.md and MODEL-LICENSE.txt. Clean data remains an independent reference. Pixel removal, false detail and halo seams are measured, not assumed safe. Passing inference does not imply passing inspection. Prepare optional models explicitly.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "restore",
+      "input": "image"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "input_error",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "input_error",
+      "input": "image_b"
+    },
+    {
+      "source": "restore",
+      "output": "image",
+      "target": "restored_error",
+      "input": "image_a"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "restored_error",
+      "input": "image_b"
+    }
+  ]
+}

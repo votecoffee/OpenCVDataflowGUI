@@ -1,0 +1,53 @@
+{
+  "model": "onnx_inference_contract_v1",
+  "schema_version": 1,
+  "block_type": "ml.restore_image",
+  "configuration": {
+    "fallback_policy": "error",
+    "input_name": "input",
+    "output_names": [],
+    "color_format": "gray",
+    "input_layout": "NCHW",
+    "output_layout": "NCHW",
+    "mean": [
+      0.0
+    ],
+    "std": [
+      1.0
+    ],
+    "output_mode": "noise_residual",
+    "blend": 1.0,
+    "processing_mode": "whole",
+    "tile_width": 32,
+    "tile_height": 28,
+    "halo": 1,
+    "engine": "classic",
+    "backend": "opencv",
+    "target": "cpu",
+    "fusion": true,
+    "maximum_source_pixels": 4000000,
+    "maximum_tiles": 256,
+    "maximum_processed_pixels": 16000000,
+    "max_output_elements": 8000000
+  },
+  "preprocessing": {
+    "input": {
+      "model": "same_grid_restoration_preprocessing_v1",
+      "color_format": "gray",
+      "layout": "NCHW",
+      "source_units": "integer_full_scale_or_float32_unit",
+      "mean": [
+        0.0
+      ],
+      "std": [
+        1.0
+      ]
+    }
+  },
+  "artifact": {
+    "file": "model.onnx",
+    "sha256": "fa859e5e2c6855949d3a4994c2103d1af12a96f02a2693bb1c5f3aeee9ab2329",
+    "bytes": 413
+  },
+  "revision": "09cdce17fa86fc749eaaf97c730f9dafebebac1afe9a24b341af9aecec72dc19"
+}

@@ -1,0 +1,85 @@
+{
+  "cases": [
+    "whole",
+    "tiles",
+    "residual",
+    "rgb_alpha",
+    "gray16",
+    "nhwc",
+    "selected",
+    "empty",
+    "fidelity_alarm",
+    "native_whole",
+    "native_tiles",
+    "native_no_halo",
+    "native_low_noise"
+  ],
+  "native_cases": [
+    "native_whole",
+    "native_tiles",
+    "native_no_halo",
+    "native_low_noise"
+  ],
+  "source_size": [
+    128,
+    96
+  ],
+  "noise_sigma_samples": 25,
+  "low_noise_sigma_samples": 2,
+  "flat_roi": [
+    4,
+    4,
+    24,
+    16
+  ],
+  "fine_texture_roi": [
+    4,
+    82,
+    60,
+    8
+  ],
+  "faint_crack_roi": [
+    75,
+    48,
+    7,
+    29
+  ],
+  "strong_crack_roi": [
+    87,
+    48,
+    7,
+    29
+  ],
+  "circle_center": [
+    30,
+    45
+  ],
+  "circle_radius": 17,
+  "native_weights_sha256": "0451a70de9b672ae037270498fbb1c17a1c1c4403785df586ff65df5b858e5b0",
+  "native_onnx_sha256": "6e9058f77ac18172ac201eeb9148fc57d5e839c1435e203eb1b03174878106c3",
+  "asset_sha256": {
+    "assets/alpha.png": "77afe22460036041c82a51c95be05538f0ebfe0a23b080cea5c3cbb1094508b5",
+    "assets/gray16.png": "34c8ae4c5b5d81de16ea34cfd6e7522ce55c53ff477ba00a3fbcd3d411ec35b5",
+    "assets/low_noise.png": "fb24ad8c5befeb860fe2a9d6dc17911f545636ec60b5b05a18a93e2fc15980cd",
+    "assets/noisy.png": "c1b0a2906510fb14615231ea74820e29acd1ca3bfee16e3244c050961ce00049",
+    "assets/reference.png": "973cbfd5b0c8883a18e5a60209beb47166f78aab689dd61fd9ab04e39dec7ef3",
+    "models/empty/contract.json": "f05ee766f09c6a0e64958099e249397d2d9a323230e67f6aab7cced6d1e946f2",
+    "models/empty/model.onnx": "41621b2b8d1cb4c4b40b7a72c5bb4c3d1cd381463004b20491c4dc92e9591d5b",
+    "models/fidelity_alarm/contract.json": "f05ee766f09c6a0e64958099e249397d2d9a323230e67f6aab7cced6d1e946f2",
+    "models/fidelity_alarm/model.onnx": "41621b2b8d1cb4c4b40b7a72c5bb4c3d1cd381463004b20491c4dc92e9591d5b",
+    "models/gray16/contract.json": "f05ee766f09c6a0e64958099e249397d2d9a323230e67f6aab7cced6d1e946f2",
+    "models/gray16/model.onnx": "41621b2b8d1cb4c4b40b7a72c5bb4c3d1cd381463004b20491c4dc92e9591d5b",
+    "models/nhwc/contract.json": "a4f9dce598f10a0e2d6b140aef9dfc528da9f25da3dc74f3a3827132760578d8",
+    "models/nhwc/model.onnx": "7403a4364efa9143ed29feb0107b78305a35e3d68901daf57b64b079072c150f",
+    "models/residual/contract.json": "155f1a41cc2238f7725699cebf523aa669fe825e3af49506eee2bd19c0363523",
+    "models/residual/model.onnx": "fa859e5e2c6855949d3a4994c2103d1af12a96f02a2693bb1c5f3aeee9ab2329",
+    "models/rgb_alpha/contract.json": "7bb7f52f1e9b813d83ca24dbff9550e1fed5fbc8ac0da3fdb96154722473eea9",
+    "models/rgb_alpha/model.onnx": "83496db5ab82996cb87a4f3ef88164f1b0aef7ba641f9433f3d934d1d9e85367",
+    "models/selected/contract.json": "db10ad5fc395cd5dd7b31f4fd405816ed6750248dc8a735c3368150235b6c691",
+    "models/selected/model.onnx": "41621b2b8d1cb4c4b40b7a72c5bb4c3d1cd381463004b20491c4dc92e9591d5b",
+    "models/tiles/contract.json": "db10ad5fc395cd5dd7b31f4fd405816ed6750248dc8a735c3368150235b6c691",
+    "models/tiles/model.onnx": "41621b2b8d1cb4c4b40b7a72c5bb4c3d1cd381463004b20491c4dc92e9591d5b",
+    "models/whole/contract.json": "f05ee766f09c6a0e64958099e249397d2d9a323230e67f6aab7cced6d1e946f2",
+    "models/whole/model.onnx": "41621b2b8d1cb4c4b40b7a72c5bb4c3d1cd381463004b20491c4dc92e9591d5b"
+  }
+}

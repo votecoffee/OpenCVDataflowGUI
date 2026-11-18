@@ -259,6 +259,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [OCR regions in batches](<opencv tools/ocr_batch/README.md>) | Native dynamic CTC batches, ordered source crops, per-read confidence/failures and an unchanged fixed-N CRNN baseline. |
 | [Constrained OCR](<opencv tools/constrained_ocr/README.md>) | Eleven alphabet/lexicon projects: prefix search, exact label mass, forced-word rejection, file constraints and unchanged CRNN glyph reads. |
 | [Learned image super-resolution](<opencv tools/super_resolution/README.md>) | Eight pinned FSRCNN projects compare reconstruction with interpolation and native-resolution geometry, cracks, noise, color, alpha and explicit high-depth conversion. |
+| [Learned image restoration](<opencv tools/learned_restoration/README.md>) | Thirteen arithmetic/pinned DnCNN projects check same-grid denoising, context seams, masks, layouts, depth/alpha and erased faint defects against independent clean images. |
 | [KAZE registration](<opencv tools/kaze_registration/README.md>) | Match extended KAZE descriptors with FLANN and recover a known translation. |
 | [Labeled distance transform](<opencv tools/labeled_distance/README.md>) | Partition an image into nearest-seed zones and emit a mask for one zone. |
 | [Laplacian pyramids](<opencv tools/laplacian_pyramid/README.md>) | Decompose an odd-sized 16-bit color image into signed bands, verify exact reconstruction, and remove the finest detail. |

@@ -9625,6 +9625,46 @@ Input `region` — Source selection intersected with Mask; independent of the te
 | `background` | `255.0` | Value must be a finite number between 0 and 65535. Intensity outside selection and at borders, in source units. |
 | `maximum_steps` | `1024` | Value must be a whole number between 1 and 4096. Bound time steps before greedy path decoding. |
 
+## Restore image with ONNX (`ml.restore_image`)
+
+ML / Image restoration
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8/uint16 or float32 [0,1], GRAY/BGR/RGB/BGRA/RGBA; no physical depth.
+
+Input `mask` — Write selection, intersected with Region. Excluded pixels remain context.
+
+Input `region` — Source-grid region; outside remains bit-identical to the input.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local same-grid ONNX; Contract path selects a sealed model/settings bundle. |
+| `input_name` | `"input"` | Exact native input name; single image, batch one. |
+| `output_names` | `[]` | Empty requires one output; otherwise select one exact terminal head. |
+| `color_format` | `"gray"` | `gray`, `rgb`, `bgr` Match gray/color source channels. Alpha passes unchanged. |
+| `input_layout` | `"NCHW"` | `NCHW`, `NHWC` |
+| `output_layout` | `"NCHW"` | `NCHW`, `NHWC` |
+| `mean` | `[0.0]` | One or C values in normalized source units, subtracted before dividing by Std. |
+| `std` | `[1.0]` | One or C positive divisors. Output restoration reverses this normalization. |
+| `output_mode` | `"restored"` | `restored`, `noise_residual` Restored reverses normalization; Noise residual subtracts predicted noise. |
+| `blend` | `1.0` | Value must be a finite number between 0 and 1. Fraction of restored values to write. Zero skips model I/O/inference. |
+| `processing_mode` | `"whole"` | `whole`, `halo_tiles` No resize. Halo tiles trim context and write disjoint cores. |
+| `tile_width` | `256` | Value must be a whole number between 1 and 4096. Core width, excluding Halo. Edge cores/context clip to actual image bounds. |
+| `tile_height` | `256` | Value must be a whole number between 1 and 4096. Core height. Native models must accept every resulting context shape. |
+| `halo` | `20` | Value must be a whole number between 0 and 256. Context around cores; cover the model's receptive field for parity. |
+| `engine` | `"classic"` | `auto`, `classic`, `new`, `ort` Classic preserves explicit backend/fusion; non-CPU targets require Classic. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
+| `fusion` | `true` |  |
+| `maximum_source_pixels` | `4000000` | Value must be a whole number between 1 and 1.6e+07. Source-grid guard before normalization or native inference. |
+| `maximum_tiles` | `256` | Value must be a whole number between 1 and 1024. Bound selected native calls; unselected cores are skipped. |
+| `maximum_processed_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. Combined context pixels, including repeated Halo work. |
+| `max_output_elements` | `8000000` | Value must be a whole number between 1 and 8e+06. Retained elements per call; does not bound native workspace. |
+
 ## Load random forest classifier (`ml.rtrees_load`)
 
 ML / Classical classification
