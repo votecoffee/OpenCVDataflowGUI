@@ -1,4 +1,5 @@
 import shutil
+import time
 from pathlib import Path
 
 import numpy as np
@@ -7,6 +8,16 @@ import pytest
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+
+
+def wait_training(app, dialog):
+    """Support both legacy synchronous trainers and the cancellable worker."""
+    deadline = time.monotonic() + 15
+    while getattr(dialog, "future", None) is not None:
+        app.processEvents()
+        assert time.monotonic() < deadline, dialog.status.text()
+        time.sleep(0.002)
+
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/reference_inspect"
 
@@ -59,6 +70,7 @@ def test_reference_trainer_restores_samples_and_stages_a_retrained_recipe(
         assert len(dialog.samples) == 7 and dialog.model is None
         dialog.fields["absolute_threshold"].setText("14")
         dialog.train_button.click()
+        wait_training(app, dialog)
         assert dialog.model is not None and dialog.model.settings.absolute_threshold == 14
         dialog.test_image = read_image(moved / "assets/changed.png")
         dialog.preview_button.click()

@@ -86,6 +86,24 @@ the inspected mask empty.
 
 ## Data
 
-All sample images, masks, and geometry were generated for this demonstration.
-The recipe retains the aligned training images. No external image datasets
-are included.
+The top-level demonstration uses generated images, masks and geometry, with
+aligned training images retained in its recipe. The completed-review and training
+subfolders also include real VisA photographs and evaluation masks; their
+`SOURCES.md` files preserve CC BY 4.0 attribution and describe modifications.
+
+## Background training and aligned imports
+
+The [dev5 training workflows](training_workflow/README.md) add bounded background
+training/cancellation, explicit image-plus-affine import with supported-pixel
+review, persistent mask/common-support guidance and saved sample descriptions.
+Cancelled, stale or closed jobs cannot publish a model. Existing mask editing/Undo,
+independent cached review and Stage/Apply/Cancel remain available.
+
+Load that folder's **pattern_plugin.py**, then **plugin.py**, before opening its
+original or trained generated/real-PCB projects. Restart if either tool package is
+already loaded. The explicit pinned wheels need no host installation. Both native
+workflows pass import/diagnosis/cancel/retrain/review/Stage/Apply/reopen and exact
+archive Save As. Unchanged inputs produce exact trained arrays/original health;
+nine prior runtime frames retain exact reports/maps/default rasters. The PCB's
+existing false alarms and incomplete coverage remain unqualified. See
+[attribution and modifications](training_workflow/SOURCES.md).

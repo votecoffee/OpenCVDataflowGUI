@@ -2,6 +2,7 @@
 
 import copy
 import shutil
+import time
 from pathlib import Path
 
 import cv2
@@ -11,6 +12,16 @@ import pytest
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+
+
+def wait_training(app, dialog):
+    """Support both legacy synchronous trainers and the cancellable worker."""
+    deadline = time.monotonic() + 15
+    while getattr(dialog, "future", None) is not None:
+        app.processEvents()
+        assert time.monotonic() < deadline, dialog.status.text()
+        time.sleep(0.002)
+
 
 EXAMPLE = (
     Path(__file__).resolve().parents[1]
@@ -71,12 +82,20 @@ def test_pose_capture_rejects_stale_frames_and_reopens_with_retained_support(
         region = trainer.inspection_mask.copy()
         trainer.inspection_mask = np.ones_like(region)
         trainer._invalidate()
+        trainer._invalidate()
         trainer.train_button.click()
+        wait_training(app, trainer)
+        coverage_status = getattr(trainer, "setup_label", trainer.status).text()
         assert (
-            trainer.model is None and "does not cover both training masks" in trainer.status.text()
+            trainer.model is None and (
+                "does not cover both training masks" in trainer.status.text()
+                or "Every training sample must cover both masks" in coverage_status
+            )
         )
         trainer.inspection_mask = region
+        trainer._invalidate()
         trainer.train_button.click()
+        wait_training(app, trainer)
         assert trainer.model is not None, trainer.status.text()
         trainer.wired_preview_button.click()
         assert trainer.inspection[0].passed
@@ -196,6 +215,7 @@ def test_empty_training_teaches_its_reference_pose_and_removal_clears_it(
         )
         trainer.capture_pose_button.click()
         trainer.train_button.click()
+        wait_training(app, trainer)
         assert trainer.model is not None, trainer.status.text()
         original = dict(block.parameters)
         trainer.reject()

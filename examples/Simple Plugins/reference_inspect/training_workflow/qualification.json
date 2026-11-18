@@ -1,0 +1,15 @@
+{
+  "source_checks": 30,
+  "wheel_loaded_checks": 30,
+  "existing_host_checks": 11,
+  "packaged_host_checks": 3,
+  "native_training_workflows": 2,
+  "unchanged_input_training_arrays_and_original_health_exact": true,
+  "earlier_runtime_frames": 9,
+  "earlier_frozen_exports": 9,
+  "earlier_reports_maps_and_default_rasters_exact": true,
+  "host_environment_modified": false,
+  "hands_on_operator_acceptance": false,
+  "defect_accuracy_qualified": false,
+  "source_and_host_native_checks": true
+}

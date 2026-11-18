@@ -1,0 +1,50 @@
+{
+  "source_commit": "426936c",
+  "wheel_sha256": "0dc6ccea2289c093cd8aff35b1eb97ead68d2d01e05e3abcdbec68a6a15a177c",
+  "source_module_sha256": {
+    "opencv_simple_reference_inspect/__init__.py": "ff9c3e39f71b3218a73284e86b1be2b8f381d8e41f458431775558bfd7b81de9",
+    "opencv_simple_reference_inspect/cli.py": "34e9a2722fb6ef3bdc20c6472e733ed992495ba0e0e6cf75a369a0bae9492d01",
+    "opencv_simple_reference_inspect/completed_review.py": "db7e7f3cb54cd7acfef9e9dcd5ced601f7abde90f8ec78afc81fcf441f8f2224",
+    "opencv_simple_reference_inspect/dataflow.py": "b11954e813fb2f972caf4e196a62ac01f235cf3c4c44170cad1cf1d2fb85f1c4",
+    "opencv_simple_reference_inspect/graphics.py": "6138fb85c96304e1c1474bb420209576f36750b1c4670f2fe330c5b3b6c5b37f",
+    "opencv_simple_reference_inspect/model.py": "e5ebd1d57d0658f231779fcf7c5541ba861b879a85e512d14c13041a9a3ab9e7",
+    "opencv_simple_reference_inspect/persistence.py": "75249d3ef1cdeddd94726401f3b22b23627f9db5c4b06205f3b9177e9e5e3d07",
+    "opencv_simple_reference_inspect/qt_completed_review.py": "00aeab1898d002095e25e547e86a2a18fdab234f58a1a6f1c7f44256faa1adf9",
+    "opencv_simple_reference_inspect/qt_masks.py": "33512d2d1d5a2373e7e3bbed07c2bf2a4f05dead9eafd6782404d810eaa77257",
+    "opencv_simple_reference_inspect/qt_review.py": "a780eaf1e1ae95116a8048036e6b441a012339fb21028a30c1c321dc99de2876",
+    "opencv_simple_reference_inspect/qt_training.py": "74bed611154a9979d8ddc3cf814ef870b070e8ca36cb88acd405b66a060e2964",
+    "opencv_simple_reference_inspect/result_review.py": "ff4f7bff33e8ef6d79b0d04a1773f5374f4fde33e2f8b316958d28c1569dc8ec"
+  },
+  "changed_modules": [
+    "opencv_simple_reference_inspect/model.py",
+    "opencv_simple_reference_inspect/qt_training.py"
+  ],
+  "changed_byte_modules": [
+    "opencv_simple_reference_inspect/__init__.py",
+    "opencv_simple_reference_inspect/cli.py",
+    "opencv_simple_reference_inspect/completed_review.py",
+    "opencv_simple_reference_inspect/dataflow.py",
+    "opencv_simple_reference_inspect/graphics.py",
+    "opencv_simple_reference_inspect/model.py",
+    "opencv_simple_reference_inspect/persistence.py",
+    "opencv_simple_reference_inspect/qt_completed_review.py",
+    "opencv_simple_reference_inspect/qt_masks.py",
+    "opencv_simple_reference_inspect/qt_review.py",
+    "opencv_simple_reference_inspect/qt_training.py",
+    "opencv_simple_reference_inspect/result_review.py"
+  ],
+  "byte_change_note": "Earlier wheel uses different physical line endings; AST comparison isolates semantic changes.",
+  "unchanged_runtime_definitions": [
+    "Settings",
+    "_image",
+    "_mask",
+    "_affine",
+    "_aligned",
+    "_normalize",
+    "ReferenceModel",
+    "Inspection",
+    "inspect"
+  ],
+  "runtime_algorithms_unchanged": true,
+  "training_change": "Optional cooperative cancellation; unchanged-input fitted arrays and original health verified exact"
+}

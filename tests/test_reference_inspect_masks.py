@@ -1,6 +1,7 @@
 """Offscreen mask drawing and persistence through the reference trainer."""
 
 import shutil
+import time
 from pathlib import Path
 
 import cv2
@@ -14,6 +15,16 @@ from PySide6.QtWidgets import QDialog
 from opencv_dataflow.app import MainWindow
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
+
+
+def wait_training(app, dialog):
+    """Support both legacy synchronous trainers and the cancellable worker."""
+    deadline = time.monotonic() + 15
+    while getattr(dialog, "future", None) is not None:
+        app.processEvents()
+        assert time.monotonic() < deadline, dialog.status.text()
+        time.sleep(0.002)
+
 
 EXAMPLE = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/reference_inspect"
 
@@ -181,6 +192,7 @@ def test_mask_dialog_cancel_and_accept_flow_through_retraining_and_apply(
         desired[104:133, 157:183] = False
         np.testing.assert_array_equal(trainer.inspection_mask, desired)
         trainer.train_button.click()
+        wait_training(app, trainer)
         trainer.test_image = read_image(moved / "assets/changed.png")
         trainer.preview_button.click()
         assert trainer.inspection[0].passed and trainer.inspection[0].report["defect_area"] == 0
