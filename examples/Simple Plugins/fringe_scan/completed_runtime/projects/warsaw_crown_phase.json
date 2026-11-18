@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fringe",
+      "type": "3d.simple_fringe_scan",
+      "name": "SimpleFringeScan",
+      "description": "Exact completed pattern/map/cloud review. Simulated controls; no physical accuracy qualification.",
+      "parameters": {
+        "recipe_path": "assets/52a5d9476bf75843e9ca5babe440a1d222fadf9bb9d3704fc4104ff83c40817f.sfs",
+        "sha256": "52a5d9476bf75843e9ca5babe440a1d222fadf9bb9d3704fc4104ff83c40817f",
+        "source": "capture manifest",
+        "capture_manifest": "assets/08f699b9796489466a6ac1b543f7511456ceacd8b74f28ea6b911437b5b92cab.json",
+        "minimum_coverage": 0.95,
+        "render_graphics": true
+      },
+      "position": [
+        450,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "cloud",
+        "maps",
+        "report",
+        "coverage",
+        "count",
+        "metric",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "overview"
+    }
+  ],
+  "connections": []
+}

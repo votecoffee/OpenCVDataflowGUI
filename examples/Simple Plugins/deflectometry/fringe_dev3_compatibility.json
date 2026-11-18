@@ -1,0 +1,146 @@
+{
+  "new_loader_coexistence.json": {
+    "load_orders": [
+      {
+        "first": "completed_runtime",
+        "second": "deflectometry",
+        "both_registered": true,
+        "untrained_validation_without_processing": true
+      },
+      {
+        "first": "deflectometry",
+        "second": "completed_runtime",
+        "both_registered": true,
+        "untrained_validation_without_processing": true
+      }
+    ],
+    "fringe_plugin_sha256": "b07fccd0f84585c6302c905464dbaca3a3c95ca0464e494022f4cdf84ec63d7c",
+    "deflect_plugin_sha256": "dc9263e57abb3e0f787b438da060779777c77f3d0b69d8a9473446b6df4605b1",
+    "passed": true
+  },
+  "legacy_loader_coexistence.json": {
+    "load_orders": [
+      {
+        "first": "fringe_scan",
+        "second": "deflectometry",
+        "both_registered": true,
+        "untrained_validation_without_processing": true
+      },
+      {
+        "first": "deflectometry",
+        "second": "fringe_scan",
+        "both_registered": true,
+        "untrained_validation_without_processing": true
+      }
+    ],
+    "fringe_plugin_sha256": "a083938837fbf8366cfd68fd0e168318946435a1c0207e7c6d5349c9f5f44c59",
+    "deflect_plugin_sha256": "dc9263e57abb3e0f787b438da060779777c77f3d0b69d8a9473446b6df4605b1",
+    "passed": true
+  },
+  "deflectometry_dev3_replay.json": {
+    "plugin_sha256": "dc9263e57abb3e0f787b438da060779777c77f3d0b69d8a9473446b6df4605b1",
+    "cases": [
+      {
+        "case": "analytic_clean",
+        "comparable": 6912,
+        "expected_pass": true,
+        "actual_pass": true,
+        "opened_without_processing": true,
+        "saved_reopened": true,
+        "raw_maps_and_report_exact": true,
+        "graphics_off_exact": true,
+        "compiled_reference_reused": true,
+        "rgb_result_images": 16,
+        "metric_height": false
+      },
+      {
+        "case": "analytic_change",
+        "comparable": 6912,
+        "expected_pass": false,
+        "actual_pass": false,
+        "opened_without_processing": true,
+        "saved_reopened": true,
+        "raw_maps_and_report_exact": true,
+        "graphics_off_exact": true,
+        "compiled_reference_reused": true,
+        "rgb_result_images": 16,
+        "metric_height": false
+      },
+      {
+        "case": "analytic_missing",
+        "comparable": 6212,
+        "expected_pass": false,
+        "actual_pass": false,
+        "opened_without_processing": true,
+        "saved_reopened": true,
+        "raw_maps_and_report_exact": true,
+        "graphics_off_exact": true,
+        "compiled_reference_reused": true,
+        "rgb_result_images": 16,
+        "metric_height": false
+      },
+      {
+        "case": "sofast_self_review",
+        "comparable": 114356,
+        "expected_pass": true,
+        "actual_pass": true,
+        "opened_without_processing": true,
+        "saved_reopened": true,
+        "raw_maps_and_report_exact": true,
+        "graphics_off_exact": true,
+        "compiled_reference_reused": true,
+        "rgb_result_images": 16,
+        "metric_height": false
+      }
+    ],
+    "expected_judgments_matched": true,
+    "scope": "Actual plugin execution, not physical accuracy"
+  },
+  "legacy_fringe_replay.json": {
+    "scope": "Actual plugin execution on rendered inputs; no acquired-camera accuracy proof",
+    "plugin_sha256": "a083938837fbf8366cfd68fd0e168318946435a1c0207e7c6d5349c9f5f44c59",
+    "cases": [
+      {
+        "case": "analytic_clean",
+        "opened_without_processing": true,
+        "accepted": 6912,
+        "actual_pass": true,
+        "expected_pass": true,
+        "raw_maps_exact": true,
+        "graphics_off_maps_points_report_exact": true,
+        "compiled_model_reused": true,
+        "rgb_result_views": 8,
+        "native_metric_cloud": true,
+        "expected_judgment_matched": true
+      },
+      {
+        "case": "analytic_missing",
+        "opened_without_processing": true,
+        "accepted": 6415,
+        "actual_pass": false,
+        "expected_pass": false,
+        "raw_maps_exact": true,
+        "graphics_off_maps_points_report_exact": true,
+        "compiled_model_reused": true,
+        "rgb_result_views": 8,
+        "native_metric_cloud": true,
+        "expected_judgment_matched": true
+      },
+      {
+        "case": "warsaw_crown_phase",
+        "opened_without_processing": true,
+        "accepted": 56985,
+        "actual_pass": false,
+        "expected_pass": false,
+        "raw_maps_exact": true,
+        "graphics_off_maps_points_report_exact": true,
+        "compiled_model_reused": true,
+        "rgb_result_views": 6,
+        "native_metric_cloud": false,
+        "expected_judgment_matched": true
+      }
+    ],
+    "expected_judgments_matched": true
+  },
+  "deflectometry_checks_passed": 50
+}

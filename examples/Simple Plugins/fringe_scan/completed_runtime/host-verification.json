@@ -1,0 +1,55 @@
+{
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "analytic_missing",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "gray_phase_conflict",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "geometry_rejected",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "connected_missing",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "missing",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "graphics_off",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "warsaw_crown_phase",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    }
+  ],
+  "exports_verified": 6,
+  "file_pins_verified": 332,
+  "scope": "Software parity, not physical calibration/shape/coding truth"
+}

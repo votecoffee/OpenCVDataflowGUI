@@ -1,0 +1,153 @@
+{
+  "schema": "simple_fringe_stack/v1",
+  "images": {
+    "array_file": "capture_array_000.npy",
+    "shape": [
+      42,
+      72,
+      96
+    ],
+    "dtype": "<f4",
+    "sha256": "d70724e505e8e04656ae3c4664b7c79098721929e01bb2dd3f9686d32b9377a7"
+  },
+  "mask": null,
+  "frame_ids": [
+    "black",
+    "white",
+    "gray:x:6:positive",
+    "gray:x:6:inverse",
+    "gray:x:5:positive",
+    "gray:x:5:inverse",
+    "gray:x:4:positive",
+    "gray:x:4:inverse",
+    "gray:x:3:positive",
+    "gray:x:3:inverse",
+    "gray:x:2:positive",
+    "gray:x:2:inverse",
+    "gray:x:1:positive",
+    "gray:x:1:inverse",
+    "gray:x:0:positive",
+    "gray:x:0:inverse",
+    "gray:y:6:positive",
+    "gray:y:6:inverse",
+    "gray:y:5:positive",
+    "gray:y:5:inverse",
+    "gray:y:4:positive",
+    "gray:y:4:inverse",
+    "gray:y:3:positive",
+    "gray:y:3:inverse",
+    "gray:y:2:positive",
+    "gray:y:2:inverse",
+    "gray:y:1:positive",
+    "gray:y:1:inverse",
+    "gray:y:0:positive",
+    "gray:y:0:inverse",
+    "phase:x:0",
+    "phase:x:1",
+    "phase:x:2",
+    "phase:x:3",
+    "phase:x:4",
+    "phase:x:5",
+    "phase:y:0",
+    "phase:y:1",
+    "phase:y:2",
+    "phase:y:3",
+    "phase:y:4",
+    "phase:y:5"
+  ],
+  "capture_id": "geometry_rejected",
+  "pixel_grid": "rendered_camera_original",
+  "response": "linear",
+  "exposure_s": 0.01,
+  "sequence": {
+    "schema": "simple_fringe_capture/v1",
+    "plan": {
+      "projector_size": [
+        128,
+        96
+      ],
+      "period_px": [
+        16.0,
+        16.0
+      ],
+      "phase_steps": 6
+    },
+    "phase_angles": null
+  },
+  "calibration": {
+    "camera": {
+      "matrix": [
+        [
+          120,
+          0,
+          48
+        ],
+        [
+          0,
+          120,
+          36
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "image_size": [
+        96,
+        72
+      ],
+      "frame": "camera"
+    },
+    "projector": {
+      "matrix": [
+        [
+          120,
+          0,
+          64
+        ],
+        [
+          0,
+          120,
+          48
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "image_size": [
+        128,
+        96
+      ],
+      "frame": "projector"
+    },
+    "rotation_cp": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation_cp_m": [
+      -0.08,
+      0,
+      0
+    ]
+  },
+  "metadata": {
+    "source": "Original analytic tilted plane; one first visible surface per camera ray",
+    "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+  }
+}

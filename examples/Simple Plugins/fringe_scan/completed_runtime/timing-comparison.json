@@ -1,0 +1,344 @@
+{
+  "baseline": {
+    "wheel_sha256": "5e75af7d9533d277d25001b2f0389094008159fae5e3fefadd0a61abfa2ce780",
+    "cases": [
+      {
+        "case": "analytic_clean",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 23.42700000735931,
+            "samples_ms": [
+              25.257500004954636,
+              23.526899982243776,
+              23.45819998299703,
+              23.42700000735931,
+              23.031099990475923,
+              22.40789998904802,
+              22.89100000052713
+            ]
+          },
+          "debug": {
+            "median_ms": 27.432300004875287,
+            "samples_ms": [
+              30.901199992513284,
+              27.432300004875287,
+              28.262500010896474,
+              27.27489999961108,
+              30.760099994949996,
+              23.922600026708096,
+              24.027500010561198
+            ]
+          }
+        }
+      },
+      {
+        "case": "analytic_missing",
+        "numerical_maps_clouds_and_rasters_exact": true
+      },
+      {
+        "case": "gray_phase_conflict",
+        "numerical_maps_clouds_and_rasters_exact": true
+      },
+      {
+        "case": "geometry_rejected",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 13.650500011863187,
+            "samples_ms": [
+              13.650500011863187,
+              14.329199999338016,
+              13.951800006907433,
+              13.76849997905083,
+              12.789900007192045,
+              12.555699999211356,
+              13.635700015584007
+            ]
+          },
+          "debug": {
+            "median_ms": 15.714399982243776,
+            "samples_ms": [
+              11.793000012403354,
+              15.881799976341426,
+              16.284699988318607,
+              16.78649999666959,
+              15.501599991694093,
+              15.714399982243776,
+              12.343500013230368
+            ]
+          }
+        }
+      },
+      {
+        "case": "connected_missing",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 12.628600001335144,
+            "samples_ms": [
+              13.273300020955503,
+              12.499400007072836,
+              12.75950000854209,
+              12.628600001335144,
+              12.772199988830835,
+              12.307500001043081,
+              11.89279998652637
+            ]
+          },
+          "debug": {
+            "median_ms": 12.297100009163842,
+            "samples_ms": [
+              13.023999985307455,
+              12.325299991061911,
+              11.983000003965572,
+              11.782199988374487,
+              11.705999990226701,
+              12.297100009163842,
+              13.474199979100376
+            ]
+          }
+        }
+      },
+      {
+        "case": "missing",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 7.45249999454245,
+            "samples_ms": [
+              10.353799996664748,
+              7.042499986710027,
+              7.802900014212355,
+              8.08510000933893,
+              7.45249999454245,
+              7.137999986298382,
+              6.828200013842434
+            ]
+          },
+          "debug": {
+            "median_ms": 7.509899995056912,
+            "samples_ms": [
+              8.644199988339096,
+              7.509899995056912,
+              7.064499979605898,
+              7.442600006470457,
+              7.784899993566796,
+              7.636299997102469,
+              7.2586000023875386
+            ]
+          }
+        }
+      },
+      {
+        "case": "graphics_off",
+        "numerical_maps_clouds_and_rasters_exact": true
+      },
+      {
+        "case": "warsaw_crown_phase",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 166.9638000021223,
+            "samples_ms": [
+              110.84049998316914,
+              120.49790000310168,
+              166.9638000021223,
+              159.49620000901632,
+              175.88939997949637,
+              167.06099998555146,
+              189.7820000012871
+            ]
+          },
+          "debug": {
+            "median_ms": 145.5673000018578,
+            "samples_ms": [
+              171.7828999971971,
+              162.2847999969963,
+              145.5673000018578,
+              118.58140002004802,
+              146.52009998098947,
+              142.05709999077953,
+              127.6752999983728
+            ]
+          }
+        }
+      }
+    ],
+    "scope": "Same inputs/models/settings; warm graphics-off execution with host retention. Separate-process timings are exploratory, not speedup or latency guarantees."
+  },
+  "current": {
+    "wheel_sha256": "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87",
+    "cases": [
+      {
+        "case": "analytic_clean",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 23.960099992109463,
+            "samples_ms": [
+              26.257299992721528,
+              23.81529999547638,
+              22.58699998492375,
+              26.78129999549128,
+              26.297799980966374,
+              23.960099992109463,
+              23.657599987927824
+            ]
+          },
+          "debug": {
+            "median_ms": 22.998500004177913,
+            "samples_ms": [
+              29.22759999637492,
+              22.998500004177913,
+              23.53690000018105,
+              22.565499995835125,
+              23.74440000858158,
+              22.681400005239993,
+              22.28460001060739
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.034199998481199145
+      },
+      {
+        "case": "analytic_missing",
+        "numerical_maps_clouds_and_rasters_exact": true
+      },
+      {
+        "case": "gray_phase_conflict",
+        "numerical_maps_clouds_and_rasters_exact": true
+      },
+      {
+        "case": "geometry_rejected",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 11.188300006324425,
+            "samples_ms": [
+              10.780299984617159,
+              11.0395000083372,
+              11.188300006324425,
+              11.299400008283556,
+              11.321600002702326,
+              12.129499984439462,
+              11.147899989737198
+            ]
+          },
+          "debug": {
+            "median_ms": 14.318800007458776,
+            "samples_ms": [
+              10.638399980962276,
+              11.537700018379837,
+              17.076300020562485,
+              14.318800007458776,
+              16.3847999938298,
+              14.815799979260191,
+              12.82920001540333
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.03220001235604286
+      },
+      {
+        "case": "connected_missing",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 11.923399986699224,
+            "samples_ms": [
+              11.3400999980513,
+              11.942600016482174,
+              11.311299982480705,
+              11.419299989938736,
+              11.923399986699224,
+              12.710200011497363,
+              13.635900017106906
+            ]
+          },
+          "debug": {
+            "median_ms": 12.52560000284575,
+            "samples_ms": [
+              13.640400022268295,
+              13.557900005253032,
+              12.52560000284575,
+              12.325300020165741,
+              12.316299980739132,
+              12.362999987090006,
+              12.727499997708946
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.0425000034738332
+      },
+      {
+        "case": "missing",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 5.68640002165921,
+            "samples_ms": [
+              5.541000020457432,
+              5.68640002165921,
+              5.754099984187633,
+              5.533599993214011,
+              5.76349999755621,
+              5.514199991011992,
+              5.804499989608303
+            ]
+          },
+          "debug": {
+            "median_ms": 6.004800001392141,
+            "samples_ms": [
+              6.000699999276549,
+              5.920399999013171,
+              6.014200014760718,
+              6.004800001392141,
+              6.090000009862706,
+              5.983299983199686,
+              6.015999999362975
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.031800009310245514
+      },
+      {
+        "case": "graphics_off",
+        "numerical_maps_clouds_and_rasters_exact": true
+      },
+      {
+        "case": "warsaw_crown_phase",
+        "numerical_maps_clouds_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 130.74880000203848,
+            "samples_ms": [
+              192.91610000072978,
+              129.00340001215227,
+              128.80519998725504,
+              128.54309999966063,
+              138.3782000048086,
+              130.74880000203848,
+              165.42880001361482
+            ]
+          },
+          "debug": {
+            "median_ms": 125.87210000492632,
+            "samples_ms": [
+              154.68750000582077,
+              125.87210000492632,
+              129.3706000142265,
+              190.92920000548474,
+              114.37170000863262,
+              114.8111000075005,
+              112.75080000632443
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.04020001506432891
+      }
+    ],
+    "scope": "Same inputs/models/settings; warm graphics-off execution with host retention. Separate-process timings are exploratory, not speedup or latency guarantees."
+  },
+  "method": "Separate fresh processes, same settings/models/inputs; bounded warm trials, no universal performance claim."
+}

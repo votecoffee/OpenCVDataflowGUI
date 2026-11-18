@@ -1,0 +1,611 @@
+{
+  "schema": "simple_fringe_completed_review/v1",
+  "execution_binding": "cd280953e3304cd8a8a0442fc2fbebf7",
+  "completed_result": {
+    "active_pixels": 559872,
+    "capture_id": "warsaw_crown_phase",
+    "capture_metadata": {
+      "image_kind": "External PBRT simulated images, not acquired camera captures",
+      "license": "CC BY 4.0",
+      "record": "https://zenodo.org/records/17826191",
+      "source": "Michal Wlasiuk / Robert Sitnik; Simulated structured light 3D scanner datasets",
+      "transformation": {
+        "channel": "green",
+        "derived_size": [
+          864,
+          648
+        ],
+        "geometry_scope": "Wrapped phase only; reconstruction calibration not imported",
+        "operation": "Linearize then 3x3 area average; any original ceiling propagates as ceiling",
+        "phase_angles_rad": [
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989,
+          6.283185307179586,
+          7.330382858376184
+        ],
+        "phase_origin": "Six source projector commands: +pi/3 step, initial 2pi/3, period6px in X",
+        "radiometry_scope": "Inference from supplied PBRT rgb Film/PNG scene and standard writer; exact renderer build/photometric qualification unavailable",
+        "source_encoding": "Declared PBRT-v4 standard PNG sRGB output, inverse applied",
+        "source_from_derived": [
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "source_size": [
+          2592,
+          1944
+        ]
+      }
+    },
+    "coverage": 0.10178219307270234,
+    "decision": {
+      "minimum_coverage": 0.95,
+      "passed": false,
+      "scope": "Accepted coverage only; not gauge or defect acceptance"
+    },
+    "input_provenance": {
+      "image_kind": "External PBRT simulated images, not acquired camera captures",
+      "license": "CC BY 4.0",
+      "record": "https://zenodo.org/records/17826191",
+      "source": "Michal Wlasiuk / Robert Sitnik; Simulated structured light 3D scanner datasets",
+      "transformation": {
+        "channel": "green",
+        "derived_size": [
+          864,
+          648
+        ],
+        "geometry_scope": "Wrapped phase only; reconstruction calibration not imported",
+        "operation": "Linearize then 3x3 area average; any original ceiling propagates as ceiling",
+        "phase_angles_rad": [
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989,
+          6.283185307179586,
+          7.330382858376184
+        ],
+        "phase_origin": "Six source projector commands: +pi/3 step, initial 2pi/3, period6px in X",
+        "radiometry_scope": "Inference from supplied PBRT rgb Film/PNG scene and standard writer; exact renderer build/photometric qualification unavailable",
+        "source_encoding": "Declared PBRT-v4 standard PNG sRGB output, inverse applied",
+        "source_from_derived": [
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "source_size": [
+          2592,
+          1944
+        ]
+      }
+    },
+    "input_scale": 1,
+    "metric": false,
+    "no_phase_redundancy": false,
+    "phase_angles": [
+      2.0943951023931953,
+      3.141592653589793,
+      4.1887902047863905,
+      5.235987755982989,
+      6.283185307179586,
+      7.330382858376184
+    ],
+    "pixel_grid": "warsaw_perspective_green_area3",
+    "reason_counts": {
+      "input_ceiling": 1123,
+      "low_modulation": 470340,
+      "poor_sinusoidal_fit": 31424,
+      "valid": 56985
+    },
+    "reference_capture_id": "warsaw_crown_phase",
+    "schema": "simple_fringe_phase_result/v1",
+    "scope": "Wrapped phase evidence only; no absolute correspondence or metric XYZ",
+    "source_encoding": "linear",
+    "valid_pixels": 56985
+  },
+  "executed_parameters": {
+    "capture_manifest": "assets/08f699b9796489466a6ac1b543f7511456ceacd8b74f28ea6b911437b5b92cab.json",
+    "minimum_coverage": 0.95,
+    "recipe_path": "assets/52a5d9476bf75843e9ca5babe440a1d222fadf9bb9d3704fc4104ff83c40817f.sfs",
+    "render_graphics": true,
+    "sha256": "52a5d9476bf75843e9ca5babe440a1d222fadf9bb9d3704fc4104ff83c40817f",
+    "source": "capture manifest"
+  },
+  "executed_definition": {
+    "schema": "simple_fringe_phase/v1",
+    "capture_id": "warsaw_crown_phase",
+    "pixel_grid": "warsaw_perspective_green_area3",
+    "exposure_s": 1.0,
+    "input_scale": 1,
+    "source_encoding": "linear",
+    "phase_angles": [
+      2.0943951023931953,
+      3.141592653589793,
+      4.1887902047863905,
+      5.235987755982989,
+      6.283185307179586,
+      7.330382858376184
+    ],
+    "provenance": {
+      "source": "Michal Wlasiuk / Robert Sitnik; Simulated structured light 3D scanner datasets",
+      "record": "https://zenodo.org/records/17826191",
+      "license": "CC BY 4.0",
+      "image_kind": "External PBRT simulated images, not acquired camera captures",
+      "transformation": {
+        "source_size": [
+          2592,
+          1944
+        ],
+        "derived_size": [
+          864,
+          648
+        ],
+        "channel": "green",
+        "source_encoding": "Declared PBRT-v4 standard PNG sRGB output, inverse applied",
+        "radiometry_scope": "Inference from supplied PBRT rgb Film/PNG scene and standard writer; exact renderer build/photometric qualification unavailable",
+        "operation": "Linearize then 3x3 area average; any original ceiling propagates as ceiling",
+        "source_from_derived": [
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "phase_angles_rad": [
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989,
+          6.283185307179586,
+          7.330382858376184
+        ],
+        "phase_origin": "Six source projector commands: +pi/3 step, initial 2pi/3, period6px in X",
+        "geometry_scope": "Wrapped phase only; reconstruction calibration not imported"
+      }
+    },
+    "frames": [
+      {
+        "id": "phase:0"
+      },
+      {
+        "id": "phase:1"
+      },
+      {
+        "id": "phase:2"
+      },
+      {
+        "id": "phase:3"
+      },
+      {
+        "id": "phase:4"
+      },
+      {
+        "id": "phase:5"
+      }
+    ],
+    "reference_import": {
+      "manifest_name": "capture.json",
+      "source_encoding": "linear",
+      "input_scale": 1,
+      "channel": "gray",
+      "source_names": [
+        "frame_00.npy",
+        "frame_01.npy",
+        "frame_02.npy",
+        "frame_03.npy",
+        "frame_04.npy",
+        "frame_05.npy"
+      ]
+    }
+  },
+  "effective_settings": {
+    "geometry": {
+      "maximum_depth_m": 100.0,
+      "maximum_ray_gap_m": 0.0005,
+      "maximum_reprojection_px": 0.75,
+      "minimum_depth_m": 0.001,
+      "minimum_ray_angle_deg": 0.25
+    },
+    "phase": {
+      "input_ceiling": 1.0,
+      "maximum_relative_rms": 0.15,
+      "minimum_amplitude": 0.03
+    }
+  },
+  "consumed_capture": {
+    "schema": "simple_fringe_stack/v1",
+    "images": {
+      "shape": [
+        6,
+        648,
+        864
+      ],
+      "dtype": "<f4",
+      "sha256": "e72607d738c77ceec35d8bc546a69d65b5c0ea37a135a91ba3b6e7f1d2463335"
+    },
+    "mask": null,
+    "frame_ids": [
+      "phase:0",
+      "phase:1",
+      "phase:2",
+      "phase:3",
+      "phase:4",
+      "phase:5"
+    ],
+    "capture_id": "warsaw_crown_phase",
+    "pixel_grid": "warsaw_perspective_green_area3",
+    "response": "linear",
+    "exposure_s": 1.0,
+    "sequence": {
+      "schema": "simple_fringe_phase/v1",
+      "plan": null,
+      "phase_angles": [
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989,
+        6.283185307179586,
+        7.330382858376184
+      ]
+    },
+    "calibration": null,
+    "metadata": {
+      "source": "Michal Wlasiuk / Robert Sitnik; Simulated structured light 3D scanner datasets",
+      "record": "https://zenodo.org/records/17826191",
+      "license": "CC BY 4.0",
+      "image_kind": "External PBRT simulated images, not acquired camera captures",
+      "transformation": {
+        "source_size": [
+          2592,
+          1944
+        ],
+        "derived_size": [
+          864,
+          648
+        ],
+        "channel": "green",
+        "source_encoding": "Declared PBRT-v4 standard PNG sRGB output, inverse applied",
+        "radiometry_scope": "Inference from supplied PBRT rgb Film/PNG scene and standard writer; exact renderer build/photometric qualification unavailable",
+        "operation": "Linearize then 3x3 area average; any original ceiling propagates as ceiling",
+        "source_from_derived": [
+          [
+            3,
+            0,
+            1
+          ],
+          [
+            0,
+            3,
+            1
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "phase_angles_rad": [
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989,
+          6.283185307179586,
+          7.330382858376184
+        ],
+        "phase_origin": "Six source projector commands: +pi/3 step, initial 2pi/3, period6px in X",
+        "geometry_scope": "Wrapped phase only; reconstruction calibration not imported"
+      }
+    }
+  },
+  "ignored_capture_fields": [],
+  "selected_pixel": {
+    "wrapped": null,
+    "amplitude": 4.186206364381413e-21,
+    "background": 3.372522041900084e-05,
+    "relative_rms": 6.776263578034403e-09,
+    "valid": false,
+    "reason": 4,
+    "reason_name": "low_modulation",
+    "x": 233,
+    "y": 321,
+    "cloud_row": null
+  },
+  "selected_observations": [
+    {
+      "index": 0,
+      "frame_id": "phase:0",
+      "raw_code": 3.3725220419000834e-05,
+      "phase_angle_rad": 2.0943951023931953,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 1,
+      "frame_id": "phase:1",
+      "raw_code": 3.3725220419000834e-05,
+      "phase_angle_rad": 3.141592653589793,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 2,
+      "frame_id": "phase:2",
+      "raw_code": 3.3725220419000834e-05,
+      "phase_angle_rad": 4.1887902047863905,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 3,
+      "frame_id": "phase:3",
+      "raw_code": 3.3725220419000834e-05,
+      "phase_angle_rad": 5.235987755982989,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 4,
+      "frame_id": "phase:4",
+      "raw_code": 3.3725220419000834e-05,
+      "phase_angle_rad": 6.283185307179586,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 5,
+      "frame_id": "phase:5",
+      "raw_code": 3.3725220419000834e-05,
+      "phase_angle_rad": 7.330382858376184,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    }
+  ],
+  "selected_frame": 1,
+  "selected_view": "wrapped",
+  "selected_component": 0,
+  "provenance": {
+    "snapshot_id": "afa4194224e940eb93333d1b7e14b762",
+    "block_id": "fringe",
+    "execution_count": 1,
+    "output_revision": 0,
+    "passed": false,
+    "score": null,
+    "message": "56985/559872 accepted pixels (10.2%); PHASE/CORRESPONDENCE ONLY, no metric XYZ",
+    "inputs": {},
+    "outputs": {
+      "image": {
+        "spatial": {
+          "root_id": "fringe-source:warsaw_perspective_green_area3",
+          "root_size": [
+            864,
+            648
+          ],
+          "image_size": [
+            864,
+            648
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "cd280953e3304cd8a8a0442fc2fbebf7"
+        }
+      },
+      "maps": {
+        "spatial": {
+          "root_id": "fringe-source:warsaw_perspective_green_area3",
+          "root_size": [
+            864,
+            648
+          ],
+          "image_size": [
+            864,
+            648
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "cd280953e3304cd8a8a0442fc2fbebf7"
+        }
+      },
+      "report": {
+        "fringe_completed_review": {
+          "id": "cd280953e3304cd8a8a0442fc2fbebf7"
+        }
+      },
+      "coverage": {
+        "fringe_completed_review": {
+          "id": "cd280953e3304cd8a8a0442fc2fbebf7"
+        }
+      },
+      "count": {
+        "fringe_completed_review": {
+          "id": "cd280953e3304cd8a8a0442fc2fbebf7"
+        }
+      },
+      "metric": {
+        "fringe_completed_review": {
+          "id": "cd280953e3304cd8a8a0442fc2fbebf7"
+        }
+      },
+      "overview": {
+        "spatial": {
+          "root_id": "fringe-overview:fringe",
+          "root_size": [
+            1380,
+            710
+          ],
+          "image_size": [
+            1380,
+            710
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "cd280953e3304cd8a8a0442fc2fbebf7"
+        }
+      }
+    }
+  },
+  "emitted_cloud": false,
+  "emitted_views": [
+    "source",
+    "phase",
+    "amplitude",
+    "residual",
+    "quality",
+    "overview"
+  ],
+  "map_arrays": {
+    "wrapped": {
+      "shape": [
+        648,
+        864
+      ],
+      "dtype": "<f8",
+      "sha256": "5ec224ae772c3c131c1f5a04999c82f5fd1ccce88d84f9e32c8688d2e7c76cf1"
+    },
+    "amplitude": {
+      "shape": [
+        648,
+        864
+      ],
+      "dtype": "<f8",
+      "sha256": "21c5b9da78ab98d4aca38cf25af342a905ae98ad68ebb4651ea4a9ee46183952"
+    },
+    "background": {
+      "shape": [
+        648,
+        864
+      ],
+      "dtype": "<f8",
+      "sha256": "eadc7263f2ae38ed7480495775b07d6da3aa0e4e1e6cef2b617bded7a7ac3ed9"
+    },
+    "relative_rms": {
+      "shape": [
+        648,
+        864
+      ],
+      "dtype": "<f8",
+      "sha256": "da2e5fd292970a194add9108987d05b59e8c3891035f7308a2054a63d106120f"
+    },
+    "valid": {
+      "shape": [
+        648,
+        864
+      ],
+      "dtype": "|b1",
+      "sha256": "f45ca17a071aa28daa4fd3d706ede28252def06a895391ff1ff80d1e36a49332"
+    },
+    "reason": {
+      "shape": [
+        648,
+        864
+      ],
+      "dtype": "|u1",
+      "sha256": "dcafe4d4c2ddc35b134d1d3f5d4932d4b29ed76f093e09040c4eabbfc550f394"
+    }
+  },
+  "manifest_sha256": "08f699b9796489466a6ac1b543f7511456ceacd8b74f28ea6b911437b5b92cab",
+  "geometry_scope": "Accepted known-calibration reconstruction, not measured XYZ; native cloud is float32; raw maps retain precision. No gap filling.",
+  "display_geometry_scope": "Camera/projector origins and sightlines derive from the declared rig and stored accepted XYZ; never source cloud rows.",
+  "source_scope": "Actual normalized consumed native arrays; original encoded camera image bytes unavailable",
+  "identity_scope": "Caller capture/grid/radiometry/calibration/tickets do not establish synchrony, registration, absolute coding truth or physical accuracy",
+  "diagnostic_scope": "Stored diagnostics only; no per-frame fitted prediction or residual",
+  "decoding_reexecuted": false,
+  "unwrapping_reexecuted": false,
+  "triangulation_reexecuted": false,
+  "calibration_changed": false,
+  "capture_reloaded": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "52a5d9476bf75843e9ca5babe440a1d222fadf9bb9d3704fc4104ff83c40817f"
+}

@@ -1,0 +1,1262 @@
+{
+  "schema": "simple_fringe_completed_review/v1",
+  "execution_binding": "593967b7ffcb49a2b35ac7ea5cf755a7",
+  "completed_result": {
+    "active_pixels": 6912,
+    "capture_id": "analytic_clean",
+    "capture_metadata": {
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence",
+      "source": "Original analytic tilted plane; one first visible surface per camera ray"
+    },
+    "coverage": 1.0,
+    "decision": {
+      "minimum_coverage": 0.95,
+      "passed": true,
+      "scope": "Accepted coverage only; not gauge or defect acceptance"
+    },
+    "decoded_coverage": 1.0,
+    "decoded_valid_pixels": 6912,
+    "geometry": {
+      "frame": "camera",
+      "reason_counts": {
+        "valid": 6912
+      },
+      "samples": 6912,
+      "schema": "simple_fringe_geometry/v1",
+      "scope": "Known-calibration ray fit; residuals do not qualify physical measurement accuracy",
+      "transform": "X_projector = R_cp @ X_camera + translation_cp_m",
+      "units": "m",
+      "valid_samples": 6912
+    },
+    "image_size": [
+      96,
+      72
+    ],
+    "input_provenance": {
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence",
+      "source": "Original analytic tilted plane; one first visible surface per camera ray"
+    },
+    "input_scale": 1,
+    "metric": true,
+    "no_phase_redundancy": false,
+    "phase_steps": 6,
+    "pixel_grid": "rendered_camera_original",
+    "projector_size": [
+      128,
+      96
+    ],
+    "reason_counts": {
+      "valid": 6912
+    },
+    "reference_capture_id": "analytic_clean",
+    "schema": "simple_fringe_decode/v1",
+    "scope": "Decoded projector correspondence, not metric height or verified acquisition timing",
+    "source_encoding": "linear",
+    "valid_pixels": 6912
+  },
+  "executed_parameters": {
+    "capture_manifest": "assets/6babe4719fbe9e8adb7e4a407bfe62c291cdbb34ac2b646945513ced4625496f.json",
+    "minimum_coverage": 0.95,
+    "recipe_path": "assets/8fba585fb7e6cf52d253d0e9baf1ce61d7ff6a84337ba9e7c05baef8013c8298.sfs",
+    "render_graphics": true,
+    "sha256": "8fba585fb7e6cf52d253d0e9baf1ce61d7ff6a84337ba9e7c05baef8013c8298",
+    "source": "capture manifest"
+  },
+  "executed_definition": {
+    "schema": "simple_fringe_capture/v1",
+    "plan": {
+      "projector_size": [
+        128,
+        96
+      ],
+      "period_px": [
+        16.0,
+        16.0
+      ],
+      "phase_steps": 6
+    },
+    "capture_id": "analytic_clean",
+    "pixel_grid": "rendered_camera_original",
+    "exposure_s": 0.01,
+    "input_scale": 1,
+    "source_encoding": "linear",
+    "calibration": {
+      "camera": {
+        "matrix": [
+          [
+            120,
+            0,
+            48
+          ],
+          [
+            0,
+            120,
+            36
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          96,
+          72
+        ],
+        "frame": "camera"
+      },
+      "projector": {
+        "matrix": [
+          [
+            120,
+            0,
+            64
+          ],
+          [
+            0,
+            120,
+            48
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          128,
+          96
+        ],
+        "frame": "projector"
+      },
+      "rotation_cp": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_cp_m": [
+        -0.08,
+        0,
+        0
+      ]
+    },
+    "provenance": {
+      "source": "Original analytic tilted plane; one first visible surface per camera ray",
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+    },
+    "frames": [
+      {
+        "id": "black"
+      },
+      {
+        "id": "white"
+      },
+      {
+        "id": "gray:x:6:positive"
+      },
+      {
+        "id": "gray:x:6:inverse"
+      },
+      {
+        "id": "gray:x:5:positive"
+      },
+      {
+        "id": "gray:x:5:inverse"
+      },
+      {
+        "id": "gray:x:4:positive"
+      },
+      {
+        "id": "gray:x:4:inverse"
+      },
+      {
+        "id": "gray:x:3:positive"
+      },
+      {
+        "id": "gray:x:3:inverse"
+      },
+      {
+        "id": "gray:x:2:positive"
+      },
+      {
+        "id": "gray:x:2:inverse"
+      },
+      {
+        "id": "gray:x:1:positive"
+      },
+      {
+        "id": "gray:x:1:inverse"
+      },
+      {
+        "id": "gray:x:0:positive"
+      },
+      {
+        "id": "gray:x:0:inverse"
+      },
+      {
+        "id": "gray:y:6:positive"
+      },
+      {
+        "id": "gray:y:6:inverse"
+      },
+      {
+        "id": "gray:y:5:positive"
+      },
+      {
+        "id": "gray:y:5:inverse"
+      },
+      {
+        "id": "gray:y:4:positive"
+      },
+      {
+        "id": "gray:y:4:inverse"
+      },
+      {
+        "id": "gray:y:3:positive"
+      },
+      {
+        "id": "gray:y:3:inverse"
+      },
+      {
+        "id": "gray:y:2:positive"
+      },
+      {
+        "id": "gray:y:2:inverse"
+      },
+      {
+        "id": "gray:y:1:positive"
+      },
+      {
+        "id": "gray:y:1:inverse"
+      },
+      {
+        "id": "gray:y:0:positive"
+      },
+      {
+        "id": "gray:y:0:inverse"
+      },
+      {
+        "id": "phase:x:0"
+      },
+      {
+        "id": "phase:x:1"
+      },
+      {
+        "id": "phase:x:2"
+      },
+      {
+        "id": "phase:x:3"
+      },
+      {
+        "id": "phase:x:4"
+      },
+      {
+        "id": "phase:x:5"
+      },
+      {
+        "id": "phase:y:0"
+      },
+      {
+        "id": "phase:y:1"
+      },
+      {
+        "id": "phase:y:2"
+      },
+      {
+        "id": "phase:y:3"
+      },
+      {
+        "id": "phase:y:4"
+      },
+      {
+        "id": "phase:y:5"
+      }
+    ],
+    "reference_import": {
+      "manifest_name": "capture.json",
+      "source_encoding": "linear",
+      "input_scale": 1,
+      "channel": "gray",
+      "source_names": [
+        "frame_00.npy",
+        "frame_01.npy",
+        "frame_02.npy",
+        "frame_03.npy",
+        "frame_04.npy",
+        "frame_05.npy",
+        "frame_06.npy",
+        "frame_07.npy",
+        "frame_08.npy",
+        "frame_09.npy",
+        "frame_10.npy",
+        "frame_11.npy",
+        "frame_12.npy",
+        "frame_13.npy",
+        "frame_14.npy",
+        "frame_15.npy",
+        "frame_16.npy",
+        "frame_17.npy",
+        "frame_18.npy",
+        "frame_19.npy",
+        "frame_20.npy",
+        "frame_21.npy",
+        "frame_22.npy",
+        "frame_23.npy",
+        "frame_24.npy",
+        "frame_25.npy",
+        "frame_26.npy",
+        "frame_27.npy",
+        "frame_28.npy",
+        "frame_29.npy",
+        "frame_30.npy",
+        "frame_31.npy",
+        "frame_32.npy",
+        "frame_33.npy",
+        "frame_34.npy",
+        "frame_35.npy",
+        "frame_36.npy",
+        "frame_37.npy",
+        "frame_38.npy",
+        "frame_39.npy",
+        "frame_40.npy",
+        "frame_41.npy"
+      ]
+    }
+  },
+  "effective_settings": {
+    "decode": {
+      "maximum_gray_phase_error_px": 0.75,
+      "minimum_gray_contrast": 0.15,
+      "minimum_illumination": 0.08,
+      "phase": {
+        "input_ceiling": 1.0,
+        "maximum_relative_rms": 0.15,
+        "minimum_amplitude": 0.03
+      }
+    },
+    "geometry": {
+      "maximum_depth_m": 100.0,
+      "maximum_ray_gap_m": 0.0005,
+      "maximum_reprojection_px": 0.75,
+      "minimum_depth_m": 0.001,
+      "minimum_ray_angle_deg": 0.25
+    }
+  },
+  "consumed_capture": {
+    "schema": "simple_fringe_stack/v1",
+    "images": {
+      "shape": [
+        42,
+        72,
+        96
+      ],
+      "dtype": "<f4",
+      "sha256": "537bef0eb533c2c74e777151c9bba8815492cd3267a060e24c21f93d4a89278a"
+    },
+    "mask": null,
+    "frame_ids": [
+      "black",
+      "white",
+      "gray:x:6:positive",
+      "gray:x:6:inverse",
+      "gray:x:5:positive",
+      "gray:x:5:inverse",
+      "gray:x:4:positive",
+      "gray:x:4:inverse",
+      "gray:x:3:positive",
+      "gray:x:3:inverse",
+      "gray:x:2:positive",
+      "gray:x:2:inverse",
+      "gray:x:1:positive",
+      "gray:x:1:inverse",
+      "gray:x:0:positive",
+      "gray:x:0:inverse",
+      "gray:y:6:positive",
+      "gray:y:6:inverse",
+      "gray:y:5:positive",
+      "gray:y:5:inverse",
+      "gray:y:4:positive",
+      "gray:y:4:inverse",
+      "gray:y:3:positive",
+      "gray:y:3:inverse",
+      "gray:y:2:positive",
+      "gray:y:2:inverse",
+      "gray:y:1:positive",
+      "gray:y:1:inverse",
+      "gray:y:0:positive",
+      "gray:y:0:inverse",
+      "phase:x:0",
+      "phase:x:1",
+      "phase:x:2",
+      "phase:x:3",
+      "phase:x:4",
+      "phase:x:5",
+      "phase:y:0",
+      "phase:y:1",
+      "phase:y:2",
+      "phase:y:3",
+      "phase:y:4",
+      "phase:y:5"
+    ],
+    "capture_id": "analytic_clean",
+    "pixel_grid": "rendered_camera_original",
+    "response": "linear",
+    "exposure_s": 0.01,
+    "sequence": {
+      "schema": "simple_fringe_capture/v1",
+      "plan": {
+        "projector_size": [
+          128,
+          96
+        ],
+        "period_px": [
+          16.0,
+          16.0
+        ],
+        "phase_steps": 6
+      },
+      "phase_angles": null
+    },
+    "calibration": {
+      "camera": {
+        "matrix": [
+          [
+            120,
+            0,
+            48
+          ],
+          [
+            0,
+            120,
+            36
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          96,
+          72
+        ],
+        "frame": "camera"
+      },
+      "projector": {
+        "matrix": [
+          [
+            120,
+            0,
+            64
+          ],
+          [
+            0,
+            120,
+            48
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          128,
+          96
+        ],
+        "frame": "projector"
+      },
+      "rotation_cp": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_cp_m": [
+        -0.08,
+        0,
+        0
+      ]
+    },
+    "metadata": {
+      "source": "Original analytic tilted plane; one first visible surface per camera ray",
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+    }
+  },
+  "ignored_capture_fields": [],
+  "selected_pixel": {
+    "projector_pixels": [
+      3.8143999824848938,
+      48.0
+    ],
+    "coarse_pixels": [
+      4,
+      48
+    ],
+    "wrapped_phase": [
+      1.4979113703534472,
+      3.3743618908240687e-16
+    ],
+    "amplitude": [
+      0.32000001041402404,
+      0.3200000027815502
+    ],
+    "relative_rms": [
+      1.3442482924599047e-08,
+      3.8021084612438094e-08
+    ],
+    "minimum_gray_contrast": 1.0,
+    "gray_phase_error_px": [
+      0.18560001751510624,
+      0.0
+    ],
+    "valid": true,
+    "reason": 0,
+    "geometry_xyz_m": [
+      -0.31512604996720484,
+      0.0,
+      0.7878151249180159
+    ],
+    "geometry_reason": 0,
+    "geometry_ray_angle_deg": 4.834491806523631,
+    "geometry_ray_gap_m": 2.7938161855448883e-15,
+    "geometry_camera_error_px": 2.2737367544323206e-13,
+    "geometry_projector_error_px": 2.349231920106831e-13,
+    "geometry_valid": true,
+    "geometry_camera_pixels": [
+      0.0,
+      36.0
+    ],
+    "geometry_projector_pixels": [
+      3.8143999824848938,
+      48.0
+    ],
+    "reason_name": "valid",
+    "geometry_reason_name": "valid",
+    "x": 0,
+    "y": 36,
+    "cloud_row": 3456
+  },
+  "selected_observations": [
+    {
+      "index": 0,
+      "frame_id": "black",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 1,
+      "frame_id": "white",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 2,
+      "frame_id": "gray:x:6:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 3,
+      "frame_id": "gray:x:6:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 4,
+      "frame_id": "gray:x:5:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 5,
+      "frame_id": "gray:x:5:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 6,
+      "frame_id": "gray:x:4:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 7,
+      "frame_id": "gray:x:4:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 8,
+      "frame_id": "gray:x:3:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 9,
+      "frame_id": "gray:x:3:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 10,
+      "frame_id": "gray:x:2:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 11,
+      "frame_id": "gray:x:2:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 12,
+      "frame_id": "gray:x:1:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 13,
+      "frame_id": "gray:x:1:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 14,
+      "frame_id": "gray:x:0:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 15,
+      "frame_id": "gray:x:0:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 16,
+      "frame_id": "gray:y:6:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 17,
+      "frame_id": "gray:y:6:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 18,
+      "frame_id": "gray:y:5:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 19,
+      "frame_id": "gray:y:5:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 20,
+      "frame_id": "gray:y:4:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 21,
+      "frame_id": "gray:y:4:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 22,
+      "frame_id": "gray:y:3:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 23,
+      "frame_id": "gray:y:3:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 24,
+      "frame_id": "gray:y:2:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 25,
+      "frame_id": "gray:y:2:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 26,
+      "frame_id": "gray:y:1:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 27,
+      "frame_id": "gray:y:1:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 28,
+      "frame_id": "gray:y:0:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 29,
+      "frame_id": "gray:y:0:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 30,
+      "frame_id": "phase:x:0",
+      "raw_code": 0.47330254316329956,
+      "phase_angle_rad": 0.0,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 31,
+      "frame_id": "phase:x:1",
+      "raw_code": 0.1852588951587677,
+      "phase_angle_rad": 1.0471975511965976,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 32,
+      "frame_id": "phase:x:2",
+      "raw_code": 0.16195635497570038,
+      "phase_angle_rad": 2.0943951023931953,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 33,
+      "frame_id": "phase:x:3",
+      "raw_code": 0.4266974627971649,
+      "phase_angle_rad": 3.141592653589793,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 34,
+      "frame_id": "phase:x:4",
+      "raw_code": 0.7147411108016968,
+      "phase_angle_rad": 4.1887902047863905,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 35,
+      "frame_id": "phase:x:5",
+      "raw_code": 0.7380436658859253,
+      "phase_angle_rad": 5.235987755982989,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 36,
+      "frame_id": "phase:y:0",
+      "raw_code": 0.7699999809265137,
+      "phase_angle_rad": 0.0,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 37,
+      "frame_id": "phase:y:1",
+      "raw_code": 0.6100000143051147,
+      "phase_angle_rad": 1.0471975511965976,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 38,
+      "frame_id": "phase:y:2",
+      "raw_code": 0.28999999165534973,
+      "phase_angle_rad": 2.0943951023931953,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 39,
+      "frame_id": "phase:y:3",
+      "raw_code": 0.12999999523162842,
+      "phase_angle_rad": 3.141592653589793,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 40,
+      "frame_id": "phase:y:4",
+      "raw_code": 0.28999999165534973,
+      "phase_angle_rad": 4.1887902047863905,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 41,
+      "frame_id": "phase:y:5",
+      "raw_code": 0.6100000143051147,
+      "phase_angle_rad": 5.235987755982989,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    }
+  ],
+  "selected_frame": 30,
+  "selected_view": "geometry_xyz_m",
+  "selected_component": 2,
+  "provenance": {
+    "snapshot_id": "fd50bf8ad0fe4c788fa4e7e91a144dc2",
+    "block_id": "fringe",
+    "execution_count": 1,
+    "output_revision": 0,
+    "passed": true,
+    "score": null,
+    "message": "6912/6912 accepted pixels (100.0%); calibrated meters",
+    "inputs": {},
+    "outputs": {
+      "image": {
+        "spatial": {
+          "root_id": "fringe-source:rendered_camera_original",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      },
+      "maps": {
+        "spatial": {
+          "root_id": "fringe-source:rendered_camera_original",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      },
+      "report": {
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      },
+      "cloud": {
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      },
+      "coverage": {
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      },
+      "count": {
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      },
+      "metric": {
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      },
+      "overview": {
+        "spatial": {
+          "root_id": "fringe-overview:fringe",
+          "root_size": [
+            1380,
+            710
+          ],
+          "image_size": [
+            1380,
+            710
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "593967b7ffcb49a2b35ac7ea5cf755a7"
+        }
+      }
+    }
+  },
+  "emitted_cloud": true,
+  "emitted_views": [
+    "source",
+    "phase",
+    "amplitude",
+    "residual",
+    "quality",
+    "depth",
+    "overview",
+    "decode_quality"
+  ],
+  "map_arrays": {
+    "projector_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "98c0797b55b8124420c0766fbecb5f54dc0e9b0b98a28943c27f8b6625542d8c"
+    },
+    "coarse_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<u2",
+      "sha256": "fd030144065d484fcc8d9cb1ac982ab5c658d19e869321126fd86bfcfa7791e9"
+    },
+    "wrapped_phase": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "5ec8c92d8007620866e63cc8498b16102717602177bbee78eb7826d964790586"
+    },
+    "amplitude": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "1d8077769cf18c5604926625344de95df0d01feb8dfcc950d68dc57b4ba746ed"
+    },
+    "relative_rms": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "b29313e02d821e1404c7985544a3feb72bb1941696eb856c150834f2a8b90bbd"
+    },
+    "minimum_gray_contrast": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "091c10cf7ba5eadcf69b169bdfa578f9f8270d8eeb9c0bc755ccf91448204611"
+    },
+    "gray_phase_error_px": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "c6ef74a67942579fc8b6d827ebfa05175833369482d6ab731e04eef25eca4398"
+    },
+    "valid": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "8434fb1d2c17e00a6445b73aa32e1dba1d420ed122886e54f17a1a96565ad5be"
+    },
+    "reason": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|u1",
+      "sha256": "71c642b31e5890a15ef92f3cbeba34edfb6e2e9f63079ecbda13a89d426f7d8b"
+    },
+    "geometry_xyz_m": {
+      "shape": [
+        72,
+        96,
+        3
+      ],
+      "dtype": "<f8",
+      "sha256": "63ca03fe0337a98cd75598105509f82d8a4f45b17e0ec111c9e9dca6c20d90c5"
+    },
+    "geometry_reason": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|u1",
+      "sha256": "71c642b31e5890a15ef92f3cbeba34edfb6e2e9f63079ecbda13a89d426f7d8b"
+    },
+    "geometry_ray_angle_deg": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "cc8edf25afcfa86133ad8a78c1f2f90c41442c2e9059fd3d98ab2aab451119ae"
+    },
+    "geometry_ray_gap_m": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "e10f600e499ddfbd52faa16011b3ce621e283055c04336ff9adc10279ee509e2"
+    },
+    "geometry_camera_error_px": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "6932d1a8e4f2cf5d20a974318a2c2959f4837f820ce64179c0186d79dfd58611"
+    },
+    "geometry_projector_error_px": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "f425457658066b900879f20cc4bfddbf143d1472bdbadae91696c268f4e7338f"
+    },
+    "geometry_valid": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "8434fb1d2c17e00a6445b73aa32e1dba1d420ed122886e54f17a1a96565ad5be"
+    },
+    "geometry_camera_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "786d5e0d03f2dad4e804e80c8093f3cd6aa82ce86a3ef102011b6f317c82bb63"
+    },
+    "geometry_projector_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "98c0797b55b8124420c0766fbecb5f54dc0e9b0b98a28943c27f8b6625542d8c"
+    }
+  },
+  "manifest_sha256": "6babe4719fbe9e8adb7e4a407bfe62c291cdbb34ac2b646945513ced4625496f",
+  "geometry_scope": "Accepted known-calibration reconstruction, not measured XYZ; native cloud is float32; raw maps retain precision. No gap filling.",
+  "display_geometry_scope": "Camera/projector origins and sightlines derive from the declared rig and stored accepted XYZ; never source cloud rows.",
+  "source_scope": "Actual normalized consumed native arrays; original encoded camera image bytes unavailable",
+  "identity_scope": "Caller capture/grid/radiometry/calibration/tickets do not establish synchrony, registration, absolute coding truth or physical accuracy",
+  "diagnostic_scope": "Stored diagnostics only; no per-frame fitted prediction or residual",
+  "decoding_reexecuted": false,
+  "unwrapping_reexecuted": false,
+  "triangulation_reexecuted": false,
+  "calibration_changed": false,
+  "capture_reloaded": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "8fba585fb7e6cf52d253d0e9baf1ce61d7ff6a84337ba9e7c05baef8013c8298"
+}

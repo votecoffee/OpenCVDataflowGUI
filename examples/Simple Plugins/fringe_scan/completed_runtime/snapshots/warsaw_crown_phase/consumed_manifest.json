@@ -1,0 +1,89 @@
+{
+  "schema": "simple_fringe_phase/v1",
+  "capture_id": "warsaw_crown_phase",
+  "pixel_grid": "warsaw_perspective_green_area3",
+  "exposure_s": 1.0,
+  "input_scale": 1,
+  "source_encoding": "linear",
+  "phase_angles": [
+    2.0943951023931953,
+    3.141592653589793,
+    4.1887902047863905,
+    5.235987755982989,
+    6.283185307179586,
+    7.330382858376184
+  ],
+  "provenance": {
+    "source": "Michal Wlasiuk / Robert Sitnik; Simulated structured light 3D scanner datasets",
+    "record": "https://zenodo.org/records/17826191",
+    "license": "CC BY 4.0",
+    "image_kind": "External PBRT simulated images, not acquired camera captures",
+    "transformation": {
+      "source_size": [
+        2592,
+        1944
+      ],
+      "derived_size": [
+        864,
+        648
+      ],
+      "channel": "green",
+      "source_encoding": "Declared PBRT-v4 standard PNG sRGB output, inverse applied",
+      "radiometry_scope": "Inference from supplied PBRT rgb Film/PNG scene and standard writer; exact renderer build/photometric qualification unavailable",
+      "operation": "Linearize then 3x3 area average; any original ceiling propagates as ceiling",
+      "source_from_derived": [
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          3,
+          1
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "phase_angles_rad": [
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989,
+        6.283185307179586,
+        7.330382858376184
+      ],
+      "phase_origin": "Six source projector commands: +pi/3 step, initial 2pi/3, period6px in X",
+      "geometry_scope": "Wrapped phase only; reconstruction calibration not imported"
+    }
+  },
+  "frames": [
+    {
+      "id": "phase:0",
+      "image": "c474158b982b5560c129c5af1dec49d0cff0f729ffaa1d2363f409ccc35b7b90.npy"
+    },
+    {
+      "id": "phase:1",
+      "image": "555a317ce940e4c774b8f32146707be9358b8c9c69dd987cbd93b0e1e9f6cb4a.npy"
+    },
+    {
+      "id": "phase:2",
+      "image": "6e49704f7f66be1b63369dbb1e93d7c96535c3d13793a02feda1eda37c7e3fa0.npy"
+    },
+    {
+      "id": "phase:3",
+      "image": "e469ff4c105cc9d7d49c8a234ceab4fb08488f4d9e25b6c6a03fadf5a9748ec3.npy"
+    },
+    {
+      "id": "phase:4",
+      "image": "7712fac7b73a18e3d72668495b92a77c82bbbdfa07323923e83526add6341e6e.npy"
+    },
+    {
+      "id": "phase:5",
+      "image": "dbed5e64af3b6af3a60e07f0af337d4676aa7f0a4872b753a09ddb23c12f0c66.npy"
+    }
+  ]
+}

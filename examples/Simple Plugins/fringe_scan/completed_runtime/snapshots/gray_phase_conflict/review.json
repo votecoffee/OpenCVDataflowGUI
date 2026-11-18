@@ -1,0 +1,1643 @@
+{
+  "schema": "simple_fringe_completed_review/v1",
+  "execution_binding": "9badd5b8cda343eb9ec6f634b6a22777",
+  "completed_result": {
+    "active_pixels": 6912,
+    "capture_id": "gray_phase_conflict",
+    "capture_metadata": {
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence",
+      "source": "Original analytic tilted plane; one first visible surface per camera ray"
+    },
+    "coverage": 0.7873263888888888,
+    "decision": {
+      "minimum_coverage": 0.95,
+      "passed": false,
+      "scope": "Accepted coverage only; not gauge or defect acceptance"
+    },
+    "decoded_coverage": 0.7873263888888888,
+    "decoded_valid_pixels": 5442,
+    "geometry": {
+      "frame": "camera",
+      "reason_counts": {
+        "unavailable_correspondence": 1470,
+        "valid": 5442
+      },
+      "samples": 6912,
+      "schema": "simple_fringe_geometry/v1",
+      "scope": "Known-calibration ray fit; residuals do not qualify physical measurement accuracy",
+      "transform": "X_projector = R_cp @ X_camera + translation_cp_m",
+      "units": "m",
+      "valid_samples": 5442
+    },
+    "image_size": [
+      96,
+      72
+    ],
+    "input_provenance": {
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence",
+      "source": "Original analytic tilted plane; one first visible surface per camera ray"
+    },
+    "input_scale": 1,
+    "metric": true,
+    "no_phase_redundancy": false,
+    "phase_steps": 6,
+    "pixel_grid": "rendered_camera_original",
+    "projector_size": [
+      128,
+      96
+    ],
+    "reason_counts": {
+      "gray_phase_disagreement": 1470,
+      "valid": 5442
+    },
+    "reference_capture_id": "analytic_clean",
+    "schema": "simple_fringe_decode/v1",
+    "scope": "Decoded projector correspondence, not metric height or verified acquisition timing",
+    "source_encoding": "linear",
+    "valid_pixels": 5442
+  },
+  "executed_parameters": {
+    "capture_manifest": "",
+    "minimum_coverage": 0.95,
+    "recipe_path": "assets/ec6530cb9c87817c7b9c4f1f068e7ae03b6d8cb728ee3a87a5428e95698b892f.sfs",
+    "render_graphics": true,
+    "sha256": "ec6530cb9c87817c7b9c4f1f068e7ae03b6d8cb728ee3a87a5428e95698b892f",
+    "source": "connected capture"
+  },
+  "executed_definition": {
+    "schema": "simple_fringe_capture/v1",
+    "plan": {
+      "projector_size": [
+        128,
+        96
+      ],
+      "period_px": [
+        16.0,
+        16.0
+      ],
+      "phase_steps": 6
+    },
+    "capture_id": "analytic_clean",
+    "pixel_grid": "rendered_camera_original",
+    "exposure_s": 0.01,
+    "input_scale": 1,
+    "source_encoding": "linear",
+    "calibration": {
+      "camera": {
+        "matrix": [
+          [
+            120,
+            0,
+            48
+          ],
+          [
+            0,
+            120,
+            36
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          96,
+          72
+        ],
+        "frame": "camera"
+      },
+      "projector": {
+        "matrix": [
+          [
+            120,
+            0,
+            64
+          ],
+          [
+            0,
+            120,
+            48
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          128,
+          96
+        ],
+        "frame": "projector"
+      },
+      "rotation_cp": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_cp_m": [
+        -0.08,
+        0,
+        0
+      ]
+    },
+    "provenance": {
+      "source": "Original analytic tilted plane; one first visible surface per camera ray",
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+    },
+    "frames": [
+      {
+        "id": "black"
+      },
+      {
+        "id": "white"
+      },
+      {
+        "id": "gray:x:6:positive"
+      },
+      {
+        "id": "gray:x:6:inverse"
+      },
+      {
+        "id": "gray:x:5:positive"
+      },
+      {
+        "id": "gray:x:5:inverse"
+      },
+      {
+        "id": "gray:x:4:positive"
+      },
+      {
+        "id": "gray:x:4:inverse"
+      },
+      {
+        "id": "gray:x:3:positive"
+      },
+      {
+        "id": "gray:x:3:inverse"
+      },
+      {
+        "id": "gray:x:2:positive"
+      },
+      {
+        "id": "gray:x:2:inverse"
+      },
+      {
+        "id": "gray:x:1:positive"
+      },
+      {
+        "id": "gray:x:1:inverse"
+      },
+      {
+        "id": "gray:x:0:positive"
+      },
+      {
+        "id": "gray:x:0:inverse"
+      },
+      {
+        "id": "gray:y:6:positive"
+      },
+      {
+        "id": "gray:y:6:inverse"
+      },
+      {
+        "id": "gray:y:5:positive"
+      },
+      {
+        "id": "gray:y:5:inverse"
+      },
+      {
+        "id": "gray:y:4:positive"
+      },
+      {
+        "id": "gray:y:4:inverse"
+      },
+      {
+        "id": "gray:y:3:positive"
+      },
+      {
+        "id": "gray:y:3:inverse"
+      },
+      {
+        "id": "gray:y:2:positive"
+      },
+      {
+        "id": "gray:y:2:inverse"
+      },
+      {
+        "id": "gray:y:1:positive"
+      },
+      {
+        "id": "gray:y:1:inverse"
+      },
+      {
+        "id": "gray:y:0:positive"
+      },
+      {
+        "id": "gray:y:0:inverse"
+      },
+      {
+        "id": "phase:x:0"
+      },
+      {
+        "id": "phase:x:1"
+      },
+      {
+        "id": "phase:x:2"
+      },
+      {
+        "id": "phase:x:3"
+      },
+      {
+        "id": "phase:x:4"
+      },
+      {
+        "id": "phase:x:5"
+      },
+      {
+        "id": "phase:y:0"
+      },
+      {
+        "id": "phase:y:1"
+      },
+      {
+        "id": "phase:y:2"
+      },
+      {
+        "id": "phase:y:3"
+      },
+      {
+        "id": "phase:y:4"
+      },
+      {
+        "id": "phase:y:5"
+      }
+    ],
+    "reference_import": {
+      "manifest_name": "capture.json",
+      "source_encoding": "linear",
+      "input_scale": 1,
+      "channel": "gray",
+      "source_names": [
+        "frame_00.npy",
+        "frame_01.npy",
+        "frame_02.npy",
+        "frame_03.npy",
+        "frame_04.npy",
+        "frame_05.npy",
+        "frame_06.npy",
+        "frame_07.npy",
+        "frame_08.npy",
+        "frame_09.npy",
+        "frame_10.npy",
+        "frame_11.npy",
+        "frame_12.npy",
+        "frame_13.npy",
+        "frame_14.npy",
+        "frame_15.npy",
+        "frame_16.npy",
+        "frame_17.npy",
+        "frame_18.npy",
+        "frame_19.npy",
+        "frame_20.npy",
+        "frame_21.npy",
+        "frame_22.npy",
+        "frame_23.npy",
+        "frame_24.npy",
+        "frame_25.npy",
+        "frame_26.npy",
+        "frame_27.npy",
+        "frame_28.npy",
+        "frame_29.npy",
+        "frame_30.npy",
+        "frame_31.npy",
+        "frame_32.npy",
+        "frame_33.npy",
+        "frame_34.npy",
+        "frame_35.npy",
+        "frame_36.npy",
+        "frame_37.npy",
+        "frame_38.npy",
+        "frame_39.npy",
+        "frame_40.npy",
+        "frame_41.npy"
+      ]
+    }
+  },
+  "effective_settings": {
+    "decode": {
+      "maximum_gray_phase_error_px": 0.75,
+      "minimum_gray_contrast": 0.15,
+      "minimum_illumination": 0.08,
+      "phase": {
+        "input_ceiling": 1.0,
+        "maximum_relative_rms": 0.15,
+        "minimum_amplitude": 0.03
+      }
+    },
+    "geometry": {
+      "maximum_depth_m": 100.0,
+      "maximum_ray_gap_m": 0.0005,
+      "maximum_reprojection_px": 0.75,
+      "minimum_depth_m": 0.001,
+      "minimum_ray_angle_deg": 0.25
+    }
+  },
+  "consumed_capture": {
+    "schema": "simple_fringe_stack/v1",
+    "images": {
+      "shape": [
+        42,
+        72,
+        96
+      ],
+      "dtype": "<f4",
+      "sha256": "98eda21b76172561fe06e07628cd2504482365fa9d873b524c9d2675583d5f78"
+    },
+    "mask": null,
+    "frame_ids": [
+      "black",
+      "white",
+      "gray:x:6:positive",
+      "gray:x:6:inverse",
+      "gray:x:5:positive",
+      "gray:x:5:inverse",
+      "gray:x:4:positive",
+      "gray:x:4:inverse",
+      "gray:x:3:positive",
+      "gray:x:3:inverse",
+      "gray:x:2:positive",
+      "gray:x:2:inverse",
+      "gray:x:1:positive",
+      "gray:x:1:inverse",
+      "gray:x:0:positive",
+      "gray:x:0:inverse",
+      "gray:y:6:positive",
+      "gray:y:6:inverse",
+      "gray:y:5:positive",
+      "gray:y:5:inverse",
+      "gray:y:4:positive",
+      "gray:y:4:inverse",
+      "gray:y:3:positive",
+      "gray:y:3:inverse",
+      "gray:y:2:positive",
+      "gray:y:2:inverse",
+      "gray:y:1:positive",
+      "gray:y:1:inverse",
+      "gray:y:0:positive",
+      "gray:y:0:inverse",
+      "phase:x:0",
+      "phase:x:1",
+      "phase:x:2",
+      "phase:x:3",
+      "phase:x:4",
+      "phase:x:5",
+      "phase:y:0",
+      "phase:y:1",
+      "phase:y:2",
+      "phase:y:3",
+      "phase:y:4",
+      "phase:y:5"
+    ],
+    "capture_id": "gray_phase_conflict",
+    "pixel_grid": "rendered_camera_original",
+    "response": "linear",
+    "exposure_s": 0.01,
+    "sequence": {
+      "schema": "simple_fringe_capture/v1",
+      "plan": {
+        "projector_size": [
+          128,
+          96
+        ],
+        "period_px": [
+          16.0,
+          16.0
+        ],
+        "phase_steps": 6
+      },
+      "phase_angles": null
+    },
+    "calibration": {
+      "camera": {
+        "matrix": [
+          [
+            120,
+            0,
+            48
+          ],
+          [
+            0,
+            120,
+            36
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          96,
+          72
+        ],
+        "frame": "camera"
+      },
+      "projector": {
+        "matrix": [
+          [
+            120,
+            0,
+            64
+          ],
+          [
+            0,
+            120,
+            48
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "image_size": [
+          128,
+          96
+        ],
+        "frame": "projector"
+      },
+      "rotation_cp": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "translation_cp_m": [
+        -0.08,
+        0,
+        0
+      ]
+    },
+    "metadata": {
+      "source": "Original analytic tilted plane; one first visible surface per camera ray",
+      "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+    }
+  },
+  "ignored_capture_fields": [],
+  "selected_pixel": {
+    "projector_pixels": [
+      null,
+      null
+    ],
+    "coarse_pixels": [
+      33,
+      48
+    ],
+    "wrapped_phase": [
+      1.3471149315267472,
+      3.3743618908240687e-16
+    ],
+    "amplitude": [
+      0.3200000055799296,
+      0.3200000027815502
+    ],
+    "relative_rms": [
+      3.005830644431143e-08,
+      3.8021084612438094e-08
+    ],
+    "minimum_gray_contrast": 1.0,
+    "gray_phase_error_px": [
+      2.43040000424611,
+      0.0
+    ],
+    "valid": false,
+    "reason": 9,
+    "geometry_xyz_m": [
+      null,
+      null,
+      null
+    ],
+    "geometry_reason": 1,
+    "geometry_ray_angle_deg": null,
+    "geometry_ray_gap_m": null,
+    "geometry_camera_error_px": null,
+    "geometry_projector_error_px": null,
+    "geometry_valid": false,
+    "geometry_camera_pixels": [
+      30.0,
+      36.0
+    ],
+    "geometry_projector_pixels": [
+      null,
+      null
+    ],
+    "reason_name": "gray_phase_disagreement",
+    "geometry_reason_name": "unavailable_correspondence",
+    "x": 30,
+    "y": 36,
+    "cloud_row": null
+  },
+  "selected_observations": [
+    {
+      "index": 0,
+      "frame_id": "black",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 1,
+      "frame_id": "white",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 2,
+      "frame_id": "gray:x:6:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 3,
+      "frame_id": "gray:x:6:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 4,
+      "frame_id": "gray:x:5:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 5,
+      "frame_id": "gray:x:5:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 6,
+      "frame_id": "gray:x:4:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 7,
+      "frame_id": "gray:x:4:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 8,
+      "frame_id": "gray:x:3:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 9,
+      "frame_id": "gray:x:3:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 10,
+      "frame_id": "gray:x:2:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 11,
+      "frame_id": "gray:x:2:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 12,
+      "frame_id": "gray:x:1:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 13,
+      "frame_id": "gray:x:1:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 14,
+      "frame_id": "gray:x:0:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 15,
+      "frame_id": "gray:x:0:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 16,
+      "frame_id": "gray:y:6:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 17,
+      "frame_id": "gray:y:6:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 18,
+      "frame_id": "gray:y:5:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 19,
+      "frame_id": "gray:y:5:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 20,
+      "frame_id": "gray:y:4:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 21,
+      "frame_id": "gray:y:4:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 22,
+      "frame_id": "gray:y:3:positive",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 23,
+      "frame_id": "gray:y:3:inverse",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 24,
+      "frame_id": "gray:y:2:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 25,
+      "frame_id": "gray:y:2:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 26,
+      "frame_id": "gray:y:1:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 27,
+      "frame_id": "gray:y:1:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 28,
+      "frame_id": "gray:y:0:positive",
+      "raw_code": 0.07999999821186066,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 29,
+      "frame_id": "gray:y:0:inverse",
+      "raw_code": 0.8199999928474426,
+      "phase_angle_rad": null,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 30,
+      "frame_id": "phase:x:0",
+      "raw_code": 0.5209826827049255,
+      "phase_angle_rad": 0.0,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 31,
+      "frame_id": "phase:x:1",
+      "raw_code": 0.21526716649532318,
+      "phase_angle_rad": 1.0471975511965976,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 32,
+      "frame_id": "phase:x:2",
+      "raw_code": 0.14428451657295227,
+      "phase_angle_rad": 2.0943951023931953,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 33,
+      "frame_id": "phase:x:3",
+      "raw_code": 0.37901735305786133,
+      "phase_angle_rad": 3.141592653589793,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 34,
+      "frame_id": "phase:x:4",
+      "raw_code": 0.6847328543663025,
+      "phase_angle_rad": 4.1887902047863905,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 35,
+      "frame_id": "phase:x:5",
+      "raw_code": 0.7557154893875122,
+      "phase_angle_rad": 5.235987755982989,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 36,
+      "frame_id": "phase:y:0",
+      "raw_code": 0.7699999809265137,
+      "phase_angle_rad": 0.0,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 37,
+      "frame_id": "phase:y:1",
+      "raw_code": 0.6100000143051147,
+      "phase_angle_rad": 1.0471975511965976,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 38,
+      "frame_id": "phase:y:2",
+      "raw_code": 0.28999999165534973,
+      "phase_angle_rad": 2.0943951023931953,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 39,
+      "frame_id": "phase:y:3",
+      "raw_code": 0.12999999523162842,
+      "phase_angle_rad": 3.141592653589793,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 40,
+      "frame_id": "phase:y:4",
+      "raw_code": 0.28999999165534973,
+      "phase_angle_rad": 4.1887902047863905,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    },
+    {
+      "index": 41,
+      "frame_id": "phase:y:5",
+      "raw_code": 0.6100000143051147,
+      "phase_angle_rad": 5.235987755982989,
+      "nonfinite": false,
+      "at_ceiling": false,
+      "scope": "Recorded normalized linear code; no fit/prediction reconstructed"
+    }
+  ],
+  "selected_frame": 30,
+  "selected_view": "gray_phase_error_px",
+  "selected_component": 0,
+  "provenance": {
+    "snapshot_id": "a21d110b28d842c2b53fde0ffb994805",
+    "block_id": "fringe",
+    "execution_count": 1,
+    "output_revision": 0,
+    "passed": false,
+    "score": null,
+    "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+    "inputs": {
+      "capture": {
+        "spatial": {
+          "root_id": "rendered_camera_original",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "source_archive_sha256": "c8eb546c8ba44c50ab4030a8563095c5fce65af356e16d8bdd5a892b174f195d",
+        "scope": "Recorded simulated control; no acquisition or training substitution",
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.819051+00:00",
+          "started_ns": 142134784022400,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T03:36:11.831209+00:00",
+          "finished_ns": 142134796178400,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 12.156
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "capture",
+            "name": "Recorded pattern capture",
+            "type": "input.simple_fringe_capture",
+            "path": "capture"
+          },
+          "score": null,
+          "message": "Recorded actual normalized stack: gray_phase_conflict",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "image": {
+        "spatial": {
+          "root_id": "fringe-source:rendered_camera_original",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      },
+      "maps": {
+        "spatial": {
+          "root_id": "fringe-source:rendered_camera_original",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      },
+      "report": {
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      },
+      "cloud": {
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      },
+      "coverage": {
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      },
+      "count": {
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      },
+      "metric": {
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      },
+      "overview": {
+        "spatial": {
+          "root_id": "fringe-overview:fringe",
+          "root_size": [
+            1380,
+            710
+          ],
+          "image_size": [
+            1380,
+            710
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "fringe_completed_review": {
+          "id": "9badd5b8cda343eb9ec6f634b6a22777"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "e59aa3d2539f4445b00858c8b6c0b72a",
+          "sequence": 1,
+          "source": "capture"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T03:36:11.832072+00:00",
+          "started_ns": 142134797043000,
+          "clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T03:36:11.852229+00:00",
+          "finished_ns": 142134817198100,
+          "finished_clock_id": "1aa91b911f3a45a2bb86ff659d5dc0a8",
+          "elapsed_ms": 20.1551
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "fringe",
+            "name": "SimpleFringeScan",
+            "type": "3d.simple_fringe_scan",
+            "path": "fringe"
+          },
+          "score": null,
+          "message": "5442/6912 accepted pixels (78.7%); calibrated meters",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "fringe_unavailable_coverage",
+              "message": "fringe_unavailable_coverage"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "emitted_cloud": true,
+  "emitted_views": [
+    "source",
+    "phase",
+    "amplitude",
+    "residual",
+    "quality",
+    "depth",
+    "overview",
+    "decode_quality"
+  ],
+  "map_arrays": {
+    "projector_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "1f531d37af7072b26a96a32b8ce4ba869f60e396851630878b0bec587d3b4fba"
+    },
+    "coarse_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<u2",
+      "sha256": "fd030144065d484fcc8d9cb1ac982ab5c658d19e869321126fd86bfcfa7791e9"
+    },
+    "wrapped_phase": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "ffc15c9f29cba07b47284350b0e186d595941a28cdcbf72924d7f13c822bd9e7"
+    },
+    "amplitude": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "bad040d1e0f5bce66112dd6f03b553aa6ef157e3c26aff66ed8b8b1e0936cdb2"
+    },
+    "relative_rms": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "8315be17ecb8f4b900f25d0aa7d093cee81d3b1f195a707594cbf06ac0a1b9eb"
+    },
+    "minimum_gray_contrast": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "091c10cf7ba5eadcf69b169bdfa578f9f8270d8eeb9c0bc755ccf91448204611"
+    },
+    "gray_phase_error_px": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "bb1bcc32e8f362cedd009b37d17fd33902d5a8976d457947f791ff5d516b2791"
+    },
+    "valid": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "6f004e7f4beb6b374ca6c5f2e759e8b0444f5993dc9d162306926dcd5182d472"
+    },
+    "reason": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|u1",
+      "sha256": "abe9e53c1e74026884b0011c3aed1d3c2907cc64323278c4a68c4cd6855327d3"
+    },
+    "geometry_xyz_m": {
+      "shape": [
+        72,
+        96,
+        3
+      ],
+      "dtype": "<f8",
+      "sha256": "61e1c0dc85729a3ae81e7c0615e0ad3e0ff268df708db5f75c35ed19636e9710"
+    },
+    "geometry_reason": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|u1",
+      "sha256": "60207c803d6016fd0dee6e322bc2c7a99100157d4aff800270c174b4a69baa0a"
+    },
+    "geometry_ray_angle_deg": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "edb34468c0d2dc4164bb6ce9ae6b1c79a88bdb623f0d2ad3c9cbb3991b0b1612"
+    },
+    "geometry_ray_gap_m": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "0cc57b85347dbd01578f50bed690a8678a1091b575de24b3434223c2e79ff142"
+    },
+    "geometry_camera_error_px": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "f3fa005aafec016192680572864931a3fa13b0d9f3fab2c2d9c2a786aa5185f9"
+    },
+    "geometry_projector_error_px": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "0f275b22c1c0a63fc7ccc8d8a40a9090a43a9ee08edccdfe00ed31f2df49f3f8"
+    },
+    "geometry_valid": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "6f004e7f4beb6b374ca6c5f2e759e8b0444f5993dc9d162306926dcd5182d472"
+    },
+    "geometry_camera_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "786d5e0d03f2dad4e804e80c8093f3cd6aa82ce86a3ef102011b6f317c82bb63"
+    },
+    "geometry_projector_pixels": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "1f531d37af7072b26a96a32b8ce4ba869f60e396851630878b0bec587d3b4fba"
+    }
+  },
+  "manifest_sha256": null,
+  "geometry_scope": "Accepted known-calibration reconstruction, not measured XYZ; native cloud is float32; raw maps retain precision. No gap filling.",
+  "display_geometry_scope": "Camera/projector origins and sightlines derive from the declared rig and stored accepted XYZ; never source cloud rows.",
+  "source_scope": "Actual normalized consumed native arrays; original encoded camera image bytes unavailable",
+  "identity_scope": "Caller capture/grid/radiometry/calibration/tickets do not establish synchrony, registration, absolute coding truth or physical accuracy",
+  "diagnostic_scope": "Stored diagnostics only; no per-frame fitted prediction or residual",
+  "decoding_reexecuted": false,
+  "unwrapping_reexecuted": false,
+  "triangulation_reexecuted": false,
+  "calibration_changed": false,
+  "capture_reloaded": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "ec6530cb9c87817c7b9c4f1f068e7ae03b6d8cb728ee3a87a5428e95698b892f"
+}

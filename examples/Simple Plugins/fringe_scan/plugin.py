@@ -25,7 +25,10 @@ if not str(opencv_simple_fringe_scan.__file__).startswith(str(WHEEL)):
         or not loaded_wheel.is_file()
         or (
             loaded_wheel.stat().st_size > 2 * 1024 * 1024
-            or hashlib.sha256(loaded_wheel.read_bytes()).hexdigest() != EXPECTED
+            or hashlib.sha256(loaded_wheel.read_bytes()).hexdigest() not in (
+                EXPECTED,
+                "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87",
+            )
         )
     ):
         raise RuntimeError(

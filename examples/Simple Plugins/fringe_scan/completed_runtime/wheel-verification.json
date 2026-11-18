@@ -1,0 +1,26 @@
+{
+  "version": "0.1.0.dev3",
+  "source_commit": "fd01254c1c74806abc916d058a21a292ceb5ca06",
+  "wheel_sha256": "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87",
+  "python_members": {
+    "opencv_simple_fringe_scan/__init__.py": "18bd8ff89fe90f4ca565cd3bca78056cd536f0e69a7d42114d5f1a4f84d9f4eb",
+    "opencv_simple_fringe_scan/cli.py": "1e39a8d7c712c99dd043689e8b8fe5a7cd032063b6c009b4b1c58c31e837e343",
+    "opencv_simple_fringe_scan/completed_review.py": "27141cb409264c793c98d8220cd756419b350c82c3eb793f35c7d4cd2ab64fb8",
+    "opencv_simple_fringe_scan/dataflow.py": "e672089468d7a653da8e2f5b442c1c37a17ebf9b746e14033e793ce1548562b5",
+    "opencv_simple_fringe_scan/decode.py": "5a4111c9abde2549ac955263a1f93aef859d4c1f2241b8adfbe9404172af6778",
+    "opencv_simple_fringe_scan/execution.py": "07599c985297b580f34490c2b8b21f7e4bf559cf1e5cbec49b695ec084b64a25",
+    "opencv_simple_fringe_scan/geometry.py": "d62643c9d12bd01d1af8f9eb585c5413d4091aea0c9244fa3b6d0edfe029f958",
+    "opencv_simple_fringe_scan/model.py": "8268309cc2db4772e9f130e6fb1bd53782fb9f22ac7becc8e3782b03c0a3a8cc",
+    "opencv_simple_fringe_scan/patterns.py": "a84faa7191bf2dcf753474948a0d7cf3ed6935bebcca7a0ccf7f802bd3ff6a1e",
+    "opencv_simple_fringe_scan/phase.py": "f6f00ae22da13213da6e883fa8355840dfce9bac3b05b0876f3672e89efd3a22",
+    "opencv_simple_fringe_scan/qt_completed_review.py": "387b6d40a45dc62f2e9fabad56b4e6059da00a236b7f644e456bd2ed514ca464",
+    "opencv_simple_fringe_scan/qt_region.py": "9d71b10a1f9b4086e832496d8964a976bf6f34f7e84df51451aaeb55feeb8f18",
+    "opencv_simple_fringe_scan/qt_training.py": "8f84b699fac0f41418fdb2a9a1a9cc9ed4a59a04b5ab761ce46228cb0b18255f",
+    "opencv_simple_fringe_scan/recipe.py": "2d7a4e15f5171d7cea1cf86f1dd826139d40ef964b53f199cf15dc98a4c81018",
+    "opencv_simple_fringe_scan/render.py": "5ebd946a179359e3351c7d5654e4c740f903a1baa4f67fea3b74014cfb5e9fc5"
+  },
+  "source_byte_exact": true,
+  "original_mit_license_preserved": true,
+  "environment_installed": false,
+  "focused_checks_passed": 71
+}

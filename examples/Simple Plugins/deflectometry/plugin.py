@@ -6,9 +6,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent / "releases"
 WHEEL = ROOT / "opencv_simple_deflectometry-0.1.0.dev2-py3-none-any.whl"
-FRINGE_WHEEL = ROOT / "opencv_simple_fringe_scan-0.1.0.dev2-py3-none-any.whl"
+FRINGE_WHEEL = ROOT / "opencv_simple_fringe_scan-0.1.0.dev3-py3-none-any.whl"
 EXPECTED = "84bc0ff026977cb47718621d9d54da557e2df62c807bfb5b5a75917a7f009056"
-FRINGE_EXPECTED = "5e75af7d9533d277d25001b2f0389094008159fae5e3fefadd0a61abfa2ce780"
+FRINGE_EXPECTED = "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87"
+FRINGE_COMPATIBLE = (
+    "5e75af7d9533d277d25001b2f0389094008159fae5e3fefadd0a61abfa2ce780",
+    FRINGE_EXPECTED,
+)
 
 
 def checked(path, digest):
@@ -37,7 +41,8 @@ for module, path, digest in (
         origin = str(module.__file__)
         end = origin.lower().rfind(".whl")
         loaded = Path(origin[: end + 4]) if end >= 0 else None
-        if loaded is None or not checked(loaded, digest):
+        accepted = FRINGE_COMPATIBLE if module is opencv_simple_fringe_scan else (digest,)
+        if loaded is None or not any(checked(loaded, value) for value in accepted):
             raise RuntimeError(
                 "Another tool version is already loaded; restart and load this plugin first"
             )

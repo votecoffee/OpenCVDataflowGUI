@@ -1,0 +1,86 @@
+{
+  "schema": "simple_fringe_stack/v1",
+  "images": {
+    "array_file": "capture_array_000.npy",
+    "shape": [
+      6,
+      648,
+      864
+    ],
+    "dtype": "<f4",
+    "sha256": "e72607d738c77ceec35d8bc546a69d65b5c0ea37a135a91ba3b6e7f1d2463335"
+  },
+  "mask": null,
+  "frame_ids": [
+    "phase:0",
+    "phase:1",
+    "phase:2",
+    "phase:3",
+    "phase:4",
+    "phase:5"
+  ],
+  "capture_id": "warsaw_crown_phase",
+  "pixel_grid": "warsaw_perspective_green_area3",
+  "response": "linear",
+  "exposure_s": 1.0,
+  "sequence": {
+    "schema": "simple_fringe_phase/v1",
+    "plan": null,
+    "phase_angles": [
+      2.0943951023931953,
+      3.141592653589793,
+      4.1887902047863905,
+      5.235987755982989,
+      6.283185307179586,
+      7.330382858376184
+    ]
+  },
+  "calibration": null,
+  "metadata": {
+    "source": "Michal Wlasiuk / Robert Sitnik; Simulated structured light 3D scanner datasets",
+    "record": "https://zenodo.org/records/17826191",
+    "license": "CC BY 4.0",
+    "image_kind": "External PBRT simulated images, not acquired camera captures",
+    "transformation": {
+      "source_size": [
+        2592,
+        1944
+      ],
+      "derived_size": [
+        864,
+        648
+      ],
+      "channel": "green",
+      "source_encoding": "Declared PBRT-v4 standard PNG sRGB output, inverse applied",
+      "radiometry_scope": "Inference from supplied PBRT rgb Film/PNG scene and standard writer; exact renderer build/photometric qualification unavailable",
+      "operation": "Linearize then 3x3 area average; any original ceiling propagates as ceiling",
+      "source_from_derived": [
+        [
+          3,
+          0,
+          1
+        ],
+        [
+          0,
+          3,
+          1
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "phase_angles_rad": [
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989,
+        6.283185307179586,
+        7.330382858376184
+      ],
+      "phase_origin": "Six source projector commands: +pi/3 step, initial 2pi/3, period6px in X",
+      "geometry_scope": "Wrapped phase only; reconstruction calibration not imported"
+    }
+  }
+}

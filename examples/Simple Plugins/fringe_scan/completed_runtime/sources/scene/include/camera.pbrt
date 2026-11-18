@@ -1,0 +1,17 @@
+LookAt 
+    0.0 0 1.00      # eye
+    0.0 0.0 0.0     # target
+    0.0 1.0 0.0     # up
+
+# Camera "realistic"
+#     # "string lensfile" [ "scanner-simulation/lenses/dgauss.NA085.25mm.dat" ]
+#     # "string dispersion" [ "scanner-simulation/lenses/dgauss.NA085.25mm.sellmeier.dat" ]
+# 
+#     "string lensfile" [ "scanner-simulation/lenses/dgauss.50mm.dat" ]
+#     # "string dispersion" [ "scanner-simulation/lenses/dgauss.50mm.sellmeier.dat" ]
+# 
+#     "float focusdistance" [  0.88 ]
+#     "float aperturediameter" [ 2.0 ]
+    
+Camera "perspective"
+	"float fov" [ 20.0 ]

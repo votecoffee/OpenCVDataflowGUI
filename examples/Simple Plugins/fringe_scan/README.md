@@ -6,6 +6,14 @@ and inspection mask. Reopening restores the source and fit layers. Metric
 results use colored **fly-around cloud thumbnails**; wrapped phase has image
 results and no XYZ cloud.
 
+The new [completed-runtime reviews](completed_runtime/README.md) provide an
+independent Results action for exact consumed patterns, executed recipe/calibration,
+raw phase/coding/rejection/XYZ maps and native colored fly-around clouds. Source/
+pixel/point selection and frozen exports never decode or triangulate again.
+Eight projects and six exports include coding conflict, ray-gap rejection,
+missing input, graphics-off and the attributed external phase example. Load that
+folder's pinned `plugin.py` first in a fresh process for the new workflow.
+
 ## Open and run
 
 Explicitly load the bundled `plugin.py` using the host's plugin loader, then

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fringe",
+      "type": "3d.simple_fringe_scan",
+      "name": "SimpleFringeScan",
+      "description": "Exact completed pattern/map/cloud review. Simulated controls; no physical accuracy qualification.",
+      "parameters": {
+        "recipe_path": "assets/8c14d5e53e5ae13dad18c2805a9a2e54a956822c98f6495868972219c370af6e.sfs",
+        "sha256": "8c14d5e53e5ae13dad18c2805a9a2e54a956822c98f6495868972219c370af6e",
+        "source": "connected capture",
+        "capture_manifest": "",
+        "minimum_coverage": 0.95,
+        "render_graphics": true
+      },
+      "position": [
+        450,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "cloud",
+        "maps",
+        "report",
+        "coverage",
+        "count",
+        "metric",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud"
+    },
+    {
+      "id": "capture",
+      "type": "input.simple_fringe_capture",
+      "name": "Recorded pattern capture",
+      "parameters": {
+        "capture_path": "assets/d77aa523ca71ece7481ab73a51be8852e78f66f4b20aa43b7694744743630ec6.sfs",
+        "sha256": "d77aa523ca71ece7481ab73a51be8852e78f66f4b20aa43b7694744743630ec6"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "capture",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "capture",
+      "target": "fringe",
+      "input": "capture"
+    }
+  ]
+}

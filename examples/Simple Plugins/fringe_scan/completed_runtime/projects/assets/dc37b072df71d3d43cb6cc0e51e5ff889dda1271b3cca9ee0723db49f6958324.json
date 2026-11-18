@@ -1,0 +1,265 @@
+{
+  "schema": "simple_fringe_capture/v1",
+  "plan": {
+    "projector_size": [
+      128,
+      96
+    ],
+    "period_px": [
+      16.0,
+      16.0
+    ],
+    "phase_steps": 6
+  },
+  "capture_id": "analytic_missing",
+  "pixel_grid": "rendered_camera_original",
+  "exposure_s": 0.01,
+  "input_scale": 1,
+  "source_encoding": "linear",
+  "calibration": {
+    "camera": {
+      "matrix": [
+        [
+          120,
+          0,
+          48
+        ],
+        [
+          0,
+          120,
+          36
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "image_size": [
+        96,
+        72
+      ],
+      "frame": "camera"
+    },
+    "projector": {
+      "matrix": [
+        [
+          120,
+          0,
+          64
+        ],
+        [
+          0,
+          120,
+          48
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "image_size": [
+        128,
+        96
+      ],
+      "frame": "projector"
+    },
+    "rotation_cp": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "translation_cp_m": [
+      -0.08,
+      0,
+      0
+    ]
+  },
+  "provenance": {
+    "source": "Original analytic tilted plane; one first visible surface per camera ray",
+    "scope": "Rendered software control, not acquired-camera or physical accuracy evidence"
+  },
+  "frames": [
+    {
+      "id": "black",
+      "image": "e347c7528d5bfba6750da6e70af01bbf3802a6512676490dea1bb38568f21418.npy"
+    },
+    {
+      "id": "white",
+      "image": "c59ed0ff223c8df0e770fe7a3504ac980787c846b39433878bc54b34fdcc0583.npy"
+    },
+    {
+      "id": "gray:x:6:positive",
+      "image": "7d46921d528bd4010b226528166a6ab78b36c42b8f0606d3c74271325ccc93f0.npy"
+    },
+    {
+      "id": "gray:x:6:inverse",
+      "image": "014052ceed3adbc2116dad1a19ce37141d105b5d985e26c779b598c8664d41b4.npy"
+    },
+    {
+      "id": "gray:x:5:positive",
+      "image": "1b0c914d6cf65816fb9019bae462c7cb8f62becf6e7739e91cec801636158e3b.npy"
+    },
+    {
+      "id": "gray:x:5:inverse",
+      "image": "3221b1d689be36156eabad9c5a6ea80bf0089fdccbac3e7bd0ad84d605b60aa4.npy"
+    },
+    {
+      "id": "gray:x:4:positive",
+      "image": "ad91e3e55f9fb4c1fa803aa621a41371fcf60a708f7cafd303536cd5100568bc.npy"
+    },
+    {
+      "id": "gray:x:4:inverse",
+      "image": "d9df69186bfe6e1694f118bf65cadf5f63af21dec35b1e9b1ebe31906db5aaee.npy"
+    },
+    {
+      "id": "gray:x:3:positive",
+      "image": "6f7d9441ac84cfdbf15d4fad42c776c7894bf75791cf4f7e23057fd73b674b2b.npy"
+    },
+    {
+      "id": "gray:x:3:inverse",
+      "image": "3ac5b9ec173b44ad624028686c67023565ac64aedddd92f34989ed86b293cb3f.npy"
+    },
+    {
+      "id": "gray:x:2:positive",
+      "image": "65d3c5e3033613eb5560b0be95e3f5130f5945054c2fc269e34d80531dee6e08.npy"
+    },
+    {
+      "id": "gray:x:2:inverse",
+      "image": "7ac161ef0976505f108b5f8d836c1a3e2cdd943e7e2bd9837d804815a88e6add.npy"
+    },
+    {
+      "id": "gray:x:1:positive",
+      "image": "7edfed47b9a8e576919e6e7ebd3e0f6a0e1aaef98858fd83d873d5a75fb80b1c.npy"
+    },
+    {
+      "id": "gray:x:1:inverse",
+      "image": "8b673cbb5c36c3bd7f62c272ae9d82b27c389a2afb5dc9390ca04f39958212ef.npy"
+    },
+    {
+      "id": "gray:x:0:positive",
+      "image": "b4d469ecfd492d0f8e36cd0a47366000699bf4decca995b8cb4e70a32e886871.npy"
+    },
+    {
+      "id": "gray:x:0:inverse",
+      "image": "2435ace1f9e9e2b652f76ca666c1704a16aaa3daf99df559e8a8d447cac7c5c5.npy"
+    },
+    {
+      "id": "gray:y:6:positive",
+      "image": "2e18e41d42d2bacdeb8cf4b8d9189d3f7a9a26ef5e77678f41ee9dd55cbb2deb.npy"
+    },
+    {
+      "id": "gray:y:6:inverse",
+      "image": "f7c6d61c6894d7f1cfd4d8a428c7aa1efa2716181d030f9d8ed5d30411b9f139.npy"
+    },
+    {
+      "id": "gray:y:5:positive",
+      "image": "dda1f7d563a05927f9b63f47b02fe620c138ed48a999522b02dd9e0dc178645b.npy"
+    },
+    {
+      "id": "gray:y:5:inverse",
+      "image": "bb34baaef55320a9c14065275633e19d412ae07937336475901b5bf6a2568024.npy"
+    },
+    {
+      "id": "gray:y:4:positive",
+      "image": "3109946d0b408566a6e153f62987b3f23f4dea77b428be99890f17230279b3de.npy"
+    },
+    {
+      "id": "gray:y:4:inverse",
+      "image": "559c3efff46c5dd9187b81ee9158a38cc53572873fec73947de532c75205bd18.npy"
+    },
+    {
+      "id": "gray:y:3:positive",
+      "image": "133b94c80c78567c053ea62049eac7178b1b5156a6a1058e4222dfab5f337331.npy"
+    },
+    {
+      "id": "gray:y:3:inverse",
+      "image": "0f8851ade89af467ccc7cd7f12950422918c8dada7b68cb61312a9e63e7d2785.npy"
+    },
+    {
+      "id": "gray:y:2:positive",
+      "image": "7136cb2a319b57401fe08db6891e5f6a27b96efc254999a2e28d3908f25e272f.npy"
+    },
+    {
+      "id": "gray:y:2:inverse",
+      "image": "3f3aa67bc550a0a2df0217894327570684cb67ff6bd9b6eb63d4d7ba93995f74.npy"
+    },
+    {
+      "id": "gray:y:1:positive",
+      "image": "2df8fc1ae42f8920297a09087bb96914d9cf0eaf973d3f804f68a950ac630fca.npy"
+    },
+    {
+      "id": "gray:y:1:inverse",
+      "image": "414fdfd8331b684ab48fe7eae685cd7daaba7f31f42724f9925714ac78008455.npy"
+    },
+    {
+      "id": "gray:y:0:positive",
+      "image": "e3a7eac13c7efb1d6dd3098565ab6cc51399a80f62dcb755670388d35da391da.npy"
+    },
+    {
+      "id": "gray:y:0:inverse",
+      "image": "4ab469e4ca6a70031eab9ae9e48a7fc78d1e5fbc6f183f1b97e4be4b0b70459b.npy"
+    },
+    {
+      "id": "phase:x:0",
+      "image": "d1b8332acaa76b83b37340ff9a719cb83f433bed37f815cc71d95997bb138c09.npy"
+    },
+    {
+      "id": "phase:x:1",
+      "image": "c14a89df944a8bd30606b5819329ed3a1764ea7d7cf595dfa53dfecde3df8365.npy"
+    },
+    {
+      "id": "phase:x:2",
+      "image": "cb0cb9a00bdcd1ff82e1b586cc6ed1bbefac21303a591e286eceeb77f6105e56.npy"
+    },
+    {
+      "id": "phase:x:3",
+      "image": "c5e567eabbc5528266849089be0ad729e78e9f5b7dbfed32c6a4494222ee979a.npy"
+    },
+    {
+      "id": "phase:x:4",
+      "image": "7426876f4ed7c12df5dfcbc770a87d2b200ae1d11aa33bc8420e56e09e6a18d0.npy"
+    },
+    {
+      "id": "phase:x:5",
+      "image": "c87436aa54a2d1997a52ab7c7ffabe2007709e07912fce7d666d80f72da6fdbb.npy"
+    },
+    {
+      "id": "phase:y:0",
+      "image": "cdb53a8db5b92f332ee83fae2ac1495adf253b9beaadcfa6f00c88185a169b1d.npy"
+    },
+    {
+      "id": "phase:y:1",
+      "image": "d498a57a22d0ba396bfcc91d928a684e2804a324ee488cf112a523e844cefa09.npy"
+    },
+    {
+      "id": "phase:y:2",
+      "image": "a4fccb29f3ee18c4e75a81bf2c73104e81c0482b941146db491bdf60507a6f4d.npy"
+    },
+    {
+      "id": "phase:y:3",
+      "image": "4e69255dffb856ca5c6d0d351f8659d7744f04fd0c7f407c1d3aa2fe1c4d07c7.npy"
+    },
+    {
+      "id": "phase:y:4",
+      "image": "172adedfc26d5300b37bc884ac32ade7ed5e06bc6927ba10d8ce7de021326caa.npy"
+    },
+    {
+      "id": "phase:y:5",
+      "image": "e7a04ee0a757d98d951364e10c826a110350d241e90befab37bd8f178c93764e.npy"
+    }
+  ]
+}
