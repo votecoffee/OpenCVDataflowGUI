@@ -7,6 +7,8 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "cv.fit_pca": "PCACompute2",
+    "cv.transform_pca": "PCAProject PCABackProject",
     "sequence.track_vit": (
         "TrackerVit.create TrackerVit.init TrackerVit.update TrackerVit.getTrackingScore"
     ),

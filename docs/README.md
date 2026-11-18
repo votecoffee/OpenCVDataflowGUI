@@ -72,6 +72,7 @@
 | ALIKED presets, subpixel features, fallback/score policies and matching | [ALIKED features](aliked-features.md) |
 | Saved image color palettes, descriptor vocabularies and unknown-sample inspection | [Reusable clusters](reusable-clusters.md) |
 | Native neighbor classes, explicit votes/distances and unknown-image rejection | [K-nearest classification](knn-classification.md) |
+| Image-descriptor PCA, persisted subspaces/revisions and held-out reconstruction | [Descriptor PCA](descriptor-pca.md) |
 | Native forest training, class votes, importance and portable checked trees | [Random forest classification](rtrees-classification.md) |
 | Labeled image sets, grouped splits, confusion matrices and classifier reports | [Classifier evaluation](classifier-evaluation.md) |
 | Labeled boxes, class-aware IoU matches, precision/recall/AP and detector reports | [Detector evaluation](detector-evaluation.md) |

@@ -1,0 +1,144 @@
+{
+  "asset_sha256": {
+    "classifier-l2.json": "ba7a34c5fcb7187c08704fede24a399353b6f2fab033ea36a659ba123e60d075",
+    "classifier-none.json": "343757534f0fa71ff72d1b45a6615ddcf04b4cf9c5637e9d8f93bff4c5b92b2c",
+    "classifier-variance.json": "22e916de4214873adca13c122ff45207f6ee6231b887ed7806cb8862b337f871",
+    "heldout-diagonal.png": "d75a1465b69298ef5a6a3b7bb6610a1bcfc4c3b59eaf17d5c81e231bfb496f01",
+    "heldout-horizontal.png": "eb05dfdda069dcd6f3ff28423c47b4705600c285c3859c3b30c90eb0e1784133",
+    "heldout-vertical.png": "d0815aa3ffe92d63d012b42e9278f9649e11c05dc5746958ba432b9841e15a54",
+    "pca-l2.json": "f2c9ac4f1ede030ea893362ac9af4413544fef33ace4b670e8128385d5331500",
+    "pca-none.json": "b499e79549aec74a23066fe68713a23e23bd094db87b382e2113476750b60a13",
+    "pca-variance.json": "622be8b775538af6e46d9c798c7d42b84b00235de749f5780ca8e7db126faa1e",
+    "train-horizontal-0.png": "d407ccb5608cea90a4a8d0612bccf8917ccfcb19e8d0173f18881a2c4c5c0654",
+    "train-horizontal-1.png": "b5ab6968170e84cf11226b53ebe8360a23fe8663b7704aac3e6f5d810bc34e0a",
+    "train-horizontal-2.png": "938259dfb4369a4dc3b9bcfe9448ff6547603d1ad233d4f8aec69cbe3d21b85b",
+    "train-vertical-0.png": "538330fa02cecf94166637838cc3e5d870b77a1ce8993e74c886b401c303cc4b",
+    "train-vertical-1.png": "45c5261eca9d0e0b9b5fa69d83e8989587745d44cfcada88c382d04d406bb050",
+    "train-vertical-2.png": "4b3b1d636491355386de3abedbe1e75ca84a20a9d6131adf2045a170ce8ecb56"
+  },
+  "cases": {
+    "classify": {
+      "labels": [
+        "vertical",
+        "horizontal"
+      ],
+      "runs": 2,
+      "states": [
+        "pass",
+        "pass"
+      ],
+      "target": "predict"
+    },
+    "dimensions_only": {
+      "labels": [],
+      "runs": 2,
+      "states": [
+        "pass",
+        "pass"
+      ],
+      "target": "project"
+    },
+    "normalized": {
+      "labels": [
+        "vertical",
+        "horizontal"
+      ],
+      "runs": 2,
+      "states": [
+        "pass",
+        "pass"
+      ],
+      "target": "predict"
+    },
+    "reconstruct": {
+      "labels": [],
+      "runs": 2,
+      "states": [
+        "pass",
+        "pass"
+      ],
+      "target": "restore"
+    },
+    "reject_diagonal": {
+      "labels": [],
+      "runs": 1,
+      "states": [
+        "fail"
+      ],
+      "target": "project"
+    },
+    "train": {
+      "labels": [],
+      "runs": 6,
+      "states": [
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "train_l2": {
+      "labels": [],
+      "runs": 6,
+      "states": [
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "variance": {
+      "labels": [
+        "vertical",
+        "horizontal"
+      ],
+      "runs": 2,
+      "states": [
+        "pass",
+        "pass"
+      ],
+      "target": "predict"
+    },
+    "wrong_descriptor": {
+      "labels": [],
+      "runs": 2,
+      "states": [
+        "error",
+        "error"
+      ],
+      "target": "project"
+    },
+    "wrong_revision": {
+      "labels": [],
+      "runs": 2,
+      "states": [
+        "error",
+        "error"
+      ],
+      "target": "predict"
+    }
+  },
+  "labels": [
+    "vertical",
+    "vertical",
+    "vertical",
+    "horizontal",
+    "horizontal",
+    "horizontal"
+  ],
+  "reconstruction_limit": 0.03,
+  "training": [
+    "train-vertical-0.png",
+    "train-vertical-1.png",
+    "train-vertical-2.png",
+    "train-horizontal-0.png",
+    "train-horizontal-1.png",
+    "train-horizontal-2.png"
+  ]
+}

@@ -811,7 +811,12 @@ def builtin_registry():
     from .polar_image import PolarImageWarp
     from .polynomial_roots import SolvePolynomialRoots
     from .poses import POSE_BLOCKS
-    from .principal_components import FitPrincipalComponents, TransformPrincipalComponents
+    from .principal_components import (
+        FitPrincipalComponents,
+        LoadPrincipalComponents,
+        SavePrincipalComponents,
+        TransformPrincipalComponents,
+    )
     from .processing import PROCESSING_BLOCKS
     from .profile_resampling import ResampleImageProfile
     from .projection import IntensityProfile, PathIntensityProfile
@@ -1193,6 +1198,8 @@ def builtin_registry():
         SortNumericTable,
         FitPrincipalComponents,
         TransformPrincipalComponents,
+        SavePrincipalComponents,
+        LoadPrincipalComponents,
         MahalanobisDistance,
         KMeansSamples,
         KMeansImage,

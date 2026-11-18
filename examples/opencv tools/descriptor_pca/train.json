@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/train-vertical-0.png",
+          "assets/train-vertical-1.png",
+          "assets/train-vertical-2.png",
+          "assets/train-horizontal-0.png",
+          "assets/train-horizontal-1.png",
+          "assets/train-horizontal-2.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hog",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 6,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "cv.fit_pca",
+      "name": "Fit principal components",
+      "parameters": {
+        "samples": [],
+        "selection": "count",
+        "component_count": 2,
+        "minimum_variance": 0.95,
+        "normalization": "none",
+        "mean": [],
+        "max_work": 64000000,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "samples"
+      ],
+      "exposed_outputs": [
+        "model",
+        "component_count",
+        "explained_variance_ratios",
+        "retained_variance"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "cv.transform_pca",
+      "name": "Transform principal components",
+      "parameters": {
+        "samples": [],
+        "direction": "project",
+        "contract_policy": "require_match",
+        "check_reconstruction_error": false,
+        "error_limit": 0.1,
+        "max_work": 64000000,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples",
+        "image"
+      ],
+      "exposed_outputs": [
+        "samples",
+        "feature_count",
+        "reconstruction_errors",
+        "maximum_error",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "ml.knn_train",
+      "name": "Train OpenCV K-nearest classifier",
+      "parameters": {
+        "k": 1,
+        "normalization": "none",
+        "labels": [
+          "vertical",
+          "vertical",
+          "vertical",
+          "horizontal",
+          "horizontal",
+          "horizontal"
+        ]
+      },
+      "position": [
+        1800,
+        0
+      ],
+      "exposed_inputs": [
+        "samples",
+        "labels"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save_pca",
+      "type": "cv.save_pca",
+      "name": "Save principal component model",
+      "parameters": {
+        "path": "trained-pca-none.json"
+      },
+      "position": [
+        1440,
+        380
+      ],
+      "exposed_inputs": [
+        "model"
+      ],
+      "exposed_outputs": [
+        "path"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save",
+      "type": "ml.knn_save",
+      "name": "Save K-nearest classifier",
+      "parameters": {
+        "path": "trained-classifier-none.json"
+      },
+      "position": [
+        2160,
+        0
+      ],
+      "exposed_inputs": [
+        "model"
+      ],
+      "exposed_outputs": [
+        "path"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original image-descriptor PCA controls",
+      "description": "Original MIT synthetic stripe images and code by OpenCVDataflowGUI contributors. Nine images copied unchanged from knn_classification. Six training images and three held-out image hashes are disjoint. PCA and classifier models are trained only on the six training windows. Training variance is not held-out accuracy; reconstruction error and nearest-neighbor distance are not probabilities. These controlled windows do not establish general defect/classification performance. See README and SOURCES.",
+      "parameters": {},
+      "position": [
+        0,
+        -470
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hog",
+      "input": "image"
+    },
+    {
+      "source": "hog",
+      "output": "descriptor",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "fit",
+      "input": "samples"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "project",
+      "input": "samples"
+    },
+    {
+      "source": "fit",
+      "output": "model",
+      "target": "project",
+      "input": "model"
+    },
+    {
+      "source": "fit",
+      "output": "model",
+      "target": "save_pca",
+      "input": "model"
+    },
+    {
+      "source": "project",
+      "output": "samples",
+      "target": "train",
+      "input": "samples"
+    },
+    {
+      "source": "train",
+      "output": "model",
+      "target": "save",
+      "input": "model"
+    }
+  ]
+}

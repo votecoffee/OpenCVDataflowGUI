@@ -2165,14 +2165,20 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 
 Image processing / Statistics
 
-Inputs: `samples` (data, optional).
+Inputs: `samples` (any, optional).
+
+Input `samples` — Up to 65,536 dimensions and 2M values; grouped contracts must agree.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `samples` | `[]` | One numeric vector per row. The Samples input overrides this table. |
-| `selection` | `"variance"` | `variance`, `count` Choose a fixed count or the smallest basis meeting a variance target. |
-| `component_count` | `2` | Value must be a whole number between 1 and 128. Number of components in Count mode, up to the fitted rank. |
-| `minimum_variance` | `0.95` | Value must be a finite number between 1e-06 and 1. Fraction of total variance to retain in Variance mode. |
+| `samples` | `[]` | Numeric rows or a batch of image descriptors. Wired input wins. |
+| `selection` | `"variance"` | `variance`, `count` Fixed count or the smallest positive-rank basis meeting the variance target. |
+| `component_count` | `2` | Value must be a whole number between 1 and 2048. Count mode only, up to fitted positive rank and the model work limit. |
+| `minimum_variance` | `0.95` | Value must be a finite number between 1e-06 and 1. Fraction of training variance, not held-out accuracy or confidence. |
+| `normalization` | `"none"` | `none`, `l2` Saved per-row L2 or None. L2 reconstruction loses original magnitude. |
+| `mean` | `[]` | Empty estimates mean; otherwise a finite vector in normalized feature units. |
+| `max_work` | `64000000` | Value must be a whole number between 1 and 1e+09. Bound estimated scalar multiply work before native PCA calls. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Bound estimated tables/basis/native workspace; not measured process RSS. |
 
 ## Flat-field correction (`cv.flat_field`)
 
@@ -2793,6 +2799,14 @@ Image processing / Calibrated layouts
 | --- | --- | --- |
 | `path` | `""` | Strict JSON layout, up to 1 MiB. Relative paths use the saved project folder. |
 | `expected_sha256` | `""` | Optional file-byte SHA256; Save As copies the sealed layout asset. |
+
+## Load principal component model (`cv.load_pca`)
+
+Image processing / Statistics
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
 
 ## Local window statistics (`cv.local_statistics`)
 
@@ -3761,6 +3775,16 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `channel_map` | `[]` | One index per output channel, numbering A then B from zero. Use -1 for zero fill or an empty list to copy the first channels in order. |
 | `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid pairs equal-size images by index, even with different frame IDs. |
 
+## Save principal component model (`cv.save_pca`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"principal-components.json"` |  |
+
 ## Scale absolute to 8-bit (`cv.scale_absolute`)
 
 Image processing / Image math
@@ -4199,12 +4223,21 @@ Input `image` — Finite nonnegative float32 radiance in gray, BGR or RGB.
 
 Image processing / Statistics
 
-Inputs: `model` (data), `samples` (data, optional).
+Inputs: `model` (data), `samples` (any, optional), `image` (image, optional).
+
+Input `image` — Optional unchanged image for one descriptor; ticket/grid/recipe must agree.
+
+Input `samples` — Image contracts and PCA revisions are retained on projected descriptor wires.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `samples` | `[]` | One numeric vector per row. The Samples input overrides this table. |
-| `direction` | `"project"` | `project`, `reconstruct` Project original features or reconstruct from component scores. |
+| `samples` | `[]` | A descriptor, table or descriptor batch. Wired input overrides this table. |
+| `direction` | `"project"` | `project`, `reconstruct` Project original features or reconstruct scores. L2 loses magnitude. |
+| `contract_policy` | `"require_match"` | `require_match`, `dimensions_only` Require descriptor/model identity, or check dimensions only. |
+| `check_reconstruction_error` | `false` | Project only: fail if any feature RMSE exceeds the limit. |
+| `error_limit` | `0.1` | Value must be a finite number between 0 and 1e+100. Inclusive per-row feature RMSE, not calibrated anomaly confidence. |
+| `max_work` | `64000000` | Value must be a whole number between 1 and 1e+09. Bound estimated scalar multiply work before native PCA calls. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Bound estimated tables/basis/native workspace; not measured process RSS. |
 
 ## Transform image points (`cv.transform_points`)
 

@@ -1,0 +1,98 @@
+{
+  "algorithm": "brute_force",
+  "class_labels": [
+    "vertical",
+    "horizontal"
+  ],
+  "default_k": 1,
+  "dimensions": 2,
+  "feature_contract": {
+    "dimensions": 2,
+    "model": "principal_components_projection_v1",
+    "normalization": "l2",
+    "pca_revision": "f9511aca7a6416a4285174b7f494499fa89d5709ca02acf9f825ee7d2fc505a7",
+    "source": {
+      "block_grid": [
+        3,
+        3
+      ],
+      "cell_grid": [
+        4,
+        4
+      ],
+      "descriptor_length": 324,
+      "input_depth": "uint8",
+      "model": "opencv_hog_window_v1",
+      "opencv_version": "5.0.0",
+      "order": [
+        "block_x",
+        "block_y",
+        "cell_x",
+        "cell_y",
+        "bin"
+      ],
+      "settings": {
+        "bins": 9,
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "cell_size": [
+          8,
+          8
+        ],
+        "gamma_correction": true,
+        "l2_hys_threshold": 0.2,
+        "signed_gradient": false,
+        "win_sigma": -1.0
+      },
+      "window_size": [
+        32,
+        32
+      ],
+      "working_encoding": "gray"
+    }
+  },
+  "model": "opencv_knn_classifier_v1",
+  "normalization": "none",
+  "opencv_major": 5,
+  "responses": [
+    0,
+    0,
+    0,
+    1,
+    1,
+    1
+  ],
+  "revision": "d628673cb167acf9ae9ead8e0fb5bef50da0401db4857220247a2c522af31d6f",
+  "samples": [
+    [
+      -0.6915267705917358,
+      -0.05367810279130936
+    ],
+    [
+      -0.6912638545036316,
+      0.021437697112560272
+    ],
+    [
+      -0.6905436515808105,
+      0.03226589411497116
+    ],
+    [
+      0.6916821002960205,
+      -0.002118975156918168
+    ],
+    [
+      0.6910892724990845,
+      0.0004609629395417869
+    ],
+    [
+      0.690562903881073,
+      0.0016325239557772875
+    ]
+  ]
+}

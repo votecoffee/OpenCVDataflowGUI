@@ -1,0 +1,97 @@
+{
+  "opencv": "5.0.0",
+  "reference": "native HOG and independent NumPy SVD",
+  "scope": "Controlled disjoint stripe windows, not general classification accuracy",
+  "modes": {
+    "none": {
+      "training_rows": 6,
+      "input_dimensions": 324,
+      "components": 2,
+      "retained_training_variance": 0.999764010186997,
+      "saved_projector_max_error": 7.28583859910259e-16,
+      "heldout": [
+        {
+          "image": "heldout-vertical.png",
+          "raw_label": "vertical",
+          "reduced_label": "vertical",
+          "reconstruction_rmse": 0.00406589748596282,
+          "nearest_reduced_distance": 0.014679672451613876
+        },
+        {
+          "image": "heldout-horizontal.png",
+          "raw_label": "horizontal",
+          "reduced_label": "horizontal",
+          "reconstruction_rmse": 0.016357113621482712,
+          "nearest_reduced_distance": 0.009844576890837236
+        },
+        {
+          "image": "heldout-diagonal.png",
+          "raw_label": "horizontal",
+          "reduced_label": "horizontal",
+          "reconstruction_rmse": 0.14491074964067902,
+          "nearest_reduced_distance": 1.0804469331198057
+        }
+      ]
+    },
+    "l2": {
+      "training_rows": 6,
+      "input_dimensions": 324,
+      "components": 2,
+      "retained_training_variance": 0.9997639032773955,
+      "saved_projector_max_error": 6.036837696399289e-16,
+      "heldout": [
+        {
+          "image": "heldout-vertical.png",
+          "raw_label": "vertical",
+          "reduced_label": "vertical",
+          "reconstruction_rmse": 0.0013576728000554107,
+          "nearest_reduced_distance": 0.004902116617072845
+        },
+        {
+          "image": "heldout-horizontal.png",
+          "raw_label": "horizontal",
+          "reduced_label": "horizontal",
+          "reconstruction_rmse": 0.005466282862574646,
+          "nearest_reduced_distance": 0.003244215270081328
+        },
+        {
+          "image": "heldout-diagonal.png",
+          "raw_label": "horizontal",
+          "reduced_label": "horizontal",
+          "reconstruction_rmse": 0.048398845078129506,
+          "nearest_reduced_distance": 0.36133785292636367
+        }
+      ]
+    },
+    "variance": {
+      "training_rows": 6,
+      "input_dimensions": 324,
+      "components": 1,
+      "retained_training_variance": 0.9982340246375919,
+      "saved_projector_max_error": 6.678685382510707e-17,
+      "heldout": [
+        {
+          "image": "heldout-vertical.png",
+          "raw_label": "vertical",
+          "reduced_label": "vertical",
+          "reconstruction_rmse": 0.007400224226272017,
+          "nearest_reduced_distance": 0.0004410328960413601
+        },
+        {
+          "image": "heldout-horizontal.png",
+          "raw_label": "horizontal",
+          "reduced_label": "horizontal",
+          "reconstruction_rmse": 0.01637630868501609,
+          "nearest_reduced_distance": 0.002492416051468105
+        },
+        {
+          "image": "heldout-diagonal.png",
+          "raw_label": "horizontal",
+          "reduced_label": "horizontal",
+          "reconstruction_rmse": 0.1449759132936761,
+          "nearest_reduced_distance": 1.0772449369972117
+        }
+      ]
+    }
+  }
+}
