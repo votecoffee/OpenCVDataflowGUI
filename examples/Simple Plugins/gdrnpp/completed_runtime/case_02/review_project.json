@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "stored_0",
+      "type": "input.cloud",
+      "name": "Recorded proposal 1: rejected",
+      "parameters": {
+        "path": "frozen/candidate_01.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "thumbnail": true,
+      "preview_output": "cloud",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ]
+    },
+    {
+      "id": "image_0",
+      "type": "input.file",
+      "name": "Original-sample projection 1",
+      "parameters": {
+        "path": "frozen/candidate_01.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        360
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Consumed source RGB",
+      "parameters": {
+        "path": "frozen/consumed_source.png",
+        "path_base": "project",
+        "color_format": "rgb"
+      },
+      "position": [
+        0,
+        720
+      ],
+      "thumbnail": true,
+      "preview_output": "image",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ]
+    }
+  ],
+  "connections": []
+}

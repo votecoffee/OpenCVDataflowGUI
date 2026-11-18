@@ -1,0 +1,13 @@
+{
+  "dataset": "T-LESS",
+  "license": "CC BY 4.0",
+  "source": "https://cmp.felk.cvut.cz/t-less/",
+  "revision": "5fd309a04476a842d93abfb584fba9ee7caecdf1",
+  "sha256": {
+    "test_primesense/000006/scene_gt.json": "e06c01e5492e38bd92f0749681040c6617c92fca4c2613cedffe1d44766b4df6",
+    "test_primesense/000006/scene_camera.json": "0600d66792e09f9ee82fd20bb62573d84219391d662dab5241aa350c9a56c90d",
+    "test_primesense/000002/scene_gt.json": "a04b5aabc88dab06280670270b4954e5e353e490f5e661a92b42aa730726316f",
+    "test_primesense/000002/scene_camera.json": "84d4a7b2106ed19c59d11da0fa406a763bd408c8585a77b8f44e5d3d7b300d9b"
+  },
+  "scope": "Unmodified published scene/calibration/pose metadata. Pose truth is not inference input."
+}

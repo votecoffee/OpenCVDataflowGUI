@@ -1,0 +1,62 @@
+{
+  "repeats": 100,
+  "warmup": 5,
+  "alternating_order": true,
+  "cases": [
+    {
+      "case": "case_01",
+      "candidate": 1,
+      "samples": 11189,
+      "retained_array_bytes": 481127,
+      "baseline_median_ms": 1.0514499881537631,
+      "retained_median_ms": 0.956349991611205,
+      "fit_identical": true
+    },
+    {
+      "case": "case_01",
+      "candidate": 2,
+      "samples": 10881,
+      "retained_array_bytes": 467883,
+      "baseline_median_ms": 1.0292000079061836,
+      "retained_median_ms": 0.9179999906336889,
+      "fit_identical": true
+    },
+    {
+      "case": "case_01",
+      "candidate": 3,
+      "samples": 11793,
+      "retained_array_bytes": 507099,
+      "baseline_median_ms": 1.0621999972499907,
+      "retained_median_ms": 1.0171000030823052,
+      "fit_identical": true
+    },
+    {
+      "case": "case_01",
+      "candidate": 4,
+      "samples": 8654,
+      "retained_array_bytes": 372122,
+      "baseline_median_ms": 0.6089999951655045,
+      "retained_median_ms": 0.6128000095486641,
+      "fit_identical": true
+    },
+    {
+      "case": "case_01",
+      "candidate": 5,
+      "samples": 9260,
+      "retained_array_bytes": 398180,
+      "baseline_median_ms": 0.617199984844774,
+      "retained_median_ms": 0.6133999850135297,
+      "fit_identical": true
+    },
+    {
+      "case": "case_02",
+      "candidate": 1,
+      "samples": 8945,
+      "retained_array_bytes": 384635,
+      "baseline_median_ms": 0.64080000447575,
+      "retained_median_ms": 0.6450999935623258,
+      "fit_identical": true
+    }
+  ],
+  "scope": "Fit kernel only on original predicted samples; no inference/render/IPC/GUI. Exploratory timings, not end-to-end latency or accuracy qualification."
+}

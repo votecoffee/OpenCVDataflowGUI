@@ -1,0 +1,51 @@
+{
+  "schema": "simple_gdrnpp_completed_checks/v1",
+  "cases": [
+    {
+      "case": "case_01",
+      "capture_id": "scene000006_frame000002_reordered_review",
+      "proposals": 5,
+      "accepted": 1,
+      "selected_proposal": 2,
+      "archive_sha256": "1cc4cba06c0671cb9937c04e4cd9d2d93e7700b1930778e15530e95d1e0dfdee",
+      "inference_requests_through_review": 1,
+      "baseline_same_settings_numeric_and_graphics_identical": true,
+      "runner_graph_handoff_preserved_worker": true,
+      "retired_worker_pid": 48216,
+      "retired_before_browsing_and_export": true,
+      "verification_samples": [
+        11189,
+        10881,
+        11793,
+        8654,
+        9260
+      ],
+      "transferred_fit_array_bytes": 1812195,
+      "cold_execution_seconds": 9.033183099993039,
+      "source": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0",
+      "mode": "Retained reference",
+      "scope": "Retained-reference demonstration, supplied boxes; no pose labels used in inference"
+    },
+    {
+      "case": "case_02",
+      "capture_id": "tless_scene000002_frame000013",
+      "proposals": 1,
+      "accepted": 0,
+      "selected_proposal": 1,
+      "archive_sha256": "420de5ab5f14fcb4df6236d0845d774527c984ebca101c55f2d8d7785f46c80e",
+      "inference_requests_through_review": 1,
+      "baseline_same_settings_numeric_and_graphics_identical": true,
+      "runner_graph_handoff_preserved_worker": true,
+      "retired_worker_pid": 10316,
+      "retired_before_browsing_and_export": true,
+      "verification_samples": [
+        8945
+      ],
+      "transferred_fit_array_bytes": 313075,
+      "cold_execution_seconds": 6.06157799999346,
+      "source": "T-LESS, Hodan et al., WACV 2017, CC BY 4.0",
+      "mode": "Retained reference",
+      "scope": "Retained-reference demonstration, supplied boxes; no pose labels used in inference"
+    }
+  ]
+}

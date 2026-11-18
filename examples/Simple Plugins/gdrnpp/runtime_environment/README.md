@@ -54,3 +54,8 @@ is T. Hodan et al., T-LESS, WACV 2017,
 Weights remain external.
 Automatic preparation of actual app execution instances is still pending the
 host resource lifecycle hook; these installation checks do not inspect images.
+
+Current completed-review wheels are in `../completed_runtime/releases/`: use
+`opencv_simple_gdrnpp-0.1.0.dev1-py3-none-any.whl` and
+`opencv_simple_foundation_pose-0.1.0.dev3-py3-none-any.whl` together.
+Their runtime source bytes and external-model identity are pinned in that bundle.

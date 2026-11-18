@@ -1,0 +1,27 @@
+{
+  "source_commit": "01a45ed",
+  "worker_checks": 197,
+  "worker_skipped": 8,
+  "worker_subtests": 4,
+  "geometry_checks": 9,
+  "host_checks": 67,
+  "real_native_retained_captures": 2,
+  "real_native_connected_controls": 1,
+  "published_projects": 4,
+  "recorded_native_clouds": 6,
+  "original_publisher_metadata_files": 4,
+  "runtime_modules_verified": 48,
+  "frozen_review_without_inference_render_or_refit": true,
+  "numerical_and_emitted_graphics_exact": true,
+  "source_recipe_bytes_preserved": true,
+  "source_and_host_modules_identical": true,
+  "source_scope": "Fresh locked Windows 3.13.9 isolated worker; checkout host and installed host API checks.",
+  "host_environment_modified": false,
+  "weights_bundled": false,
+  "package_metadata": "Public package descriptions omit private implementation tracking links; tested runtime modules remain byte-identical.",
+  "remaining": [
+    "Independent pose/occlusion/negative and physical grasp qualification",
+    "Custom-object optimizer and full training",
+    "Accelerated/GPU and broader platform profiling"
+  ]
+}

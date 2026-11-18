@@ -13,7 +13,9 @@ from opencv_dataflow.payloads import NO_VALUE, ValuePacket, frame, require_same_
 from opencv_dataflow.pointclouds import PointCloud
 
 from .bridge import WorkerClient, project_recipe_path
+from .completed_review import prepare_capture, retain_completed
 from .selection import describe_review
+from .worker_lease import WorkerLease
 
 CAPTURE_PORTS = ("image", "depth", "camera", "detections", "capture_id")
 
@@ -84,6 +86,7 @@ class SimpleGDRNPP(Block):
     parallel_safe = False
     preview_safe = False
     plugin_dialog_label = "Set up trained object…"
+    plugin_review_dialog_label = "Review completed poses and depth support…"
     inputs = tuple(
         Port(name, kind, required=False, required_when_connected=True)
         for name, kind in [
@@ -158,6 +161,8 @@ class SimpleGDRNPP(Block):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._client = None
+        self._lease = None
+        self._completed_record = None
         self.preview_output = "cloud"
 
     @property
@@ -183,6 +188,7 @@ class SimpleGDRNPP(Block):
             raise ValidationError("Choose an external model directory", "models_dir")
 
     def process(self, inputs):
+        self._completed_record = None
         p = self.parameters
         try:
             base = dict(
@@ -204,6 +210,9 @@ class SimpleGDRNPP(Block):
                 want_cloud=p["render_cloud"],
                 want_gallery=p["render_gallery"],
                 review_candidate=p["review_candidate"],
+                retain_completed=bool(
+                    self.run_profile.input_previews and self.run_profile.output_previews
+                ),
             )
             arrays = {}
             if p["mode"] == "Connected RGB-D":
@@ -216,6 +225,8 @@ class SimpleGDRNPP(Block):
                 )
             if self._client is None:
                 self._client = WorkerClient()
+            if self._lease is None:
+                self._lease = WorkerLease(self._client)
             result, graphics = self._client.call(
                 "preview", data, arrays, cancelled=getattr(self, "_cancelled", lambda: False)
             )
@@ -273,18 +284,21 @@ class SimpleGDRNPP(Block):
             if selection["candidate_index"] is not None
             else "no proposals to review"
         )
+        outputs = dict(
+            report=report,
+            pose=report["best_pose"] or NO_VALUE,
+            poses=accepted,
+            accepted_count=len(accepted),
+            overlay=image,
+            cloud=cloud,
+            review=selection,
+            candidate_table=table,
+            gallery=gallery,
+        )
+        for key, payload in retain_completed(self, result, outputs).items():
+            contexts.setdefault(key, {}).update(payload)
         return Result(
-            dict(
-                report=report,
-                pose=report["best_pose"] or NO_VALUE,
-                poses=accepted,
-                accepted_count=len(accepted),
-                overlay=image,
-                cloud=cloud,
-                review=selection,
-                candidate_table=table,
-                gallery=gallery,
-            ),
+            outputs,
             payloads=contexts,
             passed=bool(accepted),
             score=max((c["fit"]["coverage"] for c in report["candidates"]), default=0.0),
@@ -306,8 +320,32 @@ class SimpleGDRNPP(Block):
 
         return GDRNPPSetupDialog(parent, parameters, context)
 
+    def prepare_completed_review(self, context):
+        return prepare_capture(self, context)
+
+    def create_plugin_review_dialog(self, parent, context):
+        from .qt_completed_review import CompletedReviewDialog
+
+        return CompletedReviewDialog(
+            parent, context, lambda: self.prepare_completed_review(context)
+        )
+
+    def copy_runtime_from(self, other):
+        super().copy_runtime_from(other)
+        if self._lease is not other._lease:
+            self.close()
+            if other._lease is not None:
+                self._lease = other._lease.acquire()
+                self._client = self._lease.client
+        self._completed_record = other._completed_record
+
     def close(self):
-        if self._client is not None:
+        self._completed_record = None
+        lease, self._lease = self._lease, None
+        if lease is not None:
+            self._client = None
+            lease.release()
+        elif self._client is not None:
             self._client.close()
             self._client = None
 

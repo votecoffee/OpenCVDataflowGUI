@@ -1,5 +1,11 @@
 # SimpleGDRNPP setup and real saved reviews
 
+[Completed pose/support review](completed_runtime/README.md) adds a separate
+read-only Results action with exact executed RGB-D, recipe and verification
+samples. Two real examples preserve accepted/rejected poses and native colored
+fly-around review without inference, rendering or refitting. Updated worker and
+geometry-helper wheels are bundled there; choose them in the dedicated worker.
+
 `training_data/` starts new-object data preparation with calibrated labels for
 objects 1 and 6. It includes 16 original synthetic/real captures, 22 label reviews,
 split/source checks, zoomable filmstrips and four colored native cloud/image

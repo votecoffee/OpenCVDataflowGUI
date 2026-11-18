@@ -1,0 +1,34 @@
+[
+  {
+    "case": "case_01",
+    "project": "run_project",
+    "static_valid": true,
+    "native_clouds": 0,
+    "save_reopen": true,
+    "exact_recipe_bytes": true
+  },
+  {
+    "case": "case_01",
+    "project": "review_project",
+    "static_valid": true,
+    "native_clouds": 5,
+    "save_reopen": true,
+    "exact_recipe_bytes": false
+  },
+  {
+    "case": "case_02",
+    "project": "run_project",
+    "static_valid": true,
+    "native_clouds": 0,
+    "save_reopen": true,
+    "exact_recipe_bytes": true
+  },
+  {
+    "case": "case_02",
+    "project": "review_project",
+    "static_valid": true,
+    "native_clouds": 1,
+    "save_reopen": true,
+    "exact_recipe_bytes": false
+  }
+]
