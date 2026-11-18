@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from opencv_dataflow.blocks import builtin_registry
+from opencv_dataflow.classifier_common import model_revision
 
 
 @pytest.mark.parametrize("normalization,ddof", [("population", 0), ("sample", 1)])
@@ -58,7 +59,9 @@ def test_distance_requires_regularization_for_singular_model_and_rejects_indefin
 
     assert check.execute({"model": model, "samples": [[2, 3]]}) is None
     assert "feature count" in check.error
-    assert check.execute({"model": {**model, "covariance": [[-0.1]]}, "samples": [[2]]}) is None
+    negative = {**model, "covariance": [[-0.1]]}
+    negative["revision"] = model_revision(negative)
+    assert check.execute({"model": negative, "samples": [[2]]}) is None
     assert "positive semidefinite" in check.error
     assert fit.execute({"samples": [[1]]}) is None
     assert "at least two rows" in fit.error

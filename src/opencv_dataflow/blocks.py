@@ -682,7 +682,12 @@ def builtin_registry():
     from .examples3d import StereoDemo
     from .exposure import AlignExposures, FuseExposures
     from .fanuc import FANUC_BLOCKS
-    from .feature_covariance import FitFeatureCovariance, MahalanobisDistance
+    from .feature_covariance import (
+        FitFeatureCovariance,
+        LoadFeatureCovariance,
+        MahalanobisDistance,
+        SaveFeatureCovariance,
+    )
     from .feature_evaluation import EvaluateImageFeatures
     from .features import FEATURE_BLOCKS
     from .flat_field_reference import BuildFlatFieldReference
@@ -1183,6 +1188,8 @@ def builtin_registry():
         *INSTANCE_BLOCKS,
         *LANDMARK_BLOCKS,
         FitFeatureCovariance,
+        LoadFeatureCovariance,
+        SaveFeatureCovariance,
         EvaluateImageFeatures,
         SolveLinearSystem,
         SolveLinearProgram,

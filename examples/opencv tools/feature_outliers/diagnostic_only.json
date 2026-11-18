@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/crack.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hog",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 4,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "cv.load_feature_covariance",
+      "name": "Load feature covariance",
+      "parameters": {
+        "path": "assets/covariance-none.json"
+      },
+      "position": [
+        360,
+        440
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "inspect.mahalanobis_distance",
+      "name": "Mahalanobis distance",
+      "parameters": {
+        "samples": [],
+        "ridge": 0.001,
+        "check_distance": false,
+        "distance_limit": 4,
+        "contract_policy": "require_match",
+        "max_work": 64000000,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples",
+        "image"
+      ],
+      "exposed_outputs": [
+        "distances",
+        "maximum_distance",
+        "outlier_indices",
+        "outlier_count",
+        "image",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1800,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original known-good feature inspection controls",
+      "description": "Original MIT synthetic part images, edit masks, models and graphs by OpenCVDataflowGUI contributors. Nine training views have +/-1 pixel shifts and separate noise. Held-out noise, gain changes and edits are excluded from fitting. Four-bin HOG has 144 values; sample covariance plus explicit Ridge measures whole-window deviation. A crack, removed arc and empty view fail; a subtle one-pixel intensity edit passes and remains a documented miss. Whole-window graphics do not localize defects. Distance is not a probability or physical measurement. See README.md, SOURCES.md and benchmark.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -480
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "hog",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspect",
+      "input": "image"
+    },
+    {
+      "source": "model",
+      "output": "model",
+      "target": "inspect",
+      "input": "model"
+    },
+    {
+      "source": "hog",
+      "output": "descriptor",
+      "target": "inspect",
+      "input": "samples"
+    },
+    {
+      "source": "inspect",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "inspect",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

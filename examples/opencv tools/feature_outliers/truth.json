@@ -1,0 +1,209 @@
+{
+  "asset_sha256": {
+    "covariance-l2.json": "c5def9b888f2ab8175905452c9ce13743a5a0d6a699b1f942fbc1252bea3773d",
+    "covariance-none.json": "511c3b9ab281253a63cb6029ad0662448f876d031578152a03d1797066d7bb6e",
+    "covariance-pca.json": "55cbfd2da6abef2d56c77feffa3d92ac7ab9647c417f94f075e616e6cf46bc1e",
+    "crack-edit-mask.png": "5224b413446be48f250d972ffd94ea7f5bf499fc40b23563d3c291fafc63c1ee",
+    "crack.png": "441d95bc2d4268e2a806ed25dd3b3b7a637d4634b5f861e798b61f7d44707742",
+    "empty.png": "d6c4d98049a315e3afe33958d6d98c134e6938ced652f4e6c26b4c0e64b57fa1",
+    "known-bright.png": "f037b3738aa3a4a5d0df96390d580adbaf43540e05829109cdbd920b6e9e1bb2",
+    "known-dark.png": "b92933b1e37b08e6bece2c7f9da245fd8918f114fbc44bbc1f1a216756127743",
+    "known.png": "6f0d5a99aa7af63e4395a46fc3e8f5e6fc7b5e6f663f7226127f472a69ac4985",
+    "low-contrast-edit-mask.png": "85ab68a0d95c385f910ad9758b90b6acdec9febf1f04c61c4a3d535c6a9bf924",
+    "low-contrast.png": "629528d71aa2a64f4c991aaba8bd361835c8b52a3ea28255710a69849608665b",
+    "missing-arc-edit-mask.png": "3c9707d52077356555d80d2a932c6261e7720b3d8fe507716dd9fcb234991b6d",
+    "missing-arc.png": "bd9c9482a599a3763ae99fea5743e7bd5a9ead8243250ced9cad536da2b2f2cb",
+    "pca-l2.json": "90a5d5f8bbde7d534eede4d8d51a58e375012f7a26d3368cac101b7d35dc68eb",
+    "pca-none.json": "b99e9757236816b05fdd2653f150279c782f65040b6fad05da4f61de348db716",
+    "train-0.png": "d12b43e04c622a8eb758ad83795edb1cedc2538ef7b955618e0f243723d5b26c",
+    "train-1.png": "ec55356f769f29754b9d6ce14e2fc05a7cad9662173beae9c8214418788b8da5",
+    "train-2.png": "0f7e1bb6f9fd32a1dbe1dd582d29b061df4095ac3b998f6a4c83c1c76cc35416",
+    "train-3.png": "7009cbfe627896a02637c7a9d0a47950bbd91897a4ab787f9d7bd84297bcfd13",
+    "train-4.png": "41ed43c581dd410f54793e07dd738ae5172ff4454fe1a8d0508bca9c55fbf0bc",
+    "train-5.png": "b315e7e29bfe52f2b3297b76f41826d7b9f87cc36f4599b3e9721e68dd5184a0",
+    "train-6.png": "9574728e8ed2862fd45eca1fbc06824e359aa79ab0abef7cca26b457a254f08f",
+    "train-7.png": "15ded38679faede94b96beaa69cc67fc11de62d3c32f4b45f81cf2d48ccbfcbe",
+    "train-8.png": "885a5b49db30307f3c80b83bd78a89c91d204931dd49b8f4024976785f48afbe"
+  },
+  "cases": {
+    "crack": {
+      "images": [
+        "crack.png"
+      ],
+      "states": [
+        "fail"
+      ],
+      "target": "inspect"
+    },
+    "diagnostic_only": {
+      "images": [
+        "crack.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "inspect"
+    },
+    "empty_view": {
+      "images": [
+        "empty.png"
+      ],
+      "states": [
+        "fail"
+      ],
+      "target": "inspect"
+    },
+    "known_set": {
+      "images": [
+        "known.png",
+        "known-dark.png",
+        "known-bright.png"
+      ],
+      "states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "target": "inspect"
+    },
+    "low_contrast_miss": {
+      "images": [
+        "low-contrast.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "inspect"
+    },
+    "missing_arc": {
+      "images": [
+        "missing-arc.png"
+      ],
+      "states": [
+        "fail"
+      ],
+      "target": "inspect"
+    },
+    "normalized_set": {
+      "images": [
+        "known.png",
+        "known-dark.png",
+        "known-bright.png",
+        "crack.png"
+      ],
+      "states": [
+        "pass",
+        "pass",
+        "pass",
+        "fail"
+      ],
+      "target": "inspect"
+    },
+    "pca_known": {
+      "images": [
+        "known.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "inspect"
+    },
+    "pca_wrong_revision": {
+      "images": [
+        "known.png"
+      ],
+      "states": [
+        "error"
+      ],
+      "target": "inspect"
+    },
+    "singular_no_ridge": {
+      "images": [
+        "known.png"
+      ],
+      "states": [
+        "error"
+      ],
+      "target": "inspect"
+    },
+    "train": {
+      "images": [
+        "train-0.png",
+        "train-1.png",
+        "train-2.png",
+        "train-3.png",
+        "train-4.png",
+        "train-5.png",
+        "train-6.png",
+        "train-7.png",
+        "train-8.png"
+      ],
+      "states": [
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "train_l2": {
+      "images": [
+        "train-0.png",
+        "train-1.png",
+        "train-2.png",
+        "train-3.png",
+        "train-4.png",
+        "train-5.png",
+        "train-6.png",
+        "train-7.png",
+        "train-8.png"
+      ],
+      "states": [
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "wrong_descriptor": {
+      "images": [
+        "known.png"
+      ],
+      "states": [
+        "error"
+      ],
+      "target": "inspect"
+    }
+  },
+  "distance_limit": 4,
+  "known": [
+    "known.png",
+    "known-dark.png",
+    "known-bright.png"
+  ],
+  "ridge_l2": 0.0001,
+  "ridge_none": 0.001,
+  "scope": "Whole-window decisions; low-contrast edit is an intentional known miss",
+  "training": [
+    "train-0.png",
+    "train-1.png",
+    "train-2.png",
+    "train-3.png",
+    "train-4.png",
+    "train-5.png",
+    "train-6.png",
+    "train-7.png",
+    "train-8.png"
+  ]
+}

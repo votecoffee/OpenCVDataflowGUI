@@ -3061,7 +3061,7 @@ P3	function	cv2.imreadanimation	literal reference	-
 P3	function	cv2.imreadmulti	no static reference	-
 P3	function	cv2.imreadWithMetadata	no static reference	-
 P3	function	cv2.imshow	no static reference	-
-P3	function	cv2.imwrite	no static reference	-
+P3	function	cv2.imwrite	literal reference	-
 P3	function	cv2.imwriteanimation	literal reference	-
 P3	function	cv2.imwritemulti	no static reference	-
 P3	function	cv2.imwriteWithMetadata	literal reference	-

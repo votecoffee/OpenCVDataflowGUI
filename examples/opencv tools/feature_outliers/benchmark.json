@@ -1,0 +1,134 @@
+{
+  "opencv": "5.0.0",
+  "reference": "native HOG and independent NumPy covariance/quadratic form",
+  "scope": "Original controlled windows; distances are not probabilities or defect masks",
+  "modes": {
+    "none": {
+      "training_images": 9,
+      "dimensions": 144,
+      "covariance_max_error": 1.734723475976807e-18,
+      "ridge": 0.001,
+      "maximum_native_numpy_error": 2.842170943040401e-14,
+      "heldout": [
+        {
+          "image": "known.png",
+          "supported": true,
+          "numpy_distance": 2.5298431174382,
+          "native_distance": 2.529843117438199,
+          "native_numpy_error": 1.3322676295501878e-15,
+          "passed": true
+        },
+        {
+          "image": "known-dark.png",
+          "supported": true,
+          "numpy_distance": 2.5062736484118493,
+          "native_distance": 2.5062736484118493,
+          "native_numpy_error": 0.0,
+          "passed": true
+        },
+        {
+          "image": "known-bright.png",
+          "supported": true,
+          "numpy_distance": 2.4077823516047316,
+          "native_distance": 2.4077823516047308,
+          "native_numpy_error": 8.881784197001252e-16,
+          "passed": true
+        },
+        {
+          "image": "crack.png",
+          "supported": true,
+          "numpy_distance": 17.09361605182562,
+          "native_distance": 17.093616051825627,
+          "native_numpy_error": 7.105427357601002e-15,
+          "passed": false
+        },
+        {
+          "image": "missing-arc.png",
+          "supported": true,
+          "numpy_distance": 29.633090467900953,
+          "native_distance": 29.633090467900953,
+          "native_numpy_error": 0.0,
+          "passed": false
+        },
+        {
+          "image": "low-contrast.png",
+          "supported": true,
+          "numpy_distance": 2.5318825188416785,
+          "native_distance": 2.531882518841678,
+          "native_numpy_error": 4.440892098500626e-16,
+          "passed": true
+        },
+        {
+          "image": "empty.png",
+          "supported": true,
+          "numpy_distance": 92.35475058314711,
+          "native_distance": 92.35475058314708,
+          "native_numpy_error": 2.842170943040401e-14,
+          "passed": false
+        }
+      ]
+    },
+    "l2": {
+      "training_images": 9,
+      "dimensions": 144,
+      "covariance_max_error": 5.421010862427522e-19,
+      "ridge": 0.0001,
+      "maximum_native_numpy_error": 7.105427357601002e-15,
+      "heldout": [
+        {
+          "image": "known.png",
+          "supported": true,
+          "numpy_distance": 2.629127953363816,
+          "native_distance": 2.6291279533638177,
+          "native_numpy_error": 1.7763568394002505e-15,
+          "passed": true
+        },
+        {
+          "image": "known-dark.png",
+          "supported": true,
+          "numpy_distance": 2.60458309225405,
+          "native_distance": 2.604583092254052,
+          "native_numpy_error": 1.7763568394002505e-15,
+          "passed": true
+        },
+        {
+          "image": "known-bright.png",
+          "supported": true,
+          "numpy_distance": 2.4993736747585773,
+          "native_distance": 2.499373674758579,
+          "native_numpy_error": 1.7763568394002505e-15,
+          "passed": true
+        },
+        {
+          "image": "crack.png",
+          "supported": true,
+          "numpy_distance": 18.02645029420526,
+          "native_distance": 18.026450294205254,
+          "native_numpy_error": 7.105427357601002e-15,
+          "passed": false
+        },
+        {
+          "image": "missing-arc.png",
+          "supported": true,
+          "numpy_distance": 31.27118082569193,
+          "native_distance": 31.271180825691925,
+          "native_numpy_error": 3.552713678800501e-15,
+          "passed": false
+        },
+        {
+          "image": "low-contrast.png",
+          "supported": true,
+          "numpy_distance": 2.6317260461022496,
+          "native_distance": 2.631726046102251,
+          "native_numpy_error": 1.3322676295501878e-15,
+          "passed": true
+        },
+        {
+          "image": "empty.png",
+          "supported": false,
+          "reason": "zero L2 descriptor"
+        }
+      ]
+    }
+  }
+}

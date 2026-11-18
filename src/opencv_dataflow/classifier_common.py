@@ -9,6 +9,7 @@ import numpy as np
 from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import ValidationError
 from .payloads import NO_VALUE, FlowGroup, ValuePacket, metadata, require_same_frame
+from .sample_tables import finite_features
 from .tickets import ticket_key
 
 
@@ -89,6 +90,46 @@ def feature_contract(value):
     return copy.deepcopy(value)
 
 
+def descriptor_rows64(block, value, *, max_columns=65536):
+    """Finite float64 descriptor rows with common and per-row wire provenance."""
+    context = copy.deepcopy(block.input_payloads.get("samples", {}))
+    if isinstance(value, FlowGroup):
+        contexts = [metadata(item) for item in value.items]
+        contracts = [feature_contract(item.get("feature_contract")) for item in contexts]
+        if any(contract != contracts[0] for contract in contracts):
+            raise ValidationError("Features have different preprocessing contracts")
+        context["feature_contract"] = contracts[0]
+        context["feature_rows"] = [
+            {
+                key: copy.deepcopy(item[key])
+                for key in ("ticket", "spatial", "pyramid", "recipe_ref")
+                if key in item
+            }
+            for item in contexts
+        ]
+        value = [item.value for item in value.items]
+    contract = feature_contract(context.get("feature_contract"))
+    try:
+        array = np.asarray(value)
+    except (TypeError, ValueError) as exc:
+        raise ValidationError("Features must be a rectangular numeric table") from exc
+    if array.ndim == 1 and array.size:
+        array = array[None, :]
+    return finite_features(array, limit=1e100, max_columns=max_columns), contract, context
+
+
+def normalize_rows64(values, mode):
+    if mode == "none":
+        return values
+    if mode != "l2":
+        raise ValidationError("Unknown descriptor normalization")
+    peak = np.max(np.abs(values), axis=1, keepdims=True)
+    if np.any(peak == 0):
+        raise ValidationError("Cannot L2 normalize a zero descriptor")
+    scaled = values / peak
+    return np.ascontiguousarray(scaled / np.linalg.norm(scaled, axis=1, keepdims=True))
+
+
 def validate_prediction_image(block, inputs, count):
     """Optional unchanged review image must belong to the current descriptor invocation."""
     image = inputs.get("image", NO_VALUE)
@@ -96,7 +137,7 @@ def validate_prediction_image(block, inputs, count):
         return image
     if count != 1:
         raise ValidationError("Connect an image only for a single descriptor prediction")
-    features = block.input_payloads["samples"]
+    features = block.input_payloads.get("samples", {})
     require_same_frame(
         (image, ValuePacket(None, features)), message="Prediction image frame differs"
     )

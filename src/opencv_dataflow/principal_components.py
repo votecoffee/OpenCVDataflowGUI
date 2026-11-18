@@ -14,10 +14,16 @@ from .classifier_common import (
     prediction_drawing,
     validate_prediction_image,
 )
+from .classifier_common import (
+    descriptor_rows64 as descriptor_rows,
+)
+from .classifier_common import (
+    normalize_rows64 as normalize_rows,
+)
 from .core import Block, Port, Result
 from .ml_common import local_path
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import NO_VALUE, FlowGroup, metadata
+from .payloads import NO_VALUE, FlowGroup
 from .projection import profile_plot
 from .sample_tables import MAX_SAMPLE_VALUES, finite_features
 
@@ -45,44 +51,6 @@ LIMIT_HELP = {
     "max_work": "Bound estimated scalar multiply work before native PCA calls.",
     "max_bytes_mb": "Bound estimated tables/basis/native workspace; not measured process RSS.",
 }
-
-
-def descriptor_rows(block, value):
-    """Retain float64 precision and require one common contract across a group."""
-    context = copy.deepcopy(block.input_payloads.get("samples", {}))
-    if isinstance(value, FlowGroup):
-        contexts = [metadata(item) for item in value.items]
-        contracts = [feature_contract(item.get("feature_contract")) for item in contexts]
-        if any(contract != contracts[0] for contract in contracts):
-            raise ValidationError("PCA features have different preprocessing contracts")
-        context["feature_contract"] = contracts[0]
-        context["feature_rows"] = [
-            {
-                key: copy.deepcopy(item[key])
-                for key in ("ticket", "spatial", "pyramid", "recipe_ref")
-                if key in item
-            }
-            for item in contexts
-        ]
-        value = [item.value for item in value.items]
-    contract = feature_contract(context.get("feature_contract"))
-    try:
-        array = np.asarray(value)
-    except (TypeError, ValueError) as exc:
-        raise ValidationError("PCA features must be a rectangular numeric table") from exc
-    if array.ndim == 1 and array.size:
-        array = array[None, :]
-    return finite_features(array, limit=1e100, max_columns=65536), contract, context
-
-
-def normalize_rows(values, mode):
-    if mode == "none":
-        return values
-    peak = np.max(np.abs(values), axis=1, keepdims=True)
-    if np.any(peak == 0):
-        raise ValidationError("Cannot L2 normalize a zero descriptor")
-    scaled = values / peak
-    return np.ascontiguousarray(scaled / np.linalg.norm(scaled, axis=1, keepdims=True))
 
 
 def revision(model):

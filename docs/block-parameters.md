@@ -2113,12 +2113,18 @@ Inputs: `image` (image).
 
 Image processing / Statistics
 
-Inputs: `samples` (data, optional).
+Inputs: `samples` (any, optional).
+
+Input `samples` — Up to 512 features; grouped descriptor contracts must agree.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `samples` | `[]` | One feature vector per row. The Samples input overrides this table. |
-| `normalization` | `"sample"` | `sample`, `population` Sample divides by N − 1. Population divides by N. |
+| `samples` | `[]` | Numeric descriptor rows or a batch; wired Samples overrides this table. |
+| `normalization` | `"sample"` | `sample`, `population` Sample divides by N-1; Population divides by N. |
+| `feature_normalization` | `"none"` | `none`, `l2` Saved None or per-row L2, also applied during scoring. |
+| `mean` | `[]` | Empty estimates the mean; otherwise a fixed center in normalized feature units. |
+| `max_work` | `64000000` | Value must be a whole number between 1 and 1e+09. Estimated covariance/scoring work bound before native calls. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Estimated table/matrix allowance, not measured process RSS. |
 
 ## Custom 2D filter (`cv.filter2d`)
 
@@ -2790,6 +2796,14 @@ Input `image` — Gray/RGB/BGR/RGBA/BGRA uint8, uint16, int16 or float32/64. Con
 | `backend` | `"floating"` | `floating`, `native_detail` Floating uses pyrDown/pyrUp; native_detail uses createLaplacePyr on uint8 three-channel images with signed int16 bands. |
 | `working_depth` | `"float64"` | `float64`, `float32` Floating coefficient depth; raw sample units are retained. Native detail always uses int16. |
 | `border` | `"reflect_101"` | `reflect_101`, `reflect_edge`, `replicate` Downsampling border. Upsampling uses OpenCV's required reflect_101. Native detail requires reflect_101 for both. |
+
+## Load feature covariance (`cv.load_feature_covariance`)
+
+ML / Image feature models
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
 
 ## Load mosaic layout (`cv.load_mosaic_layout`)
 
@@ -3774,6 +3788,16 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba`, `hsv`, `lab` Encoding of the assembled channels. Samples are copied verbatim. |
 | `channel_map` | `[]` | One index per output channel, numbering A then B from zero. Use -1 for zero fill or an empty list to copy the first channels in order. |
 | `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid pairs equal-size images by index, even with different frame IDs. |
+
+## Save feature covariance (`cv.save_feature_covariance`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"feature-covariance.json"` |  |
 
 ## Save principal component model (`cv.save_pca`)
 
@@ -7263,14 +7287,19 @@ Input `moving_mask` — Optional captured support on the moving grid for spatial
 
 Inspection / Measurements
 
-Inputs: `model` (data), `samples` (data, optional).
+Inputs: `model` (data), `samples` (any, optional), `image` (image, optional).
+
+Input `image` — Optional unchanged review image for one current descriptor packet.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `samples` | `[]` | One feature vector per row. The Samples input overrides this table. |
-| `ridge` | `0.0` | Value must be a finite number between 0 and 1e+26. Add this value to each covariance diagonal entry before inversion. |
-| `check_distance` | `false` | Fail when any row exceeds the distance limit. |
-| `distance_limit` | `3.0` | Value must be a finite number at least 0. Maximum Mahalanobis distance for an accepted row. |
+| `samples` | `[]` | Numeric descriptor rows or a batch; wired Samples overrides this table. |
+| `ridge` | `0.0` | Value must be a finite number between 0 and 1e+26. Add to each covariance diagonal in squared feature units; changes score scale. |
+| `check_distance` | `false` | Fail when any row exceeds Distance limit; otherwise report data only. |
+| `distance_limit` | `3.0` | Value must be a finite number at least 0. Inclusive Mahalanobis distance limit, not a probability or pixel error. |
+| `contract_policy` | `"require_match"` | `require_match`, `dimensions_only` Require trained descriptor/PCA identity, or check dimensions only. |
+| `max_work` | `64000000` | Value must be a whole number between 1 and 1e+09. Estimated covariance/scoring work bound before native calls. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Estimated table/matrix allowance, not measured process RSS. |
 
 ## Map strip graphics to source (`inspect.map_strip_graphics`)
 

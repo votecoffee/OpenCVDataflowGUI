@@ -1,0 +1,73 @@
+{
+  "centering": "estimated",
+  "covariance": [
+    [
+      0.06738303800587454,
+      3.903127820947816e-18
+    ],
+    [
+      3.903127820947816e-18,
+      0.06476159622297284
+    ]
+  ],
+  "feature_contract": {
+    "dimensions": 2,
+    "model": "principal_components_projection_v1",
+    "normalization": "none",
+    "pca_revision": "ab9cdbff07c64437b15cf635060ff18f24b668b689efcf858ca75128e001f106",
+    "source": {
+      "block_grid": [
+        3,
+        3
+      ],
+      "cell_grid": [
+        4,
+        4
+      ],
+      "descriptor_length": 144,
+      "input_depth": "uint8",
+      "model": "opencv_hog_window_v1",
+      "opencv_version": "5.0.0",
+      "order": [
+        "block_x",
+        "block_y",
+        "cell_x",
+        "cell_y",
+        "bin"
+      ],
+      "settings": {
+        "bins": 4,
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "cell_size": [
+          8,
+          8
+        ],
+        "gamma_correction": true,
+        "l2_hys_threshold": 0.2,
+        "signed_gradient": false,
+        "win_sigma": -1.0
+      },
+      "window_size": [
+        32,
+        32
+      ],
+      "working_encoding": "gray"
+    }
+  },
+  "feature_normalization": "none",
+  "mean": [
+    7.709882115452476e-18,
+    0.0
+  ],
+  "model": "feature_covariance_v2",
+  "normalization": "sample",
+  "revision": "39d5eac6544651981bc8e7761464f1fa119012b609fcec7646f0b7120a11a76e",
+  "sample_count": 9
+}
