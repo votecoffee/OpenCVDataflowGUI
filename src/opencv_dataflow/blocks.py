@@ -821,6 +821,7 @@ def builtin_registry():
         load_installed_path_width,
         load_installed_pixel_segmentation,
         load_installed_reference_inspect,
+        register_simple_providers,
     )
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
@@ -1277,6 +1278,7 @@ def builtin_registry():
     registry.add_provider(LOCATE_3D_TYPES, load_installed_3d_locate)
     registry.add_provider(MEASURE_3D_TYPES, load_installed_3d_measure)
     registry.add_provider(BIN_PICKING_TYPES, load_installed_bin_picking)
+    register_simple_providers(registry)
     registry.add_provider((invert_example.Invert.type_id,), invert_example.register)
     return registry
 

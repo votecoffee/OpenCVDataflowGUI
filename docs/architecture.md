@@ -213,6 +213,12 @@ failure does not partially update the registry. This is not process isolation or
 security sandbox. Extensions can use the full Python environment. A project with
 unavailable plugin types fails clearly; load the plugin and reopen the project.
 Plugins are session-local; saved projects do not select executable plugin files.
+Known Simple Plugin integrations use host-selected lazy providers and checksum-pinned
+packages shipped with the application. Their recorded-input blocks share this route,
+so examples open directly in the editor and headless API. No adjacent `plugin.py`
+or project-selected package is imported. An explicitly loaded earlier provider
+retains ownership for that session; versions are never hot-swapped under live blocks.
+See [Simple Plugin loading](simple-plugin-loading.md).
 Optional, explicitly enabled program lifecycle scripts execute only when the
 program runs and during cleanup of a started session, never just on file load.
 

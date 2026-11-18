@@ -20,6 +20,7 @@
 | Program startup/run/shutdown scripts and owned ROS/external services | [Program lifecycle](program-lifecycle.md) |
 | Reusable subgraphs and interfaces | [ToolBlocks](toolblocks.md) |
 | Custom Python blocks | [Plugin skill](../skills/opencv-dataflow-plugins/SKILL.md), [plugin contract](../skills/opencv-dataflow-plugins/references/plugin-contract.md) |
+| Automatic Simple Plugin loading, versions and recorded sources | [Simple Plugins](simple-plugin-loading.md) |
 | Dialogs, captures and worker training | [Plugin dialogs](plugin-dialogs.md) |
 | HDR brackets, rejected motion and measured-versus-review support | [HDR motion](hdr-motion.md) |
 | Unordered rotating views, explicit camera refinement, reserved validation and source-point mapping | [Rotating panoramas](rotating-panorama.md) |

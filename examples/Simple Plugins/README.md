@@ -1,11 +1,18 @@
 # Simple Plugins
 
-In a new graph, expand **Simple Plugins** in the toolbox or search for the tool
-by name. SimpleClassify is bundled. SimplePatternMatch, SimpleSegmentation, and
-SimplePathWidth, SimpleReferenceInspect, Simple3DLocate, Simple3DMeasure and
-SimpleBinPicking load their installed integrations when you add a block or open
-a project.
-SimpleGDRNPP uses explicit plugin loading and a separately configured worker.
+Open these projects directly with **File → Open**. In a new graph, expand
+**Simple Plugins** in the toolbox or search for the tool by name. The app includes
+pinned integrations for these tools, jaw/pose conversion, simulation review and
+recorded input sources, loading them automatically when needed. This also works
+after Save As and through the headless API without `--plugin`.
+
+Some older per-example READMEs describe manually loading their pinned `plugin.py`.
+That step is optional with the current app. It remains available in a fresh session
+to reproduce that specific older version. Restart the app after updating; an
+already loaded package is never replaced underneath existing blocks.
+See [loading and versions](../../docs/simple-plugin-loading.md).
+Neural inference still requires its configured external worker and model weights;
+opening and validating a project does not start them or connect to equipment.
 
 | Tool | Example projects |
 | --- | --- |

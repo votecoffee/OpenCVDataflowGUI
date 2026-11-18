@@ -15,6 +15,7 @@ from .plugins import (
     PATH_WIDTH_TYPES,
     PIXEL_SEGMENTATION_TYPES,
     REFERENCE_INSPECT_TYPES,
+    SIMPLE_EXTRA_PROVIDERS,
 )
 from .visual_style import INDUSTRIAL
 
@@ -29,6 +30,7 @@ _OPTIONAL_SIMPLE_FAMILIES = {
     **dict.fromkeys(LOCATE_3D_TYPES, "3D localization"),
     **dict.fromkeys(MEASURE_3D_TYPES, "3D measurements"),
     **dict.fromkeys(BIN_PICKING_TYPES, "Bin picking"),
+    **{type_id: family for type_id, (_, _, family) in SIMPLE_EXTRA_PROVIDERS.items()},
 }
 _SIMPLE_FAMILIES = {**_OPTIONAL_SIMPLE_FAMILIES, "inspect.simple_classify_image": "Classification"}
 

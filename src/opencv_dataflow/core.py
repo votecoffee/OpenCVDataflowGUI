@@ -55,6 +55,23 @@ _PLUGIN_DISPLAY_TITLES = {
     "3d.simple_locate": "Simple3DLocate",
     "3d.simple_measure": "Simple3DMeasure",
     "3d.simple_bin_picking": "SimpleBinPicking",
+    "3d.simple_bin_picking_jaw": "SimpleBinPicking · Jaw clearance",
+    "3d.simple_part_instances": "SimpleBinPicking · Part instances",
+    "input.sim_bin_grid": "Simulation grid tasks",
+    "3d.sim_bin_pick_one": "Simulation pick one",
+    "3d.sim_bin_grid_summary": "Simulation grid summary",
+    "input.sim_pick_review": "Recorded simulation pick review",
+    "3d.simple_laser_profile": "SimpleLaserProfile",
+    "image.simple_surface_enhance": "SimpleSurfaceEnhance",
+    "3d.simple_fringe_scan": "SimpleFringeScan",
+    "image.simple_deflectometry": "SimpleDeflectometry",
+    "3d.simple_foundation_pose": "SimpleFoundationPose",
+    "3d.simple_gdrnpp": "SimpleGDRNPP",
+    "input.simple_jaw_example": "Recorded depth + supplied part poses",
+    "input.simple_surface_capture": "Recorded lighting capture",
+    "input.simple_fringe_capture": "Recorded pattern capture",
+    "input.simple_deflect_capture": "Recorded reflected-pattern capture",
+    "input.foundation_pose_example_capture": "FoundationPose example capture",
 }
 
 DISPLAY_RESULT_FIELDS = (

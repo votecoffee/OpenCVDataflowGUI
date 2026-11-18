@@ -132,10 +132,11 @@ from **User**, connect an image, and run the graph. Load the plugin before openi
 a saved project that uses it. The headless runner accepts `--plugin count_pixels.py`.
 Load Python code only from sources you trust.
 
-Projects using installed **Simple Plugins**, including **Simple3DLocate**,
-**Simple3DMeasure** and **SimpleBinPicking**,
-open directly after setup. **SimpleClassify** is bundled with DataflowGUI. See the
-[Simple Plugins examples and setup](<examples/Simple Plugins/README.md>).
+**Simple Plugins** ship with the app and load automatically when you add their
+blocks or open their projects, including the recorded-input example blocks.
+No separate plugin-loading step is needed. Model weights, external workers and
+live services retain their own setup. See [loading and versions](docs/simple-plugin-loading.md)
+and the [Simple Plugins examples](<examples/Simple Plugins/README.md>).
 
 The [bin-to-grid example](<examples/Simple Plugins/bin_picking/bin_to_grid/README.md>)
 includes a six-pick UR5e/MoveIt simulation and offline source-image/colored-cloud
@@ -171,6 +172,9 @@ conventions, and the [roadmap](docs/roadmap.md) for planned work.
 
 The bundled [Noto Sans font](src/opencv_dataflow/fonts/README.md) uses the
 SIL Open Font License 1.1.
+
+Bundled [Simple Plugin packages](src/opencv_dataflow/simple_plugin_wheels/README.md)
+retain their embedded MIT/Apache-2.0 licenses and third-party notices.
 
 The [medical MRI/annotation example assets](<examples/SimpleITK Tools/assets/msd_hippocampus/README.md>)
 retain their source's CC BY-SA 4.0 license.
