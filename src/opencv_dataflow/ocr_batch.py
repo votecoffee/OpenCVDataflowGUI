@@ -319,6 +319,7 @@ class RecognizeTextBatch(BatchImageInference):
             info = {"native_calls": [], "padding_rows": 0, "image_count": 0}
             if packets:
                 tokens, digest = vocabulary(self.parameters, self)
+                decoder = self.prepare_decoder(tokens)
                 result = self.infer_group({"images": FlowGroup(tuple(packets), tuple(labels))})
                 info = result.outputs["info"]
                 for packet, label in zip(result.outputs["results"].items, labels, strict=True):
@@ -326,47 +327,59 @@ class RecognizeTextBatch(BatchImageInference):
                     values = selected_tensor(
                         packet.value["tensors"], max_elements=self.parameters["max_output_elements"]
                     )
-                    text, confidence, characters = greedy_ctc(
-                        values[0],
-                        tokens,
-                        blank=self.parameters["blank_index"],
-                        activation=self.parameters["score_activation"],
-                        maximum_steps=self.parameters["maximum_steps"],
-                    )
-                    status = (
-                        "blank"
-                        if not text.strip()
-                        else "low_confidence"
-                        if confidence < self.parameters["minimum_confidence"]
-                        else "read"
-                    )
-                    row["fail_reasons"] = (
-                        []
-                        if status == "read"
-                        else [
-                            {
-                                "code": "ocr.blank" if status == "blank" else "ocr.confidence",
-                                "message": "Blank text"
-                                if status == "blank"
-                                else "Read confidence below limit",
-                            }
-                        ]
-                    )
+                    row.update(self.decode_row(values[0], tokens, decoder))
                     native_receipt = packet.value.get("receipt")
                     if isinstance(native_receipt, dict):
                         row["native_call_index"] = native_receipt["native_call_index"]
                         row["native_row_index"] = native_receipt["native_row_index"]
-                    row.update(
-                        text=text,
-                        confidence=confidence,
-                        characters=characters,
-                        status=status,
-                        passed=status == "read",
-                    )
             return self.finish(inputs, reads, info, digest)
         except Exception:
             self.reset_runtime()
             raise
+
+    def prepare_decoder(self, tokens):
+        """Prepare immutable per-activation decoder state before native inference."""
+        return None
+
+    def decode_row(self, values, tokens, decoder):
+        text, confidence, characters = greedy_ctc(
+            values,
+            tokens,
+            blank=self.parameters["blank_index"],
+            activation=self.parameters["score_activation"],
+            maximum_steps=self.parameters["maximum_steps"],
+        )
+        status = (
+            "blank"
+            if not text.strip()
+            else "low_confidence"
+            if confidence < self.parameters["minimum_confidence"]
+            else "read"
+        )
+        reasons = (
+            []
+            if status == "read"
+            else [
+                {
+                    "code": "ocr.blank" if status == "blank" else "ocr.confidence",
+                    "message": "Blank text" if status == "blank" else "Read confidence below limit",
+                }
+            ]
+        )
+        return dict(
+            text=text,
+            confidence=confidence,
+            characters=characters,
+            status=status,
+            passed=status == "read",
+            fail_reasons=reasons,
+        )
+
+    def decoder_report(self):
+        return {
+            "decoder": "CTC-greedy",
+            "confidence_semantics": "geometric_mean_emitted_run_peak_probability",
+        }
 
     def finish(self, inputs, reads, info, vocabulary_digest):
         p = self.parameters
@@ -388,8 +401,7 @@ class RecognizeTextBatch(BatchImageInference):
             "model": "ocr_batch_report_v1",
             "ctc_layout": p["ctc_layout"],
             "canonical_row_layout": "NTC",
-            "decoder": "CTC-greedy",
-            "confidence_semantics": "geometric_mean_emitted_run_peak_probability",
+            **self.decoder_report(),
             "vocabulary_sha256": vocabulary_digest,
             "input_regions": len(reads),
             "selected_regions": len(selected),

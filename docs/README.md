@@ -81,6 +81,7 @@
 | Oriented heads, rotated overlap and exact affine source poses | [Rotated detection](rotated-detection.md) |
 | Shared-ticket segmentation tiles, overlap weights, valid coverage and source-grid decisions | [Tiled segmentation](tiled-segmentation.md) |
 | Ordered rectified text crops, native CTC batches, per-read confidence and judgments | [Batch OCR](batch-ocr.md) |
+| Alphabet/lexicon CTC search, exact label scores and explicit read rejection | [Constrained OCR](constrained-ocr.md) |
 | Pinned PP-OCRv3, observable maps, DB-style rectangles and source-grid text regions | [Text detection](text-detection.md) |
 | Per-pixel class scores/IDs, source-grid masks and confidence/area decisions | [Semantic segmentation](semantic-segmentation.md) |
 | Per-object masks, prototype/ROI heads, overlap and individual inspection | [Instance segmentation](instance-segmentation.md) |

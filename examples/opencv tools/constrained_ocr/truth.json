@@ -1,0 +1,87 @@
+{
+  "cases": {
+    "beam_recovers": {},
+    "greedy_blank": {
+      "decoder": "CTC-greedy",
+      "passed": false
+    },
+    "repeat_blank": {
+      "image": "repeat",
+      "lexicon": [
+        "AA"
+      ]
+    },
+    "blank_dominant": {
+      "image": "faint",
+      "passed": false
+    },
+    "unreachable_word": {
+      "lexicon": [
+        "AAAA"
+      ],
+      "passed": false
+    },
+    "confidence_limit": {
+      "minimum_confidence": 0.9,
+      "passed": false
+    },
+    "lexicon_file": {
+      "file": true
+    },
+    "alphabet_check": {
+      "arithmetic": true,
+      "decoder": "CTC-greedy",
+      "allowed_characters": "A",
+      "passed": false
+    },
+    "lexicon_check": {
+      "arithmetic": true,
+      "decoder": "CTC-greedy",
+      "lexicon": [
+        "BA"
+      ],
+      "passed": false
+    },
+    "ratio_guard": {
+      "arithmetic": true,
+      "allowed_characters": "A",
+      "minimum_greedy_ratio": 0.1,
+      "passed": false
+    },
+    "native_lexicon": {
+      "native": true
+    }
+  },
+  "alignment_mass": {
+    "ambiguous": {
+      "": 0.216,
+      "A": 0.6880000000000001,
+      "AA": 0.096
+    },
+    "repeat": {
+      "": 0.0,
+      "A": 0.0,
+      "AA": 1.0
+    },
+    "faint": {
+      "": 0.8547233266239982,
+      "A": 0.14281017105035013,
+      "AA": 0.002466502325651521
+    }
+  },
+  "native_texts": [
+    "lot2048",
+    "pnax12",
+    "pass"
+  ],
+  "asset_sha256": {
+    "ambiguous.png": "ffbfc0be76804cd18f314d83a59e2247d494b067e3d591acaf4db55ac9f9a5bf",
+    "dynamic_tnc.onnx": "06a358dff0e01aa020455378f09e8fd469d7fec8335fa1f65f3476aa3821bbab",
+    "faint.png": "71ccff0294a2e7cbe76d1c38455162f6582b58bb062dfd02389fa7c6dac6cdc3",
+    "native_labels.png": "f4a4f12982d54a088dc5c4fddef9e6d24f5014bf3a43e3e7d3dac75a42b891e9",
+    "probability_tnc.onnx": "38f985d81a529bfed605bef3c4850688e2318c8610c808454d5054e0c3c4a4ca",
+    "repeat.png": "8a513c9dd1e05aa1708d3918196e63d95bcd1f6a48a8159a7e4a0dab8ade4945",
+    "stripes.png": "c55acd6622998221aa3d4dc9f49d87b0f42348a6af8064fd357042c8bfd6367c",
+    "words.txt": "98c2906fba9704e286ee652a43c68440acbc002afc91a3c33eb0652958629416"
+  }
+}

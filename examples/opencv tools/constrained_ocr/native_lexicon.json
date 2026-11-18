@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "MODEL-LICENSE.txt",
+      "SOURCES.md"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/native_labels.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ocr",
+      "type": "ml.recognize_constrained_text",
+      "name": "Recognize constrained text regions",
+      "parameters": {
+        "contract_path": ".local/crnn_en/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 100,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00784313725490196,
+        "mean": [
+          127.5
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "input",
+        "output_names": [
+          "output"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000,
+        "input_shape": [
+          1,
+          1,
+          32,
+          100
+        ],
+        "batch_size": 1,
+        "tail_policy": "variable",
+        "spatial_mode": "configured",
+        "maximum_images": 64,
+        "maximum_image_pixels": 16777216,
+        "maximum_source_pixels": 32000000,
+        "maximum_tensor_elements": 4000000,
+        "ctc_layout": "TNC",
+        "score_activation": "softmax",
+        "blank_index": 0,
+        "quadrilaterals": [
+          [
+            [
+              63,
+              54
+            ],
+            [
+              278,
+              54
+            ],
+            [
+              278,
+              90
+            ],
+            [
+              63,
+              90
+            ]
+          ],
+          [
+            [
+              63,
+              139
+            ],
+            [
+              255,
+              139
+            ],
+            [
+              255,
+              174
+            ],
+            [
+              63,
+              174
+            ]
+          ],
+          [
+            [
+              63,
+              225
+            ],
+            [
+              188,
+              225
+            ],
+            [
+              188,
+              260
+            ],
+            [
+              63,
+              260
+            ]
+          ]
+        ],
+        "vocabulary": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "q",
+          "r",
+          "s",
+          "t",
+          "u",
+          "v",
+          "w",
+          "x",
+          "y",
+          "z"
+        ],
+        "vocabulary_path": "",
+        "vocabulary_sha256": "",
+        "minimum_confidence": 0.0,
+        "minimum_reads": 1,
+        "aggregate": "all",
+        "background": 255.0,
+        "maximum_steps": 1024,
+        "decoder": "CTC-prefix-beam-search",
+        "allowed_characters": "0123456789abcdefghijklmnopqrstuvwxyz",
+        "lexicon": [
+          "lot2048",
+          "pnax12",
+          "pass"
+        ],
+        "lexicon_path": "",
+        "lexicon_sha256": "",
+        "beam_width": 16,
+        "token_top_k": 0,
+        "maximum_alternatives": 3,
+        "confidence_mode": "token_normalized",
+        "reject_blank_dominant": true,
+        "minimum_greedy_ratio": 0.1,
+        "maximum_output_tokens": 128,
+        "maximum_candidate_prefixes": 8192,
+        "maximum_search_expansions": 1000000,
+        "maximum_alignment_elements": 1000000,
+        "maximum_lexicon_words": 4096,
+        "maximum_lexicon_characters": 65536
+      },
+      "position": [
+        430,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "regions"
+      ],
+      "exposed_outputs": [
+        "image",
+        "text",
+        "reads",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        900,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1350,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "CTC controls / model attribution",
+      "description": "Original MIT probability/stripe controls and glyph labels by OpenCVDataflowGUI contributors. Tiny models are image-dependent arithmetic, not learned OCR. The optional unchanged Apache CRNN comes from OpenCV Zoo revision 48b10fa505aeb51fbd127fc60a5c660040e823b7 and uses fixed N=1. Exact label-sequence mass is not calibrated correctness. Dictionaries retain original model mass; blank dominance and relative likelihood can reject forced words. See README.md/SOURCES.md. Native model preparation is explicit.",
+      "parameters": {},
+      "position": [
+        0,
+        -500
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "ocr",
+      "input": "image"
+    },
+    {
+      "source": "ocr",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "ocr",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

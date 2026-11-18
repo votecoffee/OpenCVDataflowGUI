@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 32 | 6 | 24 | 62 | 51.6% |
+| 2. ML and DNN | 33 | 6 | 23 | 62 | 53.2% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 258 | 38 | 174 | 470 | 54.9% |
+| **Overall** | 259 | 38 | 173 | 470 | 55.1% |
 
 <!-- coverage-summary:end -->
 
@@ -351,7 +351,7 @@ fixture or result needed to close the item.
 | S2-31 | Text-region decoding from a probability map | Threshold, contour candidates and rotated rectangles | Complete | ml.text_regions. Verify oriented text boxes and coordinates on the original image. |
 | S2-32 | Text detection with a pinned network | DNN text detector and DB-style score-map decoding | Complete | Hash-pinned Apache PP-OCRv3 English + ml.dnn / ml.text_regions; observable maps, source-center resize/letterbox mapping, DB rectangle expansion, ROI/count/truncation and resource guards. Eight controlled CPU projects match known glyph polygons/12-degree rotation and joined/separated tokens; native DB overlap reference and Classic/New comparison. Natural-image OCR accuracy needs separate qualification. See [contract](text-detection.md). |
 | S2-33 | OCR recognition across an image batch | Rectified crops, batch inference and CTC sequence mapping | Complete | ml.recognize_text_batch reuses native batch inference for source quads and explicit TNC/NTC CTC heads; order/IDs, character spans, greedy confidence, blank/low-confidence/skipped verdicts and source payload are retained. Dynamic N=3 variable/padded-tail controls and unchanged pinned fixed-N=1 CRNN glyph reads qualify the stated CPU scope. No mixed-ticket collection or calibrated string-posterior claim. See [contract](batch-ocr.md). |
-| S2-34 | OCR vocabulary and constrained decoding | CTC prefix search, alphabet and optional lexicon | Planned | Compare blank handling, repeats and industrial text constraints on known logits and image samples. |
+| S2-34 | OCR vocabulary and constrained decoding | CTC prefix search, alphabet and optional lexicon | Complete | ml.recognize_constrained_text adds bounded prefix search or raw greedy verification, explicit alphabet/word constraints, exact unconditioned label-sequence rescoring, alternatives and Viterbi step evidence. Exhaustive path references, native image-dependent controls and unchanged pinned CRNN glyph reads qualify the stated CPU scope; blank dominance and relative-likelihood gates reject forced reads. Finite search is approximate; scores are not calibrated correctness. See [contract](constrained-ocr.md). |
 | S2-35 | Learned single-image super-resolution | dnn_superres.DnnSuperResImpl | Planned | Pin a model and compare detail, noise and dimensional error against interpolation on downsampled images. Check for false or erased defects against a native-resolution reference. |
 | S2-36 | Learned image restoration | ONNX denoising or deblurring model and overlap-safe output mapping | Planned | Run a pinned restoration model on degraded/reference pairs and report improvement and introduced artifacts. |
 | S2-37 | Learned monocular depth | ONNX dense depth inference and explicit relative/metric output | Planned | Verify model scale conventions, source alignment, invalid samples and error on known depth imagery. |

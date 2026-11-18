@@ -151,6 +151,7 @@ def export_contract(block, directory, *, preprocessing=None):
         "ml.dnn_batch",
         "ml.efficientsam",
         "ml.recognize_text_batch",
+        "ml.recognize_constrained_text",
     ):
         raise ValidationError("Choose an ONNX inference block")
     block.validate_parameters()

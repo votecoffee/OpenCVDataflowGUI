@@ -112,6 +112,7 @@ format survive grayscale inference. The pinned CRNN reads three independent
 glyph labels and agrees with the separate single-region recognizer; its weights
 are unchanged and its fixed-batch limitation is explicit.
 
-Training, lexicon-constrained/prefix decoding and OCR accuracy over natural
-industrial image sets remain separate roadmap work. The controlled examples
+Alphabet/lexicon-constrained prefix decoding is available in the separate
+[constrained OCR block](constrained-ocr.md). Training and OCR accuracy over
+natural industrial image sets remain separate roadmap work. The controlled examples
 qualify this software/data contract, not optical or machine acceptance.

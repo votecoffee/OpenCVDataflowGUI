@@ -9471,6 +9471,79 @@ Input `image` — uint8/uint16 or normalized float gray/BGR/RGB/BGRA/RGBA; prima
 | `color_space` | `"lab"` | `bgr`, `lab`, `gray` Fixed normalized BGR/gray or Lab (L/100, a/128, b/128). No automatic white balance. Stored and reused on other depths/encodings. |
 | `max_samples` | `20000` | Value must be a whole number between 1 and 100000. Evenly spaced selected pixels in row-major order, not random sampling. Raise for rare colors. Transparent pixels are excluded. |
 
+## Recognize constrained text regions (`ml.recognize_constrained_text`)
+
+ML / Text inspection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `regions` (data, optional).
+
+Input `image` — One source acquisition; output unchanged with format/depth/ticket/frame.
+
+Input `regions` — Source ocr_regions_v1; input order and IDs stay intact.
+
+Input `mask` — Mask filters centers and fills excluded pixels with Background.
+
+Input `region` — Source selection intersected with Mask; independent of the text quadrilaterals.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local ONNX path; Contract path instead uses its bundled model. |
+| `width` | `100` | Value must be a whole number between 2 and 4096. Configured mode: network width. Source mode uses each source width (up to 4096). |
+| `height` | `32` | Value must be a whole number between 2 and 4096. Configured mode: network height. Source mode uses source height (up to 4096). |
+| `color_format` | `"gray"` | `rgb`, `bgr`, `gray` Explicit network channel order; this does not rescale source intensity units. |
+| `resize_mode` | `"stretch"` | `stretch`, `letterbox` Stretch axes or retain aspect ratio with centered rounded letterbox padding. |
+| `padding_value` | `0.0` | Value must be a finite number between -3.40282e+38 and 3.40282e+38. Letterbox intensity before normalization. |
+| `scale` | `0.00784313725490196` | Value must be a finite number between -3.40282e+38 and 3.40282e+38. Normalization is (pixel - mean) * scale / std, in chosen channel order. |
+| `mean` | `[127.5]` | One value per network channel, in original intensity units. |
+| `std` | `[1.0]` | One strictly positive divisor per network channel. |
+| `input_name` | `"input"` | Exact native model image input name; this block binds one NCHW input. |
+| `output_names` | `[]` | JSON list; empty selects all unconnected output layers. |
+| `engine` | `"auto"` | `auto`, `classic`, `new`, `ort` Classic does not retry with New; non-CPU targets require Classic. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` Native backend; the selected target must be available on this installation. |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` Native compute target. Non-CPU execution requires the classic engine. |
+| `fusion` | `true` | Native layer fusion; disabling requires the classic engine. |
+| `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. Combined retained outputs for the activation, including padding. |
+| `input_shape` | `[-1, 1, 32, 100]` | Declared [N,C,H,W]; -1 permits supported variation, never reshaping. |
+| `batch_size` | `8` | Value must be a whole number between 1 and 64. Native crop rows per call; model must support declared batch dimensions. |
+| `tail_policy` | `"variable"` | `variable`, `pad_repeat`, `reject` Variable submits the real tail; Pad repeat copies its last row and discards padded outputs; Reject requires a complete multiple. Padding can affect batch-coupled models. |
+| `spatial_mode` | `"configured"` | `configured` Configured resizes each image; Source keeps dimensions, requiring one size per group. |
+| `maximum_images` | `64` | Value must be a whole number between 1 and 64. Maximum supplied regions, including those skipped by source ROI. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Per-source pixel guard; excludes runtime copies. |
+| `maximum_source_pixels` | `32000000` | Value must be a whole number between 1 and 6.4e+07. Combined source pixel budget checked before image conversion. |
+| `maximum_tensor_elements` | `4000000` | Value must be a whole number between 1 and 8e+06. Prepared N*C*H*W budget per native call, including padding. |
+| `ctc_layout` | `"TNC"` | `TNC`, `NTC` Exact native CTC axes: time/batch/classes or batch/time/classes. |
+| `score_activation` | `"softmax"` | `softmax`, `probability` Softmax for logits; Probability checks normalized class scores. |
+| `blank_index` | `0` | Value must be a whole number between 0 and 10000. CTC blank class; vocabulary lists all other classes in their native order. |
+| `quadrilaterals` | `[]` | Source quads without Regions; empty uses image/selection bounds. |
+| `vocabulary` | `[]` | Unique ordered tokens, excluding blank; multi-character tokens are allowed. |
+| `vocabulary_path` | `""` | Alternative project-relative UTF-8 token lines; requires its SHA256. |
+| `vocabulary_sha256` | `""` | File SHA256; inline tokens are sealed with parameters. |
+| `minimum_confidence` | `0.0` | Value must be a finite number between 0 and 1. Selected score limit, retaining original class mass. |
+| `minimum_reads` | `1` | Value must be a whole number between 0 and 64. Minimum nonblank reads meeting the confidence limit. |
+| `aggregate` | `"all"` | `all`, `minimum_reads` Require all selected rows to pass, or only Minimum reads. |
+| `background` | `255.0` | Value must be a finite number between 0 and 65535. Intensity outside selection and at borders, in source units. |
+| `maximum_steps` | `1024` | Value must be a whole number between 1 and 4096. Bound time steps before greedy path decoding. |
+| `decoder` | `"CTC-prefix-beam-search"` | `CTC-greedy`, `CTC-prefix-beam-search` Greedy verifies its raw read; prefix beam searches admissible label sequences. |
+| `allowed_characters` | `""` | Case-sensitive characters; empty permits all vocabulary tokens. |
+| `lexicon` | `[]` | Exact words; no case folding, weighting or spell correction. |
+| `lexicon_path` | `""` | Alternative project-relative UTF-8 word lines, requiring exact SHA256. |
+| `lexicon_sha256` | `""` | Exact lexicon file bytes; inline words are sealed with settings. |
+| `beam_width` | `16` | Value must be a whole number between 1 and 256. Prefixes retained per step; approximate search with exact final rescoring. |
+| `token_top_k` | `0` | Value must be a whole number between 0 and 10000. Nonblank classes after alphabet filtering; zero keeps all. Blank stays. |
+| `maximum_alternatives` | `3` | Value must be a whole number between 1 and 16. Alternatives with exact unconditioned label-sequence scores. |
+| `confidence_mode` | `"token_normalized"` | `token_normalized`, `sequence_probability` Exact label mass or token-count root; not calibrated correctness. |
+| `reject_blank_dominant` | `true` | Reject words with mass at or below the blank sequence. |
+| `minimum_greedy_ratio` | `0.0` | Value must be a finite number between 0 and 1. Minimum candidate/greedy mass, capped at one; zero disables. |
+| `maximum_output_tokens` | `128` | Value must be a whole number between 1 and 512. Hard decoded-label length limit; reports omitted extensions. |
+| `maximum_candidate_prefixes` | `8192` | Value must be a whole number between 1 and 65536. Reject too many temporary prefixes before beam pruning. |
+| `maximum_search_expansions` | `1000000` | Value must be a whole number between 1 and 1e+07. Bound attempted prefix/class transitions per source region. |
+| `maximum_alignment_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. Combined T x state work for scoring and alignment. |
+| `maximum_lexicon_words` | `4096` | Value must be a whole number between 1 and 10000. Distinct word limit; the file also has a 1 MB byte guard. |
+| `maximum_lexicon_characters` | `65536` | Value must be a whole number between 1 and 262144. Combined lexicon characters; bounds the prefix trie. |
+
 ## Recognize text (CTC ONNX) (`ml.recognize_text`)
 
 ML / Text inspection

@@ -773,6 +773,7 @@ def builtin_registry():
     from .network_video import NetworkVideo
     from .ocr import OCR_BLOCKS
     from .ocr_batch import RecognizeTextBatch
+    from .ocr_constraints import RecognizeConstrainedText
     from .offline_stabilization import StabilizeRecordedSequence
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
@@ -835,9 +836,9 @@ def builtin_registry():
     from .scan_stitching import StitchScanSequence
     from .scanline_motion import EstimateScanlineMotion
     from .segmentation import SEGMENTATION_BLOCKS
+    from .segmentation_fusion import FuseTileSegmentation
     from .selection_remap import RemapSelection, RemapSelectionPacked
     from .semantic_segmentation import DecodeSegmentation
-    from .segmentation_fusion import FuseTileSegmentation
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shadow_compensation import CompensateReferenceShadows
     from .shape_fitting import (
@@ -1192,6 +1193,7 @@ def builtin_registry():
         *CLUSTER_MODEL_BLOCKS,
         *OCR_BLOCKS,
         RecognizeTextBatch,
+        RecognizeConstrainedText,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,
