@@ -1,0 +1,583 @@
+{
+  "cases": {
+    "blank": {
+      "native_candidates": 0,
+      "retained": []
+    },
+    "boxes": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            176,
+            65,
+            97,
+            97
+          ],
+          "reject_level": null,
+          "score": null
+        }
+      ]
+    },
+    "count_fail": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            176,
+            65,
+            97,
+            97
+          ],
+          "reject_level": 25,
+          "score": 5.829648021783214
+        }
+      ]
+    },
+    "equalized": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            175,
+            65,
+            96,
+            96
+          ],
+          "reject_level": 25,
+          "score": 7.447745057870634
+        }
+      ]
+    },
+    "high_depth": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            176,
+            65,
+            97,
+            97
+          ],
+          "reject_level": 25,
+          "score": 5.829648021783214
+        }
+      ]
+    },
+    "lbp": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            170,
+            63,
+            107,
+            107
+          ],
+          "reject_level": 20,
+          "score": 3.4146831929683685
+        }
+      ]
+    },
+    "neighbors": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            176,
+            65,
+            97,
+            97
+          ],
+          "reject_level": null,
+          "score": 37.0
+        }
+      ]
+    },
+    "portrait": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            176,
+            65,
+            97,
+            97
+          ],
+          "reject_level": 25,
+          "score": 5.829648021783214
+        }
+      ]
+    },
+    "raw_windows": {
+      "native_candidates": 40,
+      "retained": [
+        {
+          "box": [
+            4,
+            380,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": -1.776195966929663
+        },
+        {
+          "box": [
+            5,
+            372,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": -1.0970719575998373
+        },
+        {
+          "box": [
+            161,
+            60,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": 4.463474065240007
+        },
+        {
+          "box": [
+            162,
+            51,
+            121,
+            121
+          ],
+          "reject_level": 25,
+          "score": 3.411109090957325
+        },
+        {
+          "box": [
+            162,
+            56,
+            121,
+            121
+          ],
+          "reject_level": 25,
+          "score": 1.8846960898372345
+        },
+        {
+          "box": [
+            165,
+            55,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": 1.01683695911197
+        },
+        {
+          "box": [
+            165,
+            60,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": 5.829648021783214
+        },
+        {
+          "box": [
+            165,
+            64,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": 1.1689020408666693
+        },
+        {
+          "box": [
+            170,
+            55,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": 1.0921049494645558
+        },
+        {
+          "box": [
+            170,
+            60,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": 3.9331680647446774
+        },
+        {
+          "box": [
+            170,
+            64,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": 1.5486161161097698
+        },
+        {
+          "box": [
+            171,
+            58,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": -1.3631480159820057
+        },
+        {
+          "box": [
+            171,
+            67,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": 1.6512561497511342
+        },
+        {
+          "box": [
+            171,
+            68,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": 4.95732497255085
+        },
+        {
+          "box": [
+            171,
+            72,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": -2.4217308466904797
+        },
+        {
+          "box": [
+            175,
+            55,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": -1.2495920316432603
+        },
+        {
+          "box": [
+            175,
+            58,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": -0.22492599749239162
+        },
+        {
+          "box": [
+            175,
+            63,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": 1.1889809925924055
+        },
+        {
+          "box": [
+            175,
+            64,
+            110,
+            110
+          ],
+          "reject_level": 25,
+          "score": -2.190846832061652
+        },
+        {
+          "box": [
+            175,
+            67,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": 3.0528781478642486
+        },
+        {
+          "box": [
+            175,
+            68,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": 1.8503419979824685
+        },
+        {
+          "box": [
+            175,
+            71,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": -1.6341719758347608
+        },
+        {
+          "box": [
+            175,
+            72,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": -1.2338037980371155
+        },
+        {
+          "box": [
+            178,
+            65,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": -0.8436109440517612
+        },
+        {
+          "box": [
+            178,
+            68,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": 1.7518439569394104
+        },
+        {
+          "box": [
+            178,
+            72,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": -1.4011098002665676
+        },
+        {
+          "box": [
+            180,
+            58,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": 0.987413949042093
+        },
+        {
+          "box": [
+            180,
+            67,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": 0.7448110635741614
+        },
+        {
+          "box": [
+            180,
+            69,
+            83,
+            83
+          ],
+          "reject_level": 25,
+          "score": -2.2656378651736304
+        },
+        {
+          "box": [
+            180,
+            72,
+            83,
+            83
+          ],
+          "reject_level": 25,
+          "score": -2.256033794605173
+        },
+        {
+          "box": [
+            182,
+            65,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": -0.9323469207738526
+        },
+        {
+          "box": [
+            182,
+            68,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": 3.151952027983498
+        },
+        {
+          "box": [
+            182,
+            76,
+            91,
+            91
+          ],
+          "reject_level": 25,
+          "score": -2.639955990074668
+        },
+        {
+          "box": [
+            183,
+            69,
+            83,
+            83
+          ],
+          "reject_level": 25,
+          "score": -1.1883438982185908
+        },
+        {
+          "box": [
+            184,
+            67,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": 1.0687340919976123
+        },
+        {
+          "box": [
+            186,
+            69,
+            83,
+            83
+          ],
+          "reject_level": 25,
+          "score": -2.049842960492242
+        },
+        {
+          "box": [
+            188,
+            72,
+            75,
+            75
+          ],
+          "reject_level": 25,
+          "score": 3.0454571951995604
+        },
+        {
+          "box": [
+            188,
+            75,
+            75,
+            75
+          ],
+          "reject_level": 25,
+          "score": -0.7328368016169406
+        },
+        {
+          "box": [
+            191,
+            72,
+            75,
+            75
+          ],
+          "reject_level": 25,
+          "score": -1.2328878197004087
+        },
+        {
+          "box": [
+            275,
+            110,
+            147,
+            147
+          ],
+          "reject_level": 25,
+          "score": -1.6440319563844241
+        }
+      ]
+    },
+    "selection": {
+      "native_candidates": 2,
+      "retained": [
+        {
+          "box": [
+            177,
+            67,
+            95,
+            95
+          ],
+          "reject_level": 25,
+          "score": 6.5131560528534465
+        }
+      ]
+    },
+    "single_scale": {
+      "native_candidates": 1,
+      "retained": [
+        {
+          "box": [
+            176,
+            64,
+            100,
+            100
+          ],
+          "reject_level": 25,
+          "score": 3.0528781478642486
+        }
+      ]
+    },
+    "strict_size": {
+      "native_candidates": 1,
+      "retained": []
+    },
+    "two_faces": {
+      "native_candidates": 2,
+      "retained": [
+        {
+          "box": [
+            177,
+            67,
+            95,
+            95
+          ],
+          "reject_level": 25,
+          "score": 6.5131560528534465
+        },
+        {
+          "box": [
+            598,
+            130,
+            53,
+            53
+          ],
+          "reject_level": 25,
+          "score": 3.7261190015706234
+        }
+      ]
+    },
+    "weight_fail": {
+      "native_candidates": 1,
+      "retained": []
+    }
+  },
+  "opencv": "5.0.0",
+  "scope": "Direct native parity plus independent score/size/selection filtering, not independent cascade inference or field accuracy"
+}

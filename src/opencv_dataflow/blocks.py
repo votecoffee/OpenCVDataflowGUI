@@ -644,6 +644,7 @@ def builtin_registry():
     )
     from .calipers import BeadCalipers
     from .camera_health import CameraHealth
+    from .cascade_detection import DetectCascade
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
     from .chessboard_quality import CheckChessboardQuality
@@ -967,6 +968,7 @@ def builtin_registry():
         Histogram,
         HOGFeatures,
         *HOG_DETECTION_BLOCKS,
+        DetectCascade,
         CalibrationGrid,
         DetectArucoMarkers,
         DetectCharucoBoard,

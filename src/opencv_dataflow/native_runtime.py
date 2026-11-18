@@ -1,6 +1,19 @@
 """Prime native device ownership before short-lived processing workers start."""
 
+from contextlib import contextmanager
+
 import cv2
+
+
+@contextmanager
+def cpu_execution():
+    """Restore this calling thread's OpenCL preference even on native errors."""
+    enabled = cv2.ocl.useOpenCL()
+    try:
+        cv2.ocl.setUseOpenCL(False)
+        yield
+    finally:
+        cv2.ocl.setUseOpenCL(enabled)
 
 
 def prepare_native_runtime(graph_or_blocks):

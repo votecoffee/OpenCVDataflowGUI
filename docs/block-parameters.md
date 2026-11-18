@@ -8613,6 +8613,39 @@ Input `region` — Optional selected support within each box, rather than a cent
 | `maximum_boxes` | `128` | Value must be a whole number between 1 and 128. Reject excess boxes before histogram work; never truncate. |
 | `maximum_sample_pixels` | `2000000` | Value must be a whole number between 1 and 1.67772e+07. Reject excess summed raster ROI pixels, including overlapping boxes. |
 
+## Cascade object detection (`ml.cascade_detect`)
+
+ML / Cascade detection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Local modern OpenCV HAAR/LBP XML. Sealed with the project on Save As. |
+| `model_sha256` | `""` | Optional exact content pin; empty accepts the current local file and reports its hash. |
+| `label` | `"object"` |  |
+| `result_mode` | `"weights"` | `weights`, `neighbors`, `boxes` Weights: final-stage margin/reject level. Neighbors: grouped positive-window support. Boxes: no score. |
+| `scale_factor` | `1.1` | Value must be a finite number between 1.01 and 4. Native scale step. Limits apply before native loading/search. |
+| `min_neighbors` | `3` | Value must be a whole number between 0 and 1000. Native grouped support threshold. Zero returns ungrouped positives. |
+| `min_size` | `[0, 0]` | [Width,height] object minimum; [0,0] uses the native model minimum. |
+| `max_size` | `[0, 0]` | [Width,height] object maximum; [0,0] uses image size. Equal nonzero min/max selects a native scale. |
+| `strict_size` | `true` | Filter returned boxes to requested sizes, including native nearest-scale fallback and clipped boxes. |
+| `equalize_histogram` | `false` | Equalize the uint8 gray working image; source pixels stay unchanged. |
+| `minimum_weight_enabled` | `false` | Only weights mode: filter the native final-stage margin. |
+| `minimum_weight` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Native weight, not probability. Enabled separately to preserve negative weights. |
+| `selection_policy` | `"center"` | `center`, `coverage`, `center_and_coverage` Filter returned visible boxes; descriptors still read the whole image. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Selected fraction of a returned visible box; mask and region intersect. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 10000. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 10000. Zero disables the inspection count upper limit. |
+| `maximum_image_pixels` | `1048576` | Value must be a whole number between 1 and 4.1943e+06. |
+| `maximum_model_mb` | `16.0` | Value must be a finite number between 0.001 and 64. |
+| `maximum_levels` | `256` | Value must be a whole number between 1 and 4096. |
+| `maximum_search_windows` | `2000000` | Value must be a whole number between 1 and 1e+07. Conservative pixel-start upper bound across native selected scales. |
+| `maximum_candidates` | `10000` | Value must be a whole number between 1 and 50000. |
+| `maximum_results` | `1024` | Value must be a whole number between 1 and 10000. |
+| `max_work` | `20000000000` | Value must be a whole number between 1 and 2e+11. Window upper bound times all model tree nodes; not measured native operations. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.01 and 4096. Estimated pyramid/candidate workspace; not measured process RSS. |
+
 ## Classify DNN tensor (`ml.classify`)
 
 ML / Classification

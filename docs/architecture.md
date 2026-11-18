@@ -75,8 +75,8 @@ workers start; project loading and block construction stay inert. The desktop
 Runner and live-preview constructors call this on their caller, and headless
 Graph.run prepares before branch scheduling. Clients starting their own outer
 threads should call this method on the long-lived scheduling thread first.
-HOG declares this capability; KCF retains its existing safeguard. Preparation
-does not change the OpenCL preference. A block that explicitly scopes CPU work
+HOG and cascade detection declare this capability; KCF retains its safeguard.
+Preparation does not change the OpenCL preference. A block that explicitly scopes CPU work
 must restore its calling-thread preference even on exceptions.
 
 ## Connection compatibility

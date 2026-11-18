@@ -1996,14 +1996,14 @@ P3	function	cv2.calibrationMatrixValues	no static reference	-
 P3	function	cv2.CamShift	literal reference	-
 P3	function	cv2.Canny	literal reference	-
 P3	function	cv2.cartToPolar	literal reference	-
-P3	class	cv2.CascadeClassifier	no static reference	-
+P3	class	cv2.CascadeClassifier	literal reference	-
 P3	method	cv2.CascadeClassifier.convert	no static reference	-
 P3	method	cv2.CascadeClassifier.detectMultiScale	method name only	-
-P3	method	cv2.CascadeClassifier.detectMultiScale2	no static reference	-
-P3	method	cv2.CascadeClassifier.detectMultiScale3	no static reference	-
+P3	method	cv2.CascadeClassifier.detectMultiScale2	method name only	-
+P3	method	cv2.CascadeClassifier.detectMultiScale3	method name only	-
 P3	method	cv2.CascadeClassifier.empty	method name only	-
-P3	method	cv2.CascadeClassifier.getFeatureType	no static reference	-
-P3	method	cv2.CascadeClassifier.getOriginalWindowSize	no static reference	-
+P3	method	cv2.CascadeClassifier.getFeatureType	method name only	-
+P3	method	cv2.CascadeClassifier.getOriginalWindowSize	method name only	-
 P3	method	cv2.CascadeClassifier.isOldFormatCascade	no static reference	-
 P3	method	cv2.CascadeClassifier.load	method name only	-
 P3	method	cv2.CascadeClassifier.read	method name only	-
@@ -2726,7 +2726,7 @@ P3	method	cv2.FileNode.string	method name only	-
 P3	method	cv2.FileNode.type	method name only	-
 P3	class	cv2.FileStorage	literal reference	-
 P3	method	cv2.FileStorage.endWriteStruct	no static reference	-
-P3	method	cv2.FileStorage.getFirstTopLevelNode	no static reference	-
+P3	method	cv2.FileStorage.getFirstTopLevelNode	method name only	-
 P3	method	cv2.FileStorage.getFormat	no static reference	-
 P3	method	cv2.FileStorage.getNode	method name only	-
 P3	method	cv2.FileStorage.isOpened	method name only	-

@@ -2,7 +2,6 @@
 
 import copy
 import json
-from contextlib import contextmanager
 
 import cv2
 import numpy as np
@@ -13,6 +12,7 @@ from .graphics_layers import GraphicDrawing, graphic_object
 from .hog import HOGFeatures, _sizes
 from .images import convert_depth
 from .ml_common import local_path
+from .native_runtime import cpu_execution as cpu_search
 from .objects import collection
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
@@ -23,17 +23,6 @@ from .svm_blocks import read_svm
 MODEL = "opencv_hog_detector_v1"
 MAX_BYTES = 8 * 1024**2
 PRESETS = ("default_people", "daimler_people")
-
-
-@contextmanager
-def cpu_search():
-    # OpenCV stores this preference in the calling thread, not process-wide.
-    enabled = cv2.ocl.useOpenCL()
-    try:
-        cv2.ocl.setUseOpenCL(False)
-        yield
-    finally:
-        cv2.ocl.setUseOpenCL(enabled)
 
 
 def geometry(p):

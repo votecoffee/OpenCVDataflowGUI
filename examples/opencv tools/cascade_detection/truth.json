@@ -1,0 +1,85 @@
+{
+  "asset_sha256": {
+    "blank.png": "431091eb26b8e9ddaa74ec095d6e2537ff10398a2f71b26a6d6e4ed7f8e1c146",
+    "haar.xml": "0f7d4527844eb514d4a4948e822da90fbb16a34a0bbbbc6adc6498747a5aafb0",
+    "lbp.xml": "6f5f20091b0d20311c929bcd8c927074e50bd0ac6424321016c679f43cf5ebcf",
+    "portrait.png": "8828e3f97f7a12f2b08a24840dae2636c818e2a5745fc676fc03715b6c8b653f",
+    "portrait16.png": "9be63d1ae344fd141908c5e264c022e8754bc067719d341465609505f0859660",
+    "two-faces.png": "10af1cba19cbda8643a5cb2d61afd2a8582bca0549143bfd45eaf0b815f21468"
+  },
+  "cases": {
+    "bad_pin": {
+      "image": "portrait.png",
+      "state": "error"
+    },
+    "blank": {
+      "image": "blank.png",
+      "state": "fail"
+    },
+    "boxes": {
+      "image": "portrait.png",
+      "state": "pass"
+    },
+    "count_fail": {
+      "image": "portrait.png",
+      "state": "fail"
+    },
+    "equalized": {
+      "image": "portrait.png",
+      "state": "pass"
+    },
+    "high_depth": {
+      "image": "portrait16.png",
+      "state": "pass"
+    },
+    "lbp": {
+      "image": "portrait.png",
+      "state": "pass"
+    },
+    "neighbors": {
+      "image": "portrait.png",
+      "state": "pass"
+    },
+    "portrait": {
+      "image": "portrait.png",
+      "state": "pass"
+    },
+    "raw_windows": {
+      "image": "portrait.png",
+      "state": "pass"
+    },
+    "selection": {
+      "image": "two-faces.png",
+      "state": "pass"
+    },
+    "single_scale": {
+      "image": "portrait.png",
+      "state": "pass"
+    },
+    "strict_size": {
+      "image": "portrait.png",
+      "state": "fail"
+    },
+    "two_faces": {
+      "image": "two-faces.png",
+      "state": "pass"
+    },
+    "weight_fail": {
+      "image": "portrait.png",
+      "state": "fail"
+    }
+  },
+  "reference_face": [
+    175,
+    60,
+    105,
+    115
+  ],
+  "reference_scope": "Coarse manually marked portrait face ROI; constructed second ROI uses known scale/translation. Not an accuracy dataset.",
+  "second_reference_face": [
+    599.5,
+    130.0,
+    52.5,
+    57.5
+  ]
+}

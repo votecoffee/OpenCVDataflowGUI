@@ -7,6 +7,10 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "ml.cascade_detect": (
+        "CascadeClassifier CascadeClassifier.read CascadeClassifier.detectMultiScale "
+        "CascadeClassifier.detectMultiScale2 CascadeClassifier.detectMultiScale3"
+    ),
     "ml.hog_detect": "HOGDescriptor HOGDescriptor.setSVMDetector HOGDescriptor.detectMultiScale",
     "ml.hog_detector_model": "HOGDescriptor.getDefaultPeopleDetector "
     "HOGDescriptor.getDaimlerPeopleDetector ml.SVM.getDecisionFunction",

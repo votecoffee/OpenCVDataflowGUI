@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/portrait.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "ml.cascade_detect",
+      "name": "Cascade object detection",
+      "parameters": {
+        "path": "assets/haar.xml",
+        "model_sha256": "0f7d4527844eb514d4a4948e822da90fbb16a34a0bbbbc6adc6498747a5aafb0",
+        "label": "face",
+        "result_mode": "weights",
+        "scale_factor": 1.1,
+        "min_neighbors": 3,
+        "min_size": [
+          70,
+          70
+        ],
+        "max_size": [
+          150,
+          150
+        ],
+        "strict_size": true,
+        "equalize_histogram": true,
+        "minimum_weight_enabled": false,
+        "minimum_weight": 20.0,
+        "selection_policy": "center",
+        "minimum_coverage": 1.0,
+        "minimum_count": 1,
+        "maximum_count": 0,
+        "maximum_image_pixels": 1048576,
+        "maximum_model_mb": 16.0,
+        "maximum_levels": 256,
+        "maximum_search_windows": 2000000,
+        "maximum_candidates": 10000,
+        "maximum_results": 1024,
+        "max_work": 20000000000,
+        "max_bytes_mb": 256.0
+      },
+      "position": [
+        450,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        850,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1250,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "NASA portrait and OpenCV cascade attribution",
+      "description": "NASA photograph of Eileen Collins, public domain via scikit-image. OpenCV 4.13.0 HAAR model by Rainer Lienhart retains its Intel license in XML; LBP model retains OpenCV Apache-2 terms in LICENSE.opencv. Original graphs and constructed two-view composition are MIT. Approximate manually marked face ROI is a smoke-test annotation, not a localization benchmark. Native stage weights and grouped neighbor counts are distinct and neither is probability. See README.md, SOURCES.md, truth.json and benchmark.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
