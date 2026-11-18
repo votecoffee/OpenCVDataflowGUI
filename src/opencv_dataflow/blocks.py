@@ -756,7 +756,6 @@ def builtin_registry():
     from .local_anomaly import LOCAL_ANOMALY_BLOCKS
     from .local_binary_patterns import LocalBinaryPatterns
     from .local_features import LOCAL_FEATURE_BLOCKS
-    from .native_lightglue import NATIVE_LIGHTGLUE_BLOCKS
     from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
     from .logpolar_registration import LogPolarRegistration
@@ -784,6 +783,7 @@ def builtin_registry():
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
     from .native_background import NATIVE_BACKGROUND_BLOCKS
+    from .native_lightglue import NATIVE_LIGHTGLUE_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
     from .neighbor_restoration import RestoreFromNeighbors
