@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/parts.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/proposals.onnx",
+        "width": 64,
+        "height": 64,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [],
+        "engine": "new",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        360,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "ml.decode_detections",
+      "name": "Decode object detections",
+      "parameters": {
+        "output_name": "rows",
+        "format": "xyxy_score_class",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
+        "layout": "rows",
+        "coordinate_units": "network_pixels",
+        "grid_decode": "none",
+        "strides": [
+          8,
+          16,
+          32
+        ],
+        "score_activation": "probability",
+        "labels": [
+          "part",
+          "other class"
+        ],
+        "accepted_class_ids": [],
+        "class_id_offset": 0,
+        "confidence_threshold": 0.01,
+        "objectness_threshold": 0.0,
+        "nms_enabled": false,
+        "class_agnostic_nms": false,
+        "nms_iou": 0.45,
+        "nms_eta": 1.0,
+        "nms_top_k": 0,
+        "border_policy": "clip",
+        "minimum_count": 1,
+        "maximum_count": 0,
+        "maximum_raw_rows": 100000,
+        "maximum_candidates": 10000,
+        "maximum_results": 1000,
+        "maximum_image_pixels": 16777216
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "suppress",
+      "type": "ml.soft_nms",
+      "name": "Suppress overlapping detections (Soft-NMS)",
+      "parameters": {
+        "method": "linear",
+        "score_threshold": 0.99,
+        "iou_threshold": 0.5,
+        "sigma": 0.5,
+        "top_k": 0,
+        "class_agnostic": false,
+        "box_source": "unclipped",
+        "rounding": "cover",
+        "accepted_class_ids": [],
+        "minimum_count": 1,
+        "maximum_count": 0,
+        "include_candidate_details": true,
+        "maximum_raw_detections": 10000,
+        "maximum_candidates": 2048,
+        "maximum_results": 2048,
+        "maximum_image_pixels": 16777216
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "indices",
+        "scores",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1800,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original Soft-NMS controls - MIT",
+      "description": "Original OpenCVDataflowGUI synthetic image, image-dependent ONNX proposals and projects, MIT. Six known proposals include a shifted duplicate, an adjacent part, an overlapping second class and a border-crossing box. Integer native suppression boxes are recorded while original fractional geometry is preserved. This tests postprocessing, not learned part recognition. See README.md/SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -460
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "tensors",
+      "target": "decode",
+      "input": "tensors"
+    },
+    {
+      "source": "infer",
+      "output": "preprocessing",
+      "target": "decode",
+      "input": "preprocessing"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "suppress",
+      "input": "image"
+    },
+    {
+      "source": "decode",
+      "output": "collection",
+      "target": "suppress",
+      "input": "collection"
+    },
+    {
+      "source": "suppress",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "suppress",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

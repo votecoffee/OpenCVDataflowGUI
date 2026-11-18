@@ -10612,6 +10612,39 @@ Input `collection` — Decode instance segmentation collection, optionally sorte
 | `maximum_region_runs` | `200000` | Value must be a whole number between 1 and 1e+06. Reject larger selected mask encodings before rasterizing. |
 | `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound the full source mask allocation. |
 
+## Suppress overlapping detections (Soft-NMS) (`ml.soft_nms`)
+
+ML / Object detection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `collection` (data).
+
+Input `image` — Unchanged review image in the collection's source grid.
+
+Input `collection` — Zero-origin axis-aligned boxes with score/class_id/label, e.g. Decode detections with NMS off. Already removed proposals cannot be recovered.
+
+Input `mask` — Optional center selection in the source image; intersects Region.
+
+Input `region` — Selects the pixel cell containing the chosen source box center; no cropping.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"linear"` | `linear`, `gaussian`, `hard`, `none` Native linear/Gaussian Soft-NMS, hard NMS comparison, or no suppression. |
+| `score_threshold` | `0.25` | Value must be a finite number between 0 and 1. Float32 scores: Soft/None keep equality, native Hard requires strictly greater. Soft modes apply the threshold again after decay. |
+| `iou_threshold` | `0.5` | Value must be a finite number between 0 and 1. Linear decays above this IoU; Hard suppresses above it. Gaussian ignores it. |
+| `sigma` | `0.5` | Value must be a finite number between 1e-06 and 100. Positive float32 Gaussian decay denominator: exp(-IoU squared / sigma). |
+| `top_k` | `0` | Value must be a whole number between 0 and 4096. Maximum retained per class, or globally when class-agnostic; zero unlimited. Hard applies this after native suppression, not as a candidate prefilter. |
+| `class_agnostic` | `false` | Allow overlapping classes to suppress/decay each other. |
+| `box_source` | `"unclipped"` | `unclipped`, `bbox` Require unclipped_xyxy, or use bbox XYWH explicitly. Output geometry stays unchanged. |
+| `rounding` | `"cover"` | `cover`, `nearest` Native Soft-NMS requires integer boxes. Cover floors left/top and ceils right/bottom. Nearest rounds edges, ties to even; collapsed boxes reject. Geometry is not rounded. |
+| `accepted_class_ids` | `[]` | Empty accepts all; otherwise distinct nonnegative integer class IDs. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 4096. Fail below this retained count; valid empty collections still emit. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 4096. Zero disables the upper inspection-count criterion. |
+| `include_candidate_details` | `false` | Optional bounded trace with source indices/IDs, native boxes and retained scores. Rejected final scores are unknown because native Soft-NMS does not return them. |
+| `maximum_raw_detections` | `10000` | Value must be a whole number between 1 and 50000. Reject excess input records before validation/native work. |
+| `maximum_candidates` | `2048` | Value must be a whole number between 1 and 4096. Bound quadratic native work; reject excess without truncating. |
+| `maximum_results` | `2048` | Value must be a whole number between 1 and 4096. Reject excess output records instead of publishing partial results. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. Source image budget; maximum axis 16384 pixels. |
+
 ## Split labeled images by capture group (`ml.split_image_groups`)
 
 ML / Evaluation

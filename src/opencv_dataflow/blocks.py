@@ -882,6 +882,7 @@ def builtin_registry():
     from .skimage_thresholds import GlobalThreshold, MultiOtsu
     from .skimage_thresholds import LocalThreshold as SkimageLocalThreshold
     from .slanted_edge import MeasureSlantedEdge
+    from .soft_nms import SuppressDetections
     from .spanning_tree import MinimumSpanningTree
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
@@ -1197,6 +1198,7 @@ def builtin_registry():
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,
         FuseTileDetections,
+        SuppressDetections,
         DecodeRotatedDetections,
         DecodeSegmentation,
         FuseTileSegmentation,

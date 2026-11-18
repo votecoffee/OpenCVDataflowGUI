@@ -48,7 +48,10 @@ ten original projects, **402 matching source/wheel/installed modules** and **61
 unchanged package versions**. Native DNN layer profiling (S2-55) advances the
 targeted cycle to **4/20**, with 289 focused checks, 69 installed checks and thirteen
 original projects. All **403 source/wheel/installed modules** match and **61
-package versions** remain unchanged. Score-decay suppression (S2-56) is next. These
+package versions** remain unchanged. Score-decay suppression (S2-56) advances the
+targeted cycle to **5/20**, with **217 focused checks**, **77 installed checks**,
+thirteen original projects, **404 matching source/wheel/installed modules** and
+**61 unchanged package versions**. Quantized image inference (S2-57) is next. These
 are software/offline checks, without native ROS or physical equipment qualification.
 
 The preceding audit used committed source `9c9d6a7`: **8,034 passed, 36 skipped,
@@ -85,8 +88,8 @@ detection (S2-46), cascade-based image detection (S2-47) and rotated crop
 classification (S2-48), image-based regression (S2-49) and local anomaly maps
 (S2-50), input-shift evaluation (S2-51) and instance-mask tracking (S2-52).
 That cycle and its broad checkpoint are complete. The current targeted cycle is
-**4/20** after the measurement follow-up, native ONNX LightGlue, native image
-retrieval and DNN layer profiling. Python 3.14.3/OpenCV 5.0.0
+**5/20** after the measurement follow-up, native ONNX LightGlue, native image
+retrieval, DNN layer profiling and score-decay suppression. Python 3.14.3/OpenCV 5.0.0
 contrib 5.0.0.93 remain unchanged.
 
 The previous broad checkpoint was `2a66fc8`: **6,986 passed, 36 skipped** in
@@ -123,7 +126,8 @@ and rotated crop classification (S2-48) and image-based regression (S2-49) are
 qualified; local anomaly maps (S2-50) and input-shift evaluation (S2-51) are
 qualified; instance-mask tracking (S2-52) and its broader checkpoint are complete.
 Native ONNX LightGlue (S2-53), native embedding retrieval (S2-54) and native DNN
-layer profiling (S2-55) are qualified; score-decay suppression (S2-56) is next. Permitted
+layer profiling (S2-55) and score-decay suppression (S2-56) are qualified;
+quantized image inference (S2-57) is next. Permitted
 real SuperPoint extraction remains open. This is software/offline qualification,
 without native ROS or physical equipment acceptance.
 
@@ -265,6 +269,40 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Score-decay suppression (S2-56)** adds `ml.soft_nms` for existing detection
+collections. Native Linear/Gaussian updates, class-aware/agnostic groups, an
+accepted-class filter, retained Top k and hard/disabled comparisons preserve
+source indices, item/class IDs and decayed score alignment. Original geometry,
+custom fields, primary image pixels/depth and current ticket/frame/recipe/pyramid
+context remain inspectable. Feed unsuppressed decoder proposals; earlier removals
+cannot be recovered. Native/independent scalar references qualify ranking and
+score decay, threshold equality, ties and Gaussian sigma/IoU behavior.
+
+The native Soft-NMS binding accepts integer rectangles. Explicit Cover/Nearest
+edge rounding and full-versus-visible box selection record the actual overlap
+geometry while retaining fractional output coordinates. Collapsed/oversized
+integer boxes reject; pairwise area arithmetic stays within the native int range.
+Gaussian ignores IoU cutoff; Soft keeps threshold equality while native Hard
+does not. The Hard comparison applies Top k after suppression to share the
+block's retained-cap contract. Removed final scores remain null because native
+Soft-NMS does not expose them; no inferred zero or exact rejection reason is used.
+
+[Thirteen original projects](<../examples/opencv tools/soft_nms/README.md>)
+use an image-dependent ONNX proposal head and known synthetic parts. Default
+linear decay retains six proposals versus five with hard suppression. Debug/Lean
+filmstrip overlays, class grouping, rounding/border controls, ROI selection,
+uint16 inputs, trace omission and deliberate empty/count failures are checked.
+Bounded work, metadata conflicts, rejected-input history, native error recovery,
+JSON/XML relocation, exact asset/project regeneration and a cold offscreen worker
+are covered. These are CPU postprocessing controls, not learned industrial accuracy.
+
+**217 focused checks** and **77 installed checks** pass; **404 module files** match
+source/wheel/install and **61 package versions** remain unchanged. ML/DNN is
+**55/62 (88.7%)**, overall **281/470 (59.8%)**, core **173/175 (98.9%)**. The
+targeted cycle is **5/20**, without a broad repeat. Rotated/instance-mask overlap
+and production accuracy retain their separate scope. Next: **S2-57 quantized
+image model inference**. See [contracts and limits](soft-nms.md).
+
 **DNN layer profiling (S2-55)** adds opt-in single-image, multi-input and batched
 ONNX variants. They collect bounded native layer timings immediately after the
 same forward, with model hashes, input/output shapes, cache reuse and requested/
@@ -294,7 +332,8 @@ source/wheel/install and **61 package versions** remain unchanged. ML/DNN is
 targeted cycle is **4/20**; no broad repeat. Selected CPU timing is qualified;
 accelerators, alternate timing overloads and actual per-layer placement remain
 unqualified. Off does not disable native engine internal tick bookkeeping.
-Next: **S2-56 score-decay suppression**. See [contracts and limits](dnn-profiling.md).
+Its next item, **S2-56 score-decay suppression**, is qualified above.
+See [contracts and limits](dnn-profiling.md).
 
 **Native image embedding retrieval (S2-54)** adds build/search/save/load blocks
 using OpenCV's built-in ANNIndex. Stable image IDs/labels, exact retained rows,
@@ -3698,8 +3737,8 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests; the current targeted cycle is 4/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
-| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **54/62 complete (87.1%)**. Native ONNX LightGlue (S2-53), bounded native embedding retrieval (S2-54) and CPU DNN layer profiling (S2-55) are qualified. Next qualify score-decay suppression (S2-56), then the remaining selected image-model workflows. The checklist retains real SuperPoint extraction (S2-15), quantized inference, multi-scale super-resolution, calibrated classifier uncertainty, one-class anomaly training, HOG detector training and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests; the current targeted cycle is 5/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **55/62 complete (88.7%)**. Native ONNX LightGlue (S2-53), bounded native embedding retrieval (S2-54), CPU DNN layer profiling (S2-55) and score-decay suppression (S2-56) are qualified. Next qualify quantized image inference (S2-57), then the remaining selected image-model workflows. The checklist retains real SuperPoint extraction (S2-15), multi-scale super-resolution, calibrated classifier uncertainty, one-class anomaly training, HOG detector training and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |

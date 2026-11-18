@@ -585,7 +585,7 @@ P2	function	cv2.dnn.resetMyriadDevice	no static reference	-
 P2	class	cv2.dnn.SegmentationModel	no static reference	-
 P2	method	cv2.dnn.SegmentationModel.segment	method name only	-
 P2	function	cv2.dnn.setInferenceEngineBackendType	no static reference	-
-P2	function	cv2.dnn.softNMSBoxes	no static reference	-
+P2	function	cv2.dnn.softNMSBoxes	literal reference	-
 P2	class	cv2.dnn.TextDetectionModel	no static reference	-
 P2	method	cv2.dnn.TextDetectionModel.detect	method name only	-
 P2	method	cv2.dnn.TextDetectionModel.detectTextRectangles	no static reference	-

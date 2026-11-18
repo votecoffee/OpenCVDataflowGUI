@@ -35,6 +35,10 @@ Opt-in [DNN profiling variants](dnn-profiling.md) measure native layers on the
 same single-image, multi-input or batch forward. CPU timing availability, fusion
 controls, per-call source identity and an independent off switch remain explicit.
 
+[Soft-NMS](soft-nms.md) adds linear/Gaussian score decay on existing detection
+collections, with a hard/disabled comparison, explicit native integer-box rounding,
+class grouping and aligned source indices/scores. Original geometry is preserved.
+
 ## Installation
 
 Point/box [prompted segmentation](prompted-segmentation.md) uses the pinned

@@ -1,0 +1,76 @@
+{
+  "asset_sha256": {
+    "assets/parts.png": "66bba56a0fe72f4bdbe2b4a3e69ff4af305d0b4ddedcd190ef297d02de9f087f",
+    "assets/proposals.onnx": "d3fe296a058fe9a89ba18c5ab11961ebac6166f69f129cecd5ea3554436471a6"
+  },
+  "base_scores": [
+    0.9,
+    0.8,
+    0.7,
+    0.85,
+    0.6,
+    0.2
+  ],
+  "boxes_xyxy": [
+    [
+      10.2,
+      10.1,
+      32.2,
+      30.1
+    ],
+    [
+      12.2,
+      10.1,
+      34.2,
+      30.1
+    ],
+    [
+      30.2,
+      10.1,
+      52.2,
+      30.1
+    ],
+    [
+      10.2,
+      10.1,
+      32.2,
+      30.1
+    ],
+    [
+      -4.2,
+      35.2,
+      16.2,
+      55.2
+    ],
+    [
+      42.2,
+      40.2,
+      54.2,
+      52.2
+    ]
+  ],
+  "cases": [
+    "linear",
+    "gaussian",
+    "hard",
+    "none",
+    "agnostic",
+    "top_k",
+    "selected",
+    "empty",
+    "count_failure",
+    "high_depth",
+    "nearest",
+    "visible_boxes",
+    "details_off"
+  ],
+  "classes": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0
+  ],
+  "red_mean_score_factor": 0.02
+}
