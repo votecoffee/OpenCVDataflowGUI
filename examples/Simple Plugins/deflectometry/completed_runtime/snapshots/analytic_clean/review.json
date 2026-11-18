@@ -1,0 +1,867 @@
+{
+  "schema": "simple_deflectometry_completed_review/v1",
+  "execution_binding": "67797cb5d65f41e9bdf3173577b44ad1",
+  "completed_result": {
+    "active_pixels": 6912,
+    "capture_id": "analytic_clean",
+    "changed_pixels": 0,
+    "comparable_pixels": 6912,
+    "comparison_reason_counts": {
+      "both_unavailable": 0,
+      "comparable": 6912,
+      "outside_reference_roi": 0,
+      "reference_unavailable": 0,
+      "test_unavailable": 0
+    },
+    "coverage": 1.0,
+    "decision_scope": "Availability and optional user-specified wrapped-phase vector limit",
+    "denominator": "Retained reference ROI; test masks reduce comparable coverage",
+    "exposure_s": 0.01,
+    "fail_reasons": [],
+    "maximum_change_rad": 0.45,
+    "maximum_observed_change_rad": 0.0,
+    "metric_height": false,
+    "minimum_coverage": 0.95,
+    "no_phase_redundancy": {
+      "x": false,
+      "y": false
+    },
+    "passed": true,
+    "phase_reason_labels": [
+      "valid",
+      "outside_roi",
+      "nonfinite",
+      "input_ceiling",
+      "low_modulation",
+      "poor_sinusoidal_fit"
+    ],
+    "phase_settings": {
+      "input_ceiling": 1.0,
+      "maximum_relative_rms": 0.15,
+      "minimum_amplitude": 0.03
+    },
+    "photometry_qualified": false,
+    "pixel_grid": "original-96x72",
+    "radiometry_scope": "Caller-declared normalized linear response",
+    "reference_capture_id": "reference",
+    "reference_coverage": 1.0,
+    "reference_valid_pixels": 6912,
+    "response": "linear",
+    "schema": "simple_deflectometry_phase_result/v1",
+    "scope": "Wrapped reference difference",
+    "sequence": {
+      "exposure_s": 0.01,
+      "pixel_grid": "original-96x72",
+      "response": "linear",
+      "setup_id": "analytic-phase-control",
+      "x": {
+        "direction": 1,
+        "frame_ids": [
+          "x:0",
+          "x:1",
+          "x:2",
+          "x:3",
+          "x:4",
+          "x:5"
+        ],
+        "origin_rad": 0,
+        "period_px": 32,
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ]
+      },
+      "y": {
+        "direction": 1,
+        "frame_ids": [
+          "y:0",
+          "y:1",
+          "y:2",
+          "y:3",
+          "y:4",
+          "y:5"
+        ],
+        "origin_rad": 0,
+        "period_px": 32,
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ]
+      }
+    },
+    "setup_id": "analytic-phase-control",
+    "source_records": {
+      "reference": {
+        "kind": "Analytic phase control; not physical shape"
+      },
+      "test": {
+        "kind": "Analytic phase/missing-signal control; no acquired or metric shape truth"
+      }
+    },
+    "test_coverage": 1.0,
+    "test_valid_pixels": 6912,
+    "whole_period_ambiguity": true
+  },
+  "executed_parameters": {
+    "capture_manifest": "assets/94b22a6aad5088bdf47d72bbb7dcee1533f9e24818b8aa3beeb98bda66d3776c.json",
+    "recipe_path": "assets/c68618b1b1564169e6c371a778d43ef8ecc6539f2123b80e51f76874790369fc.sdef",
+    "render_graphics": true,
+    "sha256": "c68618b1b1564169e6c371a778d43ef8ecc6539f2123b80e51f76874790369fc",
+    "source": "capture manifest"
+  },
+  "executed_configuration": {
+    "sequence": {
+      "x": {
+        "frame_ids": [
+          "x:0",
+          "x:1",
+          "x:2",
+          "x:3",
+          "x:4",
+          "x:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      },
+      "y": {
+        "frame_ids": [
+          "y:0",
+          "y:1",
+          "y:2",
+          "y:3",
+          "y:4",
+          "y:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      },
+      "setup_id": "analytic-phase-control",
+      "pixel_grid": "original-96x72",
+      "exposure_s": 0.01,
+      "response": "linear"
+    },
+    "reference_capture_id": "reference",
+    "reference_mask": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "8434fb1d2c17e00a6445b73aa32e1dba1d420ed122886e54f17a1a96565ad5be"
+    },
+    "phase": {
+      "minimum_amplitude": 0.03,
+      "maximum_relative_rms": 0.15,
+      "input_ceiling": 1.0
+    },
+    "minimum_coverage": 0.95,
+    "maximum_change_rad": 0.45,
+    "notes": {
+      "source_provenance": {
+        "kind": "Analytic phase control; not physical shape"
+      },
+      "reference_import": {
+        "manifest_name": "capture.json",
+        "source_encoding": "linear",
+        "input_scale": 1,
+        "source_names": [
+          "x_00.npy",
+          "x_01.npy",
+          "x_02.npy",
+          "x_03.npy",
+          "x_04.npy",
+          "x_05.npy",
+          "y_00.npy",
+          "y_01.npy",
+          "y_02.npy",
+          "y_03.npy",
+          "y_04.npy",
+          "y_05.npy"
+        ]
+      }
+    }
+  },
+  "consumed_capture": {
+    "schema": "simple_deflectometry_stack/v1",
+    "sequence": {
+      "x": {
+        "frame_ids": [
+          "x:0",
+          "x:1",
+          "x:2",
+          "x:3",
+          "x:4",
+          "x:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      },
+      "y": {
+        "frame_ids": [
+          "y:0",
+          "y:1",
+          "y:2",
+          "y:3",
+          "y:4",
+          "y:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      },
+      "setup_id": "analytic-phase-control",
+      "pixel_grid": "original-96x72",
+      "exposure_s": 0.01,
+      "response": "linear"
+    },
+    "capture_id": "analytic_clean",
+    "x_images": {
+      "shape": [
+        6,
+        72,
+        96
+      ],
+      "dtype": "<f4",
+      "sha256": "ed34aa0f9ed6177414c7a6bfca29ce7e22166f238eaa7899ac086ab0adb3b4f8"
+    },
+    "y_images": {
+      "shape": [
+        6,
+        72,
+        96
+      ],
+      "dtype": "<f4",
+      "sha256": "a71b16339168fb9388ba24a3f2d04c0a48d3eb2898e15d6e25c57240b77f571a"
+    },
+    "mask": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "8434fb1d2c17e00a6445b73aa32e1dba1d420ed122886e54f17a1a96565ad5be"
+    },
+    "metadata": {
+      "kind": "Analytic phase/missing-signal control; no acquired or metric shape truth"
+    }
+  },
+  "map_arrays": {
+    "valid": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "8434fb1d2c17e00a6445b73aa32e1dba1d420ed122886e54f17a1a96565ad5be"
+    },
+    "reason": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|u1",
+      "sha256": "71c642b31e5890a15ef92f3cbeba34edfb6e2e9f63079ecbda13a89d426f7d8b"
+    },
+    "reference_wrapped": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "3a37d302431a438743444b999c640354423f782f9347dc061ff890c02c760dcf"
+    },
+    "reference_amplitude": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "a2fced8f60f0d3d48d1ce548a9de1a90c300d22a503b81ecd2cf63284959a67e"
+    },
+    "reference_background": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "5907a7da5030c3729f20bd9fae7fcad11c109cf541fa9af633c03fd607a8578e"
+    },
+    "reference_relative_rms": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "822dbd789b95daed5aac6a4567c8327d4dc431b94f0d457fe639cc41a0712fc1"
+    },
+    "reference_valid": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "|b1",
+      "sha256": "f035d0afefefa618320cdaa025b0fdc47fef324d775b79bf67c8ed551c8528f1"
+    },
+    "reference_reason": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "|u1",
+      "sha256": "299407adb3f1bd645191cfecb3c33a47510b1dfba3c0a936d741bdd8513526c0"
+    },
+    "test_wrapped": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "3a37d302431a438743444b999c640354423f782f9347dc061ff890c02c760dcf"
+    },
+    "test_amplitude": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "a2fced8f60f0d3d48d1ce548a9de1a90c300d22a503b81ecd2cf63284959a67e"
+    },
+    "test_background": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "5907a7da5030c3729f20bd9fae7fcad11c109cf541fa9af633c03fd607a8578e"
+    },
+    "test_relative_rms": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "822dbd789b95daed5aac6a4567c8327d4dc431b94f0d457fe639cc41a0712fc1"
+    },
+    "test_valid": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "|b1",
+      "sha256": "f035d0afefefa618320cdaa025b0fdc47fef324d775b79bf67c8ed551c8528f1"
+    },
+    "test_reason": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "|u1",
+      "sha256": "299407adb3f1bd645191cfecb3c33a47510b1dfba3c0a936d741bdd8513526c0"
+    },
+    "change_rad": {
+      "shape": [
+        72,
+        96,
+        2
+      ],
+      "dtype": "<f8",
+      "sha256": "7c98d2da7afa2bdee9765910c81cb588e14781b77538fb54df84f7e7039e4348"
+    },
+    "magnitude_rad": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "<f8",
+      "sha256": "35295da1d5eca0b6db3168c0a64a2d61ed3ae8ca283dd4aa6116aa04703dcb60"
+    },
+    "changed": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "71c642b31e5890a15ef92f3cbeba34edfb6e2e9f63079ecbda13a89d426f7d8b"
+    },
+    "near_wrap_boundary": {
+      "shape": [
+        72,
+        96
+      ],
+      "dtype": "|b1",
+      "sha256": "71c642b31e5890a15ef92f3cbeba34edfb6e2e9f63079ecbda13a89d426f7d8b"
+    }
+  },
+  "ignored_capture_fields": [],
+  "provenance": {
+    "snapshot_id": "de9e7847884d44149b9c77b30f29bce3",
+    "block_id": "deflect",
+    "execution_count": 1,
+    "output_revision": 0,
+    "passed": true,
+    "score": null,
+    "message": "6912/6912 comparable pixels; wrapped phase only",
+    "inputs": {},
+    "outputs": {
+      "image": {
+        "spatial": {
+          "root_id": "deflect-source:original-96x72",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      },
+      "maps": {
+        "spatial": {
+          "root_id": "deflect-source:original-96x72",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      },
+      "report": {
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      },
+      "coverage": {
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      },
+      "count": {
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      },
+      "changed_pixels": {
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      },
+      "overlay": {
+        "spatial": {
+          "root_id": "deflect-source:original-96x72",
+          "root_size": [
+            96,
+            72
+          ],
+          "image_size": [
+            96,
+            72
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      },
+      "overview": {
+        "spatial": {
+          "root_id": "deflect-overview:deflect",
+          "root_size": [
+            1380,
+            1056
+          ],
+          "image_size": [
+            1380,
+            1056
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "deflect_completed_review": {
+          "id": "67797cb5d65f41e9bdf3173577b44ad1"
+        }
+      }
+    }
+  },
+  "selected_pixel": {
+    "x": 0,
+    "y": 36,
+    "whole_period_ambiguity": true,
+    "valid": true,
+    "reason": 0,
+    "reference_wrapped": [
+      0.2999999876126502,
+      1.2853981498552955
+    ],
+    "reference_amplitude": [
+      0.20000000488117808,
+      0.20000001081713137
+    ],
+    "reference_background": [
+      0.4000000009934109,
+      0.4000000059604646
+    ],
+    "reference_relative_rms": [
+      4.301594592244041e-08,
+      7.516245001617174e-16
+    ],
+    "reference_valid": [
+      true,
+      true
+    ],
+    "reference_reason": [
+      0,
+      0
+    ],
+    "test_wrapped": [
+      0.2999999876126502,
+      1.2853981498552955
+    ],
+    "test_amplitude": [
+      0.20000000488117808,
+      0.20000001081713137
+    ],
+    "test_background": [
+      0.4000000009934109,
+      0.4000000059604646
+    ],
+    "test_relative_rms": [
+      4.301594592244041e-08,
+      7.516245001617174e-16
+    ],
+    "test_valid": [
+      true,
+      true
+    ],
+    "test_reason": [
+      0,
+      0
+    ],
+    "change_rad": [
+      0.0,
+      0.0
+    ],
+    "magnitude_rad": 0.0,
+    "changed": false,
+    "near_wrap_boundary": false,
+    "reason_name": "comparable",
+    "reference_reason_names": [
+      "valid",
+      "valid"
+    ],
+    "test_reason_names": [
+      "valid",
+      "valid"
+    ]
+  },
+  "selected_observations": [
+    {
+      "index": 0,
+      "axis": "x",
+      "frame_id": "x:0",
+      "phase_angle_rad": 0.0,
+      "reference_code": 0.5910673141479492,
+      "test_code": 0.5910673141479492,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 1,
+      "axis": "x",
+      "frame_id": "x:1",
+      "phase_angle_rad": 1.0471975511965976,
+      "reference_code": 0.4443480372428894,
+      "test_code": 0.4443480372428894,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 2,
+      "axis": "x",
+      "frame_id": "x:2",
+      "phase_angle_rad": 2.0943951023931953,
+      "reference_code": 0.25328075885772705,
+      "test_code": 0.25328075885772705,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 3,
+      "axis": "x",
+      "frame_id": "x:3",
+      "phase_angle_rad": 3.141592653589793,
+      "reference_code": 0.20893269777297974,
+      "test_code": 0.20893269777297974,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 4,
+      "axis": "x",
+      "frame_id": "x:4",
+      "phase_angle_rad": 4.1887902047863905,
+      "reference_code": 0.35565194487571716,
+      "test_code": 0.35565194487571716,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 5,
+      "axis": "x",
+      "frame_id": "x:5",
+      "phase_angle_rad": 5.235987755982989,
+      "reference_code": 0.5467192530632019,
+      "test_code": 0.5467192530632019,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 6,
+      "axis": "y",
+      "frame_id": "y:0",
+      "phase_angle_rad": 0.0,
+      "reference_code": 0.45630791783332825,
+      "test_code": 0.45630791783332825,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 7,
+      "axis": "y",
+      "frame_id": "y:1",
+      "phase_angle_rad": 1.0471975511965976,
+      "reference_code": 0.2619550824165344,
+      "test_code": 0.2619550824165344,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 8,
+      "axis": "y",
+      "frame_id": "y:2",
+      "phase_angle_rad": 2.0943951023931953,
+      "reference_code": 0.20564717054367065,
+      "test_code": 0.20564717054367065,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 9,
+      "axis": "y",
+      "frame_id": "y:3",
+      "phase_angle_rad": 3.141592653589793,
+      "reference_code": 0.3436920940876007,
+      "test_code": 0.3436920940876007,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 10,
+      "axis": "y",
+      "frame_id": "y:4",
+      "phase_angle_rad": 4.1887902047863905,
+      "reference_code": 0.5380449295043945,
+      "test_code": 0.5380449295043945,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    },
+    {
+      "index": 11,
+      "axis": "y",
+      "frame_id": "y:5",
+      "phase_angle_rad": 5.235987755982989,
+      "reference_code": 0.5943528413772583,
+      "test_code": 0.5943528413772583,
+      "reference_nonfinite": false,
+      "test_nonfinite": false,
+      "reference_ceiling": false,
+      "test_ceiling": false
+    }
+  ],
+  "selected_frame": 1,
+  "selected_view": "overlay",
+  "selected_component": 1,
+  "emitted_views": [
+    "reference_source",
+    "test_source",
+    "reference_phase_x",
+    "test_phase_x",
+    "change_x",
+    "amplitude_x",
+    "residual_x",
+    "reference_phase_y",
+    "test_phase_y",
+    "change_y",
+    "amplitude_y",
+    "residual_y",
+    "magnitude",
+    "quality",
+    "overlay",
+    "overview"
+  ],
+  "manifest_sha256": "94b22a6aad5088bdf47d72bbb7dcee1533f9e24818b8aa3beeb98bda66d3776c",
+  "geometry_scope": "Wrapped phase/reference comparison only; no absolute screen U/V, normal, slope, height or cloud",
+  "source_scope": "Exact normalized consumed native arrays; original encoded camera-image bytes unavailable",
+  "identity_scope": "Caller setup/grid/sequence/radiometry/tickets do not prove registration, synchrony or physical accuracy",
+  "diagnostic_scope": "Stored diagnostics only; no per-frame fitted prediction/residual",
+  "whole_period_ambiguity": true,
+  "phase_fitting_reexecuted": false,
+  "unwrapping_reexecuted": false,
+  "reflection_solving_reexecuted": false,
+  "calibration_changed": false,
+  "capture_reloaded": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "c68618b1b1564169e6c371a778d43ef8ecc6539f2123b80e51f76874790369fc"
+}

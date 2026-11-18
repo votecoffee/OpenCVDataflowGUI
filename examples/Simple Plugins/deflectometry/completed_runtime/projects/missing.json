@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "deflect",
+      "type": "image.simple_deflectometry",
+      "name": "SimpleDeflectometry",
+      "description": "Exact completed reference/inspection pattern evidence. Wrapped phase only; no measured shape.",
+      "parameters": {
+        "recipe_path": "assets/c68618b1b1564169e6c371a778d43ef8ecc6539f2123b80e51f76874790369fc.sdef",
+        "sha256": "c68618b1b1564169e6c371a778d43ef8ecc6539f2123b80e51f76874790369fc",
+        "source": "connected capture",
+        "capture_manifest": "",
+        "render_graphics": true
+      },
+      "position": [
+        450,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "maps",
+        "report",
+        "coverage",
+        "count",
+        "changed_pixels",
+        "overlay",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "capture",
+      "type": "input.simple_deflect_capture",
+      "name": "Recorded reflected-pattern capture",
+      "parameters": {
+        "capture_path": "assets/4f7d5a4a85279269b337edcf1d0da105d32bf055b864f3bbd8dfba7fe50e0f97.sdef",
+        "sha256": "4f7d5a4a85279269b337edcf1d0da105d32bf055b864f3bbd8dfba7fe50e0f97"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "capture",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "capture",
+      "target": "deflect",
+      "input": "capture"
+    }
+  ]
+}

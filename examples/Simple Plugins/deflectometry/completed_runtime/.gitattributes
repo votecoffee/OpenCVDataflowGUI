@@ -1,0 +1,8 @@
+* -text
+*.png binary
+*.npy binary
+*.npz binary
+*.sdef binary
+*.whl binary
+*.txt binary
+LICENSE -text whitespace=cr-at-eol

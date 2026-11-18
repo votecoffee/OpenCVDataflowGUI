@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "deflect",
+      "type": "image.simple_deflectometry",
+      "name": "SimpleDeflectometry",
+      "description": "Exact completed reference/inspection pattern evidence. Wrapped phase only; no measured shape.",
+      "parameters": {
+        "recipe_path": "assets/c68618b1b1564169e6c371a778d43ef8ecc6539f2123b80e51f76874790369fc.sdef",
+        "sha256": "c68618b1b1564169e6c371a778d43ef8ecc6539f2123b80e51f76874790369fc",
+        "source": "capture manifest",
+        "capture_manifest": "assets/b2939164941038ae74ad66f5615f4d187c7a7947ac025ce33ae303ad8dffa3f9.json",
+        "render_graphics": true
+      },
+      "position": [
+        450,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "maps",
+        "report",
+        "coverage",
+        "count",
+        "changed_pixels",
+        "overlay",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": []
+}

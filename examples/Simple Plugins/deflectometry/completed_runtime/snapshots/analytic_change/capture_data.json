@@ -1,0 +1,84 @@
+{
+  "schema": "simple_deflectometry_stack/v1",
+  "sequence": {
+    "x": {
+      "frame_ids": [
+        "x:0",
+        "x:1",
+        "x:2",
+        "x:3",
+        "x:4",
+        "x:5"
+      ],
+      "phase_angles": [
+        0.0,
+        1.0471975511965976,
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989
+      ],
+      "period_px": 32,
+      "origin_rad": 0,
+      "direction": 1
+    },
+    "y": {
+      "frame_ids": [
+        "y:0",
+        "y:1",
+        "y:2",
+        "y:3",
+        "y:4",
+        "y:5"
+      ],
+      "phase_angles": [
+        0.0,
+        1.0471975511965976,
+        2.0943951023931953,
+        3.141592653589793,
+        4.1887902047863905,
+        5.235987755982989
+      ],
+      "period_px": 32,
+      "origin_rad": 0,
+      "direction": 1
+    },
+    "setup_id": "analytic-phase-control",
+    "pixel_grid": "original-96x72",
+    "exposure_s": 0.01,
+    "response": "linear"
+  },
+  "capture_id": "analytic_change",
+  "x_images": {
+    "array_file": "capture_array_000.npy",
+    "shape": [
+      6,
+      72,
+      96
+    ],
+    "dtype": "<f4",
+    "sha256": "f14aa48ddd49cbd9dc99904146cd6f2da7fbfc1165bfe0058dc245fd87bd959f"
+  },
+  "y_images": {
+    "array_file": "capture_array_001.npy",
+    "shape": [
+      6,
+      72,
+      96
+    ],
+    "dtype": "<f4",
+    "sha256": "46eb590971f744330def19bedae432fa6650f4cb37df3fa1d01ed7cd2c708025"
+  },
+  "mask": {
+    "array_file": "capture_array_002.npy",
+    "shape": [
+      72,
+      96
+    ],
+    "dtype": "|b1",
+    "sha256": "8434fb1d2c17e00a6445b73aa32e1dba1d420ed122886e54f17a1a96565ad5be"
+  },
+  "metadata": {
+    "kind": "Analytic phase/missing-signal control; no acquired or metric shape truth"
+  }
+}

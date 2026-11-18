@@ -1,0 +1,108 @@
+{
+  "schema": "simple_deflectometry_capture/v1",
+  "capture_id": "analytic_missing",
+  "sequence": {
+    "setup_id": "analytic-phase-control",
+    "pixel_grid": "original-96x72",
+    "exposure_s": 0.01,
+    "axes": {
+      "x": {
+        "frame_ids": [
+          "x:0",
+          "x:1",
+          "x:2",
+          "x:3",
+          "x:4",
+          "x:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      },
+      "y": {
+        "frame_ids": [
+          "y:0",
+          "y:1",
+          "y:2",
+          "y:3",
+          "y:4",
+          "y:5"
+        ],
+        "phase_angles": [
+          0.0,
+          1.0471975511965976,
+          2.0943951023931953,
+          3.141592653589793,
+          4.1887902047863905,
+          5.235987755982989
+        ],
+        "period_px": 32,
+        "origin_rad": 0,
+        "direction": 1
+      }
+    }
+  },
+  "source_encoding": "linear",
+  "input_scale": 1,
+  "frames": [
+    {
+      "id": "x:0",
+      "image": "a4f61ba3c83d9dec33c4ebbf35fd281936461c368cebb56e35cdad95605b28be.npy"
+    },
+    {
+      "id": "x:1",
+      "image": "927986809f6fd52bfc9e751dacf32c2356f4953673aeb273df824913548db196.npy"
+    },
+    {
+      "id": "x:2",
+      "image": "1c84afece93e668f089515bbf4e6f8fdbaa0953b7f5fc4348913ce6602ef2335.npy"
+    },
+    {
+      "id": "x:3",
+      "image": "99c4601a450d5f10dbd7a1fd1d7546c0aef4f7f29215eed6d309628624a14eaf.npy"
+    },
+    {
+      "id": "x:4",
+      "image": "c248f3cb7987c772e82e6cfc91e58355af903da7366c76ee6dfa2ba2a197d3b3.npy"
+    },
+    {
+      "id": "x:5",
+      "image": "ce76b491012ac36c9b5a6b3ca5696c5b18d6050b6ea0cde191daa61dfcda7a31.npy"
+    },
+    {
+      "id": "y:0",
+      "image": "9a9fcb0000528f5e5e746734cec90d86948ad4bbed481f226ac6540022d5b209.npy"
+    },
+    {
+      "id": "y:1",
+      "image": "7cd70dadd616b12ff87aee56429db35663c42af4653f7e8afbc6ac1d9dc71943.npy"
+    },
+    {
+      "id": "y:2",
+      "image": "21444d3989da0ddb854f4678e70796fca9624d8fc1b862746aa8684eb3a7da5a.npy"
+    },
+    {
+      "id": "y:3",
+      "image": "e9c92e534405dab8bdbf4231cc9d6b82d5e39f494d43556631ad17f659f0a1bb.npy"
+    },
+    {
+      "id": "y:4",
+      "image": "2ec7319a890e9b1c11fb67974e4cfaa0625d46ef651d552081da8278dc0be206.npy"
+    },
+    {
+      "id": "y:5",
+      "image": "7d223174fc68953279ab56c2cde9d3dfa272d051a86f36aaabca266b644b3a55.npy"
+    }
+  ],
+  "provenance": {
+    "kind": "Analytic phase/missing-signal control; no acquired or metric shape truth"
+  }
+}

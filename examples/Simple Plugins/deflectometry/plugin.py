@@ -5,12 +5,11 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent / "releases"
-WHEEL = ROOT / "opencv_simple_deflectometry-0.1.0.dev2-py3-none-any.whl"
+WHEEL = ROOT / "opencv_simple_deflectometry-0.1.0.dev3-py3-none-any.whl"
 FRINGE_WHEEL = ROOT / "opencv_simple_fringe_scan-0.1.0.dev3-py3-none-any.whl"
-EXPECTED = "84bc0ff026977cb47718621d9d54da557e2df62c807bfb5b5a75917a7f009056"
+EXPECTED = "417c4699aed97edbba0f531038cbb8fb9a88d9d6d8b3e426fe70996340aec7f9"
 FRINGE_EXPECTED = "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87"
 FRINGE_COMPATIBLE = (
-    "5e75af7d9533d277d25001b2f0389094008159fae5e3fefadd0a61abfa2ce780",
     FRINGE_EXPECTED,
 )
 
@@ -47,6 +46,11 @@ for module, path, digest in (
                 "Another tool version is already loaded; restart and load this plugin first"
             )
 
-from opencv_simple_deflectometry.dataflow import register  # noqa: E402
+from opencv_simple_deflectometry.dataflow import SimpleDeflectometry  # noqa: E402
+
+
+def register(registry):
+    if registry.types.get(SimpleDeflectometry.type_id) is not SimpleDeflectometry:
+        registry.register(SimpleDeflectometry)
 
 __all__ = ["register"]

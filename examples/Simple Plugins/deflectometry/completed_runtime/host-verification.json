@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "analytic_change",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "analytic_missing",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "connected_change",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "whole_period_shift",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "test_mask_restricted",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "missing",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "graphics_off",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    },
+    {
+      "case": "sofast_self_review",
+      "numeric_maps_and_graphics_exact": true,
+      "native_review": true,
+      "exact_model_save_as_reopen": true
+    }
+  ],
+  "exports_verified": 6,
+  "file_pins_verified": 399,
+  "scope": "Software parity, not held-out inspection, physical calibration or shape truth"
+}

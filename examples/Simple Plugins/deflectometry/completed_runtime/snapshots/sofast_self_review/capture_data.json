@@ -1,0 +1,266 @@
+{
+  "schema": "simple_deflectometry_stack/v1",
+  "sequence": {
+    "x": {
+      "frame_ids": [
+        "x:0",
+        "x:1",
+        "x:2",
+        "x:3"
+      ],
+      "phase_angles": [
+        0.0,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -4.71238898038469
+      ],
+      "period_px": null,
+      "origin_rad": null,
+      "direction": -1
+    },
+    "y": {
+      "frame_ids": [
+        "y:0",
+        "y:1",
+        "y:2",
+        "y:3"
+      ],
+      "phase_angles": [
+        0.0,
+        -1.5707963267948966,
+        -3.141592653589793,
+        -4.71238898038469
+      ],
+      "period_px": null,
+      "origin_rad": null,
+      "direction": -1
+    },
+    "setup_id": "sofast-landscape-exported-coarse",
+    "pixel_grid": "sofast-area2-code-values",
+    "exposure_s": null,
+    "response": "uncalibrated_codes"
+  },
+  "capture_id": "sofast-exported-facet",
+  "x_images": {
+    "array_file": "capture_array_000.npy",
+    "shape": [
+      4,
+      618,
+      813
+    ],
+    "dtype": "<f4",
+    "sha256": "430588bd64597869c52562324de1e64531bfb022e20a63d6e54ab8ad1cb02ef5"
+  },
+  "y_images": {
+    "array_file": "capture_array_001.npy",
+    "shape": [
+      4,
+      618,
+      813
+    ],
+    "dtype": "<f4",
+    "sha256": "d10f09ebe0c7eca3ef0fd589d1d88442b4c3f8cf7b1f23f1599d8a5bb0aa14e0"
+  },
+  "mask": {
+    "array_file": "capture_array_002.npy",
+    "shape": [
+      618,
+      813
+    ],
+    "dtype": "|b1",
+    "sha256": "392640686c5726941d5f688884e8e07cea5e5091621a2b3f422ac59f158f01a2"
+  },
+  "metadata": {
+    "creator": "OpenCSP Team, Sandia National Laboratories NSTTF",
+    "title": "SOFAST Landscape measurement of an NSTTF heliostat facet",
+    "project": "https://opencsp.sandia.gov/",
+    "license": "CC BY-SA 4.0",
+    "source": "https://sandia-csp.app.box.com/s/iftmhdkhgjnmfgefsfmkid011dtv8n3g/file/1951928463619",
+    "archive_sha256": "ce027803717c3e97cc4e4481b53e7ac6a90e822c151d1c850f4023233e24b5ff",
+    "archive_publisher_sha1_verified": true,
+    "selected_members": [
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/x_00.png",
+        "bytes": 979,
+        "crc32": "4ef5be95",
+        "sha256": "69a4790e181f8dbf9e15af2cb2ade115fa1ddd6c42774972fa1bc714f7e9a961",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/x_01.png",
+        "bytes": 998,
+        "crc32": "6d6eabf7",
+        "sha256": "4de830a26f46a47b17297e5c11e2f9d1995bc8db5b8b4632cee5b1faa75a63f6",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/x_02.png",
+        "bytes": 976,
+        "crc32": "a769774a",
+        "sha256": "95990bab8fd097ce9be213a4aab0de35b38ce31ad121bcf8b4747c619f9a30f4",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/x_03.png",
+        "bytes": 998,
+        "crc32": "6e74b149",
+        "sha256": "6ccb0afb9b9b97689a639debcf24ab2f79674b4eb547ebac2b895088d745147d",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/y_00.png",
+        "bytes": 940,
+        "crc32": "a82f54fe",
+        "sha256": "500952e3df5fa28d68d41748e7900e6422d455abd51ce18d6745cb0b1c7285a1",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/y_01.png",
+        "bytes": 940,
+        "crc32": "c1ed8386",
+        "sha256": "515c023d791ec9fb0505402c7c8472d80f10f428d71f5c39f6651c9aaa0ebee5",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/y_02.png",
+        "bytes": 950,
+        "crc32": "c1f72251",
+        "sha256": "6280c5997cc3b08c78a6bcf8acfb1ac9e2b216d59052bfdbe2f7eb3ad69f61a6",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/1_images_fringes_projected/y_03.png",
+        "bytes": 941,
+        "crc32": "21690b75",
+        "sha256": "827d231995a5d2414feb395631c5f33124dfc6a722ec850e6ce8b6fff078aac1",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/x_00.png",
+        "bytes": 908673,
+        "crc32": "d56ea45a",
+        "sha256": "70b7d517a396ef3330ebbfddc63e9c4fa5a072a7f45811089d8e503a8ce28b20",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/x_01.png",
+        "bytes": 995875,
+        "crc32": "f5922e91",
+        "sha256": "df04b25be5e548e9666825a1b401a94148f4b56bedcaebcb4d0bddb59b5906ec",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/x_02.png",
+        "bytes": 1019972,
+        "crc32": "3b609b18",
+        "sha256": "86d7e2d930b73bf3d851b13248e6020a3f13e221cd6040047f519e35f58937e9",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/x_03.png",
+        "bytes": 964529,
+        "crc32": "330aa559",
+        "sha256": "e270f124fb371401dbba050588ae3e24baa3aa4fde70caa867f7b1e5f31da529",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/y_00.png",
+        "bytes": 942887,
+        "crc32": "797b66a7",
+        "sha256": "92ac29c225395f96613b5fa02e5428821c45da7ec128a7bf3f2f182c87f8a890",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/y_01.png",
+        "bytes": 990609,
+        "crc32": "1083db5a",
+        "sha256": "9b7a712103527ec43afe7bb9de5bfe70a7d6b5ef89dde75c046239bd80370146",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/y_02.png",
+        "bytes": 1002524,
+        "crc32": "712e481a",
+        "sha256": "8d9490f89864aadb79a82cfa0690f7dba5bed5432979d219cfa3c40baead6ba9",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/y_03.png",
+        "bytes": 952579,
+        "crc32": "d54efc1b",
+        "sha256": "bf726798c8e31b2ae8501c8dd91ab79ad5198bca0afd950f78870f3e109dcd15",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/mask_00.png",
+        "bytes": 822002,
+        "crc32": "10000d80",
+        "sha256": "c16cbc40b6235970e311590311c3d1b823976b3dadb64e82105ffb1953d5ea4d",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/2_images_captured/mask_01.png",
+        "bytes": 1065437,
+        "crc32": "9da9c6b6",
+        "sha256": "c8f5c392c8a7b7586d18d466bb17b3629fb1524e32fda7b399b84bf1ee422db8",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/README.txt",
+        "bytes": 2369,
+        "crc32": "7127afa4",
+        "sha256": "7ffb17744ad4502e37c86ed11017f28ea15fd3f8ab0ae9ce3cb2fcb5cfdde170",
+        "retained_original": true
+      },
+      {
+        "member": "NSTTF_Facet_SOFAST_Landscape/SOFAST_Fringe/3_processed_data/data_sofast_processed.h5",
+        "bytes": 67893704,
+        "crc32": "48f7797e",
+        "sha256": "38c2fdb5f69b49bd18608f5d33ac82a63915d9a1466fde9070d449226dd4813b",
+        "retained_original": false
+      }
+    ],
+    "mask_dataset": "DataSofastCalculation/general/CalculationImageProcessingGeneral/mask_raw",
+    "transformation": {
+      "source_size": [
+        1626,
+        1236
+      ],
+      "derived_size": [
+        813,
+        618
+      ],
+      "source_from_derived": [
+        [
+          2,
+          0,
+          0.5
+        ],
+        [
+          0,
+          2,
+          0.5
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ],
+      "operation": "Normalize byte codes by 255; 2x2 mean; any source ceiling remains ceiling",
+      "mask": "Upstream raw region, 2x2 all-true reduction; not defect ground truth"
+    },
+    "sequence_scope": "First four exported X/Y coarse-frequency frames. Negative pi/2 shifts verified against retained command thumbnails and upstream export/generator.",
+    "command_checks": {
+      "x": {
+        "maximum_four_step_error_codes": 0.2500000000000142,
+        "inferred_cycles_in_thumbnail": -0.8998321250087544
+      },
+      "y": {
+        "maximum_four_step_error_codes": 0.2500000000000142,
+        "inferred_cycles_in_thumbnail": -0.8998321250087543
+      }
+    },
+    "limitations": "Unknown exposure/response and original physical screen pixel pitch. Code-value diagnostics only. Same capture self-comparison, not a held-out defect test. No independently measured surface reference or metric reconstruction."
+  }
+}

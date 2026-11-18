@@ -4,9 +4,9 @@ import hashlib
 import sys
 from pathlib import Path
 
-NAME = "opencv_simple_fringe_scan-0.1.0.dev2-py3-none-any.whl"
+NAME = "opencv_simple_fringe_scan-0.1.0.dev3-py3-none-any.whl"
 WHEEL = Path(__file__).resolve().parent / "releases" / NAME
-EXPECTED = "5e75af7d9533d277d25001b2f0389094008159fae5e3fefadd0a61abfa2ce780"
+EXPECTED = "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87"
 if WHEEL.stat().st_size > 2 * 1024 * 1024 or (
     hashlib.sha256(WHEEL.read_bytes()).hexdigest() != EXPECTED
 ):

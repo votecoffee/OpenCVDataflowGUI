@@ -1,5 +1,13 @@
 # SimpleDeflectometry training and execution
 
+The new [completed-runtime reviews](completed_runtime/README.md) provide an
+independent Results action for exact consumed X/Y patterns, executed reference/
+recipe/radiometry, all phase/change/reason maps and configured judgment. Linked
+source/frame/map/pixel review, recorded-code/circular-vector charts and frozen
+exports never refit, unwrap or solve reflection. Nine projects/six exports retain
+the real SOFAST uncalibrated-code self-review and unchanged analytic failure and
+whole-period controls. The pinned dev3 loader requires no environment installation.
+
 Explicitly load the trusted bundled `plugin.py`, then open an execution project
 below. No host environment installation is needed. These graphs run the actual
 cached phase-comparison tool. The separate saved map reviews remain available.

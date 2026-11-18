@@ -1,0 +1,48 @@
+{
+  "source_commit": "bb08b8b111623f7259232ec653666a1b40007003",
+  "focused_checks_passed": 66,
+  "environment_installed": false,
+  "wheels": {
+    "opencv_simple_deflectometry": {
+      "sha256": "417c4699aed97edbba0f531038cbb8fb9a88d9d6d8b3e426fe70996340aec7f9",
+      "python_members": {
+        "opencv_simple_deflectometry/__init__.py": "6c1942e60e3390b43d9290fade1ce562ac037193f7214cb948b2061129a39e8a",
+        "opencv_simple_deflectometry/cli.py": "01c983adf62fa4b097ba02d722a7d285460552e77207dda3025756304ebe6fae",
+        "opencv_simple_deflectometry/completed_review.py": "208f8789e6c6c4e1b876f2f03ad62a787025eba68c34d3da66d9f91273955700",
+        "opencv_simple_deflectometry/core.py": "b2dd593e98ac1df950b33e3718200104f8e4d891fcb7f74047f309ff7e96de5f",
+        "opencv_simple_deflectometry/dataflow.py": "3648c109781ec1b8dc70de139785ac1850af20999bc66a6a713fc1f5c7d4ed68",
+        "opencv_simple_deflectometry/execution.py": "53253eccd3b01719579289f83859bae823e153d336d8e38414379cda00e67448",
+        "opencv_simple_deflectometry/geometry.py": "62775a7a43b40163afdcd937958fe794f04cd6d223bcdf8d0a07d5bf235f9048",
+        "opencv_simple_deflectometry/qt_capture.py": "2d45918f6c1a8e31fce4de0097fdfd7c8de7d6a198f56f9dc8117c69fb227702",
+        "opencv_simple_deflectometry/qt_completed_review.py": "3dabddd24a3cf1ea950d054a36292a7fc0b7df55f8974d1e261afdd1830d0477",
+        "opencv_simple_deflectometry/qt_training.py": "70e34105a3de73013599d88c4a4490a90fae7ff0fd5150de5c64c0935ab41600",
+        "opencv_simple_deflectometry/recipe.py": "971db5ba7c1f3d571005267693c60507b05066165ccae7995efaca90924ecc5a",
+        "opencv_simple_deflectometry/render.py": "3926df9b4df3bb38dea5eb3232c7da50153f16b7246a58e6d4d2eb9644c6cff2"
+      },
+      "source_byte_exact": true,
+      "original_mit_license_preserved": true
+    },
+    "opencv_simple_fringe_scan": {
+      "sha256": "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87",
+      "python_members": {
+        "opencv_simple_fringe_scan/__init__.py": "18bd8ff89fe90f4ca565cd3bca78056cd536f0e69a7d42114d5f1a4f84d9f4eb",
+        "opencv_simple_fringe_scan/cli.py": "1e39a8d7c712c99dd043689e8b8fe5a7cd032063b6c009b4b1c58c31e837e343",
+        "opencv_simple_fringe_scan/completed_review.py": "27141cb409264c793c98d8220cd756419b350c82c3eb793f35c7d4cd2ab64fb8",
+        "opencv_simple_fringe_scan/dataflow.py": "e672089468d7a653da8e2f5b442c1c37a17ebf9b746e14033e793ce1548562b5",
+        "opencv_simple_fringe_scan/decode.py": "5a4111c9abde2549ac955263a1f93aef859d4c1f2241b8adfbe9404172af6778",
+        "opencv_simple_fringe_scan/execution.py": "07599c985297b580f34490c2b8b21f7e4bf559cf1e5cbec49b695ec084b64a25",
+        "opencv_simple_fringe_scan/geometry.py": "d62643c9d12bd01d1af8f9eb585c5413d4091aea0c9244fa3b6d0edfe029f958",
+        "opencv_simple_fringe_scan/model.py": "8268309cc2db4772e9f130e6fb1bd53782fb9f22ac7becc8e3782b03c0a3a8cc",
+        "opencv_simple_fringe_scan/patterns.py": "a84faa7191bf2dcf753474948a0d7cf3ed6935bebcca7a0ccf7f802bd3ff6a1e",
+        "opencv_simple_fringe_scan/phase.py": "f6f00ae22da13213da6e883fa8355840dfce9bac3b05b0876f3672e89efd3a22",
+        "opencv_simple_fringe_scan/qt_completed_review.py": "387b6d40a45dc62f2e9fabad56b4e6059da00a236b7f644e456bd2ed514ca464",
+        "opencv_simple_fringe_scan/qt_region.py": "9d71b10a1f9b4086e832496d8964a976bf6f34f7e84df51451aaeb55feeb8f18",
+        "opencv_simple_fringe_scan/qt_training.py": "8f84b699fac0f41418fdb2a9a1a9cc9ed4a59a04b5ab761ce46228cb0b18255f",
+        "opencv_simple_fringe_scan/recipe.py": "2d7a4e15f5171d7cea1cf86f1dd826139d40ef964b53f199cf15dc98a4c81018",
+        "opencv_simple_fringe_scan/render.py": "5ebd946a179359e3351c7d5654e4c740f903a1baa4f67fea3b74014cfb5e9fc5"
+      },
+      "source_byte_exact": true,
+      "original_mit_license_preserved": true
+    }
+  }
+}
