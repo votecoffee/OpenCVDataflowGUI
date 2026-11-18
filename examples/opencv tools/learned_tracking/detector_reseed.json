@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "SOURCES.md",
+      "MODEL-LICENSE.txt"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame_00.png",
+          "assets/frame_01.png",
+          "assets/frame_02.png",
+          "assets/frame_03.png",
+          "assets/blank.png",
+          "assets/blank.png",
+          "assets/frame_00.png",
+          "assets/frame_00.png",
+          "assets/frame_00.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "sequence.track_vit",
+      "name": "Track object box (ViT)",
+      "parameters": {
+        "warmup": 3,
+        "max_streams": 4,
+        "max_bytes_mb": 384.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "initial_bounds": [],
+        "max_misses": 1,
+        "minimum_contrast": 2.0,
+        "maximum_center_jump": 0.0,
+        "draw_overlay": true,
+        "contract_path": "models/detector_reseed/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "mean": [
+          0.485,
+          0.456,
+          0.406
+        ],
+        "std": [
+          0.229,
+          0.224,
+          0.225
+        ],
+        "tracking_score_threshold": 0.2,
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "selection_mode": "center",
+        "maximum_source_pixels": 2100000,
+        "maximum_patch_side": 2048
+      },
+      "position": [
+        600,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream",
+        "seed"
+      ],
+      "exposed_outputs": [
+        "bounds",
+        "points",
+        "pose",
+        "tracked_region",
+        "ready",
+        "activations",
+        "status",
+        "image",
+        "tracking_score"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "template",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/template.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        360
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "inspect.match_template",
+      "name": "Match template",
+      "parameters": {
+        "method": "ccoeff_normed",
+        "min_score": 0.99,
+        "subpixel": false
+      },
+      "position": [
+        300,
+        360
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "score",
+        "location",
+        "center",
+        "raw_score",
+        "response"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Model, motion and score scope",
+      "description": "OpenCV Zoo ViTTrack, Pengyu Liu / Realtime object tracking models, Apache-2.0. Unchanged model and exact notice included; see SOURCES.md. T-LESS scene 6/frame 2: T. Hodan et al., WACV 2017, CC BY 4.0, https://cmp.felk.cvut.cz/t-less/ . Images are resized and artificially translated with known boxes, not recorded part motion. The score is a native window-weighted response, not a probability. First activation initializes; warmup=3 withholds boxes for two activations. Lost/expired phases emit no current box/pose. Detector reseed explicitly creates a new track; pose angle follows image axes, not measured object rotation.",
+      "parameters": {},
+      "position": [
+        0,
+        -550
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "template",
+      "output": "image",
+      "target": "detect",
+      "input": "template"
+    },
+    {
+      "source": "detect",
+      "output": "location",
+      "target": "track",
+      "input": "seed"
+    }
+  ]
+}

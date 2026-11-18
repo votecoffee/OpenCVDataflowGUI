@@ -1,0 +1,72 @@
+{
+  "model": "onnx_inference_contract_v1",
+  "schema_version": 1,
+  "block_type": "sequence.track_vit",
+  "configuration": {
+    "warmup": 3,
+    "max_streams": 4,
+    "max_bytes_mb": 384.0,
+    "overflow": "error",
+    "context_change": "reset",
+    "max_gap_ms": 0.0,
+    "initial_bounds": [
+      92,
+      133,
+      43,
+      43
+    ],
+    "max_misses": 2,
+    "minimum_contrast": 2.0,
+    "maximum_center_jump": 0.0,
+    "draw_overlay": true,
+    "fallback_policy": "error",
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "tracking_score_threshold": 0.2,
+    "engine": "new",
+    "backend": "opencv",
+    "target": "cpu",
+    "fusion": true,
+    "selection_mode": "center",
+    "maximum_source_pixels": 2100000,
+    "maximum_patch_side": 2048
+  },
+  "preprocessing": {
+    "model": "native_vit_preparation_v1",
+    "image": "canonical_bgr_uint8",
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "template_size": [
+      128,
+      128
+    ],
+    "search_size": [
+      256,
+      256
+    ],
+    "native_template_factor": 2,
+    "native_search_factor": 4
+  },
+  "artifact": {
+    "file": "model.onnx",
+    "sha256": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "bytes": 714726
+  },
+  "revision": "247f6ddfdd1393879ae75b901eca945716c1c4567cc341ae60074f149ec7bf8b"
+}

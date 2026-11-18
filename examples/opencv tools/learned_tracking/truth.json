@@ -1,0 +1,118 @@
+{
+  "cases": [
+    "translation",
+    "loss_expiry",
+    "detector_reseed",
+    "region_seed",
+    "score_alarm",
+    "jump_alarm",
+    "resource_limit",
+    "new_engine",
+    "grayscale"
+  ],
+  "annotations": [
+    {
+      "file": "frame_00.png",
+      "bounds": [
+        92,
+        133,
+        43,
+        43
+      ]
+    },
+    {
+      "file": "frame_01.png",
+      "bounds": [
+        94,
+        134,
+        43,
+        43
+      ]
+    },
+    {
+      "file": "frame_02.png",
+      "bounds": [
+        96,
+        135,
+        43,
+        43
+      ]
+    },
+    {
+      "file": "frame_03.png",
+      "bounds": [
+        98,
+        136,
+        43,
+        43
+      ]
+    },
+    {
+      "file": "frame_04.png",
+      "bounds": [
+        100,
+        137,
+        43,
+        43
+      ]
+    },
+    {
+      "file": "frame_05.png",
+      "bounds": [
+        102,
+        138,
+        43,
+        43
+      ]
+    },
+    {
+      "file": "frame_06.png",
+      "bounds": [
+        104,
+        139,
+        43,
+        43
+      ]
+    }
+  ],
+  "initial_bounds": [
+    92,
+    133,
+    43,
+    43
+  ],
+  "warmup": 3,
+  "minimum_iou": 0.8,
+  "maximum_center_error": 3.0,
+  "model_sha256": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+  "asset_sha256": {
+    "assets/blank.png": "139fd420f9e10316684eb8e8e1bc835a4fce33608adda769516d282e5c7ce687",
+    "assets/frame_00.png": "1fcbea34199673c2cc9698361521182b731af8f56de1ee10c89257a63e9d189a",
+    "assets/frame_01.png": "c5521c993c0bf615c5bde4015050eea370a18a3edc6feb4932433456f34d3613",
+    "assets/frame_02.png": "ae279011ef9dd1fe51b686efdff8cee8a9121fda72a3acd2764561b85afada0b",
+    "assets/frame_03.png": "686d5c2c809427512ab91e8650ac48a8767420fceac378e4c2262c87e408816b",
+    "assets/frame_04.png": "380e4cf291671682bc94dd82f54aeb35be3fee3228d3f56622cfd12508b3367d",
+    "assets/frame_05.png": "de5e640083da9549f401fecd55f5b8730af94529944ee55fbbd72acaec2e2cd2",
+    "assets/frame_06.png": "bed62166ffaed8e5595c04f3cd3a1fd8ae370c194ffa2a7b53141b9495eb6fd9",
+    "assets/template.png": "2304987780e189994c9073b1281b2580f589bd2fd27d4973a07916c481a5ce5b",
+    "assets/vit.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/detector_reseed/contract.json": "787e6d30c8d0af63e58839abf031717e309e729c2b4e287f1c2ce8c5d8b82ad1",
+    "models/detector_reseed/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/grayscale/contract.json": "874cf80b5cd9e394caaa90fd1c7662bc9528d71f3e2a965eceecd587817f4141",
+    "models/grayscale/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/jump_alarm/contract.json": "a94847add6f1a4157d533d4cc162ebcd7c6c7e5a37771f151bef9da5bf1f3da9",
+    "models/jump_alarm/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/loss_expiry/contract.json": "6e8be5ca4da0e1f4da8189dd5cb0c1b11933d5a866d41f10915399992d460515",
+    "models/loss_expiry/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/new_engine/contract.json": "cad5fc1d9e951d5b7370d5ea153b719dbca08e082ecb35732cc7bd16fd1d51d8",
+    "models/new_engine/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/region_seed/contract.json": "b95a2b3a2e6c5f43d3f6f1a23ee26c5d0aa0f217037f416562b6a59097e7af8c",
+    "models/region_seed/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/resource_limit/contract.json": "268f4f5b7cfc1edc42a48496939ef6b501c1ca994088ea57a46a35d1033d126f",
+    "models/resource_limit/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/score_alarm/contract.json": "999474a20378828c38b4cf6eff45c65b6a5095c7700a2349fbc6818e5a5477e4",
+    "models/score_alarm/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+    "models/translation/contract.json": "874cf80b5cd9e394caaa90fd1c7662bc9528d71f3e2a965eceecd587817f4141",
+    "models/translation/model.onnx": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d"
+  }
+}

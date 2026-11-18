@@ -11590,6 +11590,48 @@ Input `refresh` — Wire cadence Refresh on every image. True requires current d
 | `fit_confidence` | `0.99` | Value must be a finite number between 0.001 and 0.999999. RANSAC confidence control, not track probability. |
 | `fit_refine_iterations` | `10` | Value must be a whole number between 0 and 100. Native similarity-fit refinement iterations. |
 
+## Track object box (ViT) (`sequence.track_vit`)
+
+Sequence / Object tracking
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `seed` (data, optional).
+
+Input `image` — Original uint8 gray/RGB/BGR/alpha; native tracker receives canonical BGR.
+
+Input `seed` — Current-grid [x,y,w,h] or {bounds:[...]}, used only when a new model is needed.
+
+Input `mask` — Seed support and accepted-center gate; not a native template mask.
+
+Input `region` — Current-grid rectangle/circle/polygon, intersected with Mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Value must be a whole number between 1 and 10000. Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `384.0` | Value must be a finite number between 0.01 and 4096. Conservative native workspace/model allowance; not measured RSS. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number between 0 and 3.6e+06. Reset after this ingress gap; zero keeps state across pauses. |
+| `initial_bounds` | `[]` | Initial [x,y,w,h], at least 8x8; wired Seed takes precedence. |
+| `max_misses` | `3` | Value must be a whole number between 1 and 1000. Consecutive missed updates before discarding the model and waiting for a seed. |
+| `minimum_contrast` | `2.0` | Value must be a finite number between 0 and 255. Minimum grayscale standard deviation inside the box. Zero disables. |
+| `maximum_center_jump` | `0.0` | Value must be a finite number between 0 and 65536. Maximum motion since the last accepted update. Zero disables. |
+| `draw_overlay` | `true` | Current drawable status/box; raster Overlay only when exposed. |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `off` Model/settings/import evidence or Off; native tensors are not exposed. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local ViT ONNX, or use a sealed Contract path; no automatic download. |
+| `mean` | `[0.485, 0.456, 0.406]` | Native normalized BGR means; native tracker owns template/search preparation. |
+| `std` | `[0.229, 0.224, 0.225]` | Three positive native channel divisors; defaults mirror TrackerVit.Params. |
+| `tracking_score_threshold` | `0.2` | Value must be a finite number between 0 and 1. Window-weighted response threshold; not a probability. |
+| `engine` | `"classic"` | `classic`, `new` Explicit import engine; New is CPU-only here. No silent retry. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
+| `fusion` | `true` |  |
+| `selection_mode` | `"center"` | `center`, `seed_only` Selections seed the rectangle; Center also gates accepted updates. |
+| `maximum_source_pixels` | `2100000` | Value must be a whole number between 1 and 2.1e+06. |
+| `maximum_patch_side` | `2048` | Value must be a whole number between 32 and 8192. Bound 4*sqrt(box area) search crop before native calls. |
+
 ## Video timing monitor (`sequence.video_timing`)
 
 Sequence / Video diagnostics

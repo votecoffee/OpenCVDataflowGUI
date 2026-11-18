@@ -1,0 +1,97 @@
+{
+  "opencv": "5.0.0",
+  "model_sha256": "2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d",
+  "source_size": [
+    360,
+    270
+  ],
+  "engine": "classic",
+  "target": "cpu",
+  "scope": "artificial translated single public image; not recorded motion or physical pose",
+  "frames": [
+    {
+      "frame": 1,
+      "located": true,
+      "bounds": [
+        93,
+        134,
+        43,
+        42
+      ],
+      "score": 0.850481390953064,
+      "iou": 0.9328397673188789,
+      "center_error_pixels": 1.118033988749895
+    },
+    {
+      "frame": 2,
+      "located": true,
+      "bounds": [
+        95,
+        135,
+        44,
+        42
+      ],
+      "score": 0.7829915285110474,
+      "iou": 0.9550502379693284,
+      "center_error_pixels": 0.7071067811865476
+    },
+    {
+      "frame": 3,
+      "located": true,
+      "bounds": [
+        97,
+        136,
+        44,
+        42
+      ],
+      "score": 0.7839460372924805,
+      "iou": 0.9550502379693284,
+      "center_error_pixels": 0.7071067811865476
+    },
+    {
+      "frame": 4,
+      "located": true,
+      "bounds": [
+        99,
+        137,
+        44,
+        42
+      ],
+      "score": 0.7839460372924805,
+      "iou": 0.9550502379693284,
+      "center_error_pixels": 0.7071067811865476
+    },
+    {
+      "frame": 5,
+      "located": true,
+      "bounds": [
+        101,
+        138,
+        44,
+        42
+      ],
+      "score": 0.7839460372924805,
+      "iou": 0.9550502379693284,
+      "center_error_pixels": 0.7071067811865476
+    },
+    {
+      "frame": 6,
+      "located": true,
+      "bounds": [
+        103,
+        139,
+        44,
+        42
+      ],
+      "score": 0.7839460372924805,
+      "iou": 0.9550502379693284,
+      "center_error_pixels": 0.7071067811865476
+    }
+  ],
+  "minimum_iou": 0.9328397673188789,
+  "maximum_center_error_pixels": 1.118033988749895,
+  "blank_located": false,
+  "blank_score": 0.09838075190782547,
+  "threshold": 0.2,
+  "score_is_probability": false
+}

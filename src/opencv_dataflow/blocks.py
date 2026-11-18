@@ -737,6 +737,7 @@ def builtin_registry():
     from .learned_flow import LearnedFlow
     from .learned_restoration import RestoreImage
     from .learned_stereo import LearnedStereo
+    from .learned_tracking import VitSequence
     from .lens_map_files import LoadLensMaps, SaveLensMaps
     from .lightglue_blocks import LIGHTGLUE_BLOCKS
     from .line_pair import MeasureLinePair
@@ -1204,6 +1205,7 @@ def builtin_registry():
         MonocularDepth,
         LearnedStereo,
         LearnedFlow,
+        VitSequence,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,
