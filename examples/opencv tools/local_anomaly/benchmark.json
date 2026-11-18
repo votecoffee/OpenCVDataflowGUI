@@ -1,0 +1,87 @@
+{
+  "cases": {
+    "allowed_area": {
+      "anomaly_pixels": 64,
+      "ground_truth_defect_pixels": 64,
+      "mask_iou": 1.0,
+      "maximum_distance": 0.9032897689094601,
+      "passed": true,
+      "selected_pixels": 1024
+    },
+    "bright_shift": {
+      "anomaly_pixels": 1024,
+      "ground_truth_defect_pixels": 0,
+      "mask_iou": 0.0,
+      "maximum_distance": 0.4313726127147685,
+      "passed": false,
+      "selected_pixels": 1024
+    },
+    "defect": {
+      "anomaly_pixels": 64,
+      "ground_truth_defect_pixels": 64,
+      "mask_iou": 1.0,
+      "maximum_distance": 0.9032897689094601,
+      "passed": false,
+      "selected_pixels": 1024
+    },
+    "high_depth": {
+      "anomaly_pixels": 64,
+      "ground_truth_defect_pixels": 64,
+      "mask_iou": 1.0,
+      "maximum_distance": 0.9032897689094601,
+      "passed": false,
+      "selected_pixels": 1024
+    },
+    "missing_texture": {
+      "anomaly_pixels": 64,
+      "ground_truth_defect_pixels": 64,
+      "mask_iou": 1.0,
+      "maximum_distance": 0.298966575074701,
+      "passed": false,
+      "selected_pixels": 1024
+    },
+    "normal": {
+      "anomaly_pixels": 0,
+      "ground_truth_defect_pixels": 0,
+      "mask_iou": null,
+      "maximum_distance": 0.005545935208154502,
+      "passed": true,
+      "selected_pixels": 1024
+    },
+    "sampled_reference": {
+      "anomaly_pixels": 64,
+      "ground_truth_defect_pixels": 64,
+      "mask_iou": 1.0,
+      "maximum_distance": 0.9130773155351944,
+      "passed": false,
+      "selected_pixels": 1024
+    },
+    "selected_region": {
+      "anomaly_pixels": 0,
+      "ground_truth_defect_pixels": 0,
+      "mask_iou": null,
+      "maximum_distance": 0.005545935208154502,
+      "passed": true,
+      "selected_pixels": 320
+    },
+    "train_then_inspect": {
+      "anomaly_pixels": 64,
+      "ground_truth_defect_pixels": 64,
+      "mask_iou": 1.0,
+      "maximum_distance": 0.9032897689094601,
+      "passed": false,
+      "selected_pixels": 1024
+    },
+    "weak_defect": {
+      "anomaly_pixels": 0,
+      "ground_truth_defect_pixels": 1,
+      "mask_iou": 0.0,
+      "maximum_distance": 0.1098039448261261,
+      "passed": true,
+      "selected_pixels": 1024
+    }
+  },
+  "claim": "Original CPU controls, not learned-backbone or industrial accuracy",
+  "maximum_native_patch_difference": 0.0,
+  "reference_rows": 768
+}

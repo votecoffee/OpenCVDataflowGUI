@@ -1,0 +1,82 @@
+{
+  "asset_sha256": {
+    "assets/bright.png": "d0e5236acdd39cedeb41e04b2b8d971fe344654e03171d1ac085d18e37d5f6b5",
+    "assets/corrupt.json": "f7af1ca4f255e982cf4f59685be8ab4256a5f82123fb944f4d70abf4f2103e97",
+    "assets/defect.png": "a2fdb06be9867f8f8497e966820f9a2651d84edeb05c76c94d7f1d045169b783",
+    "assets/embedding.onnx": "ee65cfb0432c86a7bb6464ee5d44317b01ead2656f7813477fc1b39d5a4f4164",
+    "assets/high16.png": "e5f4c5397aa60b854b3079af572c5bdd3bbc817ea177f2f8f4a672661f16439a",
+    "assets/missing.png": "b9c29dcaeabbc43a2ebc906c64eafa67d6ceb4a04ce904fa134946bd44442fd6",
+    "assets/normal.png": "914299cec079b5721c9ef69fdbc623386263980d8df13aaf520403fd45a9a1ba",
+    "assets/reference.json": "8b8a0b3ce1b8f7b557791ee47bfbaed45ba2ca37fa9cde0172697b6867c3a49a",
+    "assets/train-0.png": "56a7c33200111590841f91f4a112bc91842ab2632fdfb4ef53e4a1fd37db0fd0",
+    "assets/train-1.png": "691f168bee79acc261c6b8f13ea229edaecc82018b2faa6f1853b45ee88d30a3",
+    "assets/train-2.png": "9acc3f50b36b486c988cb0bc035c89b9f9c01bc434fff3a35b00aaaadd97cace",
+    "assets/truth-defect.png": "20fad57feaed38f67b75575d42aa3d64400a8efd72ba78b4db6d2c1c191d259b",
+    "assets/weak.png": "49ce3d99349cdab8583e7ca9abe1810e5b0f3d47c669df2ccdeba3fc4af437c3",
+    "bundle/contract.json": "494f2bc236e047bbc8b13ea8f1a396a520ca760dfccee8a440ed20bb6305274d",
+    "bundle/model.onnx": "ee65cfb0432c86a7bb6464ee5d44317b01ead2656f7813477fc1b39d5a4f4164"
+  },
+  "cases": {
+    "allowed_area": {
+      "image": "defect.png",
+      "target": "inspect"
+    },
+    "bright_shift": {
+      "image": "bright.png",
+      "target": "inspect"
+    },
+    "corrupt_reference": {
+      "image": "normal.png",
+      "target": "reference"
+    },
+    "defect": {
+      "image": "defect.png",
+      "target": "inspect"
+    },
+    "high_depth": {
+      "image": "high16.png",
+      "target": "inspect"
+    },
+    "missing_texture": {
+      "image": "missing.png",
+      "target": "inspect"
+    },
+    "normal": {
+      "image": "normal.png",
+      "target": "inspect"
+    },
+    "sampled_reference": {
+      "image": "defect.png",
+      "target": "inspect"
+    },
+    "selected_region": {
+      "image": "defect.png",
+      "target": "inspect"
+    },
+    "train_then_inspect": {
+      "image": "defect.png",
+      "target": "inspect"
+    },
+    "weak_defect": {
+      "image": "weak.png",
+      "target": "inspect"
+    },
+    "wrong_features": {
+      "image": "normal.png",
+      "target": "inspect"
+    }
+  },
+  "heldout_seeds": [
+    100,
+    101,
+    102,
+    103,
+    104
+  ],
+  "threshold": 0.2,
+  "training_seeds": [
+    0,
+    1,
+    2
+  ]
+}

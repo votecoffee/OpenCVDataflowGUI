@@ -81,6 +81,7 @@
 | Local HAAR/LBP cascades, native stage weights and neighbor support | [Cascade detection](cascade-detection.md) |
 | Measured-pose crops, per-part classifiers and parent/child source maps | [Pose crop classification](pose-crop-classification.md) |
 | Continuous image-model values, checked receipts and residual reports | [Image regression](image-regression.md) |
+| Known-good local feature banks, source-grid anomaly maps and threshold decisions | [Local anomalies](local-anomaly.md) |
 | Native forest training, class votes, importance and portable checked trees | [Random forest classification](rtrees-classification.md) |
 | Labeled image sets, grouped splits, confusion matrices and classifier reports | [Classifier evaluation](classifier-evaluation.md) |
 | Labeled boxes, class-aware IoU matches, precision/recall/AP and detector reports | [Detector evaluation](detector-evaluation.md) |

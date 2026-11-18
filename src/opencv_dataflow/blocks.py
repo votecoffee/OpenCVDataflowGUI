@@ -751,6 +751,7 @@ def builtin_registry():
     from .line_pair import MeasureLinePair
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
+    from .local_anomaly import LOCAL_ANOMALY_BLOCKS
     from .local_binary_patterns import LocalBinaryPatterns
     from .local_features import LOCAL_FEATURE_BLOCKS
     from .local_threshold import LocalThreshold
@@ -1184,6 +1185,7 @@ def builtin_registry():
         FinalJudgment,
         *DNN_BLOCKS,
         *REGRESSION_BLOCKS,
+        *LOCAL_ANOMALY_BLOCKS,
         *BATCH_INFERENCE_BLOCKS,
         *MULTI_INFERENCE_BLOCKS,
         DecodeDetections,

@@ -1,0 +1,895 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/defect.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 32,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "local"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "features",
+      "type": "ml.local_features",
+      "name": "Decode local feature grid",
+      "parameters": {
+        "output_name": "local",
+        "layout": "NCHW",
+        "normalization": "none",
+        "maximum_image_pixels": 4194304,
+        "maximum_feature_elements": 262144
+      },
+      "position": [
+        1050,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "ml.local_anomaly",
+      "name": "Inspect local image anomalies",
+      "parameters": {
+        "distance_threshold": 0.2,
+        "allowed_anomaly_pixels": 0,
+        "minimum_support_fraction": 0.95,
+        "reject_training_image": true,
+        "maximum_distance_work": 64000000,
+        "query_batch_size": 64,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_contours": 200,
+        "graphics_maximum_points": 100000
+      },
+      "position": [
+        1750,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "features",
+        "model"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "support",
+        "mask",
+        "maximum_distance",
+        "anomaly_pixels",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1400,
+        800
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "ml.train_local_anomaly",
+      "name": "Train local anomaly reference",
+      "parameters": {
+        "metric": "euclidean",
+        "sampling": "even_stride",
+        "bank_limit": 16,
+        "maximum_candidate_rows": 32768
+      },
+      "position": [
+        1750,
+        800
+      ],
+      "exposed_inputs": [
+        "features"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train0_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/train-0.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        500
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train0_convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        350,
+        500
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train0_net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 32,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "local"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        700,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train0_features",
+      "type": "ml.local_features",
+      "name": "Decode local feature grid",
+      "parameters": {
+        "output_name": "local",
+        "layout": "NCHW",
+        "normalization": "none",
+        "maximum_image_pixels": 4194304,
+        "maximum_feature_elements": 262144
+      },
+      "position": [
+        1050,
+        500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train1_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/train-1.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        1000
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train1_convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        350,
+        1000
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train1_net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 32,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "local"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        700,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train1_features",
+      "type": "ml.local_features",
+      "name": "Decode local feature grid",
+      "parameters": {
+        "output_name": "local",
+        "layout": "NCHW",
+        "normalization": "none",
+        "maximum_image_pixels": 4194304,
+        "maximum_feature_elements": 262144
+      },
+      "position": [
+        1050,
+        1000
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train2_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/train-2.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        1500
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train2_convert",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        350,
+        1500
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train2_net",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "bundle/contract.json",
+        "receipt_mode": "detailed",
+        "fallback_policy": "error",
+        "model_path": "",
+        "width": 32,
+        "height": 32,
+        "color_format": "gray",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0
+        ],
+        "std": [
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [
+          "local"
+        ],
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        700,
+        1500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train2_features",
+      "type": "ml.local_features",
+      "name": "Decode local feature grid",
+      "parameters": {
+        "output_name": "local",
+        "layout": "NCHW",
+        "normalization": "none",
+        "maximum_image_pixels": 4194304,
+        "maximum_feature_elements": 262144
+      },
+      "position": [
+        1050,
+        1500
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing",
+        "receipt"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        2100,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        2450,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original local anomaly controls - MIT",
+      "description": "Original synthetic images, ONNX patch encoder, reference bank and graphs by OpenCVDataflowGUI contributors, MIT. Three training seeds and separate query seeds. Four raw pixel values form each 2x2 embedding. No pretrained network or PatchCore accuracy claim. Weak defect intentionally falls below the distance threshold; the global bank can miss rearranged known textures. See README.md/SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -600
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "convert",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "features",
+      "input": "image"
+    },
+    {
+      "source": "convert",
+      "output": "image",
+      "target": "net",
+      "input": "image"
+    },
+    {
+      "source": "net",
+      "output": "tensors",
+      "target": "features",
+      "input": "tensors"
+    },
+    {
+      "source": "net",
+      "output": "preprocessing",
+      "target": "features",
+      "input": "preprocessing"
+    },
+    {
+      "source": "net",
+      "output": "receipt",
+      "target": "features",
+      "input": "receipt"
+    },
+    {
+      "source": "train0_source",
+      "output": "image",
+      "target": "train0_convert",
+      "input": "image"
+    },
+    {
+      "source": "train0_source",
+      "output": "image",
+      "target": "train0_features",
+      "input": "image"
+    },
+    {
+      "source": "train0_convert",
+      "output": "image",
+      "target": "train0_net",
+      "input": "image"
+    },
+    {
+      "source": "train0_net",
+      "output": "tensors",
+      "target": "train0_features",
+      "input": "tensors"
+    },
+    {
+      "source": "train0_net",
+      "output": "preprocessing",
+      "target": "train0_features",
+      "input": "preprocessing"
+    },
+    {
+      "source": "train0_net",
+      "output": "receipt",
+      "target": "train0_features",
+      "input": "receipt"
+    },
+    {
+      "source": "train0_features",
+      "output": "features",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "train1_source",
+      "output": "image",
+      "target": "train1_convert",
+      "input": "image"
+    },
+    {
+      "source": "train1_source",
+      "output": "image",
+      "target": "train1_features",
+      "input": "image"
+    },
+    {
+      "source": "train1_convert",
+      "output": "image",
+      "target": "train1_net",
+      "input": "image"
+    },
+    {
+      "source": "train1_net",
+      "output": "tensors",
+      "target": "train1_features",
+      "input": "tensors"
+    },
+    {
+      "source": "train1_net",
+      "output": "preprocessing",
+      "target": "train1_features",
+      "input": "preprocessing"
+    },
+    {
+      "source": "train1_net",
+      "output": "receipt",
+      "target": "train1_features",
+      "input": "receipt"
+    },
+    {
+      "source": "train1_features",
+      "output": "features",
+      "target": "batch",
+      "input": "item_2"
+    },
+    {
+      "source": "train2_source",
+      "output": "image",
+      "target": "train2_convert",
+      "input": "image"
+    },
+    {
+      "source": "train2_source",
+      "output": "image",
+      "target": "train2_features",
+      "input": "image"
+    },
+    {
+      "source": "train2_convert",
+      "output": "image",
+      "target": "train2_net",
+      "input": "image"
+    },
+    {
+      "source": "train2_net",
+      "output": "tensors",
+      "target": "train2_features",
+      "input": "tensors"
+    },
+    {
+      "source": "train2_net",
+      "output": "preprocessing",
+      "target": "train2_features",
+      "input": "preprocessing"
+    },
+    {
+      "source": "train2_net",
+      "output": "receipt",
+      "target": "train2_features",
+      "input": "receipt"
+    },
+    {
+      "source": "train2_features",
+      "output": "features",
+      "target": "batch",
+      "input": "item_3"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "train",
+      "input": "features"
+    },
+    {
+      "source": "train",
+      "output": "model",
+      "target": "inspect",
+      "input": "model"
+    },
+    {
+      "source": "features",
+      "output": "image",
+      "target": "inspect",
+      "input": "image"
+    },
+    {
+      "source": "features",
+      "output": "features",
+      "target": "inspect",
+      "input": "features"
+    },
+    {
+      "source": "inspect",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "inspect",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

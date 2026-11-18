@@ -9740,6 +9740,50 @@ Input `reference_features` — Packed reference descriptors; may use another acq
 | `maximum_features` | `1024` | Value must be a whole number between 4 and 4096. Bound each descriptor set before learned attention; no truncation. |
 | `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound current query image pixels before diagnostics. |
 
+## Load local anomaly reference (`ml.load_local_anomaly`)
+
+ML / Local anomalies
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Inspect local image anomalies (`ml.local_anomaly`)
+
+ML / Local anomalies
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `features` (data), `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `distance_threshold` | `0.2` | Value must be a finite number between 0 and 5.12e+08. Anomalous when distance > threshold; equality is accepted. |
+| `allowed_anomaly_pixels` | `0` | Value must be a whole number between 0 and 1.67772e+07. Pass when source-grid anomalous pixels <= this count. |
+| `minimum_support_fraction` | `0.95` | Value must be a finite number between 0 and 1. Reject insufficient scored support in the selected region. |
+| `reject_training_image` | `false` | Reject identical source pixel bytes used for training; different bytes do not establish an independent acquisition. |
+| `maximum_distance_work` | `64000000` | Value must be a whole number between 1 and 2.56e+08. Maximum query cells x bank rows x dimensions before search. |
+| `query_batch_size` | `64` | Value must be a whole number between 1 and 512. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. |
+| `graphics_maximum_contours` | `200` | Value must be a whole number between 1 and 2000. |
+| `graphics_maximum_points` | `100000` | Value must be a whole number between 3 and 100000. |
+
+## Decode local feature grid (`ml.local_features`)
+
+ML / Local anomalies
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `tensors` (data), `preprocessing` (data), `receipt` (data).
+
+Input `mask` — Select training/query cell centers; neighborhoods may still see excluded pixels.
+
+Input `receipt` — Required execution identity; detailed single-image output hashes are checked.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `output_name` | `""` | Spatial embedding output; pooled descriptors are not local features. |
+| `layout` | `"NCHW"` | `NCHW`, `NHWC` One image with uniformly spaced cells across the full network field. Declare the exported feature layout; arbitrary receptive-field offsets are not inferred. |
+| `normalization` | `"none"` | `none`, `l2` Per-cell L2 or unchanged feature units; zero L2 vectors are invalid. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. |
+| `maximum_feature_elements` | `262144` | Value must be a whole number between 1 and 1.04858e+06. |
+
 ## Create float32 tensor (`ml.make_tensor`)
 
 ML / Tensor preparation
@@ -10206,6 +10250,16 @@ Inputs: `samples` (any), `labels` (data, optional), `sample_weights` (data, opti
 | `labels` | `[]` | One class string per training row; a wired Labels input overrides this list. |
 | `sample_weights` | `[]` | [] gives equal weights. Otherwise one positive value per row; the wired Sample weights input overrides this list. |
 
+## Save local anomaly reference (`ml.save_local_anomaly`)
+
+Output / Local anomalies
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"local-anomaly.json"` |  |
+
 ## Define segmentation prompts (`ml.segmentation_prompts`)
 
 ML / Prompted segmentation
@@ -10446,6 +10500,21 @@ Input `region` — Optional source-grid region; intersects Mask, applied by regi
 | `maximum_candidates` | `2000` | Value must be a whole number between 1 and 20000. Reject more external contours before scoring. |
 | `maximum_tensor_elements` | `4194304` | Value must be a whole number between 4 and 1.67772e+07. Bound map samples before conversion; maximum axis is 4096. |
 | `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Source-grid pixel limit; maximum source axis is 16384. |
+
+## Train local anomaly reference (`ml.train_local_anomaly`)
+
+ML / Local anomalies
+
+Inputs: `features` (any).
+
+Input `features` — One grid, a list, or FlowGroup of known-good grids; no defect labels are inferred. Duplicate source pixel hashes are rejected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"euclidean"` | `euclidean`, `manhattan` Raw nearest-reference distance; not a calibrated probability. |
+| `sampling` | `"all"` | `all`, `even_stride` All rejects overflow. Even stride explicitly discards reference cells in deterministic source/raster order; not a representative coreset. |
+| `bank_limit` | `2048` | Value must be a whole number between 1 and 8192. |
+| `maximum_candidate_rows` | `32768` | Value must be a whole number between 1 and 32768. |
 
 ## Unpack image inference result (`ml.unpack_inference`)
 
