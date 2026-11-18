@@ -1,0 +1,20 @@
+[
+  {
+    "case": "calibrated_step",
+    "trained_project_report_exact": true,
+    "count": 480,
+    "passed": true
+  },
+  {
+    "case": "calibrated_unavailable",
+    "trained_project_report_exact": true,
+    "count": 390,
+    "passed": false
+  },
+  {
+    "case": "real_wli1",
+    "trained_project_report_exact": true,
+    "count": 72,
+    "passed": false
+  }
+]

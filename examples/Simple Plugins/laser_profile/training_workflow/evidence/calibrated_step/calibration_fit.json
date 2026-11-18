@@ -1,0 +1,211 @@
+{
+  "schema": "simple_laser_calibration/v1",
+  "source": "Analytic two-target training and separate target-depth checks; not a physical calibration",
+  "camera": {
+    "matrix": [
+      [
+        800.0,
+        0.0,
+        320.0
+      ],
+      [
+        0.0,
+        800.0,
+        240.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "image_size": [
+      640,
+      480
+    ],
+    "distortion": [],
+    "frame": "camera"
+  },
+  "laser": {
+    "normal": [
+      0.9805806756909202,
+      -0.0,
+      -0.19611613513818396
+    ],
+    "offset_m": 0.09805806756909197,
+    "frame": "camera"
+  },
+  "observations": [
+    {
+      "identifier": "near_known_board",
+      "pixels": [
+        [
+          280.0,
+          80.0
+        ],
+        [
+          280.0,
+          133.33333333333334
+        ],
+        [
+          280.0,
+          186.66666666666669
+        ],
+        [
+          280.0,
+          240.0
+        ],
+        [
+          280.0,
+          293.33333333333337
+        ],
+        [
+          280.0,
+          346.6666666666667
+        ],
+        [
+          280.0,
+          400.0
+        ]
+      ],
+      "target_depth_m": 0.4,
+      "role": "training"
+    },
+    {
+      "identifier": "far_known_board",
+      "pixels": [
+        [
+          346.66666666666663,
+          80.0
+        ],
+        [
+          346.66666666666663,
+          133.33333333333334
+        ],
+        [
+          346.66666666666663,
+          186.66666666666669
+        ],
+        [
+          346.66666666666663,
+          240.0
+        ],
+        [
+          346.66666666666663,
+          293.33333333333337
+        ],
+        [
+          346.66666666666663,
+          346.6666666666667
+        ],
+        [
+          346.66666666666663,
+          400.0
+        ]
+      ],
+      "target_depth_m": 0.6,
+      "role": "training"
+    },
+    {
+      "identifier": "independent_middle",
+      "role": "validation",
+      "target_depth_m": 0.5,
+      "pixels": [
+        [
+          320.0,
+          90.0
+        ],
+        [
+          320.0,
+          170.0
+        ],
+        [
+          320.0,
+          250.0
+        ],
+        [
+          320.0,
+          330.0
+        ],
+        [
+          320.0,
+          410.0
+        ]
+      ]
+    },
+    {
+      "identifier": "independent_step",
+      "role": "validation",
+      "target_depth_m": 0.55,
+      "pixels": [
+        [
+          334.54545454545456,
+          90.0
+        ],
+        [
+          334.54545454545456,
+          170.0
+        ],
+        [
+          334.54545454545456,
+          250.0
+        ],
+        [
+          334.54545454545456,
+          330.0
+        ],
+        [
+          334.54545454545456,
+          410.0
+        ]
+      ]
+    }
+  ],
+  "calibration_fit": {
+    "method": "All-point least-squares plane; not independent gauge qualification",
+    "units": "m",
+    "frame": "camera",
+    "training_ids": [
+      "near_known_board",
+      "far_known_board"
+    ],
+    "training_point_counts": [
+      7,
+      7
+    ],
+    "rmse_plane_residual_m": 2.7755575615628914e-17,
+    "maximum_abs_plane_residual_m": 2.7755575615628914e-17,
+    "in_plane_rank_ratio": 0.666666666666667,
+    "validation": [
+      {
+        "identifier": "independent_middle",
+        "supplied_points": 5,
+        "available_points": 5,
+        "unavailable_points": 0,
+        "rmse_point_distance_m": 5.637317510585903e-17,
+        "maximum_point_distance_m": 5.721958498152797e-17,
+        "target_reasons": {
+          "valid": 5
+        },
+        "laser_reasons": {
+          "valid": 5
+        }
+      },
+      {
+        "identifier": "independent_step",
+        "supplied_points": 5,
+        "available_points": 5,
+        "unavailable_points": 0,
+        "rmse_point_distance_m": 0.0,
+        "maximum_point_distance_m": 0.0,
+        "target_reasons": {
+          "valid": 5
+        },
+        "laser_reasons": {
+          "valid": 5
+        }
+      }
+    ],
+    "scope": "Declared target/calibration agreement; no automatic acceptance threshold, independent capture proof or physical gauge qualification"
+  }
+}

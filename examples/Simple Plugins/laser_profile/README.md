@@ -1,5 +1,12 @@
 # SimpleLaserProfile training and inspection
 
+The [dev4 training workflows](training_workflow/README.md) add retained camera/
+plane/unit review, explicit target-observation fitting with separate validation,
+reference-versus-preview guidance and accessible fixed actions. Load that pinned
+plugin first, then open the generated metric or real pixel-only projects. Original
+and finished staged projects retain exact references/calibration and Save As
+receipts. Existing extraction/availability failures remain; no installation is needed.
+
 [Completed-results reviews](completed_runtime/README.md) add the pinned dev3
 plugin, nine offline projects and six frozen exports. Load that folder's
 `plugin.py` for the independent inspector Results action with synchronized source/

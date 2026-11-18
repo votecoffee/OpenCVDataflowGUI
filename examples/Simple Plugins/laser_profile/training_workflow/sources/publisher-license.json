@@ -1,0 +1,24 @@
+{
+  "checked": "2026-11-18",
+  "url": "https://api.figshare.com/v2/articles/25040747/versions/3",
+  "title": "WLI-Set: A Comprehensive Laser Image Dataset for Real-Time Measurement of Wheelset Geometric Parameters",
+  "doi": "10.6084/m9.figshare.25040747.v3",
+  "version": 3,
+  "authors": [
+    {
+      "id": 16488741,
+      "full_name": "zeng song",
+      "first_name": "zeng",
+      "last_name": "song",
+      "is_active": true,
+      "url_name": "zeng_song",
+      "orcid_id": ""
+    }
+  ],
+  "license": {
+    "value": 1,
+    "name": "CC BY 4.0",
+    "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "url_public_html": "https://figshare.com/articles/figure/origin_zip/25040747/3"
+}

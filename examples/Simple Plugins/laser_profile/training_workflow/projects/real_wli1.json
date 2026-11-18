@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/b8ea1ec98db9dfa0c0e3408146166faf8f31fd326255b0c56dfad68adcf1aafd.jpg",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "laser",
+      "type": "3d.simple_laser_profile",
+      "name": "SimpleLaserProfile",
+      "description": "Independent completed Results: source/trend/bin evidence and native calibrated cloud. Availability is not gauge accuracy.",
+      "parameters": {
+        "recipe_path": "assets/1c8f39f26748798cb80ccf1d123b38dcc260a9aba7e0e864c4dc8fe99b2b94e6.slp",
+        "sha256": "1c8f39f26748798cb80ccf1d123b38dcc260a9aba7e0e864c4dc8fe99b2b94e6",
+        "minimum_coverage": 0.9,
+        "render_graphics": true
+      },
+      "position": [
+        410,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "cloud",
+        "report",
+        "coverage",
+        "count",
+        "calibrated",
+        "overlay",
+        "chart"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "laser",
+      "input": "image"
+    }
+  ]
+}

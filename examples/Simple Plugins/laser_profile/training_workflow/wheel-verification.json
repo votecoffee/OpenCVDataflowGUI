@@ -1,0 +1,83 @@
+{
+  "source_commit": "66a47b9",
+  "source_tests_passed": 99,
+  "final_wheel_tests_passed": 99,
+  "source_modules_exact": [
+    {
+      "module": "opencv_simple_laser_profile/__init__.py",
+      "sha256": "f5362ff62590cda6ed3b8ab79df1a8bf89bb49cdf21c0ab502233c69adf5349a"
+    },
+    {
+      "module": "opencv_simple_laser_profile/calibration_setup.py",
+      "sha256": "a529f90b78987b801c5b49cdc285df31d9cb33ec3a5640144de45db934975750"
+    },
+    {
+      "module": "opencv_simple_laser_profile/cli.py",
+      "sha256": "1795863b757427ee4dbd5b9d790017dd5d291dba6b0a2f71dac34439408a2a9b"
+    },
+    {
+      "module": "opencv_simple_laser_profile/completed_review.py",
+      "sha256": "20741fb0514aa8d986b36349300a58b17dafbd3b728e6ae1b3367130b75d415f"
+    },
+    {
+      "module": "opencv_simple_laser_profile/dataflow.py",
+      "sha256": "536bd7cb1c1def7de8eee68044538880d325abf1f086c2f0b875f15a60c20c90"
+    },
+    {
+      "module": "opencv_simple_laser_profile/geometry.py",
+      "sha256": "2211e83929ae512e95eaa93bb562fd054ec0ddc31dff99f54c32ad55f7dd3737"
+    },
+    {
+      "module": "opencv_simple_laser_profile/profile.py",
+      "sha256": "9a797b975480c990fc009840179dd0fd7c73170dc541fcad0937a558066e58b6"
+    },
+    {
+      "module": "opencv_simple_laser_profile/qt_calibration.py",
+      "sha256": "bdb6f92186f73b44355c56e76df29d640df3d4a7f184dce2ff1df172f0e1cccb"
+    },
+    {
+      "module": "opencv_simple_laser_profile/qt_completed_review.py",
+      "sha256": "16b014ff6352bf6703a2f28f8c2edafcf64ba3822c3b029f97891dee08a44513"
+    },
+    {
+      "module": "opencv_simple_laser_profile/qt_region.py",
+      "sha256": "9ae7fe81cdf66703226cdbe9948cf620c77aa018afe4aa5bafdad4929003f08d"
+    },
+    {
+      "module": "opencv_simple_laser_profile/qt_training.py",
+      "sha256": "d06729a0554562051c60ae42185d577983e5f4e1e18f9fc705017b1ffdcbe0bc"
+    },
+    {
+      "module": "opencv_simple_laser_profile/recipe.py",
+      "sha256": "c3b7347426ca3a0cba3e66d507af431aa86880532bf5e1be9cddc8f01c489d71"
+    },
+    {
+      "module": "opencv_simple_laser_profile/render.py",
+      "sha256": "59bf671fd8d3d91c4cbd0cf50f2deacd2c6e2cc5da8af25bc1fd4b69ddbbd2e6"
+    },
+    {
+      "module": "opencv_simple_laser_profile/stripe.py",
+      "sha256": "8a688b127105c8eacacd8112370b791a9837d1b083d74dccc7c2c032353c60eb"
+    },
+    {
+      "module": "opencv_simple_laser_profile/teaching.py",
+      "sha256": "84be80c6e2ae4437dc1d10d842dbffdb2b7e87b5628caf83ad850a23ac25f0d9"
+    }
+  ],
+  "unchanged_runtime_module_ast": [
+    "__init__.py",
+    "cli.py",
+    "completed_review.py",
+    "dataflow.py",
+    "geometry.py",
+    "profile.py",
+    "qt_completed_review.py",
+    "qt_region.py",
+    "recipe.py",
+    "render.py",
+    "stripe.py",
+    "teaching.py"
+  ],
+  "wheel_sha256": "1de8610194093aa8fb523032f90d369f7ed59e18f8b789663a73b603400f4771",
+  "host_installation_modified": false
+}

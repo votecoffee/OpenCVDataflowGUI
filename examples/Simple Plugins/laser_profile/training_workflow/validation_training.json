@@ -1,0 +1,165 @@
+[
+  {
+    "case": "calibrated_step",
+    "desktop_input_used": false,
+    "window_capture_used": false,
+    "calibration_fit": {
+      "method": "All-point least-squares plane; not independent gauge qualification",
+      "units": "m",
+      "frame": "camera",
+      "training_ids": [
+        "near_known_board",
+        "far_known_board"
+      ],
+      "training_point_counts": [
+        7,
+        7
+      ],
+      "rmse_plane_residual_m": 2.7755575615628914e-17,
+      "maximum_abs_plane_residual_m": 2.7755575615628914e-17,
+      "in_plane_rank_ratio": 0.666666666666667,
+      "validation": [
+        {
+          "identifier": "independent_middle",
+          "supplied_points": 5,
+          "available_points": 5,
+          "unavailable_points": 0,
+          "rmse_point_distance_m": 5.637317510585903e-17,
+          "maximum_point_distance_m": 5.721958498152797e-17,
+          "target_reasons": {
+            "valid": 5
+          },
+          "laser_reasons": {
+            "valid": 5
+          }
+        },
+        {
+          "identifier": "independent_step",
+          "supplied_points": 5,
+          "available_points": 5,
+          "unavailable_points": 0,
+          "rmse_point_distance_m": 0.0,
+          "maximum_point_distance_m": 0.0,
+          "target_reasons": {
+            "valid": 5
+          },
+          "laser_reasons": {
+            "valid": 5
+          }
+        }
+      ],
+      "scope": "Declared target/calibration agreement; no automatic acceptance threshold, independent capture proof or physical gauge qualification"
+    },
+    "setup": "METRIC m \u00b7 camera frame camera \u00b7 640 x 480\nfx/fy 800/800 px; 0 pinhole distortion coefficients.\nLaser: normal (0.9805806756909202, -0.0, -0.19611613513818396); offset 0.0980580675691 m. normal dot XYZ + offset = 0. Camera axes: X right, Y down, Z forward.\nDefault geometry checks use camera Z 0.001..100 m and incidence >= 1e-6. Missing/behind/parallel/out-of-range rays stay unavailable.\nSource: Analytic two-target training and separate target-depth checks; not a physical calibration. Imported fit metadata is reported evidence, not a recomputed or independent gauge check.",
+    "reference_health": "Taught reference: 480/480 valid bins, 480 metric. This stays separate from an independent image preview. Availability is not accuracy.",
+    "last_preview_health": "Last preview: Connected preview / publication 0\nCalibrated meters\nAvailability 100.0% (not accuracy)\nFrozen threshold 0.0117647; width 2..27 px\nReview source coverage and independent examples before Stage / Apply.",
+    "guidance": "3 \u00b7 Review an independent image with frozen training, then Stage \u2192 inspector Apply.",
+    "reference_preview_separate": true,
+    "original_settings_exact": true,
+    "original_reference_and_mask_exact": true,
+    "calibration_review_readonly": true,
+    "calibration_fit_cancel_preserves_draft": true,
+    "native_profile_cloud": true,
+    "stage_preserves_active_until_apply": true,
+    "cancel_preserves_active": true,
+    "exact_recipe_save_as": true,
+    "original_recipe_preserved": true,
+    "maximum_staged_numeric_difference": 0.0,
+    "runtime_count": 480,
+    "runtime_passed": true,
+    "metric": true
+  },
+  {
+    "case": "calibrated_unavailable",
+    "desktop_input_used": false,
+    "window_capture_used": false,
+    "calibration_fit": {
+      "method": "All-point least-squares plane; not independent gauge qualification",
+      "units": "m",
+      "frame": "camera",
+      "training_ids": [
+        "near_known_board",
+        "far_known_board"
+      ],
+      "training_point_counts": [
+        7,
+        7
+      ],
+      "rmse_plane_residual_m": 2.7755575615628914e-17,
+      "maximum_abs_plane_residual_m": 2.7755575615628914e-17,
+      "in_plane_rank_ratio": 0.666666666666667,
+      "validation": [
+        {
+          "identifier": "independent_middle",
+          "supplied_points": 5,
+          "available_points": 5,
+          "unavailable_points": 0,
+          "rmse_point_distance_m": 5.637317510585903e-17,
+          "maximum_point_distance_m": 5.721958498152797e-17,
+          "target_reasons": {
+            "valid": 5
+          },
+          "laser_reasons": {
+            "valid": 5
+          }
+        },
+        {
+          "identifier": "independent_step",
+          "supplied_points": 5,
+          "available_points": 5,
+          "unavailable_points": 0,
+          "rmse_point_distance_m": 0.0,
+          "maximum_point_distance_m": 0.0,
+          "target_reasons": {
+            "valid": 5
+          },
+          "laser_reasons": {
+            "valid": 5
+          }
+        }
+      ],
+      "scope": "Declared target/calibration agreement; no automatic acceptance threshold, independent capture proof or physical gauge qualification"
+    },
+    "setup": "METRIC m \u00b7 camera frame camera \u00b7 640 x 480\nfx/fy 800/800 px; 0 pinhole distortion coefficients.\nLaser: normal (0.9805806756909202, -0.0, -0.19611613513818396); offset 0.0980580675691 m. normal dot XYZ + offset = 0. Camera axes: X right, Y down, Z forward.\nDefault geometry checks use camera Z 0.001..100 m and incidence >= 1e-6. Missing/behind/parallel/out-of-range rays stay unavailable.\nSource: Analytic two-target training and separate target-depth checks; not a physical calibration. Imported fit metadata is reported evidence, not a recomputed or independent gauge check.",
+    "reference_health": "Taught reference: 480/480 valid bins, 480 metric. This stays separate from an independent image preview. Availability is not accuracy.",
+    "last_preview_health": "Last preview: Connected preview / publication 0\nCalibrated meters\nAvailability 81.2% (not accuracy)\nFrozen threshold 0.0117647; width 2..27 px\nReview source coverage and independent examples before Stage / Apply.",
+    "guidance": "3 \u00b7 Review an independent image with frozen training, then Stage \u2192 inspector Apply.",
+    "reference_preview_separate": true,
+    "original_settings_exact": true,
+    "original_reference_and_mask_exact": true,
+    "calibration_review_readonly": true,
+    "calibration_fit_cancel_preserves_draft": true,
+    "native_profile_cloud": true,
+    "stage_preserves_active_until_apply": true,
+    "cancel_preserves_active": true,
+    "exact_recipe_save_as": true,
+    "original_recipe_preserved": true,
+    "maximum_staged_numeric_difference": 0.0,
+    "runtime_count": 390,
+    "runtime_passed": false,
+    "metric": true
+  },
+  {
+    "case": "real_wli1",
+    "desktop_input_used": false,
+    "window_capture_used": false,
+    "setup": "PIXEL ONLY: no camera/laser calibration; no metric XYZ or cloud.",
+    "reference_health": "Taught reference: 72/120 valid bins, 0 metric. This stays separate from an independent image preview. Availability is not accuracy.",
+    "last_preview_health": "Last preview: Connected preview / publication 0\nPIXEL ONLY \u00b7 no XYZ\nAvailability 60.0% (not accuracy)\nFrozen threshold 0.0117647; width 2..36 px\nReview source coverage and independent examples before Stage / Apply.",
+    "guidance": "3 \u00b7 Review an independent image with frozen training, then Stage \u2192 inspector Apply.",
+    "reference_preview_separate": true,
+    "original_settings_exact": true,
+    "original_reference_and_mask_exact": true,
+    "calibration_review_readonly": true,
+    "calibration_fit_cancel_preserves_draft": true,
+    "native_profile_cloud": false,
+    "stage_preserves_active_until_apply": true,
+    "cancel_preserves_active": true,
+    "exact_recipe_save_as": true,
+    "original_recipe_preserved": true,
+    "maximum_staged_numeric_difference": 0.0,
+    "runtime_count": 72,
+    "runtime_passed": false,
+    "metric": false
+  }
+]

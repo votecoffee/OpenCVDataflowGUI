@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-18",
+  "source_commit": "66a47b9",
+  "version": "0.1.0.dev4",
+  "source_tests": 99,
+  "wheel_tests": 99,
+  "native_training_workflows": 3,
+  "runtime_counts": [
+    480,
+    390,
+    72
+  ],
+  "runtime_passed": [
+    true,
+    false,
+    false
+  ],
+  "maximum_staged_numeric_difference": 0.0,
+  "staged_numeric_tolerance": 1e-10,
+  "old_projects_exact": 9,
+  "old_frozen_exports_verified": 6,
+  "old_file_pins_verified": 191,
+  "old_native_review_and_save_as": true,
+  "finished_trained_projects": 3,
+  "fit_method": "Existing all-training-point least-squares geometry kernel; validation never enters fitting",
+  "validation_scope": "Agreement with explicitly declared target-plane intersections, using the same supplied camera. IDs do not establish acquisition independence",
+  "desktop_input_used": false,
+  "window_capture_used": false,
+  "physical_gauge_qualified": false,
+  "remaining": [
+    "Image-derived target/stripe collection and camera/target-pose estimation",
+    "Calibration image associations and graphical observation editing",
+    "Draft undo/history",
+    "Background source/calibration restoration",
+    "Finer cancellation inside bounded native phases",
+    "Hands-on operator and independent physical gauge qualification",
+    "Real WLI extraction/stripe-identity failures"
+  ],
+  "host_packaged_checks": 4,
+  "finished_project_reports_exact": true
+}
