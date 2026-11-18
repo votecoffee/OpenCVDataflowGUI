@@ -1,0 +1,1043 @@
+{
+  "model": "simple_3d_measure_completed_review_v1",
+  "execution_binding": "a342097ccd724716952541c4ba4d9ebe",
+  "completed_result": {
+    "lines": {
+      "angled": {
+        "all_selected_max_radial_residual": 0.058019571414013,
+        "direction": [
+          0.8660117043986691,
+          0.5000235639234679,
+          0.0004041853359694137
+        ],
+        "distance_tolerance": 0.05412033815152965,
+        "endpoints": [
+          [
+            -6.057879635100303,
+            4.50124554679812,
+            2.9970977854522207
+          ],
+          [
+            6.053427248624591,
+            11.494151994842031,
+            3.002750379541842
+          ]
+        ],
+        "excluded_fit_points": 1,
+        "fit_sample_points": 600,
+        "frame": "part",
+        "inlier_fraction": 0.9983333333333333,
+        "inlier_points": 599,
+        "model": "fitted_line_3d_v1",
+        "observed_inlier_span": 13.985153805899884,
+        "origin": [
+          0.009538631191248438,
+          8.004491622937541,
+          2.9999295733806886
+        ],
+        "orthogonal_rmse": 0.020878663258584885,
+        "parameter_bounds": [
+          -7.006161966950057,
+          6.9789918389498276
+        ],
+        "ransac_trials": 16,
+        "region_maximum": [
+          8.0,
+          11.8,
+          3.5
+        ],
+        "region_minimum": [
+          -8.0,
+          4.2,
+          2.5
+        ],
+        "selected_points": 600,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      },
+      "datum": {
+        "all_selected_max_radial_residual": 0.5262753016442242,
+        "direction": [
+          0.9999999982931932,
+          -5.578530785812494e-05,
+          -1.7367008311213203e-05
+        ],
+        "distance_tolerance": 0.05815658863284506,
+        "endpoints": [
+          [
+            -10.000103049073935,
+            0.0012571199648146792,
+            -0.00043023419031382827
+          ],
+          [
+            10.022631695355997,
+            0.00014014554102862126,
+            -0.0007779691916270767
+          ]
+        ],
+        "excluded_fit_points": 57,
+        "fit_sample_points": 660,
+        "frame": "part",
+        "inlier_fraction": 0.9136363636363637,
+        "inlier_points": 603,
+        "model": "fitted_line_3d_v1",
+        "observed_inlier_span": 20.02273477860487,
+        "origin": [
+          -0.005214433094633528,
+          0.0006995520254129447,
+          -0.0006038155042734608
+        ],
+        "orthogonal_rmse": 0.021440591310377823,
+        "parameter_bounds": [
+          -9.994888633038647,
+          10.027846145566226
+        ],
+        "ransac_trials": 16,
+        "region_maximum": [
+          12.0,
+          0.5,
+          0.5
+        ],
+        "region_minimum": [
+          -12.0,
+          -0.5,
+          -0.5
+        ],
+        "selected_points": 660,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      },
+      "target": {
+        "all_selected_max_radial_residual": 0.04241922227777206,
+        "direction": [
+          0.9945431717359896,
+          0.10432567347584372,
+          -0.00018277617299900079
+        ],
+        "distance_tolerance": 0.051314578429344754,
+        "endpoints": [
+          [
+            -5.762751162575594,
+            3.394939236373074,
+            0.0011748858790332742
+          ],
+          [
+            5.803335049958878,
+            4.608199522999065,
+            -0.0009507181516228628
+          ]
+        ],
+        "excluded_fit_points": 0,
+        "fit_sample_points": 343,
+        "frame": "part",
+        "inlier_fraction": 1.0,
+        "inlier_points": 343,
+        "model": "fitted_line_3d_v1",
+        "observed_inlier_span": 11.629546651399455,
+        "origin": [
+          0.05013421937041362,
+          4.004699777236138,
+          0.0001065994794198798
+        ],
+        "orthogonal_rmse": 0.02050412648296262,
+        "parameter_bounds": [
+          -5.844779339040185,
+          5.7847673123592696
+        ],
+        "ransac_trials": 16,
+        "region_maximum": [
+          12.0,
+          4.6,
+          0.5
+        ],
+        "region_minimum": [
+          -12.0,
+          3.4,
+          -0.5
+        ],
+        "selected_points": 343,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      }
+    },
+    "measurement_frame": "part",
+    "measurement_to_scene": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "measurements": [
+      {
+        "angle_degrees": 5.9915209468954345,
+        "kind": "line_separation",
+        "lower": 3.9,
+        "name": "gap",
+        "other": "target",
+        "plane": "datum",
+        "probe_point": null,
+        "reason": "lines_not_parallel",
+        "status": "unavailable",
+        "units": "mm",
+        "upper": 4.1,
+        "value": null
+      },
+      {
+        "angle_degrees": 30.004766877604524,
+        "definition": "acute_angle_between_line_directions",
+        "kind": "line_angle",
+        "lower": null,
+        "name": "angle",
+        "other": "angled",
+        "plane": "datum",
+        "probe_point": null,
+        "reason": null,
+        "status": "measured",
+        "units": "deg",
+        "upper": null,
+        "value": 30.004766877604524
+      },
+      {
+        "angle_degrees": null,
+        "datum_extrapolated": false,
+        "datum_projection": [
+          -0.0002367954359589041,
+          0.0006992743463632755,
+          -0.0006039019509481968
+        ],
+        "definition": "perpendicular_probe_distance_to_infinite_line",
+        "dimension_endpoints": [
+          [
+            -0.0002367954359589041,
+            0.0006992743463632755,
+            -0.0006039019509481968
+          ],
+          [
+            0.0,
+            3.0,
+            4.0
+          ]
+        ],
+        "kind": "point_line_distance",
+        "lower": null,
+        "name": "probe",
+        "other": null,
+        "plane": "datum",
+        "probe_point": [
+          0.0,
+          3.0,
+          4.0
+        ],
+        "reason": null,
+        "status": "measured",
+        "support_assessment": "observed_inlier_axial_interval_not_visibility",
+        "units": "mm",
+        "upper": null,
+        "value": 5.000063647523266
+      },
+      {
+        "angle_degrees": null,
+        "definition": "observed_inlier_axial_span_not_hidden_object_length",
+        "dimension_endpoints": [
+          [
+            -10.000103049073935,
+            0.0012571199648146792,
+            -0.00043023419031382827
+          ],
+          [
+            10.022631695355997,
+            0.00014014554102862126,
+            -0.0007779691916270767
+          ]
+        ],
+        "kind": "line_span",
+        "lower": 19.5,
+        "name": "span",
+        "other": null,
+        "plane": "datum",
+        "probe_point": null,
+        "reason": null,
+        "status": "within_limits",
+        "units": "mm",
+        "upper": 20.5,
+        "value": 20.02273477860487
+      }
+    ],
+    "model": "simple_3d_measure_v1",
+    "passed": false,
+    "planes": {},
+    "qualification": "fit_evidence_not_independent_dimensional_accuracy",
+    "scene_frame": "part",
+    "scene_points": 1860,
+    "settings": {
+      "execution_workers": 1,
+      "fit_sample_limit": 20000,
+      "max_trials": 256,
+      "min_inlier_fraction": 0.5,
+      "min_points": 30,
+      "seed": 0
+    },
+    "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+    "units": "mm"
+  },
+  "executed_parameters": {
+    "primary_measurement": "",
+    "recipe_path": "assets/d9ee728f25036f8948da6008a21bf89dbe8596e2a8dd7bd9fc9457ab1d90bdcb.s3m",
+    "render_graphics": true,
+    "residual_graphics": true,
+    "sha256": "d9ee728f25036f8948da6008a21bf89dbe8596e2a8dd7bd9fc9457ab1d90bdcb"
+  },
+  "primary_measurement": "gap",
+  "selected_measurement": {
+    "angle_degrees": 5.9915209468954345,
+    "kind": "line_separation",
+    "lower": 3.9,
+    "name": "gap",
+    "other": "target",
+    "plane": "datum",
+    "probe_point": null,
+    "reason": "lines_not_parallel",
+    "status": "unavailable",
+    "units": "mm",
+    "upper": 4.1,
+    "value": null
+  },
+  "selected_region": "target",
+  "display_mode": "residuals",
+  "display_layers": [
+    "inliers",
+    "excluded",
+    "unavailable",
+    "planes",
+    "lines",
+    "regions",
+    "zones",
+    "supports"
+  ],
+  "emitted_clouds": [
+    "fit",
+    "residuals"
+  ],
+  "graphics_scope": "Review graphics derive only from frozen fits; disabled runtime outputs remain absent",
+  "residual_semantics": "Plane signed / line radial distance to current fit, not reference deviation or measurement uncertainty",
+  "residual_color_scale": "Fixed at three taught fit bands; histogram tails retain values outside the range",
+  "effective_measurement_to_scene": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "fixture_input": null,
+  "source": {
+    "units": "mm",
+    "frame": "part",
+    "source_size": null,
+    "metadata": {},
+    "arrays": {
+      "points": {
+        "shape": [
+          1860,
+          3
+        ],
+        "dtype": "<f4",
+        "sha256": "1e083804b35f16b9b8e9bdf0487dc11b470298f97b12537f9ca4171d81877deb"
+      }
+    }
+  },
+  "provenance": {
+    "snapshot_id": "a584699f045644e3b52616ddf5b555cf",
+    "block_id": "measure",
+    "output_revision": 0,
+    "execution_count": 1,
+    "passed": false,
+    "score": null,
+    "message": "3/4 measurements available; gap: lines_not_parallel",
+    "inputs": {
+      "scene": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.729304+00:00",
+          "started_ns": 129565693747100,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:06:42.739753+00:00",
+          "finished_ns": 129565704194400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 10.4473
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "scene",
+            "name": "Load PLY / PCD point cloud",
+            "type": "input.cloud",
+            "path": "scene"
+          },
+          "score": null,
+          "message": "",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "measurements": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      },
+      "planes": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      },
+      "report": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      },
+      "count": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      },
+      "fit": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      },
+      "lines": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      },
+      "residuals": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      },
+      "residual_report": {
+        "measure_3d_completed_review": {
+          "id": "a342097ccd724716952541c4ba4d9ebe"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "5835b068bed54782abfde786923d9638",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.740657+00:00",
+          "started_ns": 129565705099400,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.759776+00:00",
+          "finished_ns": 129565724217300,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 19.1179
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/4 measurements available; gap: lines_not_parallel",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "gap: lines_not_parallel",
+              "message": "gap: lines_not_parallel"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "identity_scope": "Software pairing and declared metadata do not prove physical synchronization",
+  "coordinate_scope": "Fits/residual values use recipe units/frame; display geometry is mapped to the consumed scene frame",
+  "geometry_scope": "Measured points remain separate from derived datum grids, ROI boxes, dimensions and minimum-zone support geometry",
+  "measurement_reexecuted": false,
+  "fit_reexecuted": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "d9ee728f25036f8948da6008a21bf89dbe8596e2a8dd7bd9fc9457ab1d90bdcb",
+  "exported_regions": [
+    {
+      "name": "datum",
+      "prefix": "region_0",
+      "available": true,
+      "fit": {
+        "model": "fitted_line_3d_v1",
+        "status": "fit",
+        "selected_points": 660,
+        "fit_sample_points": 660,
+        "inlier_points": 603,
+        "excluded_fit_points": 57,
+        "inlier_fraction": 0.9136363636363637,
+        "distance_tolerance": 0.05815658863284506,
+        "ransac_trials": 16,
+        "origin": [
+          -0.005214433094633528,
+          0.0006995520254129447,
+          -0.0006038155042734608
+        ],
+        "direction": [
+          0.9999999982931932,
+          -5.578530785812494e-05,
+          -1.7367008311213203e-05
+        ],
+        "parameter_bounds": [
+          -9.994888633038647,
+          10.027846145566226
+        ],
+        "endpoints": [
+          [
+            -10.000103049073935,
+            0.0012571199648146792,
+            -0.00043023419031382827
+          ],
+          [
+            10.022631695355997,
+            0.00014014554102862126,
+            -0.0007779691916270767
+          ]
+        ],
+        "observed_inlier_span": 20.02273477860487,
+        "orthogonal_rmse": 0.021440591310377823,
+        "all_selected_max_radial_residual": 0.5262753016442242
+      }
+    },
+    {
+      "name": "target",
+      "prefix": "region_1",
+      "available": true,
+      "fit": {
+        "model": "fitted_line_3d_v1",
+        "status": "fit",
+        "selected_points": 343,
+        "fit_sample_points": 343,
+        "inlier_points": 343,
+        "excluded_fit_points": 0,
+        "inlier_fraction": 1.0,
+        "distance_tolerance": 0.051314578429344754,
+        "ransac_trials": 16,
+        "origin": [
+          0.05013421937041362,
+          4.004699777236138,
+          0.0001065994794198798
+        ],
+        "direction": [
+          0.9945431717359896,
+          0.10432567347584372,
+          -0.00018277617299900079
+        ],
+        "parameter_bounds": [
+          -5.844779339040185,
+          5.7847673123592696
+        ],
+        "endpoints": [
+          [
+            -5.762751162575594,
+            3.394939236373074,
+            0.0011748858790332742
+          ],
+          [
+            5.803335049958878,
+            4.608199522999065,
+            -0.0009507181516228628
+          ]
+        ],
+        "observed_inlier_span": 11.629546651399455,
+        "orthogonal_rmse": 0.02050412648296262,
+        "all_selected_max_radial_residual": 0.04241922227777206
+      }
+    },
+    {
+      "name": "angled",
+      "prefix": "region_2",
+      "available": true,
+      "fit": {
+        "model": "fitted_line_3d_v1",
+        "status": "fit",
+        "selected_points": 600,
+        "fit_sample_points": 600,
+        "inlier_points": 599,
+        "excluded_fit_points": 1,
+        "inlier_fraction": 0.9983333333333333,
+        "distance_tolerance": 0.05412033815152965,
+        "ransac_trials": 16,
+        "origin": [
+          0.009538631191248438,
+          8.004491622937541,
+          2.9999295733806886
+        ],
+        "direction": [
+          0.8660117043986691,
+          0.5000235639234679,
+          0.0004041853359694137
+        ],
+        "parameter_bounds": [
+          -7.006161966950057,
+          6.9789918389498276
+        ],
+        "endpoints": [
+          [
+            -6.057879635100303,
+            4.50124554679812,
+            2.9970977854522207
+          ],
+          [
+            6.053427248624591,
+            11.494151994842031,
+            3.002750379541842
+          ]
+        ],
+        "observed_inlier_span": 13.985153805899884,
+        "orthogonal_rmse": 0.020878663258584885,
+        "all_selected_max_radial_residual": 0.058019571414013
+      }
+    }
+  ],
+  "residual_review": {
+    "model": "simple_3d_residual_review_v1",
+    "units": "mm",
+    "measurement_frame": "part",
+    "scene_frame": "part",
+    "range_multiple": 3.0,
+    "scale_source": "retained_fit_band_not_frame_minimum_maximum",
+    "qualification": "fit_residual_not_reference_deviation_or_measurement_uncertainty",
+    "regions": {
+      "target": {
+        "kind": "line",
+        "status": "fit",
+        "definition": "unsigned_radial_distance_to_current_fitted_line",
+        "population": "all_selected_points_including_fit_exclusions",
+        "selected_points": 343,
+        "residual_points": 343,
+        "unavailable_points": 0,
+        "fit_band": 0.051314578429344754,
+        "color_range": [
+          0.0,
+          0.15394373528803426
+        ],
+        "histogram": {
+          "edges": [
+            0.0,
+            0.006414322303668094,
+            0.012828644607336188,
+            0.019242966911004283,
+            0.025657289214672377,
+            0.03207161151834047,
+            0.038485933822008565,
+            0.04490025612567666,
+            0.051314578429344754,
+            0.057728900733012845,
+            0.06414322303668094,
+            0.07055754534034904,
+            0.07697186764401713,
+            0.08338618994768522,
+            0.08980051225135333,
+            0.09621483455502142,
+            0.10262915685868951,
+            0.1090434791623576,
+            0.11545780146602569,
+            0.1218721237696938,
+            0.12828644607336187,
+            0.13470076837703,
+            0.14111509068069808,
+            0.14752941298436617,
+            0.15394373528803426
+          ],
+          "counts": [
+            29,
+            70,
+            98,
+            72,
+            43,
+            22,
+            9,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "below_range": 0,
+          "above_range": 0,
+          "scale": "counts_not_probability",
+          "upper_edge_inclusive": true
+        },
+        "minimum": 0.0006646163359914537,
+        "median": 0.017477457496996994,
+        "maximum": 0.04241922227777206,
+        "rmse": 0.02050412648296262,
+        "absolute_p95": 0.03442303360871962,
+        "inlier_points": 343,
+        "excluded_fit_points": 0,
+        "origin": [
+          0.05013421937041362,
+          4.004699777236138,
+          0.0001065994794198798
+        ],
+        "axis": [
+          0.9945431717359896,
+          0.10432567347584372,
+          -0.00018277617299900079
+        ]
+      }
+    }
+  },
+  "projection": {
+    "yaw": 29,
+    "pitch": -20,
+    "scope": "Display projection, not sensor pixels"
+  },
+  "ply_scope": "PLY retains XYZ/RGB/normals/units/frame; native NPY plus JSON retains source pixels and metadata"
+}

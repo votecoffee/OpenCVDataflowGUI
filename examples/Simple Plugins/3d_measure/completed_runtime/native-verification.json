@@ -1,0 +1,173 @@
+[
+  {
+    "case": "real13",
+    "passed": true,
+    "count": 3,
+    "source_sha256": "2922ab95cf3f74e80c70c959a94416b612a6327c60eda352dc4e14fa39b66279",
+    "recipe_sha256": "0f680ff602b02e9e39eef5c7748e390b7a03ec8f02df5c7b7e953e32c817714c",
+    "graphics": {
+      "fit": {
+        "points": "1d7f0f39c7ff2d26027fb714748295bec4886628eb57d561130bfd09b806e4ee",
+        "colors": "6e56641ff8e9afcac5af34a65d160ccb1f110e07fd92f7384f593121ed3f7f48"
+      },
+      "residuals": {
+        "points": "db717ade46c9fe8fb0b1f03feb16ff80ce54222ff26fe6b1887358c14a96078f",
+        "colors": "4759e436c5442cacdba02061d25836ec9c8a809b850f59175f4f82ccfc5cbf87"
+      }
+    },
+    "selected_measurement": "height",
+    "selected_region": "part_surface",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": "snapshots/real13"
+  },
+  {
+    "case": "real24",
+    "passed": true,
+    "count": 3,
+    "source_sha256": "ee1b7e54e59af433b2176573afd6dfdb8d21a03eeea4e524c5ebbb41067d6000",
+    "recipe_sha256": "0f680ff602b02e9e39eef5c7748e390b7a03ec8f02df5c7b7e953e32c817714c",
+    "graphics": {
+      "fit": {
+        "points": "08be24a337c23d6c3f89dbf3fe6e95d0cd9c129eea243b73c9b2a24dc4ce0baf",
+        "colors": "4304009bc73f01edc9e423baf1d5e112ef3abfc691b22d0278542848b5de4499"
+      },
+      "residuals": {
+        "points": "9238dd21eeb3474ffdf0b908f6150a9067b8f0aa65a5fe9c3adae4a71cf82945",
+        "colors": "97a95eaecd29e88de80dab8ed42bdc227dda27828225e5dcbc1c38ebf712af1a"
+      }
+    },
+    "selected_measurement": "height",
+    "selected_region": "part_surface",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "good",
+    "passed": true,
+    "count": 4,
+    "source_sha256": "c77dc5472956ef86bb323791c234392772526f7a879b0e49c7843c18e398cadf",
+    "recipe_sha256": "63baba65bc88cddf7ee4b746ee918ddd5632df38cd5fb05e8a1ec916b434a0b3",
+    "graphics": {
+      "fit": {
+        "points": "9106afebe596ff3df156c0518c90bed53d384123eda48d97231b013ca6732b37",
+        "colors": "6c7232ab2b03e730a26c26be993dc6e54c0a63eaf05ba60ad19c627342efbcf3"
+      },
+      "residuals": {
+        "points": "69603a4db62043b6fdd47bb0b183b990e714b9dc90377aaf5b433564df72c1d4",
+        "colors": "9a2e120698b383e57c0a895ad84d02b7c5a1a23f99f27368860734d489c91a2e"
+      }
+    },
+    "selected_measurement": "height",
+    "selected_region": "top",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "raised",
+    "passed": false,
+    "count": 4,
+    "source_sha256": "b3f137376542bd4c9d2e22f97d8908afabdc249700adc11f63deac77d60496f7",
+    "recipe_sha256": "15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0",
+    "graphics": {
+      "fit": {
+        "points": "af9dff7f9bf57dbdfc17e4f3fc1389e6b7a1519c8275ae895ac88ba9ca083bfe",
+        "colors": "ffb71c1226780a90f9e48b4cd6c2da232c3a91d19fa92b5920ee245b372a1732"
+      },
+      "residuals": {
+        "points": "417364028e616a995061bfbc4023dd74b51d31d3c1eee8714d86a6a43f9c056d",
+        "colors": "6fa0710ff50511ca9f870a73c6fdb3d7bf7ced82b22167c2632ae118a87c96c8"
+      }
+    },
+    "selected_measurement": "surface",
+    "selected_region": "top",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": "snapshots/raised"
+  },
+  {
+    "case": "missing",
+    "passed": false,
+    "count": 1,
+    "source_sha256": "c5589bc8162b4a37e8bf3a4e7da8482023a31ae3c8a394c010badcbd27a414f7",
+    "recipe_sha256": "15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0",
+    "graphics": {
+      "fit": {
+        "points": "b60cc860d3418b8f74b0afc9ee2eccd137f37aba5d0ac5c05fb1f578d41fa9a3",
+        "colors": "08a776e56f1b52b487c87c2667c52cdf3643bcb578d975dc2235d0388c5d22d9"
+      },
+      "residuals": {
+        "points": "51748bb7d8a02d3f3077793af129d447fe29c271accc7b478fa690c84982ab9d",
+        "colors": "7fc2ca29b53cb69ad3e41d4650192df46c3398aec1f81c8f0f66d3037ea1e43e"
+      }
+    },
+    "selected_measurement": "height",
+    "selected_region": "top",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": "snapshots/missing"
+  },
+  {
+    "case": "line_guard",
+    "passed": false,
+    "count": 3,
+    "source_sha256": "1e083804b35f16b9b8e9bdf0487dc11b470298f97b12537f9ca4171d81877deb",
+    "recipe_sha256": "d9ee728f25036f8948da6008a21bf89dbe8596e2a8dd7bd9fc9457ab1d90bdcb",
+    "graphics": {
+      "fit": {
+        "points": "942d9f898905add0075e6dbbbf1852002231b7e332edb8cd8a54680db3577e0e",
+        "colors": "0bed399ec2ecbd02386541bb8c14794e0d3522f8fc60d0137b70cd7a7e190e8b"
+      },
+      "residuals": {
+        "points": "d23a6d3c9749774d4491c07eef7ae8746d2368de0cc7ab5e81f7956b67ab228d",
+        "colors": "825ec406d5e81d378548d2d76eee62f55615f3374af173195ec9aff667aca105"
+      }
+    },
+    "selected_measurement": "gap",
+    "selected_region": "target",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": "snapshots/line_guard"
+  },
+  {
+    "case": "flatness",
+    "passed": true,
+    "count": 2,
+    "source_sha256": "1914295b0232f136fc9f3ac32d6cabb69fdd2344c8d763b570560e228dd883fe",
+    "recipe_sha256": "ed706cc7472682a3f3a6abc694827940fd14c1bcbd990accbb8d2d0480a830d7",
+    "graphics": {
+      "fit": {
+        "points": "9d6c633452f29fb8be6971a82967d9c1437dbc8d924f729ae2414c3b249b6573",
+        "colors": "79c5a5f370ad51b0ac946124672ff3d8df648c2c1999adcf6a9dc4ab4961e01a"
+      }
+    },
+    "selected_measurement": "flatness",
+    "selected_region": "patch",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": "snapshots/flatness"
+  },
+  {
+    "case": "graphics_off",
+    "passed": true,
+    "count": 3,
+    "source_sha256": "2922ab95cf3f74e80c70c959a94416b612a6327c60eda352dc4e14fa39b66279",
+    "recipe_sha256": "0f680ff602b02e9e39eef5c7748e390b7a03ec8f02df5c7b7e953e32c817714c",
+    "graphics": {},
+    "selected_measurement": "height",
+    "selected_region": "part_surface",
+    "native_results_flyaround": true,
+    "no_refit_measurement_reload_or_training": true,
+    "primary_outputs_and_graphics_unchanged": true,
+    "export": null
+  }
+]

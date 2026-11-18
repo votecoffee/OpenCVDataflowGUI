@@ -1,5 +1,15 @@
 # Simple3DMeasure
 
+The [dev6 completed-results examples](completed_runtime/README.md) add an independent
+**Review completed 3D measurements…** action on Results. Load that folder's pinned
+`plugin.py` first, then open its projects; restart if another version is already
+imported. No environment installation is needed. Native Flyaround, measurement/
+region/layer selection, Focus/Overview, physical histograms and frozen exports
+use exact completed source/fixture/model/fit/residual evidence without refitting,
+measuring or recipe loading. Teaching drafts stay independent. Eight unchanged
+real/generated cases include failed/unavailable measurements and rendering off;
+shared model assets avoid repeating large references between projects.
+
 Train plane datums and inspect step heights, plane angles, signed probe
 distances and surface residual ranges. Requires the optional
 `opencv-simple-3d-measure` plugin **0.1.0.dev0** and the host integration.

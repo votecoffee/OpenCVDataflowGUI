@@ -1,0 +1,847 @@
+{
+  "model": "simple_3d_measure_completed_review_v1",
+  "execution_binding": "90c05849c4be4a7fb496f12bc546ecb6",
+  "completed_result": {
+    "measurement_frame": "part",
+    "measurement_to_scene": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "measurements": [
+      {
+        "angle_degrees": null,
+        "definition": "minimum_width_two_parallel_planes_all_selected_points",
+        "dimension_endpoints": [
+          [
+            0.0,
+            0.0,
+            -0.20000000298023224
+          ],
+          [
+            0.0,
+            0.0,
+            0.20000000298023224
+          ]
+        ],
+        "flatness": {
+          "candidate_upper_bound": 0.5780128847691226,
+          "datum_fit_residual_range": 0.5799068550285164,
+          "datum_normal_angle_degrees": 1.0311042616225434,
+          "difference_facets": 92,
+          "difference_points": 289,
+          "hull_vertices": 17,
+          "max_difference_facets": 131072,
+          "max_difference_points": 65536,
+          "max_hull_vertices": 256,
+          "method": "convex_hull_minkowski_difference",
+          "normal": [
+            -0.0,
+            -0.0,
+            1.0
+          ],
+          "numeric_resolution": 2.828709953326372e-09,
+          "offsets": [
+            -0.20000000298023224,
+            0.20000000298023224
+          ],
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "population": "all_selected_points_including_datum_fit_exclusions",
+          "selected_points": 1204,
+          "status": "resolved",
+          "support_lower_count": 1,
+          "support_lower_points": [
+            [
+              0.0,
+              0.0,
+              -0.20000000298023224
+            ]
+          ],
+          "support_lower_rows": [
+            1203
+          ],
+          "support_upper_count": 3,
+          "support_upper_points": [
+            [
+              -10.0,
+              -10.0,
+              0.20000000298023224
+            ],
+            [
+              10.0,
+              -10.0,
+              0.20000000298023224
+            ],
+            [
+              0.0,
+              10.0,
+              0.20000000298023224
+            ]
+          ],
+          "support_upper_rows": [
+            1200,
+            1201,
+            1202
+          ],
+          "verification_gap": 0.0
+        },
+        "kind": "minimum_zone_flatness",
+        "lower": null,
+        "name": "flatness",
+        "other": null,
+        "plane": "patch",
+        "probe_point": null,
+        "reason": null,
+        "status": "within_limits",
+        "units": "mm",
+        "upper": 0.45,
+        "value": 0.4000000059604645
+      },
+      {
+        "angle_degrees": null,
+        "definition": "least_squares_plane_residual_range_all_selected_points",
+        "kind": "surface_range",
+        "lower": null,
+        "name": "datum_range",
+        "other": null,
+        "plane": "patch",
+        "probe_point": null,
+        "reason": null,
+        "status": "measured",
+        "units": "mm",
+        "upper": null,
+        "value": 0.5799068550285164
+      }
+    ],
+    "model": "simple_3d_measure_v1",
+    "passed": true,
+    "planes": {
+      "patch": {
+        "all_selected_residual_range": 0.5799068550285164,
+        "distance_tolerance": 0.0036903004245065706,
+        "excluded_fit_points": 4,
+        "fit_sample_points": 1204,
+        "frame": "part",
+        "inlier_bounds": [
+          [
+            -8.494795799255371,
+            -8.48666763305664,
+            -0.152948796749115
+          ],
+          [
+            8.49386978149414,
+            8.469690322875977,
+            0.15343673527240753
+          ]
+        ],
+        "inlier_fraction": 0.9966777408637874,
+        "inlier_points": 1200,
+        "inlier_residual_range": 0.006083670811800118,
+        "normal": [
+          -0.017995192825892407,
+          -1.9691447881164947e-06,
+          0.9998380734055295
+        ],
+        "origin": [
+          -0.12748119162211266,
+          0.1713842745670505,
+          -0.002294668662846865
+        ],
+        "orthogonal_rmse": 0.0009939001500696442,
+        "ransac_trials": 16,
+        "region_maximum": [
+          11.0,
+          11.0,
+          1.0
+        ],
+        "region_minimum": [
+          -11.0,
+          -11.0,
+          -1.0
+        ],
+        "selected_points": 1204,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      }
+    },
+    "qualification": "fit_evidence_not_independent_dimensional_accuracy",
+    "scene_frame": "part",
+    "scene_points": 1204,
+    "settings": {
+      "execution_workers": 1,
+      "fit_sample_limit": 20000,
+      "max_trials": 256,
+      "min_inlier_fraction": 0.5,
+      "min_points": 30,
+      "seed": 0
+    },
+    "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+    "units": "mm"
+  },
+  "executed_parameters": {
+    "primary_measurement": "",
+    "recipe_path": "assets/ed706cc7472682a3f3a6abc694827940fd14c1bcbd990accbb8d2d0480a830d7.s3m",
+    "render_graphics": true,
+    "residual_graphics": false,
+    "sha256": "ed706cc7472682a3f3a6abc694827940fd14c1bcbd990accbb8d2d0480a830d7"
+  },
+  "primary_measurement": "flatness",
+  "selected_measurement": {
+    "angle_degrees": null,
+    "definition": "minimum_width_two_parallel_planes_all_selected_points",
+    "dimension_endpoints": [
+      [
+        0.0,
+        0.0,
+        -0.20000000298023224
+      ],
+      [
+        0.0,
+        0.0,
+        0.20000000298023224
+      ]
+    ],
+    "flatness": {
+      "candidate_upper_bound": 0.5780128847691226,
+      "datum_fit_residual_range": 0.5799068550285164,
+      "datum_normal_angle_degrees": 1.0311042616225434,
+      "difference_facets": 92,
+      "difference_points": 289,
+      "hull_vertices": 17,
+      "max_difference_facets": 131072,
+      "max_difference_points": 65536,
+      "max_hull_vertices": 256,
+      "method": "convex_hull_minkowski_difference",
+      "normal": [
+        -0.0,
+        -0.0,
+        1.0
+      ],
+      "numeric_resolution": 2.828709953326372e-09,
+      "offsets": [
+        -0.20000000298023224,
+        0.20000000298023224
+      ],
+      "origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "population": "all_selected_points_including_datum_fit_exclusions",
+      "selected_points": 1204,
+      "status": "resolved",
+      "support_lower_count": 1,
+      "support_lower_points": [
+        [
+          0.0,
+          0.0,
+          -0.20000000298023224
+        ]
+      ],
+      "support_lower_rows": [
+        1203
+      ],
+      "support_upper_count": 3,
+      "support_upper_points": [
+        [
+          -10.0,
+          -10.0,
+          0.20000000298023224
+        ],
+        [
+          10.0,
+          -10.0,
+          0.20000000298023224
+        ],
+        [
+          0.0,
+          10.0,
+          0.20000000298023224
+        ]
+      ],
+      "support_upper_rows": [
+        1200,
+        1201,
+        1202
+      ],
+      "verification_gap": 0.0
+    },
+    "kind": "minimum_zone_flatness",
+    "lower": null,
+    "name": "flatness",
+    "other": null,
+    "plane": "patch",
+    "probe_point": null,
+    "reason": null,
+    "status": "within_limits",
+    "units": "mm",
+    "upper": 0.45,
+    "value": 0.4000000059604645
+  },
+  "selected_region": "patch",
+  "display_mode": "residuals",
+  "display_layers": [
+    "inliers",
+    "excluded",
+    "unavailable",
+    "planes",
+    "lines",
+    "regions",
+    "zones",
+    "supports"
+  ],
+  "emitted_clouds": [
+    "fit"
+  ],
+  "graphics_scope": "Review graphics derive only from frozen fits; disabled runtime outputs remain absent",
+  "residual_semantics": "Plane signed / line radial distance to current fit, not reference deviation or measurement uncertainty",
+  "residual_color_scale": "Fixed at three taught fit bands; histogram tails retain values outside the range",
+  "effective_measurement_to_scene": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "fixture_input": null,
+  "source": {
+    "units": "mm",
+    "frame": "part",
+    "source_size": null,
+    "metadata": {},
+    "arrays": {
+      "points": {
+        "shape": [
+          1204,
+          3
+        ],
+        "dtype": "<f4",
+        "sha256": "1914295b0232f136fc9f3ac32d6cabb69fdd2344c8d763b570560e228dd883fe"
+      }
+    }
+  },
+  "provenance": {
+    "snapshot_id": "d89ae286ce294e8aac8e47922994117d",
+    "block_id": "measure",
+    "output_revision": 0,
+    "execution_count": 1,
+    "passed": true,
+    "score": null,
+    "message": "2/2 measurements available; all configured limits satisfied",
+    "inputs": {
+      "scene": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.061662+00:00",
+          "started_ns": 129566026104600,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:06:43.070587+00:00",
+          "finished_ns": 129566035028800,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.9242
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "scene",
+            "name": "Load PLY / PCD point cloud",
+            "type": "input.cloud",
+            "path": "scene"
+          },
+          "score": null,
+          "message": "",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "measurements": {
+        "measure_3d_completed_review": {
+          "id": "90c05849c4be4a7fb496f12bc546ecb6"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.071483+00:00",
+          "started_ns": 129566035925900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:43.375009+00:00",
+          "finished_ns": 129566339449900,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 303.524
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "2/2 measurements available; all configured limits satisfied",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "planes": {
+        "measure_3d_completed_review": {
+          "id": "90c05849c4be4a7fb496f12bc546ecb6"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.071483+00:00",
+          "started_ns": 129566035925900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:43.375009+00:00",
+          "finished_ns": 129566339449900,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 303.524
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "2/2 measurements available; all configured limits satisfied",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "report": {
+        "measure_3d_completed_review": {
+          "id": "90c05849c4be4a7fb496f12bc546ecb6"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.071483+00:00",
+          "started_ns": 129566035925900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:43.375009+00:00",
+          "finished_ns": 129566339449900,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 303.524
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "2/2 measurements available; all configured limits satisfied",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "value": {
+        "measure_3d_completed_review": {
+          "id": "90c05849c4be4a7fb496f12bc546ecb6"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.071483+00:00",
+          "started_ns": 129566035925900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:43.375009+00:00",
+          "finished_ns": 129566339449900,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 303.524
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "2/2 measurements available; all configured limits satisfied",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "count": {
+        "measure_3d_completed_review": {
+          "id": "90c05849c4be4a7fb496f12bc546ecb6"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.071483+00:00",
+          "started_ns": 129566035925900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:43.375009+00:00",
+          "finished_ns": 129566339449900,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 303.524
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "2/2 measurements available; all configured limits satisfied",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "fit": {
+        "measure_3d_completed_review": {
+          "id": "90c05849c4be4a7fb496f12bc546ecb6"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.071483+00:00",
+          "started_ns": 129566035925900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:43.375009+00:00",
+          "finished_ns": 129566339449900,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 303.524
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "2/2 measurements available; all configured limits satisfied",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "lines": {
+        "measure_3d_completed_review": {
+          "id": "90c05849c4be4a7fb496f12bc546ecb6"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "d670350aa1ab4966aaef389cdd0ce790",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:43.071483+00:00",
+          "started_ns": 129566035925900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:43.375009+00:00",
+          "finished_ns": 129566339449900,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 303.524
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "2/2 measurements available; all configured limits satisfied",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    }
+  },
+  "identity_scope": "Software pairing and declared metadata do not prove physical synchronization",
+  "coordinate_scope": "Fits/residual values use recipe units/frame; display geometry is mapped to the consumed scene frame",
+  "geometry_scope": "Measured points remain separate from derived datum grids, ROI boxes, dimensions and minimum-zone support geometry",
+  "measurement_reexecuted": false,
+  "fit_reexecuted": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "ed706cc7472682a3f3a6abc694827940fd14c1bcbd990accbb8d2d0480a830d7",
+  "exported_regions": [
+    {
+      "name": "patch",
+      "prefix": "region_0",
+      "available": true,
+      "fit": {
+        "status": "fit",
+        "selected_points": 1204,
+        "fit_sample_points": 1204,
+        "inlier_points": 1200,
+        "excluded_fit_points": 4,
+        "inlier_fraction": 0.9966777408637874,
+        "distance_tolerance": 0.0036903004245065706,
+        "ransac_trials": 16,
+        "origin": [
+          -0.12748119162211266,
+          0.1713842745670505,
+          -0.002294668662846865
+        ],
+        "normal": [
+          -0.017995192825892407,
+          -1.9691447881164947e-06,
+          0.9998380734055295
+        ],
+        "inlier_bounds": [
+          [
+            -8.494795799255371,
+            -8.48666763305664,
+            -0.152948796749115
+          ],
+          [
+            8.49386978149414,
+            8.469690322875977,
+            0.15343673527240753
+          ]
+        ],
+        "orthogonal_rmse": 0.0009939001500696442,
+        "inlier_residual_range": 0.006083670811800118,
+        "all_selected_residual_range": 0.5799068550285164
+      }
+    }
+  ],
+  "residual_review": {
+    "model": "simple_3d_residual_review_v1",
+    "units": "mm",
+    "measurement_frame": "part",
+    "scene_frame": "part",
+    "range_multiple": 3.0,
+    "scale_source": "retained_fit_band_not_frame_minimum_maximum",
+    "qualification": "fit_residual_not_reference_deviation_or_measurement_uncertainty",
+    "regions": {
+      "patch": {
+        "kind": "plane",
+        "status": "fit",
+        "definition": "signed_distance_to_current_fitted_plane",
+        "population": "all_selected_points_including_fit_exclusions",
+        "selected_points": 1204,
+        "residual_points": 1204,
+        "unavailable_points": 0,
+        "fit_band": 0.0036903004245065706,
+        "color_range": [
+          -0.011070901273519711,
+          0.011070901273519711
+        ],
+        "histogram": {
+          "edges": [
+            -0.011070901273519711,
+            -0.010148326167393069,
+            -0.009225751061266427,
+            -0.008303175955139783,
+            -0.00738060084901314,
+            -0.006458025742886498,
+            -0.005535450636759856,
+            -0.0046128755306332125,
+            -0.00369030042450657,
+            -0.002767725318379927,
+            -0.0018451502122532847,
+            -0.0009225751061266423,
+            0.0,
+            0.0009225751061266423,
+            0.0018451502122532864,
+            0.0027677253183799287,
+            0.003690300424506571,
+            0.004612875530633213,
+            0.0055354506367598574,
+            0.006458025742886498,
+            0.007380600849013142,
+            0.008303175955139783,
+            0.009225751061266427,
+            0.01014832616739307,
+            0.011070901273519711
+          ],
+          "counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            35,
+            192,
+            374,
+            371,
+            192,
+            33,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "below_range": 1,
+          "above_range": 3,
+          "scale": "counts_not_probability",
+          "upper_edge_inclusive": true
+        },
+        "minimum": -0.19996703171035415,
+        "median": -1.0151610376842365e-07,
+        "maximum": 0.3799398233181622,
+        "rmse": 0.013697834771002204,
+        "absolute_p95": 0.0019374785002179442,
+        "inlier_points": 1200,
+        "excluded_fit_points": 4,
+        "origin": [
+          -0.12748119162211266,
+          0.1713842745670505,
+          -0.002294668662846865
+        ],
+        "axis": [
+          -0.017995192825892407,
+          -1.9691447881164947e-06,
+          0.9998380734055295
+        ]
+      }
+    }
+  },
+  "projection": {
+    "yaw": 29,
+    "pitch": -20,
+    "scope": "Display projection, not sensor pixels"
+  },
+  "ply_scope": "PLY retains XYZ/RGB/normals/units/frame; native NPY plus JSON retains source pixels and metadata"
+}

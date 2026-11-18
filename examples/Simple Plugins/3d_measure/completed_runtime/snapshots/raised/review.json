@@ -1,0 +1,958 @@
+{
+  "model": "simple_3d_measure_completed_review_v1",
+  "execution_binding": "2a0328cbe3ac4359b422377841bf2eb2",
+  "completed_result": {
+    "measurement_frame": "part",
+    "measurement_to_scene": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "measurements": [
+      {
+        "angle_degrees": 0.013628101480367277,
+        "datum_extrapolated": true,
+        "datum_projection": [
+          8.688078396973024,
+          0.22060750543725072,
+          -0.003600322217342189
+        ],
+        "definition": "signed_target_inlier_centroid_distance_to_datum_plane",
+        "kind": "step_height",
+        "lower": 4.9,
+        "maximum_angle_degrees": 5.0,
+        "name": "height",
+        "other": "top",
+        "plane": "datum",
+        "probe_point": [
+          8.688942664886412,
+          0.22107085163085471,
+          5.000956658011155
+        ],
+        "reason": null,
+        "status": "within_limits",
+        "support_assessment": "inlier_axis_aligned_bounds_not_visibility",
+        "units": "mm",
+        "upper": 5.1,
+        "value": 5.0045570763058045
+      },
+      {
+        "angle_degrees": 0.013628101480367277,
+        "definition": "acute_angle_between_plane_normals",
+        "kind": "plane_angle",
+        "lower": null,
+        "name": "angle",
+        "other": "top",
+        "plane": "datum",
+        "probe_point": null,
+        "reason": null,
+        "status": "within_limits",
+        "units": "deg",
+        "upper": 1.0,
+        "value": 0.013628101480367277
+      },
+      {
+        "angle_degrees": null,
+        "definition": "least_squares_plane_residual_range_all_selected_points",
+        "kind": "surface_range",
+        "lower": null,
+        "name": "surface",
+        "other": null,
+        "plane": "top",
+        "probe_point": null,
+        "reason": null,
+        "status": "out_of_limits",
+        "units": "mm",
+        "upper": 0.4,
+        "value": 1.3447054900543207
+      },
+      {
+        "angle_degrees": null,
+        "datum_extrapolated": true,
+        "datum_projection": [
+          -0.0005184476658569016,
+          -0.0002779470912161888,
+          -0.002079384014639807
+        ],
+        "definition": "signed_probe_distance_along_datum_normal",
+        "kind": "point_plane_distance",
+        "lower": null,
+        "name": "probe",
+        "other": null,
+        "plane": "datum",
+        "probe_point": [
+          0.0,
+          0.0,
+          3.0
+        ],
+        "reason": null,
+        "status": "measured",
+        "support_assessment": "inlier_axis_aligned_bounds_not_visibility",
+        "units": "mm",
+        "upper": null,
+        "value": 3.0020794416484526
+      }
+    ],
+    "model": "simple_3d_measure_v1",
+    "passed": false,
+    "planes": {
+      "datum": {
+        "all_selected_residual_range": 0.16726884106755452,
+        "distance_tolerance": 0.07497847688713416,
+        "excluded_fit_points": 3,
+        "fit_sample_points": 900,
+        "frame": "part",
+        "inlier_bounds": [
+          [
+            -14.965210914611816,
+            -9.989603996276855,
+            -0.07467535138130188
+          ],
+          [
+            -2.004587411880493,
+            9.975932121276855,
+            0.06354036182165146
+          ]
+        ],
+        "inlier_fraction": 0.9966666666666667,
+        "inlier_points": 897,
+        "inlier_residual_range": 0.13918145775744178,
+        "normal": [
+          0.0001726961847392753,
+          9.25848554705691e-05,
+          0.999999980802036
+        ],
+        "origin": [
+          -8.382058501110693,
+          0.15530952850695165,
+          -0.0006463290415994001
+        ],
+        "orthogonal_rmse": 0.02483756162063292,
+        "ransac_trials": 16,
+        "region_maximum": [
+          -1.0,
+          11.0,
+          1.0
+        ],
+        "region_minimum": [
+          -16.0,
+          -11.0,
+          -1.0
+        ],
+        "selected_points": 900,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      },
+      "top": {
+        "all_selected_residual_range": 1.3447054900543207,
+        "distance_tolerance": 0.07594029944972347,
+        "excluded_fit_points": 77,
+        "fit_sample_points": 800,
+        "frame": "part",
+        "inlier_bounds": [
+          [
+            2.0649914741516113,
+            -9.983912467956543,
+            4.9257025718688965
+          ],
+          [
+            14.972405433654785,
+            9.999656677246094,
+            5.071628570556641
+          ]
+        ],
+        "inlier_fraction": 0.90375,
+        "inlier_points": 723,
+        "inlier_residual_range": 0.14636351255844124,
+        "normal": [
+          -5.603133506065458e-05,
+          2.7325089845046794e-05,
+          0.9999999980569144
+        ],
+        "origin": [
+          8.688942664886412,
+          0.22107085163085471,
+          5.000956658011155
+        ],
+        "orthogonal_rmse": 0.02544872014662578,
+        "ransac_trials": 16,
+        "region_maximum": [
+          16.0,
+          11.0,
+          7.0
+        ],
+        "region_minimum": [
+          1.0,
+          -11.0,
+          3.0
+        ],
+        "selected_points": 800,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      }
+    },
+    "qualification": "fit_evidence_not_independent_dimensional_accuracy",
+    "scene_frame": "part",
+    "scene_points": 1700,
+    "settings": {
+      "execution_workers": 1,
+      "fit_sample_limit": 20000,
+      "max_trials": 256,
+      "min_inlier_fraction": 0.5,
+      "min_points": 30,
+      "seed": 0
+    },
+    "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+    "units": "mm"
+  },
+  "executed_parameters": {
+    "primary_measurement": "",
+    "recipe_path": "assets/15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0.s3m",
+    "render_graphics": true,
+    "residual_graphics": true,
+    "sha256": "15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0"
+  },
+  "primary_measurement": "height",
+  "selected_measurement": {
+    "angle_degrees": null,
+    "definition": "least_squares_plane_residual_range_all_selected_points",
+    "kind": "surface_range",
+    "lower": null,
+    "name": "surface",
+    "other": null,
+    "plane": "top",
+    "probe_point": null,
+    "reason": null,
+    "status": "out_of_limits",
+    "units": "mm",
+    "upper": 0.4,
+    "value": 1.3447054900543207
+  },
+  "selected_region": "top",
+  "display_mode": "residuals",
+  "display_layers": [
+    "inliers",
+    "excluded",
+    "unavailable",
+    "planes",
+    "lines",
+    "regions",
+    "zones",
+    "supports"
+  ],
+  "emitted_clouds": [
+    "fit",
+    "residuals"
+  ],
+  "graphics_scope": "Review graphics derive only from frozen fits; disabled runtime outputs remain absent",
+  "residual_semantics": "Plane signed / line radial distance to current fit, not reference deviation or measurement uncertainty",
+  "residual_color_scale": "Fixed at three taught fit bands; histogram tails retain values outside the range",
+  "effective_measurement_to_scene": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "fixture_input": null,
+  "source": {
+    "units": "mm",
+    "frame": "part",
+    "source_size": null,
+    "metadata": {},
+    "arrays": {
+      "points": {
+        "shape": [
+          1700,
+          3
+        ],
+        "dtype": "<f4",
+        "sha256": "b3f137376542bd4c9d2e22f97d8908afabdc249700adc11f63deac77d60496f7"
+      }
+    }
+  },
+  "provenance": {
+    "snapshot_id": "c3ac498c00244741ab4acad0150521d2",
+    "block_id": "measure",
+    "output_revision": 0,
+    "execution_count": 1,
+    "passed": false,
+    "score": null,
+    "message": "4/4 measurements available; surface: out_of_limits",
+    "inputs": {
+      "scene": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.103981+00:00",
+          "started_ns": 129565068423700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:06:42.114299+00:00",
+          "finished_ns": 129565078740000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 10.3163
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "scene",
+            "name": "Load PLY / PCD point cloud",
+            "type": "input.cloud",
+            "path": "scene"
+          },
+          "score": null,
+          "message": "",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "measurements": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "planes": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "report": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "value": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "count": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "fit": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "lines": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "residuals": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      },
+      "residual_report": {
+        "measure_3d_completed_review": {
+          "id": "2a0328cbe3ac4359b422377841bf2eb2"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "05b745d3bf2949e6af5d17f61afa26f5",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.115137+00:00",
+          "started_ns": 129565079579900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.132031+00:00",
+          "finished_ns": 129565096472200,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 16.8923
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "4/4 measurements available; surface: out_of_limits",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "surface: out_of_limits",
+              "message": "surface: out_of_limits"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "identity_scope": "Software pairing and declared metadata do not prove physical synchronization",
+  "coordinate_scope": "Fits/residual values use recipe units/frame; display geometry is mapped to the consumed scene frame",
+  "geometry_scope": "Measured points remain separate from derived datum grids, ROI boxes, dimensions and minimum-zone support geometry",
+  "measurement_reexecuted": false,
+  "fit_reexecuted": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0",
+  "exported_regions": [
+    {
+      "name": "datum",
+      "prefix": "region_0",
+      "available": true,
+      "fit": {
+        "status": "fit",
+        "selected_points": 900,
+        "fit_sample_points": 900,
+        "inlier_points": 897,
+        "excluded_fit_points": 3,
+        "inlier_fraction": 0.9966666666666667,
+        "distance_tolerance": 0.07497847688713416,
+        "ransac_trials": 16,
+        "origin": [
+          -8.382058501110693,
+          0.15530952850695165,
+          -0.0006463290415994001
+        ],
+        "normal": [
+          0.0001726961847392753,
+          9.25848554705691e-05,
+          0.999999980802036
+        ],
+        "inlier_bounds": [
+          [
+            -14.965210914611816,
+            -9.989603996276855,
+            -0.07467535138130188
+          ],
+          [
+            -2.004587411880493,
+            9.975932121276855,
+            0.06354036182165146
+          ]
+        ],
+        "orthogonal_rmse": 0.02483756162063292,
+        "inlier_residual_range": 0.13918145775744178,
+        "all_selected_residual_range": 0.16726884106755452
+      }
+    },
+    {
+      "name": "top",
+      "prefix": "region_1",
+      "available": true,
+      "fit": {
+        "status": "fit",
+        "selected_points": 800,
+        "fit_sample_points": 800,
+        "inlier_points": 723,
+        "excluded_fit_points": 77,
+        "inlier_fraction": 0.90375,
+        "distance_tolerance": 0.07594029944972347,
+        "ransac_trials": 16,
+        "origin": [
+          8.688942664886412,
+          0.22107085163085471,
+          5.000956658011155
+        ],
+        "normal": [
+          -5.603133506065458e-05,
+          2.7325089845046794e-05,
+          0.9999999980569144
+        ],
+        "inlier_bounds": [
+          [
+            2.0649914741516113,
+            -9.983912467956543,
+            4.9257025718688965
+          ],
+          [
+            14.972405433654785,
+            9.999656677246094,
+            5.071628570556641
+          ]
+        ],
+        "orthogonal_rmse": 0.02544872014662578,
+        "inlier_residual_range": 0.14636351255844124,
+        "all_selected_residual_range": 1.3447054900543207
+      }
+    }
+  ],
+  "residual_review": {
+    "model": "simple_3d_residual_review_v1",
+    "units": "mm",
+    "measurement_frame": "part",
+    "scene_frame": "part",
+    "range_multiple": 3.0,
+    "scale_source": "retained_fit_band_not_frame_minimum_maximum",
+    "qualification": "fit_residual_not_reference_deviation_or_measurement_uncertainty",
+    "regions": {
+      "top": {
+        "kind": "plane",
+        "status": "fit",
+        "definition": "signed_distance_to_current_fitted_plane",
+        "population": "all_selected_points_including_fit_exclusions",
+        "selected_points": 800,
+        "residual_points": 800,
+        "unavailable_points": 0,
+        "fit_band": 0.07594029944972347,
+        "color_range": [
+          -0.2278208983491704,
+          0.2278208983491704
+        ],
+        "histogram": {
+          "edges": [
+            -0.2278208983491704,
+            -0.20883582348673954,
+            -0.18985074862430867,
+            -0.1708656737618778,
+            -0.15188059889944694,
+            -0.13289552403701607,
+            -0.1139104491745852,
+            -0.09492537431215434,
+            -0.07594029944972347,
+            -0.0569552245872926,
+            -0.037970149724861735,
+            -0.018985074862430867,
+            0.0,
+            0.018985074862430867,
+            0.037970149724861735,
+            0.05695522458729263,
+            0.07594029944972347,
+            0.09492537431215431,
+            0.1139104491745852,
+            0.1328955240370161,
+            0.15188059889944694,
+            0.17086567376187778,
+            0.18985074862430867,
+            0.20883582348673957,
+            0.2278208983491704
+          ],
+          "counts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            7,
+            47,
+            118,
+            182,
+            204,
+            111,
+            46,
+            8,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "below_range": 0,
+          "above_range": 76,
+          "scale": "counts_not_probability",
+          "upper_edge_inclusive": true
+        },
+        "minimum": -0.07553993436448657,
+        "median": 0.0043249538888428165,
+        "maximum": 1.2691655556898342,
+        "rmse": 0.37085106820045294,
+        "absolute_p95": 1.1993066767845815,
+        "inlier_points": 723,
+        "excluded_fit_points": 77,
+        "origin": [
+          8.688942664886412,
+          0.22107085163085471,
+          5.000956658011155
+        ],
+        "axis": [
+          -5.603133506065458e-05,
+          2.7325089845046794e-05,
+          0.9999999980569144
+        ]
+      }
+    }
+  },
+  "projection": {
+    "yaw": 29,
+    "pitch": -20,
+    "scope": "Display projection, not sensor pixels"
+  },
+  "ply_scope": "PLY retains XYZ/RGB/normals/units/frame; native NPY plus JSON retains source pixels and metadata"
+}

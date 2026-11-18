@@ -1,0 +1,8 @@
+{
+  "source_host_files_equal": 146,
+  "strict_json_files": 20,
+  "original_recipe_manifests_checked": 10,
+  "pinned_binary_blobs_preserved": 118,
+  "windows_autocrlf": true,
+  "private_repository_references_absent": true
+}

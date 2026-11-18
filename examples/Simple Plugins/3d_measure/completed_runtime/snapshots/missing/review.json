@@ -1,0 +1,856 @@
+{
+  "model": "simple_3d_measure_completed_review_v1",
+  "execution_binding": "71f25e93e5814441a8464ef1dc0e58c8",
+  "completed_result": {
+    "measurement_frame": "part",
+    "measurement_to_scene": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "measurements": [
+      {
+        "angle_degrees": null,
+        "kind": "step_height",
+        "lower": 4.9,
+        "name": "height",
+        "other": "top",
+        "plane": "datum",
+        "probe_point": null,
+        "reason": "plane_unavailable: top",
+        "status": "unavailable",
+        "units": "mm",
+        "upper": 5.1,
+        "value": null
+      },
+      {
+        "angle_degrees": null,
+        "kind": "plane_angle",
+        "lower": null,
+        "name": "angle",
+        "other": "top",
+        "plane": "datum",
+        "probe_point": null,
+        "reason": "plane_unavailable: top",
+        "status": "unavailable",
+        "units": "deg",
+        "upper": 1.0,
+        "value": null
+      },
+      {
+        "angle_degrees": null,
+        "kind": "surface_range",
+        "lower": null,
+        "name": "surface",
+        "other": null,
+        "plane": "top",
+        "probe_point": null,
+        "reason": "plane_unavailable: top",
+        "status": "unavailable",
+        "units": "mm",
+        "upper": 0.4,
+        "value": null
+      },
+      {
+        "angle_degrees": null,
+        "datum_extrapolated": true,
+        "datum_projection": [
+          -0.0005184476658569016,
+          -0.0002779470912161888,
+          -0.002079384014639807
+        ],
+        "definition": "signed_probe_distance_along_datum_normal",
+        "kind": "point_plane_distance",
+        "lower": null,
+        "name": "probe",
+        "other": null,
+        "plane": "datum",
+        "probe_point": [
+          0.0,
+          0.0,
+          3.0
+        ],
+        "reason": null,
+        "status": "measured",
+        "support_assessment": "inlier_axis_aligned_bounds_not_visibility",
+        "units": "mm",
+        "upper": null,
+        "value": 3.0020794416484526
+      }
+    ],
+    "model": "simple_3d_measure_v1",
+    "passed": false,
+    "planes": {
+      "datum": {
+        "all_selected_residual_range": 0.16726884106755452,
+        "distance_tolerance": 0.07497847688713416,
+        "excluded_fit_points": 3,
+        "fit_sample_points": 900,
+        "frame": "part",
+        "inlier_bounds": [
+          [
+            -14.965210914611816,
+            -9.989603996276855,
+            -0.07467535138130188
+          ],
+          [
+            -2.004587411880493,
+            9.975932121276855,
+            0.06354036182165146
+          ]
+        ],
+        "inlier_fraction": 0.9966666666666667,
+        "inlier_points": 897,
+        "inlier_residual_range": 0.13918145775744178,
+        "normal": [
+          0.0001726961847392753,
+          9.25848554705691e-05,
+          0.999999980802036
+        ],
+        "origin": [
+          -8.382058501110693,
+          0.15530952850695165,
+          -0.0006463290415994001
+        ],
+        "orthogonal_rmse": 0.02483756162063292,
+        "ransac_trials": 16,
+        "region_maximum": [
+          -1.0,
+          11.0,
+          1.0
+        ],
+        "region_minimum": [
+          -16.0,
+          -11.0,
+          -1.0
+        ],
+        "selected_points": 900,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      },
+      "top": {
+        "all_selected_residual_range": null,
+        "distance_tolerance": 0.07594029944972347,
+        "excluded_fit_points": 0,
+        "fit_sample_points": 0,
+        "frame": "part",
+        "inlier_bounds": null,
+        "inlier_fraction": 0.0,
+        "inlier_points": 0,
+        "inlier_residual_range": null,
+        "normal": null,
+        "origin": null,
+        "orthogonal_rmse": null,
+        "ransac_trials": 0,
+        "region_maximum": [
+          16.0,
+          11.0,
+          7.0
+        ],
+        "region_minimum": [
+          1.0,
+          -11.0,
+          3.0
+        ],
+        "selected_points": 0,
+        "status": "insufficient_points",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      }
+    },
+    "qualification": "fit_evidence_not_independent_dimensional_accuracy",
+    "scene_frame": "part",
+    "scene_points": 900,
+    "settings": {
+      "execution_workers": 1,
+      "fit_sample_limit": 20000,
+      "max_trials": 256,
+      "min_inlier_fraction": 0.5,
+      "min_points": 30,
+      "seed": 0
+    },
+    "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+    "units": "mm"
+  },
+  "executed_parameters": {
+    "primary_measurement": "",
+    "recipe_path": "assets/15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0.s3m",
+    "render_graphics": true,
+    "residual_graphics": true,
+    "sha256": "15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0"
+  },
+  "primary_measurement": "height",
+  "selected_measurement": {
+    "angle_degrees": null,
+    "kind": "step_height",
+    "lower": 4.9,
+    "name": "height",
+    "other": "top",
+    "plane": "datum",
+    "probe_point": null,
+    "reason": "plane_unavailable: top",
+    "status": "unavailable",
+    "units": "mm",
+    "upper": 5.1,
+    "value": null
+  },
+  "selected_region": "top",
+  "display_mode": "residuals",
+  "display_layers": [
+    "inliers",
+    "excluded",
+    "unavailable",
+    "planes",
+    "lines",
+    "regions",
+    "zones",
+    "supports"
+  ],
+  "emitted_clouds": [
+    "fit",
+    "residuals"
+  ],
+  "graphics_scope": "Review graphics derive only from frozen fits; disabled runtime outputs remain absent",
+  "residual_semantics": "Plane signed / line radial distance to current fit, not reference deviation or measurement uncertainty",
+  "residual_color_scale": "Fixed at three taught fit bands; histogram tails retain values outside the range",
+  "effective_measurement_to_scene": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "fixture_input": null,
+  "source": {
+    "units": "mm",
+    "frame": "part",
+    "source_size": null,
+    "metadata": {},
+    "arrays": {
+      "points": {
+        "shape": [
+          900,
+          3
+        ],
+        "dtype": "<f4",
+        "sha256": "c5589bc8162b4a37e8bf3a4e7da8482023a31ae3c8a394c010badcbd27a414f7"
+      }
+    }
+  },
+  "provenance": {
+    "snapshot_id": "c3db00b33d384e7295396b9d6866a5f2",
+    "block_id": "measure",
+    "output_revision": 0,
+    "execution_count": 1,
+    "passed": false,
+    "score": null,
+    "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+    "inputs": {
+      "scene": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.455134+00:00",
+          "started_ns": 129565419576900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:06:42.463256+00:00",
+          "finished_ns": 129565427697400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.1205
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "scene",
+            "name": "Load PLY / PCD point cloud",
+            "type": "input.cloud",
+            "path": "scene"
+          },
+          "score": null,
+          "message": "",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "measurements": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      },
+      "planes": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      },
+      "report": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      },
+      "count": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      },
+      "fit": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      },
+      "lines": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      },
+      "residuals": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      },
+      "residual_report": {
+        "measure_3d_completed_review": {
+          "id": "71f25e93e5814441a8464ef1dc0e58c8"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "4d59504c168c48ef9af76c6c00cbca9c",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:42.464262+00:00",
+          "started_ns": 129565428704800,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:42.472758+00:00",
+          "finished_ns": 129565437200000,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 8.4952
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "1/4 measurements available; height: plane_unavailable: top; angle: plane_unavailable: top; surface: plane_unavailable: top",
+          "data": {},
+          "fail_reasons": [
+            {
+              "code": "height: plane_unavailable: top",
+              "message": "height: plane_unavailable: top"
+            },
+            {
+              "code": "angle: plane_unavailable: top",
+              "message": "angle: plane_unavailable: top"
+            },
+            {
+              "code": "surface: plane_unavailable: top",
+              "message": "surface: plane_unavailable: top"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "identity_scope": "Software pairing and declared metadata do not prove physical synchronization",
+  "coordinate_scope": "Fits/residual values use recipe units/frame; display geometry is mapped to the consumed scene frame",
+  "geometry_scope": "Measured points remain separate from derived datum grids, ROI boxes, dimensions and minimum-zone support geometry",
+  "measurement_reexecuted": false,
+  "fit_reexecuted": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "15ce6586b3119349a8ed36129d815e78cd32f577af34ceb5774bdeaadf6e5da0",
+  "exported_regions": [
+    {
+      "name": "datum",
+      "prefix": "region_0",
+      "available": true,
+      "fit": {
+        "status": "fit",
+        "selected_points": 900,
+        "fit_sample_points": 900,
+        "inlier_points": 897,
+        "excluded_fit_points": 3,
+        "inlier_fraction": 0.9966666666666667,
+        "distance_tolerance": 0.07497847688713416,
+        "ransac_trials": 16,
+        "origin": [
+          -8.382058501110693,
+          0.15530952850695165,
+          -0.0006463290415994001
+        ],
+        "normal": [
+          0.0001726961847392753,
+          9.25848554705691e-05,
+          0.999999980802036
+        ],
+        "inlier_bounds": [
+          [
+            -14.965210914611816,
+            -9.989603996276855,
+            -0.07467535138130188
+          ],
+          [
+            -2.004587411880493,
+            9.975932121276855,
+            0.06354036182165146
+          ]
+        ],
+        "orthogonal_rmse": 0.02483756162063292,
+        "inlier_residual_range": 0.13918145775744178,
+        "all_selected_residual_range": 0.16726884106755452
+      }
+    },
+    {
+      "name": "top",
+      "prefix": "region_1",
+      "available": false,
+      "fit": {
+        "status": "insufficient_points",
+        "selected_points": 0,
+        "fit_sample_points": 0,
+        "inlier_points": 0,
+        "excluded_fit_points": 0,
+        "inlier_fraction": 0.0,
+        "distance_tolerance": 0.07594029944972347,
+        "ransac_trials": 0,
+        "origin": null,
+        "normal": null,
+        "inlier_bounds": null,
+        "orthogonal_rmse": null,
+        "inlier_residual_range": null,
+        "all_selected_residual_range": null
+      }
+    }
+  ],
+  "residual_review": {
+    "model": "simple_3d_residual_review_v1",
+    "units": "mm",
+    "measurement_frame": "part",
+    "scene_frame": "part",
+    "range_multiple": 3.0,
+    "scale_source": "retained_fit_band_not_frame_minimum_maximum",
+    "qualification": "fit_residual_not_reference_deviation_or_measurement_uncertainty",
+    "regions": {
+      "top": {
+        "kind": "plane",
+        "status": "insufficient_points",
+        "definition": "signed_distance_to_current_fitted_plane",
+        "population": "all_selected_points_including_fit_exclusions",
+        "selected_points": 0,
+        "residual_points": 0,
+        "unavailable_points": 0,
+        "fit_band": 0.07594029944972347,
+        "color_range": [
+          -0.2278208983491704,
+          0.2278208983491704
+        ],
+        "histogram": null,
+        "minimum": null,
+        "median": null,
+        "maximum": null,
+        "rmse": null,
+        "absolute_p95": null,
+        "inlier_points": 0,
+        "excluded_fit_points": 0
+      }
+    }
+  },
+  "projection": {
+    "yaw": 29,
+    "pitch": -20,
+    "scope": "Display projection, not sensor pixels"
+  },
+  "ply_scope": "PLY retains XYZ/RGB/normals/units/frame; native NPY plus JSON retains source pixels and metadata"
+}

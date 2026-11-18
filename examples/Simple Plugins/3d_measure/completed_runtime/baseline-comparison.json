@@ -1,0 +1,63 @@
+{
+  "core_only": true,
+  "cases": [
+    {
+      "case": "real13",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    },
+    {
+      "case": "real24",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    },
+    {
+      "case": "good",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    },
+    {
+      "case": "raised",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    },
+    {
+      "case": "missing",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    },
+    {
+      "case": "line_guard",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    },
+    {
+      "case": "flatness",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    },
+    {
+      "case": "graphics_off",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": false,
+      "save_as_reopen": false
+    }
+  ],
+  "exports_verified": 5,
+  "scope": "Unchanged measurements/fits/residuals and emitted clouds; no accuracy qualification"
+}

@@ -1,0 +1,941 @@
+{
+  "model": "simple_3d_measure_completed_review_v1",
+  "execution_binding": "6f03c860fe6c4d97809abfc4f05e2fa7",
+  "completed_result": {
+    "measurement_frame": "object6",
+    "measurement_to_scene": [
+      [
+        0.20638003167178787,
+        0.978442250456641,
+        0.007618730110430183,
+        -33.03962683
+      ],
+      [
+        0.9373236555353782,
+        -0.19546074471854533,
+        -0.2884778363199977,
+        -69.78034692
+      ],
+      [
+        -0.28076974071460675,
+        0.06667728095397588,
+        -0.9574562616138855,
+        786.28778032
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "measurements": [
+      {
+        "angle_degrees": 1.7039470014387101,
+        "datum_extrapolated": true,
+        "datum_projection": [
+          0.7905294724017934,
+          0.331012748184521,
+          -31.637757057720343
+        ],
+        "definition": "signed_target_inlier_centroid_distance_to_datum_plane",
+        "kind": "step_height",
+        "lower": null,
+        "maximum_angle_degrees": 5.0,
+        "name": "height",
+        "other": "part_surface",
+        "plane": "table",
+        "probe_point": [
+          -0.018249537279375172,
+          0.6735449058691954,
+          16.388735227381346
+        ],
+        "reason": null,
+        "status": "measured",
+        "support_assessment": "inlier_axis_aligned_bounds_not_visibility",
+        "units": "mm",
+        "upper": null,
+        "value": 48.03452313676571
+      },
+      {
+        "angle_degrees": 1.7039470014387101,
+        "definition": "acute_angle_between_plane_normals",
+        "kind": "plane_angle",
+        "lower": null,
+        "name": "angle",
+        "other": "part_surface",
+        "plane": "table",
+        "probe_point": null,
+        "reason": null,
+        "status": "measured",
+        "units": "deg",
+        "upper": null,
+        "value": 1.7039470014387101
+      },
+      {
+        "angle_degrees": null,
+        "definition": "least_squares_plane_residual_range_all_selected_points",
+        "kind": "surface_range",
+        "lower": null,
+        "name": "part_surface_range",
+        "other": null,
+        "plane": "part_surface",
+        "probe_point": null,
+        "reason": null,
+        "status": "measured",
+        "units": "mm",
+        "upper": null,
+        "value": 21.051655047517624
+      }
+    ],
+    "model": "simple_3d_measure_v1",
+    "passed": true,
+    "planes": {
+      "part_surface": {
+        "all_selected_residual_range": 21.051655047517624,
+        "distance_tolerance": 3.3083094201947056,
+        "excluded_fit_points": 2579,
+        "fit_sample_points": 7340,
+        "frame": "object6",
+        "inlier_bounds": [
+          [
+            -47.66864623846191,
+            -24.990115375866687,
+            12.03683244493954
+          ],
+          [
+            49.36841197556499,
+            24.98599885654025,
+            20.366815682974917
+          ]
+        ],
+        "inlier_fraction": 0.6486376021798365,
+        "inlier_points": 4761,
+        "inlier_residual_range": 6.613038259915031,
+        "normal": [
+          -0.015813004711784432,
+          -0.02258901748758535,
+          0.9996197702981521
+        ],
+        "origin": [
+          -0.018249537279375172,
+          0.6735449058691954,
+          16.388735227381346
+        ],
+        "orthogonal_rmse": 1.4986105496915536,
+        "ransac_trials": 32,
+        "region_maximum": [
+          50.0,
+          25.0,
+          30.0
+        ],
+        "region_minimum": [
+          -50.0,
+          -25.0,
+          8.0
+        ],
+        "selected_points": 7340,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      },
+      "table": {
+        "all_selected_residual_range": 6.847991702071274,
+        "distance_tolerance": 3.1734466320559815,
+        "excluded_fit_points": 14,
+        "fit_sample_points": 17725,
+        "frame": "object6",
+        "inlier_bounds": [
+          [
+            -193.7027985035249,
+            -179.9958104829477,
+            -36.23677317453238
+          ],
+          [
+            -80.00621245750008,
+            -60.002716861394504,
+            -28.980716900180838
+          ]
+        ],
+        "inlier_fraction": 0.9992101551480959,
+        "inlier_points": 17711,
+        "inlier_residual_range": 6.228716785228848,
+        "normal": [
+          -0.016837452666666062,
+          0.0071309578052727585,
+          0.9998328108381307
+        ],
+        "origin": [
+          -130.4642738348679,
+          -122.71821081945556,
+          -32.97051759756427
+        ],
+        "orthogonal_rmse": 1.023509929669154,
+        "ransac_trials": 16,
+        "region_maximum": [
+          -80.0,
+          -60.0,
+          -10.0
+        ],
+        "region_minimum": [
+          -200.0,
+          -180.0,
+          -40.0
+        ],
+        "selected_points": 17725,
+        "status": "fit",
+        "tolerance_source": "reference_noise",
+        "units": "mm"
+      }
+    },
+    "qualification": "fit_evidence_not_independent_dimensional_accuracy",
+    "scene_frame": "camera",
+    "scene_points": 387412,
+    "settings": {
+      "execution_workers": 1,
+      "fit_sample_limit": 20000,
+      "max_trials": 256,
+      "min_inlier_fraction": 0.5,
+      "min_points": 30,
+      "seed": 0
+    },
+    "surface_range_definition": "max_minus_min_signed_distance_all_selected_points",
+    "units": "mm"
+  },
+  "executed_parameters": {
+    "primary_measurement": "",
+    "recipe_path": "assets/0f680ff602b02e9e39eef5c7748e390b7a03ec8f02df5c7b7e953e32c817714c.s3m",
+    "render_graphics": true,
+    "residual_graphics": true,
+    "sha256": "0f680ff602b02e9e39eef5c7748e390b7a03ec8f02df5c7b7e953e32c817714c"
+  },
+  "primary_measurement": "height",
+  "selected_measurement": {
+    "angle_degrees": 1.7039470014387101,
+    "datum_extrapolated": true,
+    "datum_projection": [
+      0.7905294724017934,
+      0.331012748184521,
+      -31.637757057720343
+    ],
+    "definition": "signed_target_inlier_centroid_distance_to_datum_plane",
+    "kind": "step_height",
+    "lower": null,
+    "maximum_angle_degrees": 5.0,
+    "name": "height",
+    "other": "part_surface",
+    "plane": "table",
+    "probe_point": [
+      -0.018249537279375172,
+      0.6735449058691954,
+      16.388735227381346
+    ],
+    "reason": null,
+    "status": "measured",
+    "support_assessment": "inlier_axis_aligned_bounds_not_visibility",
+    "units": "mm",
+    "upper": null,
+    "value": 48.03452313676571
+  },
+  "selected_region": "part_surface",
+  "display_mode": "residuals",
+  "display_layers": [
+    "inliers",
+    "excluded",
+    "unavailable",
+    "planes",
+    "lines",
+    "regions",
+    "zones",
+    "supports"
+  ],
+  "emitted_clouds": [
+    "fit",
+    "residuals"
+  ],
+  "graphics_scope": "Review graphics derive only from frozen fits; disabled runtime outputs remain absent",
+  "residual_semantics": "Plane signed / line radial distance to current fit, not reference deviation or measurement uncertainty",
+  "residual_color_scale": "Fixed at three taught fit bands; histogram tails retain values outside the range",
+  "effective_measurement_to_scene": [
+    [
+      0.20638003167178787,
+      0.978442250456641,
+      0.007618730110430183,
+      -33.03962683
+    ],
+    [
+      0.9373236555353782,
+      -0.19546074471854533,
+      -0.2884778363199977,
+      -69.78034692
+    ],
+    [
+      -0.28076974071460675,
+      0.06667728095397588,
+      -0.9574562616138855,
+      786.28778032
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "fixture_input": {
+    "model": "pose_3d_v1",
+    "source_to_target": [
+      [
+        0.20638003167178764,
+        0.9784422504566411,
+        0.0076187301104302385,
+        -33.03962683
+      ],
+      [
+        0.9373236555353782,
+        -0.19546074471854513,
+        -0.2884778363199977,
+        -69.78034692
+      ],
+      [
+        -0.28076974071460675,
+        0.06667728095397582,
+        -0.9574562616138855,
+        786.28778032
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "source_frame": "object6",
+    "target_frame": "camera",
+    "units": "mm",
+    "rvec": [
+      2.249854235896913,
+      1.8268975754867733,
+      -0.2604801126555865
+    ],
+    "translation": [
+      -33.03962683,
+      -69.78034692,
+      786.28778032
+    ]
+  },
+  "source": {
+    "units": "mm",
+    "frame": "camera",
+    "source_size": null,
+    "metadata": {},
+    "arrays": {
+      "points": {
+        "shape": [
+          387412,
+          3
+        ],
+        "dtype": "<f4",
+        "sha256": "2922ab95cf3f74e80c70c959a94416b612a6327c60eda352dc4e14fa39b66279"
+      }
+    }
+  },
+  "provenance": {
+    "snapshot_id": "4d197513ca0247819010641068e8cfe7",
+    "block_id": "measure",
+    "output_revision": 0,
+    "execution_count": 1,
+    "passed": true,
+    "score": null,
+    "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+    "inputs": {
+      "scene": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.148100+00:00",
+          "started_ns": 129563112542900,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": false,
+          "finished_at": "2026-11-18T00:06:40.221084+00:00",
+          "finished_ns": 129563185523600,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 72.9807
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "scene",
+            "name": "Load PLY / PCD point cloud",
+            "type": "input.cloud",
+            "path": "scene"
+          },
+          "score": null,
+          "message": "",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "fixture": {}
+    },
+    "outputs": {
+      "measurements": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "planes": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "report": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "value": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "count": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "fit": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "lines": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "residuals": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "residual_report": {
+        "measure_3d_completed_review": {
+          "id": "6f03c860fe6c4d97809abfc4f05e2fa7"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "number",
+          "value": 1,
+          "session": "0526ee21f0fe4fbeb5e3b2309fc5bc4a",
+          "sequence": 1,
+          "source": "scene"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-18T00:06:40.223504+00:00",
+          "started_ns": 129563187946700,
+          "clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "inferred_start": true,
+          "finished_at": "2026-11-18T00:06:40.384011+00:00",
+          "finished_ns": 129563348451400,
+          "finished_clock_id": "3a0f4c2320e3421aa9fb33313dac2f5b",
+          "elapsed_ms": 160.5047
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "measure",
+            "name": "Simple3DMeasure",
+            "type": "3d.simple_measure",
+            "path": "measure"
+          },
+          "score": null,
+          "message": "3/3 measurements available; valid measurements; no acceptance limits configured",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    }
+  },
+  "identity_scope": "Software pairing and declared metadata do not prove physical synchronization",
+  "coordinate_scope": "Fits/residual values use recipe units/frame; display geometry is mapped to the consumed scene frame",
+  "geometry_scope": "Measured points remain separate from derived datum grids, ROI boxes, dimensions and minimum-zone support geometry",
+  "measurement_reexecuted": false,
+  "fit_reexecuted": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "0f680ff602b02e9e39eef5c7748e390b7a03ec8f02df5c7b7e953e32c817714c",
+  "exported_regions": [
+    {
+      "name": "table",
+      "prefix": "region_0",
+      "available": true,
+      "fit": {
+        "status": "fit",
+        "selected_points": 17725,
+        "fit_sample_points": 17725,
+        "inlier_points": 17711,
+        "excluded_fit_points": 14,
+        "inlier_fraction": 0.9992101551480959,
+        "distance_tolerance": 3.1734466320559815,
+        "ransac_trials": 16,
+        "origin": [
+          -130.4642738348679,
+          -122.71821081945556,
+          -32.97051759756427
+        ],
+        "normal": [
+          -0.016837452666666062,
+          0.0071309578052727585,
+          0.9998328108381307
+        ],
+        "inlier_bounds": [
+          [
+            -193.7027985035249,
+            -179.9958104829477,
+            -36.23677317453238
+          ],
+          [
+            -80.00621245750008,
+            -60.002716861394504,
+            -28.980716900180838
+          ]
+        ],
+        "orthogonal_rmse": 1.023509929669154,
+        "inlier_residual_range": 6.228716785228848,
+        "all_selected_residual_range": 6.847991702071274
+      }
+    },
+    {
+      "name": "part_surface",
+      "prefix": "region_1",
+      "available": true,
+      "fit": {
+        "status": "fit",
+        "selected_points": 7340,
+        "fit_sample_points": 7340,
+        "inlier_points": 4761,
+        "excluded_fit_points": 2579,
+        "inlier_fraction": 0.6486376021798365,
+        "distance_tolerance": 3.3083094201947056,
+        "ransac_trials": 32,
+        "origin": [
+          -0.018249537279375172,
+          0.6735449058691954,
+          16.388735227381346
+        ],
+        "normal": [
+          -0.015813004711784432,
+          -0.02258901748758535,
+          0.9996197702981521
+        ],
+        "inlier_bounds": [
+          [
+            -47.66864623846191,
+            -24.990115375866687,
+            12.03683244493954
+          ],
+          [
+            49.36841197556499,
+            24.98599885654025,
+            20.366815682974917
+          ]
+        ],
+        "orthogonal_rmse": 1.4986105496915536,
+        "inlier_residual_range": 6.613038259915031,
+        "all_selected_residual_range": 21.051655047517624
+      }
+    }
+  ],
+  "residual_review": {
+    "model": "simple_3d_residual_review_v1",
+    "units": "mm",
+    "measurement_frame": "object6",
+    "scene_frame": "camera",
+    "range_multiple": 3.0,
+    "scale_source": "retained_fit_band_not_frame_minimum_maximum",
+    "qualification": "fit_residual_not_reference_deviation_or_measurement_uncertainty",
+    "regions": {
+      "part_surface": {
+        "kind": "plane",
+        "status": "fit",
+        "definition": "signed_distance_to_current_fitted_plane",
+        "population": "all_selected_points_including_fit_exclusions",
+        "selected_points": 7340,
+        "residual_points": 7340,
+        "unavailable_points": 0,
+        "fit_band": 3.3083094201947056,
+        "color_range": [
+          -9.924928260584117,
+          9.924928260584117
+        ],
+        "histogram": {
+          "edges": [
+            -9.924928260584117,
+            -9.097850905535442,
+            -8.270773550486764,
+            -7.443696195438088,
+            -6.616618840389412,
+            -5.789541485340735,
+            -4.962464130292059,
+            -4.135386775243383,
+            -3.308309420194706,
+            -2.4812320651460293,
+            -1.6541547100973535,
+            -0.8270773550486776,
+            0.0,
+            0.8270773550486759,
+            1.6541547100973517,
+            2.4812320651460293,
+            3.308309420194705,
+            4.135386775243381,
+            4.962464130292059,
+            5.7895414853407345,
+            6.61661884038941,
+            7.443696195438086,
+            8.270773550486762,
+            9.097850905535442,
+            9.924928260584117
+          ],
+          "counts": [
+            12,
+            27,
+            37,
+            55,
+            50,
+            45,
+            86,
+            95,
+            189,
+            459,
+            822,
+            1099,
+            903,
+            506,
+            420,
+            363,
+            462,
+            431,
+            356,
+            226,
+            201,
+            206,
+            81,
+            68
+          ],
+          "below_range": 0,
+          "above_range": 141,
+          "scale": "counts_not_probability",
+          "upper_edge_inclusive": true
+        },
+        "minimum": -9.43372738984773,
+        "median": 0.5952291614402219,
+        "maximum": 11.617927657669894,
+        "rmse": 3.8749539208148436,
+        "absolute_p95": 8.155442673807638,
+        "inlier_points": 4761,
+        "excluded_fit_points": 2579,
+        "origin": [
+          -0.018249537279375172,
+          0.6735449058691954,
+          16.388735227381346
+        ],
+        "axis": [
+          -0.015813004711784432,
+          -0.02258901748758535,
+          0.9996197702981521
+        ]
+      }
+    }
+  },
+  "projection": {
+    "yaw": 29,
+    "pitch": -20,
+    "scope": "Display projection, not sensor pixels"
+  },
+  "ply_scope": "PLY retains XYZ/RGB/normals/units/frame; native NPY plus JSON retains source pixels and metadata"
+}
