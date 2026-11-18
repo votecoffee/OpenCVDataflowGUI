@@ -1,0 +1,99 @@
+{
+  "schema": "simple_surface_observation_audit/v1",
+  "capture_id": "analytic_clean",
+  "pixel_grid": "rendered_reference_grid",
+  "frame": "camera",
+  "image_size": [
+    160,
+    128
+  ],
+  "active_pixels": 19344,
+  "required_available_lights": 4,
+  "sufficient_available_pixels": 19344,
+  "insufficient_available_pixels": 0,
+  "exactly_three_available_pixels": 0,
+  "global_light_rank_ratio": 0.5303300858899106,
+  "lights": [
+    {
+      "index": 0,
+      "light_id": "lamp0",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    },
+    {
+      "index": 1,
+      "light_id": "lamp1",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    },
+    {
+      "index": 2,
+      "light_id": "lamp2",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    },
+    {
+      "index": 3,
+      "light_id": "lamp3",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    },
+    {
+      "index": 4,
+      "light_id": "lamp4",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    },
+    {
+      "index": 5,
+      "light_id": "lamp5",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    },
+    {
+      "index": 6,
+      "light_id": "lamp6",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    },
+    {
+      "index": 7,
+      "light_id": "lamp7",
+      "active_pixels": 19344,
+      "available": 19344,
+      "nonfinite": 0,
+      "at_or_below_black": 0,
+      "at_input_ceiling": 0,
+      "outside_roi": 1136
+    }
+  ],
+  "scope": "Source availability only; no diffuse fit, local conditioning, normal/albedo accuracy, registration/synchrony or material/defect classification"
+}

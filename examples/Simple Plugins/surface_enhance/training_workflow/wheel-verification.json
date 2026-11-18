@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0.dev5",
+  "sha256": "392947769d3245021ab2a5c43a8eaba40908cea3e9278973f7a6b007134c0b01",
+  "size": 48271,
+  "packaged_modules": 13,
+  "modules_match_committed_source": true,
+  "original_MIT_license_preserved": true,
+  "unchanged_existing_module_asts": [
+    "cli.py",
+    "completed_review.py",
+    "dataflow.py",
+    "execution.py",
+    "inputs.py",
+    "qt_completed_review.py",
+    "qt_region.py",
+    "recipe.py",
+    "render.py",
+    "solver.py",
+    "__init__.py"
+  ],
+  "source_tests": 82,
+  "wheel_tests": 82,
+  "environment_installs": false
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "case": "analytic_clean",
+    "report_and_raw_maps_and_graphics_exact": true,
+    "passed": true
+  },
+  {
+    "case": "connected_material",
+    "report_and_raw_maps_and_graphics_exact": true,
+    "passed": true
+  },
+  {
+    "case": "missing",
+    "report_and_raw_maps_and_graphics_exact": true,
+    "passed": false
+  }
+]

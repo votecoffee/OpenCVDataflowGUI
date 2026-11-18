@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-18",
+  "source_commit": "bb830df",
+  "version": "0.1.0.dev5",
+  "source_tests": 82,
+  "wheel_tests": 82,
+  "native_training_workflows": 3,
+  "runtime_counts": [
+    19344,
+    63304,
+    0
+  ],
+  "runtime_passed": [
+    true,
+    true,
+    false
+  ],
+  "staged_reports_and_raw_maps_and_graphics_exact": true,
+  "old_projects_exact": 9,
+  "old_frozen_exports_verified": 6,
+  "old_file_pins_verified": 294,
+  "old_native_review_and_save_as": true,
+  "finished_trained_projects": 3,
+  "source_audit_without_estimation": true,
+  "desktop_input_used": false,
+  "window_capture_used": false,
+  "acquired_camera_data_used": false,
+  "physical_surface_qualified": false,
+  "remaining": [
+    "Acquired calibrated stacks and independent physical references",
+    "Dark/flat/light calibration and registration/response validation",
+    "Near-field and richer material models",
+    "Draft Undo and persistent audit/history identity",
+    "Background file import/archive restoration",
+    "Finer cancellation in bounded native preparation/copy phases",
+    "Hands-on operator acceptance"
+  ],
+  "host_packaged_checks": 4,
+  "finished_project_reports_and_arrays_exact": true
+}

@@ -1,0 +1,443 @@
+{
+  "analytic_clean": {
+    "passed": true,
+    "score": null,
+    "message": "19344/19344 valid pixels (100.0%); diffuse orientation/albedo, no metric height",
+    "fail_reasons": [],
+    "outputs": {
+      "report": {
+        "schema": "simple_surface_result/v1",
+        "capture_id": "analytic_clean",
+        "pixel_grid": "rendered_reference_grid",
+        "frame": "camera",
+        "image_size": [
+          160,
+          128
+        ],
+        "light_ids": [
+          "lamp0",
+          "lamp1",
+          "lamp2",
+          "lamp3",
+          "lamp4",
+          "lamp5",
+          "lamp6",
+          "lamp7"
+        ],
+        "settings": {
+          "minimum_support": 3,
+          "minimum_support_fraction": 0.5,
+          "relative_tolerance": 0.06,
+          "absolute_tolerance": 1e-06,
+          "minimum_singular_ratio": 0.001,
+          "ambiguity_angle_deg": 8.0,
+          "minimum_albedo": 1e-08,
+          "view_direction": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "minimum_view_cosine": 0.02,
+          "seed_count": 32
+        },
+        "compiled_triplet_seeds": 32,
+        "valid_pixels": 19344,
+        "active_pixels": 19344,
+        "coverage": 1.0,
+        "reason_counts": {
+          "valid": 19344,
+          "outside_roi": 1136
+        },
+        "no_redundancy_pixels": 0,
+        "rejected_observations": 0,
+        "scope": "Directional diffuse normal/albedo fit, not metric height or defect acceptance",
+        "residual_scope": "Positive/negative residuals are model disagreement; material labels are not inferred",
+        "radiometry": {
+          "response": "linear",
+          "black_level": 0.02,
+          "input_ceiling": 1,
+          "lighting": {
+            "light_ids": [
+              "lamp0",
+              "lamp1",
+              "lamp2",
+              "lamp3",
+              "lamp4",
+              "lamp5",
+              "lamp6",
+              "lamp7"
+            ],
+            "directions": [
+              [
+                0.6,
+                0.0,
+                -0.8
+              ],
+              [
+                0.4242640687119285,
+                0.4242640687119285,
+                -0.8
+              ],
+              [
+                3.6739403974420595e-17,
+                0.6,
+                -0.8
+              ],
+              [
+                -0.42426406871192845,
+                0.4242640687119285,
+                -0.8
+              ],
+              [
+                -0.6,
+                7.347880794884119e-17,
+                -0.8
+              ],
+              [
+                -0.4242640687119286,
+                -0.42426406871192845,
+                -0.8
+              ],
+              [
+                -1.1021821192326178e-16,
+                -0.6,
+                -0.8
+              ],
+              [
+                0.4242640687119284,
+                -0.4242640687119286,
+                -0.8
+              ]
+            ],
+            "relative_intensity": [
+              0.8,
+              0.8428571428571429,
+              0.8857142857142858,
+              0.9285714285714286,
+              0.9714285714285715,
+              1.0142857142857142,
+              1.0571428571428572,
+              1.1
+            ],
+            "exposure_s": [
+              0.2,
+              0.2285714285714286,
+              0.2571428571428572,
+              0.28571428571428575,
+              0.3142857142857143,
+              0.34285714285714286,
+              0.37142857142857144,
+              0.4
+            ],
+            "frame": "camera"
+          }
+        },
+        "reference_capture_id": "analytic_clean",
+        "registration_scope": "Caller-declared source grid; not measured registration/synchrony",
+        "decision": {
+          "passed": true,
+          "minimum_coverage": 0.95,
+          "scope": "Available fit coverage only, not defect or gauge acceptance"
+        }
+      },
+      "coverage": 1.0,
+      "valid_pixels": 19344
+    }
+  },
+  "connected_material": {
+    "passed": true,
+    "score": null,
+    "message": "63304/63504 valid pixels (99.7%); diffuse orientation/albedo, no metric height",
+    "fail_reasons": [],
+    "outputs": {
+      "report": {
+        "schema": "simple_surface_result/v1",
+        "capture_id": "polyhaven_contaminated",
+        "pixel_grid": "rendered_reference_grid",
+        "frame": "camera",
+        "image_size": [
+          256,
+          256
+        ],
+        "light_ids": [
+          "lamp0",
+          "lamp1",
+          "lamp2",
+          "lamp3",
+          "lamp4",
+          "lamp5",
+          "lamp6",
+          "lamp7"
+        ],
+        "settings": {
+          "minimum_support": 3,
+          "minimum_support_fraction": 0.5,
+          "relative_tolerance": 0.06,
+          "absolute_tolerance": 1e-06,
+          "minimum_singular_ratio": 0.001,
+          "ambiguity_angle_deg": 8.0,
+          "minimum_albedo": 1e-08,
+          "view_direction": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "minimum_view_cosine": 0.02,
+          "seed_count": 32
+        },
+        "compiled_triplet_seeds": 32,
+        "valid_pixels": 63304,
+        "active_pixels": 63504,
+        "coverage": 0.9968505920886873,
+        "reason_counts": {
+          "valid": 63304,
+          "outside_roi": 2032,
+          "insufficient_observations": 200
+        },
+        "no_redundancy_pixels": 0,
+        "rejected_observations": 26709,
+        "scope": "Directional diffuse normal/albedo fit, not metric height or defect acceptance",
+        "residual_scope": "Positive/negative residuals are model disagreement; material labels are not inferred",
+        "radiometry": {
+          "response": "linear",
+          "black_level": 0.02,
+          "input_ceiling": 1,
+          "lighting": {
+            "light_ids": [
+              "lamp0",
+              "lamp1",
+              "lamp2",
+              "lamp3",
+              "lamp4",
+              "lamp5",
+              "lamp6",
+              "lamp7"
+            ],
+            "directions": [
+              [
+                0.6,
+                0.0,
+                -0.8
+              ],
+              [
+                0.4242640687119285,
+                0.4242640687119285,
+                -0.8
+              ],
+              [
+                3.6739403974420595e-17,
+                0.6,
+                -0.8
+              ],
+              [
+                -0.42426406871192845,
+                0.4242640687119285,
+                -0.8
+              ],
+              [
+                -0.6,
+                7.347880794884119e-17,
+                -0.8
+              ],
+              [
+                -0.4242640687119286,
+                -0.42426406871192845,
+                -0.8
+              ],
+              [
+                -1.1021821192326178e-16,
+                -0.6,
+                -0.8
+              ],
+              [
+                0.4242640687119284,
+                -0.4242640687119286,
+                -0.8
+              ]
+            ],
+            "relative_intensity": [
+              0.8,
+              0.8428571428571429,
+              0.8857142857142858,
+              0.9285714285714286,
+              0.9714285714285715,
+              1.0142857142857142,
+              1.0571428571428572,
+              1.1
+            ],
+            "exposure_s": [
+              0.2,
+              0.2285714285714286,
+              0.2571428571428572,
+              0.28571428571428575,
+              0.3142857142857143,
+              0.34285714285714286,
+              0.37142857142857144,
+              0.4
+            ],
+            "frame": "camera"
+          }
+        },
+        "reference_capture_id": "polyhaven_clean",
+        "registration_scope": "Caller-declared source grid; not measured registration/synchrony",
+        "decision": {
+          "passed": true,
+          "minimum_coverage": 0.95,
+          "scope": "Available fit coverage only, not defect or gauge acceptance"
+        }
+      },
+      "coverage": 0.9968505920886873,
+      "valid_pixels": 63304
+    }
+  },
+  "missing": {
+    "passed": false,
+    "score": null,
+    "message": "0/19344 valid pixels (0.0%); diffuse orientation/albedo, no metric height",
+    "fail_reasons": [
+      {
+        "code": "surface_unavailable_coverage",
+        "message": "surface_unavailable_coverage"
+      }
+    ],
+    "outputs": {
+      "report": {
+        "schema": "simple_surface_result/v1",
+        "capture_id": "analytic-all-missing",
+        "pixel_grid": "rendered_reference_grid",
+        "frame": "camera",
+        "image_size": [
+          160,
+          128
+        ],
+        "light_ids": [
+          "lamp0",
+          "lamp1",
+          "lamp2",
+          "lamp3",
+          "lamp4",
+          "lamp5",
+          "lamp6",
+          "lamp7"
+        ],
+        "settings": {
+          "minimum_support": 3,
+          "minimum_support_fraction": 0.5,
+          "relative_tolerance": 0.06,
+          "absolute_tolerance": 1e-06,
+          "minimum_singular_ratio": 0.001,
+          "ambiguity_angle_deg": 8.0,
+          "minimum_albedo": 1e-08,
+          "view_direction": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "minimum_view_cosine": 0.02,
+          "seed_count": 32
+        },
+        "compiled_triplet_seeds": 32,
+        "valid_pixels": 0,
+        "active_pixels": 19344,
+        "coverage": 0.0,
+        "reason_counts": {
+          "outside_roi": 1136,
+          "insufficient_observations": 19344
+        },
+        "no_redundancy_pixels": 0,
+        "rejected_observations": 0,
+        "scope": "Directional diffuse normal/albedo fit, not metric height or defect acceptance",
+        "residual_scope": "Positive/negative residuals are model disagreement; material labels are not inferred",
+        "radiometry": {
+          "response": "linear",
+          "black_level": 0.02,
+          "input_ceiling": 1,
+          "lighting": {
+            "light_ids": [
+              "lamp0",
+              "lamp1",
+              "lamp2",
+              "lamp3",
+              "lamp4",
+              "lamp5",
+              "lamp6",
+              "lamp7"
+            ],
+            "directions": [
+              [
+                0.6,
+                0.0,
+                -0.8
+              ],
+              [
+                0.4242640687119285,
+                0.4242640687119285,
+                -0.8
+              ],
+              [
+                3.6739403974420595e-17,
+                0.6,
+                -0.8
+              ],
+              [
+                -0.42426406871192845,
+                0.4242640687119285,
+                -0.8
+              ],
+              [
+                -0.6,
+                7.347880794884119e-17,
+                -0.8
+              ],
+              [
+                -0.4242640687119286,
+                -0.42426406871192845,
+                -0.8
+              ],
+              [
+                -1.1021821192326178e-16,
+                -0.6,
+                -0.8
+              ],
+              [
+                0.4242640687119284,
+                -0.4242640687119286,
+                -0.8
+              ]
+            ],
+            "relative_intensity": [
+              0.8,
+              0.8428571428571429,
+              0.8857142857142858,
+              0.9285714285714286,
+              0.9714285714285715,
+              1.0142857142857142,
+              1.0571428571428572,
+              1.1
+            ],
+            "exposure_s": [
+              0.2,
+              0.2285714285714286,
+              0.2571428571428572,
+              0.28571428571428575,
+              0.3142857142857143,
+              0.34285714285714286,
+              0.37142857142857144,
+              0.4
+            ],
+            "frame": "camera"
+          }
+        },
+        "reference_capture_id": "analytic_clean",
+        "registration_scope": "Caller-declared source grid; not measured registration/synchrony",
+        "decision": {
+          "passed": false,
+          "minimum_coverage": 0.95,
+          "scope": "Available fit coverage only, not defect or gauge acceptance"
+        }
+      },
+      "coverage": 0.0,
+      "valid_pixels": 0
+    }
+  }
+}

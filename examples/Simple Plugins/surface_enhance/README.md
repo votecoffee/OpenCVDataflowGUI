@@ -1,5 +1,14 @@
 # SimpleSurfaceEnhance setup and execution
 
+[Lighting/reference training workflows](training_workflow/README.md) add the
+explicit pinned dev5 loader, three original plus three finished staged projects,
+linked source-light audits/availability flags and persistent physical/stale
+guidance. Source auditing does not fit; independent previews do not replace
+training. Stage remains separate from Apply. Reports/raw maps/default rasters
+and exact model Save As retain their prior outcomes, including missing-data
+failure. These are labeled rendered controls with the existing CC0 credit.
+No installation or SDK change is needed; load the chosen bundle's plugin first.
+
 [Completed-results reviews](completed_runtime/README.md) add the pinned dev4 plugin,
 nine projects and six frozen exports. Load that folder's `plugin.py` for independent
 source/reference/light/map/pixel selection, zoom/pan, prepared observations, flags,

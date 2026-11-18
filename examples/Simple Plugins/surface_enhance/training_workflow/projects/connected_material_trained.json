@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "surface",
+      "type": "image.simple_surface_enhance",
+      "name": "SimpleSurfaceEnhance",
+      "description": "Review the exact completed lights/maps/pixel evidence in the inspector. Rendered control; no acquired-camera qualification.",
+      "parameters": {
+        "recipe_path": "assets/7b859a6f7be06d7f24d8966e2b3a5e4c4ad2114b4a4da5f9607b6a559fd08068.sse",
+        "sha256": "7b859a6f7be06d7f24d8966e2b3a5e4c4ad2114b4a4da5f9607b6a559fd08068",
+        "source": "connected capture",
+        "capture_manifest": "",
+        "minimum_coverage": 0.95,
+        "render_graphics": true
+      },
+      "position": [
+        470.0,
+        0.0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "maps",
+        "report",
+        "coverage",
+        "valid_pixels",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "overview"
+    },
+    {
+      "id": "capture",
+      "type": "input.simple_surface_capture",
+      "name": "Recorded lighting capture",
+      "parameters": {
+        "capture_path": "assets/f9f0a5395b0703eb09e1aa1c8d2390cbaee1052c4ee4c1c9e615113f83939985.sse",
+        "sha256": "f9f0a5395b0703eb09e1aa1c8d2390cbaee1052c4ee4c1c9e615113f83939985"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "capture",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "capture",
+      "output": "capture",
+      "target": "surface",
+      "input": "capture"
+    }
+  ]
+}
