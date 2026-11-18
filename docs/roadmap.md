@@ -42,8 +42,11 @@ That fix started the next targeted cycle at **1/20**. Native ONNX LightGlue
 (S2-53) now advances it to **2/20**, with 169 focused checks and 38 installed
 checks, six original runnable projects and a separate pinned pretrained CPU pair.
 All **401 release-source/wheel/installed modules** match and **61 package versions**
-remain unchanged. Native embedding-index execution (S2-54) is next. These are
-software/offline checks, without native ROS or physical equipment qualification.
+remain unchanged for that release. Native embedding-index execution (S2-54) now
+advances the targeted cycle to **3/20**: 151 focused checks, 61 installed checks,
+ten original projects, **402 matching source/wheel/installed modules** and **61
+unchanged package versions**. Native DNN layer profiling (S2-55) is next. These
+are software/offline checks, without native ROS or physical equipment qualification.
 
 The preceding audit used committed source `9c9d6a7`: **8,034 passed, 36 skipped,
 six failed** in 872.37 seconds offscreen (8,076 cases). All **8,844 tracked-file
@@ -115,8 +118,8 @@ HOG sliding-window detection (S2-46) and cascade-based image detection (S2-47)
 and rotated crop classification (S2-48) and image-based regression (S2-49) are
 qualified; local anomaly maps (S2-50) and input-shift evaluation (S2-51) are
 qualified; instance-mask tracking (S2-52) and its broader checkpoint are complete.
-Native ONNX LightGlue (S2-53) is now qualified; the native embedding index
-(S2-54) is next. Permitted
+Native ONNX LightGlue (S2-53) and native embedding retrieval (S2-54) are qualified;
+native DNN layer profiling (S2-55) is next. Permitted
 real SuperPoint extraction remains open. This is software/offline qualification,
 without native ROS or physical equipment acceptance.
 
@@ -258,6 +261,37 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Native image embedding retrieval (S2-54)** adds build/search/save/load blocks
+using OpenCV's built-in ANNIndex. Stable image IDs/labels, exact retained rows,
+normalization and preprocessing contracts travel with checked self-contained
+native bundles. Both RAM and on-disk build paths are qualified; private mmap
+ownership, native byte/ABI/hash checks and cache/reset/error cleanup are explicit.
+Queries retain current image/ticket/frame context, optional result graphics,
+candidate diagnostics and scalar-ID withholding for unknown or batch results.
+
+[Ten original projects](<../examples/opencv tools/native_embedding_index/README.md>)
+use six named HOG/hash gallery images and separate held-out queries. All five
+metrics match independent scalar/image-derived references when retrieving the
+gallery. Native candidate recall remains approximate; exact reranking is limited
+to returned candidates. Threshold rejection, wrong preprocessing, L2 normalization,
+full 256-bit Hamming, native file reloads, stable IDs after row reorder, JSON/XML,
+Save As, failed-input history and a cold Run All worker are checked.
+
+Direct native byte-Hamming returned incorrect zero distances on the installed
+Windows build. The supported Hamming path uses native Euclidean on unpacked bits,
+with exact bit differences of 0/128/256 verified; the direct binding remains
+unqualified. Tiny galleries can gain reported roots after save/load, so bundles
+retain actual reloaded counts. Conservative build bytes, expanded dimensions,
+query comparisons/effort and native/JSON size budgets reject excess work.
+The full source matrix is still required; this is not streaming acquisition.
+
+**151 focused checks** and **61 installed checks** pass; **402 module files** match
+source/wheel/install and **61 package versions** remain unchanged. ML/DNN is
+**53/62 (85.5%)**, overall **279/470 (59.4%)**, core **173/175 (98.9%)**. The
+targeted cycle is **3/20**; no broad repeat. Cross-build binary compatibility,
+large-gallery recall/speed and industrial accuracy remain separate work.
+Next: **S2-55 native DNN layer profiling**. See [contracts and limits](native-embedding-index.md).
+
 **Native ONNX feature matching (S2-53)** adds `ml.native_aliked_features` and
 `ml.native_lightglue` under OpenCV's Features Framework. Local ONNX files use
 bounded hashed snapshots and content-based caches. Source-center masks/regions,
@@ -282,8 +316,8 @@ independent native parity. All **401 module files** match source/wheel/install;
 **61 package versions** remain unchanged. CPU ALIKED is qualified for the stated
 pair, not every family/export, accelerator, 3D pose or industrial accuracy.
 ML/DNN is **52/62 (83.9%)**, overall **278/470 (59.1%)**, core **173/175 (98.9%)**.
-The targeted cycle is **2/20**; no broad repeat. Next: **S2-54 native embedding
-index**. See [contracts and limits](native-lightglue.md).
+That release advanced the targeted cycle to **2/20**; native embedding retrieval
+(S2-54) is now qualified above. See [contracts and limits](native-lightglue.md).
 
 **Instance-mask tracking (S2-52)** adds `sequence.track_instances` on the shared
 serial sequence runtime. Current mask centroids/overlap, constant-velocity
@@ -3628,8 +3662,8 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests; the current targeted cycle is 2/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
-| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **52/62 complete (83.9%)**. Native ONNX LightGlue (S2-53) is qualified on the pinned CPU pair. Next qualify the native embedding index (S2-54), then the remaining selected image-model workflows. The checklist retains real SuperPoint extraction (S2-15), layer profiling, score-decay suppression, quantized inference, multi-scale super-resolution, calibrated classifier uncertainty, one-class anomaly training, HOG detector training and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests; the current targeted cycle is 3/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **53/62 complete (85.5%)**. Native ONNX LightGlue (S2-53) and bounded native embedding retrieval (S2-54) are qualified. Next qualify native DNN layer profiling (S2-55), then the remaining selected image-model workflows. The checklist retains real SuperPoint extraction (S2-15), layer profiling, score-decay suppression, quantized inference, multi-scale super-resolution, calibrated classifier uncertainty, one-class anomaly training, HOG detector training and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |

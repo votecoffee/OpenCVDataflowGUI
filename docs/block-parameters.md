@@ -9939,6 +9939,72 @@ Input `region` — Source-grid region intersected with Mask; surrounding pixels 
 | `maximum_network_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound width times height before native inference. |
 | `graphics_maximum_features` | `256` | Value must be a whole number between 1 and 4096. Limit optional markers without changing retained features. |
 
+## Build native image embedding index (`ml.native_ann_build`)
+
+ML / Image retrieval
+
+Inputs: `samples` (any), `item_ids` (data, optional), `labels` (data, optional).
+
+Input `samples` — Image descriptor rows or a FlowGroup of descriptors with consistent feature_contract.
+
+Input `item_ids` — Optional stable unique image identifiers, one per row; overrides configured IDs.
+
+Input `labels` — Optional display/class labels, one per row; overrides configured labels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"euclidean"` | `euclidean`, `manhattan`, `angular`, `hamming`, `dot` Native L2/L1/angular/dot. Hamming uses exact byte-to-bit expansion and native L2. |
+| `normalization` | `"none"` | `none`, `l2` Saved per-row L2 or None. Hamming requires None; zero rows cannot use L2/angular. |
+| `trees` | `10` | Value must be a whole number between 1 and 64. Explicit bounded forest count. Native automatic tree count is not used. |
+| `seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Full uint32 seed; converted to the signed native API without changing its bits. |
+| `build_mode` | `"memory"` | `memory`, `disk` RAM build/native save, or temporary native setOnDiskBuild before adding rows. |
+| `item_ids` | `[]` | Unique strings per image; blank uses batch member IDs or sequential strings. |
+| `labels` | `[]` | Optional labels per image; blank uses item IDs. Duplicate labels are allowed. |
+| `maximum_index_bytes` | `16777216` | Value must be a whole number between 1 and 3.35544e+07. Reject conservative node-size estimate before native build and actual bytes afterward. |
+
+## Load native image embedding index (`ml.native_ann_load`)
+
+ML / Image retrieval
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Self-contained native ANN JSON bundle with matching hashes and native ABI. |
+| `prefault` | `false` | Ask native mmap to pre-read pages when supported; unsupported platforms may ignore it. |
+
+## Save native image embedding index (`ml.native_ann_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"image-index.json"` | New self-contained JSON file retaining exact native bytes, descriptors and stable IDs. Existing files are preserved. |
+
+## Search native image embeddings (`ml.native_ann_search`)
+
+ML / Image retrieval
+
+Inputs: `model` (data), `samples` (any), `image` (image, optional).
+
+Input `model` — Checked native index bundle; never a pointer, pickle or bare .ann path.
+
+Input `samples` — One query descriptor or rows, using the gallery's encoding and normalization.
+
+Input `image` — Optional unchanged review image for exactly one query; known context must agree.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `neighbors` | `5` | Value must be a whole number between 1 and 4096. Returned neighbors per query, limited to gallery size after candidate reranking/filtering. |
+| `candidates` | `32` | Value must be a whole number between 1 and 4096. Native candidate count per query, capped at gallery size. More candidates may improve recall. |
+| `search_k` | `-1` | Value must be a whole number between -1 and 1e+07. -1 uses native default; otherwise positive effort limit. Approximate search may return fewer rows. |
+| `minimum_results` | `1` | Value must be a whole number between 1 and 4096. Minimum qualifying returned neighbors per query for a passing result. |
+| `filter_results` | `false` | Apply the inclusive distance limit, or minimum dot similarity. |
+| `maximum_distance` | `1.0` | Value must be a finite number between 0 and 1e+18. Used for L2/L1/angular/Hamming only when filtering is enabled; native L2 is not squared. |
+| `minimum_similarity` | `0.0` | Value must be a finite number between -1e+18 and 1e+18. Minimum dot product when filtering is enabled; may be negative. |
+| `contract_policy` | `"require_match"` | `require_match`, `dimensions_only` Require the saved descriptor preprocessing contract, or explicitly check dimensions only. |
+| `prefault` | `false` | Ask native mmap to pre-read pages when supported; this platform may ignore it. |
+
 ## LightGlue ONNX feature matcher (`ml.native_lightglue`)
 
 ML / Feature matching

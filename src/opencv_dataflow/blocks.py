@@ -783,6 +783,7 @@ def builtin_registry():
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
     from .native_background import NATIVE_BACKGROUND_BLOCKS
+    from .native_index import NATIVE_INDEX_BLOCKS
     from .native_lightglue import NATIVE_LIGHTGLUE_BLOCKS
     from .native_trackers import NATIVE_TRACKER_BLOCKS
     from .nearest_rows import FindNearestRows
@@ -1240,6 +1241,7 @@ def builtin_registry():
         LearnedFlow,
         VitSequence,
         *ANNOY_BLOCKS,
+        *NATIVE_INDEX_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,
         *RTREES_BLOCKS,

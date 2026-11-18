@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 52 | 2 | 8 | 62 | 83.9% |
+| 2. ML and DNN | 53 | 1 | 8 | 62 | 85.5% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 278 | 34 | 158 | 470 | 59.1% |
+| **Overall** | 279 | 33 | 158 | 470 | 59.4% |
 
 <!-- coverage-summary:end -->
 
@@ -381,7 +381,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S2-53 | Native ONNX LightGlue execution | LightGlueMatcher.create, setPairInfo and match | Complete | ml.native_aliked_features and ml.native_lightglue qualify a pinned ALIKED CPU pair against direct ONNX, with explicit source context, normalized coordinates, scores/rejections and pose parity. Six original runnable controls cover ROI, empty/high-depth inputs and bounded failures. Other families/exports and accelerators retain their stated qualification limits; see native-lightglue.md. |
-| S2-54 | Native OpenCV embedding index | ANNIndex build, knnSearch, save, load and setOnDiskBuild | Partial | ml.annoy_search, ml.annoy_build use a separate Annoy package. Qualify native index persistence and bounded on-disk build, compare rankings by metric against exact search, and verify stable image IDs. |
+| S2-54 | Native OpenCV embedding index | ANNIndex build, knnSearch, save, load and setOnDiskBuild | Complete | ml.native_ann_build/search/save/load retain native bytes, IDs and preprocessing in checked bundles. Memory/disk builds and five image-feature metrics match exact references; Hamming uses native Euclidean on unpacked bits because the direct uchar backend is unqualified. Ten projects cover held-out image retrieval, rejection, contracts, persistence and lifecycle. See native-embedding-index.md for build/ABI/budget limits. |
 
 ### DNN performance and detection qualification
 

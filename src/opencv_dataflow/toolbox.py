@@ -123,7 +123,7 @@ IMPLEMENTATION_MODULES = {
     "img_hash": "image_hash",
     "rgbd": "ptcloud3d",
     "tracking": "native_trackers",
-    "features": "native_lightglue",
+    "features": "native_lightglue native_index",
     "ximgproc": "local_threshold region_proposals ridge_response superpixels",
 }
 BLOCK_MODULES = {

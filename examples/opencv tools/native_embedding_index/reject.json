@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/heldout-diagonal.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "descriptor",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.native_ann_load",
+      "name": "Load native image embedding index",
+      "parameters": {
+        "path": "assets/euclidean.json",
+        "prefault": false
+      },
+      "position": [
+        360,
+        400
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "search",
+      "type": "ml.native_ann_search",
+      "name": "Search native image embeddings",
+      "parameters": {
+        "neighbors": 3,
+        "candidates": 6,
+        "search_k": 10000,
+        "minimum_results": 1,
+        "filter_results": true,
+        "maximum_distance": 0,
+        "minimum_similarity": 0.0,
+        "contract_policy": "require_match",
+        "prefault": false
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples",
+        "image"
+      ],
+      "exposed_outputs": [
+        "neighbors",
+        "item_ids",
+        "labels",
+        "item_id",
+        "label",
+        "accepted",
+        "image",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original native image retrieval controls - MIT",
+      "description": "Original synthetic stripe images copied unchanged from OpenCVDataflowGUI's K-nearest examples, MIT. Six gallery images and disjoint held-out queries feed HOG or binary block-mean image hashes. Five metrics use native ANN candidates with exact metric reranking; Hamming uses native Euclidean on unpacked bits. Stable IDs are filenames, labels are orientation classes. This controlled fixture does not demonstrate general similarity or inspection accuracy. See README.md/SOURCES.md.",
+      "parameters": {},
+      "position": [
+        0,
+        -450
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "descriptor",
+      "input": "image"
+    },
+    {
+      "source": "descriptor",
+      "output": "descriptor",
+      "target": "search",
+      "input": "samples"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "search",
+      "input": "image"
+    },
+    {
+      "source": "model",
+      "output": "model",
+      "target": "search",
+      "input": "model"
+    },
+    {
+      "source": "search",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "search",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

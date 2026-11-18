@@ -26,6 +26,11 @@ Native [ALIKED/LightGlue ONNX blocks](native-lightglue.md) run through OpenCV 5
 without PyTorch and live under **OpenCV > Features Framework**. Existing Python
 LightGlue workflows below retain their settings and optional dependencies.
 
+Native [image embedding retrieval](native-embedding-index.md) also uses the base
+OpenCV installation: build/search/save/load galleries with stable image IDs,
+checked feature contracts and self-contained native bundles. HOG and binary
+image hashes connect directly; approximate recall remains explicit.
+
 ## Installation
 
 Point/box [prompted segmentation](prompted-segmentation.md) uses the pinned

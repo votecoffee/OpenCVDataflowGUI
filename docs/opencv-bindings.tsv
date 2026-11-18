@@ -1691,17 +1691,17 @@ P3	method	cv2.ALIKED.Params	method name only	-
 P3	function	cv2.ALIKED_create	no static reference	-
 P3	class	cv2.ALIKED_Params	literal reference	-
 P3	class	cv2.Animation	literal reference	-
-P3	class	cv2.ANNIndex	no static reference	-
+P3	class	cv2.ANNIndex	literal reference	-
 P3	method	cv2.ANNIndex.addItems	method name only	-
 P3	method	cv2.ANNIndex.build	method name only	-
-P3	method	cv2.ANNIndex.create	method name only	-
-P3	method	cv2.ANNIndex.getItemNumber	no static reference	-
-P3	method	cv2.ANNIndex.getTreeNumber	no static reference	-
-P3	method	cv2.ANNIndex.knnSearch	no static reference	-
+P3	method	cv2.ANNIndex.create	literal reference	-
+P3	method	cv2.ANNIndex.getItemNumber	method name only	-
+P3	method	cv2.ANNIndex.getTreeNumber	method name only	-
+P3	method	cv2.ANNIndex.knnSearch	method name only	-
 P3	method	cv2.ANNIndex.load	method name only	-
 P3	method	cv2.ANNIndex.save	method name only	-
-P3	method	cv2.ANNIndex.setOnDiskBuild	no static reference	-
-P3	method	cv2.ANNIndex.setSeed	no static reference	-
+P3	method	cv2.ANNIndex.setOnDiskBuild	method name only	-
+P3	method	cv2.ANNIndex.setSeed	method name only	-
 P3	function	cv2.ANNIndex_create	no static reference	-
 P3	function	cv2.applyColorMap	literal reference	-
 P3	function	cv2.approxPolyDP	literal reference	-
@@ -2763,7 +2763,7 @@ P3	class	cv2.flann.Index	no static reference	-
 P3	method	cv2.flann.Index.build	method name only	-
 P3	method	cv2.flann.Index.getAlgorithm	no static reference	-
 P3	method	cv2.flann.Index.getDistance	no static reference	-
-P3	method	cv2.flann.Index.knnSearch	no static reference	-
+P3	method	cv2.flann.Index.knnSearch	method name only	-
 P3	method	cv2.flann.Index.load	method name only	-
 P3	method	cv2.flann.Index.radiusSearch	no static reference	-
 P3	method	cv2.flann.Index.release	method name only	-
