@@ -494,6 +494,7 @@ class Block:
             self.last_result = copy.deepcopy(result)
             # Observation availability belongs to this completion, not a later profile switch.
             self.last_result._output_values_retained = self.run_profile.output_previews
+            self.last_result._input_values_retained = self.run_profile.input_previews
             self.current_emissions = self.last_result.emissions
             self.last_output_images = {
                 p.name: self.last_result.outputs[p.name]
@@ -677,6 +678,7 @@ class Block:
             )
             if self.last_result is not None:
                 self.last_result._output_values_retained = False
+                self.last_result._input_values_retained = False
             return
         for name in (*DISPLAY_RESULT_FIELDS, "elapsed_ms", "timing"):
             setattr(self, name, copy.deepcopy(getattr(other, name)))
@@ -930,6 +932,8 @@ class Graph:
             self._bind_block_graphics(block)
             if not self.run_profile.input_previews:
                 block.last_inputs = {}
+                if block.last_result is not None:
+                    block.last_result._input_values_retained = False
             if not self.run_profile.output_previews:
                 block.last_output_images = {}
             if hasattr(block, "graph"):
@@ -1153,6 +1157,8 @@ class Graph:
                     setattr(block, name, copy.deepcopy(value))
             if not self.run_profile.input_previews:
                 block.last_inputs = {}
+                if block.last_result is not None:
+                    block.last_result._input_values_retained = False
             if not self.run_profile.output_previews:
                 block.last_output_images = {}
             block._trim_graphics()

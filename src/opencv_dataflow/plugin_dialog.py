@@ -262,7 +262,14 @@ class PluginDialogContext:
                 or not getattr(result, "_output_values_retained", False)
             ):
                 raise ValueError("Processed outputs were not retained. Run again in Debug profile.")
-            if (block.inputs and not block.last_inputs) or any(
+            if ports is not None:
+                if isinstance(ports, str):
+                    raise TypeError("Pass input names as a collection, not a single string")
+                ports = tuple(ports)
+            empty_completion = (
+                paired and ports == () and getattr(result, "_input_values_retained", False)
+            )
+            if (block.inputs and not block.last_inputs and not empty_completion) or any(
                 port.required and port.name not in block.last_inputs for port in block.inputs
             ):
                 raise ValueError("Processed inputs are unavailable. Run again in Debug profile.")
@@ -270,9 +277,7 @@ class PluginDialogContext:
             if ports is None:
                 names = tuple(port.name for port in block.inputs if port.name in block.last_inputs)
             else:
-                if isinstance(ports, str):
-                    raise TypeError("Pass input names as a collection, not a single string")
-                names = tuple(ports)
+                names = ports
                 if any(not isinstance(name, str) or name not in declared for name in names):
                     raise ValueError("Processed capture must name declared block inputs")
                 if len(set(names)) != len(names):

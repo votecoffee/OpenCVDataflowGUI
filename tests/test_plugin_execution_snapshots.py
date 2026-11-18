@@ -257,3 +257,98 @@ def test_no_input_block_cannot_expose_described_lean_outputs_after_debug_switch(
         context._close()
         graph.close()
         worker.close()
+
+
+class ManifestInspection(Block):
+    inputs = (Port("image", required=False), Port("manifest", "data", required=False))
+    outputs = (Port("review", "data"),)
+    defaults = {"broken": False, "passed": True}
+
+    def process(self, inputs):
+        if self.parameters["broken"]:
+            raise ValueError("Manifest processing failed")
+        return Result(
+            {"review": {"captures": ["manifest-image"], "run": self.timing.count + 1}},
+            passed=self.parameters["passed"],
+            payloads={"review": {"completed_review": {"model": "executed-model"}}},
+        )
+
+
+@pytest.mark.parametrize("passed", [True, False])
+@pytest.mark.parametrize("published", [False, True])
+def test_explicit_empty_input_capture_uses_optional_input_completion_without_execution(
+    passed, published
+):
+    graph = Graph()
+    block = graph.add(ManifestInspection())
+    worker = ManifestInspection(parameters={"passed": passed}) if published else block
+    context = PluginDialogContext(graph, block)
+    try:
+        worker.parameters["passed"] = passed
+        assert worker.execute({}) is not None
+        if published:
+            block.copy_results_from(worker)
+        assert block.last_inputs == {}
+        with pytest.raises(ValueError, match="inputs are unavailable"):
+            context.snapshot_processed_execution()
+        with pytest.raises(ValueError, match="inputs are unavailable"):
+            context.snapshot_processed_inputs(())
+        pair = context.snapshot_processed_execution((), ["review"])
+        assert pair.inputs == {} and pair.passed is passed
+        assert pair.outputs["review"].value["captures"] == ["manifest-image"]
+        assert pair.outputs["review"].payload["completed_review"]["model"] == "executed-model"
+        assert pair.execution_count == worker.timing.count == 1
+        pair.outputs["review"].value["captures"].clear()
+        fresh = context.snapshot_processed_execution(iter(()), ["review"])
+        assert fresh.outputs["review"].value["captures"] == ["manifest-image"]
+        assert fresh.snapshot_id != pair.snapshot_id and worker.timing.count == 1
+        worker.parameters["broken"] = True
+        worker.execute({})
+        if published:
+            block.copy_results_from(worker)
+        with pytest.raises(ValueError, match="No completed"):
+            context.snapshot_processed_execution((), ["review"])
+    finally:
+        context._close()
+        graph.close()
+        if worker is not block:
+            worker.close()
+
+
+@pytest.mark.parametrize("profile", ["balanced", "lean"])
+@pytest.mark.parametrize("switch_before_execution", [False, True])
+def test_optional_empty_capture_never_recreates_evicted_input_history(
+    profile, switch_before_execution
+):
+    graph = Graph()
+    block = graph.add(ManifestInspection())
+    context = PluginDialogContext(graph, block)
+    try:
+        if switch_before_execution:
+            graph.set_run_profile(profile)
+        block.execute({})
+        graph.set_run_profile(profile)
+        with pytest.raises(ValueError, match="not retained.*Debug"):
+            context.snapshot_processed_execution((), ["review"])
+        graph.set_run_profile("debug")
+        with pytest.raises(ValueError, match="unavailable|not retained"):
+            context.snapshot_processed_execution((), ["review"])
+        block.execute({})
+        assert context.snapshot_processed_execution((), ["review"]).outputs
+        # Restored snapshots must honor the receiving graph's retention budget too.
+        captured = {block.id: {"last_result": block.last_result}}
+        graph.set_run_profile(profile)
+        graph.restore_captured(captured)
+        graph.set_run_profile("debug")
+        with pytest.raises(ValueError, match="unavailable|not retained"):
+            context.snapshot_processed_execution((), ["review"])
+    finally:
+        context._close()
+        graph.close()
+
+
+def test_explicit_empty_selection_does_not_hide_missing_required_input_history(setup):
+    _, block, context, _ = setup
+    block.last_inputs = {}
+    with pytest.raises(ValueError, match="inputs are unavailable"):
+        context.snapshot_processed_execution((), ["review"])

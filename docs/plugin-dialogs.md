@@ -211,6 +211,15 @@ run again in Debug. The internal retention marker is not a primary output,
 serialized project field or connection payload. It does not add image copies to
 processing; the API copies only when explicitly called.
 
+A file/manifest-driven plugin may complete with no wired values when every input
+is optional. After that Debug completion, pass `input_ports=()` explicitly to
+capture its retained output/report pair. The capture has an empty input mapping;
+it does not manufacture an image input or invoke training. Missing required inputs
+still reject capture. Default/input-only snapshots retain their existing history
+checks. Completion retention is tracked even for an empty mapping: switching from
+Balanced/Lean to Debug, or clearing input history by changing profiles, requires
+a fresh Debug execution before this empty-input capture becomes available.
+
 ## Capture a connected bundle before training
 
 An unconfigured tool can capture its connected depth/image, camera model, pose,
