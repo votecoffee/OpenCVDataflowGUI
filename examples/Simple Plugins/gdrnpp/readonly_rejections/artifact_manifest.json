@@ -1,0 +1,12 @@
+{
+  "sha256": {
+    ".gitattributes": "2821638ef9f64dc6d0da2507110cf033e69cb1d16ad5dc9972d2e7fd1772592f",
+    "check_read_rejections.py": "201c5c23f8003e0b7ee7118ad7fcec78ea4394e047e8a84430bc4dfcfad7b77d",
+    "LICENSE": "e1e2d2d0f228c8956d1f5e3e108c35919c88e37e76b4243f21b7ef5307ec3367",
+    "README.md": "e29947f4833d05e4e52b52e96bcb80756640a2ce67306a85cd4d084e7f2cd8d4",
+    "THIRD_PARTY.md": "481f2678cb4e2776eca761f2ba53fb65ee25be1fdcb50a35520a1d5743fe2532",
+    "validation.json": "be9ee11305a0a2a2efa11e96ad5d2008673c10c8b5dc88278d6db3a49e5a0142",
+    "licenses/GDRNPP_Apache-2.0.txt": "99e90c1921d6bf28850c9a6f90215a339e8db244837a7c5d211b8d0c9ac9232b",
+    "releases/opencv_simple_gdrnpp-0.1.0.dev2-py3-none-any.whl": "3303c4d487a4ebd9a67902b925cc893a3eb38a842980e2ceb55a1bd6a48b1ff3"
+  }
+}

@@ -166,6 +166,7 @@ class WorkerClient:
         job = None
         response_metadata = None
         failed = False
+        rejected_read = False
         while not self._lock.acquire(timeout=0.05):
             if cancelled():
                 raise RuntimeError("GDRNPP request cancelled")
@@ -210,6 +211,11 @@ class WorkerClient:
                 if response.get("id") != identifier:
                     raise RuntimeError("Stale worker response")
                 if not response.get("ok"):
+                    rejected_read = operation in (
+                        "capture_completed",
+                        "capture_completed_candidate",
+                        "capture_completed_graphics",
+                    ) and str(response.get("error", "")).startswith("ValueError:")
                     raise ValueError(response.get("error", "GDRNPP worker failed"))
                 received = time.perf_counter()
                 response_metadata, result_arrays = read_packet(job / "result")
@@ -238,7 +244,9 @@ class WorkerClient:
                     ]
                 return response_metadata, result_arrays
         except BaseException:
-            failed = True
+            failed = not rejected_read
+            if rejected_read:
+                raise
             try:
                 self._stop()
             except BaseException:

@@ -1,0 +1,10 @@
+{
+  "read_rejections": 3,
+  "process_preserved": true,
+  "private_request_files_retired": true,
+  "recipe_unchanged": true,
+  "model_loaded": false,
+  "inference_performed": false,
+  "final_close_retired_worker": true,
+  "scope": "Protocol/cache-lifetime control only"
+}
