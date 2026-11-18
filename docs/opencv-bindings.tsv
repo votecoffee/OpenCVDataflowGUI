@@ -1685,11 +1685,11 @@ P3	method	cv2.AlignMTB.setCut	no static reference	-
 P3	method	cv2.AlignMTB.setExcludeRange	no static reference	-
 P3	method	cv2.AlignMTB.setMaxBits	no static reference	-
 P3	method	cv2.AlignMTB.shiftMat	method name only	-
-P3	class	cv2.ALIKED	no static reference	-
-P3	method	cv2.ALIKED.create	method name only	-
+P3	class	cv2.ALIKED	literal reference	-
+P3	method	cv2.ALIKED.create	literal reference	-
 P3	method	cv2.ALIKED.Params	method name only	-
 P3	function	cv2.ALIKED_create	no static reference	-
-P3	class	cv2.ALIKED_Params	no static reference	-
+P3	class	cv2.ALIKED_Params	literal reference	-
 P3	class	cv2.Animation	literal reference	-
 P3	class	cv2.ANNIndex	no static reference	-
 P3	method	cv2.ANNIndex.addItems	method name only	-
@@ -3222,11 +3222,11 @@ P3	class	cv2.legacy_TrackerMOSSE	alias	cv2.legacy.TrackerMOSSE
 P3	method	cv2.legacy_TrackerMOSSE.create	alias	cv2.legacy.TrackerMOSSE.create
 P3	class	cv2.legacy_TrackerTLD	alias	cv2.legacy.TrackerTLD
 P3	method	cv2.legacy_TrackerTLD.create	alias	cv2.legacy.TrackerTLD.create
-P3	class	cv2.LightGlueMatcher	no static reference	-
-P3	method	cv2.LightGlueMatcher.clearPairInfo	no static reference	-
-P3	method	cv2.LightGlueMatcher.create	method name only	-
+P3	class	cv2.LightGlueMatcher	literal reference	-
+P3	method	cv2.LightGlueMatcher.clearPairInfo	method name only	-
+P3	method	cv2.LightGlueMatcher.create	literal reference	-
 P3	method	cv2.LightGlueMatcher.createFromMemory	no static reference	-
-P3	method	cv2.LightGlueMatcher.setPairInfo	no static reference	-
+P3	method	cv2.LightGlueMatcher.setPairInfo	method name only	-
 P3	function	cv2.LightGlueMatcher_create	no static reference	-
 P3	function	cv2.LightGlueMatcher_createFromMemory	no static reference	-
 P3	function	cv2.line	literal reference	-

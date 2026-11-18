@@ -67,6 +67,7 @@
 | Judgments, reasons and ticket histories | [Ticket results](ticket-results.md) |
 | 3D/depth/point clouds | [3D vision](vision-3d.md) |
 | ML/DNN and optional dependencies | [ML](ml.md) |
+| Native ALIKED/LightGlue ONNX, scores and CPU qualification | [Native matching](native-lightglue.md) |
 | Explicit external SuperPoint tensors, learned matching and extraction limits | [Local features](local-features.md) |
 | Learned DISK extraction, native controls and matching local weights | [DISK features](disk-features.md) |
 | ALIKED presets, subpixel features, fallback/score policies and matching | [ALIKED features](aliked-features.md) |

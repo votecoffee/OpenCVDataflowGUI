@@ -1,0 +1,53 @@
+{
+  "source_run": {
+    "opencv": "5.0.0",
+    "features": [
+      1000,
+      1000
+    ],
+    "matches": 211,
+    "inliers": 207,
+    "rejected_by_score": 0,
+    "maximum_point_error": 3.0517578125e-05,
+    "maximum_descriptor_error": 2.954155206680298e-06,
+    "maximum_score_error": 2.9802322387695312e-08,
+    "maximum_pose_error": 0.0,
+    "asset_sha256": {
+      "aliked-n16rot-top1k-640.onnx": "b46868de0794ea0f2d878985d99dc17d3639dfab85d852994254a4cdf0cdc0ea",
+      "aliked_lightglue.onnx": "a1bd99d294c4c6c08ca978af3128c85f8c0e603b04a03e4391428455d9624439",
+      "box.png": "1094629c1e2ebbc8a9ae2c9c63e18c1dff0f5f1481146e02f3b11a3d30feb20a",
+      "box_in_scene.png": "8b0225ff76244a42bd1400c0904f8b7afea7d97b7d8115495e42e98ad347bd51"
+    },
+    "model_bytes_redistributed": false,
+    "scope": "Pinned CPU pair; direct ONNX/native parity, not independent scene ground truth or general accuracy"
+  },
+  "installed_run": {
+    "opencv": "5.0.0",
+    "features": [
+      1000,
+      1000
+    ],
+    "matches": 211,
+    "inliers": 207,
+    "rejected_by_score": 0,
+    "maximum_point_error": 6.103515625e-05,
+    "maximum_descriptor_error": 1.7434358596801758e-06,
+    "maximum_score_error": 2.9802322387695312e-08,
+    "maximum_pose_error": 0.0,
+    "asset_sha256": {
+      "aliked-n16rot-top1k-640.onnx": "b46868de0794ea0f2d878985d99dc17d3639dfab85d852994254a4cdf0cdc0ea",
+      "aliked_lightglue.onnx": "a1bd99d294c4c6c08ca978af3128c85f8c0e603b04a03e4391428455d9624439",
+      "box.png": "1094629c1e2ebbc8a9ae2c9c63e18c1dff0f5f1481146e02f3b11a3d30feb20a",
+      "box_in_scene.png": "8b0225ff76244a42bd1400c0904f8b7afea7d97b7d8115495e42e98ad347bd51"
+    },
+    "model_bytes_redistributed": false,
+    "scope": "Pinned CPU pair; direct ONNX/native parity, not independent scene ground truth or general accuracy"
+  },
+  "acceptance_tolerances": {
+    "maximum_point_error": 0.0001,
+    "maximum_descriptor_error": 1e-05,
+    "maximum_score_error": 1e-06,
+    "maximum_pose_error": 1e-07
+  },
+  "scope": "Two CPU runs with known floating-point variation; native/direct ONNX parity, not independent scene truth or general accuracy."
+}

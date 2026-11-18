@@ -756,6 +756,7 @@ def builtin_registry():
     from .local_anomaly import LOCAL_ANOMALY_BLOCKS
     from .local_binary_patterns import LocalBinaryPatterns
     from .local_features import LOCAL_FEATURE_BLOCKS
+    from .native_lightglue import NATIVE_LIGHTGLUE_BLOCKS
     from .local_threshold import LocalThreshold
     from .logix import LOGIX_BLOCKS
     from .logpolar_registration import LogPolarRegistration
@@ -1246,6 +1247,7 @@ def builtin_registry():
         EvaluateDetections,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
+        *NATIVE_LIGHTGLUE_BLOCKS,
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,

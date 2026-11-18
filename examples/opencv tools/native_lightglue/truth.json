@@ -1,0 +1,20 @@
+{
+  "asset_sha256": {
+    "features.onnx": "5c637d8f5bda32b8f5ef1e7988fb2c9d0834d477aa933eabdf19bdc969fd406d",
+    "matcher.onnx": "fa57ab96fb54627a8d31d3434d5e02cb3cccb5a9a1f2c15355c56b638a9922c9",
+    "query.png": "ed6e5c0719c4710ab722f526aa8f4146c82d02ed3b392a24fdd44244b772de17",
+    "reference.png": "0f524357d29bdcecf3b3172acbd0bc3589b684e16e21bfbd43dce2b038f29e26"
+  },
+  "cases": [
+    "translation",
+    "score_rejection",
+    "selected",
+    "empty",
+    "high_depth",
+    "pair_budget"
+  ],
+  "translation_count": 7,
+  "translation_inliers": 7,
+  "translation_x": 2.007843137254902,
+  "translation_y": 0
+}

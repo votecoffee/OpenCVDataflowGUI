@@ -38,9 +38,12 @@ targeted measurement fix keeps tracked mask bounds, box area/aspect and mask
 coverage consistent while retaining original/custom source metrics. It passed
 **45 source checks and 45 installed checks**; all **400 release-source, wheel
 and installed modules** match, with all **61 package versions** unchanged.
-This starts the next targeted cycle at **1/20**; native ONNX LightGlue (S2-53)
-is the next capability. These are software/offline checks, without native ROS
-or physical equipment qualification.
+That fix started the next targeted cycle at **1/20**. Native ONNX LightGlue
+(S2-53) now advances it to **2/20**, with 169 focused checks and 38 installed
+checks, six original runnable projects and a separate pinned pretrained CPU pair.
+All **401 release-source/wheel/installed modules** match and **61 package versions**
+remain unchanged. Native embedding-index execution (S2-54) is next. These are
+software/offline checks, without native ROS or physical equipment qualification.
 
 The preceding audit used committed source `9c9d6a7`: **8,034 passed, 36 skipped,
 six failed** in 872.37 seconds offscreen (8,076 cases). All **8,844 tracked-file
@@ -76,7 +79,7 @@ detection (S2-46), cascade-based image detection (S2-47) and rotated crop
 classification (S2-48), image-based regression (S2-49) and local anomaly maps
 (S2-50), input-shift evaluation (S2-51) and instance-mask tracking (S2-52).
 That cycle and its broad checkpoint are complete. The current targeted cycle is
-**1/20** after the measurement follow-up above. Python 3.14.3/OpenCV 5.0.0
+**2/20** after the measurement follow-up and native ONNX LightGlue. Python 3.14.3/OpenCV 5.0.0
 contrib 5.0.0.93 remain unchanged.
 
 The previous broad checkpoint was `2a66fc8`: **6,986 passed, 36 skipped** in
@@ -112,7 +115,8 @@ HOG sliding-window detection (S2-46) and cascade-based image detection (S2-47)
 and rotated crop classification (S2-48) and image-based regression (S2-49) are
 qualified; local anomaly maps (S2-50) and input-shift evaluation (S2-51) are
 qualified; instance-mask tracking (S2-52) and its broader checkpoint are complete.
-Native ONNX LightGlue (S2-53) is next. Permitted
+Native ONNX LightGlue (S2-53) is now qualified; the native embedding index
+(S2-54) is next. Permitted
 real SuperPoint extraction remains open. This is software/offline qualification,
 without native ROS or physical equipment acceptance.
 
@@ -254,6 +258,33 @@ reinstalled; no broad suite or robot/simulator operation was performed.
 
 ## Short-term focus
 
+**Native ONNX feature matching (S2-53)** adds `ml.native_aliked_features` and
+`ml.native_lightglue` under OpenCV's Features Framework. Local ONNX files use
+bounded hashed snapshots and content-based caches. Source-center masks/regions,
+pixel/depth/encoding preservation, declared descriptor families, current-image
+ticket/grid checks and feature/attention budgets remain explicit. Every match
+sets and clears native point/image context. Thresholded candidates and scores,
+geometric inliers, drawable accepted/rejected markers and a passing-only planar
+pose remain inspectable. Existing PyTorch projects retain their settings.
+
+[Six original projects](<../examples/opencv tools/native_lightglue/README.md>)
+use untrained image/descriptor/context-dependent native ONNX models. They verify
+known 2.007843-pixel translation, score rejection, selected/empty centers, RGB
+uint16 and explicit attention-budget failure. The separate opt-in local-only
+pretrained pair produces **1,000 features per image, 211 matches and 207 inliers**.
+Independent direct ONNX preparation agrees within 1e-4 pixels, 1e-5
+descriptor units and 1e-6 score units, with an identical homography. The
+external exports/images are hash-pinned and not redistributed; their export
+repository lacks an explicit license file. The public arithmetic fixtures are MIT.
+
+**169 focused checks** pass, with **38 final installed checks**, cold worker and
+independent native parity. All **401 module files** match source/wheel/install;
+**61 package versions** remain unchanged. CPU ALIKED is qualified for the stated
+pair, not every family/export, accelerator, 3D pose or industrial accuracy.
+ML/DNN is **52/62 (83.9%)**, overall **278/470 (59.1%)**, core **173/175 (98.9%)**.
+The targeted cycle is **2/20**; no broad repeat. Next: **S2-54 native embedding
+index**. See [contracts and limits](native-lightglue.md).
+
 **Instance-mask tracking (S2-52)** adds `sequence.track_instances` on the shared
 serial sequence runtime. Current mask centroids/overlap, constant-velocity
 predictions and optional masked HSV/gray appearance feed the shared gated global
@@ -283,8 +314,7 @@ remain unchanged. ML/DNN is **51/62 (82.3%)**, overall **277/470 (58.9%)**, core
 **173/175 (98.9%)**. That initial publication completed the **20/20** cycle;
 the subsequent broad checkpoint passed **9,429 tests**, with 36 expected skips.
 The box-measurement follow-up passed **45 source and 45 installed checks** and
-starts the next cycle at **1/20**. The next capability is **S2-53 native ONNX
-LightGlue**. See [contracts and limits](instance-tracking.md).
+started the next cycle at **1/20**. Native ONNX LightGlue is now qualified above. See [contracts and limits](instance-tracking.md).
 
 **Inspection input-shift evaluation (S2-51)** adds three reusable blocks for
 controlled exposure/blur/affine views, current inspection observations and paired
@@ -3598,8 +3628,8 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests; the new targeted cycle is 1/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
-| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **51/62 complete (82.3%)**. Next qualify native ONNX LightGlue (S2-53), followed by the native embedding index (S2-54) and remaining selected image-model workflows. The checklist retains real SuperPoint extraction (S2-15), layer profiling, score-decay suppression, quantized inference, multi-scale super-resolution, calibrated classifier uncertainty, one-class anomaly training, HOG detector training and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests; the current targeted cycle is 2/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **52/62 complete (83.9%)**. Native ONNX LightGlue (S2-53) is qualified on the pinned CPU pair. Next qualify the native embedding index (S2-54), then the remaining selected image-model workflows. The checklist retains real SuperPoint extraction (S2-15), layer profiling, score-decay suppression, quantized inference, multi-scale super-resolution, calibrated classifier uncertainty, one-class anomaly training, HOG detector training and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |

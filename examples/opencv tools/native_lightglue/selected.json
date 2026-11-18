@@ -1,0 +1,415 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_features",
+      "type": "ml.native_aliked_features",
+      "name": "ALIKED ONNX features",
+      "parameters": {
+        "model_path": "assets/features.onnx",
+        "model_sha256": "5c637d8f5bda32b8f5ef1e7988fb2c9d0834d477aa933eabdf19bdc969fd406d",
+        "maximum_model_bytes": 134217728,
+        "width": 32,
+        "height": 32,
+        "normalize_descriptors": true,
+        "alpha_policy": "exclude",
+        "minimum_score": 0.0,
+        "minimum_count": 4,
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304,
+        "maximum_network_pixels": 4194304,
+        "graphics_maximum_features": 256
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          0,
+          0,
+          63,
+          30
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        170
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_features",
+      "type": "ml.native_aliked_features",
+      "name": "ALIKED ONNX features",
+      "parameters": {
+        "model_path": "assets/features.onnx",
+        "model_sha256": "5c637d8f5bda32b8f5ef1e7988fb2c9d0834d477aa933eabdf19bdc969fd406d",
+        "maximum_model_bytes": 134217728,
+        "width": 32,
+        "height": 32,
+        "normalize_descriptors": true,
+        "alpha_policy": "exclude",
+        "minimum_score": 0.0,
+        "minimum_count": 4,
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304,
+        "maximum_network_pixels": 4194304,
+        "graphics_maximum_features": 256
+      },
+      "position": [
+        380,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          0,
+          0,
+          63,
+          30
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        520
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "ml.native_lightglue",
+      "name": "LightGlue ONNX feature matcher",
+      "parameters": {
+        "filter_threshold": 0.1,
+        "minimum_matches": 4,
+        "minimum_inliers": 4,
+        "minimum_inlier_ratio": 0.5,
+        "geometry": "ransac",
+        "ransac_threshold": 3.0,
+        "ransac_confidence": 0.995,
+        "ransac_iterations": 2000,
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304,
+        "model_path": "assets/matcher.onnx",
+        "model_sha256": "fa57ab96fb54627a8d31d3434d5e02cb3cccb5a9a1f2c15355c56b638a9922c9",
+        "maximum_model_bytes": 134217728,
+        "feature_family": "aliked",
+        "maximum_attention_pairs": 1024
+      },
+      "position": [
+        780,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "query_features",
+        "reference_features"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "transform",
+        "pose",
+        "count",
+        "inliers",
+        "overlay",
+        "image",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1180,
+        350
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1580,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original native ONNX controls - MIT",
+      "description": "Original OpenCVDataflowGUI images and untrained arithmetic ONNX models, MIT. Image red-channel mean moves feature points; descriptor agreement and normalized point displacement determine match scores. These fixtures test native input, score, geometry and failure contracts, not learned feature accuracy. See README.md/SOURCES.md for the separate pinned pretrained qualification.",
+      "parameters": {},
+      "position": [
+        0,
+        -450
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_features",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_region",
+      "input": "image"
+    },
+    {
+      "source": "reference_region",
+      "output": "region",
+      "target": "reference_features",
+      "input": "region"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_features",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_region",
+      "input": "image"
+    },
+    {
+      "source": "query_region",
+      "output": "region",
+      "target": "query_features",
+      "input": "region"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "match",
+      "input": "image"
+    },
+    {
+      "source": "query_features",
+      "output": "features",
+      "target": "match",
+      "input": "query_features"
+    },
+    {
+      "source": "reference_features",
+      "output": "features",
+      "target": "match",
+      "input": "reference_features"
+    },
+    {
+      "source": "match",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "match",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

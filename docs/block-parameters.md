@@ -9911,6 +9911,64 @@ Input `region` — Intersects Mask; known coordinate-frame conflicts fail.
 | `maximum_input_elements` | `3000000` | Value must be a whole number between 1 and 1.6e+07. Configured input tensor bound before allocation. |
 | `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. |
 
+## ALIKED ONNX features (`ml.native_aliked_features`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source gray/BGR/RGB/alpha image; uint8, uint16 or float32 [0,1]. Output is unchanged.
+
+Input `mask` — Source-center filter, not a CNN attention mask; connected missing values gate work.
+
+Input `region` — Source-grid region intersected with Mask; surrounding pixels remain visible to the CNN.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Local ONNX file; never downloaded during execution. Save As rebases the path. |
+| `model_sha256` | `""` | Optional exact 64-hex SHA-256; checked against the bounded import snapshot. |
+| `maximum_model_bytes` | `134217728` | Value must be a whole number between 1 and 5.36871e+08. Bound model bytes read before hashing/import; not an internal DNN RAM limit. |
+| `width` | `640` | Value must be a whole number between 32 and 4096. Native stretched RGB network width; must match the selected ONNX model. |
+| `height` | `640` | Value must be a whole number between 32 and 4096. Native stretched RGB network height; must match the selected ONNX model. |
+| `normalize_descriptors` | `true` | Native per-row L2 normalization; disable only for raw downstream consumers. |
+| `alpha_policy` | `"exclude"` | `exclude`, `ignore` Exclude fully transparent centers or explicitly ignore alpha. |
+| `minimum_score` | `0.0` | Value must be a finite number between 0 and 1. Inclusive source-center score filter after native extraction; no top-K truncation. |
+| `minimum_count` | `4` | Value must be a whole number between 0 and 4096. Minimum retained features for a passing inspection. |
+| `maximum_features` | `1024` | Value must be a whole number between 1 and 4096. Reject excessive raw rows before serialization; native allocations are model-dependent. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound source pixels before conversion; axes are limited to 16384. |
+| `maximum_network_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound width times height before native inference. |
+| `graphics_maximum_features` | `256` | Value must be a whole number between 1 and 4096. Limit optional markers without changing retained features. |
+
+## LightGlue ONNX feature matcher (`ml.native_lightglue`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `query_features` (data), `reference_features` (data).
+
+Input `image` — Current query image, returned unchanged with its current ticket and grid.
+
+Input `query_features` — Current normalized ALIKED/DISK/SuperPoint features, with matching image context.
+
+Input `reference_features` — Normalized reference features from the same descriptor family; a different ticket is permitted.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `filter_threshold` | `0.1` | Value must be a finite number between 0 and 1. Inclusive score >= threshold, from 1 - native DMatch.distance. Raw candidates remain in Report. |
+| `minimum_matches` | `8` | Value must be a whole number between 4 and 4096. Minimum learned correspondences for a passing geometric fit. |
+| `minimum_inliers` | `6` | Value must be a whole number between 4 and 4096. Minimum geometric inliers for a passing fit. |
+| `minimum_inlier_ratio` | `0.5` | Value must be a finite number between 0 and 1. Required inlier fraction among learned matches. |
+| `geometry` | `"ransac"` | `ransac`, `lmeds`, `rho` Native robust homography method; one planar registration only. |
+| `ransac_threshold` | `3.0` | Value must be a finite number between 0.0001 and 1e+06. Geometric reprojection threshold in query source pixels. |
+| `ransac_confidence` | `0.995` | Value must be a finite number between 0.0001 and 0.999999. Robust-fit confidence, strictly below one. |
+| `ransac_iterations` | `2000` | Value must be a whole number between 1 and 100000. Maximum native robust-fit iterations. |
+| `maximum_features` | `1024` | Value must be a whole number between 4 and 4096. Bound each descriptor set before learned attention; no truncation. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound current query image pixels before diagnostics. |
+| `model_path` | `""` | Local ONNX file; never downloaded during execution. Save As rebases the path. |
+| `model_sha256` | `""` | Optional exact 64-hex SHA-256; checked against the bounded import snapshot. |
+| `maximum_model_bytes` | `134217728` | Value must be a whole number between 1 and 5.36871e+08. Bound model bytes read before hashing/import; not an internal DNN RAM limit. |
+| `feature_family` | `"aliked"` | `aliked`, `disk`, `superpoint` Explicit descriptor family matching the ONNX checkpoint; no family inference. |
+| `maximum_attention_pairs` | `1048576` | Value must be a whole number between 1 and 1.67772e+07. Bound reference rows times query rows before native attention; not an internal RAM limit. |
+
 ## Learned optical flow (`ml.optical_flow`)
 
 ML / Motion estimation

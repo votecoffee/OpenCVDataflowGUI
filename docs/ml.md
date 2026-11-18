@@ -22,6 +22,10 @@ tree/split controls, class priors, sample weights, optional feature importance
 and per-class votes. Portable models retain checked native trees and their
 training/preprocessing settings. This also uses the base OpenCV installation.
 
+Native [ALIKED/LightGlue ONNX blocks](native-lightglue.md) run through OpenCV 5
+without PyTorch and live under **OpenCV > Features Framework**. Existing Python
+LightGlue workflows below retain their settings and optional dependencies.
+
 ## Installation
 
 Point/box [prompted segmentation](prompted-segmentation.md) uses the pinned
