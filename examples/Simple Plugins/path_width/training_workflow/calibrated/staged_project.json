@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Nominal, narrow, and off-path",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/bead.png",
+          "assets/narrow.png",
+          "assets/offset.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "calibration",
+      "type": "input.calibration",
+      "name": "Plane calibration",
+      "parameters": {
+        "path": "assets/calibration.json",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "width",
+      "type": "inspect.simple_path_width",
+      "name": "Measure bead",
+      "parameters": {
+        "recipe_path": "assets/path_width/a1c8ebe292bf426c8de6a0f183e2b748.spw",
+        "manifest_sha256": "8959cc257cdb77decf242afa7889a9715fd7eb2490d23a1cbb1c28ec424d85bb",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        390.0,
+        80.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend",
+        "physical_measurements",
+        "mean_width_physical",
+        "longest_gap_physical",
+        "physical_trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "physical_trend"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "width",
+      "input": "image"
+    },
+    {
+      "source": "calibration",
+      "output": "profile",
+      "target": "width",
+      "input": "calibration"
+    }
+  ]
+}

@@ -42,3 +42,18 @@ your package location. This reuses the host's OpenCV installation.
 The supplied `assets/trace-mask.png` can be used with **Trace mask…** to
 regenerate an editable path from the reference. Mask tracing requires
 `scikit-image` and `scipy`. DXF import requires `ezdxf`.
+
+## Guided training setup
+
+The [dev14 pinned-plugin examples](training_workflow/README.md) add persistent
+source/reference alignment and unit guidance, path/positive-offset arrows,
+planned scan/search-band geometry, station selection/focus and 100% zoom.
+Settings are grouped; invalid values disable Preview/Stage and changed setup
+marks the old measured preview stale. Planned guides do not find edges.
+
+Load that folder's **plugin.py first**, then open its original or staged
+calibrated-bead/real-weld project. Restart if another PathWidth version is loaded.
+The explicit wheel requires no host installation. Native restore/cancel,
+import/align/reverse, linked preview, Stage/Apply/reopen and exact recipe Save As
+are checked. Eight earlier frames retain exact reports and default rasters.
+See the [dataset attribution and modifications](training_workflow/SOURCES.md).

@@ -1,0 +1,5 @@
+* -text
+LICENSE -diff
+WELD-LICENSE-data.txt -diff
+*.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+LICENSE-data.txt -diff

@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Weld replay",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/20230930_21h03m42s_B11_1.png",
+          "assets/20231113_19h46m30s_B13_3.png",
+          "assets/20231114_11h25m52s_B04_3.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspection",
+      "type": "inspect.simple_path_width",
+      "name": "SimplePathWidth",
+      "parameters": {
+        "recipe_path": "assets/weld.spw",
+        "manifest_sha256": "38de26530d10ca0f0cc64933a344aeb9afba11062cb0a30a95403ef1dfd8aa0d",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        370.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspection",
+      "input": "image"
+    }
+  ]
+}

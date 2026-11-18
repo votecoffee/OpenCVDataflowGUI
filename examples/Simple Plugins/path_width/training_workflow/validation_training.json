@@ -1,0 +1,70 @@
+[
+  {
+    "case": "calibrated",
+    "desktop_input_used": false,
+    "window_capture_used": false,
+    "planned_stations": 30,
+    "planned_length_px": 145.45991531188693,
+    "planned_length_physical": 40.000000000000014,
+    "units": "mm",
+    "setup_summary": "1 Reference \u2192 2 Path/alignment \u2192 3 Scan setup \u2192 4 Preview \u2192 Stage \u2192 Apply.\nAffine source \u2192 reference \u00b7 Start (198.45, 189.95) px \u00b7 Open path.\nSource \u2192 reference matrix: [1.25, 0.05, 7; 0.02, 1.3, 11]. This does not define measurement units.\nLength 145.46 px / 40.000 mm \u00b7 30 planned stations \u00b7 0 corner exclusions \u00b7 0 clipped scans/bands.\nPreview profile uses mm; inspection still requires the wired calibration.\nGreen arrow: path direction \u00b7 Yellow arrow: positive scan offset \u00b7 Thick scan sections: planned search bands, not found edges.",
+    "source_to_reference": [
+      [
+        1.25,
+        0.05000000000000015,
+        7.0
+      ],
+      [
+        0.02,
+        1.3,
+        11.000000000000014
+      ]
+    ],
+    "restored": true,
+    "native_import_align_reverse": true,
+    "guides_do_not_inspect": true,
+    "linked_station_preview": true,
+    "invalid_setup_and_stale_preview": true,
+    "cancel_preserves_applied": true,
+    "stage_preserves_applied_until_apply": true,
+    "apply_reopen": true,
+    "exact_recipe_save_as": true,
+    "original_assets_preserved": true,
+    "reference_preview_passed": true,
+    "reference_preview_coverage": 1.0
+  },
+  {
+    "case": "weld",
+    "desktop_input_used": false,
+    "window_capture_used": false,
+    "planned_stations": 31,
+    "planned_length_px": 248.00000000000006,
+    "planned_length_physical": null,
+    "units": "px",
+    "setup_summary": "1 Reference \u2192 2 Path/alignment \u2192 3 Scan setup \u2192 4 Preview \u2192 Stage \u2192 Apply.\nAffine source \u2192 reference \u00b7 Start (100.00, 165.00) px \u00b7 Open path.\nSource \u2192 reference matrix: [1.25, 0.05, 7; 0.02, 1.3, 11]. This does not define measurement units.\nLength 248.00 px \u00b7 31 planned stations \u00b7 0 corner exclusions \u00b7 0 clipped scans/bands.\nWidths/offsets use pixels. CAD units alone do not calibrate measurements.\nGreen arrow: path direction \u00b7 Yellow arrow: positive scan offset \u00b7 Thick scan sections: planned search bands, not found edges.",
+    "source_to_reference": [
+      [
+        1.25,
+        0.05000000000000015,
+        7.0
+      ],
+      [
+        0.02,
+        1.3,
+        11.000000000000014
+      ]
+    ],
+    "restored": true,
+    "native_import_align_reverse": true,
+    "guides_do_not_inspect": true,
+    "linked_station_preview": true,
+    "invalid_setup_and_stale_preview": true,
+    "cancel_preserves_applied": true,
+    "stage_preserves_applied_until_apply": true,
+    "apply_reopen": true,
+    "exact_recipe_save_as": true,
+    "original_assets_preserved": true,
+    "reference_preview_passed": true,
+    "reference_preview_coverage": 1.0
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "source_commit": "81da496",
+  "wheel_sha256": "4276490dbf0d291418088367be7fa83801008e19edd5e99ba144ba3e62242840",
+  "source_module_sha256": {
+    "opencv_simple_path_width/__init__.py": "fdd341257efc9ddbb76af534df1da31fc2ca9aae9df37f5e6593646a1f124823",
+    "opencv_simple_path_width/cad.py": "7168443081aa8a1a21881dcdb7aee6410bbd5027c151972263206a4f95742fc6",
+    "opencv_simple_path_width/calibration.py": "3b6c46a3a6afe250dd5ea0c3f079732ec0b177675d451d6c3124771948e53324",
+    "opencv_simple_path_width/centerline.py": "5a5e8bc2d288a62d3d6714f07505a94c5c2d34b67c1c9fb603f24dfdcc51bfdd",
+    "opencv_simple_path_width/cli.py": "da50f9d43fdf9c2759b8c13284d845026d44b3d6b49c56996a32ab83dbd2525c",
+    "opencv_simple_path_width/completed_review.py": "bb96a839c5e6ecca14ff38a5754162422d1db414953c61efd17d3869c6c03cf5",
+    "opencv_simple_path_width/dataflow.py": "03254e2fa8b0111060d9eef920ccd0f73aada45b503aeb93268a33399b9d5be2",
+    "opencv_simple_path_width/geometry.py": "27b22afa863d4f09406e9fc9315d07c3ca3bb6bd374e5da261c9e9386874674a",
+    "opencv_simple_path_width/measurement.py": "ba3ca333e2b4ac7f22ed5cd1d3424d4b450900064020fedce8e6842f012f501c",
+    "opencv_simple_path_width/overlay.py": "b9121b9a8007ba1a090f7717852bc0d43d5fabe922d2d7b9ad0fa81dd172f27a",
+    "opencv_simple_path_width/qt_canvas.py": "d8febd8ef7dc320d7a2d83920cf79a860d00b0119c12b0e50eff5da4f8c0dbef",
+    "opencv_simple_path_width/qt_completed_review.py": "5143d6e13ddcd973977ad8c84b44e919392cf464ac569869c9582b53657ae194",
+    "opencv_simple_path_width/qt_training.py": "d0fad57fb7dfe9dc90a96de5528b22621434db80db803f62147d573aa31311a5",
+    "opencv_simple_path_width/recipe.py": "69b2abf5556393ece8fa8eaf53bf5dafcc2778e219f5ea7acffb54032fd55c4b",
+    "opencv_simple_path_width/setup_cli.py": "bb438ccd779a4debe3353395a39e180a5fdb97ec722210846ec90cc1a7a8090e",
+    "opencv_simple_path_width/station_review.py": "72507220a5242328e4295a8eadd30c7554a4133736c0ccc43d2cc55f1b45dac1",
+    "opencv_simple_path_width/trace_cli.py": "016595ef0e80f3743747f9cb3853965bdddb154e82f44ff9e73d8ef08728e6ac",
+    "opencv_simple_path_width/training_review.py": "5e4f72f548c400340afc6412eb36fa61206eab151dbf8878cc2881e18d453bd1",
+    "opencv_simple_path_width/trend.py": "ce73da76d978b0039c0d15d6aab3776c730db37a3fecfa011f878172d5b0934d"
+  },
+  "changed_modules": [
+    "opencv_simple_path_width/qt_canvas.py",
+    "opencv_simple_path_width/qt_training.py"
+  ],
+  "added_modules": [
+    "opencv_simple_path_width/training_review.py"
+  ],
+  "runtime_algorithms_unchanged": true
+}

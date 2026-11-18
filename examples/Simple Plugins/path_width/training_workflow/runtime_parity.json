@@ -1,0 +1,72 @@
+{
+  "core_only": true,
+  "native": false,
+  "exported_reviews_verified": 11,
+  "cases": [
+    {
+      "case": "generated",
+      "frame": 0,
+      "passed": true,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "generated",
+      "frame": 1,
+      "passed": false,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "calibrated",
+      "frame": 0,
+      "passed": true,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "calibrated",
+      "frame": 1,
+      "passed": false,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "calibrated",
+      "frame": 2,
+      "passed": false,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "weld",
+      "frame": 0,
+      "passed": true,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "weld",
+      "frame": 1,
+      "passed": true,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "weld",
+      "frame": 2,
+      "passed": false,
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": false
+    }
+  ],
+  "scope": "Exact complete station/scalar/physical reports and default raster bytes; no accuracy claim"
+}
