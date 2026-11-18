@@ -1,6 +1,5 @@
 """Observed mask continuity, bounded association, stream lifecycle and current provenance."""
 
-
 import numpy as np
 import pytest
 
@@ -239,3 +238,34 @@ def test_memory_geometry_and_capacity_limits_fail_without_partial_masks(make, pa
 def test_parameter_validation_is_exposed(make, parameters):
     with pytest.raises(ValueError):
         make(**parameters).validate_parameters()
+
+
+def test_current_box_measurements_follow_selected_mask_and_preserve_source_metrics(make):
+    data = inputs([(2, 3)])
+    item = data["instances"].value["items"][0]
+    item["geometry"]["bbox"] = [0, 0, 40, 24]
+    item["metrics"] = {
+        "area": 960,
+        "aspect_ratio": 40 / 24,
+        "mask_coverage": 36 / 960,
+        "mask_mean_confidence": 0.88,
+        "custom_quality": 0.7,
+    }
+    block = make()
+    result = block.execute(data)
+    current = result.outputs["tracks"]["items"][0]
+    assert current["geometry"]["bbox"] == [2, 3, 6, 6]
+    assert current["metrics"]["area"] == 36
+    assert current["metrics"]["aspect_ratio"] == 1
+    assert current["metrics"]["mask_coverage"] == 1
+    assert current["metrics"]["mask_mean_confidence"] == 0.88
+    assert current["source_metrics"]["area"] == 960
+    assert current["source_geometry"]["bbox"] == [0, 0, 40, 24]
+    assert current["metrics"]["custom_quality"] == 0.7
+    selected = np.zeros((24, 40), np.uint8)
+    selected[3:6, 2:8] = 255
+    data["mask"] = selected
+    current = block.execute(data).outputs["tracks"]["items"][0]
+    assert current["metrics"]["area"] == current["metrics"]["mask_area"] == 18
+    assert current["metrics"]["aspect_ratio"] == 2
+    assert current["metrics"]["mask_mean_confidence"] is None

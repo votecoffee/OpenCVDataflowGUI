@@ -477,11 +477,18 @@ class TrackInstanceMasks(SequenceBlock):
                 label_id=track["id"],
                 track_hits=track["hits"],
             )
+            item["source_metrics"] = copy.deepcopy(item.get("metrics", {}))
             item["metrics"] = {
-                **item.get("metrics", {}),
+                **item["source_metrics"],
                 "center_x": float(observed["center"][0]),
                 "center_y": float(observed["center"][1]),
                 "mask_area": observed["area"],
+                "area": width * height,
+                "aspect_ratio": width / height,
+                "mask_coverage": observed["area"] / (width * height),
+                "mask_mean_confidence": item["source_metrics"].get("mask_mean_confidence")
+                if mask is None
+                else None,
                 "x": x,
                 "y": y,
                 "width": width,

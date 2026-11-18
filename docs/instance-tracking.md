@@ -58,7 +58,11 @@ ID is the run-scoped Track key. Reset/new contexts may restart numeric IDs.
 Tracks is an ordinary sortable/filterable box collection whose items retain
 independent overlapping masks, current scores and source geometry. Its active
 geometry is the current mask's tight bounds; mask centroids/areas are measured
-from selected current pixels. Existing **Select instance mask**, configured by ID,
+from selected current pixels. Current box area/aspect ratio and mask coverage use
+those tight bounds. Original geometry/metrics remain in Source geometry/Source
+metrics, including custom fields. Mean mask confidence is unset when selection
+is supplied, since per-pixel confidence is unavailable for recomputing that mean.
+Existing **Select instance mask**, configured by ID,
 can select a temporal track. The Labels image resolves overlapping current masks
 by score and then lower track ID; Overlap count and the collection preserve overlap.
 
