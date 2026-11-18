@@ -1,0 +1,46 @@
+{
+  "wheel_sha256": "c299e0d8433c10d245f5ec6849eed9843fb761eab53a12cdd3c99e1ee495275c",
+  "source_module_sha256": {
+    "opencv_simple_3d_locate/__init__.py": "d151e854399386dd89ea2eee57da314a693441f5e0187e9658bb08043d69fc13",
+    "opencv_simple_3d_locate/alternatives.py": "32bcd620ea9526560c0c924b9dd7df8b109a04f52cb97fd6ddd6d9073f84248e",
+    "opencv_simple_3d_locate/boundary.py": "e1a6e7335df813cfe7de987e3166b459975191eb995b54a4b9ff8716694a8670",
+    "opencv_simple_3d_locate/capture.py": "b2fdb6368efd931d585c39e2a24af9fbeda8467e06f16f0bebd7a7be6631fe04",
+    "opencv_simple_3d_locate/cli.py": "25a87b41f7491645e8b6fe0e1c2b2e9c7b7e754b78443754345e9c4aa78ff801",
+    "opencv_simple_3d_locate/completed_review.py": "0885289923c2e51028c769de405221ea9d2ddaae1a750af5e47653af432e64f3",
+    "opencv_simple_3d_locate/dataflow.py": "31676c63176931fb6592d809d1afcc6fa0d1d63f58c6aaf0bef70d66b2966d45",
+    "opencv_simple_3d_locate/depth.py": "f10daa5925c58d1dfb3ba56f2b83e1fe416156f4473bb6f2cb60cf19f5036dfe",
+    "opencv_simple_3d_locate/depth_review.py": "27224ee21a10177ddd2666aef1d3356736210fc295edf03c8b74ea6887e58708",
+    "opencv_simple_3d_locate/diagnostics.py": "58fffc175721d56e788096f4d1cfd437741416595f818ec797f402d66b2161f3",
+    "opencv_simple_3d_locate/features.py": "7839d39000083b8d6d056dc182a734c2428f8c195271c36c8b9b48abfb5dfceb",
+    "opencv_simple_3d_locate/geometry.py": "ed5862b7416b2b54aea98b7c28a5a920b8c86f7b54c28b649006fdc00d1320a2",
+    "opencv_simple_3d_locate/graphics.py": "e58b68713190147018350cd03dc1d06b82230093045be6eb4d4c72189f877045",
+    "opencv_simple_3d_locate/locate.py": "ae5e92834243cb5049d282b6d51b673f539b9bee7894037f604feda8b78d324a",
+    "opencv_simple_3d_locate/mesh.py": "552b5e302c1fc8f1ce1480664e9fc90694ab291f34008c672bcf192b6354ecf0",
+    "opencv_simple_3d_locate/mesh_io.py": "0b4ac59fcac9d53995bb8219f5962e8b34d5ae73a7777371540602522e5a692e",
+    "opencv_simple_3d_locate/model.py": "ab8256d52835c5287b51e5c749ebb08bec7852a3a1a8b11ea1bc95dc074fe264",
+    "opencv_simple_3d_locate/observation.py": "0174bf1f192b97928542bf10b27004dd8d9c0d5795d6b81abf13ab57e13f46b3",
+    "opencv_simple_3d_locate/optimization.py": "57dfec023a0e5c039b79709baa7f1e97ad3f476139c8c6bbc93ddca61e9ababc",
+    "opencv_simple_3d_locate/overlap.py": "0fbba83b2dec4d7bd7d2f4f1a3e39e66a2737080e2ed16789e256acf1998af05",
+    "opencv_simple_3d_locate/persistence.py": "82485847ee36dfdeb5c19c86639d751d7f340310ad4706ea9689d751ab383f1c",
+    "opencv_simple_3d_locate/planes.py": "153088255324559a3b7b53e2755ce71b41046a6a914e7ff522ed3758dcb81754",
+    "opencv_simple_3d_locate/preview_capture.py": "a9e53fabc548c23d128ababe366cd85497859e5b44cb44f9f10f71a4968a711a",
+    "opencv_simple_3d_locate/projective.py": "8fce3d54a7e9331f8abc8e51c7c69c5704cf304ce93157f39382e554ef0e8990",
+    "opencv_simple_3d_locate/qt_boundary_review.py": "e74a69feed8c5259afda113119e001dec6b693e97d73329d4cc715a104311ca1",
+    "opencv_simple_3d_locate/qt_completed_review.py": "ee5152b6d7c5ac511ab55674cf97234748c6405696c57e3b1aa613af44e7f2bc",
+    "opencv_simple_3d_locate/qt_depth_review.py": "75ecd3ff01c7f8085bb2d888e5b27387b7cab607a2391fcfcc5a92d2278a7e9f",
+    "opencv_simple_3d_locate/qt_optimization.py": "dd205d5ab3f0d95a8b2771a806bf221a21328b0f224f88e7025bca67e6731e47",
+    "opencv_simple_3d_locate/qt_training.py": "3d44e0df0cee34a1c3e773301d2e63a877da66cc9615d0d4312a1f568ca00b65",
+    "opencv_simple_3d_locate/regions.py": "5470869cffd39ff8977462d7f40f7bac717295be888b4878c86c4f1d37fc55e8",
+    "opencv_simple_3d_locate/review.py": "6c81de68642cff8d2b5a207184942437750d5c050b95196849939c6f3aa90a13",
+    "opencv_simple_3d_locate/training_setup.py": "62234c2035a21c68f733a1c329e2444b19b167b97a7c1340ccf981c10422983d"
+  },
+  "changed_modules": [
+    "opencv_simple_3d_locate/qt_training.py"
+  ],
+  "added_modules": [
+    "opencv_simple_3d_locate/training_setup.py"
+  ],
+  "runtime_algorithms_unchanged": true,
+  "follow_up": "Adapts initial popup size to the screen and keeps cancellation/teaching actions outside scrollable content.",
+  "source_base_commit": "383ec84"
+}

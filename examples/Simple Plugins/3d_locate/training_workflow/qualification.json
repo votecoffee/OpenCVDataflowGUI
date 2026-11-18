@@ -1,0 +1,20 @@
+{
+  "source_checks": 209,
+  "wheel_loaded_affected_checks": 81,
+  "existing_host_checks": 3,
+  "packaged_host_checks": 3,
+  "native_training_workflows": 2,
+  "accepted_counts": [
+    1,
+    0
+  ],
+  "unchanged_training_arrays_settings_and_match_records": true,
+  "earlier_runtime_projects": 4,
+  "earlier_frozen_exports": 4,
+  "earlier_numeric_xyz_rgb_and_default_rasters_exact": true,
+  "host_environment_modified": false,
+  "hands_on_operator_acceptance": false,
+  "matching_accuracy_qualified": false,
+  "post_layout_source_gui_checks": 8,
+  "screen_adaptive_scroll_and_sticky_actions": true
+}

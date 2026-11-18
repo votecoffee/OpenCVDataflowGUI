@@ -120,3 +120,20 @@ This is a synthetic workflow check. Real depth-camera and dense bin-picking
 qualification remain future work. The current OpenCV surface-matching backend
 has a [published patent notice](https://docs.opencv.org/4.13.0/d9/d25/group__surface__matching.html).
 The tool's dependency notes record it separately from project copyright terms.
+
+## Native teaching and background jobs
+
+The [dev22 training workflows](training_workflow/README.md) make the native
+orbit/flyaround cloud the primary teaching view. Preview kept/excluded crop
+points and derived bounds before applying a crop; Undo restores the previous
+cloud/CAD in the session. Persistent units/frame/camera/depth/normal/budget
+feedback accompanies bounded background train/compile/test jobs and stale/
+cancel/close guards. A running native phase finishes before cancellation.
+
+Load that folder's **plugin.py first**, then open its original or retrained
+T-LESS projects. Restart if another locator package is imported. The explicit
+wheel needs no host installation. Both native workflows preserve exact trained
+arrays/settings and original match records through crop/undo/cancel/train/test,
+Stage/Apply/reopen and exact archive Save As. Counts remain 1/0; the known miss
+stays a miss. Four earlier runtime projects retain exact reports/poses/XYZ/RGB/
+default rasters. See [attribution and modifications](training_workflow/SOURCES.md).

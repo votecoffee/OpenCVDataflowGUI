@@ -1,4 +1,5 @@
 import json
+import time
 from pathlib import Path
 
 import cv2
@@ -300,6 +301,11 @@ def test_real_tless_training_captures_completed_inputs_without_changing_recipe(a
         assert not dialog.viewer.image_item.pixmap().isNull()
         assert "unverified" in dialog.capture_status.text()
         dialog._preview()
+        deadline = time.monotonic() + 45
+        while getattr(dialog, "future", None) is not None:
+            app.processEvents()
+            assert time.monotonic() < deadline, dialog.status.text()
+            time.sleep(0.002)
         assert len(dialog.result.matches) == block.last_result.outputs["count"] == 1
         assert draft == block.parameters
     finally:
