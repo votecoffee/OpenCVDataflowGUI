@@ -818,6 +818,7 @@ def builtin_registry():
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
     from .polynomial_roots import SolvePolynomialRoots
+    from .pose_crop import CropPose
     from .poses import POSE_BLOCKS
     from .principal_components import (
         FitPrincipalComponents,
@@ -1023,6 +1024,7 @@ def builtin_registry():
         RenderMosaicTile,
         PasteImagePatch,
         CropSubpixel,
+        CropPose,
         PolarImageWarp,
         UnwrapPathStrip,
         MapStripGraphics,

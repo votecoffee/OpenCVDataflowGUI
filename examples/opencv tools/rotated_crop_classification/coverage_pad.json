@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/scene.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "pose.define",
+      "name": "Define image pose",
+      "parameters": {
+        "x": 8.0,
+        "y": 8.0,
+        "angle_degrees": 25.0,
+        "scale": 1.0
+      },
+      "position": [
+        360,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "points",
+        "angle_degrees",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "crop",
+      "type": "cv.crop_pose",
+      "name": "Crop at image pose",
+      "parameters": {
+        "width": 64,
+        "height": 32,
+        "local_width": 64.0,
+        "local_height": 32.0,
+        "center_x": 0.0,
+        "center_y": 0.0,
+        "interpolation": "linear",
+        "bounds_policy": "pad",
+        "border": "constant",
+        "border_value": 0.0,
+        "minimum_coverage": 1.0,
+        "maximum_image_pixels": 16777216,
+        "maximum_crop_pixels": 1048576
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "pose",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "valid_mask",
+        "coverage"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original pose-normalized inspection controls - MIT",
+      "description": "Original MIT synthetic parts, training windows, native linear SVM weights, ONNX export and projects by OpenCVDataflowGUI contributors. Scenes are drawn analytically with separate noise seeds. Blob moments measure center and an unoriented 180-degree axis; both texture classes are unchanged by that ambiguity. One unmarked part is an explicit low-confidence rejection control. Five known parts passing does not establish production accuracy or calibrated confidence. The existing parallel inspection ToolBlock owns per-part jobs and child tickets; each crop retains its mapping to the original parent image. See README.md, SOURCES.md and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "pose",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "crop",
+      "input": "image"
+    },
+    {
+      "source": "pose",
+      "output": "pose",
+      "target": "crop",
+      "input": "pose"
+    },
+    {
+      "source": "crop",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

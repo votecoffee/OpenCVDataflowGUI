@@ -1,0 +1,600 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/scene.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.convert",
+      "name": "Convert image",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Threshold",
+      "parameters": {
+        "value": 80.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "parts",
+      "type": "inspect.blobs",
+      "name": "Find blobs",
+      "parameters": {
+        "connectivity": 8,
+        "min_area": 1000,
+        "max_area": 0,
+        "expected_count": 2,
+        "algorithm": "default",
+        "region_mode": "center",
+        "check_count": false
+      },
+      "position": [
+        1050,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count",
+        "centroids",
+        "data",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "flow.inspect_each",
+      "name": "Inspect each pose in parallel",
+      "parameters": {
+        "workers": 3,
+        "max_items": 64,
+        "max_result_mb": 128.0,
+        "max_input_mb": 256.0,
+        "stop_after_passes": 0,
+        "stop_after_failures": 0,
+        "result_policy": "all_pass",
+        "required_passes": 1,
+        "allowed_failures": 0,
+        "empty_policy": "fail",
+        "image_terminal": "image",
+        "pose_terminal": "pose",
+        "context_terminal": "context",
+        "image_output": "crop",
+        "preview_index": 0,
+        "feature_angle": "fixed"
+      },
+      "position": [
+        1400,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "features",
+        "context"
+      ],
+      "exposed_outputs": [
+        "results",
+        "group",
+        "images",
+        "pass_count",
+        "fail_count",
+        "error_count",
+        "complete",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "inspection": {
+        "block_type": "ToolBlocks",
+        "subtype": "Reusable",
+        "toolblock_version": 1,
+        "name": "ToolBlock",
+        "graph": {
+          "schema_version": 1,
+          "blocks": [
+            {
+              "id": "image",
+              "type": "flow.split",
+              "name": "Split parallel branches",
+              "parameters": {
+                "branches": 3,
+                "workers": 1
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "value"
+              ],
+              "exposed_outputs": [
+                "branch_1",
+                "branch_2",
+                "branch_3",
+                "branch_4"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "pose",
+              "type": "pose.offset",
+              "name": "Offset pose",
+              "parameters": {
+                "pose_offset_x": 0.0,
+                "pose_offset_y": 0.0,
+                "pose_offset_angle": 0.0
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "pose"
+              ],
+              "exposed_outputs": [
+                "pose",
+                "points",
+                "angle_degrees"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "crop",
+              "type": "cv.crop_pose",
+              "name": "Crop at image pose",
+              "parameters": {
+                "width": 64,
+                "height": 32,
+                "local_width": 64.0,
+                "local_height": 32.0,
+                "center_x": 0.0,
+                "center_y": 0.0,
+                "interpolation": "linear",
+                "bounds_policy": "strict",
+                "border": "constant",
+                "border_value": 0.0,
+                "minimum_coverage": 1.0,
+                "maximum_image_pixels": 16777216,
+                "maximum_crop_pixels": 1048576
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "image",
+                "pose",
+                "mask",
+                "region"
+              ],
+              "exposed_outputs": [
+                "image",
+                "geometry",
+                "valid_mask",
+                "coverage",
+                "result_graphics"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "convert",
+              "type": "cv.convert",
+              "name": "Convert image",
+              "parameters": {
+                "color_format": "gray",
+                "pixel_depth": "uint8"
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "image"
+              ],
+              "exposed_outputs": [
+                "image"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "net",
+              "type": "ml.dnn",
+              "name": "DNN ONNX inference",
+              "parameters": {
+                "contract_path": "bundle/contract.json",
+                "receipt_mode": "summary",
+                "fallback_policy": "error",
+                "model_path": "",
+                "width": 32,
+                "height": 16,
+                "color_format": "gray",
+                "resize_mode": "stretch",
+                "padding_value": 0.0,
+                "scale": 0.00392156862745098,
+                "mean": [
+                  0.0
+                ],
+                "std": [
+                  1.0
+                ],
+                "input_name": "image",
+                "output_names": [
+                  "scores"
+                ],
+                "engine": "classic",
+                "backend": "opencv",
+                "target": "cpu",
+                "fusion": true,
+                "max_output_elements": 1000000
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "image",
+                "mask",
+                "region"
+              ],
+              "exposed_outputs": [
+                "tensors",
+                "preprocessing"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "classify",
+              "type": "ml.classify",
+              "name": "Classify DNN tensor",
+              "parameters": {
+                "output_name": "",
+                "labels": [
+                  "horizontal",
+                  "vertical"
+                ],
+                "softmax": true,
+                "top_k": 2,
+                "minimum_confidence": 0.9,
+                "accepted_labels": []
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "tensors"
+              ],
+              "exposed_outputs": [
+                "predictions",
+                "label",
+                "confidence"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "text",
+              "type": "cv.annotation_layer",
+              "name": "Add annotation layer",
+              "parameters": {
+                "shape": "label",
+                "layer_name": "annotation",
+                "origin": [
+                  8.0,
+                  8.0
+                ],
+                "end": [
+                  64.0,
+                  42.0
+                ],
+                "radius": 12.0,
+                "label": "Inspection",
+                "color_rgb": [
+                  255,
+                  197,
+                  66
+                ],
+                "thickness": 2,
+                "filled": false,
+                "font_file": "",
+                "font_size": 12,
+                "font_index": 0,
+                "text_direction": "auto",
+                "text_outline": 1
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "image",
+                "points",
+                "text"
+              ],
+              "exposed_outputs": [
+                "result_graphics"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            },
+            {
+              "id": "overlay",
+              "type": "cv.overlay_result_graphics",
+              "name": "Overlay result graphics",
+              "parameters": {
+                "excluded_graphics": {}
+              },
+              "position": [
+                0.0,
+                0.0
+              ],
+              "exposed_inputs": [
+                "image",
+                "graphics_1",
+                "graphics_2"
+              ],
+              "exposed_outputs": [
+                "image"
+              ],
+              "thumbnail": true,
+              "preview_output": ""
+            }
+          ],
+          "connections": [
+            {
+              "source": "image",
+              "output": "branch_1",
+              "target": "crop",
+              "input": "image"
+            },
+            {
+              "source": "image",
+              "output": "branch_2",
+              "target": "text",
+              "input": "image"
+            },
+            {
+              "source": "image",
+              "output": "branch_3",
+              "target": "overlay",
+              "input": "image"
+            },
+            {
+              "source": "pose",
+              "output": "pose",
+              "target": "crop",
+              "input": "pose"
+            },
+            {
+              "source": "pose",
+              "output": "points",
+              "target": "text",
+              "input": "points"
+            },
+            {
+              "source": "crop",
+              "output": "image",
+              "target": "convert",
+              "input": "image"
+            },
+            {
+              "source": "convert",
+              "output": "image",
+              "target": "net",
+              "input": "image"
+            },
+            {
+              "source": "net",
+              "output": "tensors",
+              "target": "classify",
+              "input": "tensors"
+            },
+            {
+              "source": "classify",
+              "output": "label",
+              "target": "text",
+              "input": "text"
+            },
+            {
+              "source": "crop",
+              "output": "result_graphics",
+              "target": "overlay",
+              "input": "graphics_1"
+            },
+            {
+              "source": "text",
+              "output": "result_graphics",
+              "target": "overlay",
+              "input": "graphics_2"
+            }
+          ]
+        },
+        "inputs": {
+          "image": {
+            "block": "image",
+            "port": "value"
+          },
+          "pose": {
+            "block": "pose",
+            "port": "pose"
+          }
+        },
+        "outputs": {
+          "crop": {
+            "block": "crop",
+            "port": "image"
+          },
+          "geometry": {
+            "block": "crop",
+            "port": "geometry"
+          },
+          "overlay": {
+            "block": "overlay",
+            "port": "image"
+          },
+          "label": {
+            "block": "classify",
+            "port": "label"
+          },
+          "confidence": {
+            "block": "classify",
+            "port": "confidence"
+          }
+        }
+      }
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1800,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original pose-normalized inspection controls - MIT",
+      "description": "Original MIT synthetic parts, training windows, native linear SVM weights, ONNX export and projects by OpenCVDataflowGUI contributors. Scenes are drawn analytically with separate noise seeds. Blob moments measure center and an unoriented 180-degree axis; both texture classes are unchanged by that ambiguity. One unmarked part is an explicit low-confidence rejection control. Five known parts passing does not establish production accuracy or calibrated confidence. The existing parallel inspection ToolBlock owns per-part jobs and child tickets; each crop retains its mapping to the original parent image. See README.md, SOURCES.md and truth.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "parts",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspect",
+      "input": "image"
+    },
+    {
+      "source": "parts",
+      "output": "collection",
+      "target": "inspect",
+      "input": "features"
+    },
+    {
+      "source": "inspect",
+      "output": "overlay",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

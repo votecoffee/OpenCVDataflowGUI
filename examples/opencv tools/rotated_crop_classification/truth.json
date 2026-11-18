@@ -1,0 +1,232 @@
+{
+  "asset_sha256": {
+    "assets/all-known.png": "df63bded5574d601b3f56999e58d3dc4eb0724f3d54fca81fbd3270d33af19a9",
+    "assets/blank.png": "3888079a825b47ed4721a0b20d35caf0307805273cfccb8961974e355ec72c78",
+    "assets/classifier-weights.json": "229a31f44c4ff3370ca68b276c894548b60c23fb4df4da38463d2454838ba185",
+    "assets/classifier.onnx": "c10fdb61119bd429579b176658fbacaf63200e41a8ad09fdf3d699ab6a652bd7",
+    "assets/one-part.png": "d1aa9b68753a8c8df392bd1659b2fbf65db3a3afaf578ce99afab123d750b2ee",
+    "assets/scene.png": "b8765faff36db211743abaa9e0db69a8caf7c08e1d0642bb90b9d4f51854b531",
+    "assets/scene16.png": "34cb8cad9a9302925480cbb817d7d17b7d7153895d2b599cd282820095bdfe42",
+    "assets/train-horizontal-00.png": "592518250292e42f530a3614f1062c1220003ecd6572c397197e6d3e36c72dd6",
+    "assets/train-horizontal-01.png": "de0fab791f8abe0f240e46b14c0a9854aafd9db8bd035148fa35c62b365f882c",
+    "assets/train-horizontal-02.png": "ccab7139ff85e42203a11249d3ef00206a88f77e5d1f931cafddc991f5bfd76a",
+    "assets/train-horizontal-03.png": "07c92c411e2189be9cf8f41082a73aa80d560a62cd4e48c6f33e9dcd4f2bddb1",
+    "assets/train-horizontal-04.png": "6403cdba634b874f4ee99ad01dce417b21f1c12620aee3922382f308c53737a6",
+    "assets/train-horizontal-05.png": "b2065826afd8164211182b1f39b7b933ec160d83f60f3c591cb526f385554873",
+    "assets/train-horizontal-06.png": "342a75c1619fcc259ffe99a54942893e84866f8887204f38fce5a2bdf8ccac58",
+    "assets/train-horizontal-07.png": "6a23ee0c2850de5f93a0a9e048eae680b73b205609c019fe4eb5c2e7ba56e786",
+    "assets/train-horizontal-08.png": "99277392b1ae32df31d0851a58b3ed97fef3b0aa31026ac3793154fb72a56aaf",
+    "assets/train-horizontal-09.png": "1683d1dd55adff52d74537984d477a3a09a3f9c3403b86fd824dd2b134e37587",
+    "assets/train-horizontal-10.png": "cfcede59284370b9f4a0b58d6166ae66a9a5eb91aac5aed197f10e856c509ac3",
+    "assets/train-horizontal-11.png": "30c3ff0c95c04bb56ab925f2b0484290dced71388ac5d2990e7ecdfd2df85705",
+    "assets/train-vertical-00.png": "ca64b0f26b425c2019103972c15969f51bb7e67d8f1e2efc49d1982fd8e2fa20",
+    "assets/train-vertical-01.png": "420c6e021be89243a26a1077899e6419ef7f190e9b93f0b1a90d217835315c0f",
+    "assets/train-vertical-02.png": "30b1b322dc928f3a76ee7c133311a0ee6175bfe951596a2572d229557e70011b",
+    "assets/train-vertical-03.png": "fc874071a7dbb842f2fb1822869bedcae1c334df9c1b3823dc870a8342382271",
+    "assets/train-vertical-04.png": "ae684158903a51b5dbd11389bfc50991dac7d20e35ff34ff7226ec7f6d8de047",
+    "assets/train-vertical-05.png": "ff79b264cf8ad2c98aedf96b74b0b6b72d37fc5291dfd7eb85d6901e352dd0d0",
+    "assets/train-vertical-06.png": "19aaaedfb7d2b3f2c903f173f733206b78cd8e5f5a5ed3c72e5c6e2240f3bcf8",
+    "assets/train-vertical-07.png": "8c3bf23e5d62bd5bbf904539d0b31820b76050043c60afe3f2091f40223b1b25",
+    "assets/train-vertical-08.png": "1e564d9bf95213800d3b76fde15b1aae908a3e8e1bf25fd3a17144e9979c5441",
+    "assets/train-vertical-09.png": "d95d62aa42d72ea27b0ea2800de33500270b22dc29c15dadc14d244337fd19a7",
+    "assets/train-vertical-10.png": "affee186aadf929a717e49709c6f78d37f08ba73ec0030c044aa4a2753b59f33",
+    "assets/train-vertical-11.png": "1e0d044ceade5dc3badeda022a84631f8b6f74ab2bcc21283d36920fe23f98ab",
+    "bundle/contract.json": "c960800c98971a82dba40f6b0cf220dc398e97f8b4668bd011b171f7a2c15921",
+    "bundle/model.onnx": "c10fdb61119bd429579b176658fbacaf63200e41a8ad09fdf3d699ab6a652bd7"
+  },
+  "cases": {
+    "accepted_horizontal": {
+      "image": "scene.png",
+      "target": "inspect"
+    },
+    "all_known": {
+      "image": "all-known.png",
+      "target": "inspect"
+    },
+    "coverage_pad": {
+      "image": "scene.png",
+      "target": "crop"
+    },
+    "coverage_strict": {
+      "image": "scene.png",
+      "target": "crop"
+    },
+    "empty": {
+      "image": "blank.png",
+      "target": "inspect"
+    },
+    "high_depth": {
+      "image": "scene16.png",
+      "target": "inspect"
+    },
+    "no_alignment": {
+      "image": "scene.png",
+      "target": "inspect"
+    },
+    "parallel_inspection": {
+      "image": "scene.png",
+      "target": "inspect"
+    },
+    "selected_parts": {
+      "image": "scene.png",
+      "target": "inspect"
+    },
+    "serial_inspection": {
+      "image": "scene.png",
+      "target": "inspect"
+    },
+    "single_part": {
+      "image": "one-part.png",
+      "target": "inspect"
+    }
+  },
+  "parts": [
+    {
+      "angle": -55,
+      "center": [
+        90,
+        80
+      ],
+      "label": "horizontal"
+    },
+    {
+      "angle": -20,
+      "center": [
+        250,
+        80
+      ],
+      "label": "vertical"
+    },
+    {
+      "angle": 25,
+      "center": [
+        410,
+        80
+      ],
+      "label": "horizontal"
+    },
+    {
+      "angle": 70,
+      "center": [
+        90,
+        230
+      ],
+      "label": "vertical"
+    },
+    {
+      "angle": 110,
+      "center": [
+        250,
+        230
+      ],
+      "label": "horizontal"
+    },
+    {
+      "angle": 160,
+      "center": [
+        410,
+        230
+      ],
+      "label": "unknown"
+    }
+  ],
+  "reference_scope": "Analytic construction centers/angles/classes; noisy held-out scenes are separate from training, not industrial accuracy data",
+  "training": [
+    {
+      "file": "train-horizontal-00.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-01.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-02.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-03.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-04.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-05.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-06.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-07.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-08.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-09.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-10.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-horizontal-11.png",
+      "label": "horizontal"
+    },
+    {
+      "file": "train-vertical-00.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-01.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-02.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-03.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-04.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-05.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-06.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-07.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-08.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-09.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-10.png",
+      "label": "vertical"
+    },
+    {
+      "file": "train-vertical-11.png",
+      "label": "vertical"
+    }
+  ]
+}

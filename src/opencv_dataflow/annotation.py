@@ -3,7 +3,13 @@
 from pathlib import Path
 
 from .core import Block, Port, Result
-from .graphics_layers import RESULT_GRAPHICS, GraphicDrawing, graphic_circle, graphic_object
+from .graphics_layers import (
+    RESULT_GRAPHICS,
+    GraphicDrawing,
+    GraphicsBundle,
+    graphic_circle,
+    graphic_object,
+)
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import ValuePacket, require_same_frame
 from .unicode_text import TextStyle, text_masks
@@ -108,7 +114,8 @@ class AnnotationLayer(Block):
 
     def process(self, inputs):
         if not self.generate_graphics:
-            return Result({})
+            # An annotation invocation completed even when its diagnostic layer is empty.
+            return Result({RESULT_GRAPHICS: GraphicsBundle(())})
         p = self.parameters
         shape = p["shape"]
         origin, end = p["origin"], p["end"]

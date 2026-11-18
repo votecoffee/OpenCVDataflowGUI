@@ -1668,6 +1668,34 @@ Inputs: `image` (image).
 | `width` | `0` | Value must be a whole number at least 0. |
 | `height` | `0` | Value must be a whole number at least 0. |
 
+## Crop at image pose (`cv.crop_pose`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `pose` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `pose` — Required affine image_pose_v1. Shared-root poses are mapped into this image grid.
+
+Input `mask` — Selected measured pixels; intersected with Region and nonzero alpha.
+
+Input `region` — Selection in this image frame; excluded pixels are replaced before interpolation.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `64` | Value must be a whole number between 1 and 4096. Output columns. Local width is a pixel-cell span; centers use a half-pixel resize convention. |
+| `height` | `32` | Value must be a whole number between 1 and 4096. Output rows, independent of the inspected local height. |
+| `local_width` | `64.0` | Value must be a finite number between 0.0001 and 100000. Inspected width in pose-local units, including the pose scale/shear. |
+| `local_height` | `32.0` | Value must be a finite number between 0.0001 and 100000. Inspected height in pose-local units. Pose origin is the crop center by default. |
+| `center_x` | `0.0` | Value must be a finite number between -100000 and 100000. Crop center offset along the pose's local X axis. |
+| `center_y` | `0.0` | Value must be a finite number between -100000 and 100000. Crop center offset along the pose's local Y axis. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Higher-order interpolation uses a conservative support halo, not a ringing coverage estimate. |
+| `bounds_policy` | `"strict"` | `strict`, `pad` Strict rejects any unsupported sample. Pad emits a crop and measured coverage judgment. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` Extrapolation for image-edge samples in Pad mode; it never makes them measured support. |
+| `border_value` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Stored source units; also fills excluded mask/region/transparent samples before sampling. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Inclusive supported fraction required to pass in Pad mode. |
+| `maximum_image_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. |
+| `maximum_crop_pixels` | `1048576` | Value must be a whole number between 1 and 1.67772e+07. |
+
 ## Crop subpixel patch (`cv.crop_subpixel`)
 
 Image processing / Geometry

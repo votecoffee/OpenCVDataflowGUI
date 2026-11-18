@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 46 | 4 | 12 | 62 | 74.2% |
+| 2. ML and DNN | 47 | 3 | 12 | 62 | 75.8% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 272 | 36 | 162 | 470 | 57.9% |
+| **Overall** | 273 | 35 | 162 | 470 | 58.1% |
 
 <!-- coverage-summary:end -->
 
@@ -370,7 +370,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S2-46 | HOG sliding-window object detection | HOGDescriptor.detectMultiScale with configured detector weights | Complete | ml.hog_detect provides bounded single/multiscale native searches, grouping, deterministic IoU suppression, mask/region filtering and raw weights; ml.hog_detector_model configures native people presets, explicit weights or exports compatible binary linear image SVMs, with strict portable model I/O. [Thirteen projects](<../examples/opencv tools/hog_detection/README.md>) qualify known boxes, threshold extras, uint16, count/blank failures and invalid models. Independent 501-window descriptor-dot margins match below 3.3e-8; Debug/Lean, JSON/XML/Save As, input gates and cold worker/parallel/preview teardown are checked. Stock presets have blank-image integration checks only; no industrial accuracy, calibrated confidence or performance claim. [Contract](hog-detection.md). |
 | S2-47 | Cascade-based image object detection | CascadeClassifier.detectMultiScale | Complete | ml.cascade_detect loads bounded, optionally SHA-pinned modern HAAR/LBP XML and exposes native boxes, final-stage weights/reject levels or neighbor counts, scale/size/group controls, working equalization and mask/region selection. [Fifteen projects](<../examples/opencv tools/cascade_detection/README.md>) use an attributed NASA portrait, coarse manual ROI and known two-size composition; direct-native parity, negative margins, nearest-scale/strict-size behavior, valid fail/error cases, Debug/Lean, uint16/payloads, JSON/XML/Save As and cold Run All/parallel/preview are checked. CPU integration only; no generalized accuracy or calibrated confidence claim. [Contract](cascade-detection.md). |
-| S2-48 | Rotated crop classification | Model preprocessing from measured image poses | Partial | ml.dnn consumes an image or selected region. Qualify independent oriented part crops with source geometry and per-part ticket retention. |
+| S2-48 | Rotated crop classification | Model preprocessing from measured image poses | Complete | cv.crop_pose supplies affine pose-local sampling, explicit pixel-center geometry, measured masks/coverage, strict/padded support and moved spatial/pyramid/ticket payload. [Eleven projects](<../examples/opencv tools/rotated_crop_classification/README.md>) compose measured blob axes, crops and a sealed original linear-SVM ONNX classifier in the existing per-part ToolBlock: five known textures pass, an unmarked part fails, no-alignment has zero passes, serial/parallel agree and child tickets retain parent/feature/source maps. Independent moments/bilinear/NumPy-native checks, Debug/Lean, high depth, selections, coverage failures, XML/Save As and cold teardown qualify this controlled CPU baseline. Empty disabled annotations now complete rather than appearing buffered. Scores remain uncalibrated; no production accuracy or directed-axis claim. [Contract](pose-crop-classification.md). |
 | S2-49 | Image-based regression | OpenCV SVM regression or ONNX scalar decoder | Planned | Estimate a continuous image-derived measurement on held-out captures and report residuals with model revision. |
 | S2-50 | Image-model anomaly maps | Local embeddings and nearest-reference or model-specific anomaly scores | Planned | Train a known-good image reference set, localize anomalies and verify threshold decisions on independent defect images. |
 | S2-51 | Detect image defects under input shifts | Model evaluation across exposure, blur and camera pose | Planned | Replay controlled image perturbations and report confidence, localization and false rejects against the reference results. |

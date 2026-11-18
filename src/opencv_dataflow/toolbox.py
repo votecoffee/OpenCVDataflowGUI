@@ -76,7 +76,7 @@ IMPLEMENTATION_MODULES = {
         "laplacian_pyramids processing differential_exposure "
         "pixel_moments pyramids raster_hough_lines registration run_contours segmentation "
         "stack_blur selection_remap visible_support "
-        "subpixel_crop "
+        "subpixel_crop pose_crop "
         "template_instances "
         "tilted_statistics"
     ),
