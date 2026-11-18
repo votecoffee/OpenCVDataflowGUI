@@ -7,6 +7,10 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "ml.visual_features": "SIFT_create ORB_create",
+    "ml.bow_train": "kmeans BFMatcher",
+    "ml.bow_encode": "BFMatcher",
+    "ml.bow_rank": "norm compareHist",
     "cv.feature_covariance": "calcCovarMatrix",
     "inspect.mahalanobis_distance": "Mahalanobis eigen invert",
     "ml.em_train_image": "ml.EM_create ml.EM.trainEM ml.EM.trainM",

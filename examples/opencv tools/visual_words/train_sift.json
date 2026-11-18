@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/washers-train-0.png",
+          "assets/washers-train-1.png",
+          "assets/crosses-train-0.png",
+          "assets/crosses-train-1.png",
+          "assets/tabs-train-0.png",
+          "assets/tabs-train-1.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "features",
+      "type": "ml.visual_features",
+      "name": "Visual local features",
+      "parameters": {
+        "method": "sift",
+        "max_features": 200,
+        "sift_octave_layers": 3,
+        "sift_contrast_threshold": 0.04,
+        "sift_edge_threshold": 10.0,
+        "sift_sigma": 1.6,
+        "sift_precise_upscale": false,
+        "orb_scale_factor": 1.2,
+        "orb_levels": 8,
+        "orb_edge_threshold": 31,
+        "orb_first_level": 0,
+        "orb_wta_k": "2",
+        "orb_score": "harris",
+        "orb_patch_size": 31,
+        "orb_fast_threshold": 20
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "count",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 6,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "ml.bow_train",
+      "name": "Train visual words",
+      "parameters": {
+        "words": 16,
+        "max_per_image": 512,
+        "max_samples": 2048,
+        "iterations": 20,
+        "epsilon": 0.01,
+        "max_work": 128000000,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "features"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save",
+      "type": "ml.bow_save",
+      "name": "Save visual-word model",
+      "parameters": {
+        "path": "trained-codebook-sift.json"
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "model"
+      ],
+      "exposed_outputs": [
+        "path"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original visual-word retrieval controls",
+      "description": "Original MIT synthetic images, models and graphs by OpenCVDataflowGUI contributors. Six training views use +/-3 degree rotation and separate noise. Held-out views use 7 degrees, different noise and a 0.95 gain. SIFT uses native L2 k-means; ORB words are actual binary descriptors selected by farthest-first Hamming distance. Image histograms rank a saved gallery, without proving geometry, pose, visibility or production accuracy. The rearranged query exposes lack of spatial layout checks. See README.md, SOURCES.md and benchmark.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -460
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "features",
+      "input": "image"
+    },
+    {
+      "source": "features",
+      "output": "features",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "fit",
+      "input": "features"
+    },
+    {
+      "source": "fit",
+      "output": "model",
+      "target": "save",
+      "input": "model"
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "asset_sha256": {
+    "blank.png": "4b0e4b01b69d987c8d4aae470a19862cca6a4e6279019ede3ab0c2ee43c4c8c3",
+    "codebook-orb.json": "3bed20c76627b6130ca69dc41db193c2d07f5d07287b6936e4f304d4c44da937",
+    "codebook-sift.json": "d534f8a9792d1b356bdceb14c03da5e5838af669cf1e877c1466362e72dc2895",
+    "crosses-query.png": "026a15e180d330bc98dad467e73df31dc609f417de7ea07fcd3e0a1748fcbc83",
+    "crosses-train-0.png": "550b3f77258114323477c9cf9cfd77a0b61c1a4b6bbbab40a69c05105589d3eb",
+    "crosses-train-1.png": "10ff98f214da891cc845724708468bbad591f72fd61a42f4c1480e363c7b1188",
+    "gallery-orb-l1.json": "6aef6110c95391af306f0d5100c72d2ff76aa60d57fc2da88ec37c1668b78901",
+    "gallery-sift-hellinger.json": "42026a8bd7eb121c01898ef90c452de578557d12407cdef171fdc9557c26629d",
+    "gallery-sift-l1.json": "f026b165944b2607cb6c495f60c66fc21bac79e52b321c2f188b3f5d7845e5cb",
+    "rearranged.png": "f982a9e949f9405b8180fea762f3239d68a2fd65fb631e43003b50f4997c2003",
+    "tabs-query.png": "1858826c8a9eed7c426391b500ac9ebbe49ac294c68dcdecdad409d694739952",
+    "tabs-train-0.png": "3404f80591f136e9bace08a6cad4b8ba6d70e1a35c122d9e813b16bc1b5efc7a",
+    "tabs-train-1.png": "fc2d479cd29b4288379c8bc0e8d092720858a5acbc8c69e71b9c3cee461dea91",
+    "washers-query.png": "149c4f9216a489dce317039ca7c466fdec66f6087d337777f234f8025f4b47f9",
+    "washers-train-0.png": "5cdd5ebc4c88013f322f98de2fa7b8bf900ee79016af1f39eeec410892096aa9",
+    "washers-train-1.png": "4257906c471fa40314f16179c7d2727a1010a016e3a904443514cfa65a833a54"
+  },
+  "cases": {
+    "blank_query": {
+      "images": [
+        "blank.png"
+      ],
+      "states": [
+        "fail"
+      ],
+      "target": "rank"
+    },
+    "gallery_orb": {
+      "images": [
+        "washers-train-0.png",
+        "crosses-train-0.png",
+        "tabs-train-0.png"
+      ],
+      "states": [
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "gallery_sift": {
+      "images": [
+        "washers-train-0.png",
+        "crosses-train-0.png",
+        "tabs-train-0.png"
+      ],
+      "states": [
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "hellinger": {
+      "images": [
+        "washers-query.png",
+        "crosses-query.png",
+        "tabs-query.png"
+      ],
+      "states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "target": "rank"
+    },
+    "retrieve_orb": {
+      "images": [
+        "washers-query.png",
+        "crosses-query.png",
+        "tabs-query.png"
+      ],
+      "states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "target": "rank"
+    },
+    "retrieve_sift": {
+      "images": [
+        "washers-query.png",
+        "crosses-query.png",
+        "tabs-query.png"
+      ],
+      "states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "target": "rank"
+    },
+    "spatial_rearrangement": {
+      "images": [
+        "rearranged.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "rank"
+    },
+    "strict_rejection": {
+      "images": [
+        "washers-query.png"
+      ],
+      "states": [
+        "fail"
+      ],
+      "target": "rank"
+    },
+    "train_orb": {
+      "images": [
+        "washers-train-0.png",
+        "washers-train-1.png",
+        "crosses-train-0.png",
+        "crosses-train-1.png",
+        "tabs-train-0.png",
+        "tabs-train-1.png"
+      ],
+      "states": [
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "train_sift": {
+      "images": [
+        "washers-train-0.png",
+        "washers-train-1.png",
+        "crosses-train-0.png",
+        "crosses-train-1.png",
+        "tabs-train-0.png",
+        "tabs-train-1.png"
+      ],
+      "states": [
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "wrong_features": {
+      "images": [
+        "washers-query.png"
+      ],
+      "states": [
+        "error"
+      ],
+      "target": "encode"
+    },
+    "wrong_histogram": {
+      "images": [
+        "washers-query.png"
+      ],
+      "states": [
+        "error"
+      ],
+      "target": "rank"
+    }
+  },
+  "labels": [
+    "washers",
+    "crosses",
+    "tabs"
+  ],
+  "queries": [
+    "washers-query.png",
+    "crosses-query.png",
+    "tabs-query.png"
+  ],
+  "rankings": {
+    "orb-l1": [
+      {
+        "distance": 0.005703698450203576,
+        "image": "washers-query.png",
+        "label": "washers"
+      },
+      {
+        "distance": 0.015825571462214527,
+        "image": "crosses-query.png",
+        "label": "crosses"
+      },
+      {
+        "distance": 0.08714323502969534,
+        "image": "tabs-query.png",
+        "label": "tabs"
+      }
+    ],
+    "sift-hellinger": [
+      {
+        "distance": 0.014634933554302343,
+        "image": "washers-query.png",
+        "label": "washers"
+      },
+      {
+        "distance": 0.013343592796165038,
+        "image": "crosses-query.png",
+        "label": "crosses"
+      },
+      {
+        "distance": 0.015832080756901235,
+        "image": "tabs-query.png",
+        "label": "tabs"
+      }
+    ],
+    "sift-l1": [
+      {
+        "distance": 0.011866206225832787,
+        "image": "washers-query.png",
+        "label": "washers"
+      },
+      {
+        "distance": 0.032097445411394254,
+        "image": "crosses-query.png",
+        "label": "crosses"
+      },
+      {
+        "distance": 0.03962934412095953,
+        "image": "tabs-query.png",
+        "label": "tabs"
+      }
+    ]
+  },
+  "training": [
+    "washers-train-0.png",
+    "washers-train-1.png",
+    "crosses-train-0.png",
+    "crosses-train-1.png",
+    "tabs-train-0.png",
+    "tabs-train-1.png"
+  ]
+}

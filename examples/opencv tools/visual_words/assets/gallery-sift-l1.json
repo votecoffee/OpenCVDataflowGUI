@@ -1,0 +1,79 @@
+{
+  "entries": [
+    {
+      "histogram": [
+        0.0,
+        0.0,
+        0.01,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.065,
+        0.07,
+        0.335,
+        0.175,
+        0.135,
+        0.01,
+        0.0,
+        0.045,
+        0.155
+      ],
+      "label": "washers",
+      "source": {}
+    },
+    {
+      "histogram": [
+        0.0,
+        0.07,
+        0.2,
+        0.0,
+        0.0,
+        0.0,
+        0.2,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.21,
+        0.0,
+        0.0,
+        0.32
+      ],
+      "label": "crosses",
+      "source": {}
+    },
+    {
+      "histogram": [
+        0.0,
+        0.07,
+        0.095,
+        0.08,
+        0.08,
+        0.13,
+        0.06,
+        0.055,
+        0.055,
+        0.045,
+        0.0,
+        0.0,
+        0.1,
+        0.23,
+        0.0,
+        0.0
+      ],
+      "label": "tabs",
+      "source": {}
+    }
+  ],
+  "feature_contract": {
+    "codebook_revision": "1d53ebd08c58a832b4228130f5f472edf9732733251e935f344f7ef34606606d",
+    "max_word_distance": -1.0,
+    "model": "opencv_visual_histogram_v1",
+    "normalization": "l1",
+    "words": 16
+  },
+  "model": "opencv_visual_gallery_v1",
+  "revision": "a2c7cebf272c2a885889f717d9a0b2cce781cf7510d15bd495e225d0a33b69f4"
+}

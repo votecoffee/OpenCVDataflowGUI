@@ -8517,6 +8517,76 @@ Inputs: `model` (data), `vector` (data).
 | `min_similarity` | `-1.0` | Dot metric only: minimum inner product; -1 disables. |
 | `minimum_results` | `1` |  |
 
+## Image visual-word histogram (`ml.bow_encode`)
+
+ML / Image retrieval
+
+Inputs: `model` (data), `features` (data), `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `normalization` | `"l1"` | `l1`, `l2`, `hellinger` L1 frequency, L2 unit norm, or square-root L1 (Hellinger) signature. |
+| `max_word_distance` | `-1.0` | Value must be a finite number at least -1. -1 disables rejection; otherwise use the inclusive native distance limit. Rejected IDs are -1. |
+| `max_work` | `128000000` | Value must be a whole number between 1 and 1e+09. Estimated descriptor comparisons/fit work before native calls. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Estimated numeric workspace allowance, not process RSS. |
+
+## Build visual-word gallery (`ml.bow_gallery`)
+
+ML / Image retrieval
+
+Inputs: `histograms` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `labels` | `[]` | Optional label per signature; otherwise batch labels or entry numbers. Duplicate labels can represent multiple views. |
+
+## Load visual-word model (`ml.bow_load`)
+
+ML / Image retrieval
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Rank visual-word images (`ml.bow_rank`)
+
+ML / Image retrieval
+
+Inputs: `query` (data), `gallery` (data), `image` (image, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `metric` | `"cosine"` | `cosine`, `l2`, `chi_square`, `bhattacharyya` |
+| `top_k` | `5` | Value must be a whole number between 1 and 1024. |
+| `max_distance` | `-1.0` | Value must be a finite number at least -1. -1 disables rejection; otherwise an inclusive metric-specific limit. Distance is not confidence. |
+| `minimum_results` | `1` | Value must be a whole number between 1 and 1024. Required retained results after distance filtering and Top k. |
+
+## Save visual-word model (`ml.bow_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"visual-words.json"` |  |
+
+## Train visual words (`ml.bow_train`)
+
+ML / Image retrieval
+
+Inputs: `features` (any).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `words` | `16` | Value must be a whole number between 2 and 128. Requires at least this many distinct sampled descriptors. |
+| `max_per_image` | `512` | Value must be a whole number between 8 and 4096. Even deterministic row sampling before global Max samples. |
+| `max_samples` | `2048` | Value must be a whole number between 8 and 8192. |
+| `iterations` | `20` | Value must be a whole number between 1 and 100. SIFT native k-means after deterministic initialization. ORB retains farthest-first actual byte descriptors. |
+| `epsilon` | `0.01` | Value must be a finite number at least 0. SIFT native k-means center-movement tolerance; unused for ORB. |
+| `max_work` | `128000000` | Value must be a whole number between 1 and 1e+09. Estimated descriptor comparisons/fit work before native calls. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Estimated numeric workspace allowance, not process RSS. |
+
 ## Describe box appearance (`ml.box_appearance`)
 
 ML / Object tracking
@@ -10212,6 +10282,34 @@ ML / Embeddings
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `values` | `[[1.0, 0.0], [0.0, 1.0]]` |  |
+
+## Visual local features (`ml.visual_features`)
+
+ML / Image retrieval
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Up to one million pixels. Fixed-scale gray conversion; original image retained.
+
+Input `mask` — Selected keypoint centers only; descriptor patches may read beyond selection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"sift"` | `sift`, `orb` SIFT float descriptors use L2; ORB bytes use Hamming (Hamming2 for WTA 3/4). |
+| `max_features` | `512` | Value must be a whole number between 8 and 4096. Hard retained feature bound; points are sorted by response and geometry. |
+| `sift_octave_layers` | `3` | Value must be a whole number between 1 and 8. |
+| `sift_contrast_threshold` | `0.04` | Value must be a finite number between 0 and 1. |
+| `sift_edge_threshold` | `10.0` | Value must be a finite number between 0.1 and 1000. |
+| `sift_sigma` | `1.6` | Value must be a finite number between 0.1 and 10. |
+| `sift_precise_upscale` | `false` | Native precise upscale; saved in descriptor identity. |
+| `orb_scale_factor` | `1.2` | Value must be a finite number between 1.05 and 2. |
+| `orb_levels` | `8` | Value must be a whole number between 1 and 16. |
+| `orb_edge_threshold` | `31` | Value must be a whole number between 0 and 127. |
+| `orb_first_level` | `0` | Value must be a whole number between 0 and 15. Must be smaller than ORB levels. |
+| `orb_wta_k` | `"2"` | `2`, `3`, `4` |
+| `orb_score` | `"harris"` | `harris`, `fast` |
+| `orb_patch_size` | `31` | Value must be a positive odd integer between 3 and 127. Odd patch size; selection limits centers, not patch support. |
+| `orb_fast_threshold` | `20` | Value must be a whole number between 0 and 255. |
 
 ## Write animation file (`output.animation_file`)
 

@@ -1,0 +1,294 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/washers-query.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "features",
+      "type": "ml.visual_features",
+      "name": "Visual local features",
+      "parameters": {
+        "method": "sift",
+        "max_features": 200,
+        "sift_octave_layers": 3,
+        "sift_contrast_threshold": 0.04,
+        "sift_edge_threshold": 10.0,
+        "sift_sigma": 1.6,
+        "sift_precise_upscale": false,
+        "orb_scale_factor": 1.2,
+        "orb_levels": 8,
+        "orb_edge_threshold": 31,
+        "orb_first_level": 0,
+        "orb_wta_k": "2",
+        "orb_score": "harris",
+        "orb_patch_size": 31,
+        "orb_fast_threshold": 20
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "count",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "codebook",
+      "type": "ml.bow_load",
+      "name": "Load visual-word model",
+      "parameters": {
+        "path": "assets/codebook-sift.json"
+      },
+      "position": [
+        360,
+        420
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode",
+      "type": "ml.bow_encode",
+      "name": "Image visual-word histogram",
+      "parameters": {
+        "normalization": "l2",
+        "max_word_distance": -1.0,
+        "max_work": 128000000,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "features",
+        "image"
+      ],
+      "exposed_outputs": [
+        "histogram",
+        "word_ids",
+        "distances",
+        "count",
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gallery",
+      "type": "ml.bow_load",
+      "name": "Load visual-word model",
+      "parameters": {
+        "path": "assets/gallery-sift-l1.json"
+      },
+      "position": [
+        720,
+        420
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rank",
+      "type": "ml.bow_rank",
+      "name": "Rank visual-word images",
+      "parameters": {
+        "metric": "cosine",
+        "top_k": 5,
+        "max_distance": -1,
+        "minimum_results": 1
+      },
+      "position": [
+        1080,
+        0
+      ],
+      "exposed_inputs": [
+        "query",
+        "gallery",
+        "image"
+      ],
+      "exposed_outputs": [
+        "results",
+        "label",
+        "distance",
+        "count",
+        "image",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1440,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1800,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original visual-word retrieval controls",
+      "description": "Original MIT synthetic images, models and graphs by OpenCVDataflowGUI contributors. Six training views use +/-3 degree rotation and separate noise. Held-out views use 7 degrees, different noise and a 0.95 gain. SIFT uses native L2 k-means; ORB words are actual binary descriptors selected by farthest-first Hamming distance. Image histograms rank a saved gallery, without proving geometry, pose, visibility or production accuracy. The rearranged query exposes lack of spatial layout checks. See README.md, SOURCES.md and benchmark.json.",
+      "parameters": {},
+      "position": [
+        0,
+        -460
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "features",
+      "input": "image"
+    },
+    {
+      "source": "features",
+      "output": "features",
+      "target": "encode",
+      "input": "features"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "encode",
+      "input": "image"
+    },
+    {
+      "source": "codebook",
+      "output": "model",
+      "target": "encode",
+      "input": "model"
+    },
+    {
+      "source": "encode",
+      "output": "histogram",
+      "target": "rank",
+      "input": "query"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "rank",
+      "input": "image"
+    },
+    {
+      "source": "gallery",
+      "output": "model",
+      "target": "rank",
+      "input": "gallery"
+    },
+    {
+      "source": "rank",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "rank",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

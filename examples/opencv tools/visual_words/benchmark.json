@@ -1,0 +1,469 @@
+{
+  "opencv": "5.0.0",
+  "reference": "native SIFT/ORB and independent NumPy Euclidean/bit-count quantization and cosine ranking",
+  "scope": "Original controlled held-out views; no pose, layout or production accuracy claim",
+  "cases": {
+    "sift-l1": [
+      {
+        "image": "washers-query.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 2.782265374889903e-05,
+        "histogram": [
+          0.0,
+          0.0,
+          0.01,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.07,
+          0.07,
+          0.39,
+          0.15,
+          0.105,
+          0.005,
+          0.015,
+          0.015,
+          0.17
+        ],
+        "ranking": [
+          {
+            "label": "washers",
+            "distance": 0.011866206225832787
+          },
+          {
+            "label": "crosses",
+            "distance": 0.7481664265762591
+          },
+          {
+            "label": "tabs",
+            "distance": 0.8150800145963504
+          }
+        ]
+      },
+      {
+        "image": "crosses-query.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 1.3847601763927742e-05,
+        "histogram": [
+          0.0,
+          0.17,
+          0.19,
+          0.0,
+          0.0,
+          0.0,
+          0.205,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.17,
+          0.0,
+          0.0,
+          0.265
+        ],
+        "ranking": [
+          {
+            "label": "crosses",
+            "distance": 0.032097445411394365
+          },
+          {
+            "label": "tabs",
+            "distance": 0.6204334374156328
+          },
+          {
+            "label": "washers",
+            "distance": 0.7780031178400872
+          }
+        ]
+      },
+      {
+        "image": "tabs-query.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 2.4381853336308268e-05,
+        "histogram": [
+          0.0,
+          0.08,
+          0.13,
+          0.075,
+          0.09,
+          0.115,
+          0.085,
+          0.02,
+          0.02,
+          0.065,
+          0.0,
+          0.0,
+          0.14,
+          0.18,
+          0.0,
+          0.0
+        ],
+        "ranking": [
+          {
+            "label": "tabs",
+            "distance": 0.03962934412095964
+          },
+          {
+            "label": "crosses",
+            "distance": 0.520807312539294
+          },
+          {
+            "label": "washers",
+            "distance": 0.818807259835298
+          }
+        ]
+      },
+      {
+        "image": "rearranged.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 2.2912347048986703e-05,
+        "histogram": [
+          0.005,
+          0.0,
+          0.02,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.07,
+          0.07,
+          0.35,
+          0.2,
+          0.135,
+          0.005,
+          0.0,
+          0.04,
+          0.105
+        ],
+        "ranking": [
+          {
+            "label": "washers",
+            "distance": 0.008715552266901794
+          },
+          {
+            "label": "crosses",
+            "distance": 0.8219348482664772
+          },
+          {
+            "label": "tabs",
+            "distance": 0.8333662675192044
+          }
+        ]
+      }
+    ],
+    "orb-l1": [
+      {
+        "image": "washers-query.png",
+        "descriptors": 187,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 0.0,
+        "histogram": [
+          0.0053475935828877,
+          0.03208556149732621,
+          0.0053475935828877,
+          0.0053475935828877,
+          0.016042780748663103,
+          0.016042780748663103,
+          0.0,
+          0.5401069518716578,
+          0.053475935828877004,
+          0.2192513368983957,
+          0.0213903743315508,
+          0.06951871657754011,
+          0.0,
+          0.016042780748663103,
+          0.0,
+          0.0
+        ],
+        "ranking": [
+          {
+            "label": "washers",
+            "distance": 0.005703698450203576
+          },
+          {
+            "label": "tabs",
+            "distance": 0.47991810245333155
+          },
+          {
+            "label": "crosses",
+            "distance": 0.8630449393653251
+          }
+        ]
+      },
+      {
+        "image": "crosses-query.png",
+        "descriptors": 191,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 0.0,
+        "histogram": [
+          0.13089005235602094,
+          0.29842931937172773,
+          0.0,
+          0.0,
+          0.02617801047120419,
+          0.02617801047120419,
+          0.005235602094240838,
+          0.02617801047120419,
+          0.005235602094240838,
+          0.03664921465968586,
+          0.041884816753926704,
+          0.0,
+          0.0,
+          0.015706806282722512,
+          0.2670157068062827,
+          0.12041884816753927
+        ],
+        "ranking": [
+          {
+            "label": "crosses",
+            "distance": 0.015825571462214527
+          },
+          {
+            "label": "tabs",
+            "distance": 0.8189244777953202
+          },
+          {
+            "label": "washers",
+            "distance": 0.8428313786833175
+          }
+        ]
+      },
+      {
+        "image": "tabs-query.png",
+        "descriptors": 179,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 0.0,
+        "histogram": [
+          0.01675977653631285,
+          0.0223463687150838,
+          0.01675977653631285,
+          0.00558659217877095,
+          0.0111731843575419,
+          0.05027932960893855,
+          0.03910614525139665,
+          0.061452513966480445,
+          0.027932960893854747,
+          0.36312849162011174,
+          0.01675977653631285,
+          0.05027932960893855,
+          0.11731843575418995,
+          0.17318435754189945,
+          0.027932960893854747,
+          0.0
+        ],
+        "ranking": [
+          {
+            "label": "tabs",
+            "distance": 0.08714323502969545
+          },
+          {
+            "label": "washers",
+            "distance": 0.5471004659573929
+          },
+          {
+            "label": "crosses",
+            "distance": 0.8256172678020713
+          }
+        ]
+      },
+      {
+        "image": "rearranged.png",
+        "descriptors": 187,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 0.0,
+        "histogram": [
+          0.0106951871657754,
+          0.0213903743315508,
+          0.0106951871657754,
+          0.0106951871657754,
+          0.0053475935828877,
+          0.026737967914438502,
+          0.0,
+          0.5347593582887701,
+          0.0481283422459893,
+          0.18716577540106952,
+          0.026737967914438502,
+          0.058823529411764705,
+          0.0,
+          0.058823529411764705,
+          0.0,
+          0.0
+        ],
+        "ranking": [
+          {
+            "label": "washers",
+            "distance": 0.003100207605559291
+          },
+          {
+            "label": "tabs",
+            "distance": 0.4815322499987599
+          },
+          {
+            "label": "crosses",
+            "distance": 0.8693000544463436
+          }
+        ]
+      }
+    ],
+    "sift-hellinger": [
+      {
+        "image": "washers-query.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 2.782265374889903e-05,
+        "histogram": [
+          0.0,
+          0.0,
+          0.1,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.2645751311064591,
+          0.2645751311064591,
+          0.6244997998398398,
+          0.3872983346207417,
+          0.324037034920393,
+          0.07071067811865475,
+          0.1224744871391589,
+          0.1224744871391589,
+          0.41231056256176607
+        ],
+        "ranking": [
+          {
+            "label": "washers",
+            "distance": 0.014634933554302343
+          },
+          {
+            "label": "tabs",
+            "distance": 0.6315074001329772
+          },
+          {
+            "label": "crosses",
+            "distance": 0.6896368611641529
+          }
+        ]
+      },
+      {
+        "image": "crosses-query.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 1.3847601763927742e-05,
+        "histogram": [
+          0.0,
+          0.41231056256176607,
+          0.43588989435406733,
+          0.0,
+          0.0,
+          0.0,
+          0.4527692569068708,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.41231056256176607,
+          0.0,
+          0.0,
+          0.51478150704935
+        ],
+        "ranking": [
+          {
+            "label": "crosses",
+            "distance": 0.013343592796165038
+          },
+          {
+            "label": "tabs",
+            "distance": 0.5152731772600516
+          },
+          {
+            "label": "washers",
+            "distance": 0.7125102723133041
+          }
+        ]
+      },
+      {
+        "image": "tabs-query.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 2.4381853336308268e-05,
+        "histogram": [
+          0.0,
+          0.282842712474619,
+          0.36055512754639896,
+          0.27386127875258304,
+          0.3,
+          0.3391164991562634,
+          0.29154759474226505,
+          0.1414213562373095,
+          0.1414213562373095,
+          0.25495097567963926,
+          0.0,
+          0.0,
+          0.37416573867739417,
+          0.4242640687119285,
+          0.0,
+          0.0
+        ],
+        "ranking": [
+          {
+            "label": "tabs",
+            "distance": 0.015832080756901235
+          },
+          {
+            "label": "crosses",
+            "distance": 0.4620733671996746
+          },
+          {
+            "label": "washers",
+            "distance": 0.7054922811215043
+          }
+        ]
+      },
+      {
+        "image": "rearranged.png",
+        "descriptors": 200,
+        "assignment_disagreements": 0,
+        "maximum_distance_error": 2.2912347048986703e-05,
+        "histogram": [
+          0.07071067811865475,
+          0.0,
+          0.1414213562373095,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.2645751311064591,
+          0.2645751311064591,
+          0.5916079783099616,
+          0.4472135954999579,
+          0.3674234614174767,
+          0.07071067811865475,
+          0.0,
+          0.2,
+          0.324037034920393
+        ],
+        "ranking": [
+          {
+            "label": "washers",
+            "distance": 0.0068324509513439935
+          },
+          {
+            "label": "tabs",
+            "distance": 0.6844545903495755
+          },
+          {
+            "label": "crosses",
+            "distance": 0.7210477155063595
+          }
+        ]
+      }
+    ]
+  }
+}

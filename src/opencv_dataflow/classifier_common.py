@@ -130,14 +130,14 @@ def normalize_rows64(values, mode):
     return np.ascontiguousarray(scaled / np.linalg.norm(scaled, axis=1, keepdims=True))
 
 
-def validate_prediction_image(block, inputs, count):
+def validate_prediction_image(block, inputs, count, *, samples_port="samples"):
     """Optional unchanged review image must belong to the current descriptor invocation."""
     image = inputs.get("image", NO_VALUE)
     if image is NO_VALUE:
         return image
     if count != 1:
         raise ValidationError("Connect an image only for a single descriptor prediction")
-    features = block.input_payloads.get("samples", {})
+    features = block.input_payloads.get(samples_port, {})
     require_same_frame(
         (image, ValuePacket(None, features)), message="Prediction image frame differs"
     )

@@ -75,6 +75,7 @@
 | Image-descriptor PCA, persisted subspaces/revisions and held-out reconstruction | [Descriptor PCA](descriptor-pca.md) |
 | Native image color/texture mixtures, density rejection and portable models | [Image mixtures](image-mixtures.md) |
 | Known-good image features, covariance models and Mahalanobis outlier inspection | [Feature outliers](feature-outliers.md) |
+| SIFT/ORB visual vocabularies, portable image galleries and exact retrieval | [Visual words](visual-words.md) |
 | Native forest training, class votes, importance and portable checked trees | [Random forest classification](rtrees-classification.md) |
 | Labeled image sets, grouped splits, confusion matrices and classifier reports | [Classifier evaluation](classifier-evaluation.md) |
 | Labeled boxes, class-aware IoU matches, precision/recall/AP and detector reports | [Detector evaluation](detector-evaluation.md) |

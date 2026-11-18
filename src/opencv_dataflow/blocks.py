@@ -904,6 +904,7 @@ def builtin_registry():
     from .video_timing import VideoTiming
     from .visible_support import VisibleSupport
     from .vision3d_modules import VISION3D_MODULE_BLOCKS
+    from .visual_words import VISUAL_WORD_BLOCKS
     from .voronoi import VoronoiCells
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
     from .weighted_moments import IntensityMoments
@@ -1212,6 +1213,7 @@ def builtin_registry():
         KMeansSamples,
         KMeansImage,
         *CLUSTER_MODEL_BLOCKS,
+        *VISUAL_WORD_BLOCKS,
         *IMAGE_EM_BLOCKS,
         *OCR_BLOCKS,
         RecognizeTextBatch,
