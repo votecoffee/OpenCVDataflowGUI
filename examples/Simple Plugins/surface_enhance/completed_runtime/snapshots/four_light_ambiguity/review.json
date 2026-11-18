@@ -1,0 +1,578 @@
+{
+  "schema": "simple_surface_completed_review/v1",
+  "execution_binding": "63104fb001c647b5abad1596f75df1f2",
+  "completed_result": {
+    "active_pixels": 19344,
+    "capture_id": "four_light_ambiguity",
+    "compiled_triplet_seeds": 4,
+    "coverage": 0.6178660049627791,
+    "decision": {
+      "minimum_coverage": 0.95,
+      "passed": false,
+      "scope": "Available fit coverage only, not defect or gauge acceptance"
+    },
+    "frame": "camera",
+    "image_size": [
+      160,
+      128
+    ],
+    "light_ids": [
+      "lamp0",
+      "lamp1",
+      "lamp2",
+      "lamp3"
+    ],
+    "no_redundancy_pixels": 0,
+    "pixel_grid": "rendered_reference_grid",
+    "radiometry": {
+      "black_level": 0.02,
+      "input_ceiling": 1,
+      "lighting": {
+        "directions": [
+          [
+            0.6,
+            0.0,
+            -0.8
+          ],
+          [
+            3.6739403974420595e-17,
+            0.6,
+            -0.8
+          ],
+          [
+            -0.6,
+            7.347880794884119e-17,
+            -0.8
+          ],
+          [
+            -1.1021821192326178e-16,
+            -0.6,
+            -0.8
+          ]
+        ],
+        "exposure_s": [
+          0.2,
+          0.26666666666666666,
+          0.33333333333333337,
+          0.4
+        ],
+        "frame": "camera",
+        "light_ids": [
+          "lamp0",
+          "lamp1",
+          "lamp2",
+          "lamp3"
+        ],
+        "relative_intensity": [
+          0.8,
+          0.9,
+          1.0,
+          1.1
+        ]
+      },
+      "response": "linear"
+    },
+    "reason_counts": {
+      "ambiguous_orientation": 7392,
+      "outside_roi": 1136,
+      "valid": 11952
+    },
+    "reference_capture_id": "four_light_ambiguity",
+    "registration_scope": "Caller-declared source grid; not measured registration/synchrony",
+    "rejected_observations": 7392,
+    "residual_scope": "Positive/negative residuals are model disagreement; material labels are not inferred",
+    "schema": "simple_surface_result/v1",
+    "scope": "Directional diffuse normal/albedo fit, not metric height or defect acceptance",
+    "settings": {
+      "absolute_tolerance": 1e-06,
+      "ambiguity_angle_deg": 8.0,
+      "minimum_albedo": 1e-08,
+      "minimum_singular_ratio": 0.001,
+      "minimum_support": 3,
+      "minimum_support_fraction": 0.5,
+      "minimum_view_cosine": 0.02,
+      "relative_tolerance": 0.06,
+      "seed_count": 32,
+      "view_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
+    "valid_pixels": 11952
+  },
+  "executed_parameters": {
+    "capture_manifest": "assets/226ee0029f16f2f32f680a64a26da51640e76c6acf42f6b5dffa6a1ccd379ac1.json",
+    "minimum_coverage": 0.95,
+    "recipe_path": "assets/27da1f092eef7219a65cf277315cbb5890a5558a1afe55c4e9167cbc0f4409c5.sse",
+    "render_graphics": true,
+    "sha256": "27da1f092eef7219a65cf277315cbb5890a5558a1afe55c4e9167cbc0f4409c5",
+    "source": "capture manifest"
+  },
+  "executed_configuration": {
+    "lighting": {
+      "light_ids": [
+        "lamp0",
+        "lamp1",
+        "lamp2",
+        "lamp3"
+      ],
+      "directions": [
+        [
+          0.6,
+          0.0,
+          -0.8
+        ],
+        [
+          3.6739403974420595e-17,
+          0.6,
+          -0.8
+        ],
+        [
+          -0.6,
+          7.347880794884119e-17,
+          -0.8
+        ],
+        [
+          -1.1021821192326178e-16,
+          -0.6,
+          -0.8
+        ]
+      ],
+      "relative_intensity": [
+        0.8,
+        0.9,
+        1.0,
+        1.1
+      ],
+      "exposure_s": [
+        0.2,
+        0.26666666666666666,
+        0.33333333333333337,
+        0.4
+      ],
+      "frame": "camera"
+    },
+    "settings": {
+      "minimum_support": 3,
+      "minimum_support_fraction": 0.5,
+      "relative_tolerance": 0.06,
+      "absolute_tolerance": 1e-06,
+      "minimum_singular_ratio": 0.001,
+      "ambiguity_angle_deg": 8.0,
+      "minimum_albedo": 1e-08,
+      "view_direction": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "minimum_view_cosine": 0.02,
+      "seed_count": 32
+    },
+    "black_level": 0.02,
+    "input_ceiling": 1,
+    "capture_id": "four_light_ambiguity",
+    "pixel_grid": "rendered_reference_grid",
+    "virtual_light": [
+      0.6,
+      0.0,
+      -0.8
+    ],
+    "metadata": {
+      "manifest_name": "capture.json",
+      "input_scale": 1,
+      "channel": "gray",
+      "response": "linear"
+    },
+    "reference": {
+      "shape": [
+        4,
+        128,
+        160
+      ],
+      "dtype": "<f4",
+      "sha256": "1adfd2ffc5fa1f29e335c444cc780f128850c1aa7569e08f1d36aedd3833e232"
+    },
+    "mask": {
+      "shape": [
+        128,
+        160
+      ],
+      "dtype": "|b1",
+      "sha256": "b4553aa5906331b933ec4a7eeb6a42b8d57e29f3383d4f6ccccf8ded29286778"
+    }
+  },
+  "consumed_capture": {
+    "schema": "simple_surface_stack/v1",
+    "images": {
+      "shape": [
+        4,
+        128,
+        160
+      ],
+      "dtype": "<f4",
+      "sha256": "1adfd2ffc5fa1f29e335c444cc780f128850c1aa7569e08f1d36aedd3833e232"
+    },
+    "lighting": {
+      "light_ids": [
+        "lamp0",
+        "lamp1",
+        "lamp2",
+        "lamp3"
+      ],
+      "directions": [
+        [
+          0.6,
+          0.0,
+          -0.8
+        ],
+        [
+          3.6739403974420595e-17,
+          0.6,
+          -0.8
+        ],
+        [
+          -0.6,
+          7.347880794884119e-17,
+          -0.8
+        ],
+        [
+          -1.1021821192326178e-16,
+          -0.6,
+          -0.8
+        ]
+      ],
+      "relative_intensity": [
+        0.8,
+        0.9,
+        1.0,
+        1.1
+      ],
+      "exposure_s": [
+        0.2,
+        0.26666666666666666,
+        0.33333333333333337,
+        0.4
+      ],
+      "frame": "camera"
+    },
+    "capture_id": "four_light_ambiguity",
+    "pixel_grid": "rendered_reference_grid",
+    "response": "linear",
+    "black_level": 0.02,
+    "input_ceiling": 1,
+    "mask": {
+      "shape": [
+        128,
+        160
+      ],
+      "dtype": "|b1",
+      "sha256": "b4553aa5906331b933ec4a7eeb6a42b8d57e29f3383d4f6ccccf8ded29286778"
+    }
+  },
+  "ignored_capture_fields": [],
+  "selected_pixel": {
+    "x": 80,
+    "y": 63,
+    "albedo": null,
+    "valid": false,
+    "reason": 5,
+    "support": 3,
+    "available": 4,
+    "singular_ratio": 0.3301890194416046,
+    "fit_rms_relative": 1.4904303860218391e-15,
+    "all_rms_relative": 0.8593907952308655,
+    "relight": null,
+    "normal_change": null,
+    "normals": [
+      null,
+      null,
+      null
+    ],
+    "reason_name": "ambiguous_orientation"
+  },
+  "selected_observations": [
+    {
+      "index": 0,
+      "light_id": "lamp0",
+      "direction": [
+        0.6,
+        0.0,
+        -0.8
+      ],
+      "exposure_s": 0.2,
+      "relative_intensity": 0.8,
+      "raw_code": 0.19403639435768127,
+      "prepared_value": 1.0877275466918945,
+      "available": true,
+      "used": true,
+      "residual": -6.661338147750939e-16,
+      "predicted_from_stored_residual": null,
+      "flags": 0,
+      "flag_names": []
+    },
+    {
+      "index": 1,
+      "light_id": "lamp1",
+      "direction": [
+        3.6739403974420595e-17,
+        0.6,
+        -0.8
+      ],
+      "exposure_s": 0.26666666666666666,
+      "relative_intensity": 0.9,
+      "raw_code": 0.11601794511079788,
+      "prepared_value": 0.4000747501850128,
+      "available": true,
+      "used": true,
+      "residual": 4.996003610813204e-16,
+      "predicted_from_stored_residual": null,
+      "flags": 0,
+      "flag_names": []
+    },
+    {
+      "index": 2,
+      "light_id": "lamp2",
+      "direction": [
+        -0.6,
+        7.347880794884119e-17,
+        -0.8
+      ],
+      "exposure_s": 0.33333333333333337,
+      "relative_intensity": 1.0,
+      "raw_code": 0.15324567258358002,
+      "prepared_value": 0.39973703026771545,
+      "available": true,
+      "used": true,
+      "residual": -6.106226635438361e-16,
+      "predicted_from_stored_residual": null,
+      "flags": 0,
+      "flag_names": []
+    },
+    {
+      "index": 3,
+      "light_id": "lamp3",
+      "direction": [
+        -1.1021821192326178e-16,
+        -0.6,
+        -0.8
+      ],
+      "exposure_s": 0.4,
+      "relative_intensity": 1.1,
+      "raw_code": 0.19595572352409363,
+      "prepared_value": 0.3998993933200836,
+      "available": true,
+      "used": false,
+      "residual": -0.6874904632568359,
+      "predicted_from_stored_residual": null,
+      "flags": 0,
+      "flag_names": []
+    }
+  ],
+  "selected_light": 1,
+  "selected_view": "normals",
+  "provenance": {
+    "snapshot_id": "1681b2288fd8483d855285c2007c79cb",
+    "block_id": "surface",
+    "execution_count": 1,
+    "output_revision": 0,
+    "passed": false,
+    "score": null,
+    "message": "11952/19344 valid pixels (61.8%); diffuse orientation/albedo, no metric height",
+    "inputs": {},
+    "outputs": {
+      "image": {
+        "spatial": {
+          "root_id": "surface-source:rendered_reference_grid",
+          "root_size": [
+            160,
+            128
+          ],
+          "image_size": [
+            160,
+            128
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "surface_completed_review": {
+          "id": "63104fb001c647b5abad1596f75df1f2"
+        }
+      },
+      "maps": {
+        "spatial": {
+          "root_id": "surface-source:rendered_reference_grid",
+          "root_size": [
+            160,
+            128
+          ],
+          "image_size": [
+            160,
+            128
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "surface_completed_review": {
+          "id": "63104fb001c647b5abad1596f75df1f2"
+        }
+      },
+      "report": {
+        "surface_completed_review": {
+          "id": "63104fb001c647b5abad1596f75df1f2"
+        }
+      },
+      "coverage": {
+        "surface_completed_review": {
+          "id": "63104fb001c647b5abad1596f75df1f2"
+        }
+      },
+      "valid_pixels": {
+        "surface_completed_review": {
+          "id": "63104fb001c647b5abad1596f75df1f2"
+        }
+      },
+      "overview": {
+        "spatial": {
+          "root_id": "surface-overview:surface",
+          "root_size": [
+            1380,
+            702
+          ],
+          "image_size": [
+            1380,
+            702
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "surface_completed_review": {
+          "id": "63104fb001c647b5abad1596f75df1f2"
+        }
+      }
+    }
+  },
+  "emitted_overview": true,
+  "emitted_views": [
+    "source",
+    "normals",
+    "albedo",
+    "relight",
+    "detail",
+    "residual",
+    "quality",
+    "overview"
+  ],
+  "display_ranges": {
+    "albedo_max": 0.5006185173988342,
+    "normal_change_max": 0.0026544686406850815,
+    "input_max": 0.19419385492801666,
+    "residual_max": 0.25,
+    "relight_max": 1.0,
+    "scope": "Display ranges only; numerical maps, fit and validity are unchanged",
+    "reason_legend": {
+      "valid": [
+        40,
+        200,
+        80
+      ],
+      "outside_roi": [
+        50,
+        55,
+        60
+      ],
+      "insufficient_observations": [
+        65,
+        130,
+        240
+      ],
+      "ill_conditioned": [
+        255,
+        175,
+        35
+      ],
+      "insufficient_consensus": [
+        230,
+        95,
+        35
+      ],
+      "ambiguous_orientation": [
+        215,
+        65,
+        220
+      ],
+      "weak_signal": [
+        115,
+        120,
+        125
+      ],
+      "back_facing": [
+        200,
+        75,
+        75
+      ],
+      "numerical_failure": [
+        120,
+        30,
+        160
+      ]
+    }
+  },
+  "manifest_sha256": "226ee0029f16f2f32f680a64a26da51640e76c6acf42f6b5dffa6a1ccd379ac1",
+  "geometry_scope": "Estimated normal directions and relative albedo, not measured XYZ or metric height",
+  "prediction_scope": "Display prediction is observation minus stored residual for accepted fits only",
+  "source_scope": "Actual normalized native capture codes retained; original encoded source-image bytes unavailable",
+  "identity_scope": "Caller-declared capture/grid/calibration/tickets do not prove registration or synchrony",
+  "preparation_reexecuted": false,
+  "estimation_reexecuted": false,
+  "calibration_changed": false,
+  "capture_reloaded": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_recipe_sha256": "27da1f092eef7219a65cf277315cbb5890a5558a1afe55c4e9167cbc0f4409c5"
+}

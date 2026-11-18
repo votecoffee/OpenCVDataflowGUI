@@ -1,0 +1,2000 @@
+{
+  "cases": [
+    {
+      "case": "analytic_clean",
+      "passed": true,
+      "valid": 19344,
+      "active": 19344,
+      "source_mode": "capture manifest",
+      "capture_id": "analytic_clean",
+      "coverage": 1.0,
+      "reasons": {
+        "outside_roi": 1136,
+        "valid": 19344
+      },
+      "recipe_sha256": "1f7ff1583d3617ddec6ad7f9846c75ccc590a859e3ff63946c116580d9f7b846",
+      "capture_sha256": "2381eb4a50537f74bf6ca0e01f10028f41af6ca39d67c97672092fa1c19dc342",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "f526d3a01e4f0a19e0b5ee68f8fb6527988513748250ad6707f32149070bea07"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "5ed3177dbf563762d3160c19e56c08d05ea727f92d0e80be6b7fead0e34ca334"
+          },
+          "valid": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "b4553aa5906331b933ec4a7eeb6a42b8d57e29f3383d4f6ccccf8ded29286778"
+          },
+          "reason": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "4edbc7699cac54bbeff8122eb0b835a9f9e3dc869b866901dbacb1de29579b98"
+          },
+          "support": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "0f7c1b6fbeeaecdac84893410c6ff893061b6f5692028843b557bcb2e9cd74a7"
+          },
+          "available": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "0f7c1b6fbeeaecdac84893410c6ff893061b6f5692028843b557bcb2e9cd74a7"
+          },
+          "singular_ratio": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "f52385a93087df147c9acbb7c611b4f723e9ece7914c64518b075b987bbaa3e4"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "1dfa98dea44c661e1dd93641cebe2761b01ab55c41f64ade78f10917456fb9ca"
+          },
+          "all_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "0f3b1274f17c2a201119150b3cb7fae294ec163d4710724f7411986c889c3b7d"
+          },
+          "used": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "96971abda6a2fae3b521fede255513379371f29e426a4d1352a4e0ecabf721b7"
+          },
+          "residual": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "e452899ec7475a20cfcaf1343f9b07bf6f275d15ca4683383cdaaabfd26c382a"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "e679789b01c14775afa9e9b685766d0b5785a83ea90c317be092322d145c2f08"
+          },
+          "normal_change": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "9da2c98f4b3bf640338e4fc8be2b65b320aae7a2fa98d17388106b30accb5ed5"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "3767eb4353e83219aca219e96f7b51078788659107847a349a0457fd664ff667"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "e679789b01c14775afa9e9b685766d0b5785a83ea90c317be092322d145c2f08"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "95275ebc150796dacf93046f372d5b1c11025f3b5fd096abaa4b60b98bee0bc9"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "e060700a10a6d0cba7960b06f873e4fb36eeb1ca35b04900d38b2659fb1261c6"
+          },
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3a031386b217a655f2dc8e11298d7db6a22e172d4358f90b610c63f921fd6e4f"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "f358d294abc10a672489bf7fd6d592ded657943896dc7d9ac5e5e247f35ae99d"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "c67f8f05c117249bd27d24e1627bfd64771a9728d02e76c1c35ff23e1f4b6240"
+          },
+          "detail": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "6f91cdd73ffdd97dd9de082b88c189eee9a0b2cdbe5b237d621834c6d12de283"
+          },
+          "residual": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "90f3aeb7c1860bf8ab9657cc40d5986a618700adeb916d8267c084005453c820"
+          },
+          "quality": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "4b946ab2090218895e20055c34ebbad867a47e315c217739a7d1d238a2567319"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "95275ebc150796dacf93046f372d5b1c11025f3b5fd096abaa4b60b98bee0bc9"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "analytic_contaminated",
+      "passed": true,
+      "valid": 19144,
+      "active": 19344,
+      "source_mode": "capture manifest",
+      "capture_id": "analytic_contaminated",
+      "coverage": 0.9896608767576509,
+      "reasons": {
+        "insufficient_observations": 200,
+        "outside_roi": 1136,
+        "valid": 19144
+      },
+      "recipe_sha256": "1f7ff1583d3617ddec6ad7f9846c75ccc590a859e3ff63946c116580d9f7b846",
+      "capture_sha256": "63e1f620430ca33bd47f415563250094bf54958c3f163cfff27b96ebe6b88108",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "69c7b7ca028b408ddb2b8d17ac209360c298502a97d5ade360d50360f20a64fe"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "29f1d722be609274e0131fd111a69c86a3dbe697b69653305d69a02ea5b7dc61"
+          },
+          "valid": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "41bf5a86dacee008b18b34aeda047e13415896477ea1cdfc2e1b9adc70a065e7"
+          },
+          "reason": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "7cd13eba752386ddd4a56097d1da64059def1ca5cd56dfbcb2251fff0155a8a8"
+          },
+          "support": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "b1a813e21e27fd140de5347a5dd13400ed3286016103968fe2c931582b544daa"
+          },
+          "available": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "7dee11ab201f46e171fd3fd0dba9dbb6c11131f87222b50e642de2ffb70a3808"
+          },
+          "singular_ratio": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8fb5adcd41daa423d056002ed5d55a67a0c5f61a6a5761d471ba4bef213a5abd"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "215e6ccb0e53584cf8bacc6d9fe4f4093a2cdc95c480a02fb1d9686c97cc9dc5"
+          },
+          "all_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "a332e2246eccd26c4badad4a50f904fecb55d98c74d2a8a002eabee55e6233d4"
+          },
+          "used": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "39a62725492ee8736fc7c306d306f7e4689098e58b8eae067cbfc8028a0ac288"
+          },
+          "residual": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "54df475ed2612bb187bad4b22fa04ffcd335a3447f3569fbbba7fe10a5fdb6ca"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "864fbdb0ab0a5b44a3d7f53d85ca52dac71a714cacfcc7c3efe4ad11b5240218"
+          },
+          "normal_change": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "7c28acbc5e6ab2340fba77c186523474315a09fd7d3141072c89cf1a0a14d0bc"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "a339923854ab45c54a18f228452d408b2ecb8c1a9bbdee76f50b4f8c65d7568a"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "864fbdb0ab0a5b44a3d7f53d85ca52dac71a714cacfcc7c3efe4ad11b5240218"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "2171c8f51753e7c1f204bfe358f8c0c99d7e17e85ec1cf3fcee6f994f8189cc0"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "481ba931ed70adeff0708dc7ff6ef48e8f1a84a605c32eaef3f7a542b242392b"
+          },
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "cc17849c0bcd7b99b6a71b6bde35db60a8b738408aaeada5d07fd958e9c0c626"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3b75dbadda6486aa2861ae99ac8715d2e8d459b2257fe73c654e96cd804ca362"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3e6f1fcefa91779a4f62aeb7e7289396205e20a6f12237c5ed15ad31577d38e8"
+          },
+          "detail": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "131afcacd630713206a54972a06776c8c8a4f0a935c35d3195849536e4296dc0"
+          },
+          "residual": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b33f268e5ec665aaf028d6e59dc4cd044c4da3ac278cc0d730de94dd265c1b53"
+          },
+          "quality": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "c12f5098b14cc41a3fa13d7188bf9627483bfe7782d1567b322cf99447c25ceb"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "2171c8f51753e7c1f204bfe358f8c0c99d7e17e85ec1cf3fcee6f994f8189cc0"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "four_light_ambiguity",
+      "passed": false,
+      "valid": 11952,
+      "active": 19344,
+      "source_mode": "capture manifest",
+      "capture_id": "four_light_ambiguity",
+      "coverage": 0.6178660049627791,
+      "reasons": {
+        "ambiguous_orientation": 7392,
+        "outside_roi": 1136,
+        "valid": 11952
+      },
+      "recipe_sha256": "27da1f092eef7219a65cf277315cbb5890a5558a1afe55c4e9167cbc0f4409c5",
+      "capture_sha256": "1adfd2ffc5fa1f29e335c444cc780f128850c1aa7569e08f1d36aedd3833e232",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "efa2d2ace536a64cb7f216bd97a204bb09ba5df4e0697a7c1838ab1c27638dad"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "eb8057390f86bd476e12398b1ba600f715fa8b875fc8fecdc9221b043b3c4113"
+          },
+          "valid": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "6be8eb2725cd1d8f63d4ddb1a43f011ea9f642326c1ad0a78d10d7d0b1f3bae9"
+          },
+          "reason": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "269ca95f1996a72f02c0caa97552576c01857178493039d0367ac9e443ac0004"
+          },
+          "support": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "3df0034ff45dfe7a74f7b91fedb5ef8376fd2f4f607a4cf07ee38479b635203f"
+          },
+          "available": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "a892d66f7df3bb9bbcc3b21afba8937f7ccded58e3ae8adce755aaa24f07a685"
+          },
+          "singular_ratio": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "9d4b0a295abeb9e93aef925e5a4a7399774610468a67181184d087b02be248f7"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "a770e39e5720727b6159687ed15a4a5566a4b6a4c038b4c9cc0c07dc9b64b599"
+          },
+          "all_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "e86cc8c1970ecb68f1d2e7d1f7ed3b25dd6cea9f00bcd9e48b22185fa6ef3c93"
+          },
+          "used": {
+            "shape": [
+              4,
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "b9b5c55f90bd61b6a8b4f0bd0e74154321b239ad9c2212487dd3db5fd6e62023"
+          },
+          "residual": {
+            "shape": [
+              4,
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "2bb101a261452d7962f5565e0845770bd363c7f2281eeb30b86fa282a0ad68ee"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "44167d567b193f0072cd0fdd738fc446de77477b725bd62ad355f28f7ffd4a9b"
+          },
+          "normal_change": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "dd58e5b1a634807a251db2c223a3cd4879865fbffee06417997d8946788ef551"
+          },
+          "observation_flags": {
+            "shape": [
+              4,
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "d9f461f3eae2e673b67fccc394cd6e747d7294b266cf02033a140db22eff65e0"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "44167d567b193f0072cd0fdd738fc446de77477b725bd62ad355f28f7ffd4a9b"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "9de250cee2954bb6dd8faaa8be638350113b13e0e9ed79e42495bf95a3fc183d"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "68b3ea0816dfca26173886872291bae764bf524bf32dd5b039f4bbef7c92e688"
+          },
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "1ef11d282d3e66b376e666d0781dfc3d2be9c1d2f5ab2847ff9c4d717902d90d"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "74c31bbaf44ffef7bc11eec115b4400da56f458c75e19c8396c81d22eef6b85a"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "a5c4e1ffd41012c24687c41772dfcb0eebdfc9ea1e34d17f2417e478c592b8b6"
+          },
+          "detail": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "f573c9215121fcb37b349a803bbde54ab1998a5c3b5e72a7d8853b2bac404bb5"
+          },
+          "residual": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "446760feafbc2ca00f2c0a98321660bfa6c623fdef2b09d6e9ecb5e06b37d3fd"
+          },
+          "quality": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "f4fd37835f5dcfde9fbd81c8986371d303c2e9a0bd9fcaec1a6863e3778aa9c9"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "9de250cee2954bb6dd8faaa8be638350113b13e0e9ed79e42495bf95a3fc183d"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "material_clean",
+      "passed": true,
+      "valid": 63504,
+      "active": 63504,
+      "source_mode": "capture manifest",
+      "capture_id": "polyhaven_clean",
+      "coverage": 1.0,
+      "reasons": {
+        "outside_roi": 2032,
+        "valid": 63504
+      },
+      "recipe_sha256": "7d5ac33a8066c69299ec9b6a5892551b6d86b67b442be1e709973b2eb32e8973",
+      "capture_sha256": "f94c834fcd4ade38a7d1b96a35b33d686aed293b67c13c8d49ee7012e0cb158d",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "034c344ad3434dd03d236e7422c9d75f765a665470105737c60c9fb7e7dd2d44"
+          },
+          "albedo": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "b486912e0c2aa7bd3049133d6aa37a4894a90a4ac377b5b1d532c22eeca7702f"
+          },
+          "valid": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "|b1",
+            "sha256": "4f829955090a0ea259dd0574e0048fe0bba726f878342e572eb5deaa7d389709"
+          },
+          "reason": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "|u1",
+            "sha256": "a6c61172069376245605afff94f6342ff21a2184187475ecfc4c2c9f01eed83f"
+          },
+          "support": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<u2",
+            "sha256": "8d9514e6065540b05268c51d07dbf9c1efd19200bc23ace2291dd30923e8ed8f"
+          },
+          "available": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<u2",
+            "sha256": "8d9514e6065540b05268c51d07dbf9c1efd19200bc23ace2291dd30923e8ed8f"
+          },
+          "singular_ratio": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "62627f1c06f76435143928d78713fecf53945c22484d0067b5254257746f9440"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "3e4a5afbd60746b66fb45a9d2a427d8588f71da9d078e8835b7f2cf5f6516c73"
+          },
+          "all_rms_relative": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "39bd28908f89eb1868ef3db74868adcfd402a82eaa4b7659e0d86f8581419d4b"
+          },
+          "used": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "|b1",
+            "sha256": "3b73a127d49daf717dbec241140d9b1e6bdbb133611e1a6247812662ea3dbc7a"
+          },
+          "residual": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "b822b7b1b23d15f4a847792a25038347858a72db5781a3e2ffcd50d4c166c15c"
+          },
+          "relight": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "9289ee32035712f424a449c8718ad197b012105c56a2e34738ba1321f1b51338"
+          },
+          "normal_change": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "967d6739967e683b3cf7a5285c20b2951fde60e1cb03a9959367d42e8d31c94a"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "|u1",
+            "sha256": "3443448508a850f33dce04f8a45aed5eb8a32fcd90ccf58a080d1a879b575c2c"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "9289ee32035712f424a449c8718ad197b012105c56a2e34738ba1321f1b51338"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "d94148e9b5683c126920c670c8daa69b07fbca699c33531a1eb9807c99f6e1ff"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "62ef23e0b18726fb995a272149f7f1a12d7372370082e8adda2386b5c4895746"
+          },
+          "normals": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b2929b779ca80a832ff965fd206196b00e2de32af55ec91ca3ea502c79693670"
+          },
+          "albedo": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "69e38e2223382929ec172de37b3a418edc6dc0c78ffa73eea721219b05969691"
+          },
+          "relight": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b462d18fea4e502518daff5d2c7fe0321e46e8593a70fdc49d61bd901dcafde9"
+          },
+          "detail": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "fe00b64d08a8293a2024a4d2fcced74ab6ab55e7b8732ddbe48baeeea633a303"
+          },
+          "residual": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "f77b2ba0d4a391e94fd44bc9b8cd0d1cd2e805636a2744cd565e496ecd356977"
+          },
+          "quality": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "54e9760a0a15b73388ac81c4daef9c3521e526beae583ba9637434115f242602"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "d94148e9b5683c126920c670c8daa69b07fbca699c33531a1eb9807c99f6e1ff"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "material_contaminated",
+      "passed": true,
+      "valid": 63304,
+      "active": 63504,
+      "source_mode": "capture manifest",
+      "capture_id": "polyhaven_contaminated",
+      "coverage": 0.9968505920886873,
+      "reasons": {
+        "insufficient_observations": 200,
+        "outside_roi": 2032,
+        "valid": 63304
+      },
+      "recipe_sha256": "7d5ac33a8066c69299ec9b6a5892551b6d86b67b442be1e709973b2eb32e8973",
+      "capture_sha256": "2642bd6ee83cc8a40edf626beaa6f03fd1e14f2ad859d3dfb97f0b05aa845e58",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "39a9f41b46c86d7064cc768fd78003fb2819b44e05ff4ef56a18d9a073cab0fe"
+          },
+          "albedo": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "962c44b61988136b66fa50c93dcd60ffdeccab1554ddcac77a8ad88c7350d5c6"
+          },
+          "valid": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "|b1",
+            "sha256": "639ee63086ab9d180932bbd4c2ba46df878d0470bba23cbc54d882e9c5895710"
+          },
+          "reason": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "|u1",
+            "sha256": "e59465feb749fd4e12edd9d7425af43beb7cc2e574d3a02277a593cbab9ed349"
+          },
+          "support": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<u2",
+            "sha256": "b1df71d5131fc1bfdfb97f72db5be829b22992f36ab0b2225fd0619d1841f45b"
+          },
+          "available": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<u2",
+            "sha256": "8a348715e97f50040db86e46ccc8d6bd77df7dc1431ab4c12f504c983772a8c9"
+          },
+          "singular_ratio": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "ae107a6c87fe42a30cbb259cbd5551eb55337e699ac36bffc2f0ac68eb8ab6d4"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "b395780f541b0a80d6fb3955ea83fe8a67abc7b887a723ba81d63a6985f0b85a"
+          },
+          "all_rms_relative": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "c118e52b24b23974e5eb57fad070a4de7e6298e431b41373fb8efbbcb6a75588"
+          },
+          "used": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "|b1",
+            "sha256": "758d95f87116365350f095061ba750b34b6ebf062d7ee40bc95a2a5eed62fae6"
+          },
+          "residual": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "1a19b09809f6efd35247a51a6af67daf5b0542bd7ca057f8d993c577f41e4beb"
+          },
+          "relight": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "60bd488e77122e9dbcebd83ac46e0c5b554abd5e0d31887ba74f131e66894d2a"
+          },
+          "normal_change": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "641f51c2cfa1bbd0dd58f459276694d591916ede8eb60b43f440e88440a8d381"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "|u1",
+            "sha256": "be299db172b1afdf8f477a470f757d2fcd4ae1b6b0b6cf16fc66a9201547b96e"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "60bd488e77122e9dbcebd83ac46e0c5b554abd5e0d31887ba74f131e66894d2a"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3f7585187ffea5758367ed4c264638617291081660cf093b03760d42b44d5778"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "58b29c7d9961bff73156a9707067428f31da3dafae73bbf9b4b0219e2197764a"
+          },
+          "normals": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "40ed67c5bd89c59e4d2ce340561f0cf4d931625dfc00d63cf251849be8bcd334"
+          },
+          "albedo": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "78a36feff1ac7479c283f159041c6a7b23893fd6bd726912fbff0e775f3b746c"
+          },
+          "relight": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "37be9759035a88dddc6ec9a9458b2fd1ebd3af8eeb137491a7da1d2efbcdd376"
+          },
+          "detail": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b4564c80942b3cc1597c8bf817e94bfaa67ff6666218c74ade418a25034eddff"
+          },
+          "residual": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "a7952792aed8791b46d59aea10956d195740c13cfea065482759244ebde7bbf6"
+          },
+          "quality": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "77b7a60b6fde9a2fd5f1d46a4e3b74c8f96d4f7920f497f64067f4aa2c557e08"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3f7585187ffea5758367ed4c264638617291081660cf093b03760d42b44d5778"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "connected_material",
+      "passed": true,
+      "valid": 63304,
+      "active": 63504,
+      "source_mode": "connected capture",
+      "capture_id": "polyhaven_contaminated",
+      "coverage": 0.9968505920886873,
+      "reasons": {
+        "insufficient_observations": 200,
+        "outside_roi": 2032,
+        "valid": 63304
+      },
+      "recipe_sha256": "7d5ac33a8066c69299ec9b6a5892551b6d86b67b442be1e709973b2eb32e8973",
+      "capture_sha256": "2642bd6ee83cc8a40edf626beaa6f03fd1e14f2ad859d3dfb97f0b05aa845e58",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "39a9f41b46c86d7064cc768fd78003fb2819b44e05ff4ef56a18d9a073cab0fe"
+          },
+          "albedo": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "962c44b61988136b66fa50c93dcd60ffdeccab1554ddcac77a8ad88c7350d5c6"
+          },
+          "valid": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "|b1",
+            "sha256": "639ee63086ab9d180932bbd4c2ba46df878d0470bba23cbc54d882e9c5895710"
+          },
+          "reason": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "|u1",
+            "sha256": "e59465feb749fd4e12edd9d7425af43beb7cc2e574d3a02277a593cbab9ed349"
+          },
+          "support": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<u2",
+            "sha256": "b1df71d5131fc1bfdfb97f72db5be829b22992f36ab0b2225fd0619d1841f45b"
+          },
+          "available": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<u2",
+            "sha256": "8a348715e97f50040db86e46ccc8d6bd77df7dc1431ab4c12f504c983772a8c9"
+          },
+          "singular_ratio": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "ae107a6c87fe42a30cbb259cbd5551eb55337e699ac36bffc2f0ac68eb8ab6d4"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "b395780f541b0a80d6fb3955ea83fe8a67abc7b887a723ba81d63a6985f0b85a"
+          },
+          "all_rms_relative": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "c118e52b24b23974e5eb57fad070a4de7e6298e431b41373fb8efbbcb6a75588"
+          },
+          "used": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "|b1",
+            "sha256": "758d95f87116365350f095061ba750b34b6ebf062d7ee40bc95a2a5eed62fae6"
+          },
+          "residual": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "1a19b09809f6efd35247a51a6af67daf5b0542bd7ca057f8d993c577f41e4beb"
+          },
+          "relight": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "60bd488e77122e9dbcebd83ac46e0c5b554abd5e0d31887ba74f131e66894d2a"
+          },
+          "normal_change": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "641f51c2cfa1bbd0dd58f459276694d591916ede8eb60b43f440e88440a8d381"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              256,
+              256
+            ],
+            "dtype": "|u1",
+            "sha256": "be299db172b1afdf8f477a470f757d2fcd4ae1b6b0b6cf16fc66a9201547b96e"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              256,
+              256
+            ],
+            "dtype": "<f4",
+            "sha256": "60bd488e77122e9dbcebd83ac46e0c5b554abd5e0d31887ba74f131e66894d2a"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3f7585187ffea5758367ed4c264638617291081660cf093b03760d42b44d5778"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "58b29c7d9961bff73156a9707067428f31da3dafae73bbf9b4b0219e2197764a"
+          },
+          "normals": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "40ed67c5bd89c59e4d2ce340561f0cf4d931625dfc00d63cf251849be8bcd334"
+          },
+          "albedo": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "78a36feff1ac7479c283f159041c6a7b23893fd6bd726912fbff0e775f3b746c"
+          },
+          "relight": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "37be9759035a88dddc6ec9a9458b2fd1ebd3af8eeb137491a7da1d2efbcdd376"
+          },
+          "detail": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b4564c80942b3cc1597c8bf817e94bfaa67ff6666218c74ade418a25034eddff"
+          },
+          "residual": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "a7952792aed8791b46d59aea10956d195740c13cfea065482759244ebde7bbf6"
+          },
+          "quality": {
+            "shape": [
+              256,
+              256,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "77b7a60b6fde9a2fd5f1d46a4e3b74c8f96d4f7920f497f64067f4aa2c557e08"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3f7585187ffea5758367ed4c264638617291081660cf093b03760d42b44d5778"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "exposure_changed",
+      "passed": true,
+      "valid": 19344,
+      "active": 19344,
+      "source_mode": "connected capture",
+      "capture_id": "analytic-half-exposure",
+      "coverage": 1.0,
+      "reasons": {
+        "outside_roi": 1136,
+        "valid": 19344
+      },
+      "recipe_sha256": "1f7ff1583d3617ddec6ad7f9846c75ccc590a859e3ff63946c116580d9f7b846",
+      "capture_sha256": "e722ed9c0ee479f9d5f812ba43d07005682f4432970cadc79d2083339df94eaf",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "410d7acdeac6ebcaf533c3950be0707bd9b6596e26d8993ad1ed6ad8c4b63787"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8a0011f3022977147f9c4dbe07bede161fd97c84d1f976d0d0b55dca9baeea57"
+          },
+          "valid": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "b4553aa5906331b933ec4a7eeb6a42b8d57e29f3383d4f6ccccf8ded29286778"
+          },
+          "reason": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "4edbc7699cac54bbeff8122eb0b835a9f9e3dc869b866901dbacb1de29579b98"
+          },
+          "support": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "0f7c1b6fbeeaecdac84893410c6ff893061b6f5692028843b557bcb2e9cd74a7"
+          },
+          "available": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "0f7c1b6fbeeaecdac84893410c6ff893061b6f5692028843b557bcb2e9cd74a7"
+          },
+          "singular_ratio": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "f52385a93087df147c9acbb7c611b4f723e9ece7914c64518b075b987bbaa3e4"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "9f8e572509134322e79f3e692b932be9bbc81f8c048d973613aa9a2cb7c420ca"
+          },
+          "all_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8baddc88ff354926080349a0380157502df426d2bd3f22dc22ed1f5240ff4532"
+          },
+          "used": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "96971abda6a2fae3b521fede255513379371f29e426a4d1352a4e0ecabf721b7"
+          },
+          "residual": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "c7189e3ae3280fbe0b562930bc63ee288c4440b6ed35930748da837a98d68ce2"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "68fa1975183406d9f0ac6ab1abbad4592aa444537655cb7c9496ff7eba905ab9"
+          },
+          "normal_change": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "2573c21b2ff6acd7c1032609fd7f88e29e3142d4f6657596909f25aebb1e5344"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "3767eb4353e83219aca219e96f7b51078788659107847a349a0457fd664ff667"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "68fa1975183406d9f0ac6ab1abbad4592aa444537655cb7c9496ff7eba905ab9"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "a53a1b5efae21ed7b53828d7c9072518e38172c6b243246e8f005e2105a261fa"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "13cc7fe82718812575436c71458446e9f96ce9840ff9695860b104f850d46b19"
+          },
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3a031386b217a655f2dc8e11298d7db6a22e172d4358f90b610c63f921fd6e4f"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "f358d294abc10a672489bf7fd6d592ded657943896dc7d9ac5e5e247f35ae99d"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "c67f8f05c117249bd27d24e1627bfd64771a9728d02e76c1c35ff23e1f4b6240"
+          },
+          "detail": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "6f91cdd73ffdd97dd9de082b88c189eee9a0b2cdbe5b237d621834c6d12de283"
+          },
+          "residual": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "47a89b7ce20f7c50bccf452966c9da6c32f697981e1094708263b7d93bdc624d"
+          },
+          "quality": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "4b946ab2090218895e20055c34ebbad867a47e315c217739a7d1d238a2567319"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "a53a1b5efae21ed7b53828d7c9072518e38172c6b243246e8f005e2105a261fa"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "missing",
+      "passed": false,
+      "valid": 0,
+      "active": 19344,
+      "source_mode": "connected capture",
+      "capture_id": "analytic-all-missing",
+      "coverage": 0.0,
+      "reasons": {
+        "insufficient_observations": 19344,
+        "outside_roi": 1136
+      },
+      "recipe_sha256": "1f7ff1583d3617ddec6ad7f9846c75ccc590a859e3ff63946c116580d9f7b846",
+      "capture_sha256": "ff6335069b6e140eb47149d847aea80bf7e2b06bd80ae9708aa382efb3ae21ee",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "c00ae35e04d8f342d0d44795c1ae36d6b2b72e2be44553f4f9a9197d7f3ef56e"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8b8953921265567b214469427d374427fab26426e452e4b0c05dc3d34f7b8643"
+          },
+          "valid": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "cc61635da46b2c9974335ea37e0b5fd660a5c8a42a89b271fa7ec2ac4b8b26f6"
+          },
+          "reason": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "4244b5212f9277214b12baab2bf785818f53be17e4db03a5cfecdc630a260e20"
+          },
+          "support": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "02b1c2234680617802901a77eae606ad02e4ddb4282ccbc60061eac5b2d90bba"
+          },
+          "available": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "02b1c2234680617802901a77eae606ad02e4ddb4282ccbc60061eac5b2d90bba"
+          },
+          "singular_ratio": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "fa569e2360c540e6280e34a4627516770f1a5f34d81d35689334a99cc1013357"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "941fe9106d628d1f3367672589eb701ccceabaae1e62a67cb94950f279ebdb02"
+          },
+          "all_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "fa569e2360c540e6280e34a4627516770f1a5f34d81d35689334a99cc1013357"
+          },
+          "used": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "6cdd259c8ecbe61fbc369f3293c1961541386954a223b17a37899d7fd9ad42da"
+          },
+          "residual": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "50ef9423e9a6631523c278e74ee358a6e0a07737655bc636a5bbd27eab61233d"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8b8953921265567b214469427d374427fab26426e452e4b0c05dc3d34f7b8643"
+          },
+          "normal_change": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8b8953921265567b214469427d374427fab26426e452e4b0c05dc3d34f7b8643"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "073a634247ab6ebe529b2a3a1ecaa84645e477b6ba4fe6b6a37e933322fc4510"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8b8953921265567b214469427d374427fab26426e452e4b0c05dc3d34f7b8643"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "7d95a80c4ab44a64e58b0b2e07b3766f6ad6e015149161343e289081eaf5b833"
+          }
+        },
+        "graphics": {
+          "source": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "0693f6bfa2117a9b14f9ceca13d3a5611de5dca226bf999f20a7f615fbd08dff"
+          },
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b020a895e4203df74e37fd18981205c42cadfe3176b69a308b9e373503d86ac6"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b020a895e4203df74e37fd18981205c42cadfe3176b69a308b9e373503d86ac6"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b020a895e4203df74e37fd18981205c42cadfe3176b69a308b9e373503d86ac6"
+          },
+          "detail": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "b020a895e4203df74e37fd18981205c42cadfe3176b69a308b9e373503d86ac6"
+          },
+          "residual": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "281da50d0cbfa76f2b7feb13151203175f4a1cb91dd72c181db601affb1144bf"
+          },
+          "quality": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "3d37cb76be1d3fcda9b883fac9ced2143fbe34033bffc6d4dfa67b2cae330f1a"
+          },
+          "overview": {
+            "shape": [
+              702,
+              1380,
+              3
+            ],
+            "dtype": "|u1",
+            "sha256": "7d95a80c4ab44a64e58b0b2e07b3766f6ad6e015149161343e289081eaf5b833"
+          }
+        }
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    },
+    {
+      "case": "graphics_off",
+      "passed": true,
+      "valid": 19144,
+      "active": 19344,
+      "source_mode": "connected capture",
+      "capture_id": "analytic_contaminated",
+      "coverage": 0.9896608767576509,
+      "reasons": {
+        "insufficient_observations": 200,
+        "outside_roi": 1136,
+        "valid": 19144
+      },
+      "recipe_sha256": "1f7ff1583d3617ddec6ad7f9846c75ccc590a859e3ff63946c116580d9f7b846",
+      "capture_sha256": "63e1f620430ca33bd47f415563250094bf54958c3f163cfff27b96ebe6b88108",
+      "arrays": {
+        "maps": {
+          "normals": {
+            "shape": [
+              128,
+              160,
+              3
+            ],
+            "dtype": "<f4",
+            "sha256": "69c7b7ca028b408ddb2b8d17ac209360c298502a97d5ade360d50360f20a64fe"
+          },
+          "albedo": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "29f1d722be609274e0131fd111a69c86a3dbe697b69653305d69a02ea5b7dc61"
+          },
+          "valid": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "41bf5a86dacee008b18b34aeda047e13415896477ea1cdfc2e1b9adc70a065e7"
+          },
+          "reason": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "7cd13eba752386ddd4a56097d1da64059def1ca5cd56dfbcb2251fff0155a8a8"
+          },
+          "support": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "b1a813e21e27fd140de5347a5dd13400ed3286016103968fe2c931582b544daa"
+          },
+          "available": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<u2",
+            "sha256": "7dee11ab201f46e171fd3fd0dba9dbb6c11131f87222b50e642de2ffb70a3808"
+          },
+          "singular_ratio": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "8fb5adcd41daa423d056002ed5d55a67a0c5f61a6a5761d471ba4bef213a5abd"
+          },
+          "fit_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "215e6ccb0e53584cf8bacc6d9fe4f4093a2cdc95c480a02fb1d9686c97cc9dc5"
+          },
+          "all_rms_relative": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "a332e2246eccd26c4badad4a50f904fecb55d98c74d2a8a002eabee55e6233d4"
+          },
+          "used": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|b1",
+            "sha256": "39a62725492ee8736fc7c306d306f7e4689098e58b8eae067cbfc8028a0ac288"
+          },
+          "residual": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "54df475ed2612bb187bad4b22fa04ffcd335a3447f3569fbbba7fe10a5fdb6ca"
+          },
+          "relight": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "864fbdb0ab0a5b44a3d7f53d85ca52dac71a714cacfcc7c3efe4ad11b5240218"
+          },
+          "normal_change": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "7c28acbc5e6ab2340fba77c186523474315a09fd7d3141072c89cf1a0a14d0bc"
+          },
+          "observation_flags": {
+            "shape": [
+              8,
+              128,
+              160
+            ],
+            "dtype": "|u1",
+            "sha256": "a339923854ab45c54a18f228452d408b2ecb8c1a9bbdee76f50b4f8c65d7568a"
+          }
+        },
+        "images": {
+          "image": {
+            "shape": [
+              128,
+              160
+            ],
+            "dtype": "<f4",
+            "sha256": "864fbdb0ab0a5b44a3d7f53d85ca52dac71a714cacfcc7c3efe4ad11b5240218"
+          }
+        },
+        "graphics": {}
+      },
+      "native_results": true,
+      "no_preparation_estimation_relight_or_reload": true
+    }
+  ],
+  "projects": 9,
+  "frozen_exports": 6,
+  "scope": "Rendered software controls, not acquired-camera qualification"
+}

@@ -1,0 +1,406 @@
+{
+  "previous": {
+    "wheel_sha256": "d08ace480ee7f86f1e9691d33566a0291053998a6f5029e490f79a8719201cb3",
+    "cases": [
+      {
+        "case": "analytic_clean",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 192.2467999975197,
+            "samples_ms": [
+              166.5629000053741,
+              172.42170000099577,
+              192.2467999975197,
+              215.08819999871776,
+              186.26220000442117,
+              197.98150000860915,
+              210.23219998460263
+            ]
+          },
+          "debug": {
+            "median_ms": 193.5271999973338,
+            "samples_ms": [
+              186.75619998248294,
+              191.3277999847196,
+              188.37320001330227,
+              198.0180999962613,
+              202.34320001327433,
+              193.5271999973338,
+              201.93079998716712
+            ]
+          }
+        }
+      },
+      {
+        "case": "analytic_contaminated",
+        "numerical_maps_and_rasters_exact": true
+      },
+      {
+        "case": "four_light_ambiguity",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 84.18340000207536,
+            "samples_ms": [
+              93.89119999832474,
+              81.86070001102053,
+              85.13419999508187,
+              87.74230000562966,
+              84.18340000207536,
+              76.01609997800551,
+              77.61619999655522
+            ]
+          },
+          "debug": {
+            "median_ms": 95.85279997554608,
+            "samples_ms": [
+              92.20680000726134,
+              95.85279997554608,
+              105.37269999622367,
+              101.80400000535883,
+              110.48470000969246,
+              93.07909998460673,
+              86.23119999538176
+            ]
+          }
+        }
+      },
+      {
+        "case": "material_clean",
+        "numerical_maps_and_rasters_exact": true
+      },
+      {
+        "case": "material_contaminated",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 616.2358000001404,
+            "samples_ms": [
+              621.7083999945316,
+              616.2358000001404,
+              612.4245999963023,
+              662.8237999975681,
+              643.3174000121653,
+              580.3923000057694,
+              612.2006999794394
+            ]
+          },
+          "debug": {
+            "median_ms": 599.3534000008367,
+            "samples_ms": [
+              617.6910999929532,
+              601.5652999922168,
+              619.3548000010196,
+              599.3534000008367,
+              592.6633999915794,
+              545.7082999928389,
+              556.6369000007398
+            ]
+          }
+        }
+      },
+      {
+        "case": "connected_material",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 554.7356000170112,
+            "samples_ms": [
+              554.7356000170112,
+              562.1173999970779,
+              555.6921999959741,
+              551.6782000195235,
+              606.9527000072412,
+              530.0739999802317,
+              537.2918999928515
+            ]
+          },
+          "debug": {
+            "median_ms": 524.8152000131086,
+            "samples_ms": [
+              884.7318999760319,
+              906.7874999891501,
+              593.9686999772675,
+              518.6144000035711,
+              509.2385999741964,
+              524.8152000131086,
+              502.1909999777563
+            ]
+          }
+        }
+      },
+      {
+        "case": "exposure_changed",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 161.15840000566095,
+            "samples_ms": [
+              161.06360001140274,
+              161.15840000566095,
+              175.17629999201745,
+              179.01910000364296,
+              162.28990000672638,
+              160.9625999990385,
+              159.30080000543967
+            ]
+          },
+          "debug": {
+            "median_ms": 173.89569999068044,
+            "samples_ms": [
+              176.49620000156574,
+              169.09820001455955,
+              173.89569999068044,
+              169.38189999200404,
+              167.04719999688677,
+              177.81540000578389,
+              190.94430000404827
+            ]
+          }
+        }
+      },
+      {
+        "case": "missing",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 208.07279998552985,
+            "samples_ms": [
+              158.0400999810081,
+              217.8827000025194,
+              253.88309999834746,
+              234.3539999856148,
+              208.07279998552985,
+              190.4342999914661,
+              199.9641000002157
+            ]
+          },
+          "debug": {
+            "median_ms": 169.90709997480735,
+            "samples_ms": [
+              192.9678000160493,
+              190.49490001634695,
+              169.90709997480735,
+              148.52250000694767,
+              159.40799997770227,
+              179.10249999840744,
+              152.61399999144487
+            ]
+          }
+        }
+      },
+      {
+        "case": "graphics_off",
+        "numerical_maps_and_rasters_exact": true
+      }
+    ],
+    "scope": "Same inputs/models/settings; warm graphics-off block execution including normal host retention. Separate-process timings are exploratory, not speedup or latency guarantees."
+  },
+  "current": {
+    "wheel_sha256": "26a1276124dbb25b50983a7bfad7ead7a61ce920a34d32aec97fc5e53990c6d8",
+    "cases": [
+      {
+        "case": "analytic_clean",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 195.75510002323426,
+            "samples_ms": [
+              195.75510002323426,
+              191.25579998944886,
+              195.15869999304414,
+              199.1934000106994,
+              198.48820002516732,
+              194.70009999349713,
+              198.48130000173114
+            ]
+          },
+          "debug": {
+            "median_ms": 182.71620001178235,
+            "samples_ms": [
+              213.5949000075925,
+              188.81339998915792,
+              182.75000000721775,
+              182.71620001178235,
+              182.61899999924935,
+              182.4186000158079,
+              181.9623000046704
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.03709999145939946
+      },
+      {
+        "case": "analytic_contaminated",
+        "numerical_maps_and_rasters_exact": true
+      },
+      {
+        "case": "four_light_ambiguity",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 95.01680001267232,
+            "samples_ms": [
+              83.01890001166612,
+              83.55589999700896,
+              95.01680001267232,
+              98.87639997759834,
+              111.99750000378117,
+              96.25509998295456,
+              94.04259998700581
+            ]
+          },
+          "debug": {
+            "median_ms": 92.75000001071021,
+            "samples_ms": [
+              83.78899999661371,
+              83.98259998648427,
+              84.50940001057461,
+              107.46660002041608,
+              109.65539998142049,
+              97.49230000306852,
+              92.75000001071021
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.03279998782090843
+      },
+      {
+        "case": "material_clean",
+        "numerical_maps_and_rasters_exact": true
+      },
+      {
+        "case": "material_contaminated",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 590.9338000055868,
+            "samples_ms": [
+              590.9338000055868,
+              578.1371000048239,
+              664.0394999994896,
+              604.3666000186931,
+              580.555100023048,
+              579.4842000177596,
+              603.0402000178583
+            ]
+          },
+          "debug": {
+            "median_ms": 577.3047000111546,
+            "samples_ms": [
+              577.3047000111546,
+              602.0161000196822,
+              654.5728000055533,
+              617.3073000099976,
+              573.8012999936473,
+              559.4647999969311,
+              563.84230000549
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.03759999526664615
+      },
+      {
+        "case": "connected_material",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 579.9859999970067,
+            "samples_ms": [
+              581.1771000153385,
+              622.5654000008944,
+              579.9859999970067,
+              577.3536000051536,
+              551.8382000154816,
+              550.5813999916427,
+              581.0781000182033
+            ]
+          },
+          "debug": {
+            "median_ms": 550.7954999920912,
+            "samples_ms": [
+              590.215200005332,
+              616.7475000256673,
+              620.7898000138812,
+              542.4657000112347,
+              541.9467999890912,
+              550.7954999920912,
+              548.1384999875445
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.03749999450519681
+      },
+      {
+        "case": "exposure_changed",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 172.14470001636073,
+            "samples_ms": [
+              163.15859998576343,
+              185.60719999368303,
+              174.53969997586682,
+              172.14470001636073,
+              171.82119999779388,
+              172.2752999921795,
+              172.00449999654666
+            ]
+          },
+          "debug": {
+            "median_ms": 173.66040000342764,
+            "samples_ms": [
+              206.85849999426864,
+              194.33240001671948,
+              175.14399997889996,
+              173.66040000342764,
+              167.37619999912567,
+              168.0062000232283,
+              167.85060000256635
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.03530000685714185
+      },
+      {
+        "case": "missing",
+        "numerical_maps_and_rasters_exact": true,
+        "warm_graphics_off_execution": {
+          "lean": {
+            "median_ms": 154.25910000340082,
+            "samples_ms": [
+              153.266099980101,
+              152.59149999474175,
+              152.9136000026483,
+              159.45610002381727,
+              156.85739999753423,
+              154.25910000340082,
+              155.2110999764409
+            ]
+          },
+          "debug": {
+            "median_ms": 156.6369000065606,
+            "samples_ms": [
+              176.76279999432154,
+              167.84420001204126,
+              156.6369000065606,
+              156.7446999833919,
+              154.85759999137372,
+              156.27569999196567,
+              156.3220999960322
+            ]
+          }
+        },
+        "debug_record_only_median_ms": 0.03600001218728721
+      },
+      {
+        "case": "graphics_off",
+        "numerical_maps_and_rasters_exact": true
+      }
+    ],
+    "scope": "Same inputs/models/settings; warm graphics-off block execution including normal host retention. Separate-process timings are exploratory, not speedup or latency guarantees."
+  },
+  "all_numerical_maps_and_emitted_rasters_exact": true,
+  "interpretation": "Same models/inputs/generic settings. Debug record-only medians about 0.03..0.04 ms; Lean skips extra prepared retention and record. No preparation/solve/copy was added for review on the hot path. Separate-process timing shifts in both directions do not establish speedup or universal latency."
+}

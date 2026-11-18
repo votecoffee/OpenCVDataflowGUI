@@ -1,0 +1,103 @@
+{
+  "schema": "simple_surface_capture/v1",
+  "capture_id": "polyhaven_clean",
+  "pixel_grid": "rendered_reference_grid",
+  "response": "linear",
+  "input_scale": 1,
+  "frame": "camera",
+  "black_level": 0.02,
+  "input_ceiling": 1,
+  "mask": "2c1b22a93fbdb646cf806242d896878642cf560791ce1c2f4bad76a0d11d3161.npy",
+  "lights": [
+    {
+      "id": "lamp0",
+      "image": "3ce180996546d1ec301fa37ce9160744b197da9d136c5606d793073c78609a1b.npy",
+      "direction": [
+        0.6,
+        0.0,
+        -0.8
+      ],
+      "relative_intensity": 0.8,
+      "exposure_s": 0.2
+    },
+    {
+      "id": "lamp1",
+      "image": "c3844ada7b2d1f527d59bc5216b014c5e884919ca9a044363c348c303b4f315f.npy",
+      "direction": [
+        0.4242640687119285,
+        0.4242640687119285,
+        -0.8
+      ],
+      "relative_intensity": 0.8428571428571429,
+      "exposure_s": 0.2285714285714286
+    },
+    {
+      "id": "lamp2",
+      "image": "068a45d2c8d7006f3aa3d69d1416224ff2266c10c643109c121b2226b82f5fa8.npy",
+      "direction": [
+        3.6739403974420595e-17,
+        0.6,
+        -0.8
+      ],
+      "relative_intensity": 0.8857142857142858,
+      "exposure_s": 0.2571428571428572
+    },
+    {
+      "id": "lamp3",
+      "image": "d6f310e0b358cc825b715e456dd9a7f64d7bf6cdbaa03858f4ba340e490e5f6c.npy",
+      "direction": [
+        -0.42426406871192845,
+        0.4242640687119285,
+        -0.8
+      ],
+      "relative_intensity": 0.9285714285714286,
+      "exposure_s": 0.28571428571428575
+    },
+    {
+      "id": "lamp4",
+      "image": "f4c1d84e60a66a9c07ee7d4a574e72e50f1b100403e0270920c05f391899b217.npy",
+      "direction": [
+        -0.6,
+        7.347880794884119e-17,
+        -0.8
+      ],
+      "relative_intensity": 0.9714285714285715,
+      "exposure_s": 0.3142857142857143
+    },
+    {
+      "id": "lamp5",
+      "image": "935cf9b03fb10ada262745c63ad6e93689e99d8347a4bf90b4cd680b6a2bbb05.npy",
+      "direction": [
+        -0.4242640687119286,
+        -0.42426406871192845,
+        -0.8
+      ],
+      "relative_intensity": 1.0142857142857142,
+      "exposure_s": 0.34285714285714286
+    },
+    {
+      "id": "lamp6",
+      "image": "1e631515570be779ea3816de6470c91a7c923340d6e00f73eeaf28785cb11463.npy",
+      "direction": [
+        -1.1021821192326178e-16,
+        -0.6,
+        -0.8
+      ],
+      "relative_intensity": 1.0571428571428572,
+      "exposure_s": 0.37142857142857144
+    },
+    {
+      "id": "lamp7",
+      "image": "93ebdc7a04690eb3102d7e1ef75ad10f3b9052c6bbed2c52e81e602bdb1dee31.npy",
+      "direction": [
+        0.4242640687119284,
+        -0.4242640687119286,
+        -0.8
+      ],
+      "relative_intensity": 1.1,
+      "exposure_s": 0.4
+    }
+  ],
+  "source": "Powered by Poly Haven / Charlotte Baglioni / Anti Slip Concrete / CC0",
+  "reference_scope": "Rendering inputs are reference normals/albedo; not physical gauge evidence"
+}

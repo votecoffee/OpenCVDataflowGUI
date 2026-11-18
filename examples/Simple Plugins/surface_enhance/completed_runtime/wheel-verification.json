@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0.dev4",
+  "sha256": "26a1276124dbb25b50983a7bfad7ead7a61ce920a34d32aec97fc5e53990c6d8",
+  "size": 44313,
+  "packaged_modules": 12,
+  "modules_match_committed_source": true,
+  "original_MIT_license_preserved": true,
+  "source_tests": 70,
+  "wheel_tests": 70,
+  "clean_native_exit": true,
+  "environment_installs": false,
+  "host_empty_selection_sdk_commit": "da6de1a4"
+}

@@ -1,0 +1,29 @@
+{
+  "asset_id": "anti_slip_concrete",
+  "title": "Anti Slip Concrete",
+  "authors": {
+    "Charlotte Baglioni": "All"
+  },
+  "asset_url": "https://polyhaven.com/a/anti_slip_concrete",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "source_files_hash": "6cb6548b7d539a2af92acae83c8943a7140ed444",
+  "checked": "2026-11-16",
+  "files": {
+    "diffuse.exr": {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/exr/1k/anti_slip_concrete/anti_slip_concrete_diff_1k.exr",
+      "bytes": 1974257,
+      "publisher_md5": "43aec16abfd54c39f1d970b94477e10c",
+      "sha256": "a1b7562ab1e42d4bd7199178b9c3e7281aef9ca0c25e6c3b02074d89a8b7c899"
+    },
+    "normal_gl.png": {
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/1k/anti_slip_concrete/anti_slip_concrete_nor_gl_1k.png",
+      "bytes": 5720251,
+      "publisher_md5": "31a303a343c8858aca2a455ca17631c1",
+      "sha256": "277a105697b06f9744acad8ac8968673aaab0daced2e84c456ffc18de5155d0f"
+    }
+  },
+  "api_credit": "Powered by Poly Haven",
+  "api_terms": "https://github.com/Poly-Haven/Public-API/blob/master/ToS.md",
+  "use": "Material-map inputs for rendered diffuse controls, not acquired multi-light camera data"
+}

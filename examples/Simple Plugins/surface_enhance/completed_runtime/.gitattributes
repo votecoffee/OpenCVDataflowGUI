@@ -1,0 +1,11 @@
+*.sse binary
+*.npy binary
+*.npz binary
+*.png binary
+*.exr binary
+*.whl binary
+*.json -text
+*.py -text
+*.md -text
+LICENSE -text
+.gitattributes -text

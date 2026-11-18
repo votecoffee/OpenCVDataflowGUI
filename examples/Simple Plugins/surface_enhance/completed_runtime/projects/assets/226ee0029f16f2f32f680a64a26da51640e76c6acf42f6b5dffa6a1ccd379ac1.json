@@ -1,0 +1,59 @@
+{
+  "schema": "simple_surface_capture/v1",
+  "capture_id": "four_light_ambiguity",
+  "pixel_grid": "rendered_reference_grid",
+  "response": "linear",
+  "input_scale": 1,
+  "frame": "camera",
+  "black_level": 0.02,
+  "input_ceiling": 1,
+  "mask": "fb2d19273c7b5954bd8660ea384c5ffe3eb39640038974e254b562cbfa6a23b8.npy",
+  "lights": [
+    {
+      "id": "lamp0",
+      "image": "754cb99f68a45ea38df7c78924966b42254d9c032bd28a7208c665deefc625fc.npy",
+      "direction": [
+        0.6,
+        0.0,
+        -0.8
+      ],
+      "relative_intensity": 0.8,
+      "exposure_s": 0.2
+    },
+    {
+      "id": "lamp1",
+      "image": "e6d45a5099b7583fd0cb7277baf1872dd71311e2f4eba7eda1992cedc13ff0ad.npy",
+      "direction": [
+        3.6739403974420595e-17,
+        0.6,
+        -0.8
+      ],
+      "relative_intensity": 0.9,
+      "exposure_s": 0.26666666666666666
+    },
+    {
+      "id": "lamp2",
+      "image": "ce28d7b177fe11629025d3bcbc122d97dc5b68c0202312c6542749e61208dbe6.npy",
+      "direction": [
+        -0.6,
+        7.347880794884119e-17,
+        -0.8
+      ],
+      "relative_intensity": 1.0,
+      "exposure_s": 0.33333333333333337
+    },
+    {
+      "id": "lamp3",
+      "image": "8518ebb28d944e4850adc33867b81c6ddd403a0de797506d0e8e0c1ba2205c08.npy",
+      "direction": [
+        -1.1021821192326178e-16,
+        -0.6,
+        -0.8
+      ],
+      "relative_intensity": 1.1,
+      "exposure_s": 0.4
+    }
+  ],
+  "source": "Original flat reference; four lights with one competing observation",
+  "reference_scope": "Rendering inputs are reference normals/albedo; not physical gauge evidence"
+}

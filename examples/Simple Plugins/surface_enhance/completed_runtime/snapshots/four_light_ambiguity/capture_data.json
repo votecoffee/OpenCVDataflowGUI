@@ -1,0 +1,70 @@
+{
+  "schema": "simple_surface_stack/v1",
+  "images": {
+    "array_file": "capture_images.npy",
+    "shape": [
+      4,
+      128,
+      160
+    ],
+    "dtype": "<f4",
+    "sha256": "1adfd2ffc5fa1f29e335c444cc780f128850c1aa7569e08f1d36aedd3833e232"
+  },
+  "lighting": {
+    "light_ids": [
+      "lamp0",
+      "lamp1",
+      "lamp2",
+      "lamp3"
+    ],
+    "directions": [
+      [
+        0.6,
+        0.0,
+        -0.8
+      ],
+      [
+        3.6739403974420595e-17,
+        0.6,
+        -0.8
+      ],
+      [
+        -0.6,
+        7.347880794884119e-17,
+        -0.8
+      ],
+      [
+        -1.1021821192326178e-16,
+        -0.6,
+        -0.8
+      ]
+    ],
+    "relative_intensity": [
+      0.8,
+      0.9,
+      1.0,
+      1.1
+    ],
+    "exposure_s": [
+      0.2,
+      0.26666666666666666,
+      0.33333333333333337,
+      0.4
+    ],
+    "frame": "camera"
+  },
+  "capture_id": "four_light_ambiguity",
+  "pixel_grid": "rendered_reference_grid",
+  "response": "linear",
+  "black_level": 0.02,
+  "input_ceiling": 1,
+  "mask": {
+    "array_file": "capture_mask.npy",
+    "shape": [
+      128,
+      160
+    ],
+    "dtype": "|b1",
+    "sha256": "b4553aa5906331b933ec4a7eeb6a42b8d57e29f3383d4f6ccccf8ded29286778"
+  }
+}

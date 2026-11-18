@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "surface",
+      "type": "image.simple_surface_enhance",
+      "name": "SimpleSurfaceEnhance",
+      "description": "Review the exact completed lights/maps/pixel evidence in the inspector. Rendered control; no acquired-camera qualification.",
+      "parameters": {
+        "recipe_path": "assets/27da1f092eef7219a65cf277315cbb5890a5558a1afe55c4e9167cbc0f4409c5.sse",
+        "sha256": "27da1f092eef7219a65cf277315cbb5890a5558a1afe55c4e9167cbc0f4409c5",
+        "source": "capture manifest",
+        "capture_manifest": "assets/226ee0029f16f2f32f680a64a26da51640e76c6acf42f6b5dffa6a1ccd379ac1.json",
+        "minimum_coverage": 0.95,
+        "render_graphics": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "capture"
+      ],
+      "exposed_outputs": [
+        "image",
+        "maps",
+        "report",
+        "coverage",
+        "valid_pixels",
+        "overview"
+      ],
+      "thumbnail": true,
+      "preview_output": "overview"
+    }
+  ],
+  "connections": []
+}

@@ -1,0 +1,10 @@
+{
+  "size": [
+    256,
+    256
+  ],
+  "resampling": "Area average; decoded normal vectors renormalized",
+  "normal_decode": "OpenGL 2*uint16/65535-1, then [Nx,-Ny,-Nz] into camera axes",
+  "albedo": "Linear EXR green channel; no per-frame normalization",
+  "rendering": "Local diffuse cosine only; not measured illumination or a full optical simulation"
+}

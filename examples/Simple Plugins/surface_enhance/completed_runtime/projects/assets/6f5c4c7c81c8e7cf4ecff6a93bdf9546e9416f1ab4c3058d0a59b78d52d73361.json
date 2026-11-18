@@ -1,0 +1,103 @@
+{
+  "schema": "simple_surface_capture/v1",
+  "capture_id": "analytic_contaminated",
+  "pixel_grid": "rendered_reference_grid",
+  "response": "linear",
+  "input_scale": 1,
+  "frame": "camera",
+  "black_level": 0.02,
+  "input_ceiling": 1,
+  "mask": "fb2d19273c7b5954bd8660ea384c5ffe3eb39640038974e254b562cbfa6a23b8.npy",
+  "lights": [
+    {
+      "id": "lamp0",
+      "image": "c7b013924098fb0b126b17d77bac8b6ce889ea3d94221ecf2a775d94fd559e28.npy",
+      "direction": [
+        0.6,
+        0.0,
+        -0.8
+      ],
+      "relative_intensity": 0.8,
+      "exposure_s": 0.2
+    },
+    {
+      "id": "lamp1",
+      "image": "ebc9c1d698cd2ef79d5eabe3cbc479880b5e76c25839641bfd2908840c895271.npy",
+      "direction": [
+        0.4242640687119285,
+        0.4242640687119285,
+        -0.8
+      ],
+      "relative_intensity": 0.8428571428571429,
+      "exposure_s": 0.2285714285714286
+    },
+    {
+      "id": "lamp2",
+      "image": "22f3cfa48cad5507221f50afe1edac52257f4c9c063fcb946b87ac496f9964b7.npy",
+      "direction": [
+        3.6739403974420595e-17,
+        0.6,
+        -0.8
+      ],
+      "relative_intensity": 0.8857142857142858,
+      "exposure_s": 0.2571428571428572
+    },
+    {
+      "id": "lamp3",
+      "image": "5f26110b804ec86114e9d6c0ae1de25f03f2a60d800728332fcd121873951516.npy",
+      "direction": [
+        -0.42426406871192845,
+        0.4242640687119285,
+        -0.8
+      ],
+      "relative_intensity": 0.9285714285714286,
+      "exposure_s": 0.28571428571428575
+    },
+    {
+      "id": "lamp4",
+      "image": "b6d086e348973c5d4a061c2a6920b7701ab10123cce6ae130900db371a89bc65.npy",
+      "direction": [
+        -0.6,
+        7.347880794884119e-17,
+        -0.8
+      ],
+      "relative_intensity": 0.9714285714285715,
+      "exposure_s": 0.3142857142857143
+    },
+    {
+      "id": "lamp5",
+      "image": "640379ca2534056ba81c567a24af0b8af7d6d27b53c85e2f4efd41bcd73a520a.npy",
+      "direction": [
+        -0.4242640687119286,
+        -0.42426406871192845,
+        -0.8
+      ],
+      "relative_intensity": 1.0142857142857142,
+      "exposure_s": 0.34285714285714286
+    },
+    {
+      "id": "lamp6",
+      "image": "2dc44697e5eb4f0081719d9dd9be2e1dc177721080fbffb833d0f10ef987e16f.npy",
+      "direction": [
+        -1.1021821192326178e-16,
+        -0.6,
+        -0.8
+      ],
+      "relative_intensity": 1.0571428571428572,
+      "exposure_s": 0.37142857142857144
+    },
+    {
+      "id": "lamp7",
+      "image": "6e58e80a07793f6ad01018836a447e2fcc32aa1af338673e725bac1554c48860.npy",
+      "direction": [
+        0.4242640687119284,
+        -0.4242640687119286,
+        -0.8
+      ],
+      "relative_intensity": 1.1,
+      "exposure_s": 0.4
+    }
+  ],
+  "source": "Original analytic bump/hollow and varying albedo",
+  "reference_scope": "Rendering inputs are reference normals/albedo; not physical gauge evidence"
+}

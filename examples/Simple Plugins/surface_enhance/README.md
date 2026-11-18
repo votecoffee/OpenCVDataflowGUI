@@ -1,5 +1,14 @@
 # SimpleSurfaceEnhance setup and execution
 
+[Completed-results reviews](completed_runtime/README.md) add the pinned dev4 plugin,
+nine projects and six frozen exports. Load that folder's `plugin.py` for independent
+source/reference/light/map/pixel selection, zoom/pan, prepared observations, flags,
+fit usage and stored residuals. Review/export does not prepare, estimate, relight,
+recalibrate or reload source/model files. Manifest review requires the host's explicit
+empty paired-input support (`da6de1a4`); no wired input or training substitution is
+invented. Examples retain their rendered-control and CC0 attribution scope. No
+environment installation is needed; the older dev3 loader/projects below remain.
+
 **Powered by Poly Haven.** The public material maps are **Anti Slip Concrete**
 by **Charlotte Baglioni / Poly Haven**, under **CC0**. Exact original files,
 hashes and transformations are retained. See [dataset credits](DATASET_CREDITS.md).
