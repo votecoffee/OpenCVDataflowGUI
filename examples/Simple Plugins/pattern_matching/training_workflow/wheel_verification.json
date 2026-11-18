@@ -1,0 +1,40 @@
+{
+  "wheel_sha256": "a3e4025d4100d7d0b7fd3a1c469cd2468de685c10ffdec29ba8fff98f62eb2eb",
+  "changed_python_ast_modules": [
+    "opencv_geometric_pattern_match/dataflow.py",
+    "opencv_geometric_pattern_match/qt_training.py"
+  ],
+  "added_modules": [
+    "opencv_geometric_pattern_match/training_feedback.py"
+  ],
+  "source_module_sha256": {
+    "opencv_geometric_pattern_match/__init__.py": "8e43e35565bb695c976a6e78046c517d144d3f619304961862193c3db7f86bbd",
+    "opencv_geometric_pattern_match/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "opencv_geometric_pattern_match/benchmark.py": "0c2218686d4506b92f21eb8a63e6f66799b6a3b3b38596ea57778f93db1700d3",
+    "opencv_geometric_pattern_match/cli.py": "507cd45477a9c5ff8c155344ad4ad8be9709cb9eeb4740c62fee3285279e8595",
+    "opencv_geometric_pattern_match/completed_review.py": "5b7dcd4601d146121b819ab586a3bbaf0fd32ffbf912342c10c05bd09d3499bb",
+    "opencv_geometric_pattern_match/composite_training.py": "0cdfb6bc97ba839ce09a39f05602e1fa4eac991ec16d17c8675df14cd91e62eb",
+    "opencv_geometric_pattern_match/dataflow.py": "6493245abc976bdbc31834c16ad4f108e914ea88152b76ae5cac6cfe860a14cc",
+    "opencv_geometric_pattern_match/feature_weights.py": "233f9d1fd8b160479c615146ad658d14c3785f7b1c765cead68a7fd10bb9ce8e",
+    "opencv_geometric_pattern_match/image_input.py": "dab50f450f026e78864f900574f02da20b8724c5ebb371945988a50538c91d76",
+    "opencv_geometric_pattern_match/locator.py": "5909428eb6fd17bea7ad5d2764e5cfa50da3132f1b47c76f35fa414e3fc43f69",
+    "opencv_geometric_pattern_match/persistence.py": "a7566240d02e96e0dd0f97858e32b4a42f15e965d5fc4c86ac929b79c8e3d3d3",
+    "opencv_geometric_pattern_match/qt_completed_review.py": "50ada9887777f7cc7d8fec132490d809ab425984c6b0054af39e2fa03414cbf8",
+    "opencv_geometric_pattern_match/qt_training.py": "3be5f7ac2b00da36948ccd47dd5686f18d7fd7bc25352e5c6d44866e5e952cb9",
+    "opencv_geometric_pattern_match/refinement.py": "b73db5dc0a8e957ed0f83d08972953155562e99b39d78d8e14fce1ab551868fd",
+    "opencv_geometric_pattern_match/result_review.py": "a208b177bf757590ad404599690caa88c25822af4e69a460823445366abaeaa3",
+    "opencv_geometric_pattern_match/runtime.py": "107316d0c7c1fff7d9e94e4eadf78a16231a9224ee0a02720dceb5472c595b10",
+    "opencv_geometric_pattern_match/shape_training.py": "37fd2bc0922048695d1fb31d836151432c6557972e17c0955e9b478529c7a19d",
+    "opencv_geometric_pattern_match/training_draft.py": "adf1795c04d50e27a19ff02949698c7370cdc45d2f06eed70af1408ff3537c72",
+    "opencv_geometric_pattern_match/training_feedback.py": "bac3ae4faefe71c6eb7c2e67a366c4cdd7769628bbe901e12b3a63132bfa23df",
+    "opencv_geometric_pattern_match/workbench.py": "69247be0a45e8f96868ba73cee2d5225fd3b8d2d398c250aa1f1737f40188b60",
+    "opencv_geometric_pattern_match/workbench_mask.py": "d2ddc1962926392180640091177db2e452db650770125463d311ec69f54334ce",
+    "opencv_geometric_pattern_match/workbench_view.py": "ff97b5e66d03aa54d214c649b8bd5d491fef0cd0824db41563c94fffc7cf9985"
+  },
+  "execution_ast_unchanged": true,
+  "dataflow_change": "Adds training-image Save As dependency declaration only.",
+  "line_endings": "Previous wheel uses CRLF; current source/wheel use LF. AST comparison excludes physical newline differences.",
+  "host_environment_modified": false,
+  "followup": "Clarifies unsaved training state and comparison image frames.",
+  "source_base_commit": "4188ae9"
+}

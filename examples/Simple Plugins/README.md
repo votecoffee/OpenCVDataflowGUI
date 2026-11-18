@@ -77,6 +77,13 @@ pose accuracy remain open.
 
 ## Set up SimplePatternMatch
 
+The [dev3 training examples](pattern_matching/training_workflow/README.md) bundle
+an explicit checksum-pinned plugin with persistent model health, recorded
+before/after refinement fits, feature/weight changes and Undo. Save As retains
+reference/refinement images. They include a real VisA PCB and generated brackets;
+load their plugin before opening those projects, restarting if another matcher
+version is already loaded. This route does not modify the host installation.
+
 If SimplePatternMatch is already installed in the Python environment running
 OpenCVDataflowGUI, open a project that uses it directly. DataflowGUI
 loads the installed integration when it encounters a SimplePatternMatch block.

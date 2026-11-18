@@ -1,0 +1,18 @@
+{
+  "case": "brackets",
+  "accepted_before": 4,
+  "accepted_after": 4,
+  "moved": 348,
+  "downweighted": 0,
+  "fixed_pose_score_before": 0.972135638027725,
+  "fixed_pose_score_after": 0.9728663667767563,
+  "restored_reference_and_health": true,
+  "undo_exact": true,
+  "stage_does_not_apply": true,
+  "apply_reopen": true,
+  "save_as_exact_recipe": true,
+  "relocated_training_images": true,
+  "original_recipe_preserved": true,
+  "original_recipe_sha256": "776278a4590b4968580117bd7b0d5b873a2dffd255d3af6dda8895055c72f50c",
+  "scope": "Refinement-image fit comparison, not held-out accuracy qualification."
+}

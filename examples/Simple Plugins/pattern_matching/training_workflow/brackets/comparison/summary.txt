@@ -1,0 +1,3 @@
+Recorded fixed pose: X 79.4019, Y 74.7942, angle 5.0012° · 348 moved, 0 downweighted fine edges.
+Score 0.972136 → 0.972866 · Coverage 100.00% → 100.00% · Fit RMS 0.0546739 → 0.0279772 working px.
+This is the refinement image at the same pose, not held-out validation. Run preview on separate images before Stage → Apply.

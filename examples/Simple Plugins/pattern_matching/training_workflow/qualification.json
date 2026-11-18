@@ -1,0 +1,16 @@
+{
+  "source_checks": 117,
+  "wheel_loaded_checks": 117,
+  "subtests": 48,
+  "native_training_examples": 2,
+  "packaged_host_checks": 3,
+  "baseline_frames": 7,
+  "baseline_overlay_arrays_exact": 7,
+  "baseline_maximum_numeric_difference": 1.7468991586611082e-07,
+  "training_sources_retained_after_save_as": true,
+  "hands_on_operator_acceptance": false,
+  "host_environment_modified": false,
+  "comparison_history": "Session-only; latest reference/refinement images retained with the recipe",
+  "scope": "Software training workflow and unchanged original processing; not independent accuracy qualification",
+  "source_and_host_native_workflows": true
+}
