@@ -49,7 +49,7 @@ Xenophon Zabulis. *T-LESS: An RGB-D Dataset for 6D Pose Estimation of Texture-le
 Objects*, WACV 2017. [Publisher/license](https://cmp.felk.cvut.cz/t-less/).
 The cloud demo reuses the already bundled Primesense scene 1/frame 220, original
 RGB/depth arrays and publisher camera intrinsics from the
-[pinned source](<../../Simple Plugins/3d_locate/real_tless/source/ATTRIBUTION.md>).
+[pinned source](<../../Simple Plugins/3d_locate/dev/real_tless/source/ATTRIBUTION.md>).
 Depth scale is 0.1 mm per encoded sample. The demo samples, filters, voxelizes
 and estimates normals; it does not claim a detected part pose or robot calibration.
 

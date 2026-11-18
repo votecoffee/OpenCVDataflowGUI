@@ -1,0 +1,667 @@
+{
+  "version": 1,
+  "tools": {
+    "3d_locate": [
+      {
+        "folder": "cad_surface",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "generated_surface",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "tless_depth_verified",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "tless_match",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "tless_no_match",
+        "projects": [
+          "project.json"
+        ]
+      }
+    ],
+    "3d_measure": [
+      {
+        "folder": "generated_good",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "inspection",
+        "projects": [
+          "flatness.json",
+          "good.json",
+          "graphics_off.json",
+          "line_guard.json",
+          "missing.json",
+          "raised.json",
+          "real13.json",
+          "real24.json"
+        ]
+      },
+      {
+        "folder": "missing_line_target",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "tless_flatness",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "tless_line",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "tless_plane",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "training",
+        "projects": [
+          "missing.json",
+          "real13.json",
+          "real24.json"
+        ]
+      }
+    ],
+    "bin_picking": [
+      {
+        "folder": "bin_to_grid",
+        "projects": [
+          "project.json",
+          "review.json"
+        ]
+      },
+      {
+        "folder": "inspection",
+        "projects": [
+          "jaw_clear.json",
+          "jaw_graphics_off.json",
+          "jaw_mesh.json",
+          "jaw_obstacle.json",
+          "jaw_real13.json",
+          "jaw_real3.json",
+          "jaw_unknown.json",
+          "suction_good.json",
+          "suction_holes.json",
+          "suction_missing.json",
+          "suction_real13.json"
+        ]
+      },
+      {
+        "folder": "jaw_clear",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "jaw_obstacle",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "suction_generated",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "suction_tless",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "tless_mesh_grid",
+        "projects": [
+          "project.json",
+          "review.json"
+        ]
+      },
+      {
+        "folder": "training",
+        "projects": [
+          "jaw_clear.json",
+          "jaw_clear_trained.json",
+          "jaw_real13.json",
+          "jaw_real13_trained.json",
+          "suction_good.json",
+          "suction_good_trained.json",
+          "suction_real13.json",
+          "suction_real13_trained.json"
+        ]
+      }
+    ],
+    "deflectometry": [
+      {
+        "folder": "inspection",
+        "projects": [
+          "analytic_change.json",
+          "analytic_clean.json",
+          "analytic_missing.json",
+          "connected_change.json",
+          "graphics_off.json",
+          "missing.json",
+          "sofast_self_review.json",
+          "test_mask_restricted.json",
+          "whole_period_shift.json"
+        ]
+      }
+    ],
+    "foundation_pose": [
+      {
+        "folder": "held_out_frame13",
+        "projects": [
+          "review_project.json",
+          "run_project.json"
+        ]
+      },
+      {
+        "folder": "wrong_object",
+        "projects": [
+          "review_project.json",
+          "run_project.json"
+        ]
+      }
+    ],
+    "fringe_scan": [
+      {
+        "folder": "inspection",
+        "projects": [
+          "analytic_clean.json",
+          "analytic_missing.json",
+          "connected_missing.json",
+          "geometry_rejected.json",
+          "graphics_off.json",
+          "gray_phase_conflict.json",
+          "missing.json",
+          "warsaw_crown_phase.json"
+        ]
+      }
+    ],
+    "gdrnpp": [
+      {
+        "folder": "accepted_parts",
+        "projects": [
+          "review_project.json",
+          "run_project.json"
+        ]
+      },
+      {
+        "folder": "live_review",
+        "projects": [
+          "review_project.json",
+          "run_project.json",
+          "run_rejected_review.json"
+        ]
+      },
+      {
+        "folder": "rejected_part",
+        "projects": [
+          "review_project.json",
+          "run_project.json"
+        ]
+      },
+      {
+        "folder": "setup",
+        "projects": [
+          "icp_project.json",
+          "project.json"
+        ]
+      }
+    ],
+    "image_classification": [
+      {
+        "folder": "vegqual",
+        "projects": [
+          "color_and_layout.json",
+          "project.json"
+        ]
+      }
+    ],
+    "laser_profile": [
+      {
+        "folder": "inspection",
+        "projects": [
+          "calibrated_missing.json",
+          "calibrated_step.json",
+          "calibrated_unavailable.json",
+          "geometry_rejected.json",
+          "graphics_off.json",
+          "real_wli1.json",
+          "real_wli2.json",
+          "real_wli3.json",
+          "real_wli4.json"
+        ]
+      },
+      {
+        "folder": "training",
+        "projects": [
+          "calibrated_step.json",
+          "calibrated_step_trained.json",
+          "calibrated_unavailable.json",
+          "calibrated_unavailable_trained.json",
+          "real_wli1.json",
+          "real_wli1_trained.json"
+        ]
+      }
+    ],
+    "path_width": [
+      {
+        "folder": "calibrated_bead",
+        "projects": [
+          "project.json",
+          "spacing-project.json"
+        ]
+      },
+      {
+        "folder": "calibrated_curve",
+        "projects": [
+          "bands-project.json",
+          "project.json"
+        ]
+      },
+      {
+        "folder": "fixture_capture",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "generated_bead",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "weld_bead",
+        "projects": [
+          "project.json"
+        ]
+      }
+    ],
+    "pattern_matching": [
+      {
+        "folder": "asymmetric_brackets",
+        "projects": [
+          "project.json",
+          "wired_recipe.json"
+        ]
+      },
+      {
+        "folder": "visa_pcb2",
+        "projects": [
+          "project.json"
+        ]
+      }
+    ],
+    "pixel_segmentation": [
+      {
+        "folder": "armbench_tote",
+        "projects": [
+          "pick_candidate.json",
+          "project.json"
+        ]
+      },
+      {
+        "folder": "brick_mortar",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "cup_rim",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "pcb_laminate",
+        "projects": [
+          "project.json"
+        ]
+      }
+    ],
+    "reference_inspect": [
+      {
+        "folder": "armbench_tote",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "fixture_capture",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
+        "folder": "generated_inspection",
+        "projects": [
+          "assessment-project.json",
+          "project.json"
+        ]
+      },
+      {
+        "folder": "visa_pcb2",
+        "projects": [
+          "project.json"
+        ]
+      }
+    ],
+    "surface_enhance": [
+      {
+        "folder": "inspection",
+        "projects": [
+          "analytic_clean.json",
+          "analytic_contaminated.json",
+          "connected_material.json",
+          "exposure_changed.json",
+          "four_light_ambiguity.json",
+          "graphics_off.json",
+          "material_clean.json",
+          "material_contaminated.json",
+          "missing.json"
+        ]
+      },
+      {
+        "folder": "training",
+        "projects": [
+          "analytic_clean.json",
+          "analytic_clean_trained.json",
+          "connected_material.json",
+          "connected_material_trained.json",
+          "missing.json",
+          "missing_trained.json"
+        ]
+      }
+    ]
+  },
+  "directory_moves": {
+    "3d_locate/assets": "3d_locate/generated_surface/assets",
+    "3d_locate/benchmarks": "3d_locate/dev/benchmarks",
+    "3d_locate/boundary_verification": "3d_locate/dev/boundary_verification",
+    "3d_locate/build_demo.py": "3d_locate/dev/build_demo.py",
+    "3d_locate/camera_depth_review": "3d_locate/dev/camera_depth_review",
+    "3d_locate/CAPTURE.md": "3d_locate/dev/CAPTURE.md",
+    "3d_locate/completed_runtime": "3d_locate/dev/completed_runtime",
+    "3d_locate/expected.json": "3d_locate/dev/expected.json",
+    "3d_locate/geometry_diagnostics": "3d_locate/dev/geometry_diagnostics",
+    "3d_locate/novel_models": "3d_locate/dev/novel_models",
+    "3d_locate/project.json": "3d_locate/generated_surface/project.json",
+    "3d_locate/real_tless": "3d_locate/dev/real_tless",
+    "3d_locate/reference_sources": "3d_locate/dev/reference_sources",
+    "3d_locate/result.png": "3d_locate/dev/result.png",
+    "3d_locate/result_review": "3d_locate/dev/result_review",
+    "3d_locate/training_workflow": "3d_locate/dev/training_workflow",
+    "3d_measure/build_demo.py": "3d_measure/dev/build_demo.py",
+    "3d_measure/build_flatness.py": "3d_measure/dev/build_flatness.py",
+    "3d_measure/build_lines.py": "3d_measure/dev/build_lines.py",
+    "3d_measure/build_reference_context.py": "3d_measure/dev/build_reference_context.py",
+    "3d_measure/build_residuals.py": "3d_measure/dev/build_residuals.py",
+    "3d_measure/build_tless.py": "3d_measure/dev/build_tless.py",
+    "3d_measure/completed_runtime": "3d_measure/dev/completed_runtime",
+    "3d_measure/flatness": "3d_measure/dev/flatness",
+    "3d_measure/FLATNESS.md": "3d_measure/dev/FLATNESS.md",
+    "3d_measure/flatness_samples.py": "3d_measure/dev/flatness_samples.py",
+    "3d_measure/generated": "3d_measure/dev/generated",
+    "3d_measure/host_examples.py": "3d_measure/dev/host_examples.py",
+    "3d_measure/LICENSE": "3d_measure/dev/LICENSE",
+    "3d_measure/line_samples.py": "3d_measure/dev/line_samples.py",
+    "3d_measure/lines": "3d_measure/dev/lines",
+    "3d_measure/LINES.md": "3d_measure/dev/LINES.md",
+    "3d_measure/real_tless": "3d_measure/dev/real_tless",
+    "3d_measure/reference_context": "3d_measure/dev/reference_context",
+    "3d_measure/REFERENCE_CONTEXT.md": "3d_measure/dev/REFERENCE_CONTEXT.md",
+    "3d_measure/residuals": "3d_measure/dev/residuals",
+    "3d_measure/RESIDUALS.md": "3d_measure/dev/RESIDUALS.md",
+    "3d_measure/sha256.json": "3d_measure/dev/sha256.json",
+    "3d_measure/THIRD_PARTY.md": "3d_measure/dev/THIRD_PARTY.md",
+    "3d_measure/TRAINING.md": "3d_measure/dev/TRAINING.md",
+    "3d_measure/training_workflow": "3d_measure/dev/training_workflow",
+    "3d_measure/completed_runtime/projects": "3d_measure/inspection",
+    "3d_measure/training_workflow/projects": "3d_measure/training",
+    "bin_picking/APPLICATION_PLAN.md": "bin_picking/dev/APPLICATION_PLAN.md",
+    "bin_picking/build_examples.py": "bin_picking/dev/build_examples.py",
+    "bin_picking/completed_runtime": "bin_picking/dev/completed_runtime",
+    "bin_picking/generated": "bin_picking/dev/generated",
+    "bin_picking/known_part_jaw": "bin_picking/dev/known_part_jaw",
+    "bin_picking/LICENSE": "bin_picking/dev/LICENSE",
+    "bin_picking/real_tless": "bin_picking/dev/real_tless",
+    "bin_picking/samples.py": "bin_picking/dev/samples.py",
+    "bin_picking/sha256.json": "bin_picking/dev/sha256.json",
+    "bin_picking/TRAINING.md": "bin_picking/dev/TRAINING.md",
+    "bin_picking/training_workflow": "bin_picking/dev/training_workflow",
+    "bin_picking/completed_runtime/projects": "bin_picking/inspection",
+    "bin_picking/training_workflow/projects": "bin_picking/training",
+    "deflectometry/.ruff_cache": "deflectometry/dev/.ruff_cache",
+    "deflectometry/__pycache__": "deflectometry/dev/__pycache__",
+    "deflectometry/APPLICATION_PLAN.md": "deflectometry/dev/APPLICATION_PLAN.md",
+    "deflectometry/build_examples.py": "deflectometry/dev/build_examples.py",
+    "deflectometry/build_execution_projects.py": "deflectometry/dev/build_execution_projects.py",
+    "deflectometry/build_review_projects.py": "deflectometry/dev/build_review_projects.py",
+    "deflectometry/bundled_plugin.py.in": "deflectometry/dev/bundled_plugin.py.in",
+    "deflectometry/candidate_metadata.json": "deflectometry/dev/candidate_metadata.json",
+    "deflectometry/completed_loader_checks.json": "deflectometry/dev/completed_loader_checks.json",
+    "deflectometry/completed_runtime": "deflectometry/dev/completed_runtime",
+    "deflectometry/CONTRACTS.md": "deflectometry/dev/CONTRACTS.md",
+    "deflectometry/DATASET_AUDIT.md": "deflectometry/dev/DATASET_AUDIT.md",
+    "deflectometry/DATASET_CREDITS.md": "deflectometry/dev/DATASET_CREDITS.md",
+    "deflectometry/E1_VALIDATION.md": "deflectometry/dev/E1_VALIDATION.md",
+    "deflectometry/e2_inspector_checks.json": "deflectometry/dev/e2_inspector_checks.json",
+    "deflectometry/e2_package_verification.json": "deflectometry/dev/e2_package_verification.json",
+    "deflectometry/e2_published_checks.json": "deflectometry/dev/e2_published_checks.json",
+    "deflectometry/E2_VALIDATION.md": "deflectometry/dev/E2_VALIDATION.md",
+    "deflectometry/execution": "deflectometry/dev/execution",
+    "deflectometry/fringe_dev3_compatibility.json": "deflectometry/dev/fringe_dev3_compatibility.json",
+    "deflectometry/FUTURE_WORK.md": "deflectometry/dev/FUTURE_WORK.md",
+    "deflectometry/HOST_WORKFLOW.md": "deflectometry/dev/HOST_WORKFLOW.md",
+    "deflectometry/LICENSE": "deflectometry/dev/LICENSE",
+    "deflectometry/MAP_REVIEWS.md": "deflectometry/dev/MAP_REVIEWS.md",
+    "deflectometry/package_verification.json": "deflectometry/dev/package_verification.json",
+    "deflectometry/plugin.py": "deflectometry/dev/plugin.py",
+    "deflectometry/plugin_coexistence_checks.json": "deflectometry/dev/plugin_coexistence_checks.json",
+    "deflectometry/prepare_sofast.py": "deflectometry/dev/prepare_sofast.py",
+    "deflectometry/published_package_checks.json": "deflectometry/dev/published_package_checks.json",
+    "deflectometry/RECIPE_CONTRACT.md": "deflectometry/dev/RECIPE_CONTRACT.md",
+    "deflectometry/releases": "deflectometry/dev/releases",
+    "deflectometry/ruff.toml": "deflectometry/dev/ruff.toml",
+    "deflectometry/run_capture.py": "deflectometry/dev/run_capture.py",
+    "deflectometry/sofast_source": "deflectometry/dev/sofast_source",
+    "deflectometry/studies": "deflectometry/dev/studies",
+    "deflectometry/verify_execution.py": "deflectometry/dev/verify_execution.py",
+    "deflectometry/verify_package.py": "deflectometry/dev/verify_package.py",
+    "deflectometry/verify_plugins.py": "deflectometry/dev/verify_plugins.py",
+    "deflectometry/completed_runtime/projects": "deflectometry/inspection",
+    "foundation_pose/__pycache__": "foundation_pose/dev/__pycache__",
+    "foundation_pose/APPLICATION_PLAN.md": "foundation_pose/dev/APPLICATION_PLAN.md",
+    "foundation_pose/build_worker_projects.py": "foundation_pose/dev/build_worker_projects.py",
+    "foundation_pose/completed_runtime": "foundation_pose/dev/completed_runtime",
+    "foundation_pose/different_object_negative": "foundation_pose/dev/legacy_different_object_negative",
+    "foundation_pose/fetch_models.py": "foundation_pose/dev/fetch_models.py",
+    "foundation_pose/held_out_frame13": "foundation_pose/dev/legacy_held_out_frame13",
+    "foundation_pose/LICENSE": "foundation_pose/dev/LICENSE",
+    "foundation_pose/licenses": "foundation_pose/dev/licenses",
+    "foundation_pose/model_checks.json": "foundation_pose/dev/model_checks.json",
+    "foundation_pose/NATIVE_SETUP.md": "foundation_pose/dev/NATIVE_SETUP.md",
+    "foundation_pose/plugin.py": "foundation_pose/dev/plugin.py",
+    "foundation_pose/releases": "foundation_pose/dev/releases",
+    "foundation_pose/replay_tless.py": "foundation_pose/dev/replay_tless.py",
+    "foundation_pose/sha256.json": "foundation_pose/dev/sha256.json",
+    "foundation_pose/source": "foundation_pose/dev/source",
+    "foundation_pose/THIRD_PARTY.md": "foundation_pose/dev/THIRD_PARTY.md",
+    "foundation_pose/trained.sfp": "foundation_pose/dev/trained.sfp",
+    "foundation_pose/worker_execution": "foundation_pose/dev/worker_execution",
+    "foundation_pose/WORKER_WORKFLOW.md": "foundation_pose/dev/WORKER_WORKFLOW.md",
+    "fringe_scan/.ruff_cache": "fringe_scan/dev/.ruff_cache",
+    "fringe_scan/__pycache__": "fringe_scan/dev/__pycache__",
+    "fringe_scan/build_examples.py": "fringe_scan/dev/build_examples.py",
+    "fringe_scan/build_execution_projects.py": "fringe_scan/dev/build_execution_projects.py",
+    "fringe_scan/build_review_projects.py": "fringe_scan/dev/build_review_projects.py",
+    "fringe_scan/bundled_plugin.py.in": "fringe_scan/dev/bundled_plugin.py.in",
+    "fringe_scan/CAPTURE_CONTRACT.md": "fringe_scan/dev/CAPTURE_CONTRACT.md",
+    "fringe_scan/completed_runtime": "fringe_scan/dev/completed_runtime",
+    "fringe_scan/DATASET_CREDITS.md": "fringe_scan/dev/DATASET_CREDITS.md",
+    "fringe_scan/deflectometry_coexistence_checks.json": "fringe_scan/dev/deflectometry_coexistence_checks.json",
+    "fringe_scan/deflectometry_loader_replay.json": "fringe_scan/dev/deflectometry_loader_replay.json",
+    "fringe_scan/e2_inspector_checks.json": "fringe_scan/dev/e2_inspector_checks.json",
+    "fringe_scan/e2_package_verification.json": "fringe_scan/dev/e2_package_verification.json",
+    "fringe_scan/e2_published_checks.json": "fringe_scan/dev/e2_published_checks.json",
+    "fringe_scan/E2_VALIDATION.md": "fringe_scan/dev/E2_VALIDATION.md",
+    "fringe_scan/execution": "fringe_scan/dev/execution",
+    "fringe_scan/fetch_warsaw.py": "fringe_scan/dev/fetch_warsaw.py",
+    "fringe_scan/FUTURE_WORK.md": "fringe_scan/dev/FUTURE_WORK.md",
+    "fringe_scan/LICENSE": "fringe_scan/dev/LICENSE",
+    "fringe_scan/MAP_REVIEWS.md": "fringe_scan/dev/MAP_REVIEWS.md",
+    "fringe_scan/package_verification.json": "fringe_scan/dev/package_verification.json",
+    "fringe_scan/plugin.py": "fringe_scan/dev/plugin.py",
+    "fringe_scan/published_package_checks.json": "fringe_scan/dev/published_package_checks.json",
+    "fringe_scan/published_review_checks.json": "fringe_scan/dev/published_review_checks.json",
+    "fringe_scan/releases": "fringe_scan/dev/releases",
+    "fringe_scan/ruff.toml": "fringe_scan/dev/ruff.toml",
+    "fringe_scan/run_capture.py": "fringe_scan/dev/run_capture.py",
+    "fringe_scan/source_members.json": "fringe_scan/dev/source_members.json",
+    "fringe_scan/studies": "fringe_scan/dev/studies",
+    "fringe_scan/VALIDATION.md": "fringe_scan/dev/VALIDATION.md",
+    "fringe_scan/verify_execution.py": "fringe_scan/dev/verify_execution.py",
+    "fringe_scan/verify_package.py": "fringe_scan/dev/verify_package.py",
+    "fringe_scan/verify_reviews.py": "fringe_scan/dev/verify_reviews.py",
+    "fringe_scan/completed_runtime/projects": "fringe_scan/inspection",
+    "gdrnpp/__pycache__": "gdrnpp/dev/__pycache__",
+    "gdrnpp/assets": "gdrnpp/setup/assets",
+    "gdrnpp/batch_execution": "gdrnpp/dev/batch_execution",
+    "gdrnpp/candidate_execution": "gdrnpp/dev/candidate_execution",
+    "gdrnpp/completed_runtime": "gdrnpp/dev/completed_runtime",
+    "gdrnpp/fetch_model.py": "gdrnpp/dev/fetch_model.py",
+    "gdrnpp/frame13": "gdrnpp/dev/frame13",
+    "gdrnpp/frame3": "gdrnpp/dev/frame3",
+    "gdrnpp/LICENSE": "gdrnpp/dev/LICENSE",
+    "gdrnpp/licenses": "gdrnpp/dev/licenses",
+    "gdrnpp/managed_files.json": "gdrnpp/dev/managed_files.json",
+    "gdrnpp/overlap_review": "gdrnpp/dev/overlap_review",
+    "gdrnpp/packet_transport": "gdrnpp/dev/packet_transport",
+    "gdrnpp/performance": "gdrnpp/dev/performance",
+    "gdrnpp/plugin.py": "gdrnpp/dev/plugin.py",
+    "gdrnpp/preprocessing": "gdrnpp/dev/preprocessing",
+    "gdrnpp/projective_refinement": "gdrnpp/dev/projective_refinement",
+    "gdrnpp/readonly_rejections": "gdrnpp/dev/readonly_rejections",
+    "gdrnpp/resource_prepare": "gdrnpp/dev/resource_prepare",
+    "gdrnpp/runtime_environment": "gdrnpp/dev/runtime_environment",
+    "gdrnpp/scene_extension": "gdrnpp/dev/scene_extension",
+    "gdrnpp/setup_icp_project.json": "gdrnpp/setup/icp_project.json",
+    "gdrnpp/setup_project.json": "gdrnpp/setup/project.json",
+    "gdrnpp/THIRD_PARTY.md": "gdrnpp/dev/THIRD_PARTY.md",
+    "gdrnpp/training_data": "gdrnpp/dev/training_data",
+    "gdrnpp/worker_cycles": "gdrnpp/dev/worker_cycles",
+    "gdrnpp/worker_lifecycle": "gdrnpp/dev/worker_lifecycle",
+    "gdrnpp/wrong_object": "gdrnpp/dev/wrong_object",
+    "image_classification/__pycache__": "image_classification/dev/__pycache__",
+    "image_classification/classifier_plugin.py": "image_classification/dev/classifier_plugin.py",
+    "image_classification/completed_runtime": "image_classification/dev/completed_runtime",
+    "image_classification/training_workflow": "image_classification/dev/training_workflow",
+    "laser_profile/__pycache__": "laser_profile/dev/__pycache__",
+    "laser_profile/completed_runtime": "laser_profile/dev/completed_runtime",
+    "laser_profile/DATASET_CREDITS.md": "laser_profile/dev/DATASET_CREDITS.md",
+    "laser_profile/execution": "laser_profile/dev/execution",
+    "laser_profile/execution_checks.json": "laser_profile/dev/execution_checks.json",
+    "laser_profile/LICENSE": "laser_profile/dev/LICENSE",
+    "laser_profile/plugin.py": "laser_profile/dev/plugin.py",
+    "laser_profile/portable_review_checks.json": "laser_profile/dev/portable_review_checks.json",
+    "laser_profile/releases": "laser_profile/dev/releases",
+    "laser_profile/sha256.json": "laser_profile/dev/sha256.json",
+    "laser_profile/studies": "laser_profile/dev/studies",
+    "laser_profile/training_checks.json": "laser_profile/dev/training_checks.json",
+    "laser_profile/training_workflow": "laser_profile/dev/training_workflow",
+    "laser_profile/VALIDATION.md": "laser_profile/dev/VALIDATION.md",
+    "laser_profile/WORKFLOW_VALIDATION.md": "laser_profile/dev/WORKFLOW_VALIDATION.md",
+    "laser_profile/completed_runtime/projects": "laser_profile/inspection",
+    "laser_profile/training_workflow/projects": "laser_profile/training",
+    "path_width/assets": "path_width/generated_bead/assets",
+    "path_width/completed_runtime": "path_width/dev/completed_runtime",
+    "path_width/project.json": "path_width/generated_bead/project.json",
+    "path_width/station_review": "path_width/dev/station_review",
+    "path_width/training_workflow": "path_width/dev/training_workflow",
+    "pattern_matching/completed_runtime": "pattern_matching/dev/completed_runtime",
+    "pattern_matching/result_review": "pattern_matching/dev/result_review",
+    "pattern_matching/training_workflow": "pattern_matching/dev/training_workflow",
+    "pixel_segmentation/completed_runtime": "pixel_segmentation/dev/completed_runtime",
+    "pixel_segmentation/training_workflow": "pixel_segmentation/dev/training_workflow",
+    "real_data": "dev/real_data",
+    "reference_inspect/assessment-project.json": "reference_inspect/generated_inspection/assessment-project.json",
+    "reference_inspect/assets": "reference_inspect/generated_inspection/assets",
+    "reference_inspect/completed_runtime": "reference_inspect/dev/completed_runtime",
+    "reference_inspect/project.json": "reference_inspect/generated_inspection/project.json",
+    "reference_inspect/result_review": "reference_inspect/dev/result_review",
+    "reference_inspect/training_workflow": "reference_inspect/dev/training_workflow",
+    "surface_enhance/.ruff_cache": "surface_enhance/dev/.ruff_cache",
+    "surface_enhance/__pycache__": "surface_enhance/dev/__pycache__",
+    "surface_enhance/build_examples.py": "surface_enhance/dev/build_examples.py",
+    "surface_enhance/build_execution_projects.py": "surface_enhance/dev/build_execution_projects.py",
+    "surface_enhance/build_review_projects.py": "surface_enhance/dev/build_review_projects.py",
+    "surface_enhance/CAPTURE_CONTRACT.md": "surface_enhance/dev/CAPTURE_CONTRACT.md",
+    "surface_enhance/completed_runtime": "surface_enhance/dev/completed_runtime",
+    "surface_enhance/DATASET_CREDITS.md": "surface_enhance/dev/DATASET_CREDITS.md",
+    "surface_enhance/e2_inspector_checks.json": "surface_enhance/dev/e2_inspector_checks.json",
+    "surface_enhance/e2_package_verification.json": "surface_enhance/dev/e2_package_verification.json",
+    "surface_enhance/e2_published_checks.json": "surface_enhance/dev/e2_published_checks.json",
+    "surface_enhance/E2_VALIDATION.md": "surface_enhance/dev/E2_VALIDATION.md",
+    "surface_enhance/execution": "surface_enhance/dev/execution",
+    "surface_enhance/fetch_polyhaven.py": "surface_enhance/dev/fetch_polyhaven.py",
+    "surface_enhance/FUTURE_WORK.md": "surface_enhance/dev/FUTURE_WORK.md",
+    "surface_enhance/LICENSE": "surface_enhance/dev/LICENSE",
+    "surface_enhance/package_verification.json": "surface_enhance/dev/package_verification.json",
+    "surface_enhance/plugin.py": "surface_enhance/dev/plugin.py",
+    "surface_enhance/published_review_checks.json": "surface_enhance/dev/published_review_checks.json",
+    "surface_enhance/releases": "surface_enhance/dev/releases",
+    "surface_enhance/ruff.toml": "surface_enhance/dev/ruff.toml",
+    "surface_enhance/run_capture.py": "surface_enhance/dev/run_capture.py",
+    "surface_enhance/studies": "surface_enhance/dev/studies",
+    "surface_enhance/training_workflow": "surface_enhance/dev/training_workflow",
+    "surface_enhance/VALIDATION.md": "surface_enhance/dev/VALIDATION.md",
+    "surface_enhance/verify_execution.py": "surface_enhance/dev/verify_execution.py",
+    "surface_enhance/verify_package.py": "surface_enhance/dev/verify_package.py",
+    "surface_enhance/verify_reviews.py": "surface_enhance/dev/verify_reviews.py",
+    "surface_enhance/completed_runtime/projects": "surface_enhance/inspection",
+    "surface_enhance/training_workflow/projects": "surface_enhance/training",
+    "gdrnpp/completed_runtime/case_01": "gdrnpp/accepted_parts",
+    "gdrnpp/completed_runtime/case_02": "gdrnpp/rejected_part",
+    "3d_locate/real_tless/depth_verified": "3d_locate/tless_depth_verified",
+    "3d_locate/completed_runtime/real_positive": "3d_locate/tless_match",
+    "3d_locate/completed_runtime/real_no_match": "3d_locate/tless_no_match",
+    "3d_measure/real_tless/frame000013": "3d_measure/tless_plane",
+    "3d_measure/lines/real_sections/frame000013": "3d_measure/tless_line",
+    "3d_measure/flatness/real_tless/frame000013": "3d_measure/tless_flatness",
+    "3d_measure/generated/good": "3d_measure/generated_good",
+    "3d_measure/lines/generated/missing_target": "3d_measure/missing_line_target",
+    "bin_picking/generated/good": "bin_picking/suction_generated",
+    "bin_picking/real_tless/frame000013": "bin_picking/suction_tless",
+    "bin_picking/known_part_jaw/native_training/clear": "bin_picking/jaw_clear",
+    "bin_picking/known_part_jaw/native_training/obstacle": "bin_picking/jaw_obstacle",
+    "foundation_pose/completed_runtime/held_out_frame13": "foundation_pose/held_out_frame13",
+    "foundation_pose/completed_runtime/different_object_negative": "foundation_pose/wrong_object",
+    "build_result_views.py": "dev/build_result_views.py"
+  }
+}

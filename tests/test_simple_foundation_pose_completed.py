@@ -11,8 +11,14 @@ import pytest
 
 ROOT = (
     Path(__file__).resolve().parents[1]
-    / "examples/Simple Plugins/foundation_pose/completed_runtime"
+    / "examples/Simple Plugins/foundation_pose/dev/completed_runtime"
 )
+
+
+CASE_FOLDERS = {
+    "different_object_negative": "../../wrong_object",
+    "held_out_frame13": "../../held_out_frame13",
+}
 
 
 def test_delivered_artifact_pins():
@@ -27,19 +33,23 @@ import sys
 from pathlib import Path
 from opencv_dataflow.assistant_api import ProjectSession,make_registry
 root,destination=map(Path,sys.argv[1:])
+CASE_FOLDERS={'different_object_negative':'../../wrong_object',
+              'held_out_frame13':'../../held_out_frame13'}
 registry=make_registry(plugins=[str(root/'plugin.py')])
 block=registry.create('3d.simple_foundation_pose')
 assert block.plugin_review_dialog_label and block.preview_output=='cloud'
 assert 'onnxruntime' not in sys.modules and 'torch' not in sys.modules
 for name in ('held_out_frame13','different_object_negative','global_cohort'):
-    with ProjectSession.open(root/name/'run_project.json',registry) as session:
+    source=root/CASE_FOLDERS.get(name,name)
+    with ProjectSession.open(source/'run_project.json',registry) as session:
         assert session.inspect()['validation']['valid']
         target=destination/name/'project.json';target.parent.mkdir(parents=True)
         session.save(target)
     with ProjectSession.open(target,registry) as reopened:
         assert reopened.inspect()['validation']['valid']
         block=reopened.graph.blocks['pose']
-        assert (target.parent/block.parameters['recipe_path']).read_bytes()==(root/name/'trained.sfp').read_bytes()
+        relocated=(target.parent/block.parameters['recipe_path']).read_bytes()
+        assert relocated==(source/'trained.sfp').read_bytes()
 assert 'onnxruntime' not in sys.modules
 """
     result = subprocess.run(
@@ -60,7 +70,8 @@ def test_native_recorded_cloud_replay(case):
     from opencv_dataflow.cloud_viewer import CloudViewer
 
     app = QApplication.instance() or QApplication([])
-    with ProjectSession.open(ROOT / case / "review_project.json") as session:
+    project=ROOT / CASE_FOLDERS.get(case, case) / "review_project.json"
+    with ProjectSession.open(project) as session:
         assert session.inspect()["validation"]["valid"]
         session.run()
         count = 0

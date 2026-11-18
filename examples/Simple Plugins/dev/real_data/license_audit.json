@@ -1,0 +1,59 @@
+{
+  "checked_on": "2026-11-13",
+  "datasets": {
+    "VisA": {
+      "license": "CC-BY-4.0",
+      "publisher": "https://registry.opendata.aws/visa/",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Yang Zou, Jongheon Jeong, Latha Pemula, Dongqing Zhang, Onkar Dabeer; ECCV 2022",
+      "evidence": "Publisher dataset registry explicitly links CC BY 4.0."
+    },
+    "ARMBench": {
+      "license": "CC-BY-4.0",
+      "publisher": "https://www.armbench.com/",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Amazon.com, Inc.; Mitash et al., ICRA 2023",
+      "evidence": "Publisher Credits section declares CC BY 4.0 for the datasets."
+    },
+    "T-LESS": {
+      "license": "CC-BY-4.0",
+      "publisher": "https://cmp.felk.cvut.cz/t-less/",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Tomas Hodan, Pavel Haluza, Stepan Obdrzalek, Jiri Matas, Manolis Lourakis, Xenophon Zabulis; WACV 2017",
+      "evidence": "Original dataset page explicitly identifies CC BY 4.0."
+    },
+    "VegQual v4": {
+      "license": "CC-BY-4.0",
+      "publisher": "https://api.figshare.com/v2/articles/30596084/versions/4",
+      "published_title": "VegQual : A Multiclass Dataset for Real-Time Fresh and Defective Vegetables",
+      "published_license": {
+        "value": 1,
+        "name": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "authors": [
+        "Tarek Rahman",
+        "Md Rahadul Islam Jishan",
+        "Robiul Islam",
+        "Md Rakibul Islam",
+        "Jannatul Tajrian",
+        "Md. Sakhawat Hossain",
+        "Suman Ahmmed",
+        "Ohidujjaman -"
+      ]
+    },
+    "Weld bead": {
+      "license": "MIT",
+      "publisher": "https://api.figshare.com/v2/articles/25904014/versions/1",
+      "published_title": "Weld bead images and masks",
+      "published_license": {
+        "value": 3,
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      },
+      "authors": [
+        "Hyun Soo Kim"
+      ]
+    }
+  }
+}

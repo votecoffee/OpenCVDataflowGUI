@@ -8,7 +8,7 @@ import numpy as np
 from opencv_dataflow.cloud_io import read_cloud
 
 ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins"
-GALLERY = ROOT / "real_data"
+GALLERY = ROOT / "dev/real_data"
 
 
 def test_all_six_tools_have_real_projects_credit_and_unchanged_saved_result_images():

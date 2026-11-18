@@ -11,7 +11,7 @@ import pytest
 
 ROOT = (
     Path(__file__).resolve().parents[1]
-    / "examples/Simple Plugins/pixel_segmentation/training_workflow"
+    / "examples/Simple Plugins/pixel_segmentation/dev/training_workflow"
 )
 
 

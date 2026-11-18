@@ -1,0 +1,271 @@
+{
+  "frame": 0,
+  "state": "pass",
+  "input_file": "pattern_matching/visa_pcb2/assets/pcb2-0000.jpg",
+  "input_file_sha256": "9cad63a1fbf0890e28773ab847a2f32f360bc819eff3432bdba8309fa2a600a4",
+  "result_pixels_sha256": "666f7eb762f6ca24461730124921bfeaa921ee87f26dff2128f787180124b06e",
+  "result_size": [
+    702,
+    535
+  ],
+  "measurements": {
+    "count": 1,
+    "score": 0.9976863863545233,
+    "matches": {
+      "model": "pattern_matches_v1",
+      "pattern_id": "e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+      "count": 1,
+      "items": [
+        {
+          "score": 0.9976863863545233,
+          "center": [
+            323.9994131232386,
+            265.00042794129206
+          ],
+          "corners": [
+            [
+              84.99482805524414,
+              161.00540199551241
+            ],
+            [
+              562.9988985492962,
+              160.99368262606154
+            ],
+            [
+              563.003998191233,
+              368.9954538870717
+            ],
+            [
+              84.99992769718092,
+              369.0071732565225
+            ]
+          ],
+          "pose": {
+            "model": "image_pose_v1",
+            "source_to_target": [
+              [
+                1.0000085156779333,
+                2.4517509311470445e-05,
+                98.99521696733763
+              ],
+              [
+                -2.4517509311470445e-05,
+                1.0000085156779333,
+                172.00515242283933
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "target_size": [
+              702,
+              535
+            ],
+            "target_payload": {
+              "ticket": {
+                "model": "flow_ticket_v1",
+                "kind": "string",
+                "value": "pcb2-0000.jpg",
+                "session": "03fa8bcb9eb549abb347d239884fec4a:file:1",
+                "sequence": 1,
+                "source": "scene"
+              },
+              "spatial": {
+                "root_id": "scene:image",
+                "root_size": [
+                  702,
+                  535
+                ],
+                "image_size": [
+                  702,
+                  535
+                ],
+                "to_root": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "processing_time": {
+                "model": "processing_time_v1",
+                "started_at": "2026-11-13T12:17:21.101322+00:00",
+                "started_ns": 2870612410900,
+                "clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                "inferred_start": false,
+                "finished_at": "2026-11-13T12:17:21.107680+00:00",
+                "finished_ns": 2870618766500,
+                "finished_clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                "elapsed_ms": 6.3556
+              },
+              "outcome": {
+                "model": "tool_outcome_v1",
+                "passed": true,
+                "chain_passed": true,
+                "source": {
+                  "id": "scene",
+                  "name": "VisA PCB2 photographs",
+                  "type": "input.file",
+                  "path": "scene"
+                },
+                "score": null,
+                "message": "pcb2-0000.jpg \u00b7 bgr / uint8",
+                "data": {},
+                "fail_reasons": []
+              }
+            },
+            "origin": [
+              98.99521696733763,
+              172.00515242283933
+            ],
+            "angle_degrees": 0.0014047378451434193,
+            "scale_x": 1.0000085159784848,
+            "scale_y": 1.0000085159784848
+          },
+          "transform": {
+            "model": "image_pattern_pose_v1",
+            "source_to_target": [
+              [
+                1.0000085156779333,
+                2.4517509311470445e-05,
+                84.99482805524414
+              ],
+              [
+                -2.4517509311470445e-05,
+                1.0000085156779333,
+                161.00540199551241
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_size": [
+              479,
+              209
+            ],
+            "target_size": [
+              702,
+              535
+            ],
+            "source_payload": {
+              "spatial": {
+                "root_id": "ogpm:e883f26a2875f2a08fa8dfe772499ffd62870d45707d5494803ae2fdb45d7b02",
+                "root_size": [
+                  479,
+                  209
+                ],
+                "image_size": [
+                  479,
+                  209
+                ],
+                "to_root": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              }
+            },
+            "target_payload": {
+              "ticket": {
+                "model": "flow_ticket_v1",
+                "kind": "string",
+                "value": "pcb2-0000.jpg",
+                "session": "03fa8bcb9eb549abb347d239884fec4a:file:1",
+                "sequence": 1,
+                "source": "scene"
+              },
+              "spatial": {
+                "root_id": "scene:image",
+                "root_size": [
+                  702,
+                  535
+                ],
+                "image_size": [
+                  702,
+                  535
+                ],
+                "to_root": [
+                  [
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  [
+                    0.0,
+                    0.0,
+                    1.0
+                  ]
+                ]
+              },
+              "processing_time": {
+                "model": "processing_time_v1",
+                "started_at": "2026-11-13T12:17:21.101322+00:00",
+                "started_ns": 2870612410900,
+                "clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                "inferred_start": false,
+                "finished_at": "2026-11-13T12:17:21.107680+00:00",
+                "finished_ns": 2870618766500,
+                "finished_clock_id": "39165d35163f41a698d8f46b9e3d0b28",
+                "elapsed_ms": 6.3556
+              },
+              "outcome": {
+                "model": "tool_outcome_v1",
+                "passed": true,
+                "chain_passed": true,
+                "source": {
+                  "id": "scene",
+                  "name": "VisA PCB2 photographs",
+                  "type": "input.file",
+                  "path": "scene"
+                },
+                "score": null,
+                "message": "pcb2-0000.jpg \u00b7 bgr / uint8",
+                "data": {},
+                "fail_reasons": []
+              }
+            }
+          },
+          "coverage": 0.9979166666666667,
+          "fit_error_working_px": 0.02658281376064261,
+          "coarse_score": 0.8353184858957926,
+          "contrast": 74.52082213106782,
+          "clutter": null,
+          "outside_region_fraction": 0.0,
+          "measured_edge_count": 479
+        }
+      ]
+    }
+  }
+}

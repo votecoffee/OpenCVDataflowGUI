@@ -15,7 +15,7 @@ from opencv_dataflow.cloud_io import read_cloud
 )
 def test_saved_result_views_preserve_known_outcomes_and_separate_rejected_clouds(name, count):
     root = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate"
-    folder = root / "result_review"
+    folder = root / "dev/result_review"
     receipt = json.loads((folder / "receipt.json").read_bytes())[name]
     report = json.loads((folder / f"{name}.json").read_bytes())
     assert receipt["accepted_count"] == len(report["matches"]) == count

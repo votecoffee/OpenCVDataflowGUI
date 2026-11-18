@@ -1,0 +1,817 @@
+{
+  "dataset": "T-LESS",
+  "archive_sha256": "6a29c59766b8d2af05e62e71739f0ca7243ad81bc3c7f9a24925504a8cb37928",
+  "models": [
+    {
+      "object_id": 1,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1978,
+        "bounding_diagonal": 78.65165770284078,
+        "normal_spread": 0.37905040466444667,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1978,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 84260,
+          "surface_area": 16895.70276845414,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 2,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 86.44889376336252,
+        "normal_spread": 0.3731721965067014,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2316,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8635578583765112,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 82114,
+          "surface_area": 23403.501390439546,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2316 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 3,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 91.0988147211855,
+        "normal_spread": 0.35427874851919466,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2224,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8992805755395683,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 94992,
+          "surface_area": 23832.809673666943,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2224 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 4,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1270,
+        "bounding_diagonal": 96.33057389272378,
+        "normal_spread": 0.35883317071542326,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1270,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 7374,
+          "surface_area": 9604.281475370894,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 5,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 123.96874606125529,
+        "normal_spread": 0.3193400951113774,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2236,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8944543828264758,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 25614,
+          "surface_area": 34794.218371163974,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2236 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 6,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 116.50154622504867,
+        "normal_spread": 0.3471155502250107,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2482,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8058017727639001,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 5700,
+          "surface_area": 36036.615293433126,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2482 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 7,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 185.13403326462466,
+        "normal_spread": 0.3124616297956127,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2746,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.7283321194464676,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 17106,
+          "surface_area": 136774.8619279837,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2746 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 8,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 222.0529032227413,
+        "normal_spread": 0.3326042664600977,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2662,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.7513148009015778,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 22812,
+          "surface_area": 185714.41694560446,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2662 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 9,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 157.46342343707215,
+        "normal_spread": 0.3590333810667013,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2256,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8865248226950354,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 14120,
+          "surface_area": 77776.35632070886,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2256 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 10,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 110.57978562244591,
+        "normal_spread": 0.30790488585762293,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2054,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.9737098344693281,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 18434,
+          "surface_area": 30483.008022270355,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2054 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 11,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 98.84593059191641,
+        "normal_spread": 0.3443567299331392,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2089,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.9573958831977023,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 42614,
+          "surface_area": 20874.04898875629,
+          "discarded_triangles": 8
+        }
+      },
+      "previous_training_error": "Sampling produced 2089 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 12,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 112.39180456662537,
+        "normal_spread": 0.32795182678953194,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2238,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8936550491510277,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 44154,
+          "surface_area": 30968.28603817603,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2238 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 13,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 72.89744475810181,
+        "normal_spread": 0.36737479313542665,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2300,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8695652173913043,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 12774,
+          "surface_area": 11838.995558061128,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2300 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 14,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1969,
+        "bounding_diagonal": 90.01428512529733,
+        "normal_spread": 0.4060300625315491,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1969,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 13788,
+          "surface_area": 15047.255893598209,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 15,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 83.46042647156908,
+        "normal_spread": 0.39116191248117943,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2280,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8771929824561403,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 13654,
+          "surface_area": 15760.000845955748,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2280 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 16,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 90.8795992763661,
+        "normal_spread": 0.35345842222003554,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2405,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.8316008316008316,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 18738,
+          "surface_area": 19571.239304185423,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2405 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 17,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 2000,
+        "bounding_diagonal": 163.30440323665073,
+        "normal_spread": 0.3166801109841557,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 2151,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": true,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 0.9298000929800093,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 25868,
+          "surface_area": 57058.93423561476,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": "Sampling produced 2151 points; require 30..2000. Adjust sampling distance or crop."
+    },
+    {
+      "object_id": 18,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1756,
+        "bounding_diagonal": 152.53851012653772,
+        "normal_spread": 0.3714164259731478,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1756,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 36210,
+          "surface_area": 51066.4139812994,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 19,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1935,
+        "bounding_diagonal": 111.11916246032345,
+        "normal_spread": 0.3576194786573266,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1935,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 4692,
+          "surface_area": 23244.735430189598,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 20,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1997,
+        "bounding_diagonal": 121.58853222556972,
+        "normal_spread": 0.3507170087785289,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1997,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 4692,
+          "surface_area": 27642.7810581361,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 21,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1864,
+        "bounding_diagonal": 118.03002026742145,
+        "normal_spread": 0.3632544113973104,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1864,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 20508,
+          "surface_area": 24826.429221246988,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 22,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1888,
+        "bounding_diagonal": 118.16968084717966,
+        "normal_spread": 0.3630070845579162,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1888,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 21210,
+          "surface_area": 25744.17206371641,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 23,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1484,
+        "bounding_diagonal": 164.6483761947135,
+        "normal_spread": 0.32989054492148906,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1484,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 5890,
+          "surface_area": 34942.26060535695,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 24,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1681,
+        "bounding_diagonal": 100.9580653824928,
+        "normal_spread": 0.35189979993063064,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1681,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 21946,
+          "surface_area": 16680.222494820202,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 25,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1912,
+        "bounding_diagonal": 128.5180505611673,
+        "normal_spread": 0.3041423076585962,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1912,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 8846,
+          "surface_area": 35147.262376982944,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 26,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1867,
+        "bounding_diagonal": 128.85799549719115,
+        "normal_spread": 0.32543293554353725,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1867,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 8792,
+          "surface_area": 33325.61805618621,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 27,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1940,
+        "bounding_diagonal": 163.3416664540925,
+        "normal_spread": 0.2840180532785636,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1940,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 7490,
+          "surface_area": 54545.294929310236,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 28,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1525,
+        "bounding_diagonal": 148.77294818128036,
+        "normal_spread": 0.25787418299453196,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1525,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 26884,
+          "surface_area": 34202.67867505342,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 29,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1804,
+        "bounding_diagonal": 148.59084734037316,
+        "normal_spread": 0.3485038772844432,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1804,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 5736,
+          "surface_area": 40943.714625188935,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    },
+    {
+      "object_id": 30,
+      "trained": true,
+      "health": {
+        "reference_points": 6000,
+        "sample_points": 1666,
+        "bounding_diagonal": 123.8523121085738,
+        "normal_spread": 0.28283329448878264,
+        "units": "mm",
+        "frame": "model",
+        "sampling_budget": {
+          "voxel_points": 1666,
+          "sample_budget": 2000,
+          "candidate_budget": 10000,
+          "reference_exceeds_budget": false,
+          "candidate_pool_reduction": false,
+          "trained_fraction_of_voxels": 1.0,
+          "assessment": "derived_from_retained_reference_and_settings"
+        },
+        "cad": {
+          "triangles": 12184,
+          "surface_area": 23638.29402480864,
+          "discarded_triangles": 0
+        }
+      },
+      "previous_training_error": null
+    }
+  ],
+  "scope": "Default CAD training only; no pose-detection qualification. No parameters vary between models. Legacy-accepted sample arrays are compared exactly."
+}

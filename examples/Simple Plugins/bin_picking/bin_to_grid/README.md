@@ -20,7 +20,7 @@ install ROS binary extensions into that environment. Load this folder's
 `plugin.py` explicitly using **Load Python plugin**, or CLI `--plugin`.
 
 The separately built ROS packages are included in
-[`integrations/ros2/packages`](../../../../../integrations/ros2/README.md):
+[`integrations/ros2/packages`](../../../../integrations/ros2/README.md):
 `opencv_bin_picking_fixture` supplies the scene/camera/assistance;
 `opencv_dataflow_pick_backend` supplies native planning/execution primitives.
 Use a matched native RoboStack Lyrical/MoveIt/Gazebo environment and a trusted

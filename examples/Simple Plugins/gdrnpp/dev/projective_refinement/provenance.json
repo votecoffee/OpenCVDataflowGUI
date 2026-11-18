@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "method": "projective_icp_v1",
+  "raw_proposals": "Unmodified earlier GDRNPP RGB reports",
+  "pose_labels_entered_runtime": false,
+  "raw_baselines_modified": false,
+  "sha256": {
+    "comparison.jpg": "12b2cc4fdfb6bb38115119da071298bda294d91b736db6fcdad2e80ff9533966",
+    "frame13/evaluation.json": "5a80894ea9ce5724b1b7a04d46651d4e994d77379b216735151b4934eceb8417",
+    "frame13/fit.ply": "c5d82ffa776089bfb22d09edd05e5b30cc88b5111a3a2673c2398382163f7976",
+    "frame13/overlay.png": "d5f80f4e963a99f17cbaef5020f1f2c8926deb6f505b9357e2b894bf1bac3de2",
+    "frame13/report.json": "fdafdd8f1af9b28a5393054d076d61c60cf799006aec8f37f9f5743775660e70",
+    "frame3/evaluation.json": "2cc16b1a1f9339634582b90981ba7cc86decc64a06d98d610451caedde906a2d",
+    "frame3/fit.ply": "1f157da0780f1076a20ccacae200f0b1a7aa8df35a4d32808f2397475e0307a2",
+    "frame3/overlay.png": "2db389ec21d7491e2dac192dc8dd7cd2223f305d1ec72571e30d16043bfc3069",
+    "frame3/report.json": "bbaaf5ebeb74b6edc4160ec858af8e0ecb517e5f42f5d81949d9b9f0311a929e",
+    "summary.json": "92158a72c6390391ba1aa0b7adad3e9b183fde3e3ee211704c35fd49dca53f16",
+    "wrong_object/evaluation.json": "ce9f90d1482993fa5ce6e025150ceafad17dbb9de71c00ec9ffe136568847445",
+    "wrong_object/fit.ply": "24c026110e3600a48ff7832afbea7a0af4af35d93b04b0db586dae2fa8fe5957",
+    "wrong_object/overlay.png": "67a9202ce5e0fb0c8274d69af540f35269abce08e126e45d247e455b5e82fe46",
+    "wrong_object/report.json": "14261e5bc5cc99ecf62d36596a0a867ec68b582bafdad88f85cce41773284cca",
+    "validation.json": "32a0129ac1195ded36e8117061010eb2f0b6c0bcd37b67db39035a13bd2ad2c8",
+    "../../setup/assets/tless6_icp.gdrnpp": "51ef53bc077528fd27edc7d813c0e8d56f528c68e94f1df5106bb75e9e76dfb3"
+  }
+}

@@ -12,7 +12,7 @@ from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import NO_VALUE
 from opencv_dataflow.pointclouds import PointCloud
 
-ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_measure/lines"
+ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_measure/dev/lines"
 
 
 @pytest.mark.local_examples

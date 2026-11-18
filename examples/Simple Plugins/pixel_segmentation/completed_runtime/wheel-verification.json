@@ -1,9 +1,0 @@
-{
-  "wheel": "opencv_defect_segmentation-0.1.0.dev2-py3-none-any.whl",
-  "sha256": "2e754fcdc214a0db9abd24cc45be1238be37777cd6347b42c00dfd88189bca75",
-  "source_revision": "73eedbea874d269091bbd5255d5ba52f5b1f2fa4",
-  "source_modules": 18,
-  "source_matches_after_newline_normalization": true,
-  "mit_notice_matches": true,
-  "host_environment_install": false
-}

@@ -10,7 +10,8 @@ from pathlib import Path
 import pytest
 
 ROOT = (
-    Path(__file__).resolve().parents[1] / "examples/Simple Plugins/laser_profile/training_workflow"
+    Path(__file__).resolve().parents[1]
+    / "examples/Simple Plugins/laser_profile/dev/training_workflow"
 )
 
 

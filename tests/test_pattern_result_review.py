@@ -19,7 +19,7 @@ import pytest
 )
 def test_selected_review_fixtures_keep_counts_limits_and_image_grids(kind, index, count):
     root = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/pattern_matching"
-    samples = root / "result_review/samples"
+    samples = root / "dev/result_review/samples"
     receipt = json.loads((samples / "receipt.json").read_bytes())
     for status in ("accepted", "rejected"):
         name = f"{kind}_{index}_{status}"

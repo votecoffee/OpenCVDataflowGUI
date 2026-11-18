@@ -393,7 +393,7 @@ def main():
 
     owner = DEMOS / "rgbd_cloud/rgbd_cloud.json"
     data = original("rgbd_cloud")
-    source = ROOT / "examples/Simple Plugins/3d_locate/real_tless/source/test_primesense/000001"
+    source = ROOT / "examples/Simple Plugins/3d_locate/dev/real_tless/source/test_primesense/000001"
     camera = read(source / "scene_camera.json")["220"]
     k = camera["cam_K"]
     data["blocks"] = [b for b in data["blocks"] if b["id"] != "pair"]
@@ -546,15 +546,16 @@ def main():
                     "license": "CC-BY-4.0",
                     "camera_sha256": sha(
                         ROOT
-                        / "examples/Simple Plugins/3d_locate/real_tless/source"
+                        / "examples/Simple Plugins/3d_locate/dev/real_tless/source"
                         / "test_primesense/000001/scene_camera.json"
                     ),
                     "revision": read(
-                        ROOT / "examples/Simple Plugins/3d_locate/real_tless/source/provenance.json"
+                        ROOT
+                        / "examples/Simple Plugins/3d_locate/dev/real_tless/source/provenance.json"
                     )["revision"],
                     "rgb_sha256": sha(
                         source_path := ROOT
-                        / "examples/Simple Plugins/3d_locate/real_tless/source"
+                        / "examples/Simple Plugins/3d_locate/dev/real_tless/source"
                         / "test_primesense/000001/rgb/000220.png"
                     ),
                     "depth_sha256": sha(source_path.parent.parent / "depth/000220.png"),

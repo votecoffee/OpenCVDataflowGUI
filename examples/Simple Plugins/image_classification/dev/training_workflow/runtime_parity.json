@@ -1,0 +1,239 @@
+{
+  "core_only": true,
+  "native": false,
+  "exported_reviews_verified": 9,
+  "cases": [
+    {
+      "case": "surface_texture",
+      "frame": 0,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 1,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 2,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 3,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 4,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 5,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 6,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 7,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 8,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 9,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 10,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 11,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 12,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 13,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 14,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "surface_texture",
+      "frame": 15,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 0,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 1,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 2,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 3,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 4,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 5,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 6,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 7,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 8,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 9,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 10,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 11,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 12,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 13,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 14,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "color_and_layout",
+      "frame": 15,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    },
+    {
+      "case": "no_overlay",
+      "frame": 0,
+      "numeric_exact": true,
+      "default_chart_exact": true,
+      "native_results_review": false
+    }
+  ],
+  "scope": "Exact completed scores and default chart bytes; no independent accuracy qualification"
+}

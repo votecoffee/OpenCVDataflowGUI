@@ -1088,7 +1088,7 @@ are unchanged. Python 3.14.3/OpenCV 5.0.0 contrib 5.0.0.93 remain in use.
 The S2-35 checkpoint reached ML/DNN **34/62 (54.8%)**, overall **260/470 (55.3%)**,
 core **173/175 (98.9%)**, targeted cycle **2/20**, without a broad repeat.
 The separately owned
-[SimpleBinPicking completed Results review](<../examples/Simple Plugins/bin_picking/completed_runtime/README.md>)
+[SimpleBinPicking completed Results review](<../examples/Simple Plugins/bin_picking/dev/completed_runtime/README.md>)
 is indexed; its plugin/native validation is owner-reported. The next item was S2-36 learned
 image restoration. Real SuperPoint, native EXR, useful LK-pyramid consumption
 and accelerator qualification remain open.
@@ -1120,7 +1120,7 @@ source/wheel/installed modules** matched; **61 package versions** were unchanged
 The installed package passes **25 new example checks** and a cold background
 worker returns three native reads in one acquisition. Python 3.14.3/OpenCV 5.0.0
 contrib 5.0.0.93 remain in use. The separately owned
-[Simple3DMeasure completed Results review](<../examples/Simple Plugins/3d_measure/completed_runtime/README.md>)
+[Simple3DMeasure completed Results review](<../examples/Simple Plugins/3d_measure/dev/completed_runtime/README.md>)
 is indexed; its plugin/native validation is owner-reported. The next item was S2-35 learned
 single-image super-resolution; real SuperPoint, native EXR and usable LK-pyramid
 consumption remain open. No broad rerun was needed for this targeted increment.
@@ -1154,7 +1154,7 @@ and all **61 package versions** remain unchanged. The installed package passes
 **20 example checks** and a cold background worker returns three current native
 reads from one acquisition. Python 3.14.3/OpenCV 5.0.0 contrib 5.0.0.93 remain
 in use. The separately owned
-[Simple3DLocate completed Results review](<../examples/Simple Plugins/3d_locate/completed_runtime/README.md>)
+[Simple3DLocate completed Results review](<../examples/Simple Plugins/3d_locate/dev/completed_runtime/README.md>)
 is indexed; its native/plugin validation is owner-reported. The next item was S2-34
 constrained OCR decoding, while real SuperPoint, native EXR and useful
 LK-pyramid consumption remain open.
@@ -1190,7 +1190,7 @@ ML/DNN is now **31/62 (50.0%)**, overall **257/470 (54.7%)**, core
 **173/175 (98.9%)**. Targeted cycle **19/20**; no broad suite repeated. Next:
 batched OCR recognition and per-region order/confidence qualification (S2-33).
 Real SuperPoint extraction, native EXR and useful LK-pyramid consumption remain
-open. The separately owned [SimpleClassify completed-run Results review](<../examples/Simple Plugins/image_classification/completed_runtime/README.md>)
+open. The separately owned [SimpleClassify completed-run Results review](<../examples/Simple Plugins/image_classification/dev/completed_runtime/README.md>)
 is indexed; its plugin validation remains owner-reported.
 
 
@@ -1223,7 +1223,7 @@ ML/DNN is now **30/62 (48.4%)**, overall **256/470 (54.5%)**, core
 qualify a pinned text detector (S2-32), then batched OCR recognition (S2-33).
 Real SuperPoint extraction, native EXR (S1-125) and usable LK-pyramid consumption
 (S1-155) remain open. The newly published, independently owned
-[SimpleSegmentation completed-run review](<../examples/Simple Plugins/pixel_segmentation/completed_runtime/README.md>)
+[SimpleSegmentation completed-run review](<../examples/Simple Plugins/pixel_segmentation/dev/completed_runtime/README.md>)
 is indexed in the example catalog; its plugin qualification is owner-reported.
 
 
@@ -3132,7 +3132,7 @@ handoffs. It must be bounded/cancellable, retain the execution client's prepared
 resources, report resource status separately and run no dummy image, inference,
 ticket or inspection result. It must not run on open/validate. Startup scripts
 are separate subprocesses and cannot prepare an in-process block worker. The
-[GDRNPP preparation study](<../examples/Simple Plugins/gdrnpp/resource_prepare/README.md>)
+[GDRNPP preparation study](<../examples/Simple Plugins/gdrnpp/dev/resource_prepare/README.md>)
 provides supporting workflow evidence; it does not add this automatic SDK hook.
 Track the shared lifecycle seam under [production runtime #9](https://github.com/votecoffee/OpenCVDataflowGUI/issues/9).
 
@@ -3834,7 +3834,7 @@ testable inspection workflows.
 
 The optional Simple3DMeasure 0.1.0.dev2 plugin supplies observed line fitting,
 angle, separation, probe distance and span measurements, with
-[generated and recorded section examples](<../examples/Simple Plugins/3d_measure/lines/README.md>).
+[generated and recorded section examples](<../examples/Simple Plugins/3d_measure/dev/lines/README.md>).
 This is the partial baseline for S3-129. A native XYZ `fitLine` path with selectable
 robust distances and retained-point identity qualification remains open. Recorded
 sections use supplied fixture poses; automatic edge detection and independent

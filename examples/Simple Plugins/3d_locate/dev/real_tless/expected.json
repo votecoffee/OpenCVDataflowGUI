@@ -1,0 +1,77 @@
+{
+  "model": "simple_3d_locate_v1",
+  "units": "mm",
+  "source_frame": "tless_object29",
+  "target_frame": "camera",
+  "matches": [
+    {
+      "source_to_target": [
+        [
+          -0.20790580273472792,
+          0.05832765470808154,
+          0.9764082455026085,
+          54.432993142112615
+        ],
+        [
+          0.6682174923267226,
+          0.7374525635659142,
+          0.09822982967840546,
+          -5.901461963077741
+        ],
+        [
+          -0.7143252481452794,
+          0.6728756208886724,
+          -0.19229622636928756,
+          741.5840173209577
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "coverage": 0.7808988764044944,
+      "score": 0.7112825289206748,
+      "score_type": "geometric_fit_not_probability",
+      "rmse": 0.8806226991403855,
+      "normal_spread": 0.3705286700885702,
+      "votes": 204,
+      "model_inliers": 417,
+      "unique_scene_inliers": 338,
+      "refined": true,
+      "visible_model_points": 534
+    }
+  ],
+  "candidate_count": 36,
+  "tested_candidates": 24,
+  "sampled_scene_points": 741,
+  "search_model_points": 384,
+  "search_scene_points": 741,
+  "passed": true,
+  "execution": {
+    "sampling": "uniform",
+    "refinement": "legacy",
+    "observation_mode": "surface",
+    "projection": "pinhole",
+    "input_points": 15059,
+    "first_surface_points": 15059,
+    "overlap_metric": "combined",
+    "overlap_threshold": 0.6,
+    "overlap_rejected": 15,
+    "coarse_rejected": 0,
+    "icp_calls": 47,
+    "model_levels": [
+      1804
+    ],
+    "scene_levels": [
+      741
+    ],
+    "seconds": {
+      "preprocess": 0.02505750000000262,
+      "candidate_search": 0.06488840000019991,
+      "refine_verify": 0.6285786999997072,
+      "total": 0.7185247999996136
+    }
+  }
+}

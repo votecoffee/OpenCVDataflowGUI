@@ -109,7 +109,10 @@ def test_real_rgbd_cloud_matches_publisher_depth_scale_intrinsics_and_color():
         cloud = graph.blocks["project"].last_result.outputs["cloud"]
         assert cloud.units == "m" and cloud.source_size == (720, 540)
         points, pixels, colors = cloud.points[::137], cloud.pixels[::137], cloud.colors[::137]
-        folder = ROOT / "examples/Simple Plugins/3d_locate/real_tless/source/test_primesense/000001"
+        folder = (
+            ROOT
+            / "examples/Simple Plugins/3d_locate/dev/real_tless/source/test_primesense/000001"
+        )
         camera = json.loads((folder / "scene_camera.json").read_text())["220"]
         depth = cv2.imread(str(folder / "depth/000220.png"), cv2.IMREAD_UNCHANGED)
         image = cv2.imread(str(folder / "rgb/000220.png"))

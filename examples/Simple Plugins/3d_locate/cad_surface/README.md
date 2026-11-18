@@ -1,6 +1,6 @@
 # Simple3DLocate · CAD surface
 
-For a **real single-view depth capture**, open [T-LESS](../real_tless/README.md).
+For a **real single-view depth capture**, open [T-LESS](../dev/real_tless/README.md).
 It uses attributed CC BY 4.0 industrial RGB-D data and requires plugin dev3.
 This older generated example deliberately uses **complete/fused observations**;
 it does not simulate first-surface depth-camera sensing.
@@ -64,5 +64,5 @@ separate qualification work.
 The OpenCV surface-matching backend retains its
 [published patent notice](https://docs.opencv.org/4.13.0/d9/d25/group__surface__matching.html).
 
-The [broader execution benchmark](../benchmarks/README.md) compares curved and
+The [broader execution benchmark](../dev/benchmarks/README.md) compares curved and
 CAD geometry across additional poses, clutter and negative scenes.

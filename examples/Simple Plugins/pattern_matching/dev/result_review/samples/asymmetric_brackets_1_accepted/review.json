@@ -1,0 +1,133 @@
+{
+  "model": "ogpm_candidate_review_v1",
+  "accepted": true,
+  "reason": null,
+  "explanation": "Accepted geometric fit; its score is not a probability.",
+  "pose_working": {
+    "x": 221.57470221153818,
+    "y": 78.19276200260303,
+    "angle_deg": -5.0452612702764625,
+    "scale": 0.9587819124310906,
+    "aspect": 1.0
+  },
+  "datum_source": [
+    221.57470221153818,
+    78.19276200260303
+  ],
+  "model_to_source": [
+    [
+      0.9550671482266647,
+      -0.08431783905678154,
+      221.57470221153818
+    ],
+    [
+      0.08431783905678154,
+      0.9550671482266647,
+      78.19276200260303
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "working_to_source": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "metrics": [
+    {
+      "name": "Fine score",
+      "value": 0.9014266155820034,
+      "units": "fit fraction",
+      "minimum": 0.55,
+      "status": "meets limit"
+    },
+    {
+      "name": "Coarse score",
+      "value": 0.3650434647483387,
+      "units": "coarse vote fraction",
+      "minimum": 0.25,
+      "status": "meets limit"
+    },
+    {
+      "name": "Contrast",
+      "value": 162.6623312425782,
+      "units": "working 8-bit gradient",
+      "minimum": 0.0,
+      "status": "meets limit"
+    },
+    {
+      "name": "Coverage",
+      "value": 0.9375,
+      "units": "probe fraction",
+      "minimum": null,
+      "status": "diagnostic"
+    },
+    {
+      "name": "Fit RMS",
+      "value": 0.09149833349940532,
+      "units": "working pixels",
+      "minimum": null,
+      "status": "diagnostic"
+    },
+    {
+      "name": "Clutter",
+      "value": null,
+      "units": "extra edge fraction",
+      "minimum": null,
+      "status": "not measured"
+    },
+    {
+      "name": "Outside image/ROI",
+      "value": 0.0,
+      "units": "probe fraction",
+      "minimum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "edges": {
+    "trained": 368,
+    "found": 345,
+    "missing": 23,
+    "unmeasured": 0,
+    "correspondences_captured": true
+  },
+  "selection_limits": {
+    "maximum_results": 8,
+    "xy_overlap": 0.35,
+    "angle_overlap_deg": 360.0,
+    "scale_overlap": 1.4
+  },
+  "score_using_clutter": false,
+  "layers": [
+    "found",
+    "missing",
+    "unmeasured",
+    "residuals",
+    "pose"
+  ],
+  "working_image_size": [
+    440,
+    290
+  ],
+  "display_crop_working": [
+    173,
+    28,
+    100,
+    99
+  ]
+}

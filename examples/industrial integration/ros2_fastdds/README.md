@@ -63,7 +63,7 @@ The cloud examples reuse **T-LESS**, Tomáš Hodaň, Pavel Haluza, Štěpán Obd
 Jiří Matas, Manolis Lourakis and Xenophon Zabulis, WACV 2017, under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 The [publisher](https://cmp.felk.cvut.cz/t-less/) and
-[pinned source/hash/license record](<../../Simple Plugins/3d_locate/real_tless/source/ATTRIBUTION.md>)
+[pinned source/hash/license record](<../../Simple Plugins/3d_locate/dev/real_tless/source/ATTRIBUTION.md>)
 cover the original Primesense scene 1/frame 220 RGB, depth and intrinsics.
 Depth scale is 0.1 mm/sample. These graphs sample valid pixels every four rows
 and columns, reconstruct the organized grid with NaN holes and retain source

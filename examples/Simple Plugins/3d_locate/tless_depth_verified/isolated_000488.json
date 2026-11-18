@@ -1,0 +1,66 @@
+{
+  "case": "isolated_000488",
+  "segmentation_supplied": true,
+  "validation": {
+    "matched": 0,
+    "missed": 1,
+    "extra": 0,
+    "max_position_error": 0.0,
+    "max_angle_error_degrees": 0.0
+  },
+  "result": {
+    "model": "simple_3d_locate_v1",
+    "units": "mm",
+    "source_frame": "tless_object29",
+    "target_frame": "camera",
+    "matches": [],
+    "candidate_count": 77,
+    "tested_candidates": 24,
+    "sampled_scene_points": 649,
+    "search_model_points": 384,
+    "search_scene_points": 649,
+    "passed": false,
+    "execution": {
+      "sampling": "uniform",
+      "candidate_backend": "ppf_planes",
+      "plane_search": {
+        "model_patches": 7,
+        "scene_patches": 3,
+        "coarse_proposals": 64
+      },
+      "refinement": "legacy",
+      "observation_mode": "surface",
+      "projection": "pinhole",
+      "input_points": 6920,
+      "first_surface_points": 6920,
+      "depth_verification": {
+        "mode": "auto",
+        "status": "available",
+        "reason": null
+      },
+      "depth_rejected": 0,
+      "depth_rejected_candidates": [],
+      "overlap_metric": "combined",
+      "overlap_threshold": 0.6,
+      "overlap_rejected": 0,
+      "coarse_rejected": 0,
+      "icp_calls": 35,
+      "model_levels": [
+        1804
+      ],
+      "scene_levels": [
+        649
+      ],
+      "seconds": {
+        "preprocess": 0.010502000000997214,
+        "candidate_search": 0.07276789999923494,
+        "ppf_search": 0.0035021999992750352,
+        "plane_search": 0.06915579999986221,
+        "depth_prepare": 0.0005032999997638399,
+        "depth_verify": 0.0,
+        "refine_verify": 0.43195700000069337,
+        "total": 0.5152271000006294
+      }
+    }
+  }
+}

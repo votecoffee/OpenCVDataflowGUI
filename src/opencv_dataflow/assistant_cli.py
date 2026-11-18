@@ -92,6 +92,10 @@ def example_index(root, query=""):
     for category in folders:
         for path in sorted((root / "examples" / category).rglob("*.json")):
             relative = path.relative_to(root)
+            if category == "Simple Plugins" and any(
+                part.casefold() == "dev" for part in relative.parts[2:]
+            ):
+                continue
             if visible is not None and relative.as_posix() not in visible:
                 continue
             if any(part.casefold() in {"private", "cognextools"} for part in relative.parts):

@@ -60,11 +60,11 @@ def test_saved_projects_replay_numeric_evidence_and_native_cloud(relative):
 
 @pytest.mark.local_examples
 def test_example_hashes_and_raw_license_provenance():
-    manifest = json.loads((ROOT / "sha256.json").read_bytes())
+    manifest = json.loads((ROOT / "dev/sha256.json").read_bytes())
     assert not any("__pycache__" in p or p.endswith((".pyc", ".pyo")) for p in manifest)
     for relative, digest in manifest.items():
         assert hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() == digest, relative
-    source = ROOT / "real_tless/source"
+    source = ROOT / "dev/real_tless/source"
     provenance = json.loads((source / "provenance.json").read_bytes())
     assert provenance["license"] == "CC-BY-4.0"
     for relative, digest in provenance["sha256"].items():
@@ -75,12 +75,12 @@ def test_example_hashes_and_raw_license_provenance():
 
 @pytest.mark.local_examples
 def test_real_canonical_camera_preserves_first_returns_and_fixed_training():
-    source = ROOT / "real_tless/source/test_primesense/000002"
+    source = ROOT / "dev/real_tless/source/test_primesense/000002"
     cameras = json.loads((source / "scene_camera.json").read_bytes())
-    normalization = json.loads((ROOT / "real_tless/normalization.json").read_bytes())
+    normalization = json.loads((ROOT / "dev/real_tless/normalization.json").read_bytes())
     recipes = []
     for frame in (3, 13, 24):
-        case = ROOT / f"real_tless/frame{frame:06}"
+        case = ROOT / f"dev/real_tless/frame{frame:06}"
         raw = cv2.imread(str(source / f"depth/{frame:06}.png"), cv2.IMREAD_UNCHANGED)
         normalized = np.load(case / "assets/depth.npy", allow_pickle=False)
         dx, dy = normalization["pixel_shifts_xy"][str(frame)]
@@ -100,7 +100,7 @@ def test_real_canonical_camera_preserves_first_returns_and_fixed_training():
 
 @pytest.mark.local_examples
 def test_save_as_keeps_sealed_recipe_bytes(tmp_path):
-    original = ROOT / "generated/good"
+    original = ROOT / "suction_generated"
     with ProjectSession.open(original / "project.json") as session:
         session.save(tmp_path / "project.json")
         path = session.graph.blocks["picker"].parameters["recipe_path"]
@@ -112,7 +112,7 @@ def test_save_as_keeps_sealed_recipe_bytes(tmp_path):
 
 @pytest.mark.local_examples
 def test_novel_block_teaches_from_host_connected_publication(app, tmp_path):
-    recipe = load_recipe(ROOT / "generated/good/assets/recipe.sbp")
+    recipe = load_recipe(ROOT / "suction_generated/assets/recipe.sbp")
 
     class Source(Block):
         outputs = (Port("depth", "depth"), Port("camera", "data"))

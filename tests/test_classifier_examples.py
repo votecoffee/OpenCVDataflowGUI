@@ -86,7 +86,7 @@ def test_vegqual_opens_bundled_trainer_and_manual_plugin_is_repeatable(app, monk
         dialog.review_filter.setCurrentIndex(2)
         assert dialog.review_counts.text() == "5 held out · 1 misclassified"
         dialog.reject()
-        load_plugin(APPLICATION / "classifier_plugin.py", window.registry)
+        load_plugin(APPLICATION / "dev/classifier_plugin.py", window.registry)
         assert window.registry.types[ClassifyImage.type_id] is ClassifyImage
     finally:
         window.dirty = False

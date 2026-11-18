@@ -126,21 +126,21 @@ assert not any(name in sys.modules for name in ('torch','onnxruntime','timm'))
 @pytest.mark.parametrize(
     "relative",
     (
-        "bin_picking/known_part_jaw/clear/project.json",
-        "bin_picking/known_part_jaw/obstacle/project.json",
-        "bin_picking/known_part_jaw/locator_chain/cad/project.json",
+        "bin_picking/dev/known_part_jaw/clear/project.json",
+        "bin_picking/dev/known_part_jaw/obstacle/project.json",
+        "bin_picking/dev/known_part_jaw/locator_chain/cad/project.json",
         "bin_picking/bin_to_grid/motion_review/baseline/project.json",
-        "surface_enhance/completed_runtime/projects/connected_material.json",
-        "surface_enhance/completed_runtime/projects/missing.json",
-        "fringe_scan/completed_runtime/projects/connected_missing.json",
-        "deflectometry/completed_runtime/projects/connected_change.json",
-        "laser_profile/completed_runtime/projects/calibrated_step.json",
-        "laser_profile/completed_runtime/projects/real_wli1.json",
+        "surface_enhance/inspection/connected_material.json",
+        "surface_enhance/inspection/missing.json",
+        "fringe_scan/inspection/connected_missing.json",
+        "deflectometry/inspection/connected_change.json",
+        "laser_profile/inspection/calibrated_step.json",
+        "laser_profile/inspection/real_wli1.json",
         "pattern_matching/visa_pcb2/project.json",
         "pixel_segmentation/pcb_laminate/project.json",
         "path_width/calibrated_bead/project.json",
         "reference_inspect/armbench_tote/project.json",
-        "3d_measure/flatness/generated/good/project.json",
+        "3d_measure/dev/flatness/generated/good/project.json",
     ),
 )
 def test_representative_offline_projects_execute_without_plugin_flags(relative):
@@ -173,18 +173,18 @@ with ProjectSession.open(root) as session:
     assert source.last_result.outputs['image'].ndim==3
     assert source.last_result.outputs['depth'].ndim==2
     assert 'onnxruntime' not in sys.modules and 'torch' not in sys.modules
-""", EXAMPLES / "foundation_pose/completed_runtime/held_out_frame13/run_project.json")
+""", EXAMPLES / "foundation_pose/held_out_frame13/run_project.json")
 
 
 @pytest.mark.local_examples
 @pytest.mark.parametrize(
     "relative",
     (
-        "bin_picking/known_part_jaw/clear/project.json",
-        "foundation_pose/completed_runtime/held_out_frame13/run_project.json",
-        "surface_enhance/completed_runtime/projects/connected_material.json",
-        "fringe_scan/completed_runtime/projects/connected_missing.json",
-        "deflectometry/completed_runtime/projects/connected_change.json",
+        "bin_picking/dev/known_part_jaw/clear/project.json",
+        "foundation_pose/held_out_frame13/run_project.json",
+        "surface_enhance/inspection/connected_material.json",
+        "fringe_scan/inspection/connected_missing.json",
+        "deflectometry/inspection/connected_change.json",
     ),
 )
 def test_recorded_sources_save_as_and_reopen_without_plugin_flags(tmp_path, relative):
@@ -212,8 +212,8 @@ with ProjectSession.open(target) as moved:
 @pytest.mark.parametrize(
     "relative",
     (
-        "surface_enhance/completed_runtime/projects/connected_material.json",
-        "bin_picking/known_part_jaw/clear/project.json",
+        "surface_enhance/inspection/connected_material.json",
+        "bin_picking/dev/known_part_jaw/clear/project.json",
     ),
 )
 def test_offscreen_editor_opens_and_runs_new_providers(relative):

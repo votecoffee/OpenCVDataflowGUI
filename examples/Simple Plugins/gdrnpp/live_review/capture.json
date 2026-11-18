@@ -1,8 +1,8 @@
 {
   "schema": "simple_gdrnpp_request/v1",
   "capture_id": "scene000006_frame000002_reordered_review",
-  "rgb_path": "../preprocessing/source.png",
-  "depth_path": "../preprocessing/depth.png",
+  "rgb_path": "../dev/preprocessing/source.png",
+  "depth_path": "../dev/preprocessing/depth.png",
   "depth_scale_to_m": 0.0001,
   "camera_matrix": [
     [

@@ -6,7 +6,7 @@
       "type": "input.file",
       "name": "Real T-LESS RGB capture",
       "parameters": {
-        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/rgb/000220.png",
+        "path": "../../Simple Plugins/3d_locate/dev/real_tless/source/test_primesense/000001/rgb/000220.png",
         "source_mode": "single",
         "paths": [],
         "directory": "",
@@ -38,7 +38,7 @@
       "type": "input.depth_file",
       "name": "Measured Primesense depth",
       "parameters": {
-        "path": "../../Simple Plugins/3d_locate/real_tless/source/test_primesense/000001/depth/000220.png",
+        "path": "../../Simple Plugins/3d_locate/dev/real_tless/source/test_primesense/000001/depth/000220.png",
         "path_base": "project",
         "units_per_sample": 0.0001,
         "units": "m",

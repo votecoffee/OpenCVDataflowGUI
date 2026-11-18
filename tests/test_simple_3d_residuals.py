@@ -22,7 +22,7 @@ CASES = ["good", "raised", "missing", "line_good", "line_nonparallel",
 @pytest.mark.local_examples
 @pytest.mark.parametrize("name", CASES)
 def test_residual_projects_reuse_recipes_and_keep_reports_with_and_without_graphics(name):
-    folder = ROOT / "residuals" / name
+    folder = ROOT / "dev/residuals" / name
     graph = Graph.load(folder / "project.json", builtin_registry())
     try:
         graph.run()
@@ -58,7 +58,7 @@ def test_residual_projects_reuse_recipes_and_keep_reports_with_and_without_graph
 @pytest.mark.local_examples
 def test_saved_raw_residuals_are_full_population_with_explicit_missing_values():
     for name in CASES:
-        folder = ROOT / "residuals" / name
+        folder = ROOT / "dev/residuals" / name
         with np.load(folder / "residuals.npz", allow_pickle=False) as archive:
             manifest = json.loads(str(archive["manifest"].item()))
             assert manifest["row_index_scope"] == "zero_based_rows_of_scene_xyz_sha256"
@@ -73,7 +73,7 @@ def test_saved_raw_residuals_are_full_population_with_explicit_missing_values():
 
 @pytest.mark.local_examples
 def test_real_native_residual_review_cache_and_histogram_restore_without_refitting(app):
-    graph = Graph.load(ROOT / "residuals/tless_frame13/project.json", builtin_registry())
+    graph = Graph.load(ROOT / "dev/residuals/tless_frame13/project.json", builtin_registry())
     context = dialog = None
     try:
         graph.run()

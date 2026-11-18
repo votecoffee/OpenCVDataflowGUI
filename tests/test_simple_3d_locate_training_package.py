@@ -9,7 +9,10 @@ from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate/training_workflow"
+ROOT = (
+    Path(__file__).resolve().parents[1]
+    / "examples/Simple Plugins/3d_locate/dev/training_workflow"
+)
 
 
 def test_3d_training_artifact_pins():

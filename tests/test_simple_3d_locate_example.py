@@ -20,8 +20,9 @@ def test_simple_3d_locate_example_roundtrip(variant):
 
         if not hasattr(tool, "compare_profiles"):
             pytest.skip("CAD example requires Simple3DLocate 0.1.0.dev2 or later")
-    truth = [np.asarray(item) for item in json.loads((root / "assets/truth.json").read_text())]
-    graph = Graph.load(root / "project.json", builtin_registry())
+    raw_truth = (root / "generated_surface/assets/truth.json").read_text()
+    truth = [np.asarray(item) for item in json.loads(raw_truth)]
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -65,9 +66,9 @@ def test_cropped_search_uses_separate_full_frame_depth():
 
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/cropped_search_depth"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/cropped_search_depth"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -78,7 +79,7 @@ def test_cropped_search_uses_separate_full_frame_depth():
         assert depth["source"] == "depth_scene"
         assert depth["input_points"] > report["execution"]["input_points"]
         assert report["matches"][0]["depth_verification"]["applied"]
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         checked = pose_agreement(
             [np.asarray(report["matches"][0]["source_to_target"])],
             [truth],
@@ -100,9 +101,9 @@ def test_depth_verified_full_scene_has_one_correct_pose_and_records_rejection():
 
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/depth_verified"
+        / "examples/Simple Plugins/3d_locate/tless_depth_verified"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -114,7 +115,7 @@ def test_depth_verified_full_scene_has_one_correct_pose_and_records_rejection():
         depth = output["pose"]["depth_verification"]
         assert depth["applied"] and depth["status"] == "checked"
         assert depth["free_space_fraction"] < depth["maximum_free_space"]
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         checked = pose_agreement(
             [np.asarray(output["pose"]["source_to_target"])],
             [truth],
@@ -140,9 +141,9 @@ def test_experimental_plane_example_preserves_extra_pose_in_qualification():
 
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/plane_candidates"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/plane_candidates"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -151,7 +152,7 @@ def test_experimental_plane_example_preserves_extra_pose_in_qualification():
         assert output["count"] == 2
         assert output["report"]["execution"]["candidate_backend"] == "ppf_planes"
         assert output["report"]["matches"][0]["candidate_source"] == "planes"
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         options = dict(
             position_tolerance=5, angle_degrees=5, symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),)
         )
@@ -175,8 +176,8 @@ def test_real_tless_first_surface_camera_example():
         pytest.skip("Real T-LESS example requires Simple3DLocate 0.1.0.dev3 or later")
     from opencv_simple_3d_locate.optimization import pose_agreement
 
-    root = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate/real_tless"
-    graph = Graph.load(root / "project.json", builtin_registry())
+    root = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate/dev/real_tless"
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -187,7 +188,7 @@ def test_real_tless_first_surface_camera_example():
         assert block.last_result.outputs["count"] == 1
         pose = block.last_result.outputs["pose"]
         assert 0 < pose["score"] <= 1
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         checked = pose_agreement(
             [np.asarray(pose["source_to_target"])],
             [truth],
@@ -222,9 +223,9 @@ def test_feature_candidate_example_uses_full_scene_and_retains_failed_qualificat
         pytest.skip("Feature example requires Simple3DLocate 0.1.0.dev7 or later")
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/feature_candidates"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/feature_candidates"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -240,7 +241,7 @@ def test_feature_candidate_example_uses_full_scene_and_retains_failed_qualificat
         assert 0 < feature["coarse_proposals"] <= 128
         assert feature["seconds"]["scene_descriptors"] > 0
         assert report["matches"][0]["depth_verification"]["applied"]
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         checked = pose_agreement(
             [np.asarray(outputs["pose"]["source_to_target"])],
             [truth],
@@ -271,9 +272,9 @@ def test_real_tless_training_captures_completed_inputs_without_changing_recipe(a
         pytest.skip("Completed-input capture requires a compatible host")
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/cropped_search_depth"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/cropped_search_depth"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     context = dialog = None
     try:
         graph.set_run_profile("debug")
@@ -323,9 +324,9 @@ def test_pose_alternatives_example_keeps_annotation_failure_and_reports_competit
 
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/pose_alternatives"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/pose_alternatives"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -339,7 +340,7 @@ def test_pose_alternatives_example_keeps_annotation_failure_and_reports_competit
         assert 0 <= info["relative_score_margin"] < 0.2
         assert len(info["alternatives"]) <= 3 and not info["exhaustive"]
         assert report["execution"]["seconds"]["pose_alternatives"] >= 0
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         options = dict(
             position_tolerance=5, angle_degrees=5, symmetries=(np.diag([-1.0, -1.0, 1.0, 1.0]),)
         )
@@ -371,9 +372,9 @@ def test_parallel_verification_example_keeps_poses_and_caches_compiled_model():
 
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/parallel_verification"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/parallel_verification"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -384,7 +385,7 @@ def test_parallel_verification_example_keeps_poses_and_caches_compiled_model():
         assert output["count"] == 1
         assert report["execution"]["execution_workers"] == 4
         assert 1 < report["execution"]["active_candidate_workers"] <= 4
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         checked = pose_agreement(
             [np.asarray(output["pose"]["source_to_target"])],
             [truth],
@@ -425,9 +426,9 @@ def test_projective_scoring_example_ranks_correct_pose_with_cached_locator():
 
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/projective_scoring"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/projective_scoring"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -439,7 +440,7 @@ def test_projective_scoring_example_ranks_correct_pose_with_cached_locator():
         assert pose["score_type"] == "projective_depth_fit_not_probability"
         assert pose["projective_scoring"]["known_rays"] >= 20
         assert output["report"]["execution"]["pose_scoring"]["active"] == "projective"
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         check = pose_agreement(
             [np.asarray(pose["source_to_target"])],
             [truth],
@@ -482,9 +483,9 @@ def test_regional_candidate_example_recovers_full_scene_with_original_depth():
 
     root = (
         Path(__file__).resolve().parents[1]
-        / "examples/Simple Plugins/3d_locate/real_tless/regional_candidates"
+        / "examples/Simple Plugins/3d_locate/dev/real_tless/regional_candidates"
     )
-    graph = Graph.load(root / "project.json", builtin_registry())
+    graph = Graph.load(root / "generated_surface/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["locate"]
@@ -498,7 +499,7 @@ def test_regional_candidate_example_recovers_full_scene_with_original_depth():
         assert execution["region_search"]["proposal_only_removed_points"] > 0
         assert execution["depth_verification"]["source"] == "depth_scene"
         assert execution["pose_scoring"]["active"] == "projective"
-        truth = np.asarray(json.loads((root / "assets/truth.json").read_bytes()))
+        truth = np.asarray(json.loads((root / "generated_surface/assets/truth.json").read_bytes()))
         checked = pose_agreement(
             [np.asarray(outputs["pose"]["source_to_target"])],
             [truth],
@@ -533,7 +534,10 @@ def test_novel_training_examples_restore_budget_and_retain_known_misses(object_i
         pytest.skip("Automatic training budget requires Simple3DLocate dev13")
     from opencv_simple_3d_locate.optimization import read_validation_scenes
 
-    root = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_locate/novel_models"
+    root = (
+        Path(__file__).resolve().parents[1]
+        / "examples/Simple Plugins/3d_locate/dev/novel_models"
+    )
     folder = root / f"object_{object_id:06}"
     graph = Graph.load(folder / "project.json", builtin_registry())
     try:

@@ -1,0 +1,821 @@
+{
+  "model": "simple_reference_inspect_review_v1",
+  "state": "fail",
+  "inspection": {
+    "area_units": "reference_pixels",
+    "coverage": 1.0,
+    "defect_area": 754,
+    "defects": [
+      {
+        "area": 754,
+        "reference_bounds": [
+          157,
+          104,
+          26,
+          29
+        ]
+      }
+    ],
+    "evaluated": true,
+    "exposure": {
+      "correlation": 0.9978544697020463,
+      "gain": 0.8055409616362301,
+      "offset": -2.72782956145943
+    },
+    "failures": [
+      "defect_area_above_maximum"
+    ],
+    "inspected_pixels": 24576,
+    "max_deviation": 5.734594821929932,
+    "model": "simple_reference_inspect_v1",
+    "passed": false,
+    "settings": {
+      "absolute_threshold": 12,
+      "edge_tolerance_px": 0.75,
+      "max_gain": 2.0,
+      "max_total_defect_area": 0,
+      "min_correlation": 0.85,
+      "min_coverage": 0.98,
+      "min_defect_area": 12,
+      "min_gain": 0.5,
+      "normalization": "gain_offset",
+      "variation_multiplier": 3
+    }
+  },
+  "metrics": [
+    {
+      "name": "Geometric support",
+      "value": 1.0,
+      "units": "fraction",
+      "minimum": 0.98,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Exposure gain",
+      "value": 0.8055409616362301,
+      "units": "ratio",
+      "minimum": 0.5,
+      "maximum": 2.0,
+      "status": "within limits"
+    },
+    {
+      "name": "Reference correlation",
+      "value": 0.9978544697020463,
+      "units": "correlation",
+      "minimum": 0.85,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Accepted change area",
+      "value": 754,
+      "units": "reference pixels",
+      "minimum": null,
+      "maximum": 0,
+      "status": "outside limits"
+    },
+    {
+      "name": "Maximum deviation",
+      "value": 5.734594821929932,
+      "units": "tolerance ratio",
+      "minimum": null,
+      "maximum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "expected_inspection_pixels": 24576,
+  "inspected_reference_pixels": 24576,
+  "reference_size": [
+    256,
+    192
+  ],
+  "input_size": [
+    256,
+    192
+  ],
+  "input_dtype": "uint8",
+  "input_pixels_sha256": "212a34c6198f5db5fb74961426c78612a32dd953da50de126ee2da244a43be88",
+  "reference_mean_sha256": "09009e516b3297f824f4bcb16ebddfbab964faf13bd5dcae5859dec163273dab",
+  "reference_tolerance_sha256": "564d3a5c1b4455ef91e2eca769fa617db5acceb84d5437c0be2b88eb7feefce1",
+  "inspection_region_sha256": "f1e8804658a998aecac556871458b2a62a92fdf1214d2ea0c176c970e7852190",
+  "normalization_region_sha256": "ba08e6bed258bc9085215be92fa264a75208eb4a66ba40fd7953b3415e5da47a",
+  "reference_to_image": [
+    [
+      1.0,
+      0.0,
+      -6.0
+    ],
+    [
+      0.0,
+      1.0,
+      7.0
+    ]
+  ],
+  "display": {
+    "intensity_range": [
+      28.87030601501465,
+      217.69383239746094
+    ],
+    "signed_residual_range": [
+      -89.23947143554688,
+      89.23947143554688
+    ],
+    "deviation_range": [
+      0.0,
+      2.0
+    ],
+    "tolerance_boundary": 1.0
+  },
+  "training_health": {
+    "mean_standard_deviation": 0.9922160506248474,
+    "sample_count": 8,
+    "samples": [
+      {
+        "correlation": 1.0,
+        "gain": 1.0,
+        "offset": 0.0
+      },
+      {
+        "correlation": 0.9982264402949956,
+        "gain": 0.9528400360155448,
+        "offset": -0.6828231117079753
+      },
+      {
+        "correlation": 0.9972011953179938,
+        "gain": 0.9095208444776995,
+        "offset": -1.2380789008404918
+      },
+      {
+        "correlation": 0.9959820939772609,
+        "gain": 0.869152029232691,
+        "offset": -1.6728663635849301
+      },
+      {
+        "correlation": 0.9976565995294413,
+        "gain": 0.8398042153986786,
+        "offset": -3.1853668061061313
+      },
+      {
+        "correlation": 0.9981774688209705,
+        "gain": 0.808293328154277,
+        "offset": -3.914061235212472
+      },
+      {
+        "correlation": 0.9982893798326438,
+        "gain": 0.7783304325347632,
+        "offset": -4.449857544161205
+      },
+      {
+        "correlation": 0.9983530490945292,
+        "gain": 0.7508755155341652,
+        "offset": -5.0545117587004285
+      }
+    ],
+    "warnings": []
+  },
+  "arrays": {
+    "residual": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "b9c332b9ebd7f56187c0588fdff4e7a7a7106323e8d582debd67fd71cc079c64"
+    },
+    "deviation_map": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "6a14565970f8ba42cb5ddd1536844b5d2d9fb30e6d30a556d049204b9d1f4b0c"
+    },
+    "inspected_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "3c19c89da5c6b87f74c637c0c2596e57f21661273d5709394f36eabf5caef1cd"
+    },
+    "defect_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "5a841e1706fbc5c99021376d9a8f37495dbfa19544356aea242dc2e11cf67154"
+    }
+  },
+  "images": {
+    "0_reference_mean.png": {
+      "view": "Reference mean",
+      "grid": "reference"
+    },
+    "1_normalized_current.png": {
+      "view": "Normalized current",
+      "grid": "reference"
+    },
+    "2_signed_residual.png": {
+      "view": "Signed residual",
+      "grid": "reference"
+    },
+    "3_deviation_tolerance.png": {
+      "view": "Deviation / tolerance",
+      "grid": "reference"
+    },
+    "4_inspected_coverage.png": {
+      "view": "Inspected coverage",
+      "grid": "reference"
+    },
+    "5_input_overlay.png": {
+      "view": "Input overlay",
+      "grid": "input"
+    }
+  },
+  "completed_execution": {
+    "model": "simple_reference_completed_review_v1",
+    "execution_binding": "f2294d8c38e7475e9fce9162bbf32e82",
+    "original_recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "source_image": {
+      "shape": [
+        192,
+        256
+      ],
+      "dtype": "|u1",
+      "format": "gray",
+      "sha256": "212a34c6198f5db5fb74961426c78612a32dd953da50de126ee2da244a43be88"
+    },
+    "measurement_image": {
+      "shape": [
+        192,
+        256
+      ],
+      "dtype": "|u1"
+    },
+    "reference_size": [
+      256,
+      192
+    ],
+    "reference_to_image": [
+      [
+        1.0,
+        0.0,
+        -6.0
+      ],
+      [
+        0.0,
+        1.0,
+        7.0
+      ]
+    ],
+    "inspection": {
+      "area_units": "reference_pixels",
+      "coverage": 1.0,
+      "defect_area": 754,
+      "defects": [
+        {
+          "area": 754,
+          "reference_bounds": [
+            157,
+            104,
+            26,
+            29
+          ]
+        }
+      ],
+      "evaluated": true,
+      "exposure": {
+        "correlation": 0.9978544697020463,
+        "gain": 0.8055409616362301,
+        "offset": -2.72782956145943
+      },
+      "failures": [
+        "defect_area_above_maximum"
+      ],
+      "inspected_pixels": 24576,
+      "max_deviation": 5.734594821929932,
+      "model": "simple_reference_inspect_v1",
+      "passed": false,
+      "settings": {
+        "absolute_threshold": 12,
+        "edge_tolerance_px": 0.75,
+        "max_gain": 2.0,
+        "max_total_defect_area": 0,
+        "min_correlation": 0.85,
+        "min_coverage": 0.98,
+        "min_defect_area": 12,
+        "min_gain": 0.5,
+        "normalization": "gain_offset",
+        "variation_multiplier": 3
+      }
+    },
+    "source_maps": {
+      "residual": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "<f4",
+        "sha256": "7060fc968a14a2306a10e771aa0d078b795e5bbd549c7578f9be3f5d13094db7"
+      },
+      "deviation_map": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "<f4",
+        "sha256": "2756a7791626bad3b5e945c8e587330ca6a0a849bc67702e4608dca28653d3d5"
+      },
+      "inspected_mask": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "|u1",
+        "sha256": "0a25af45ad78a490882b021556bd8332baf7bcb5657a184b63f7152344ff2742"
+      },
+      "defect_mask": {
+        "shape": [
+          192,
+          256
+        ],
+        "dtype": "|u1",
+        "sha256": "dbe1e5975e2ce40e9e67f92874f6639d292a8a43dccc7ee5ac099044eadb99bb"
+      }
+    },
+    "provenance": {
+      "snapshot_id": "457a8c6f6aca4fd28174b0b040aa7f0d",
+      "block_id": "inspection",
+      "output_revision": 0,
+      "execution_count": 3,
+      "passed": false,
+      "score": null,
+      "message": "754 reference pixels in 1 regions",
+      "inputs": {
+        "image": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-changed.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:3",
+            "sequence": 3,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.876626+00:00",
+            "started_ns": 121391838900600,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.882428+00:00",
+            "finished_ns": 121391844701200,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 5.8006
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "source",
+              "name": "Image file",
+              "type": "input.file",
+              "path": "source"
+            },
+            "score": null,
+            "message": "moved-changed.png \u00b7 gray / uint8",
+            "data": {},
+            "fail_reasons": []
+          }
+        },
+        "pose": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-changed.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:3",
+            "sequence": 3,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.876626+00:00",
+            "started_ns": 121391838900600,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.890690+00:00",
+            "finished_ns": 121391852964200,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 14.0636
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": true,
+            "chain_passed": true,
+            "source": {
+              "id": "fixture",
+              "name": "Pose from feature",
+              "type": "pose.from_feature",
+              "path": "fixture"
+            },
+            "score": null,
+            "message": "",
+            "data": {},
+            "fail_reasons": []
+          }
+        }
+      },
+      "outputs": {
+        "inspection": {
+          "sri_completed_review": {
+            "id": "f2294d8c38e7475e9fce9162bbf32e82",
+            "recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f"
+          },
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-changed.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:3",
+            "sequence": 3,
+            "source": "source"
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.892054+00:00",
+            "started_ns": 121391854328600,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": true,
+            "finished_at": "2026-11-17T21:50:28.899126+00:00",
+            "finished_ns": 121391861399400,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 7.0708
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": false,
+            "chain_passed": false,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "754 reference pixels in 1 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": [
+              {
+                "code": "defect_area_above_maximum",
+                "message": "defect_area_above_maximum"
+              }
+            ]
+          }
+        },
+        "residual": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-changed.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:3",
+            "sequence": 3,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.876626+00:00",
+            "started_ns": 121391838900600,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.899126+00:00",
+            "finished_ns": 121391861399400,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 22.4988
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": false,
+            "chain_passed": false,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "754 reference pixels in 1 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": [
+              {
+                "code": "defect_area_above_maximum",
+                "message": "defect_area_above_maximum"
+              }
+            ]
+          }
+        },
+        "deviation_map": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-changed.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:3",
+            "sequence": 3,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.876626+00:00",
+            "started_ns": 121391838900600,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.899126+00:00",
+            "finished_ns": 121391861399400,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 22.4988
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": false,
+            "chain_passed": false,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "754 reference pixels in 1 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": [
+              {
+                "code": "defect_area_above_maximum",
+                "message": "defect_area_above_maximum"
+              }
+            ]
+          }
+        },
+        "inspected_mask": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-changed.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:3",
+            "sequence": 3,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.876626+00:00",
+            "started_ns": 121391838900600,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.899126+00:00",
+            "finished_ns": 121391861399400,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 22.4988
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": false,
+            "chain_passed": false,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "754 reference pixels in 1 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": [
+              {
+                "code": "defect_area_above_maximum",
+                "message": "defect_area_above_maximum"
+              }
+            ]
+          }
+        },
+        "defect_mask": {
+          "ticket": {
+            "model": "flow_ticket_v1",
+            "kind": "string",
+            "value": "moved-changed.png",
+            "session": "cd12d7e699b145ea82a64c6073b3c2b9:file:3",
+            "sequence": 3,
+            "source": "source"
+          },
+          "spatial": {
+            "root_id": "source:image",
+            "root_size": [
+              256,
+              192
+            ],
+            "image_size": [
+              256,
+              192
+            ],
+            "to_root": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          },
+          "processing_time": {
+            "model": "processing_time_v1",
+            "started_at": "2026-11-17T21:50:28.876626+00:00",
+            "started_ns": 121391838900600,
+            "clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "inferred_start": false,
+            "finished_at": "2026-11-17T21:50:28.899126+00:00",
+            "finished_ns": 121391861399400,
+            "finished_clock_id": "93500ba01af34eaab9e8c09c78733381",
+            "elapsed_ms": 22.4988
+          },
+          "outcome": {
+            "model": "tool_outcome_v1",
+            "passed": false,
+            "chain_passed": false,
+            "source": {
+              "id": "inspection",
+              "name": "SimpleReferenceInspect",
+              "type": "inspect.simple_reference",
+              "path": "inspection"
+            },
+            "score": null,
+            "message": "754 reference pixels in 1 regions",
+            "data": {
+              "filmstrip_priority": -1
+            },
+            "fail_reasons": [
+              {
+                "code": "defect_area_above_maximum",
+                "message": "defect_area_above_maximum"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "coordinate_scope": "Reference maps, exact consumed-input maps and assessment display grids remain distinct",
+    "identity_scope": "Software completion identifiers do not establish physical exposure identity",
+    "review_reconstruction": "Normalized current is resampled with captured pose/exposure; no exposure refitting",
+    "inspection_reexecuted": false,
+    "exposure_refitted": false,
+    "recipe_reloaded": false,
+    "training_changed": false,
+    "exported_model": {
+      "file": "executed_model.sri",
+      "sha256": "cd4dd604b64efeb059cb57facf5e47991d2343071938f3fce4fcb679ed5449b2",
+      "scope": "Re-encoded executed model; archive bytes may differ from original pin"
+    }
+  }
+}

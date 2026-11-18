@@ -21,9 +21,9 @@ ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_measure
 
 @pytest.mark.local_examples
 def test_source_context_rgb_pixels_and_calibration_match_pinned_real_capture():
-    recipe = load_recipe(ROOT / "reference_context/assets/measurement.s3m")
+    recipe = load_recipe(ROOT / "dev/reference_context/assets/measurement.s3m")
     evidence = recipe.reference_evidence
-    raw = ROOT / "real_tless/source/test_primesense/000002"
+    raw = ROOT / "dev/real_tless/source/test_primesense/000002"
     image = cv2.imread(str(raw / "rgb/000003.png"))
     depth = cv2.imread(str(raw / "depth/000003.png"), cv2.IMREAD_UNCHANGED)
     y, x = np.nonzero(depth)
@@ -41,13 +41,13 @@ def test_source_context_rgb_pixels_and_calibration_match_pinned_real_capture():
 
 @pytest.mark.local_examples
 def test_context_project_preserves_previous_values_and_save_as_bytes(tmp_path):
-    graph = Graph.load(ROOT / "reference_context/project.json", builtin_registry())
+    graph = Graph.load(ROOT / "dev/reference_context/project.json", builtin_registry())
     try:
         graph.run()
         block = graph.blocks["measure"]
         assert block.state == "pass", block.error
         report = block.last_result.outputs["report"]
-        prior = json.loads((ROOT / "real_tless/frame000013/expected.json").read_bytes())
+        prior = json.loads((ROOT / "tless_plane/expected.json").read_bytes())
         assert report == prior
         assert graph.blocks["scene"].last_result.outputs["cloud"].colors is not None
         block.parameters["render_graphics"] = False
@@ -72,7 +72,7 @@ def test_context_project_preserves_previous_values_and_save_as_bytes(tmp_path):
 
 @pytest.mark.local_examples
 def test_native_source_view_keeps_cached_result_and_frozen_context(app):
-    graph = Graph.load(ROOT / "reference_context/project.json", builtin_registry())
+    graph = Graph.load(ROOT / "dev/reference_context/project.json", builtin_registry())
     dialog = context = None
     try:
         graph.run()

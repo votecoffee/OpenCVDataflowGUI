@@ -29,10 +29,10 @@ def test_locator_uses_native_colored_thumbnail_and_flyaround_popout_without_matc
     pytest.importorskip("opencv_simple_3d_locate")
     from opencv_dataflow.app import MainWindow
 
-    graph = Graph.load(ROOT / "project.json", builtin_registry())
+    graph = Graph.load(ROOT / "generated_surface/project.json", builtin_registry())
     window = MainWindow()
     try:
-        window.replace_graph(graph, ROOT / "project.json")
+        window.replace_graph(graph, ROOT / "generated_surface/project.json")
         graph.run()
         block = graph.blocks["locate"]
         assert block.state == "pass", block.error

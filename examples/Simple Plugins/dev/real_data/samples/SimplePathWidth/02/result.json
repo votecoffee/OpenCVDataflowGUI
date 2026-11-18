@@ -1,0 +1,825 @@
+{
+  "frame": 2,
+  "state": "fail",
+  "input_file": "path_width/weld_bead/assets/20231114_11h25m52s_B04_3.png",
+  "input_file_sha256": "8b17dfea3c870dbbf50dcf670073bf4f1e687667e77b3d7127f22a02a18c7dfa",
+  "result_pixels_sha256": "c9b29233b1b9516a11961561ce39e348b6c98803f8010a106a564cbbeeb0b509",
+  "result_size": [
+    448,
+    448
+  ],
+  "measurements": {
+    "model": "simple_path_width_v1",
+    "path": [
+      [
+        100.0,
+        165.0
+      ],
+      [
+        348.0,
+        165.0
+      ]
+    ],
+    "closed": false,
+    "path_length_px": 248.0,
+    "station_spacing_px": 8.0,
+    "stations": [
+      {
+        "distance_px": 4.0,
+        "point": [
+          104.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            104.0,
+            98.07658089904504
+          ],
+          [
+            104.0,
+            250.28574094802389
+          ]
+        ],
+        "edge_strengths": [
+          3.10880419910137,
+          3.628462426691621
+        ],
+        "width_px": 152.20916004897884,
+        "center_offset_px": 9.181160923534463,
+        "issues": []
+      },
+      {
+        "distance_px": 12.0,
+        "point": [
+          112.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            112.0,
+            96.61059296848337
+          ],
+          [
+            112.0,
+            247.77989513176593
+          ]
+        ],
+        "edge_strengths": [
+          2.7370816052804408,
+          7.628782569631664
+        ],
+        "width_px": 151.16930216328257,
+        "center_offset_px": 7.19524405012465,
+        "issues": []
+      },
+      {
+        "distance_px": 20.0,
+        "point": [
+          120.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 28.0,
+        "point": [
+          128.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 36.0,
+        "point": [
+          136.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            136.0,
+            112.96208280822836
+          ],
+          [
+            136.0,
+            221.96025592283343
+          ]
+        ],
+        "edge_strengths": [
+          3.3624765209617933,
+          14.202316710637175
+        ],
+        "width_px": 108.99817311460507,
+        "center_offset_px": 2.4611693655308926,
+        "issues": []
+      },
+      {
+        "distance_px": 44.0,
+        "point": [
+          144.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            144.0,
+            124.6888860068771
+          ],
+          [
+            144.0,
+            242.47227233642408
+          ]
+        ],
+        "edge_strengths": [
+          7.682433986523247,
+          12.497864787473604
+        ],
+        "width_px": 117.78338632954699,
+        "center_offset_px": 18.58057917165059,
+        "issues": []
+      },
+      {
+        "distance_px": 52.0,
+        "point": [
+          152.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            152.0,
+            114.55642854007874
+          ],
+          [
+            152.0,
+            224.2007884219464
+          ]
+        ],
+        "edge_strengths": [
+          2.4222122875667496,
+          10.743831726141602
+        ],
+        "width_px": 109.64435988186767,
+        "center_offset_px": 4.378608481012581,
+        "issues": []
+      },
+      {
+        "distance_px": 60.0,
+        "point": [
+          160.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            160.0,
+            115.1173772341674
+          ],
+          [
+            160.0,
+            233.38879377005168
+          ]
+        ],
+        "edge_strengths": [
+          3.8576317804045615,
+          10.793457803133583
+        ],
+        "width_px": 118.27141653588427,
+        "center_offset_px": 9.253085502109542,
+        "issues": []
+      },
+      {
+        "distance_px": 68.0,
+        "point": [
+          168.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            168.0,
+            117.20359826798538
+          ],
+          [
+            168.0,
+            224.54159232205822
+          ]
+        ],
+        "edge_strengths": [
+          4.807139194094371,
+          12.227347252608759
+        ],
+        "width_px": 107.33799405407284,
+        "center_offset_px": 5.872595295021803,
+        "issues": []
+      },
+      {
+        "distance_px": 76.0,
+        "point": [
+          176.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            176.0,
+            121.9125700049072
+          ],
+          [
+            176.0,
+            240.42600551480848
+          ]
+        ],
+        "edge_strengths": [
+          3.355375176065364,
+          3.7285565762669814
+        ],
+        "width_px": 118.51343550990129,
+        "center_offset_px": 16.169287759857834,
+        "issues": []
+      },
+      {
+        "distance_px": 84.0,
+        "point": [
+          184.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            184.0,
+            92.86496194148003
+          ],
+          [
+            184.0,
+            232.36313645867818
+          ]
+        ],
+        "edge_strengths": [
+          3.5760693295497545,
+          3.671632810292042
+        ],
+        "width_px": 139.49817451719815,
+        "center_offset_px": -2.3859507999208915,
+        "issues": []
+      },
+      {
+        "distance_px": 92.0,
+        "point": [
+          192.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 100.0,
+        "point": [
+          200.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 108.0,
+        "point": [
+          208.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 116.0,
+        "point": [
+          216.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            216.0,
+            119.98106029230419
+          ],
+          [
+            216.0,
+            237.32400120792983
+          ]
+        ],
+        "edge_strengths": [
+          3.4716643445249225,
+          12.876620138773324
+        ],
+        "width_px": 117.34294091562563,
+        "center_offset_px": 13.652530750117013,
+        "issues": []
+      },
+      {
+        "distance_px": 124.0,
+        "point": [
+          224.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 132.0,
+        "point": [
+          232.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 140.0,
+        "point": [
+          240.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            240.0,
+            100.3911129507558
+          ],
+          [
+            240.0,
+            224.42845537821512
+          ]
+        ],
+        "edge_strengths": [
+          3.2460650222803697,
+          25.131217809586005
+        ],
+        "width_px": 124.03734242745932,
+        "center_offset_px": -2.5902158355145417,
+        "issues": []
+      },
+      {
+        "distance_px": 148.0,
+        "point": [
+          248.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 156.0,
+        "point": [
+          256.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 164.0,
+        "point": [
+          264.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            264.0,
+            100.07911717480306
+          ],
+          [
+            264.0,
+            228.64199574543326
+          ]
+        ],
+        "edge_strengths": [
+          4.228263744864592,
+          18.813510614127594
+        ],
+        "width_px": 128.5628785706302,
+        "center_offset_px": -0.6394435398818388,
+        "issues": []
+      },
+      {
+        "distance_px": 172.0,
+        "point": [
+          272.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            272.0,
+            124.95522389039533
+          ],
+          [
+            272.0,
+            233.06905386838056
+          ]
+        ],
+        "edge_strengths": [
+          23.73326300110469,
+          19.551726406297124
+        ],
+        "width_px": 108.11382997798523,
+        "center_offset_px": 14.012138879387948,
+        "issues": []
+      },
+      {
+        "distance_px": 180.0,
+        "point": [
+          280.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            280.0,
+            89.20472085693117
+          ],
+          [
+            280.0,
+            248.4963933861663
+          ]
+        ],
+        "edge_strengths": [
+          3.9774282087069213,
+          15.524130103052018
+        ],
+        "width_px": 159.29167252923511,
+        "center_offset_px": 3.850557121548732,
+        "issues": []
+      },
+      {
+        "distance_px": 188.0,
+        "point": [
+          288.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 196.0,
+        "point": [
+          296.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 204.0,
+        "point": [
+          304.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "out_of_tolerance",
+        "edges": [
+          [
+            304.0,
+            75.993351140958
+          ],
+          [
+            304.0,
+            243.74686729572926
+          ]
+        ],
+        "edge_strengths": [
+          2.133106760526994,
+          11.15572680322535
+        ],
+        "width_px": 167.75351615477126,
+        "center_offset_px": -5.129890781656371,
+        "issues": [
+          "width_above_maximum"
+        ]
+      },
+      {
+        "distance_px": 212.0,
+        "point": [
+          312.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            312.0,
+            107.85481763091126
+          ],
+          [
+            312.0,
+            246.24384112765722
+          ]
+        ],
+        "edge_strengths": [
+          2.133322954213294,
+          20.579082039303426
+        ],
+        "width_px": 138.38902349674595,
+        "center_offset_px": 12.049329379284238,
+        "issues": []
+      },
+      {
+        "distance_px": 220.0,
+        "point": [
+          320.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 228.0,
+        "point": [
+          328.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "missing",
+        "edges": null,
+        "edge_strengths": null,
+        "width_px": null,
+        "center_offset_px": null,
+        "issues": []
+      },
+      {
+        "distance_px": 236.0,
+        "point": [
+          336.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "out_of_tolerance",
+        "edges": [
+          [
+            336.0,
+            90.7127164303297
+          ],
+          [
+            336.0,
+            250.7201641338086
+          ]
+        ],
+        "edge_strengths": [
+          2.8545396073353166,
+          11.62197638890269
+        ],
+        "width_px": 160.00744770347887,
+        "center_offset_px": 5.716440282069151,
+        "issues": [
+          "width_above_maximum"
+        ]
+      },
+      {
+        "distance_px": 244.0,
+        "point": [
+          344.0,
+          165.0
+        ],
+        "normal": [
+          -0.0,
+          1.0
+        ],
+        "status": "pass",
+        "edges": [
+          [
+            344.0,
+            91.55315124467893
+          ],
+          [
+            344.0,
+            249.30844077986401
+          ]
+        ],
+        "edge_strengths": [
+          3.4993567867825317,
+          9.646987137664079
+        ],
+        "width_px": 157.75528953518509,
+        "center_offset_px": 5.430796012271472,
+        "issues": []
+      }
+    ],
+    "gaps": [
+      {
+        "start_px": 16.0,
+        "end_px": 32.0,
+        "length_px": 16.0,
+        "wraps": false
+      },
+      {
+        "start_px": 88.0,
+        "end_px": 112.0,
+        "length_px": 24.0,
+        "wraps": false
+      },
+      {
+        "start_px": 120.0,
+        "end_px": 136.0,
+        "length_px": 16.0,
+        "wraps": false
+      },
+      {
+        "start_px": 144.0,
+        "end_px": 160.0,
+        "length_px": 16.0,
+        "wraps": false
+      },
+      {
+        "start_px": 184.0,
+        "end_px": 200.0,
+        "length_px": 16.0,
+        "wraps": false
+      },
+      {
+        "start_px": 216.0,
+        "end_px": 232.0,
+        "length_px": 16.0,
+        "wraps": false
+      }
+    ],
+    "min_width_px": 107.33799405407284,
+    "max_width_px": 167.75351615477126,
+    "mean_width_px": 132.48218574813637,
+    "coverage": 0.5806451612903226,
+    "observed_fraction": 1.0,
+    "longest_gap_px": 24.0,
+    "passed": false,
+    "failures": [
+      "coverage_below_minimum",
+      "station_out_of_tolerance"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "reference_points": 6000,
+  "sample_points": 2000,
+  "bounding_diagonal": 222.0529032227413,
+  "normal_spread": 0.3326042664600977,
+  "units": "mm",
+  "frame": "tless_object8",
+  "sampling_budget": {
+    "voxel_points": 2662,
+    "sample_budget": 2000,
+    "candidate_budget": 10000,
+    "reference_exceeds_budget": true,
+    "candidate_pool_reduction": false,
+    "trained_fraction_of_voxels": 0.7513148009015778,
+    "assessment": "derived_from_retained_reference_and_settings"
+  },
+  "cad": {
+    "triangles": 22812,
+    "surface_area": 185714.41694560446,
+    "discarded_triangles": 0
+  }
+}

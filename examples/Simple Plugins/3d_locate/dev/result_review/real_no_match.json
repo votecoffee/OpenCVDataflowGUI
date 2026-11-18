@@ -1,0 +1,483 @@
+{
+  "model": "simple_3d_locate_v1",
+  "units": "mm",
+  "source_frame": "tless_object6",
+  "target_frame": "camera",
+  "matches": [],
+  "candidate_count": 94,
+  "tested_candidates": 24,
+  "sampled_scene_points": 872,
+  "search_model_points": 384,
+  "search_scene_points": 872,
+  "passed": false,
+  "execution": {
+    "sampling": "uniform",
+    "candidate_backend": "ppf_regions",
+    "plane_search": {
+      "model_patches": 0,
+      "scene_patches": 0,
+      "coarse_proposals": 0
+    },
+    "feature_search": {
+      "coarse_proposals": 0
+    },
+    "region_search": {
+      "input_points": 872,
+      "background_planes": 0,
+      "proposal_only_removed_points": 0,
+      "components": 2,
+      "largest_component_sizes": [
+        815,
+        43
+      ],
+      "region_points": [
+        815,
+        43
+      ],
+      "window_regions": 0,
+      "skipped_global_duplicates": 0,
+      "region_limit": 12,
+      "enabled": true,
+      "search_region_points": [
+        815,
+        43
+      ],
+      "native_failures": 0,
+      "malformed_hypotheses": 0,
+      "detector_compilations": 1,
+      "coarse_proposals": 35,
+      "selected_proposals": 12,
+      "seconds": {
+        "analysis": 0.008870600002410356,
+        "native_and_compile": 0.2920507999988331,
+        "model_compile": 0.2649942000025476,
+        "coarse_ranking": 0.038920899998629466
+      }
+    },
+    "refinement": "legacy",
+    "pose_scoring": {
+      "requested": "projective",
+      "active": "projective",
+      "fallback_reason": null,
+      "rejected_candidates": []
+    },
+    "observation_mode": "surface",
+    "projection": "pinhole",
+    "input_points": 10078,
+    "first_surface_points": 10078,
+    "depth_verification": {
+      "mode": "auto",
+      "status": "available",
+      "reason": null,
+      "source": "depth_scene",
+      "input_points": 388080
+    },
+    "depth_rejected": 0,
+    "depth_rejected_candidates": [],
+    "overlap_metric": "combined",
+    "overlap_threshold": 0.6,
+    "overlap_rejected": 0,
+    "verified_candidates": 0,
+    "rejection_counts": {
+      "geometry": 24
+    },
+    "candidate_review": [
+      {
+        "candidate_index": 4,
+        "stage": "geometry",
+        "candidate_source": "regions",
+        "source_to_target": [
+          [
+            0.8658812188540929,
+            0.4979141162590816,
+            -0.04828299561634653,
+            -86.15041412224069
+          ],
+          [
+            0.4702920309425666,
+            -0.8431260414091929,
+            -0.2606988376068832,
+            -24.32111833007238
+          ],
+          [
+            -0.17051428229818874,
+            0.20302711919249064,
+            -0.964212045353475,
+            775.4795557171531
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.2420141098688715,
+        "coverage": 0.3087378640776699,
+        "rmse": 1.1159204699280507,
+        "normal_spread": 0.09015252652379421,
+        "unique_support": 137,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      },
+      {
+        "candidate_index": 23,
+        "stage": "geometry",
+        "candidate_source": "ppf",
+        "source_to_target": [
+          [
+            0.8686838467906319,
+            0.4931461629923569,
+            -0.046853348342952156,
+            -86.11947270232992
+          ],
+          [
+            0.46429119099237726,
+            -0.8435116787623334,
+            -0.27004025210777266,
+            -24.258414511705436
+          ],
+          [
+            -0.1726906606968368,
+            0.21282600808516206,
+            -0.9617083892691303,
+            775.4485806596372
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.23999771279163407,
+        "coverage": 0.3044315992292871,
+        "rmse": 1.0899370909055195,
+        "normal_spread": 0.09980915222093305,
+        "unique_support": 133,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      },
+      {
+        "candidate_index": 7,
+        "stage": "geometry",
+        "candidate_source": "regions",
+        "source_to_target": [
+          [
+            -0.8706109589692363,
+            -0.4902403560329814,
+            -0.041242592538807965,
+            -85.2290858399869
+          ],
+          [
+            -0.46265820127614377,
+            0.8443589684202963,
+            -0.2701949689393498,
+            -25.349352142699576
+          ],
+          [
+            0.1672840306621938,
+            -0.21615347733698054,
+            -0.961921892525865,
+            775.4264679811986
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.23668636698845746,
+        "coverage": 0.29693486590038315,
+        "rmse": 1.0767719633130706,
+        "normal_spread": 0.09913733905706384,
+        "unique_support": 140,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      },
+      {
+        "candidate_index": 18,
+        "stage": "geometry",
+        "candidate_source": "ppf",
+        "source_to_target": [
+          [
+            -0.9944363379914365,
+            -0.0933705936733288,
+            -0.048767836934525,
+            -84.64070575573984
+          ],
+          [
+            -0.07678374869891764,
+            0.9594459245074528,
+            -0.2712337992982833,
+            -26.1310477328601
+          ],
+          [
+            0.0721153632586272,
+            -0.2659801687779187,
+            -0.9612772358684808,
+            775.8738182232612
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.1696009309551783,
+        "coverage": 0.21660649819494585,
+        "rmse": 1.1033190025368824,
+        "normal_spread": 0.1030294856728837,
+        "unique_support": 107,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      },
+      {
+        "candidate_index": 2,
+        "stage": "geometry",
+        "candidate_source": "regions",
+        "source_to_target": [
+          [
+            0.08457991304821541,
+            0.994748080055393,
+            -0.05764109241562013,
+            -82.4487087276094
+          ],
+          [
+            0.9620349546174505,
+            -0.09658974892414961,
+            -0.25526293600319233,
+            -26.40330541234555
+          ],
+          [
+            -0.2594898541426167,
+            -0.03386262879457928,
+            -0.9651519766172396,
+            775.8814549558607
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.15675848938744405,
+        "coverage": 0.20864661654135339,
+        "rmse": 1.2069258235613565,
+        "normal_spread": 0.20860693983023193,
+        "unique_support": 91,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      },
+      {
+        "candidate_index": 8,
+        "stage": "geometry",
+        "candidate_source": "regions",
+        "source_to_target": [
+          [
+            0.38478988688543675,
+            0.9229198999024953,
+            -0.0124740255996586,
+            -81.53108087861128
+          ],
+          [
+            0.8829998339374404,
+            -0.3720145206735969,
+            -0.28621056876790385,
+            -31.766408881094794
+          ],
+          [
+            -0.26878994813263724,
+            0.0991163698485883,
+            -0.9580855436811958,
+            777.0111146127314
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.13482789144641927,
+        "coverage": 0.17647058823529413,
+        "rmse": 1.1590118854389948,
+        "normal_spread": 0.03461605413483026,
+        "unique_support": 73,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      },
+      {
+        "candidate_index": 5,
+        "stage": "geometry",
+        "candidate_source": "regions",
+        "source_to_target": [
+          [
+            0.8809244166231727,
+            -0.001714894774351632,
+            0.4732538761944122,
+            -75.21652222530447
+          ],
+          [
+            0.4515400361269561,
+            0.30249453368016876,
+            -0.839409705011852,
+            -21.550354022824422
+          ],
+          [
+            -0.1417172112750961,
+            0.953149577049442,
+            0.26724916426226597,
+            777.8566476022072
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.11480120580252429,
+        "coverage": 0.16883116883116883,
+        "rmse": 1.4189881368470365,
+        "normal_spread": 0.13238844822918083,
+        "unique_support": 77,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      },
+      {
+        "candidate_index": 16,
+        "stage": "geometry",
+        "candidate_source": "ppf",
+        "source_to_target": [
+          [
+            -0.8930927096907183,
+            0.04716102976647505,
+            -0.44739384122789977,
+            -85.36522076995357
+          ],
+          [
+            -0.4162842121690994,
+            0.2904199982987068,
+            0.8616052920490519,
+            -17.930733073873675
+          ],
+          [
+            0.17056631143353632,
+            0.9557363976848138,
+            -0.23973959110754528,
+            777.4990806961994
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "score": 0.11385285121565296,
+        "coverage": 0.16958041958041958,
+        "rmse": 1.4438070882891745,
+        "normal_spread": 0.10097425879264567,
+        "unique_support": 84,
+        "limits": {
+          "min_coverage": 0.5,
+          "min_unique_support": 20,
+          "max_rmse": 1.74752319337573,
+          "min_normal_spread": 0.01
+        },
+        "failed_checks": [
+          "coverage"
+        ]
+      }
+    ],
+    "candidate_review_limit": 8,
+    "match_limit_discarded": 0,
+    "coarse_rejected": 0,
+    "icp_calls": 38,
+    "execution_workers": 4,
+    "active_candidate_workers": 4,
+    "candidate_timing_aggregation": "worker_intervals_may_overlap",
+    "model_levels": [
+      2000
+    ],
+    "scene_levels": [
+      872
+    ],
+    "seconds": {
+      "preprocess": 0.0510772999987239,
+      "candidate_search": 0.3667200000018056,
+      "ppf_search": 0.026698100002249703,
+      "plane_search": 0.0,
+      "feature_search": 0.0,
+      "region_search": 0.3398606999980984,
+      "depth_prepare": 0.03827060000185156,
+      "depth_verify": 0.0,
+      "projective_score_sum": 0.0,
+      "worker_index_prepare_sum": 0.0008593999991717283,
+      "suppression": 3.6000019463244826e-06,
+      "pose_alternatives": 3.6999990697950125e-06,
+      "refine_verify": 0.2042662999992899,
+      "total": 0.6220637000005809
+    }
+  },
+  "assessment": {
+    "status": "verification_failed",
+    "message": "Not located: none of 24 tested candidates passed",
+    "rejection_counts": {
+      "geometry": 24
+    }
+  }
+}

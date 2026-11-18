@@ -1,0 +1,180 @@
+{
+  "model": "simple_reference_inspect_review_v1",
+  "state": "pass",
+  "inspection": {
+    "model": "simple_reference_inspect_v1",
+    "passed": true,
+    "evaluated": true,
+    "failures": [],
+    "coverage": 1.0,
+    "exposure": {
+      "gain": 1.0,
+      "offset": 0.0,
+      "correlation": 1.0
+    },
+    "inspected_pixels": 375570,
+    "defect_area": 0,
+    "defects": [],
+    "area_units": "reference_pixels",
+    "max_deviation": 0.0,
+    "settings": {
+      "absolute_threshold": 12.0,
+      "variation_multiplier": 3.0,
+      "edge_tolerance_px": 0.75,
+      "normalization": "gain_offset",
+      "min_gain": 0.5,
+      "max_gain": 2.0,
+      "min_correlation": 0.85,
+      "min_coverage": 0.98,
+      "min_defect_area": 9,
+      "max_total_defect_area": 0
+    }
+  },
+  "metrics": [
+    {
+      "name": "Geometric support",
+      "value": 1.0,
+      "units": "fraction",
+      "minimum": 0.98,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Exposure gain",
+      "value": 1.0,
+      "units": "ratio",
+      "minimum": 0.5,
+      "maximum": 2.0,
+      "status": "within limits"
+    },
+    {
+      "name": "Reference correlation",
+      "value": 1.0,
+      "units": "correlation",
+      "minimum": 0.85,
+      "maximum": null,
+      "status": "within limits"
+    },
+    {
+      "name": "Accepted change area",
+      "value": 0,
+      "units": "reference pixels",
+      "minimum": null,
+      "maximum": 0,
+      "status": "within limits"
+    },
+    {
+      "name": "Maximum deviation",
+      "value": 0.0,
+      "units": "tolerance ratio",
+      "minimum": null,
+      "maximum": null,
+      "status": "diagnostic"
+    }
+  ],
+  "expected_inspection_pixels": 375570,
+  "inspected_reference_pixels": 375570,
+  "reference_size": [
+    702,
+    535
+  ],
+  "input_size": [
+    702,
+    535
+  ],
+  "input_dtype": "uint8",
+  "input_pixels_sha256": "a04b10038623e09fb03ac34df8e9e1c6a77709e0f450cd3c1b0dfd3d8e288f8e",
+  "reference_mean_sha256": "297445bddfa62fd7f079ef2d141bea8904c7c62a852a6157dd41974042fbba20",
+  "reference_tolerance_sha256": "35bda6f8cb71d83045b3adf4037b5d5a5048dd74dd8f3b2300fbabfc80061131",
+  "inspection_region_sha256": "20f6c03f14e56baad6168dae8a80bc84411a2f9f77cd1b384fdb7b19dffe2967",
+  "normalization_region_sha256": "20f6c03f14e56baad6168dae8a80bc84411a2f9f77cd1b384fdb7b19dffe2967",
+  "reference_to_image": [
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0
+    ]
+  ],
+  "display": {
+    "intensity_range": [
+      8.0,
+      255.0
+    ],
+    "signed_residual_range": [
+      -143.954345703125,
+      143.954345703125
+    ],
+    "deviation_range": [
+      0.0,
+      2.0
+    ],
+    "tolerance_boundary": 1.0
+  },
+  "training_health": {
+    "sample_count": 1,
+    "samples": [
+      {
+        "gain": 1.0,
+        "offset": 0.0,
+        "correlation": 1.0
+      }
+    ],
+    "warnings": [
+      "Fewer than five good samples. Validate against independent images."
+    ],
+    "mean_standard_deviation": 0.0
+  },
+  "arrays": {
+    "residual": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "50d7adf6d61bd8743aa9d983bb59e4464f4882a4dc6ba37ffabdc3fd2bff7b53"
+    },
+    "deviation_map": {
+      "grid": "reference",
+      "dtype": "float32",
+      "sha256": "50d7adf6d61bd8743aa9d983bb59e4464f4882a4dc6ba37ffabdc3fd2bff7b53"
+    },
+    "inspected_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "f48aaf20d8be8dec84a6f4f59bb9eceb1b23e680c95dc4a8f95b2028731fc82e"
+    },
+    "defect_mask": {
+      "grid": "reference",
+      "dtype": "uint8",
+      "sha256": "4ba9f3e2b02ab5209699ca233b59ea816652555e79714f8f67796e43b1117587"
+    }
+  },
+  "images": {
+    "0_reference_mean.png": {
+      "view": "Reference mean",
+      "grid": "reference"
+    },
+    "1_normalized_current.png": {
+      "view": "Normalized current",
+      "grid": "reference"
+    },
+    "2_signed_residual.png": {
+      "view": "Signed residual",
+      "grid": "reference"
+    },
+    "3_deviation_tolerance.png": {
+      "view": "Deviation / tolerance",
+      "grid": "reference"
+    },
+    "4_inspected_coverage.png": {
+      "view": "Inspected coverage",
+      "grid": "reference"
+    },
+    "5_input_overlay.png": {
+      "view": "Input overlay",
+      "grid": "input"
+    }
+  }
+}

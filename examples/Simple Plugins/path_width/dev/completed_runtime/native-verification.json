@@ -1,0 +1,324 @@
+[
+  {
+    "case": "generated",
+    "frame": 0,
+    "passed": true,
+    "stations": 146,
+    "coverage": 1.0,
+    "manifest_sha256": "23c1647ac600e0681829284e97318412b63aa442b47da1d90c4455e5d72f89e6",
+    "source_sha256": "7752d5c3fe69b08f3dbfd9409a0db568f4cc93e92ae99d64df6cba623b7cd0d8",
+    "source_shape": [
+      280,
+      288
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 146,
+      "out_of_tolerance": 0,
+      "missing": 0,
+      "ambiguous": 0,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "9a60ba4d137117dff8c24bd88d88a4326f08bf8e0079c96607a1de45ca608229",
+      "trend": "07a8ac717cc72c2f9170da65fc39ed94c1804c8f956d785de2f54661908c55b8"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/generated_0_measured",
+        "group": "measured",
+        "station": 73
+      }
+    ]
+  },
+  {
+    "case": "generated",
+    "frame": 1,
+    "passed": false,
+    "stations": 146,
+    "coverage": 0.9452054794520548,
+    "manifest_sha256": "23c1647ac600e0681829284e97318412b63aa442b47da1d90c4455e5d72f89e6",
+    "source_sha256": "b3bc53431c991c198404f8abb87f5dd479f1d3ef063a41b449916bbfb5557419",
+    "source_shape": [
+      280,
+      288
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 119,
+      "out_of_tolerance": 19,
+      "missing": 6,
+      "ambiguous": 2,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "699a4de7eee1bfe62ff5b6e721dffa43b8876562b03d2019a06ae1f21edf7602",
+      "trend": "939bce8aa407353eebc402b84a15e10b9288e434ffd4a22ba86a9b07cf11795f"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/generated_1_out_of_tolerance",
+        "group": "out_of_tolerance",
+        "station": 46
+      },
+      {
+        "path": "snapshots/generated_1_missing",
+        "group": "missing",
+        "station": 1
+      },
+      {
+        "path": "snapshots/generated_1_ambiguous",
+        "group": "ambiguous",
+        "station": 3
+      }
+    ]
+  },
+  {
+    "case": "calibrated",
+    "frame": 0,
+    "passed": true,
+    "stations": 30,
+    "coverage": 1.0,
+    "manifest_sha256": "d1b5efbedbd26af89a5d38aa81b199ecbe83b88ec84f69293be8671f54bc7c79",
+    "source_sha256": "3b4a868a91944772a65f7493aee84816e44ef84c50635d61c73eb55982ece971",
+    "source_shape": [
+      340,
+      420
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 30,
+      "out_of_tolerance": 0,
+      "missing": 0,
+      "ambiguous": 0,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "cc40be170212baed162b300e72252ef5639d069a15689753fd02d8243a7883cf",
+      "trend": "c027af89a639575d9020d0da3da52ac0351a20597302b4971b0f35df6d42f829",
+      "physical_trend": "15c9110bf6078ac4c80afc03d83a36d8c52f735effffe5294d9a631648f255b0"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/calibrated_0_measured",
+        "group": "measured",
+        "station": 15
+      }
+    ]
+  },
+  {
+    "case": "calibrated",
+    "frame": 1,
+    "passed": false,
+    "stations": 30,
+    "coverage": 1.0,
+    "manifest_sha256": "d1b5efbedbd26af89a5d38aa81b199ecbe83b88ec84f69293be8671f54bc7c79",
+    "source_sha256": "db121f272e6c9c2005bcf8c11ad05617b9f2efb5f8988cb68a59b0c3fef72f40",
+    "source_shape": [
+      340,
+      420
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 0,
+      "out_of_tolerance": 30,
+      "missing": 0,
+      "ambiguous": 0,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "0d610a43583883410574f5a0be0c05b0faa5c0e41aca7f88bcccfb9925736ec4",
+      "trend": "5d972690261b25b8ff2c75350c6c13e4370186906e7c0f35f1d40a874f1f0ff5",
+      "physical_trend": "ae22eda50f4ceff895b547aa6700d356796248444857f773590c5f01263b1b8f"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/calibrated_1_out_of_tolerance",
+        "group": "out_of_tolerance",
+        "station": 15
+      }
+    ]
+  },
+  {
+    "case": "calibrated",
+    "frame": 2,
+    "passed": false,
+    "stations": 30,
+    "coverage": 1.0,
+    "manifest_sha256": "d1b5efbedbd26af89a5d38aa81b199ecbe83b88ec84f69293be8671f54bc7c79",
+    "source_sha256": "84c3bd7a4ecfb0619ec387854d9a8c6bb259fea47c36e6a73001ce8479d0f6f7",
+    "source_shape": [
+      340,
+      420
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 0,
+      "out_of_tolerance": 30,
+      "missing": 0,
+      "ambiguous": 0,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "9645a1302372d6b4daf3f0ff69cd57bebb9a7039443647860003ebd63674d521",
+      "trend": "aabb720040cd7e251a3ce9d504f9d9e84de82c956db42ec98800f0eca9cdce3f",
+      "physical_trend": "c879ec7026a48931d2a7f3f505427b31dbdbc4c9aa5ef424c7900c78d7ee3859"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/calibrated_2_out_of_tolerance",
+        "group": "out_of_tolerance",
+        "station": 15
+      }
+    ]
+  },
+  {
+    "case": "weld",
+    "frame": 0,
+    "passed": true,
+    "stations": 31,
+    "coverage": 1.0,
+    "manifest_sha256": "38de26530d10ca0f0cc64933a344aeb9afba11062cb0a30a95403ef1dfd8aa0d",
+    "source_sha256": "237eb0e023a6062264a074e773eddb09d190a7853f8b64b123af3cff6da175cd",
+    "source_shape": [
+      448,
+      448
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 31,
+      "out_of_tolerance": 0,
+      "missing": 0,
+      "ambiguous": 0,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "d90f64fe690ff4f870a7d7a1045fc0cbf8b2e7bed8a6d8474529fa84f158e646",
+      "trend": "7b9205fa8222cdecd8313f88d3ce3130ec2dc5807d0b378ed99b25e46f5a2cd4"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/weld_0_measured",
+        "group": "measured",
+        "station": 15
+      }
+    ]
+  },
+  {
+    "case": "weld",
+    "frame": 1,
+    "passed": true,
+    "stations": 31,
+    "coverage": 1.0,
+    "manifest_sha256": "38de26530d10ca0f0cc64933a344aeb9afba11062cb0a30a95403ef1dfd8aa0d",
+    "source_sha256": "b6ecfb43fe2a592226097fe11675abdb64c8faeddfa4e10409dbc56b2d998ce9",
+    "source_shape": [
+      448,
+      448
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 31,
+      "out_of_tolerance": 0,
+      "missing": 0,
+      "ambiguous": 0,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "ea69c3960ea42b330d8d3455acab67bfac9de557b05f9815d06d7646e33c2d52",
+      "trend": "a5a5bd0bfc58dc7227d4cd4b5248f98c4a4088c5f4ba41d1f536a367de778c8b"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/weld_1_measured",
+        "group": "measured",
+        "station": 15
+      }
+    ]
+  },
+  {
+    "case": "weld",
+    "frame": 2,
+    "passed": false,
+    "stations": 31,
+    "coverage": 0.5806451612903226,
+    "manifest_sha256": "38de26530d10ca0f0cc64933a344aeb9afba11062cb0a30a95403ef1dfd8aa0d",
+    "source_sha256": "9123d61da669ad379b0c2bfba57dcf4b42a88f9c11dc8102f55b8226ffe8176e",
+    "source_shape": [
+      448,
+      448
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "groups": {
+      "measured": 16,
+      "out_of_tolerance": 2,
+      "missing": 13,
+      "ambiguous": 0,
+      "unobserved": 0
+    },
+    "runtime_rasters": {
+      "overlay": "c9b29233b1b9516a11961561ce39e348b6c98803f8010a106a564cbbeeb0b509",
+      "trend": "c6e852c61ca1d263309efe83cdaac205aab051edaa6701db9f893a6f14388eb2"
+    },
+    "native_results_action": true,
+    "source_and_measurement_visible": true,
+    "review_did_not_measure_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "exports": [
+      {
+        "path": "snapshots/weld_2_out_of_tolerance",
+        "group": "out_of_tolerance",
+        "station": 25
+      },
+      {
+        "path": "snapshots/weld_2_missing",
+        "group": "missing",
+        "station": 12
+      }
+    ]
+  }
+]

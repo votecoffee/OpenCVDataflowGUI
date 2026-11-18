@@ -1,0 +1,827 @@
+[
+  {
+    "case": "surface_texture",
+    "frame": 0,
+    "source": "images/test/fresh_potato/01.jpg",
+    "truth": "fresh_potato",
+    "predicted": "fresh_potato",
+    "correct": true,
+    "source_sha256": "bb476fbec94073ba52ca51ee4fbc8e82312df0bd39d2d39f33dc3f28b27090f3",
+    "source_shape": [
+      106,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "4ecb5c9269db86277ebd349c442306f39691c85b94b43159b028bef850b06250",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/surface_texture_0"
+  },
+  {
+    "case": "surface_texture",
+    "frame": 1,
+    "source": "images/test/fresh_potato/02.jpg",
+    "truth": "fresh_potato",
+    "predicted": "fresh_potato",
+    "correct": true,
+    "source_sha256": "567123d16e895b45773ef83b4c76efe9c3cba259e50487f9278363378dee0dff",
+    "source_shape": [
+      135,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "9cbcbd9b7bd8ab0e2bb2d4b2aef3bb7323cd72abea7d00a075b2fa12565eda03",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 2,
+    "source": "images/test/fresh_potato/03.jpg",
+    "truth": "fresh_potato",
+    "predicted": "defected_Potato",
+    "correct": false,
+    "source_sha256": "b7ba5b833fc04905531a972b37b32d5838fb45ee88d1ba7eb590a509731a2d0f",
+    "source_shape": [
+      119,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "d9f28322e125d0797b12df116ea4f38041966217d6a59f1acb365f778ec5c064",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 3,
+    "source": "images/test/fresh_potato/04.jpg",
+    "truth": "fresh_potato",
+    "predicted": "defected_Potato",
+    "correct": false,
+    "source_sha256": "04bc064510b8513a2a82cb94889579197d4f4e24038edc80a2c65e60cd12b482",
+    "source_shape": [
+      192,
+      183,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "3e32f534274c5dd271414e806584d4de346aada75998cc9d297272bba987d5c8",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 4,
+    "source": "images/test/defected_Potato/01.jpg",
+    "truth": "defected_Potato",
+    "predicted": "defected_Potato",
+    "correct": true,
+    "source_sha256": "f8e95ef846aa3967cee1d2b85158f69da9ebda787f715b8d0cd49b94e6fb8c3e",
+    "source_shape": [
+      153,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "294757c6103e271e694ea6bd2252f149814a9a31786c9f5101ef9ff011aa42c3",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/surface_texture_4"
+  },
+  {
+    "case": "surface_texture",
+    "frame": 5,
+    "source": "images/test/defected_Potato/02.jpg",
+    "truth": "defected_Potato",
+    "predicted": "defected_Potato",
+    "correct": true,
+    "source_sha256": "3d9c1a6cdeb2c19111f263adb1325ab191758671b069c76cf979b70674786877",
+    "source_shape": [
+      192,
+      185,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "a4d817c8e750b3feaed2214e278e75dc101624de7d87a0e9d47ddffcd5a3084a",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 6,
+    "source": "images/test/defected_Potato/03.jpg",
+    "truth": "defected_Potato",
+    "predicted": "defected_Potato",
+    "correct": true,
+    "source_sha256": "bf307955395b8818fb27a85666feee23bbc0668bd0c786e743f9c21eddd14543",
+    "source_shape": [
+      112,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "dd48c5b715336bc71d99ddf38c716578c7331cdec7eef3cb8c735efcd7212bc2",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 7,
+    "source": "images/test/defected_Potato/04.jpg",
+    "truth": "defected_Potato",
+    "predicted": "defected_Potato",
+    "correct": true,
+    "source_sha256": "161906780b6ed67ebcb7696639648e34831bd4e373d36538edc74f82b178a42b",
+    "source_shape": [
+      192,
+      164,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "58b241f65d7363f60aaccb2ff6d1456c57431f4d86428e141b84301e97cd5663",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 8,
+    "source": "images/test/fresh_capsicum/01.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "fresh_capsicum",
+    "correct": true,
+    "source_sha256": "30a76eb418dd28b5ee69b130058db58fe6e1df973e0a2de4330e57b697db9804",
+    "source_shape": [
+      149,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "5fc472bc23482ec32c797586245656e910cd6d291fbcc801164eebb5ce86b597",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/surface_texture_8"
+  },
+  {
+    "case": "surface_texture",
+    "frame": 9,
+    "source": "images/test/fresh_capsicum/02.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "fresh_capsicum",
+    "correct": true,
+    "source_sha256": "0b401227704ba552f44c8f27755ff80ee43f7cb3c8c1387754b9773607d7f59d",
+    "source_shape": [
+      142,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "de870f39723b590211e874dfecc83fbdecaa6f2fa7f179d837b04e21eced3c6e",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 10,
+    "source": "images/test/fresh_capsicum/03.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": false,
+    "source_sha256": "0c67befc280012a5ff405a27de95e0a6c102702c29843d884ac272269f7498f3",
+    "source_shape": [
+      161,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "bae50292af0be0e3fe21dddf428aa89c3bfc4b034f410661cfa887249d319d2d",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 11,
+    "source": "images/test/fresh_capsicum/04.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": false,
+    "source_sha256": "47e441524da26364a33b283af0a35c2aea58c6f4359560e0112e8ab1d150db76",
+    "source_shape": [
+      145,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "244cfb3f1f239f3967af39a5e58d9a49e5b2f241935cae7cb5bfa15a8a13b0bb",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 12,
+    "source": "images/test/defected_capsicum/01.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": true,
+    "source_sha256": "1a66fb303dccd080959f13907cc6debd62c10c9f30c88ac891d35f1583e4924e",
+    "source_shape": [
+      192,
+      182,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "a6220477e44986379c623d6dcfbc7dc0be1517bb9d8b20f6c218f8178a700a9d",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/surface_texture_12"
+  },
+  {
+    "case": "surface_texture",
+    "frame": 13,
+    "source": "images/test/defected_capsicum/02.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "fresh_capsicum",
+    "correct": false,
+    "source_sha256": "108b03402599bed016e3ff01e33585b3e3871599133489b6eed3525870fab189",
+    "source_shape": [
+      140,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "7535ed71f33292067798f0d67b97c1ae39f9289c5c246472e15e7eba3c80f9fc",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 14,
+    "source": "images/test/defected_capsicum/03.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": true,
+    "source_sha256": "194bac3233d05ad1befbf270e6c47ba68699cc1d3f33d78efe0b5dabc9a4fa28",
+    "source_shape": [
+      167,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "858271c8a3b7c9af81dcb1fb327987234e42f7c94b28e05b8d2809760cb91189",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "surface_texture",
+    "frame": 15,
+    "source": "images/test/defected_capsicum/04.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "fresh_capsicum",
+    "correct": false,
+    "source_sha256": "dc5d08832cdd94ecdc069f21c8f9c6cd986f54d80ee8f7597fc6aa906f0ced2a",
+    "source_shape": [
+      140,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": "4fc370d228ce2fddd74d521dc2fbebbd09d1e5bc14dcdf5a3a7d7f6b1549a810",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 0,
+    "source": "images/test/fresh_potato/01.jpg",
+    "truth": "fresh_potato",
+    "predicted": "fresh_potato",
+    "correct": true,
+    "source_sha256": "bb476fbec94073ba52ca51ee4fbc8e82312df0bd39d2d39f33dc3f28b27090f3",
+    "source_shape": [
+      106,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "23c4a224da3b25638104b963eff1a0b4843110ca63fb74b463c97e3df7bfcfee",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/color_and_layout_0"
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 1,
+    "source": "images/test/fresh_potato/02.jpg",
+    "truth": "fresh_potato",
+    "predicted": "fresh_potato",
+    "correct": true,
+    "source_sha256": "567123d16e895b45773ef83b4c76efe9c3cba259e50487f9278363378dee0dff",
+    "source_shape": [
+      135,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "454ec72174d57678020cb4c1f3ff0f3ab4d163f2099469357103bc0b890c97d3",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 2,
+    "source": "images/test/fresh_potato/03.jpg",
+    "truth": "fresh_potato",
+    "predicted": "defected_Potato",
+    "correct": false,
+    "source_sha256": "b7ba5b833fc04905531a972b37b32d5838fb45ee88d1ba7eb590a509731a2d0f",
+    "source_shape": [
+      119,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "e5e656a263a610774dbdcbed17beb5f2345fc4e28001ce6226015ca1eecccfca",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 3,
+    "source": "images/test/fresh_potato/04.jpg",
+    "truth": "fresh_potato",
+    "predicted": "defected_Potato",
+    "correct": false,
+    "source_sha256": "04bc064510b8513a2a82cb94889579197d4f4e24038edc80a2c65e60cd12b482",
+    "source_shape": [
+      192,
+      183,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "897e9626f5a3037fe1caa953a251a173a6a7512f9038ea5fae8dcb724a87e894",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 4,
+    "source": "images/test/defected_Potato/01.jpg",
+    "truth": "defected_Potato",
+    "predicted": "defected_Potato",
+    "correct": true,
+    "source_sha256": "f8e95ef846aa3967cee1d2b85158f69da9ebda787f715b8d0cd49b94e6fb8c3e",
+    "source_shape": [
+      153,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "52d22d50bb6c4fe837682921a50b783b55c1a33b3d0e0ac3081ed95b92e7255d",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/color_and_layout_4"
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 5,
+    "source": "images/test/defected_Potato/02.jpg",
+    "truth": "defected_Potato",
+    "predicted": "fresh_potato",
+    "correct": false,
+    "source_sha256": "3d9c1a6cdeb2c19111f263adb1325ab191758671b069c76cf979b70674786877",
+    "source_shape": [
+      192,
+      185,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "c70b10de9b57663e9922ab468241ce89334213c6197d1fccefc5ac478b838ac7",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 6,
+    "source": "images/test/defected_Potato/03.jpg",
+    "truth": "defected_Potato",
+    "predicted": "fresh_potato",
+    "correct": false,
+    "source_sha256": "bf307955395b8818fb27a85666feee23bbc0668bd0c786e743f9c21eddd14543",
+    "source_shape": [
+      112,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "4d24e62d4fcdd30f615b13d805460720649b8858d971e7cf9e51511fd93c4a3b",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 7,
+    "source": "images/test/defected_Potato/04.jpg",
+    "truth": "defected_Potato",
+    "predicted": "defected_Potato",
+    "correct": true,
+    "source_sha256": "161906780b6ed67ebcb7696639648e34831bd4e373d36538edc74f82b178a42b",
+    "source_shape": [
+      192,
+      164,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "7e6b8f4f2054266865fe273ba5525bf4ec3fc5077abdbb76b32cdb435eab1fee",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 8,
+    "source": "images/test/fresh_capsicum/01.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "fresh_capsicum",
+    "correct": true,
+    "source_sha256": "30a76eb418dd28b5ee69b130058db58fe6e1df973e0a2de4330e57b697db9804",
+    "source_shape": [
+      149,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "1eb260eb6142193e4a144c1a93c64400191dca7c288ed95101b81576a441ecd7",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/color_and_layout_8"
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 9,
+    "source": "images/test/fresh_capsicum/02.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": false,
+    "source_sha256": "0b401227704ba552f44c8f27755ff80ee43f7cb3c8c1387754b9773607d7f59d",
+    "source_shape": [
+      142,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "1486680161a038b1621b62ec504ebb5d05a328dddbb6211e2d1757a4981dfdb0",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 10,
+    "source": "images/test/fresh_capsicum/03.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": false,
+    "source_sha256": "0c67befc280012a5ff405a27de95e0a6c102702c29843d884ac272269f7498f3",
+    "source_shape": [
+      161,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "9296ccff797c9d05382558c18b8ea6e85f24cc0351b7a06fb75e7dbff52b378d",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 11,
+    "source": "images/test/fresh_capsicum/04.jpg",
+    "truth": "fresh_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": false,
+    "source_sha256": "47e441524da26364a33b283af0a35c2aea58c6f4359560e0112e8ab1d150db76",
+    "source_shape": [
+      145,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "206ae123f19da16089af440873cd627405a966786d1614f3ed85e3eee48d7cee",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 12,
+    "source": "images/test/defected_capsicum/01.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": true,
+    "source_sha256": "1a66fb303dccd080959f13907cc6debd62c10c9f30c88ac891d35f1583e4924e",
+    "source_shape": [
+      192,
+      182,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "f31ad919df83f57cc5cc4a17032632da48b4c13c384afb8671a8a64a7e97132b",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/color_and_layout_12"
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 13,
+    "source": "images/test/defected_capsicum/02.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": true,
+    "source_sha256": "108b03402599bed016e3ff01e33585b3e3871599133489b6eed3525870fab189",
+    "source_shape": [
+      140,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "5e4f7dc2d78c207cd164f0644c0399aeb540d6ff5a76e623951bf688475cbe58",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 14,
+    "source": "images/test/defected_capsicum/03.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "fresh_capsicum",
+    "correct": false,
+    "source_sha256": "194bac3233d05ad1befbf270e6c47ba68699cc1d3f33d78efe0b5dabc9a4fa28",
+    "source_shape": [
+      167,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "cfb4e939907e7e67df8ddb8b6c89b333c0d73eeae743742de6b26849f5664c59",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "color_and_layout",
+    "frame": 15,
+    "source": "images/test/defected_capsicum/04.jpg",
+    "truth": "defected_capsicum",
+    "predicted": "defected_capsicum",
+    "correct": true,
+    "source_sha256": "dc5d08832cdd94ecdc069f21c8f9c6cd986f54d80ee8f7597fc6aa906f0ced2a",
+    "source_shape": [
+      140,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "248e39b2d56a0afb8a43639e9cfbc7110a2f9d5f55d1645396b70cbd40bf85f4",
+      "forest.yml": "4370a8a9bf896890c376efa14f448d79339ac912667a6a65553acd81506110dd"
+    },
+    "runtime_chart_sha256": "905271cb317c592de4f4aab790377e462fb9beaceb9ac708063b70271e59e11b",
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": null
+  },
+  {
+    "case": "no_overlay",
+    "frame": 0,
+    "source": "images/test/fresh_potato/01.jpg",
+    "truth": "fresh_potato",
+    "predicted": "fresh_potato",
+    "correct": true,
+    "source_sha256": "bb476fbec94073ba52ca51ee4fbc8e82312df0bd39d2d39f33dc3f28b27090f3",
+    "source_shape": [
+      106,
+      192,
+      3
+    ],
+    "source_dtype": "|u1",
+    "executed_assets": {
+      "manifest.json": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+      "surface.npz": "d8c6cd40e3f073a701903d77c61d1fbb73053f46e363547b65dddfe60ace11b3"
+    },
+    "runtime_chart_sha256": null,
+    "native_results_action": true,
+    "review_did_not_infer_reload_or_train": true,
+    "primary_values_and_chart_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/no_overlay_0"
+  }
+]

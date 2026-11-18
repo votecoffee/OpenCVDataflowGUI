@@ -92,4 +92,4 @@ Objects**, WACV 2017, [CC BY 4.0](https://cmp.felk.cvut.cz/t-less/). Same first-
 RGB-D/calibration and visible-box inputs as the prior five-proposal review;
 reordered rectangles, retained metric asset, gallery, overlays and colored clouds
 are modifications. Ground-truth poses/labels enter evaluation only. No endorsement
-is implied. [Model/source/dependency notices](../THIRD_PARTY.md) remain unchanged.
+is implied. [Model/source/dependency notices](../dev/THIRD_PARTY.md) remain unchanged.

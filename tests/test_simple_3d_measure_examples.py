@@ -53,11 +53,11 @@ def test_public_measurements_replay_through_native_lazy_provider(relative):
 
 @pytest.mark.local_examples
 def test_public_measurement_assets_and_raw_source_bytes_remain_pinned():
-    manifest = json.loads((ROOT / "sha256.json").read_bytes())
+    manifest = json.loads((ROOT / "dev/sha256.json").read_bytes())
     assert not any("__pycache__" in p or p.endswith((".pyc", ".pyo")) for p in manifest)
     for relative, digest in manifest.items():
         assert hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() == digest, relative
-    source = ROOT / "real_tless/source"
+    source = ROOT / "dev/real_tless/source"
     provenance = json.loads((source / "provenance.json").read_bytes())
     assert provenance["license"] == "CC-BY-4.0"
     for relative, digest in provenance["sha256"].items():

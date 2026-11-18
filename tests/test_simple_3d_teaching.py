@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_measure
 
 @pytest.mark.local_examples
 def test_real_recipe_teaches_with_completed_fixture_and_preserves_active_recipe(app):
-    graph = Graph.load(ROOT / "real_tless/frame000013/project.json", builtin_registry())
+    graph = Graph.load(ROOT / "tless_plane/project.json", builtin_registry())
     context = dialog = None
     try:
         graph.run()

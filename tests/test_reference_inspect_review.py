@@ -14,7 +14,7 @@ EXAMPLE = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/referen
 
 def test_optional_assessment_preserves_results_and_uses_a_separate_display_grid(monkeypatch):
     integration = pytest.importorskip("opencv_simple_reference_inspect.dataflow")
-    graph = Graph.load(EXAMPLE / "project.json", builtin_registry())
+    graph = Graph.load(EXAMPLE / "generated_inspection/project.json", builtin_registry())
     try:
         block = graph.blocks["inspection"]
         original_renderer = integration.draw_assessment
@@ -67,17 +67,19 @@ def test_training_review_reuses_cached_result_and_invalidates_after_new_input(
     review_module = pytest.importorskip("opencv_simple_reference_inspect.qt_review")
     from PySide6.QtWidgets import QFileDialog
 
-    graph = Graph.load(EXAMPLE / "project.json", builtin_registry())
+    graph = Graph.load(EXAMPLE / "generated_inspection/project.json", builtin_registry())
     window = MainWindow()
     try:
-        window.replace_graph(graph, EXAMPLE / "project.json")
+        window.replace_graph(graph, EXAMPLE / "generated_inspection/project.json")
         block = graph.blocks["inspection"]
         original = copy.deepcopy(block.parameters)
         window.inspector.select(block)
         window.inspector.open_plugin_dialog()
         trainer = window.inspector._plugin_dialog
         assert trainer.model is not None and not trainer.review_button.isEnabled()
-        trainer.test_image = trainer_module.read_image(EXAMPLE / "assets/changed.png")
+        trainer.test_image = trainer_module.read_image(
+            EXAMPLE / "generated_inspection/assets/changed.png"
+        )
         trainer.preview_button.click()
         cached = trainer.inspection
         assert trainer.review_button.isEnabled()
@@ -116,7 +118,8 @@ def test_training_review_reuses_cached_result_and_invalidates_after_new_input(
         (exported,) = tmp_path.glob("reference-review-*/review.json")
         assert json.loads(exported.read_bytes())["inspection"] == cached[0].report
         monkeypatch.setattr(
-            QFileDialog, "getOpenFileName", lambda *a: (str(EXAMPLE / "assets/nominal.png"), "")
+            QFileDialog, "getOpenFileName",
+            lambda *a: (str(EXAMPLE / "generated_inspection/assets/nominal.png"), "")
         )
         trainer._open_test()
         assert trainer.inspection is None and not trainer.review_button.isEnabled()

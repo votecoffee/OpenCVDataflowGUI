@@ -1,0 +1,14 @@
+{
+  "python": "3.14.3",
+  "opencv": "5.0.0",
+  "numpy": "2.5.4",
+  "host_runtime_revision": "0f4e0c72d5add87ef4092f8d11501b46fc458b5d",
+  "tool_packages": {
+    "opencv-geometric-pattern-match": "0.1.0.dev1",
+    "opencv-defect-segmentation": "0.1.0.dev1",
+    "opencv-simple-classifier": "0.3.1",
+    "opencv-simple-path-width": "0.1.0.dev12",
+    "opencv-simple-reference-inspect": "0.1.0.dev3",
+    "opencv-simple-3d-locate": "0.1.0.dev14"
+  }
+}

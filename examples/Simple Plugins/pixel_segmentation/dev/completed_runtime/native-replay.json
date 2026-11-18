@@ -1,0 +1,80 @@
+{
+  "core_only": false,
+  "native": true,
+  "exported_reviews_verified": 8,
+  "cases": [
+    {
+      "case": "tote",
+      "frame": 0,
+      "state": "measured",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    },
+    {
+      "case": "tote",
+      "frame": 1,
+      "state": "measured",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    },
+    {
+      "case": "pcb",
+      "frame": 0,
+      "state": "measured",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    },
+    {
+      "case": "pcb",
+      "frame": 1,
+      "state": "measured",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    },
+    {
+      "case": "votes_unavailable",
+      "frame": 0,
+      "state": "measured",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    },
+    {
+      "case": "heatmap_only",
+      "frame": 0,
+      "state": "measured",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    },
+    {
+      "case": "heatmap_only",
+      "frame": 1,
+      "state": "measured",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    },
+    {
+      "case": "unobserved",
+      "frame": 0,
+      "state": "no_observed_pixels",
+      "numeric_exact": true,
+      "default_rasters_exact": true,
+      "native_results_review": true,
+      "portable_save_as": true
+    }
+  ],
+  "scope": "Exact completed numerical/mask/score/default raster results; no accuracy qualification"
+}

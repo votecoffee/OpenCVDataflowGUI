@@ -1,139 +1,19 @@
-# Simple3DLocate
+# Simple3DLocate examples
 
-For exact **completed-run Results review**, open the
-[dev21 pinned-plugin examples](completed_runtime/README.md). Load that folder's
-`plugin.py` first, then open one of its four projects; restart if another locator
-version is already imported. No environment installation is needed. Its native
-fly-around Results popup freezes original scene/camera/depth, executed recipe
-and recorded accepted/rejected fit evidence with layer selection and raw-cloud/
-array/recipe/JSON/PNG export. It performs no search, ICP, verification or model
-reload and keeps teaching drafts independent. Real first-return accepted/missed
-cases retain their existing settings; generated complete/fused and empty controls
-stay explicit. The node's native fit-cloud thumbnail remains the primary output.
+Open a project below with **File → Open**, then use **Run once**. The app loads
+the required Simple Plugin automatically. Each listed folder contains runnable
+project JSON files directly; testing and development material is in `dev`.
 
-For a **real single-view depth capture**, open [T-LESS](real_tless/README.md).
-It uses attributed CC BY 4.0 industrial RGB-D data and requires plugin dev3.
-This older generated example deliberately uses **complete/fused observations**;
-it does not simulate first-surface depth-camera sensing.
+| Example folder | Start here |
+| --- | --- |
+| [cad_surface](<cad_surface/README.md>) | [project.json](<cad_surface/project.json>) |
+| [generated_surface](<generated_surface/README.md>) | [project.json](<generated_surface/project.json>) |
+| [tless_depth_verified](<tless_depth_verified/README.md>) | [project.json](<tless_depth_verified/project.json>) |
+| [tless_match](<tless_match/README.md>) | [project.json](<tless_match/project.json>) |
+| [tless_no_match](<tless_no_match/README.md>) | [project.json](<tless_no_match/project.json>) |
 
-This generated example locates two rigid surfaces with independent point
-sampling, rotation/translation, partial occlusion, measurement noise, and
-unrelated clutter. All coordinates are in millimeters.
+Use the block's Configuration popup to inspect or edit retained training. In
+`training`, prefer a `*_trained.json` project when you want the finished staged setup.
 
-For STL CAD training, retained-mesh resampling and bounded candidate search,
-open the [CAD surface example](cad_surface/README.md), which requires
-Simple3DLocate 0.1.0.dev1 or later.
-
-For automatic bounded training on new CAD models, open the
-[novel-model validation examples](novel_models/README.md), requiring plugin
-dev13. They retain twelve positive matching failures and target-absent negatives
-while demonstrating successful model preparation and full-reference restoration.
-
-With dev18, compare [CAD, reconstructed and captured references](reference_sources/README.md).
-Seven runnable real-data projects retain correct, missed and accepted wrong
-poses with native flyaround output. All 66 fixed comparison reports remain
-available; model-source choice alone does not resolve the accuracy gap.
-The trainer now imports triangle PLY as well as STL meshes.
-
-With dev19, [experimental boundary evidence](boundary_verification/README.md)
-adds native cached-pose views for a rejected wrong candidate, its accepted
-wrong replacement and an accepted correct isolated pose. The full comparison
-keeps the same detection counts; the new verification route remains off by
-default. Use **Review boundary evidence…** in the trainer to inspect it.
-
-For a controlled explanation of those failures, open the
-[supplied-pose geometry diagnostics](geometry_diagnostics/README.md). Six real
-captures compare model budgets, normals and triangle self-visibility with
-native colored flyaround clouds. These supplied annotations are not detections;
-the unseeded matching failures remain open. Rebuilding requires plugin dev16.
-
-## Setup and run
-
-Install the Simple3DLocate wheel or source folder into the Python environment
-running DataflowGUI, then restart the application.
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install --no-deps "C:\path\to\Simple3DLocate.whl"
-```
-
-Open [project.json](project.json) and run once. Expect two accepted instances.
-Select Simple3DLocate and use **Cloud / fit**. The node thumbnail and inspector
-orbit the native colored point cloud; double-click the preview for the
-interactive flyaround viewer. Green model samples have geometric support, red
-samples are unsupported or occluded, and gray points belong to the scene.
-RGB axes mark each taught model origin and orientation.
-
-Open **Train 3D locator…** to see the retained reference and trained samples.
-
-With **dev17**, select one cached accepted or rejected pose and choose
-**Review camera-depth evidence…** in the trainer. Its native flyaround popup
-separates ray agreement, missing depth, nearer/farther returns and grazing
-surfaces with full-map exports. See the [six real camera-depth reviews](camera_depth_review/README.md).
-Load `assets/scene.ply` as the independent test scene and locate it.
-To teach a replacement, load `assets/model.ply`, train, test, stage, and Apply.
-The model cloud should contain one isolated part.
-
-With plugin **0.1.0.dev8**, run in Debug and use **Capture last processed
-inputs** to review the scene and any camera/depth consumed in one completed
-run. The trained model is preserved. Acquisition pairing remains explicit;
-see [completed-input capture](CAPTURE.md). Older hosts keep manual captures.
-
-With **dev15**, new blocks and all shipped 3D projects select the native fit
-cloud by default. RGB point colors and pose axes remain in 3D while rotating.
-The optional bitmap assessment remains available as **Result / overlay**
-when **Render overlay** is enabled. Example builders enable that secondary
-image for offline documentation; new blocks leave it off to skip rendering.
-Existing custom graphs keep their saved preview choices.
-
-## Outputs
-
-The saved model frame is `part`; the scene frame is `camera`.
-Poses map model coordinates into scene coordinates using 4×4 rigid transforms.
-Support is a fraction of model samples. Point-to-plane RMSE is in millimeters.
-Neither measurement is a class probability.
-
-[assets/truth.json](assets/truth.json) contains the generated true transforms.
-[expected.json](expected.json) records the locally validated result.
-[result.png](result.png) is a computational render of that result.
-Rebuild the example with `build_demo.py . --host-project` when the tool and
-host Python packages are available.
-
-## Result assessment and candidate review
-
-With dev14, results keep the cloud separate from its status, legend and
-measurement panel. In training, **Result selection** chooses an instance or
-rejected candidate, with toggles for the scene, axes and fit layers. Orange
-rejected poses are never accepted detections. No-match results explain the
-failed stage and original gate measurements. **Render overlay** off still
-skips image rendering.
-
-The [result review examples](result_review/README.md) include generated and
-real positive cases plus a known zero-match case, each with image, report
-and separately labeled accepted/rejected PLY clouds.
-
-## Provenance and limitations
-
-The analytic surface generator and these generated clouds use the MIT license
-of this repository.
-
-This is a synthetic workflow check. Real depth-camera and dense bin-picking
-qualification remain future work. The current OpenCV surface-matching backend
-has a [published patent notice](https://docs.opencv.org/4.13.0/d9/d25/group__surface__matching.html).
-The tool's dependency notes record it separately from project copyright terms.
-
-## Native teaching and background jobs
-
-The [dev22 training workflows](training_workflow/README.md) make the native
-orbit/flyaround cloud the primary teaching view. Preview kept/excluded crop
-points and derived bounds before applying a crop; Undo restores the previous
-cloud/CAD in the session. Persistent units/frame/camera/depth/normal/budget
-feedback accompanies bounded background train/compile/test jobs and stale/
-cancel/close guards. A running native phase finishes before cancellation.
-
-Load that folder's **plugin.py first**, then open its original or retrained
-T-LESS projects. Restart if another locator package is imported. The explicit
-wheel needs no host installation. Both native workflows preserve exact trained
-arrays/settings and original match records through crop/undo/cancel/train/test,
-Stage/Apply/reopen and exact archive Save As. Counts remain 1/0; the known miss
-stays a miss. Four earlier runtime projects retain exact reports/poses/XYZ/RGB/
-default rasters. See [attribution and modifications](training_workflow/SOURCES.md).
+[Detailed setup, sources and limitations](dev/README.md) ·
+[Development and verification files](dev/)

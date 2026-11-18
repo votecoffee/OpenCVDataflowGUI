@@ -10,7 +10,7 @@
   "scope": "Review/selection/caching contract checks on an existing assisted development capture, not new accuracy or speed qualification",
   "sha256": {
     "candidate_table.json": "6a818e7182e619412fffa0546d330a62d6c3beec375548751d879838207d4beb",
-    "capture.json": "a8db0ca01c6576fcfa326284e6ba37751b728b756b91ff95bdb6890359e792f3",
+    "capture.json": "258819060fd532c81e7a41593aeb6ca2b2f4ce2a54bccb981ed21b807c79141d",
     "results/best.json": "cec36be38ec7d3d37ec5f7a999c45fc360f10bbb748dc819a72e74baa074cee9",
     "results/best.ply": "1793b2ecbeea82def81c09bae4e95930b5f5e24323a99efba216fb9bf3d17f07",
     "results/best.png": "2d10b0f4c5bb844209b4d87fb6565fa4ef26ab7fbbb495603ee9a261dc6337c4",

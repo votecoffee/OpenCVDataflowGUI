@@ -35,7 +35,7 @@ class Client:
         while not self.hold.wait(0.01):
             if cancelled():
                 raise RuntimeError("cancelled")
-        summary = json.loads((PILOT / "assets/setup_summary.json").read_text())
+        summary = json.loads((PILOT / "setup/assets/setup_summary.json").read_text())
         summary["settings"]["minimum_coverage"] = 0.733333333333
         image = np.full((540, 720, 3), [10, 20, 30], np.uint8)
         if op == "inspect":

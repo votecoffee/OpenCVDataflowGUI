@@ -7,7 +7,10 @@ import cv2
 import numpy as np
 import pytest
 
-_GALLERY = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/path_width/station_review"
+_GALLERY = (
+    Path(__file__).resolve().parents[1]
+    / "examples/Simple Plugins/path_width/dev/station_review"
+)
 
 
 def test_saved_station_reviews_keep_source_grid_limits_and_license():

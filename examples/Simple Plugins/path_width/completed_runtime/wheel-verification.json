@@ -1,9 +1,0 @@
-{
-  "wheel": "opencv_simple_path_width-0.1.0.dev13-py3-none-any.whl",
-  "sha256": "fce40fd5da1932afb342a86ba9ed49205b37c15ec2942d3e06671ef13fb7d42e",
-  "source_revision": "58489ea81a703ea16a2776a96d413bb5afe02c2e",
-  "source_modules": 18,
-  "source_matches_after_newline_normalization": true,
-  "mit_notice_matches": true,
-  "host_environment_install": false
-}

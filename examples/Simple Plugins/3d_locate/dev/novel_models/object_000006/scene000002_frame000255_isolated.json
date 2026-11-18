@@ -1,0 +1,107 @@
+{
+  "model": "simple_3d_locate_v1",
+  "units": "mm",
+  "source_frame": "tless_object6",
+  "target_frame": "camera",
+  "matches": [],
+  "candidate_count": 100,
+  "tested_candidates": 24,
+  "sampled_scene_points": 1104,
+  "search_model_points": 384,
+  "search_scene_points": 1104,
+  "passed": false,
+  "execution": {
+    "sampling": "uniform",
+    "candidate_backend": "ppf_regions",
+    "plane_search": {
+      "model_patches": 0,
+      "scene_patches": 0,
+      "coarse_proposals": 0
+    },
+    "feature_search": {
+      "coarse_proposals": 0
+    },
+    "region_search": {
+      "input_points": 1104,
+      "background_planes": 0,
+      "proposal_only_removed_points": 0,
+      "components": 1,
+      "largest_component_sizes": [
+        1055
+      ],
+      "region_points": [
+        1055
+      ],
+      "window_regions": 0,
+      "skipped_global_duplicates": 0,
+      "region_limit": 12,
+      "enabled": true,
+      "search_region_points": [
+        1055
+      ],
+      "native_failures": 0,
+      "malformed_hypotheses": 0,
+      "detector_compilations": 0,
+      "coarse_proposals": 32,
+      "selected_proposals": 12,
+      "seconds": {
+        "analysis": 0.008282300001155818,
+        "native_and_compile": 0.031248899998900015,
+        "model_compile": 0.0,
+        "coarse_ranking": 0.030304799998702947
+      }
+    },
+    "refinement": "legacy",
+    "pose_scoring": {
+      "requested": "projective",
+      "active": "projective",
+      "fallback_reason": null,
+      "rejected_candidates": []
+    },
+    "observation_mode": "surface",
+    "projection": "pinhole",
+    "input_points": 12641,
+    "first_surface_points": 12641,
+    "depth_verification": {
+      "mode": "auto",
+      "status": "available",
+      "reason": null,
+      "source": "depth_scene",
+      "input_points": 382539
+    },
+    "depth_rejected": 0,
+    "depth_rejected_candidates": [],
+    "overlap_metric": "combined",
+    "overlap_threshold": 0.6,
+    "overlap_rejected": 0,
+    "verified_candidates": 0,
+    "match_limit_discarded": 0,
+    "coarse_rejected": 0,
+    "icp_calls": 44,
+    "execution_workers": 4,
+    "active_candidate_workers": 4,
+    "candidate_timing_aggregation": "worker_intervals_may_overlap",
+    "model_levels": [
+      2000
+    ],
+    "scene_levels": [
+      1104
+    ],
+    "seconds": {
+      "preprocess": 0.04743370000142022,
+      "candidate_search": 0.0931946999990032,
+      "ppf_search": 0.023124800001824042,
+      "plane_search": 0.0,
+      "feature_search": 0.0,
+      "region_search": 0.06986150000011548,
+      "depth_prepare": 0.031938199997966876,
+      "depth_verify": 0.0,
+      "projective_score_sum": 0.0,
+      "worker_index_prepare_sum": 0.0013359000040509272,
+      "suppression": 3.2999996619764715e-06,
+      "pose_alternatives": 3.1000017770566046e-06,
+      "refine_verify": 0.2570949000000837,
+      "total": 0.39772330000050715
+    }
+  }
+}

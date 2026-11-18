@@ -1,0 +1,555 @@
+{
+  "model": "simple_segmentation_completed_review_v1",
+  "type_id": "inspection.ocv_segment_image",
+  "execution_binding": "0e090e1ca10d46548b72834950aae84a",
+  "state": "no_observed_pixels",
+  "inspection": {
+    "count": 1,
+    "image_size": [
+      612,
+      512
+    ],
+    "incomplete_count": 1,
+    "model": "image_segmentation_v1",
+    "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+    "parts": [
+      {
+        "defect_fraction": null,
+        "defect_pixels": 0,
+        "foreground_fraction": null,
+        "foreground_pixels": 0,
+        "inspected_fraction": 0.0,
+        "inspected_pixels": 0,
+        "match_index": 1,
+        "patch_size": [
+          612,
+          512
+        ],
+        "patch_to_source": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "regions": [],
+        "requested_pixels": 183848
+      }
+    ],
+    "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb"
+  },
+  "executed_parameters": {
+    "capture_only": false,
+    "emit_score_map": true,
+    "min_area_px": 180,
+    "model_path": "model.yml",
+    "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+    "region_path": "region.png",
+    "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb",
+    "render_heatmap": false,
+    "render_overlay": true,
+    "samples_per_pixel": 1,
+    "threshold": 0.5,
+    "workers": 4
+  },
+  "source_image": {
+    "shape": [
+      512,
+      612
+    ],
+    "dtype": "|u1",
+    "format": "gray",
+    "sha256": "dd4613e4074644cf122b54b2ed5f9146043f3f4176abb41826950e03e3f494fe"
+  },
+  "source_inspected_pixels": 0,
+  "source_foreground_pixels": 0,
+  "source_foreground_fraction": null,
+  "score_source": "output",
+  "scores_available": true,
+  "score_semantics": "Uncalibrated forest vote fraction 0..1; scores outside inspected are zero sentinels, not measured background",
+  "map_semantics": "Source masks are unions; source votes use nearest sampling and maximum across overlapping parts",
+  "region_semantics": "Reported component bounds/area/mean vote use each sampled patch grid before projection",
+  "selected": {
+    "part_index": 0,
+    "region_index": null,
+    "part": {
+      "defect_fraction": null,
+      "defect_pixels": 0,
+      "foreground_fraction": null,
+      "foreground_pixels": 0,
+      "inspected_fraction": 0.0,
+      "inspected_pixels": 0,
+      "match_index": 1,
+      "patch_size": [
+        612,
+        512
+      ],
+      "patch_to_source": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "regions": [],
+      "requested_pixels": 183848
+    },
+    "region": null,
+    "source_polygon": [
+      [
+        -0.5,
+        -0.5
+      ],
+      [
+        611.5,
+        -0.5
+      ],
+      [
+        611.5,
+        511.5
+      ],
+      [
+        -0.5,
+        511.5
+      ]
+    ],
+    "scope": "Projected sampled-patch bounds; displayed mask/scores are the source union, not isolated region members"
+  },
+  "display_crop_source": [
+    0,
+    0,
+    612,
+    512
+  ],
+  "provenance": {
+    "snapshot_id": "a7a3cb324d5f4647a269b8ae1529e7d6",
+    "block_id": "segment",
+    "output_revision": 0,
+    "execution_count": 1,
+    "passed": false,
+    "score": null,
+    "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground",
+    "inputs": {
+      "image": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "OAR1KXNIME.jpg",
+          "session": "00b320e3bc2940bb8311b131b9d9d82e:file:1",
+          "sequence": 1,
+          "source": "source"
+        },
+        "spatial": {
+          "root_id": "source:image",
+          "root_size": [
+            612,
+            512
+          ],
+          "image_size": [
+            612,
+            512
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:31:47.005097+00:00",
+          "started_ns": 123869967519400,
+          "clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "inferred_start": false,
+          "finished_at": "2026-11-17T22:31:47.021706+00:00",
+          "finished_ns": 123869984126900,
+          "finished_clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "elapsed_ms": 16.6075
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "blue",
+            "name": "Measure blue dominance",
+            "type": "cv.channel_transform",
+            "path": "blue"
+          },
+          "score": null,
+          "message": "",
+          "data": {},
+          "fail_reasons": []
+        }
+      },
+      "valid": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "OAR1KXNIME.jpg",
+          "session": "00b320e3bc2940bb8311b131b9d9d82e:file:1",
+          "sequence": 1,
+          "source": "source"
+        },
+        "spatial": {
+          "root_id": "source:image",
+          "root_size": [
+            612,
+            512
+          ],
+          "image_size": [
+            612,
+            512
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:31:47.005097+00:00",
+          "started_ns": 123869967519400,
+          "clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "inferred_start": false,
+          "finished_at": "2026-11-17T22:31:47.023560+00:00",
+          "finished_ns": 123869985981700,
+          "finished_clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "elapsed_ms": 18.4623
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": true,
+          "chain_passed": true,
+          "source": {
+            "id": "validity_control",
+            "name": "Control: deliberately no observed pixels",
+            "type": "cv.threshold",
+            "path": "validity_control"
+          },
+          "score": null,
+          "message": "",
+          "data": {},
+          "fail_reasons": []
+        }
+      }
+    },
+    "outputs": {
+      "report": {
+        "segmentation_completed_review": {
+          "id": "0e090e1ca10d46548b72834950aae84a",
+          "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+          "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb"
+        },
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "OAR1KXNIME.jpg",
+          "session": "00b320e3bc2940bb8311b131b9d9d82e:file:1",
+          "sequence": 1,
+          "source": "source"
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:31:47.024741+00:00",
+          "started_ns": 123869987163100,
+          "clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "inferred_start": true,
+          "finished_at": "2026-11-17T22:31:47.084623+00:00",
+          "finished_ns": 123870047043900,
+          "finished_clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "elapsed_ms": 59.8808
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "segment",
+            "name": "SimpleSegmentation \u00b7 Inventory foreground",
+            "type": "inspection.ocv_segment_image",
+            "path": "segment"
+          },
+          "score": null,
+          "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": [
+            {
+              "code": "inspection.ocv_segment_image.failed",
+              "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground"
+            }
+          ]
+        }
+      },
+      "mask": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "OAR1KXNIME.jpg",
+          "session": "00b320e3bc2940bb8311b131b9d9d82e:file:1",
+          "sequence": 1,
+          "source": "source"
+        },
+        "spatial": {
+          "root_id": "source:image",
+          "root_size": [
+            612,
+            512
+          ],
+          "image_size": [
+            612,
+            512
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:31:47.005097+00:00",
+          "started_ns": 123869967519400,
+          "clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "inferred_start": false,
+          "finished_at": "2026-11-17T22:31:47.084623+00:00",
+          "finished_ns": 123870047043900,
+          "finished_clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "elapsed_ms": 79.5245
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "segment",
+            "name": "SimpleSegmentation \u00b7 Inventory foreground",
+            "type": "inspection.ocv_segment_image",
+            "path": "segment"
+          },
+          "score": null,
+          "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": [
+            {
+              "code": "inspection.ocv_segment_image.failed",
+              "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground"
+            }
+          ]
+        }
+      },
+      "inspected": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "OAR1KXNIME.jpg",
+          "session": "00b320e3bc2940bb8311b131b9d9d82e:file:1",
+          "sequence": 1,
+          "source": "source"
+        },
+        "spatial": {
+          "root_id": "source:image",
+          "root_size": [
+            612,
+            512
+          ],
+          "image_size": [
+            612,
+            512
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:31:47.005097+00:00",
+          "started_ns": 123869967519400,
+          "clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "inferred_start": false,
+          "finished_at": "2026-11-17T22:31:47.084623+00:00",
+          "finished_ns": 123870047043900,
+          "finished_clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "elapsed_ms": 79.5245
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "segment",
+            "name": "SimpleSegmentation \u00b7 Inventory foreground",
+            "type": "inspection.ocv_segment_image",
+            "path": "segment"
+          },
+          "score": null,
+          "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": [
+            {
+              "code": "inspection.ocv_segment_image.failed",
+              "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground"
+            }
+          ]
+        }
+      },
+      "score_map": {
+        "ticket": {
+          "model": "flow_ticket_v1",
+          "kind": "string",
+          "value": "OAR1KXNIME.jpg",
+          "session": "00b320e3bc2940bb8311b131b9d9d82e:file:1",
+          "sequence": 1,
+          "source": "source"
+        },
+        "spatial": {
+          "root_id": "source:image",
+          "root_size": [
+            612,
+            512
+          ],
+          "image_size": [
+            612,
+            512
+          ],
+          "to_root": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ]
+        },
+        "processing_time": {
+          "model": "processing_time_v1",
+          "started_at": "2026-11-17T22:31:47.005097+00:00",
+          "started_ns": 123869967519400,
+          "clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "inferred_start": false,
+          "finished_at": "2026-11-17T22:31:47.084623+00:00",
+          "finished_ns": 123870047043900,
+          "finished_clock_id": "75a2d2a7e2944e1b8a387f297dc512b7",
+          "elapsed_ms": 79.5245
+        },
+        "outcome": {
+          "model": "tool_outcome_v1",
+          "passed": false,
+          "chain_passed": false,
+          "source": {
+            "id": "segment",
+            "name": "SimpleSegmentation \u00b7 Inventory foreground",
+            "type": "inspection.ocv_segment_image",
+            "path": "segment"
+          },
+          "score": null,
+          "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground",
+          "data": {
+            "filmstrip_priority": -1
+          },
+          "fail_reasons": [
+            {
+              "code": "inspection.ocv_segment_image.failed",
+              "message": "1 images measured \u00b7 1 with incomplete coverage \u00b7 0 source pixels inspected \u00b7 0 foreground"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "identity_scope": "Software completion identifiers do not establish physical exposure identity",
+  "block_judgment_scope": "Passed means some observations were processed; foreground presence is not a quality acceptance gate",
+  "inference_reexecuted": false,
+  "recipe_reloaded": false,
+  "training_changed": false,
+  "exported_assets": {
+    "executed_model.yml": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+    "executed_region.png": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb"
+  }
+}

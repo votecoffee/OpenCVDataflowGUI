@@ -1,0 +1,77 @@
+{
+  "frame": 0,
+  "state": "pass",
+  "input_file": "pixel_segmentation/armbench_tote/assets/OAR1KXNIME.jpg",
+  "input_file_sha256": "7f4d546306841aad78a9a64a49b6947b9421c8e91a02ce32738e199866409ba2",
+  "result_pixels_sha256": "7306b4e4640cdf59ea1a5b406b05f119d6112915a93268b3e7cff9faff938564",
+  "result_size": [
+    612,
+    512
+  ],
+  "measurements": {
+    "foreground_pixels": 97845,
+    "inspected_pixels": 183848,
+    "report": {
+      "model": "image_segmentation_v1",
+      "count": 1,
+      "incomplete_count": 0,
+      "parts": [
+        {
+          "match_index": 1,
+          "patch_size": [
+            612,
+            512
+          ],
+          "patch_to_source": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "requested_pixels": 183848,
+          "inspected_pixels": 183848,
+          "defect_pixels": 97845,
+          "regions": [
+            {
+              "x": 59,
+              "y": 37,
+              "width": 441,
+              "height": 343,
+              "area_px": 97330,
+              "mean_score": 0.9819971323013306
+            },
+            {
+              "x": 230,
+              "y": 37,
+              "width": 128,
+              "height": 9,
+              "area_px": 515,
+              "mean_score": 0.747785210609436
+            }
+          ],
+          "inspected_fraction": 1.0,
+          "defect_fraction": 0.5322059527435707,
+          "foreground_pixels": 97845,
+          "foreground_fraction": 0.5322059527435707
+        }
+      ],
+      "image_size": [
+        612,
+        512
+      ],
+      "model_sha256": "7b6c9b334e447708a638e5c02298d7ac711dc77fefff9cfe0ad409c079586507",
+      "region_sha256": "104c2848b0396df945958d246e78594ffc641bbb202f56d76599de783c0105bb"
+    }
+  }
+}

@@ -85,7 +85,7 @@ def test_recipe_cannot_escape_or_replace_the_program_file(tmp_path, relative):
 def test_sealed_3d_measurement_recipe_survives_save_as_and_native_replay(tmp_path):
     pytest.importorskip("opencv_simple_3d_measure.dataflow")
     registry = builtin_registry()
-    original = EXAMPLES / "3d_measure/generated/good/project.json"
+    original = EXAMPLES / "3d_measure/generated_good/project.json"
     graph = Graph.load(original, registry)
     try:
         graph.run()

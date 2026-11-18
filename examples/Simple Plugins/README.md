@@ -1,119 +1,31 @@
-# Simple Plugins
+# Simple Plugins examples
 
-Open these projects directly with **File → Open**. In a new graph, expand
-**Simple Plugins** in the toolbox or search for the tool by name. The app includes
-pinned integrations for these tools, jaw/pose conversion, simulation review and
-recorded input sources, loading them automatically when needed. This also works
-after Save As and through the headless API without `--plugin`.
+Open a tool folder below. Its runnable example folders are directly inside it,
+with a short README linking the project JSON files. No manual plugin-loading step
+is needed in the current app.
 
-Some older per-example READMEs describe manually loading their pinned `plugin.py`.
-That step is optional with the current app. It remains available in a fresh session
-to reproduce that specific older version. Restart the app after updating; an
-already loaded package is never replaced underneath existing blocks.
-See [loading and versions](../../docs/simple-plugin-loading.md).
-Neural inference still requires its configured external worker and model weights;
-opening and validating a project does not start them or connect to equipment.
-
-| Tool | Example projects |
+| Tool | Example folders |
 | --- | --- |
-| **SimpleSegmentation** | [Real ARMBench tote foreground](pixel_segmentation/armbench_tote/README.md), plus [other segmentation projects](pixel_segmentation/README.md). |
-| **SimpleClassify** | [VegQual surface texture and color/layout classification](image_classification/README.md) |
-| **SimplePatternMatch** | [VisA PCB photographs](pattern_matching/visa_pcb2/README.md) for real board localization and [asymmetric brackets](pattern_matching/asymmetric_brackets/README.md) for generated multi-part scenes. |
-| **SimplePathWidth** | [Real industrial weld bead](path_width/weld_bead/README.md), plus a [generated curved bead](path_width/README.md) for controlled gap/width regression. |
-| **SimpleReferenceInspect** | [Real clear-tote inspection](reference_inspect/armbench_tote/README.md), [posed PCB hard case](reference_inspect/visa_pcb2/README.md), and [generated reference inspection](reference_inspect/README.md). |
-| **Simple3DLocate** | [Real T-LESS clutter with depth verification](3d_locate/real_tless/depth_verified/README.md), plus [generated rigid surfaces](3d_locate/README.md) for controlled regression. |
-| **Simple3DMeasure** | [Real T-LESS measurement review and generated known/raised/missing surfaces](3d_measure/README.md), with native RGB flyaround, retained reference recipes and explicit dimensional qualification limits. |
-| **SimpleBinPicking** | [Suction contact/clearance review](bin_picking/README.md), plus [CAD-taught jaw alternatives](bin_picking/known_part_jaw/README.md): native colored clearance graphics, clear/obstacle/unknown controls and two rejected real T-LESS pose-assisted cases. |
-| **SimpleGDRNPP (experimental)** | [T-LESS pose reviews and native setup](gdrnpp/README.md), with three retained rejected poses, RGB overlays and native fit-cloud flyaround. |
+| [Simple3DLocate](3d_locate/README.md) | `cad_surface`, `generated_surface`, `tless_depth_verified`, `tless_match`, `tless_no_match` |
+| [Simple3DMeasure](3d_measure/README.md) | `generated_good`, `inspection`, `missing_line_target`, `tless_flatness`, `tless_line`, `tless_plane`, `training` |
+| [SimpleBinPicking](bin_picking/README.md) | `bin_to_grid`, `inspection`, `jaw_clear`, `jaw_obstacle`, `suction_generated`, `suction_tless`, `tless_mesh_grid`, `training` |
+| [SimpleDeflectometry](deflectometry/README.md) | `inspection` |
+| [SimpleFoundationPose](foundation_pose/README.md) | `held_out_frame13`, `wrong_object` |
+| [SimpleFringeScan](fringe_scan/README.md) | `inspection` |
+| [SimpleGDRNPP](gdrnpp/README.md) | `accepted_parts`, `live_review`, `rejected_part`, `setup` |
+| [SimpleClassify](image_classification/README.md) | `vegqual` |
+| [SimpleLaserProfile](laser_profile/README.md) | `inspection`, `training` |
+| [SimplePathWidth](path_width/README.md) | `calibrated_bead`, `calibrated_curve`, `fixture_capture`, `generated_bead`, `weld_bead` |
+| [SimplePatternMatch](pattern_matching/README.md) | `asymmetric_brackets`, `visa_pcb2` |
+| [SimpleSegmentation](pixel_segmentation/README.md) | `armbench_tote`, `brick_mortar`, `cup_rim`, `pcb_laminate` |
+| [SimpleReferenceInspect](reference_inspect/README.md) | `armbench_tote`, `fixture_capture`, `generated_inspection`, `visa_pcb2` |
+| [SimpleSurfaceEnhance](surface_enhance/README.md) | `inspection`, `training` |
 
-The [SimpleLaserProfile trainer and examples](laser_profile/README.md) add
-retained reference/ROI teaching, six execution projects and eight saved image/
-profile/cloud reviews. Load its bundled-wheel plugin explicitly; no environment
-installation is needed. Calibrated results use native fly-around clouds. Real
-CC BY 4.0 WLI-Set captures remain pixel-only, with poor fits and missing samples
-visible. The trainer restores existing training and stages edits for Apply.
+Each tool's **dev** folder contains builders, old-version plugins/releases, benchmark
+studies, frozen reviews and verification bundles. Shared development material is
+in [dev](dev/README.md). The coding API's example search omits these development
+projects by default, while they remain loadable through File → Open.
 
-The [SimpleSurfaceEnhance setup and execution examples](surface_enhance/README.md)
-add retained light/reference/ROI teaching, independent previews, Stage/Apply
-and one cached execution plugin. Five rendered controls retain normal/albedo,
-relighting, residual and unavailable-reason views, with attributed CC0 material
-inputs. Load its bundled-wheel plugin explicitly; file-only map reviews remain
-available separately. Acquired-camera accuracy remains unqualified.
-
-The [SimpleFringeScan setup and execution examples](fringe_scan/README.md)
-add retained sequence/reference/calibration/mask teaching, independent previews,
-Stage/Apply and one cached execution block. Two analytic scans use native
-colored fly-around clouds; a CC BY4 external simulated crown remains phase-only.
-Weak/rejected evidence stays visible under identical generic settings.
-File-only reviews remain separate; acquired-camera accuracy is unqualified.
-
-The [SimpleDeflectometry training and execution examples](deflectometry/README.md)
-add retained source filmstrips, ordered image-file teaching, editable regions,
-independent previews, Stage/Apply and cached phase-reference execution. Four
-projects retain clean/change/missing controls and actual CC BY-SA 4 SOFAST code
-diagnostics. The real self-review has unknown exposure/response calibration;
-physical qualification and absolute screen decoding remain open. Both shared-
-wheel plugins load together in either order; file-only reviews remain separate.
-
-## Start with real public data
-
-The [real-data showcase](real_data/README.md) links runnable projects for all
-six tools, with 28 actual replays, input/result images, numeric outputs and
-native 3D fit clouds. It includes dataset licenses, attribution and retained
-errors. The new [clear-tote reference inspection](reference_inspect/armbench_tote/README.md)
-uses separate empty/loaded captures; the [posed PCB reference example](reference_inspect/visa_pcb2/README.md)
-keeps real held-out defect masks and known false alarms visible.
-
-The newer [Simple3DMeasure examples](3d_measure/README.md) add three real
-first-return captures with supplied annotation fixtures. They demonstrate the
-measurement/review workflow; independent physical accuracy remains unqualified.
-
-The experimental [FoundationPose saved-result reviews](foundation_pose/README.md)
-add source-aligned overlays and native RGB flyaround clouds from two actual
-CPU ONNX runs. Both retain rejected results. These fast file-only projects do
-not run neural inference or require its worker environment; live integration
-and the training editor remain future work.
-
-The [SimpleGDRNPP examples](gdrnpp/README.md) provide three file-only saved-result
-reviews without running neural inference. Setup and inference use the explicitly
-loaded plugin and an isolated worker; model weights stay external. The native
-popup retains RGB-D/CAD references, previews connected captures and stages draft
-changes for **Apply configuration**. All retained poses fail the measured-depth
-gates. The checkpoint covers T-LESS object 6; new-object training and broader
-pose accuracy remain open.
-
-## Set up SimplePatternMatch
-
-The [dev3 training examples](pattern_matching/training_workflow/README.md) bundle
-an explicit checksum-pinned plugin with persistent model health, recorded
-before/after refinement fits, feature/weight changes and Undo. Save As retains
-reference/refinement images. They include a real VisA PCB and generated brackets;
-load their plugin before opening those projects, restarting if another matcher
-version is already loaded. This route does not modify the host installation.
-
-If SimplePatternMatch is already installed in the Python environment running
-OpenCVDataflowGUI, open a project that uses it directly. DataflowGUI
-loads the installed integration when it encounters a SimplePatternMatch block.
-From the DataflowGUI repository root, install your local SimplePatternMatch
-checkout or wheel that includes the DataflowGUI integration. Replace the
-sample path with your checkout or wheel. The `--no-deps` option reuses the
-host's OpenCV contrib wheel.
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install --no-deps "C:\path\to\SimplePatternMatch"
-```
-
-With **Render overlay** enabled, select **Result / overlay** on the matcher
-after a run. The same image appears in the **Image results filmstrip** when
-**Capture result thumbnails** is checked. Balanced and Debug retain inspector
-image previews.
-
-## Set up SimpleSegmentation
-
-See the [SimpleSegmentation projects](pixel_segmentation/README.md) for the package setup and saved projects.
-
-## Run SimpleClassify
-
-Open either [bundled VegQual project](image_classification/README.md) to compare
-two training profiles on the same labeled images. SimpleClassify uses the
-app's OpenCV and Qt dependencies.
+Neural inference and live simulation require their configured external workers,
+weights and services. Saved file-only reviews are identified in the tool READMEs.
+Attribution, source data, recipes and qualification limits remain with their examples.

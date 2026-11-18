@@ -13,7 +13,7 @@ from opencv_dataflow.core import Graph
 from opencv_dataflow.payloads import NO_VALUE
 from opencv_dataflow.pointclouds import PointCloud
 
-ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_measure/flatness"
+ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/3d_measure/dev/flatness"
 
 
 @pytest.mark.local_examples

@@ -10,7 +10,7 @@ from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 
 ROOT = Path(__file__).resolve().parents[1] / "examples/Simple Plugins/reference_inspect"
-GALLERY = ROOT / "result_review/samples"
+GALLERY = ROOT / "dev/result_review/samples"
 
 
 def test_gallery_keeps_native_maps_grid_provenance_and_unevaluated_states():

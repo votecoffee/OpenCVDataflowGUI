@@ -1,9 +1,0 @@
-{
-  "wheel": "opencv_geometric_pattern_match-0.1.0.dev2-py3-none-any.whl",
-  "sha256": "a36824f45e5671e98906e932d860a52cc489f466839579275ca43d919d44f575",
-  "source_revision": "52a0ec45382a882dae7f840925daa06ff89d1416",
-  "source_modules": 21,
-  "source_matches_after_newline_normalization": true,
-  "mit_notice_matches": true,
-  "host_environment_install": false
-}

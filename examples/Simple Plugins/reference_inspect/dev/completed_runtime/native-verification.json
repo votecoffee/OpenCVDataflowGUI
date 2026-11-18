@@ -1,0 +1,309 @@
+[
+  {
+    "case": "generated",
+    "frame": 0,
+    "state": "pass",
+    "original_recipe_sha256": "213df47636a7b41dcf80fa45a4b8cff71f9ae52575fa4ebe703609a05d56fb0f",
+    "source_sha256": "0af25401d27e4582a865f9e8e5b00925faa9b5e032f4cc3304b965d75a4c8e23",
+    "source_shape": [
+      192,
+      256
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "reference_size": [
+      256,
+      192
+    ],
+    "runtime_rasters": {
+      "residual": "63601b1573d5ef8475d56c8159498a562f1095ebf16e0e81ef54c72ba80f31de",
+      "deviation_map": "8ef4c462957f9e431896cf193ad13164ef78855c7a58a5be12a60536dbab0a4f",
+      "inspected_mask": "3c19c89da5c6b87f74c637c0c2596e57f21661273d5709394f36eabf5caef1cd",
+      "defect_mask": "2aae7dc846aaf25f1cadf55f1666862046c6db9d65d84bdc07fa039dac405606",
+      "overlay": "a604407e3950adcd17ad2b1a5614ee245629f4eb084c4cc7c896cf8d0139d7fa"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/generated_0",
+    "ground_truth": null
+  },
+  {
+    "case": "generated",
+    "frame": 1,
+    "state": "fail",
+    "original_recipe_sha256": "213df47636a7b41dcf80fa45a4b8cff71f9ae52575fa4ebe703609a05d56fb0f",
+    "source_sha256": "4102481b975b37a04433634f8e7adcd237647b0cb395f74e91b3ed31693a0824",
+    "source_shape": [
+      192,
+      256
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "reference_size": [
+      256,
+      192
+    ],
+    "runtime_rasters": {
+      "residual": "30bea2497959b786fb77cb002a6f041b00299ddde04017ead4160cb1f74ff25e",
+      "deviation_map": "82db0eb57b2aaa9186555a976667f7beeb54a01498ad5de001f8b75f982b8b0e",
+      "inspected_mask": "3c19c89da5c6b87f74c637c0c2596e57f21661273d5709394f36eabf5caef1cd",
+      "defect_mask": "5a841e1706fbc5c99021376d9a8f37495dbfa19544356aea242dc2e11cf67154",
+      "overlay": "a92017a26a3b0f108646c0a576eee90ad1b80020be3504862c8dffc27bcbe847"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/generated_1",
+    "ground_truth": null
+  },
+  {
+    "case": "fixture",
+    "frame": 0,
+    "state": "pass",
+    "original_recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "source_sha256": "aa4feb39da4fcbe360a867521ca317332ed4fd012f7297609fbfd8557e5408b5",
+    "source_shape": [
+      192,
+      256
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "reference_size": [
+      256,
+      192
+    ],
+    "runtime_rasters": {
+      "residual": "71632e13ba8437fa6721beaf09fe37fe5502f972371a55a4063a64d7579d2565",
+      "deviation_map": "e7bfeaaf9cbb42d7936fbcc0c2707c68db27e630c6d1bb222c04231a6c1f5227",
+      "inspected_mask": "3c19c89da5c6b87f74c637c0c2596e57f21661273d5709394f36eabf5caef1cd",
+      "defect_mask": "2aae7dc846aaf25f1cadf55f1666862046c6db9d65d84bdc07fa039dac405606",
+      "overlay": "cbf597c08101bd1b285e13f5266d7cfa7536c02b8b2a867270eaa0da3754b168"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/fixture_0",
+    "ground_truth": null
+  },
+  {
+    "case": "fixture",
+    "frame": 1,
+    "state": "pass",
+    "original_recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "source_sha256": "0c3981e69eec5131a884215630a0530e081a08c1875ff04ac64ecaf2b21c99b4",
+    "source_shape": [
+      192,
+      256
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "reference_size": [
+      256,
+      192
+    ],
+    "runtime_rasters": {
+      "residual": "df0f28840fa58d8eb04b4a211ec2e55d54417475e9841d8e42a04fdd951b74c1",
+      "deviation_map": "156315e08cea361d703c5b03b3ef730e69741e774a7d31a2656c7bb104943166",
+      "inspected_mask": "f7a751f8717db3731558db2490dc0df654f5d21851c1538c33d4eda4f61d9fea",
+      "defect_mask": "2aae7dc846aaf25f1cadf55f1666862046c6db9d65d84bdc07fa039dac405606",
+      "overlay": "06c1bf586871d3b49eaa43e11dd3f4ed8f91f42738dfe655c29790b55cfe8f70"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/fixture_1",
+    "ground_truth": null
+  },
+  {
+    "case": "fixture",
+    "frame": 2,
+    "state": "fail",
+    "original_recipe_sha256": "b29114a05b9c1b47693a3f561882b70e3c8ff515a1274741aa5c5bd62f5b2e7f",
+    "source_sha256": "212a34c6198f5db5fb74961426c78612a32dd953da50de126ee2da244a43be88",
+    "source_shape": [
+      192,
+      256
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "reference_size": [
+      256,
+      192
+    ],
+    "runtime_rasters": {
+      "residual": "7060fc968a14a2306a10e771aa0d078b795e5bbd549c7578f9be3f5d13094db7",
+      "deviation_map": "2756a7791626bad3b5e945c8e587330ca6a0a849bc67702e4608dca28653d3d5",
+      "inspected_mask": "0a25af45ad78a490882b021556bd8332baf7bcb5657a184b63f7152344ff2742",
+      "defect_mask": "dbe1e5975e2ce40e9e67f92874f6639d292a8a43dccc7ee5ac099044eadb99bb",
+      "overlay": "3107ef75d6c5dfe6e87a573c46dd9bf92041bd8088e2bf96e0e1480a9b482062"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/fixture_2",
+    "ground_truth": null
+  },
+  {
+    "case": "visa_limited",
+    "frame": 0,
+    "state": "pass",
+    "original_recipe_sha256": "0a19af29f25de7a25c8507c55a04e9de5175f9d5bef6e39bae752ba3b236e47b",
+    "source_sha256": "a04b10038623e09fb03ac34df8e9e1c6a77709e0f450cd3c1b0dfd3d8e288f8e",
+    "source_shape": [
+      535,
+      702
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "reference_size": [
+      702,
+      535
+    ],
+    "runtime_rasters": {
+      "residual": "50d7adf6d61bd8743aa9d983bb59e4464f4882a4dc6ba37ffabdc3fd2bff7b53",
+      "deviation_map": "50d7adf6d61bd8743aa9d983bb59e4464f4882a4dc6ba37ffabdc3fd2bff7b53",
+      "inspected_mask": "f48aaf20d8be8dec84a6f4f59bb9eceb1b23e680c95dc4a8f95b2028731fc82e",
+      "defect_mask": "4ba9f3e2b02ab5209699ca233b59ea816652555e79714f8f67796e43b1117587",
+      "overlay": "7a204987cceb86404cc52e2999fcac925a6dbfdad9b39a528325f9d685b03e7c",
+      "assessment": "1dd50091bc24649945b9ccd9659aead453c6e3872c5fd76e1d71f243e3f213ce"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/visa_limited_0",
+    "ground_truth": {
+      "label": "normal",
+      "used_for_inference": false
+    }
+  },
+  {
+    "case": "visa_limited",
+    "frame": 1,
+    "state": "not_evaluated",
+    "original_recipe_sha256": "0a19af29f25de7a25c8507c55a04e9de5175f9d5bef6e39bae752ba3b236e47b",
+    "source_sha256": "9089cf024846089ebcd1f130bc357255ba3f1256ec14754299ff2afa8db013c7",
+    "source_shape": [
+      535,
+      702
+    ],
+    "source_dtype": "|u1",
+    "source_format": "gray",
+    "reference_size": [
+      702,
+      535
+    ],
+    "runtime_rasters": {
+      "residual": "50d7adf6d61bd8743aa9d983bb59e4464f4882a4dc6ba37ffabdc3fd2bff7b53",
+      "deviation_map": "50d7adf6d61bd8743aa9d983bb59e4464f4882a4dc6ba37ffabdc3fd2bff7b53",
+      "inspected_mask": "4ba9f3e2b02ab5209699ca233b59ea816652555e79714f8f67796e43b1117587",
+      "defect_mask": "4ba9f3e2b02ab5209699ca233b59ea816652555e79714f8f67796e43b1117587",
+      "overlay": "2ab1d68280520f830ec5b380564083f22ccc880275180d6ba88c50fdc519f507",
+      "assessment": "e1b5542527692e85976f731aa6b981442d5b2cc69ecf5ea49126367a40095a7c"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/visa_limited_1",
+    "ground_truth": {
+      "label": "normal",
+      "used_for_inference": false
+    }
+  },
+  {
+    "case": "visa_posed",
+    "frame": 0,
+    "state": "fail",
+    "original_recipe_sha256": "6fe4d7e3faf265ca48b3ec49d38493df1d3aee48c7633a05f406094b7c7f0e87",
+    "source_sha256": "18575bf3d7fc0b85200ea6bf30d4491bacb12780eb87f4a7fcdc2ba299ce4e7d",
+    "source_shape": [
+      535,
+      702,
+      3
+    ],
+    "source_dtype": "|u1",
+    "source_format": "bgr",
+    "reference_size": [
+      702,
+      535
+    ],
+    "runtime_rasters": {
+      "residual": "1c563478e25ee004259ea89c5d2617a9906a3654719a20fd51a600b5f3e9a4fa",
+      "deviation_map": "a13e468888d335e09179189726696d66f1d5ae974083e1936bd619e7ee573a43",
+      "inspected_mask": "d0173cb069f688d8658dfb79d15362d039991c4671c6557ea9d87c33ccd86f82",
+      "defect_mask": "ccba3f7dfb4de958e1722f0fc8e7841c749579b05c2a315d6554678d099123d8",
+      "overlay": "ed55680b7764325c41837e1e347431ae6a9a990b7562e04d6935cf39d01933b8",
+      "assessment": "397637cd3e471f707770c80387eaf8f6ed2d079cf4596cdff82178aae428533f"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/visa_posed_0",
+    "ground_truth": {
+      "label": "normal",
+      "used_for_inference": false,
+      "false_alarm": true,
+      "comparison": "ground_truth_comparison.png"
+    }
+  },
+  {
+    "case": "visa_posed",
+    "frame": 1,
+    "state": "fail",
+    "original_recipe_sha256": "6fe4d7e3faf265ca48b3ec49d38493df1d3aee48c7633a05f406094b7c7f0e87",
+    "source_sha256": "663afb7a5c1bff846a4b565d9a253bac3837a2a0f0f9435f949005ef206ff6a8",
+    "source_shape": [
+      535,
+      702,
+      3
+    ],
+    "source_dtype": "|u1",
+    "source_format": "bgr",
+    "reference_size": [
+      702,
+      535
+    ],
+    "runtime_rasters": {
+      "residual": "27f7a0dbeb27c2b31b0b897dbd65f36aebfebfbfa76e29ea110d7d2544c176d2",
+      "deviation_map": "685ea5391b9a774950ed2cecd60c34387aca2183e0d76a935f9ab31a95af4983",
+      "inspected_mask": "d16fed8cc0396430b7d56af7a2d5042fe8361d033ef078f3f49a98870ea6f5d3",
+      "defect_mask": "40b9fe1ba2cba0f19d029130dcf98acc675eb38ae5c61f1c6958803735b5098f",
+      "overlay": "6d254271eb05f6a614ebb92634088447b3246c8634baf053c6f5cffeb3b006e7",
+      "assessment": "fa3e6bd9c7fcab77adeaa260dd7c38f0866ff6c1811764466d1e8a2c82a4b4e9"
+    },
+    "native_results_action": true,
+    "source_and_comparisons_visible": true,
+    "review_did_not_inspect_refit_or_reload": true,
+    "primary_values_and_rasters_unchanged": true,
+    "parameters_unchanged": true,
+    "export": "snapshots/visa_posed_1",
+    "ground_truth": {
+      "label": "anomaly",
+      "used_for_inference": false,
+      "false_alarm": false,
+      "mask": "assets/truth-anomaly-000.png",
+      "truth_pixels": 468,
+      "predicted_pixels": 3759,
+      "true_positive_pixels": 116,
+      "precision": 0.03085927108273477,
+      "recall": 0.24786324786324787,
+      "comparison": "ground_truth_comparison.png"
+    }
+  }
+]

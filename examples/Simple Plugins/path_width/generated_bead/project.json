@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Clean and defective bead",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/reference.png",
+          "assets/bead.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspection",
+      "type": "inspect.simple_path_width",
+      "name": "SimplePathWidth",
+      "parameters": {
+        "recipe_path": "assets/bead.spw",
+        "manifest_sha256": "23c1647ac600e0681829284e97318412b63aa442b47da1d90c4455e5d72f89e6",
+        "reference_fixture": [],
+        "render_overlay": true,
+        "render_trend": true
+      },
+      "position": [
+        370.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "measurements",
+        "mean_width",
+        "coverage",
+        "longest_gap",
+        "overlay",
+        "trend"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "inspection",
+      "input": "image"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "generated_0_measured": {
+    "project": "project.json",
+    "frame_index": 0,
+    "station_number": 74,
+    "group": "measured",
+    "path_passed": true,
+    "station_count": 146,
+    "recipe_sha256": "48f37e00fd506ce760726d3c909b6f6d3dc37fafdbf4b8d589c0f724888fd8e9",
+    "input_pixels_sha256": "7752d5c3fe69b08f3dbfd9409a0db568f4cc93e92ae99d64df6cba623b7cd0d8",
+    "measurement_sha256": "b1ebd6c1852700e712e9b331a2c96ccb4786e41402298659a257cd24b406b4a2"
+  },
+  "generated_1_out_of_tolerance": {
+    "project": "project.json",
+    "frame_index": 1,
+    "station_number": 47,
+    "group": "out_of_tolerance",
+    "path_passed": false,
+    "station_count": 146,
+    "recipe_sha256": "48f37e00fd506ce760726d3c909b6f6d3dc37fafdbf4b8d589c0f724888fd8e9",
+    "input_pixels_sha256": "b3bc53431c991c198404f8abb87f5dd479f1d3ef063a41b449916bbfb5557419",
+    "measurement_sha256": "ba7451ba01a717b5787b7036a6764342c68304613516324c67abf106e8f9e8a9"
+  },
+  "generated_1_missing": {
+    "project": "project.json",
+    "frame_index": 1,
+    "station_number": 2,
+    "group": "missing",
+    "path_passed": false,
+    "station_count": 146,
+    "recipe_sha256": "48f37e00fd506ce760726d3c909b6f6d3dc37fafdbf4b8d589c0f724888fd8e9",
+    "input_pixels_sha256": "b3bc53431c991c198404f8abb87f5dd479f1d3ef063a41b449916bbfb5557419",
+    "measurement_sha256": "ba7451ba01a717b5787b7036a6764342c68304613516324c67abf106e8f9e8a9"
+  },
+  "generated_1_ambiguous": {
+    "project": "project.json",
+    "frame_index": 1,
+    "station_number": 4,
+    "group": "ambiguous",
+    "path_passed": false,
+    "station_count": 146,
+    "recipe_sha256": "48f37e00fd506ce760726d3c909b6f6d3dc37fafdbf4b8d589c0f724888fd8e9",
+    "input_pixels_sha256": "b3bc53431c991c198404f8abb87f5dd479f1d3ef063a41b449916bbfb5557419",
+    "measurement_sha256": "ba7451ba01a717b5787b7036a6764342c68304613516324c67abf106e8f9e8a9"
+  },
+  "calibrated_bead_0_measured": {
+    "project": "calibrated_bead/project.json",
+    "frame_index": 0,
+    "station_number": 16,
+    "group": "measured",
+    "path_passed": true,
+    "station_count": 30,
+    "recipe_sha256": "fd721b928512ac429fa221c92028cc8a5be152429befd20c305c8b4644b6d285",
+    "input_pixels_sha256": "3b4a868a91944772a65f7493aee84816e44ef84c50635d61c73eb55982ece971",
+    "measurement_sha256": "3f44f8c65cfe9a18a1e05bdde205df3e1f6bef8be836ff6a435f6546bff41261"
+  },
+  "calibrated_bead_1_out_of_tolerance": {
+    "project": "calibrated_bead/project.json",
+    "frame_index": 1,
+    "station_number": 16,
+    "group": "out_of_tolerance",
+    "path_passed": false,
+    "station_count": 30,
+    "recipe_sha256": "fd721b928512ac429fa221c92028cc8a5be152429befd20c305c8b4644b6d285",
+    "input_pixels_sha256": "db121f272e6c9c2005bcf8c11ad05617b9f2efb5f8988cb68a59b0c3fef72f40",
+    "measurement_sha256": "dd7c067cd71d23d4508cc4c4105a875b1cd25c3aad8c7ffaf94d04dab4e1a658"
+  },
+  "calibrated_bead_2_out_of_tolerance": {
+    "project": "calibrated_bead/project.json",
+    "frame_index": 2,
+    "station_number": 16,
+    "group": "out_of_tolerance",
+    "path_passed": false,
+    "station_count": 30,
+    "recipe_sha256": "fd721b928512ac429fa221c92028cc8a5be152429befd20c305c8b4644b6d285",
+    "input_pixels_sha256": "84c3bd7a4ecfb0619ec387854d9a8c6bb259fea47c36e6a73001ce8479d0f6f7",
+    "measurement_sha256": "e9c89518a2eca1723370c755343eea9831b271099ef44ee67593e616f3d511cc"
+  },
+  "weld_bead_0_measured": {
+    "project": "weld_bead/project.json",
+    "frame_index": 0,
+    "station_number": 16,
+    "group": "measured",
+    "path_passed": true,
+    "station_count": 31,
+    "recipe_sha256": "6b12c8f9df73af31ce9b1835002bad7a8e0f17d90f598200abf3b149b3414d25",
+    "input_pixels_sha256": "237eb0e023a6062264a074e773eddb09d190a7853f8b64b123af3cff6da175cd",
+    "measurement_sha256": "3e7c378b8ccad828be4f2e4acd5c854b1ae0b844e12b9628254f6d6a3b9a51f1"
+  },
+  "weld_bead_1_measured": {
+    "project": "weld_bead/project.json",
+    "frame_index": 1,
+    "station_number": 16,
+    "group": "measured",
+    "path_passed": true,
+    "station_count": 31,
+    "recipe_sha256": "6b12c8f9df73af31ce9b1835002bad7a8e0f17d90f598200abf3b149b3414d25",
+    "input_pixels_sha256": "b6ecfb43fe2a592226097fe11675abdb64c8faeddfa4e10409dbc56b2d998ce9",
+    "measurement_sha256": "bf4071a0b137e51ae4b3869fcf7e68aaa964221b6ca75b96e3f3916a520f4424"
+  },
+  "weld_bead_2_out_of_tolerance": {
+    "project": "weld_bead/project.json",
+    "frame_index": 2,
+    "station_number": 26,
+    "group": "out_of_tolerance",
+    "path_passed": false,
+    "station_count": 31,
+    "recipe_sha256": "6b12c8f9df73af31ce9b1835002bad7a8e0f17d90f598200abf3b149b3414d25",
+    "input_pixels_sha256": "9123d61da669ad379b0c2bfba57dcf4b42a88f9c11dc8102f55b8226ffe8176e",
+    "measurement_sha256": "7f36aea5f8d40c286b28a1a466c08f65fb791886990735e4a381f4cd6bf50495"
+  },
+  "weld_bead_2_missing": {
+    "project": "weld_bead/project.json",
+    "frame_index": 2,
+    "station_number": 13,
+    "group": "missing",
+    "path_passed": false,
+    "station_count": 31,
+    "recipe_sha256": "6b12c8f9df73af31ce9b1835002bad7a8e0f17d90f598200abf3b149b3414d25",
+    "input_pixels_sha256": "9123d61da669ad379b0c2bfba57dcf4b42a88f9c11dc8102f55b8226ffe8176e",
+    "measurement_sha256": "7f36aea5f8d40c286b28a1a466c08f65fb791886990735e4a381f4cd6bf50495"
+  }
+}

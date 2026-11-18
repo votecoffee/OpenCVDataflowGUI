@@ -2,11 +2,11 @@
   "schema_version": 1,
   "blocks": [
     {
-      "id": "fit",
+      "id": "cloud_0",
       "type": "input.cloud",
-      "name": "Saved rejected pose / fit",
+      "name": "Rank 1, id 1: rejected",
       "parameters": {
-        "path": "fit.ply",
+        "path": "frozen/candidate_01.ply",
         "units": "m",
         "frame": "camera",
         "max_points": 1000000
@@ -15,7 +15,6 @@
         0,
         0
       ],
-      "node_size": "large",
       "exposed_inputs": [
         "ticket"
       ],
@@ -28,57 +27,65 @@
       "preview_output": "cloud"
     },
     {
-      "id": "rgb",
+      "id": "image_0",
       "type": "input.file",
-      "name": "Original RGB",
+      "name": "Original fit samples, rank 1",
       "parameters": {
-        "path": "../source/test_primesense/000002/rgb/000013.png",
-        "source_mode": "single",
-        "paths": [],
-        "directory": "",
-        "recursive": false,
-        "repeat": "stop",
-        "filename_ticket": false,
-        "metadata_mode": "off",
-        "color_format": "rgb",
-        "pixel_depth": "uint8",
-        "path_base": "project"
+        "path": "frozen/candidate_01.png",
+        "path_base": "project",
+        "color_format": "rgb"
       },
       "position": [
-        500,
+        0,
+        360
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true
+    },
+    {
+      "id": "cloud_1",
+      "type": "input.cloud",
+      "name": "Rank 2, id 0: rejected",
+      "parameters": {
+        "path": "frozen/candidate_02.ply",
+        "units": "m",
+        "frame": "camera",
+        "max_points": 1000000
+      },
+      "position": [
+        440,
         0
       ],
       "exposed_inputs": [
         "ticket"
       ],
       "exposed_outputs": [
-        "image",
-        "info",
+        "cloud",
+        "count",
         "ticket"
       ],
       "thumbnail": true,
-      "preview_output": "image"
+      "preview_output": "cloud"
     },
     {
-      "id": "overlay",
+      "id": "image_1",
       "type": "input.file",
-      "name": "Recorded neural proposal \u2014 rejected",
+      "name": "Original fit samples, rank 2",
       "parameters": {
-        "path": "overlay.png",
-        "source_mode": "single",
-        "paths": [],
-        "directory": "",
-        "recursive": false,
-        "repeat": "stop",
-        "filename_ticket": false,
-        "metadata_mode": "off",
-        "color_format": "rgb",
-        "pixel_depth": "uint8",
-        "path_base": "project"
+        "path": "frozen/candidate_02.png",
+        "path_base": "project",
+        "color_format": "rgb"
       },
       "position": [
-        500,
-        350
+        440,
+        360
       ],
       "exposed_inputs": [
         "ticket"
@@ -88,24 +95,7 @@
         "info",
         "ticket"
       ],
-      "thumbnail": true,
-      "preview_output": "image"
-    },
-    {
-      "id": "scope",
-      "type": "layout.comment",
-      "name": "SAVED REVIEW: both pose results REJECTED",
-      "description": "Actual CPU ONNX outputs with supplied instance masks. File-source pass means load success, not pose acceptance. First raw pose 1.20mm/2.68deg, rejected at 67.5% support versus fixed 70%. Negative presents object 8 to model 6. No live inference or robot motion. T-LESS, Hodan et al., WACV 2017, CC BY 4.0. See README, report/evaluation JSON and THIRD_PARTY notices.",
-      "parameters": {},
-      "position": [
-        0,
-        -300
-      ],
-      "node_size": "large",
-      "exposed_inputs": [],
-      "exposed_outputs": [],
-      "thumbnail": true,
-      "preview_output": ""
+      "thumbnail": true
     }
   ],
   "connections": []
