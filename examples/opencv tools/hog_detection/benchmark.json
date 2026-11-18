@@ -1,0 +1,122 @@
+{
+  "opencv": "5.0.0",
+  "windows": 501,
+  "reference": "Native HOG descriptors with independent float64 dot products and scalar IoU suppression",
+  "scope": "One original controlled query, separate training noise; thresholds illustrate behavior, not unbiased field accuracy",
+  "cases": {
+    "0.0": {
+      "independent_candidates": 74,
+      "native_candidates": 74,
+      "differing_boxes": 0,
+      "maximum_margin_error": 3.211001076142139e-08,
+      "retained": [
+        {
+          "box": [
+            32,
+            24,
+            32,
+            32
+          ],
+          "margin": 1.0008398375670884
+        },
+        {
+          "box": [
+            112,
+            64,
+            32,
+            32
+          ],
+          "margin": 1.0008398375670884
+        },
+        {
+          "box": [
+            16,
+            40,
+            32,
+            32
+          ],
+          "margin": 0.17377222820416782
+        },
+        {
+          "box": [
+            96,
+            80,
+            32,
+            32
+          ],
+          "margin": 0.15664312300664607
+        },
+        {
+          "box": [
+            40,
+            88,
+            32,
+            32
+          ],
+          "margin": 0.02781888888050471
+        },
+        {
+          "box": [
+            48,
+            40,
+            32,
+            32
+          ],
+          "margin": 0.003954897757612208
+        }
+      ]
+    },
+    "0.5": {
+      "independent_candidates": 6,
+      "native_candidates": 6,
+      "differing_boxes": 0,
+      "maximum_margin_error": 2.4197724268759657e-08,
+      "retained": [
+        {
+          "box": [
+            32,
+            24,
+            32,
+            32
+          ],
+          "margin": 1.0008398375670884
+        },
+        {
+          "box": [
+            112,
+            64,
+            32,
+            32
+          ],
+          "margin": 1.0008398375670884
+        }
+      ]
+    },
+    "0.8": {
+      "independent_candidates": 2,
+      "native_candidates": 2,
+      "differing_boxes": 0,
+      "maximum_margin_error": 1.3710138579980935e-08,
+      "retained": [
+        {
+          "box": [
+            32,
+            24,
+            32,
+            32
+          ],
+          "margin": 1.0008398375670884
+        },
+        {
+          "box": [
+            112,
+            64,
+            32,
+            32
+          ],
+          "margin": 1.0008398375670884
+        }
+      ]
+    }
+  }
+}

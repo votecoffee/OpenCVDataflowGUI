@@ -1,0 +1,227 @@
+{
+  "asset_sha256": {
+    "blank-0.png": "5e574b837ebdfaa96dcae44d4906d40c70b501f65156d44bfa9b9231b45c7de3",
+    "blank-1.png": "7f5aa495f8ec17743f53625d7541bf9501034f9fcd88f2d800b9b3293df14b19",
+    "blank-2.png": "1847d693cff3bbddbc241c4a62691107f13427b87fc0b9b281a5c14cbc393c04",
+    "blank-3.png": "d92fb3f3714414154692ad0e30410f68aacda8a52bac3248d4ff09cbdcb0d0ee",
+    "changed-detector.json": "681cddccfc98196f7706720be0b92a34fb1103d9c4e404e4f1e7793df7bd872a",
+    "classifier-linear.json": "485b906c62ffdcfde7baff187ce6267358987dc0ec6288c807e7e7295c07a242",
+    "classifier-rbf.json": "2d3be1494c6dcaac3d05e717dcc313fcce138ddfd3a379cf3ebd92e974400c73",
+    "cross-0.png": "43d2736165270c0fc86d7ec2256588016b29afca5bec4e96e101e89f36a66bfe",
+    "cross-1.png": "ca6388b9508a8ce8c1c58fae9de4aa14151449445ed1a739cb63be58e900d14e",
+    "cross-2.png": "d8402e48d6dae8af072bfc8584cd47bebac3fddfb466ef526bfeb53c0f67686a",
+    "cross-3.png": "a1096f74fb8612818661fc997e9a517f254a5de69ac4095b353181c27b48240c",
+    "detector.json": "29c69b467683e0234ccde98222b9521fadc988a3c86598c3b3e31cd6809be787",
+    "empty.png": "acd0e1bd64e383ab7c1b21e9ff5c4f9cec05569ac49e891a5153f4e6396b9aa3",
+    "part-0.png": "1547a2553b3bf4a9f42e455c0d184e6a62ab10d794a31dd826f0c60ae774251e",
+    "part-1.png": "dd574423e9e3a782844d711ef34ec2ad434cec67462632cfa3bba0bb89bbdc20",
+    "part-2.png": "265a797b60ca1d621ce288da7c783ca205dab3e45a60167ae55203cc142ff1e0",
+    "part-3.png": "d36b1b88ba0f633c2c325fa90a7329f271581b41df1681f7e9e73698903ee041",
+    "ring-0.png": "f1c37777c013137774b4bd3aa9fc43ecd017bae26639f18f926ddbecf95931b5",
+    "ring-1.png": "b04501a47d5a13d3f02b05d00cc4c701af8527c497b2adfd25963b608090355f",
+    "ring-2.png": "1f968e47f5b95fc64f0affbb99f97afde7ca1b44823ebbafcc31b3ee9802e386",
+    "ring-3.png": "bc3ea8bf8a938a59c4a2e648ccdfee47ebe053e939a519d1aec34f8bd022da6c",
+    "scene.png": "af763a9bf3cca8148b93dc1e38afb5e7a7c5db5f7d10b6218e2f445023ab2112",
+    "scene16.png": "4d0fc6d544ced6b5e9094e01fe82eea73651e0841eb5b7bfc731c57273670548"
+  },
+  "boxes": [
+    [
+      32,
+      24,
+      32,
+      32
+    ],
+    [
+      112,
+      64,
+      32,
+      32
+    ]
+  ],
+  "cases": {
+    "blank": {
+      "images": [
+        "empty.png"
+      ],
+      "states": [
+        "fail"
+      ],
+      "target": "detect"
+    },
+    "count_fail": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "fail"
+      ],
+      "target": "detect"
+    },
+    "daimler_people": {
+      "images": [
+        "empty.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "default_people": {
+      "images": [
+        "empty.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "high_depth": {
+      "images": [
+        "scene16.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "low_threshold": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "multiscale": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "nonlinear_svm": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "error"
+      ],
+      "target": "model"
+    },
+    "raw_windows": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "selection": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "single_scale": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "pass"
+      ],
+      "target": "detect"
+    },
+    "train": {
+      "images": [
+        "part-0.png",
+        "part-1.png",
+        "part-2.png",
+        "part-3.png",
+        "ring-0.png",
+        "ring-1.png",
+        "ring-2.png",
+        "ring-3.png",
+        "cross-0.png",
+        "cross-1.png",
+        "cross-2.png",
+        "cross-3.png",
+        "blank-0.png",
+        "blank-1.png",
+        "blank-2.png",
+        "blank-3.png"
+      ],
+      "states": [
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "inactive",
+        "pass"
+      ],
+      "target": "save"
+    },
+    "wrong_model": {
+      "images": [
+        "scene.png"
+      ],
+      "states": [
+        "error"
+      ],
+      "target": "model"
+    }
+  },
+  "evidence": "Original construction boxes; native/independent margin and window references, not production accuracy",
+  "labels": [
+    "part",
+    "part",
+    "part",
+    "part",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background",
+    "background"
+  ],
+  "training": [
+    "part-0.png",
+    "part-1.png",
+    "part-2.png",
+    "part-3.png",
+    "ring-0.png",
+    "ring-1.png",
+    "ring-2.png",
+    "ring-3.png",
+    "cross-0.png",
+    "cross-1.png",
+    "cross-2.png",
+    "cross-3.png",
+    "blank-0.png",
+    "blank-1.png",
+    "blank-2.png",
+    "blank-3.png"
+  ]
+}

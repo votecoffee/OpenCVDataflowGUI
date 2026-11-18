@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 44 | 4 | 14 | 62 | 71.0% |
+| 2. ML and DNN | 45 | 4 | 13 | 62 | 72.6% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 270 | 36 | 164 | 470 | 57.4% |
+| **Overall** | 271 | 36 | 163 | 470 | 57.7% |
 
 <!-- coverage-summary:end -->
 
@@ -368,7 +368,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S2-46 | HOG sliding-window object detection | HOGDescriptor.detectMultiScale with configured detector weights | Planned | Detect objects at multiple scales with per-window confidence and verify suppression on known image boxes. |
+| S2-46 | HOG sliding-window object detection | HOGDescriptor.detectMultiScale with configured detector weights | Complete | ml.hog_detect provides bounded single/multiscale native searches, grouping, deterministic IoU suppression, mask/region filtering and raw weights; ml.hog_detector_model configures native people presets, explicit weights or exports compatible binary linear image SVMs, with strict portable model I/O. [Thirteen projects](<../examples/opencv tools/hog_detection/README.md>) qualify known boxes, threshold extras, uint16, count/blank failures and invalid models. Independent 501-window descriptor-dot margins match below 3.3e-8; Debug/Lean, JSON/XML/Save As, input gates and cold worker/parallel/preview teardown are checked. Stock presets have blank-image integration checks only; no industrial accuracy, calibrated confidence or performance claim. [Contract](hog-detection.md). |
 | S2-47 | Cascade-based image object detection | CascadeClassifier.detectMultiScale | Planned | Load a local configured cascade and verify detections, scale controls and output scores on a labeled fixture. |
 | S2-48 | Rotated crop classification | Model preprocessing from measured image poses | Partial | ml.dnn consumes an image or selected region. Qualify independent oriented part crops with source geometry and per-part ticket retention. |
 | S2-49 | Image-based regression | OpenCV SVM regression or ONNX scalar decoder | Planned | Estimate a continuous image-derived measurement on held-out captures and report residuals with model revision. |

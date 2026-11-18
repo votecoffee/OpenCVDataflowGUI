@@ -119,6 +119,7 @@ class Block:
     category: ClassVar[str] = "Custom"
     block_type: ClassVar[str] = ""
     parallel_safe: ClassVar[bool] = False
+    requires_opencl_context: ClassVar[bool] = False
     layout_only: ClassVar[bool] = False
     subtype: ClassVar[str] = "General"
     inputs: ClassVar[tuple[Port, ...]] = ()
@@ -796,6 +797,7 @@ class Connection:
 
 class Graph:
     def __init__(self):
+        self._native_runtime_ready = False
         self.blocks: dict[str, Block] = {}
         self.connections: list[Connection] = []
         self.project_dir = None
@@ -982,6 +984,7 @@ class Graph:
                 block.graph.bind_project_dir(self.project_dir)
 
     def add(self, block):
+        self._native_runtime_ready = False
         if block.id in self.blocks:
             raise ValueError("Duplicate block id")
         if hasattr(block, "graph"):
@@ -1008,6 +1011,7 @@ class Graph:
             self.invalidate()
 
     def invalidate(self):
+        self._native_runtime_ready = False
         self.clock = TicketClock()
         self.clear_results()
         for block in self.blocks.values():
@@ -1203,10 +1207,17 @@ class Graph:
             )
         self.branch_workers = value
 
+    def prepare_native_execution(self):
+        from .native_runtime import prepare_native_runtime
+
+        prepare_native_runtime(self)
+
     def run(
         self, cancelled=lambda: False, injected=None, provided=None, *,
         filmstrip_capture=None, end_of_input=False,
     ):
+        if not cancelled():
+            self.prepare_native_execution()
         runtime = self._ensure_program_runtime()
         if runtime is None or cancelled():
             return self._run_with_bookkeeping(

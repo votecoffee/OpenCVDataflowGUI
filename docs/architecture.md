@@ -66,6 +66,19 @@ operators implement `reset_runtime` and `copy_runtime_from`; queues never enter
 project serialization. See [control flow](control-flow.md) for identities, bounds,
 FIFO expectations and fan-in policies.
 
+## Native worker startup
+
+Blocks that can lazily initialize a native OpenCL device during CPU-facing work
+can declare `requires_opencl_context = True`. `Graph.prepare_native_execution()`
+walks nested ToolBlocks and parallel inspections and primes the context before
+workers start; project loading and block construction stay inert. The desktop
+Runner and live-preview constructors call this on their caller, and headless
+Graph.run prepares before branch scheduling. Clients starting their own outer
+threads should call this method on the long-lived scheduling thread first.
+HOG declares this capability; KCF retains its existing safeguard. Preparation
+does not change the OpenCL preference. A block that explicitly scopes CPU work
+must restore its calling-thread preference even on exceptions.
+
 ## Connection compatibility
 
 The editor checks declared port kinds on drop. Project loading and ToolBlock

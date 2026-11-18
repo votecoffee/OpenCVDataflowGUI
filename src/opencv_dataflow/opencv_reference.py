@@ -7,6 +7,9 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "ml.hog_detect": "HOGDescriptor HOGDescriptor.setSVMDetector HOGDescriptor.detectMultiScale",
+    "ml.hog_detector_model": "HOGDescriptor.getDefaultPeopleDetector "
+    "HOGDescriptor.getDaimlerPeopleDetector ml.SVM.getDecisionFunction",
     "ml.visual_features": "SIFT_create ORB_create",
     "ml.bow_train": "kmeans BFMatcher",
     "ml.bow_encode": "BFMatcher",

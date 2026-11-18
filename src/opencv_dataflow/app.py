@@ -127,6 +127,7 @@ class Runner(QThread):
 
     def __init__(self, graph, mode, registry=None):
         super().__init__()
+        graph.prepare_native_execution()
         self.graph, self.mode = graph, mode
         self.continuous = mode == "continuous"
         self.iterations = 0
@@ -242,6 +243,9 @@ class ProgramCloser(QThread):
 class LivePreview(QThread):
     def __init__(self, block, inputs, revision, parent):
         super().__init__(parent)
+        from .native_runtime import prepare_native_runtime
+
+        prepare_native_runtime([block])
         self.block, self.inputs, self.revision = block, inputs, revision
         self.error = ""
 
@@ -2626,9 +2630,7 @@ class MainWindow(QMainWindow):
                 self.filmstrip_dock.show()
             for key, block in self.root_graph.blocks.items():
                 execution_graph.blocks[key].copy_results_from(block)
-            if any(b.type_id == "sequence.track_kcf" for b in walk(execution_graph)):
-                # Keep KCF from creating the primary OpenCL context on a short-lived Qt worker.
-                cv2.ocl.useOpenCL()
+            execution_graph.prepare_native_execution()
         except (Exception, SystemExit) as exc:
             self.warn(exception_message(exc))
             return

@@ -823,14 +823,14 @@ P2	method	cv2.ml.SVM.create	method name only	-
 P2	method	cv2.ml.SVM.getC	no static reference	-
 P2	method	cv2.ml.SVM.getClassWeights	no static reference	-
 P2	method	cv2.ml.SVM.getCoef0	no static reference	-
-P2	method	cv2.ml.SVM.getDecisionFunction	no static reference	-
+P2	method	cv2.ml.SVM.getDecisionFunction	method name only	-
 P2	method	cv2.ml.SVM.getDefaultGridPtr	no static reference	-
 P2	method	cv2.ml.SVM.getDegree	no static reference	-
 P2	method	cv2.ml.SVM.getGamma	no static reference	-
 P2	method	cv2.ml.SVM.getKernelType	method name only	-
 P2	method	cv2.ml.SVM.getNu	no static reference	-
 P2	method	cv2.ml.SVM.getP	no static reference	-
-P2	method	cv2.ml.SVM.getSupportVectors	no static reference	-
+P2	method	cv2.ml.SVM.getSupportVectors	method name only	-
 P2	method	cv2.ml.SVM.getTermCriteria	no static reference	-
 P2	method	cv2.ml.SVM.getType	method name only	-
 P2	method	cv2.ml.SVM.getUncompressedSupportVectors	no static reference	-
@@ -1998,7 +1998,7 @@ P3	function	cv2.Canny	literal reference	-
 P3	function	cv2.cartToPolar	literal reference	-
 P3	class	cv2.CascadeClassifier	no static reference	-
 P3	method	cv2.CascadeClassifier.convert	no static reference	-
-P3	method	cv2.CascadeClassifier.detectMultiScale	no static reference	-
+P3	method	cv2.CascadeClassifier.detectMultiScale	method name only	-
 P3	method	cv2.CascadeClassifier.detectMultiScale2	no static reference	-
 P3	method	cv2.CascadeClassifier.detectMultiScale3	no static reference	-
 P3	method	cv2.CascadeClassifier.empty	method name only	-
@@ -3003,14 +3003,14 @@ P3	method	cv2.HOGDescriptor.checkDetectorSize	no static reference	-
 P3	method	cv2.HOGDescriptor.compute	method name only	-
 P3	method	cv2.HOGDescriptor.computeGradient	no static reference	-
 P3	method	cv2.HOGDescriptor.detect	method name only	-
-P3	method	cv2.HOGDescriptor.detectMultiScale	no static reference	-
-P3	method	cv2.HOGDescriptor.getDaimlerPeopleDetector	no static reference	-
-P3	method	cv2.HOGDescriptor.getDefaultPeopleDetector	no static reference	-
+P3	method	cv2.HOGDescriptor.detectMultiScale	method name only	-
+P3	method	cv2.HOGDescriptor.getDaimlerPeopleDetector	literal reference	-
+P3	method	cv2.HOGDescriptor.getDefaultPeopleDetector	literal reference	-
 P3	method	cv2.HOGDescriptor.getDescriptorSize	no static reference	-
 P3	method	cv2.HOGDescriptor.getWinSigma	no static reference	-
 P3	method	cv2.HOGDescriptor.load	method name only	-
 P3	method	cv2.HOGDescriptor.save	method name only	-
-P3	method	cv2.HOGDescriptor.setSVMDetector	no static reference	-
+P3	method	cv2.HOGDescriptor.setSVMDetector	method name only	-
 P3	function	cv2.HOGDescriptor_getDaimlerPeopleDetector	no static reference	-
 P3	function	cv2.HOGDescriptor_getDefaultPeopleDetector	no static reference	-
 P3	function	cv2.HoughCircles	literal reference	-

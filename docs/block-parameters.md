@@ -9270,6 +9270,77 @@ Input `tiles` — Flat FlowGroup from Join of matching exported segmentation rec
 | `maximum_resample_elements` | `8000000` | Value must be a whole number between 1 and 3.2e+07. Bound classes x reference pixels before accumulation. |
 | `maximum_mapped_elements` | `64000000` | Value must be a whole number between 1 and 2.56e+08. Conservative tiles x classes x reference pixels work limit. |
 
+## HOG sliding-window detection (`ml.hog_detect`)
+
+ML / HOG detection
+
+Inputs: `image` (image), `model` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `detector` | `"default_people"` | `default_people`, `daimler_people` Fallback native people model only when Model is not wired. |
+| `hit_threshold` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Inclusive native SVM margin, including saved bias; not a probability. |
+| `win_stride` | `[8, 8]` | [X,Y] step in level pixels; must use whole model block strides. |
+| `padding` | `[0, 0]` | Native symmetric border padding in level pixels; rounded up to block stride. |
+| `scale_factor` | `1.05` | Value must be a finite number between 1.001 and 4. Pyramid scale increment; Pyramid levels=1 selects a single scale. |
+| `pyramid_levels` | `64` | Value must be a whole number between 1 and 128. Native maximum search levels, also bounded by image/window size. |
+| `grouping` | `"none"` | `none`, `rectangles`, `meanshift` Native grouping before selection and optional IoU suppression. |
+| `group_threshold` | `2.0` | Value must be a finite number between 0 and 100. Native group threshold; rectangle grouping requires a whole number. |
+| `nms_enabled` | `true` |  |
+| `nms_iou` | `0.4` | Value must be a finite number between 0 and 1. Suppress overlap strictly above this IoU; raw native weights determine rank. |
+| `selection_policy` | `"center"` | `center`, `coverage`, `center_and_coverage` Filter visible boxes by center and/or selected coverage. Descriptors still read the whole image. |
+| `minimum_coverage` | `1.0` | Value must be a finite number between 0 and 1. Inclusive selected fraction of each returned visible box. |
+| `score_mode` | `"margin"` | `margin`, `sigmoid` Raw native weight or its sigmoid for normalized consumers; sigmoid is not calibrated confidence. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 10000. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 10000. |
+| `maximum_image_pixels` | `1048576` | Value must be a whole number between 1 and 4.1943e+06. |
+| `maximum_windows` | `100000` | Value must be a whole number between 1 and 200000. Bound the complete padded multiscale search before native work. |
+| `maximum_candidates` | `2048` | Value must be a whole number between 1 and 10000. Reject excess candidates before suppression; no truncation. |
+| `maximum_results` | `512` | Value must be a whole number between 1 and 10000. Reject excess retained detections. |
+| `max_work` | `256000000` | Value must be a whole number between 1 and 1e+09. Estimated feature comparisons plus suppression pair allowance. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Estimated workspace, not measured process RSS. |
+
+## Load HOG detector model (`ml.hog_detector_load`)
+
+ML / HOG detection
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Configure HOG detector model (`ml.hog_detector_model`)
+
+ML / HOG detection
+
+Inputs: `svm` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `cell_size` | `[8, 8]` | [Width, height] of a cell in pixels. |
+| `block_size` | `[16, 16]` | [Width, height] in pixels. Both dimensions must be multiples of cell size. |
+| `block_stride` | `[8, 8]` | [X, Y] stride in pixels, in whole cells no larger than the block. |
+| `bins` | `9` | Value must be a whole number between 2 and 36. Gradient orientation bins per cell. |
+| `win_sigma` | `-1.0` | Value must be a finite number between -1 and 4096. Gaussian weighting sigma in pixels. −1 uses OpenCV's automatic value. |
+| `l2_hys_threshold` | `0.2` | Value must be a finite number between 0.0001 and 1. Clipping threshold before the second block normalization. |
+| `gamma_correction` | `true` | Apply square-root gamma correction before measuring gradients. |
+| `signed_gradient` | `false` | Use 360° directions. Off treats opposite directions as equivalent. |
+| `preset` | `"default_people"` | `default_people`, `daimler_people`, `coefficients`, `linear_svm` Native people geometry is fixed. Coefficients uses editable geometry; linear_svm derives it from the HOG training contract. |
+| `window_size` | `[64, 128]` | [Width,height] in pixels; used by coefficients mode. |
+| `working_encoding` | `"gray"` | `gray`, `bgr` Grayscale or canonical BGR. SVM mode uses its training contract. |
+| `coefficients` | `[]` | Float32 weights and optional bias; required in coefficients mode. |
+| `label` | `"object"` | Label for coefficients; other presets use person or Positive label. |
+| `positive_label` | `"part"` | Binary linear-SVM class that should produce positive detector margins. |
+
+## Save HOG detector model (`ml.hog_detector_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"hog-detector.json"` |  |
+
 ## Image to DNN tensor (`ml.image_tensor`)
 
 ML / Tensor preparation

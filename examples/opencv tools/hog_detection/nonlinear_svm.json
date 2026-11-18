@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/scene.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "svm",
+      "type": "ml.svm_load",
+      "name": "Load OpenCV SVM classifier",
+      "parameters": {
+        "path": "assets/classifier-rbf.json"
+      },
+      "position": [
+        370,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.hog_detector_model",
+      "name": "Configure HOG detector model",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false,
+        "preset": "linear_svm",
+        "window_size": [
+          64,
+          128
+        ],
+        "working_encoding": "gray",
+        "coefficients": [],
+        "label": "object",
+        "positive_label": "part"
+      },
+      "position": [
+        740,
+        0
+      ],
+      "exposed_inputs": [
+        "svm"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original HOG inspection controls - MIT",
+      "description": "Original MIT synthetic images, native SVM training and projects by OpenCVDataflowGUI contributors. Sixteen noisy training windows exclude the query noise seeds. Two query parts have exact construction boxes; a ring is a distractor. Raw margins are not probabilities. The permissive threshold retains extra detections, while multiscale search yields overlapping windows removed by explicit IoU suppression. Native people models are exercised only on a blank control: this is not pedestrian accuracy evidence. See README.md, SOURCES.md, truth.json and benchmark.json. All image data and saved custom models are original; no customer captures.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "svm",
+      "output": "model",
+      "target": "model",
+      "input": "svm"
+    }
+  ]
+}

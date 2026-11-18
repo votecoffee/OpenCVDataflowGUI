@@ -77,6 +77,7 @@
 | Known-good image features, covariance models and Mahalanobis outlier inspection | [Feature outliers](feature-outliers.md) |
 | SIFT/ORB visual vocabularies, portable image galleries and exact retrieval | [Visual words](visual-words.md) |
 | Configured landmark skeletons, multi-score heads and pretrained point suppression | [Object landmarks](object-landmarks.md) |
+| Native HOG searches, portable detectors and linear image-SVM export | [HOG detection](hog-detection.md) |
 | Native forest training, class votes, importance and portable checked trees | [Random forest classification](rtrees-classification.md) |
 | Labeled image sets, grouped splits, confusion matrices and classifier reports | [Classifier evaluation](classifier-evaluation.md) |
 | Labeled boxes, class-aware IoU matches, precision/recall/AP and detector reports | [Detector evaluation](detector-evaluation.md) |

@@ -108,7 +108,7 @@ IMPLEMENTATION_MODULES = {
         "video_time video_timing"
     ),
     "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
-    "xobjdetect": "hog",
+    "xobjdetect": "hog hog_detection",
     "dnn": "batch_inference detection_decode detection_fusion dnn_blocks "
     "instance_segmentation landmarks multi_inference ocr rotated_detection "
     "semantic_segmentation prompt_segmentation prompt_mask_decode",

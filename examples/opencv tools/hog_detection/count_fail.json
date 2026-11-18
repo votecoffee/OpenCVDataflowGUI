@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/scene.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.hog_detector_load",
+      "name": "Load HOG detector model",
+      "parameters": {
+        "path": "assets/detector.json"
+      },
+      "position": [
+        370,
+        420
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "ml.hog_detect",
+      "name": "HOG sliding-window detection",
+      "parameters": {
+        "detector": "default_people",
+        "hit_threshold": 0.5,
+        "win_stride": [
+          8,
+          8
+        ],
+        "padding": [
+          0,
+          0
+        ],
+        "scale_factor": 1.25,
+        "pyramid_levels": 1,
+        "grouping": "none",
+        "group_threshold": 2.0,
+        "nms_enabled": true,
+        "nms_iou": 0.2,
+        "selection_policy": "center",
+        "minimum_coverage": 1.0,
+        "score_mode": "margin",
+        "minimum_count": 1,
+        "maximum_count": 1,
+        "maximum_image_pixels": 1048576,
+        "maximum_windows": 100000,
+        "maximum_candidates": 2048,
+        "maximum_results": 512,
+        "max_work": 256000000,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        740,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "model",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "report",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1110,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1480,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original HOG inspection controls - MIT",
+      "description": "Original MIT synthetic images, native SVM training and projects by OpenCVDataflowGUI contributors. Sixteen noisy training windows exclude the query noise seeds. Two query parts have exact construction boxes; a ring is a distractor. Raw margins are not probabilities. The permissive threshold retains extra detections, while multiscale search yields overlapping windows removed by explicit IoU suppression. Native people models are exercised only on a blank control: this is not pedestrian accuracy evidence. See README.md, SOURCES.md, truth.json and benchmark.json. All image data and saved custom models are original; no customer captures.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "model",
+      "output": "model",
+      "target": "detect",
+      "input": "model"
+    },
+    {
+      "source": "detect",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

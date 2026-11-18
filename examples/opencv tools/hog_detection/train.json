@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/part-0.png",
+          "assets/part-1.png",
+          "assets/part-2.png",
+          "assets/part-3.png",
+          "assets/ring-0.png",
+          "assets/ring-1.png",
+          "assets/ring-2.png",
+          "assets/ring-3.png",
+          "assets/cross-0.png",
+          "assets/cross-1.png",
+          "assets/cross-2.png",
+          "assets/cross-3.png",
+          "assets/blank-0.png",
+          "assets/blank-1.png",
+          "assets/blank-2.png",
+          "assets/blank-3.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "features",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false
+      },
+      "position": [
+        370,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 16,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        740,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "svm",
+      "type": "ml.svm_train",
+      "name": "Train OpenCV SVM classifier",
+      "parameters": {
+        "kernel": "linear",
+        "c": 2.0,
+        "gamma": 0.1,
+        "degree": 3.0,
+        "coef0": 0.0,
+        "normalization": "none",
+        "max_iterations": 5000,
+        "epsilon": 1e-06,
+        "class_weights": [],
+        "labels": [
+          "part",
+          "part",
+          "part",
+          "part",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background",
+          "background"
+        ]
+      },
+      "position": [
+        1110,
+        0
+      ],
+      "exposed_inputs": [
+        "samples",
+        "labels"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "ml.hog_detector_model",
+      "name": "Configure HOG detector model",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false,
+        "preset": "linear_svm",
+        "window_size": [
+          64,
+          128
+        ],
+        "working_encoding": "gray",
+        "coefficients": [],
+        "label": "object",
+        "positive_label": "part"
+      },
+      "position": [
+        1480,
+        0
+      ],
+      "exposed_inputs": [
+        "svm"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "save",
+      "type": "ml.hog_detector_save",
+      "name": "Save HOG detector model",
+      "parameters": {
+        "path": "trained-detector.json"
+      },
+      "position": [
+        1850,
+        0
+      ],
+      "exposed_inputs": [
+        "model"
+      ],
+      "exposed_outputs": [
+        "path"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original HOG inspection controls - MIT",
+      "description": "Original MIT synthetic images, native SVM training and projects by OpenCVDataflowGUI contributors. Sixteen noisy training windows exclude the query noise seeds. Two query parts have exact construction boxes; a ring is a distractor. Raw margins are not probabilities. The permissive threshold retains extra detections, while multiscale search yields overlapping windows removed by explicit IoU suppression. Native people models are exercised only on a blank control: this is not pedestrian accuracy evidence. See README.md, SOURCES.md, truth.json and benchmark.json. All image data and saved custom models are original; no customer captures.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "features",
+      "input": "image"
+    },
+    {
+      "source": "features",
+      "output": "descriptor",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "svm",
+      "input": "samples"
+    },
+    {
+      "source": "svm",
+      "output": "model",
+      "target": "model",
+      "input": "svm"
+    },
+    {
+      "source": "model",
+      "output": "model",
+      "target": "save",
+      "input": "model"
+    }
+  ]
+}
