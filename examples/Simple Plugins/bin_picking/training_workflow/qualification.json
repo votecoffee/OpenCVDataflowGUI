@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-18",
+  "version": "0.1.0.dev14",
+  "source_commit": "7c9c831",
+  "source_tests": 181,
+  "wheel_tests": 181,
+  "native_training_workflows": 4,
+  "native_counts": [
+    10,
+    0,
+    1,
+    0
+  ],
+  "old_runtime_projects_exact": 11,
+  "old_exports_verified": 6,
+  "old_file_pins_verified": 172,
+  "old_native_review_and_save_as": true,
+  "staged_references": "Jaw captures explicitly retain supplied depth/pose reference notes, producing a new model checksum checked against the report",
+  "maximum_staged_numeric_difference": 1.6181014982569974e-16,
+  "staged_numeric_tolerance": 1e-12,
+  "staged_discrete_decisions_exact": true,
+  "staged_runtime_xyz_rgb_exact": true,
+  "calibration_settings_cad_contact_geometry_unchanged": true,
+  "desktop_input_used": false,
+  "window_capture_used": false,
+  "robot_execution": false,
+  "physical_grasp_qualified": false,
+  "remaining": [
+    "Real grasp/sensor/contact agreement and actual pick outcomes",
+    "Full robot reach/collision/transported-part checks",
+    "Hands-on operator training acceptance",
+    "Shared compact native toolbar/layer controls",
+    "Background reference import/restoration",
+    "Finer cancellation of running native previews"
+  ],
+  "host_existing_checks": 12,
+  "host_new_package_checks": 5,
+  "host_total_checks": 17,
+  "finished_trained_projects": 4
+}

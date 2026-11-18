@@ -1,0 +1,72 @@
+{
+  "capture_id": "clear",
+  "pose_assistance": "Authored analytic box pose",
+  "camera": {
+    "model": "camera_model_v1",
+    "matrix": [
+      [
+        1200.0,
+        0.0,
+        160.0
+      ],
+      [
+        0.0,
+        1200.0,
+        120.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "image_size": [
+      320,
+      240
+    ],
+    "frame": "camera",
+    "units": "m",
+    "lens": "pinhole",
+    "distortion": []
+  },
+  "part_instances": [
+    {
+      "model": "part_instance_v1",
+      "id": "part-1",
+      "accepted": true,
+      "capture_id": "clear",
+      "pose": {
+        "model": "pose_3d_v1",
+        "source_frame": "box",
+        "target_frame": "camera",
+        "units": "m",
+        "source_to_target": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            -1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -1.0,
+            0.48
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    }
+  ]
+}

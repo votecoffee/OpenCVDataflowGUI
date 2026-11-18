@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "depth",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/43fa28108562da302a718d97b22ac12ff96694dd5cfb6e4b91cf6ebe42f2ba61.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 180.0,
+        "fy": 180.0,
+        "cx": 80.0,
+        "cy": 60.0,
+        "width": 160,
+        "height": 120,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        0.0,
+        240.0
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "picker",
+      "type": "3d.simple_bin_picking",
+      "name": "SimpleBinPicking",
+      "description": "Review completed bin-picking evidence in the inspector. Recorded first surfaces; no robot execution or physical grasp truth.",
+      "parameters": {
+        "recipe_path": "assets/0467841bac30e9f7418cbc8ca1d35e0b409f9cec56525efe0b50a36ef13e1722.sbp",
+        "sha256": "0467841bac30e9f7418cbc8ca1d35e0b409f9cec56525efe0b50a36ef13e1722",
+        "render_graphics": true
+      },
+      "position": [
+        500.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "bin_pose",
+        "instances",
+        "image"
+      ],
+      "exposed_outputs": [
+        "picks",
+        "candidates",
+        "report",
+        "count",
+        "tcp",
+        "pregrasp",
+        "graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": "graphics"
+    },
+    {
+      "id": "bin_pose",
+      "type": "3d.pose",
+      "name": "Supplied bin/camera calibration (not object detection)",
+      "parameters": {
+        "rvec": [
+          3.141592653589793,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          500.0
+        ],
+        "source_frame": "bin",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        0.0,
+        480.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "image",
+      "target": "picker",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "picker",
+      "input": "camera"
+    },
+    {
+      "source": "bin_pose",
+      "output": "transform",
+      "target": "picker",
+      "input": "bin_pose"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "cases": [
+    {
+      "case": "suction_good",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "suction_holes",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "suction_missing",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "suction_real13",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "jaw_clear",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "jaw_obstacle",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "jaw_unknown",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "jaw_real3",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "jaw_real13",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "jaw_mesh",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    },
+    {
+      "case": "jaw_graphics_off",
+      "numeric_exact": true,
+      "default_clouds_exact": true,
+      "native_review": true,
+      "save_as_reopen": true
+    }
+  ],
+  "exports_verified": 6,
+  "file_pins_verified": 172,
+  "scope": "Offline parity, not physical qualification"
+}

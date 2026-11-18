@@ -1,0 +1,183 @@
+{
+  "source_commit": "7c9c831",
+  "wheel_sha256": "4eff5f15afb2b3827badf0c20871ca2a3c447e1d9d26c15f49655935974dedd3",
+  "source_modules_exact": [
+    {
+      "module": "opencv_simple_bin_picking/__init__.py",
+      "sha256": "63e728ae978a0ad1598ee36974792c69394526a199647e98b806798736ff21a7"
+    },
+    {
+      "module": "opencv_simple_bin_picking/cli.py",
+      "sha256": "8152ec66cddc8d6d291b3f13b0439f8ab1699dbac96cddfeb0f38029102a59b0"
+    },
+    {
+      "module": "opencv_simple_bin_picking/completed_review.py",
+      "sha256": "f876b6235a755fb741dcb4c86bfcbad994a505be66f4f5e72042b5c9116118d0"
+    },
+    {
+      "module": "opencv_simple_bin_picking/dataflow.py",
+      "sha256": "718241c7e9aee0e6e220768fa0a09d9c1090ce83054ab12b41cf928ec632f41e"
+    },
+    {
+      "module": "opencv_simple_bin_picking/graphics.py",
+      "sha256": "20843024702ee55f0d94e8d9390ca59f5a885b9ae49bfb473426b1661255ff09"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw.py",
+      "sha256": "fee308b851c09ed777d7bf34b7cf511c4c58db9339b2c44191d83c92dfe9006d"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_cli.py",
+      "sha256": "d02e3cfacbeef83c140887c407893f5d4664f6d6b85dad3d0e1cffd673ab339b"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_dataflow.py",
+      "sha256": "032ac14b41254927bcdef6d9222e6c08ffa9be65acb62600e36dacc69f2e46f1"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_fit.py",
+      "sha256": "b7d1063c20c50be0e0b1df0f9eee852d2977be4034dc9b8c64d8f2ea54607df1"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_graphics.py",
+      "sha256": "6b632ff1ed895b0a7744755c09392108383e70f66b7c850455f34435aa5e3f6a"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_mesh.py",
+      "sha256": "5a2767b75f89091577c3523f12caf673c94ddd64259a9ee9fda31392a01d2eab"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_metrics.py",
+      "sha256": "df2e8472003c543bbb2015b9cee50f33331ced845f25352aec7a2e3cef598a29"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_persistence.py",
+      "sha256": "3c7e049bfec6b12d43919576d79cb43bc54c627008ee7959a0ed0ab99ae55b11"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_proposals.py",
+      "sha256": "7aba90152f4aa8e67595c5aad4bfc5e99a2a46f55a324e96704a6a1decababe2"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_raster.py",
+      "sha256": "228c1fe2eeaad51bc4eeb5dd282b3a19acae06421e3657eafc3fc25a249d6cbb"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_specs.py",
+      "sha256": "dea8403eb276025223c7ec3fd14f981785fc516a8cb1168d1d60dcf7501d37f0"
+    },
+    {
+      "module": "opencv_simple_bin_picking/jaw_teaching.py",
+      "sha256": "ee2f5e392b06f6f7d6aba220e9c76fe8ca43f346630bca683c042b04a37b2187"
+    },
+    {
+      "module": "opencv_simple_bin_picking/motion.py",
+      "sha256": "d23f431ef41af782cfa4f02f64eec6583905e9ecff4ef751b84999f9cf2e5378"
+    },
+    {
+      "module": "opencv_simple_bin_picking/parallel_jaw.py",
+      "sha256": "9f1486cd4aeed17f41976b7411f072cf88cca590699be4855aa9ecea33c92dfd"
+    },
+    {
+      "module": "opencv_simple_bin_picking/persistence.py",
+      "sha256": "a6f55f4bd77271a6e8a609fc4945e9ff5b9e8261217c8a9d734446a876efa501"
+    },
+    {
+      "module": "opencv_simple_bin_picking/planning.py",
+      "sha256": "ca497fdbc7e5e3e948db67b7193d3db77dfd6326e6f35a601b966091391a2b5d"
+    },
+    {
+      "module": "opencv_simple_bin_picking/pose_dataflow.py",
+      "sha256": "a64afb578ed997281b4db026d73f84214000e28c7e0ffd52352728145503ccc2"
+    },
+    {
+      "module": "opencv_simple_bin_picking/pose_instances.py",
+      "sha256": "e4ffd7fb30d859ad1c3516abde13bc31854bab97b7e2b28c01f707a82d7e1d66"
+    },
+    {
+      "module": "opencv_simple_bin_picking/qt_completed_review.py",
+      "sha256": "42dbf0d628233fbdb84056e0450d544ef11ee9be140c16c19a842313c7a9a49d"
+    },
+    {
+      "module": "opencv_simple_bin_picking/qt_jaw_proposals.py",
+      "sha256": "85c7eff5eb8d453141790b9b10aeb0e118db3165ba09f0e9792f5c09f667b73c"
+    },
+    {
+      "module": "opencv_simple_bin_picking/qt_jaw_training.py",
+      "sha256": "b2383e81010ac6973e3d58b5776e514ac5b8649098b593cc6c7e87aa17a9f7dc"
+    },
+    {
+      "module": "opencv_simple_bin_picking/qt_setup.py",
+      "sha256": "acc3c05a9702ffb43975a74d1b8570a173f3c16dca9e20a85087c3622f17cae6"
+    },
+    {
+      "module": "opencv_simple_bin_picking/qt_training.py",
+      "sha256": "82e979008208621bbfe3787862e5eede986f0808f1510f97e85d36bc4b797bbf"
+    },
+    {
+      "module": "opencv_simple_bin_picking/scene.py",
+      "sha256": "82ae47dbbd227c7994dc8b0b98d87770e6aad3c5922936e7b4853e80e0ef79ef"
+    },
+    {
+      "module": "opencv_simple_bin_picking/sim_client.py",
+      "sha256": "4d20260f603c60530b9b4f38726bbde8c7debca1653ccadfea5897bcf1e0dac4"
+    },
+    {
+      "module": "opencv_simple_bin_picking/sim_dataflow.py",
+      "sha256": "2f41f2baa8eda96d923d9f8c2cae546c1e5cca21d32e5edf25f25452e9e47e0d"
+    },
+    {
+      "module": "opencv_simple_bin_picking/sim_workflow.py",
+      "sha256": "55068babe7e0b76efe52cece93f39656172360290f5833a4670ac44d615f3d43"
+    },
+    {
+      "module": "opencv_simple_bin_picking/specs.py",
+      "sha256": "3b5fe3aacb02dbe42ce970d9f93b01c00fea6e19440950693034c31ca2035165"
+    },
+    {
+      "module": "opencv_simple_bin_picking/teaching.py",
+      "sha256": "87a16aa6748c0ceb68b4f1d421bc7883fe28554f9f37745105fec54c15db699f"
+    },
+    {
+      "module": "opencv_simple_bin_picking/top_template.py",
+      "sha256": "9f30946c5cac524f105864682fd6bd0e586fd1da85e3d3621ea56c33b62204f1"
+    }
+  ],
+  "unchanged_runtime_module_ast": [
+    "__init__.py",
+    "cli.py",
+    "completed_review.py",
+    "dataflow.py",
+    "graphics.py",
+    "jaw.py",
+    "jaw_cli.py",
+    "jaw_dataflow.py",
+    "jaw_fit.py",
+    "jaw_graphics.py",
+    "jaw_mesh.py",
+    "jaw_metrics.py",
+    "jaw_persistence.py",
+    "jaw_proposals.py",
+    "jaw_raster.py",
+    "jaw_specs.py",
+    "jaw_teaching.py",
+    "motion.py",
+    "parallel_jaw.py",
+    "persistence.py",
+    "planning.py",
+    "pose_dataflow.py",
+    "pose_instances.py",
+    "qt_completed_review.py",
+    "qt_jaw_proposals.py",
+    "scene.py",
+    "sim_client.py",
+    "sim_dataflow.py",
+    "sim_workflow.py",
+    "specs.py",
+    "teaching.py",
+    "top_template.py"
+  ],
+  "source_tests_passed": 181,
+  "wheel_tests_passed": 181,
+  "host_installation_modified": false
+}

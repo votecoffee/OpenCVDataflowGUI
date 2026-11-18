@@ -1,0 +1,22 @@
+[
+  {
+    "case": "suction_good",
+    "trained_project_report_exact": true,
+    "eligible_picks": 10
+  },
+  {
+    "case": "suction_real13",
+    "trained_project_report_exact": true,
+    "eligible_picks": 0
+  },
+  {
+    "case": "jaw_clear",
+    "trained_project_report_exact": true,
+    "eligible_picks": 1
+  },
+  {
+    "case": "jaw_real13",
+    "trained_project_report_exact": true,
+    "eligible_picks": 0
+  }
+]

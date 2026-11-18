@@ -1,5 +1,13 @@
 # SimpleBinPicking suction planning
 
+The [dev14 training workflows](training_workflow/README.md) add persistent
+physical bin/camera/tool/CAD context, immediate invalid-setting reasons, stale
+evidence guidance, precise suction bin bounds and source-ray floor picks.
+Load that pinned plugin first, then open its generated/real suction or jaw
+project. Four native inspector workflows preserve Stage/Apply/Cancel and exact
+recipe Save As. Runtime planners and conservative real zero-pick outcomes stay
+unchanged; no installation or robot execution is involved.
+
 [Completed suction and jaw reviews](completed_runtime/README.md) add the pinned
 dev13 plugin, eleven offline projects and six frozen exports. Use the independent
 inspector Results action for native fly-around candidate/contact/clearance layers,
