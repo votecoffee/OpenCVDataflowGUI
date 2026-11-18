@@ -676,6 +676,7 @@ def builtin_registry():
     from .disk_features import DISK_BLOCKS
     from .distortion_fixture import DistortImageFixture
     from .dnn_blocks import DNN_BLOCKS
+    from .dnn_profiling import DNN_PROFILING_BLOCKS
     from .ecc_registration import AlignECC
     from .edge_agreement import CompareEdgeMaps
     from .epipolar import CheckEpipolarCorrespondences
@@ -1188,6 +1189,7 @@ def builtin_registry():
         ConveyorDemo,
         FinalJudgment,
         *DNN_BLOCKS,
+        *DNN_PROFILING_BLOCKS,
         *REGRESSION_BLOCKS,
         *LOCAL_ANOMALY_BLOCKS,
         *INPUT_SHIFT_BLOCKS,

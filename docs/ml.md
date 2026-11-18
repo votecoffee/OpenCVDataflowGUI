@@ -31,6 +31,10 @@ OpenCV installation: build/search/save/load galleries with stable image IDs,
 checked feature contracts and self-contained native bundles. HOG and binary
 image hashes connect directly; approximate recall remains explicit.
 
+Opt-in [DNN profiling variants](dnn-profiling.md) measure native layers on the
+same single-image, multi-input or batch forward. CPU timing availability, fusion
+controls, per-call source identity and an independent off switch remain explicit.
+
 ## Installation
 
 Point/box [prompted segmentation](prompted-segmentation.md) uses the pinned

@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 53 | 1 | 8 | 62 | 85.5% |
+| 2. ML and DNN | 54 | 1 | 7 | 62 | 87.1% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 279 | 33 | 158 | 470 | 59.4% |
+| **Overall** | 280 | 33 | 157 | 470 | 59.6% |
 
 <!-- coverage-summary:end -->
 
@@ -387,7 +387,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S2-55 | Profile image model layers | dnn.Net.getPerfProfile and getLayerNames | Planned | Qualify per-layer and total inference timings on a pinned model. Record engine and target, distinguish fused layers from unavailable timings, and verify predictable behavior when profiling is disabled. |
+| S2-55 | Profile image model layers | dnn.Net.getPerfProfile, getLayerNames, getLayerId and getTickFrequency | Complete | ml.dnn_profile, ml.dnn_multi_profile and ml.dnn_batch_profile collect bounded native layers from the same forward. Thirteen pinned original CPU projects qualify Classic/New/requested Auto, actual ID-to-slot alignment, fusion controls, zero-tick/unavailable/partial states, disabled collection, independent charts/receipts, batch-tail ownership, high depth and sealed JSON/XML relocation. No second forward or per-layer placement claim; non-CPU timings and alternate native overloads remain unqualified. See dnn-profiling.md. |
 | S2-56 | Score-decay suppression for overlapping detections | dnn.softNMSBoxes | Planned | Verify linear and Gaussian score decay on overlapping parts. Keep class IDs, updated scores and original indices aligned and compare against hard suppression on adjacent detections. |
 | S2-57 | Qualify quantized image model inference | ONNX QuantizeLinear/DequantizeLinear models and DNN engine selection | Planned | Compare a pinned integer-quantized vision model with its floating-point reference. Verify scale and zero-point handling, classification or detection tolerances, and diagnostics for an unsupported operator or execution target. |
 

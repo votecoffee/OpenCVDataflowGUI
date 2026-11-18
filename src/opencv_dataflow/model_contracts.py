@@ -15,7 +15,14 @@ from .ml_common import local_path
 from .parameter_validation import ValidationError
 
 MAX_MODEL_BYTES = 256 * 1024 * 1024
-OBSERVATION_FIELDS = ("model_path", "contract_path", "receipt_mode")
+OBSERVATION_FIELDS = (
+    "model_path",
+    "contract_path",
+    "receipt_mode",
+    "profile_mode",
+    "maximum_profile_layers",
+    "profile_plot_layers",
+)
 CONTRACT_DEFAULTS = {"contract_path": "", "receipt_mode": "summary", "fallback_policy": "error"}
 CONTRACT_CHOICES = {
     "receipt_mode": ("summary", "detailed", "off"),
@@ -149,6 +156,9 @@ def export_contract(block, directory, *, preprocessing=None):
         "ml.dnn",
         "ml.dnn_multi",
         "ml.dnn_batch",
+        "ml.dnn_profile",
+        "ml.dnn_multi_profile",
+        "ml.dnn_batch_profile",
         "ml.efficientsam",
         "ml.recognize_text_batch",
         "ml.recognize_constrained_text",

@@ -545,15 +545,15 @@ P2	method	cv2.dnn.Net.forwardAndRetrieve	no static reference	-
 P2	method	cv2.dnn.Net.forwardAsync	no static reference	-
 P2	method	cv2.dnn.Net.getFLOPS	no static reference	-
 P2	method	cv2.dnn.Net.getLayer	no static reference	-
-P2	method	cv2.dnn.Net.getLayerId	no static reference	-
-P2	method	cv2.dnn.Net.getLayerNames	no static reference	-
+P2	method	cv2.dnn.Net.getLayerId	method name only	-
+P2	method	cv2.dnn.Net.getLayerNames	method name only	-
 P2	method	cv2.dnn.Net.getLayersCount	no static reference	-
 P2	method	cv2.dnn.Net.getLayerShapes	no static reference	-
 P2	method	cv2.dnn.Net.getLayerTypes	no static reference	-
 P2	method	cv2.dnn.Net.getMemoryConsumption	no static reference	-
 P2	method	cv2.dnn.Net.getModelFormat	no static reference	-
 P2	method	cv2.dnn.Net.getParam	no static reference	-
-P2	method	cv2.dnn.Net.getPerfProfile	no static reference	-
+P2	method	cv2.dnn.Net.getPerfProfile	method name only	-
 P2	method	cv2.dnn.Net.getProfilingMode	no static reference	-
 P2	method	cv2.dnn.Net.getTracingMode	no static reference	-
 P2	method	cv2.dnn.Net.getUnconnectedOutLayers	no static reference	-
@@ -2875,7 +2875,7 @@ P3	function	cv2.getRotationMatrix2D	literal reference	-
 P3	function	cv2.getStructuringElement	literal reference	-
 P3	function	cv2.getTextSize	literal reference	-
 P3	function	cv2.getThreadNum	no static reference	-
-P3	function	cv2.getTickFrequency	no static reference	-
+P3	function	cv2.getTickFrequency	literal reference	-
 P3	function	cv2.getTrackbarPos	no static reference	-
 P3	function	cv2.getValidDisparityROI	no static reference	-
 P3	function	cv2.getVersionMajor	no static reference	-

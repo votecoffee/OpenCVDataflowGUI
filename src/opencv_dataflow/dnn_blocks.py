@@ -215,7 +215,9 @@ class DNNInference(Block):
             message=f"{filename}: {len(tensors)} tensor outputs",
         )
 
-    def infer_tensors(self, inputs, cache_token=(), *, array_outputs=False, preprocessing=None):
+    def infer_tensors(
+        self, inputs, cache_token=(), *, array_outputs=False, preprocessing=None, observer=None
+    ):
         """Bind every input for this activation; never keep a partially rebound network."""
         p = self.parameters
         inputs = tuple(inputs)
@@ -313,7 +315,21 @@ class DNNInference(Block):
                 raise ValidationError("Select existing terminal model output names", "output_names")
             # This OpenCV 5 engine requires the complete terminal-output set even when
             # callers retain a subset. Preserve requested order after one native forward.
-            values = self._net.forward(available)
+            values = (
+                self._net.forward(available)
+                if observer is None
+                else observer.forward(
+                    self._net,
+                    available,
+                    artifact=dict(identity),
+                    requested_execution=requested,
+                    selected_execution=selected,
+                    model_import=copy.deepcopy(self._import),
+                    cache_reused=reused,
+                    input_shapes={name: list(value.shape) for name, value in inputs},
+                    retained_outputs=names,
+                )
+            )
             if isinstance(values, np.ndarray):
                 values = [values]
             if len(values) != len(available):

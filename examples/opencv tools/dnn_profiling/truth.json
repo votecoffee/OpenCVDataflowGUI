@@ -1,0 +1,26 @@
+{
+  "asset_sha256": {
+    "assets/0.png": "e820e4747eabb142d90a16cca3ed0a11d6cac2c8d3f4ee7888246ceb6cc0add7",
+    "assets/1.png": "80898003ce946b0cf5514dfccb1def4c6232baa850c1af20f524bd65e28ec852",
+    "assets/2.png": "c49f804a831ebaaa7d96b15e824757ddac5f570acdba3b1cab3fe94f3834f095",
+    "assets/multi.onnx": "da2d7e65fd607b7698f82e3fbe289f8ed1b55416396dc75d409f80d555b50c44",
+    "assets/single.onnx": "465750b93933b068ecf2a39863c38386c111ccf00deb4199c517dbc4099504f3",
+    "bundle/contract.json": "23a3d5be9cb9bf5017de6abc8a14d50171c1794e17960f2bd46074b7413d813d",
+    "bundle/model.onnx": "465750b93933b068ecf2a39863c38386c111ccf00deb4199c517dbc4099504f3"
+  },
+  "cases": [
+    "classic_fused",
+    "classic_unfused",
+    "new_cpu",
+    "auto_cpu",
+    "disabled",
+    "receipt_off",
+    "plot_off",
+    "optional_budget",
+    "required_budget",
+    "multi_input",
+    "batch_tail",
+    "sealed",
+    "high_depth"
+  ]
+}

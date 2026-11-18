@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/0.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "ml.image_tensor",
+      "name": "Image to DNN tensor",
+      "parameters": {
+        "width": 16,
+        "height": 16,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00784313725490196,
+        "mean": [
+          127.5,
+          127.5,
+          127.5
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "layout": "nchw",
+        "maximum_image_pixels": 16777216,
+        "maximum_elements": 2000000
+      },
+      "position": [
+        370,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "tensor",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "ml.image_tensor",
+      "name": "Image to DNN tensor",
+      "parameters": {
+        "width": 16,
+        "height": 16,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00784313725490196,
+        "mean": [
+          127.5,
+          127.5,
+          127.5
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "layout": "nchw",
+        "maximum_image_pixels": 16777216,
+        "maximum_elements": 2000000
+      },
+      "position": [
+        370,
+        300
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "tensor",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "profile",
+      "type": "ml.dnn_multi_profile",
+      "name": "Profile multi-input ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/multi.onnx",
+        "output_names": [
+          "scores"
+        ],
+        "engine": "new",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000,
+        "active_inputs": 2,
+        "primary_input": "input_1",
+        "ticket_policy": "same_ticket",
+        "maximum_input_elements": 2000000,
+        "maximum_total_elements": 4000000,
+        "input_1_name": "left",
+        "input_1_shape": [
+          1,
+          3,
+          16,
+          16
+        ],
+        "input_1_tensor": "",
+        "input_1_role": "current",
+        "input_2_name": "right",
+        "input_2_shape": [
+          1,
+          3,
+          16,
+          16
+        ],
+        "input_2_tensor": "",
+        "input_2_role": "current",
+        "input_3_name": "aux1",
+        "input_3_shape": [
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "input_3_tensor": "",
+        "input_3_role": "reference",
+        "input_4_name": "aux2",
+        "input_4_shape": [
+          1,
+          3,
+          -1,
+          -1
+        ],
+        "input_4_tensor": "",
+        "input_4_role": "reference",
+        "profile_mode": "optional",
+        "maximum_profile_layers": 4096,
+        "profile_plot_layers": 20
+      },
+      "position": [
+        740,
+        0
+      ],
+      "exposed_inputs": [
+        "input_1",
+        "input_2",
+        "input_3",
+        "input_4"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing",
+        "input_info",
+        "profile"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Original DNN profiling controls - MIT",
+      "description": "Original OpenCVDataflowGUI images, untrained 1x1 CNNs and projects, MIT. Known channel transforms and pooling test outputs while native CPU layer timings are collected from the same forward. Timings vary by machine and warmup. Zero ticks may mean fusion, skipping or clock resolution; unavailable timings are explicit. Disabled collection does not call native timing APIs. See README.md/SOURCES.md. No learned accuracy or accelerator claim.",
+      "parameters": {},
+      "position": [
+        0,
+        -460
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "left",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "right",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "tensor",
+      "target": "profile",
+      "input": "input_1"
+    },
+    {
+      "source": "right",
+      "output": "tensor",
+      "target": "profile",
+      "input": "input_2"
+    }
+  ]
+}

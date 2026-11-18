@@ -334,6 +334,16 @@ BINDINGS = {
     "ml.dnn_multi": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward dnn.getAvailableTargets",
     "ml.image_tensor": "resize",
     "ml.dnn": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward dnn.getAvailableTargets",
+    "ml.dnn_profile": (
+        "dnn.readNetFromONNX dnn.Net.forward dnn.Net.getPerfProfile "
+        "dnn.Net.getLayerNames dnn.Net.getLayerId getTickFrequency"
+    ),
+    "ml.dnn_multi_profile": (
+        "dnn.Net.setInput dnn.Net.forward dnn.Net.getPerfProfile dnn.Net.getLayerNames"
+    ),
+    "ml.dnn_batch_profile": (
+        "dnn.blobFromImages dnn.Net.forward dnn.Net.getPerfProfile dnn.Net.getLayerNames"
+    ),
     "ml.kmeans": "kmeans",
     "output.image": "imencode imwriteWithMetadata",
     "output.tiff_file": "imencodemulti",
