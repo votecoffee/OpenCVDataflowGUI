@@ -94,6 +94,11 @@
       "parameters": {
         "output_name": "packed_boxes",
         "format": "xyxy_score_class",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
         "layout": "rows",
         "coordinate_units": "network_pixels",
         "grid_decode": "none",

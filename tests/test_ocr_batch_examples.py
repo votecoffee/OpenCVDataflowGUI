@@ -5,6 +5,7 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import cv2
 import numpy as np
@@ -130,6 +131,17 @@ def test_wrong_pinned_weights_reject_without_network_or_publication(tmp_path, mo
     with pytest.raises(ValueError, match="pinned"):
         prepare.prepare(path, directory=tmp_path / "bundle")
     assert path.read_bytes() == b"keep" and not (tmp_path / "bundle").exists()
+
+
+@pytest.mark.parametrize("example", ["ocr_batch", "pinned_text_detection", "ssd_detection"])
+def test_authoring_uses_its_own_settings_despite_a_foreign_helper(tmp_path, monkeypatch, example):
+    monkeypatch.setitem(sys.modules, "prepare_model", SimpleNamespace(PARAMETERS={"foreign": True}))
+    folder = BASE.parent / example
+    builder = module("isolated_" + example, folder / "build_example.py")
+    builder.HERE = tmp_path
+    builder.build()
+    for path in folder.glob("*.json"):
+        assert json.loads((tmp_path / path.name).read_bytes()) == json.loads(path.read_bytes())
 
 
 @native

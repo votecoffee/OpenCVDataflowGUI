@@ -91,6 +91,11 @@
       "parameters": {
         "output_name": "objectness",
         "format": "xywha_objectness",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
         "layout": "rows",
         "coordinate_units": "network_pixels",
         "score_activation": "probability",

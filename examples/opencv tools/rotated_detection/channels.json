@@ -91,6 +91,11 @@
       "parameters": {
         "output_name": "channels",
         "format": "xywh_scores_angle",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
         "layout": "channels_first",
         "coordinate_units": "network_pixels",
         "score_activation": "probability",

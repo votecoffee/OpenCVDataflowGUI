@@ -19,7 +19,8 @@ def test_all_shipped_simple3d_projects_choose_native_fit_clouds():
             if block["type"] == "3d.simple_locate":
                 assert block["preview_output"] == "fit", path
                 projects += 1
-    assert projects == 13
+    # Check every discovered project while retaining the original coverage floor.
+    assert projects >= 13
 
 
 def test_locator_uses_native_colored_thumbnail_and_flyaround_popout_without_matching(

@@ -171,6 +171,11 @@
       "parameters": {
         "output_name": "unavailable",
         "format": "xywh_scores",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
         "layout": "rows",
         "coordinate_units": "network_pixels",
         "grid_decode": "none",

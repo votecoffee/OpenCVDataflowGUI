@@ -2,16 +2,18 @@
 
 import hashlib
 import json
+import runpy
 from pathlib import Path
 
 import cv2
 import numpy as np
-from prepare_model import NATIVE_QUADS, PARAMETERS
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 
 HERE = Path(__file__).resolve().parent
+_preparation = runpy.run_path(str(Path(__file__).with_name("prepare_model.py")))
+PARAMETERS, NATIVE_QUADS = _preparation["PARAMETERS"], _preparation["NATIVE_QUADS"]
 SOURCE = HERE.parent / "pinned_text_detection/assets/labels.png"
 PATTERNS = [
     [255, 255, 128, 0, 255],

@@ -2,16 +2,17 @@
 
 import hashlib
 import json
+import runpy
 from pathlib import Path
 
 import cv2
 import numpy as np
-from prepare_model import PARAMETERS
 
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 
 HERE = Path(__file__).resolve().parent
+PARAMETERS = runpy.run_path(str(Path(__file__).with_name("prepare_model.py")))["PARAMETERS"]
 CASES = {
     "labels": {},
     "rotated": {"image": "rotated"},
