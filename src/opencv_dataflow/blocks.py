@@ -868,6 +868,7 @@ def builtin_registry():
     from .strip_width import InspectStripWidth
     from .structure_tensor import StructureTensor
     from .subpixel_crop import CropSubpixel
+    from .super_resolution import SuperResolution
     from .superpixels import SuperpixelsLSC, SuperpixelsSEEDS, SuperpixelsSLIC
     from .svm_blocks import SVM_BLOCKS
     from .table_sort import SortNumericTable
@@ -1194,6 +1195,7 @@ def builtin_registry():
         *OCR_BLOCKS,
         RecognizeTextBatch,
         RecognizeConstrainedText,
+        SuperResolution,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,

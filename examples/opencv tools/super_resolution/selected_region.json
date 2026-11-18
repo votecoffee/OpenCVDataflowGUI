@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "MODEL-LICENSE.txt",
+      "SOURCES.md"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "downsample",
+      "type": "cv.resize",
+      "name": "Resize",
+      "parameters": {
+        "width": 128,
+        "height": 96,
+        "interpolation": "area",
+        "size_mode": "absolute",
+        "scale_x": 1.0,
+        "scale_y": 1.0,
+        "padding_value": 0.0
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "learned",
+      "type": "ml.super_resolution",
+      "name": "Learned image super-resolution",
+      "parameters": {
+        "model_path": "assets/FSRCNN_x2.pb",
+        "model_sha256": "366b33f0084c7b3f2bf6724f0a2c77bca94fcec9d7b6d72389d330073b380d5c",
+        "algorithm": "fsrcnn",
+        "scale": 2,
+        "depth_mode": "uint8_only",
+        "baseline_interpolation": "cubic",
+        "backend": "opencv",
+        "target": "cpu",
+        "maximum_model_bytes": 67108864,
+        "maximum_input_pixels": 1000000,
+        "maximum_output_pixels": 16000000
+      },
+      "position": [
+        800,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "baseline",
+        "processed_mask",
+        "geometry",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "learned_error",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "mae",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 0.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1240,
+        -160
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "baseline_error",
+      "type": "inspect.image_quality",
+      "name": "Compare image quality",
+      "parameters": {
+        "metric": "mae",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 0.95,
+        "peak_value": 255.0
+      },
+      "position": [
+        1240,
+        220
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1640,
+        -20
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Shape region",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          20,
+          20
+        ],
+        "center": [
+          35,
+          44
+        ],
+        "radius": 22,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        400,
+        420
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "FSRCNN source / reconstruction limits",
+      "description": "Original MIT geometric/color/noise controls by OpenCVDataflowGUI contributors. Unmodified Apache-2.0 FSRCNN_x2.pb from Saafke/FSRCNN_Tensorflow, revision 6a4812c4ef1c4f5947d79beafa32a05a6eb4a94d. See SOURCES.md/MODEL-LICENSE.txt. Each source is the native-resolution reference; area reduction removes detail. Compare learned and cubic errors, processed selection and retained benchmark. Reconstruction can invent/erase defects. Nominal grid mapping is not new measured resolution or calibrated geometry. Model execution passing does not mean inspection fidelity passes; fidelity_alarm intentionally fails its zero-error check.",
+      "parameters": {},
+      "position": [
+        0,
+        -590
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "downsample",
+      "input": "image"
+    },
+    {
+      "source": "downsample",
+      "output": "image",
+      "target": "learned",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "learned_error",
+      "input": "image_a"
+    },
+    {
+      "source": "learned",
+      "output": "image",
+      "target": "learned_error",
+      "input": "image_b"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "baseline_error",
+      "input": "image_a"
+    },
+    {
+      "source": "learned",
+      "output": "baseline",
+      "target": "baseline_error",
+      "input": "image_b"
+    },
+    {
+      "source": "learned",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    },
+    {
+      "source": "downsample",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "learned",
+      "input": "region"
+    }
+  ]
+}

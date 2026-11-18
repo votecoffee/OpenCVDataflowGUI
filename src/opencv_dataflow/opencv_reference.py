@@ -7,6 +7,12 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "ml.super_resolution": (
+        "dnn_superres.DnnSuperResImpl_create dnn_superres.DnnSuperResImpl.readModel "
+        "dnn_superres.DnnSuperResImpl.setModel dnn_superres.DnnSuperResImpl.upsample "
+        "dnn_superres.DnnSuperResImpl.setPreferableBackend "
+        "dnn_superres.DnnSuperResImpl.setPreferableTarget"
+    ),
     "inspect.estimate_motion_blur": "dft",
     "sequence.fill_stabilization_borders": "remap connectedComponents distanceTransform dilate",
     "cv.panorama_points": "perspectiveTransform",

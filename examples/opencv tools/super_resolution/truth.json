@@ -1,0 +1,69 @@
+{
+  "cases": [
+    "geometry",
+    "color",
+    "alpha",
+    "gray16",
+    "selected_region",
+    "empty_region",
+    "fidelity_alarm",
+    "noise"
+  ],
+  "model_sha256": "366b33f0084c7b3f2bf6724f0a2c77bca94fcec9d7b6d72389d330073b380d5c",
+  "scale": 2,
+  "source_size": [
+    256,
+    192
+  ],
+  "reduced_size": [
+    128,
+    96
+  ],
+  "dark_threshold": 110,
+  "circle_roi": [
+    30,
+    45,
+    82,
+    86
+  ],
+  "gap_roi": [
+    170,
+    96,
+    24,
+    15
+  ],
+  "detail_roi": [
+    128,
+    138,
+    112,
+    38
+  ],
+  "flat_roi": [
+    4,
+    4,
+    32,
+    28
+  ],
+  "native_circle": {
+    "center": [
+      70,
+      88
+    ],
+    "radius": 36
+  },
+  "native_crack_widths": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "native_bead_gap_width": 2,
+  "asset_sha256": {
+    "alpha.png": "11e03613e0dec05576d1eab4dc8b1d9a9f761f929cbae8f7a638498e44ef0cd1",
+    "color.png": "1ec52f7009bb130ea6444e58c1578731bcef727e4e298afb1cc465143d967382",
+    "FSRCNN_x2.pb": "366b33f0084c7b3f2bf6724f0a2c77bca94fcec9d7b6d72389d330073b380d5c",
+    "gray16.png": "88962a0d2c72908e93cf417573c0329175daa00574edad33423ef906e061f969",
+    "noise.png": "f87ffe4eb852002f1bff5f29e7625b4d411402de374756576da4838209b4ccdd",
+    "reference.png": "6bdc5404f601de508725c13c1122aa0dfb6cea59c955bcce85999dd6272c5462"
+  }
+}

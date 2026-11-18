@@ -2404,13 +2404,13 @@ P3	class	cv2.dnn_superres.DnnSuperResImpl	no static reference	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.create	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.getAlgorithm	no static reference	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.getScale	no static reference	-
-P3	method	cv2.dnn_superres.DnnSuperResImpl.readModel	no static reference	-
+P3	method	cv2.dnn_superres.DnnSuperResImpl.readModel	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.setModel	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.setPreferableBackend	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.setPreferableTarget	method name only	-
-P3	method	cv2.dnn_superres.DnnSuperResImpl.upsample	no static reference	-
+P3	method	cv2.dnn_superres.DnnSuperResImpl.upsample	method name only	-
 P3	method	cv2.dnn_superres.DnnSuperResImpl.upsampleMultioutput	no static reference	-
-P3	function	cv2.dnn_superres.DnnSuperResImpl_create	no static reference	-
+P3	function	cv2.dnn_superres.DnnSuperResImpl_create	literal reference	-
 P3	class	cv2.dnn_superres_DnnSuperResImpl	alias	cv2.dnn_superres.DnnSuperResImpl
 P3	method	cv2.dnn_superres_DnnSuperResImpl.create	alias	cv2.dnn_superres.DnnSuperResImpl.create
 P3	method	cv2.dnn_superres_DnnSuperResImpl.getAlgorithm	alias	cv2.dnn_superres.DnnSuperResImpl.getAlgorithm

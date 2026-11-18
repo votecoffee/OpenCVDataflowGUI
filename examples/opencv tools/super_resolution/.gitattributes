@@ -1,0 +1,3 @@
+*.json -text
+*.pb binary
+MODEL-LICENSE.txt -text

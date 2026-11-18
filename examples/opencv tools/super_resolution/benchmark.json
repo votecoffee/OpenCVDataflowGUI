@@ -1,0 +1,245 @@
+{
+  "model_sha256": "366b33f0084c7b3f2bf6724f0a2c77bca94fcec9d7b6d72389d330073b380d5c",
+  "opencv": "5.0.0",
+  "reference": {
+    "mae": 0.0,
+    "rmse": 0.0,
+    "maximum_absolute_error": 0.0,
+    "circle_width_height": [
+      73,
+      73
+    ],
+    "circle_center": [
+      70.0,
+      88.0
+    ],
+    "circle_area": 4053,
+    "crack_widths_at_y157": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "false_dark_detail_pixels": 0,
+    "erased_dark_detail_pixels": 0,
+    "bead_gap_columns": 2,
+    "flat_std": 0.0,
+    "flat_changed_pixels": 0,
+    "flat_rmse_to_180": 0.0
+  },
+  "cases": {
+    "reference": {
+      "learned": {
+        "mae": 1.1710611979166667,
+        "rmse": 5.375026495816478,
+        "maximum_absolute_error": 94.0,
+        "circle_width_height": [
+          71,
+          71
+        ],
+        "circle_center": [
+          70.00247157686604,
+          88.00914483440435
+        ],
+        "circle_area": 4046,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 27,
+        "bead_gap_columns": 2,
+        "flat_std": 0.17989188132552492,
+        "flat_changed_pixels": 30,
+        "flat_rmse_to_180": 0.18298126367784998
+      },
+      "linear": {
+        "mae": 1.5436808268229167,
+        "rmse": 7.774568071051037,
+        "maximum_absolute_error": 100.0,
+        "circle_width_height": [
+          71,
+          71
+        ],
+        "circle_center": [
+          70.03080745341614,
+          88.03080745341614
+        ],
+        "circle_area": 4025,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 30,
+        "bead_gap_columns": 2,
+        "flat_std": 0.0,
+        "flat_changed_pixels": 0,
+        "flat_rmse_to_180": 0.0
+      },
+      "cubic": {
+        "mae": 1.7218424479166667,
+        "rmse": 7.1817487179960215,
+        "maximum_absolute_error": 92.0,
+        "circle_width_height": [
+          71,
+          71
+        ],
+        "circle_center": [
+          70.01585335645281,
+          88.01585335645281
+        ],
+        "circle_area": 4037,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 26,
+        "bead_gap_columns": 2,
+        "flat_std": 0.0,
+        "flat_changed_pixels": 0,
+        "flat_rmse_to_180": 0.0
+      },
+      "lanczos4": {
+        "mae": 1.970947265625,
+        "rmse": 7.248666925754061,
+        "maximum_absolute_error": 92.0,
+        "circle_width_height": [
+          71,
+          71
+        ],
+        "circle_center": [
+          70.00396530359356,
+          88.00396530359356
+        ],
+        "circle_area": 4035,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 26,
+        "bead_gap_columns": 2,
+        "flat_std": 0.0,
+        "flat_changed_pixels": 0,
+        "flat_rmse_to_180": 0.0
+      }
+    },
+    "noise": {
+      "learned": {
+        "mae": 3.5710042317708335,
+        "rmse": 6.415798904730221,
+        "maximum_absolute_error": 95.0,
+        "circle_width_height": [
+          71,
+          71
+        ],
+        "circle_center": [
+          70.00420168067227,
+          87.99307958477509
+        ],
+        "circle_area": 4046,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 28,
+        "bead_gap_columns": 2,
+        "flat_std": 3.0696872578309455,
+        "flat_changed_pixels": 787,
+        "flat_rmse_to_180": 3.0989989743233446
+      },
+      "linear": {
+        "mae": 3.4684651692708335,
+        "rmse": 8.177534488615747,
+        "maximum_absolute_error": 100.0,
+        "circle_width_height": [
+          71,
+          71
+        ],
+        "circle_center": [
+          70.04347826086956,
+          88.01937888198758
+        ],
+        "circle_area": 4025,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 34,
+        "bead_gap_columns": 2,
+        "flat_std": 2.334286805426284,
+        "flat_changed_pixels": 736,
+        "flat_rmse_to_180": 2.358495283014151
+      },
+      "cubic": {
+        "mae": 4.22259521484375,
+        "rmse": 8.005695858473855,
+        "maximum_absolute_error": 93.0,
+        "circle_width_height": [
+          71,
+          71
+        ],
+        "circle_center": [
+          70.02229930624381,
+          88.01164519326065
+        ],
+        "circle_area": 4036,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 28,
+        "bead_gap_columns": 2,
+        "flat_std": 3.1681631276240507,
+        "flat_changed_pixels": 790,
+        "flat_rmse_to_180": 3.195106470392318
+      },
+      "lanczos4": {
+        "mae": 4.50238037109375,
+        "rmse": 8.149156547852437,
+        "maximum_absolute_error": 93.0,
+        "circle_width_height": [
+          71,
+          72
+        ],
+        "circle_center": [
+          70.01015354135711,
+          87.99207528479445
+        ],
+        "circle_area": 4038,
+        "crack_widths_at_y157": [
+          0,
+          2,
+          3,
+          4
+        ],
+        "false_dark_detail_pixels": 0,
+        "erased_dark_detail_pixels": 27,
+        "bead_gap_columns": 2,
+        "flat_std": 3.379467050090868,
+        "flat_changed_pixels": 814,
+        "flat_rmse_to_180": 3.404467915212932
+      }
+    }
+  },
+  "scope": "known synthetic pixels; nominal grid; no physical dimensional accuracy"
+}

@@ -9731,6 +9731,32 @@ Inputs: `samples` (data, optional).
 | `seed` | `0` | Value must be a whole number between -2.14748e+09 and 2.14748e+09. Deterministic group hash order; independent of input order or global RNG state. |
 | `require_training_classes` | `true` | Reject missing training classes. Split is not stratified. |
 
+## Learned image super-resolution (`ml.super_resolution`)
+
+ML / Image restoration
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — GRAY/BGR/RGB/BGRA/RGBA. Interpolated alpha; no physical depth.
+
+Input `mask` — Optional source-grid nonzero selection; intersects Region and repeats to output.
+
+Input `region` — Source-grid region. Full source remains model context; outside uses baseline.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Frozen .pb: relative assets copy on Save As; absolute paths stay linked. |
+| `model_sha256` | `""` | Exact digest checked each run; imports a private snapshot on cache miss. |
+| `algorithm` | `"fsrcnn"` | `fsrcnn`, `espcn`, `edsr`, `lapsrn` Must match the export. Qualified here: pinned FSRCNN x2 on CPU. |
+| `scale` | `2` | `2`, `3`, `4`, `8` Export scale; FSRCNN/ESPCN/EDSR: 2/3/4; LapSRN: 2/4/8. Output size is checked. |
+| `depth_mode` | `"uint8_only"` | `uint8_only`, `convert_full_scale` Quantizes uint16/float32 [0,1] to 8 bits, then restores source depth. |
+| `baseline_interpolation` | `"cubic"` | `nearest`, `linear`, `cubic`, `lanczos4` Full-source resize; also supplies unselected pixels and alpha. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` Unavailable targets fail. Layer placement is not measured. |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` CPU baseline; other available devices require their own qualification. |
+| `maximum_model_bytes` | `67108864` | Value must be a whole number between 1 and 2.68435e+08. Bound the exact model snapshot; does not bound native workspace. |
+| `maximum_input_pixels` | `1000000` | Value must be a whole number between 1 and 1.6e+07. Full-source inference with unselected context; no ROI speedup. |
+| `maximum_output_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. Bound predicted output size before resize and native inference. |
+
 ## Load OpenCV SVM classifier (`ml.svm_load`)
 
 ML / Classical classification
