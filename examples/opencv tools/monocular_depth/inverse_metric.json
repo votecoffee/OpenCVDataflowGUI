@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "SOURCES.md",
+      "MODEL-LICENSE.txt"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/ramp.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "estimate",
+      "type": "ml.monocular_depth",
+      "name": "Estimate monocular depth",
+      "parameters": {
+        "contract_path": "models/inverse_metric/contract.json",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "",
+        "input_name": "input",
+        "output_names": [],
+        "width": 31,
+        "height": 23,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "input_interpolation": "linear",
+        "padding_value": 0.0,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "layout": "NHW",
+        "convention": "metric_inverse_depth",
+        "head_scale": 1.0,
+        "head_offset": 0.0,
+        "units": "m",
+        "minimum_model_value": 0.0,
+        "maximum_model_value": 0.0,
+        "minimum_depth": 0.001,
+        "maximum_depth": 100.0,
+        "resampling": "linear",
+        "minimum_valid_pixels": 1,
+        "minimum_valid_fraction": 0.01,
+        "export_estimate": true,
+        "preview_mode": "auto_percentile",
+        "display_min": 0.0,
+        "display_max": 1.0,
+        "engine": "classic",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "maximum_source_pixels": 1000000,
+        "maximum_input_elements": 3000000,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        450,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "preview",
+        "valid_mask",
+        "estimate",
+        "depth",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        920,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Depth sources / units and scale",
+      "description": "Original MIT image-dependent arithmetic controls by OpenCVDataflowGUI contributors. These controls are not learned models. Optional MiDaS v2.1 Small uses unchanged MIT Intel ISL weights. Real RGB/first-return depth: T-LESS, T. Hodan et al., WACV 2017, CC BY 4.0; scene 6/frame 2. https://cmp.felk.cvut.cz/t-less/ ; https://creativecommons.org/licenses/by/4.0/ . See SOURCES.md and MODEL-LICENSE.txt. Relative inverse values are arbitrary, not meters. Only explicitly declared metric models/fixed calibrations emit Depth. Display stretching does not change numbers or identify physical scale. Reference depths are evaluation-only.",
+      "parameters": {},
+      "position": [
+        0,
+        -850
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "estimate",
+      "input": "image"
+    },
+    {
+      "source": "estimate",
+      "output": "preview",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "cases": [
+    "relative",
+    "metric",
+    "inverse_metric",
+    "millimeters",
+    "letterbox",
+    "invalid_hole",
+    "selected",
+    "empty",
+    "coverage_alarm",
+    "native_relative",
+    "native_letterbox"
+  ],
+  "native_cases": [
+    "native_relative",
+    "native_letterbox"
+  ],
+  "source_size": [
+    31,
+    23
+  ],
+  "quantity_formula": "q = 1 + 2 * source_red / 255; inverse metric z = 1 / q",
+  "hole_rectangle": [
+    13,
+    8,
+    4,
+    4
+  ],
+  "midas_sha256": "2d8c6cb8f415229daf1eb041024208e2608c9f98e17c81cc7c6ecb449c56fd58",
+  "dataset": {
+    "name": "T-LESS",
+    "license": "CC-BY-4.0",
+    "scene": 6,
+    "frame": 2,
+    "depth_scale_to_m": 0.0001
+  },
+  "asset_sha256": {
+    "assets/hole.png": "ef2f02ff5bb00e8d5bafeb444c32f655a3b9e935705258b3c222e7ec416021ed",
+    "assets/ramp.png": "0a79cb1ff9b072ff52f2915542aed448b94d355bdd52aff2d47cc6834aa42ce7",
+    "assets/tless_camera.json": "4cfa78d219ac8a317a45f375585a3d27cfe5f7a3fd35de49263e5d6484e5e313",
+    "assets/tless_color.png": "04b19c87d60aaabe98c6be9655a58c5cc620ac31dc356ede55e89dc02cd2a166",
+    "assets/tless_depth.png": "ffc9e6045fbb77da82f9620b4d5e8d086b7d13a74a2360f7d6c7a446db20cc56",
+    "models/coverage_alarm/contract.json": "3700c5ec479cb5c1aff253117f7e60059e2aaeddedf899d0bc285f6060f6ae99",
+    "models/coverage_alarm/model.onnx": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05",
+    "models/empty/contract.json": "916460c45882443231e37ad91b3092c1e244f7cff4ed28c7dd73ddad3906b9bf",
+    "models/empty/model.onnx": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05",
+    "models/invalid_hole/contract.json": "c7e7d2ff7d7f3b3aee81dd15e337746835fb543352483ca3b20a02c328bcfa05",
+    "models/invalid_hole/model.onnx": "2dc2266d4dd0710e27f11a4b23cbabf025e3361acfc92968f646286f62ba378a",
+    "models/inverse_metric/contract.json": "a6e96ed2f46e241f8729d3be3bfb46c9a8a13b9a3232d6704065ccffa4892dd7",
+    "models/inverse_metric/model.onnx": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05",
+    "models/letterbox/contract.json": "451084e8ac5ef700bdae8f13c0c2d669c7848c2873fd966ede146f21d2e633e8",
+    "models/letterbox/model.onnx": "0ae3dccb6b02ac1671bcce74904e1ba7c9019d99d9d2421466318f3e0c651a4e",
+    "models/metric/contract.json": "dd7d65054f48f3e0e0e74bf61e2b004fb4e365fe2cfef88261de654680184f0e",
+    "models/metric/model.onnx": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05",
+    "models/millimeters/contract.json": "25dfe5b9d026bd0a6a0f4ff1f46c4eada0dac6e9c77a1a645c4021885ba6a61e",
+    "models/millimeters/model.onnx": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05",
+    "models/relative/contract.json": "916460c45882443231e37ad91b3092c1e244f7cff4ed28c7dd73ddad3906b9bf",
+    "models/relative/model.onnx": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05",
+    "models/selected/contract.json": "916460c45882443231e37ad91b3092c1e244f7cff4ed28c7dd73ddad3906b9bf",
+    "models/selected/model.onnx": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05"
+  }
+}

@@ -510,7 +510,7 @@ P2	method	cv2.dnn.Image2BlobParams.blobRectsToImageRects	no static reference	-
 P2	method	cv2.dnn.Image2BlobParams.blobRectToImageRect	no static reference	-
 P2	function	cv2.dnn.imagesFromBlob	no static reference	-
 P2	class	cv2.dnn.KeypointsModel	no static reference	-
-P2	method	cv2.dnn.KeypointsModel.estimate	no static reference	-
+P2	method	cv2.dnn.KeypointsModel.estimate	method name only	-
 P2	class	cv2.dnn.Layer	no static reference	-
 P2	method	cv2.dnn.Layer.finalize	no static reference	-
 P2	method	cv2.dnn.Layer.outputNameToIndex	no static reference	-

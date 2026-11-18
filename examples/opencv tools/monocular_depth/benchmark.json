@@ -1,0 +1,94 @@
+{
+  "opencv": "5.0.0",
+  "artifact_sha256": "2d8c6cb8f415229daf1eb041024208e2608c9f98e17c81cc7c6ecb449c56fd58",
+  "source_size": [
+    720,
+    540
+  ],
+  "head_size": [
+    256,
+    256
+  ],
+  "convention": "relative_inverse_depth",
+  "metric_output": false,
+  "head_minimum": 60.026145935058594,
+  "head_maximum": 622.9835815429688,
+  "source_samples": [
+    {
+      "pixel": [
+        0,
+        0
+      ],
+      "value": 322.81439208984375
+    },
+    {
+      "pixel": [
+        719,
+        0
+      ],
+      "value": 60.026145935058594
+    },
+    {
+      "pixel": [
+        0,
+        539
+      ],
+      "value": 519.3410034179688
+    },
+    {
+      "pixel": [
+        719,
+        539
+      ],
+      "value": 477.4568786621094
+    },
+    {
+      "pixel": [
+        360,
+        270
+      ],
+      "value": 418.38999616116223
+    },
+    {
+      "pixel": [
+        123,
+        147
+      ],
+      "value": 344.1077810552531
+    },
+    {
+      "pixel": [
+        501,
+        326
+      ],
+      "value": 340.52060126367337
+    }
+  ],
+  "known_depth_pixels": 387684,
+  "fit_pixels": 3046,
+  "heldout_pixels": 194168,
+  "ordering_pairs": 3609,
+  "near_far_order_accuracy": 0.9720144084233859,
+  "evaluation_only_alignment": {
+    "family": "inverse_meters = a * relative_value + b",
+    "fit": "left image half, 8-pixel stride; measured depths used only for evaluation",
+    "validation": "right image half; same captured frame, not another acquisition",
+    "slope": 0.0005618235602815829,
+    "offset": 1.0423525093028643,
+    "positive_inverse_slope": true,
+    "aligned": {
+      "valid_fraction": 1.0,
+      "rmse_m": 0.05136196807826048,
+      "absolute_relative": 0.06184736515797805,
+      "delta1": 1.0
+    },
+    "constant_calibration_median": {
+      "valid_fraction": 1.0,
+      "rmse_m": 0.04070451982787192,
+      "absolute_relative": 0.04408230810723959,
+      "delta1": 1.0
+    },
+    "runtime_calibration": false
+  },
+  "scope": "single licensed real frame; scale/shift alignment is diagnostic, not physical model calibration"
+}

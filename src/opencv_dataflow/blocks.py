@@ -760,6 +760,7 @@ def builtin_registry():
     from .matrix_svd import MatrixSVD
     from .metadata_blocks import CreateImageMetadata
     from .mil_tracking import MILSequence
+    from .monocular_depth import MonocularDepth
     from .mosaic_layout_io import LoadMosaicLayout, SaveMosaicLayout
     from .motion_trajectory import CaptureMotionTrajectory, ReplayMotionTrajectory
     from .motion_trajectory_io import LoadMotionTrajectory, SaveMotionTrajectory
@@ -1198,6 +1199,7 @@ def builtin_registry():
         RecognizeConstrainedText,
         SuperResolution,
         RestoreImage,
+        MonocularDepth,
         *ANNOY_BLOCKS,
         *SVM_BLOCKS,
         *KNN_BLOCKS,

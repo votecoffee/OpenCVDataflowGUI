@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "ml.monocular_depth": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.restore_image": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward",
     "ml.super_resolution": (
         "dnn_superres.DnnSuperResImpl_create dnn_superres.DnnSuperResImpl.readModel "

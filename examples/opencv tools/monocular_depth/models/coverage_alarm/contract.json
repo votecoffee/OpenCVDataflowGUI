@@ -1,0 +1,77 @@
+{
+  "model": "onnx_inference_contract_v1",
+  "schema_version": 1,
+  "block_type": "ml.monocular_depth",
+  "configuration": {
+    "fallback_policy": "error",
+    "input_name": "input",
+    "output_names": [],
+    "width": 31,
+    "height": 23,
+    "color_format": "rgb",
+    "resize_mode": "stretch",
+    "input_interpolation": "linear",
+    "padding_value": 0.0,
+    "mean": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "std": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "layout": "NHW",
+    "convention": "relative_inverse_depth",
+    "head_scale": 1.0,
+    "head_offset": 0.0,
+    "units": "m",
+    "minimum_model_value": 0.0,
+    "maximum_model_value": 0.0,
+    "minimum_depth": 0.001,
+    "maximum_depth": 100.0,
+    "resampling": "linear",
+    "minimum_valid_pixels": 714,
+    "minimum_valid_fraction": 0.01,
+    "export_estimate": true,
+    "preview_mode": "auto_percentile",
+    "display_min": 0.0,
+    "display_max": 1.0,
+    "engine": "classic",
+    "backend": "opencv",
+    "target": "cpu",
+    "fusion": true,
+    "maximum_source_pixels": 1000000,
+    "maximum_input_elements": 3000000,
+    "max_output_elements": 1000000
+  },
+  "preprocessing": {
+    "input": {
+      "model": "monocular_depth_preparation_v1",
+      "source_units": "integer_full_scale_or_float_unit",
+      "width": 31,
+      "height": 23,
+      "color_format": "rgb",
+      "resize_mode": "stretch",
+      "input_interpolation": "linear",
+      "padding_value": 0.0,
+      "mean": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "std": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "artifact": {
+    "file": "model.onnx",
+    "sha256": "b9823e961509df5f983a46e53ef4d1c760538809a5af53ed942fa7bca2da2f05",
+    "bytes": 376
+  },
+  "revision": "54b8fb6c5c1104597fd0ededbf0bdb06a4d57065061b8b591590e3e57a2794c1"
+}

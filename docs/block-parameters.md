@@ -9391,6 +9391,58 @@ Input `data` — Optional scalar or flat numeric list, replacing the Values para
 | `values` | `[1.0, 1.0, 1.0]` | Fallback scalar/flat numeric list when Data is absent; converted to finite float32. |
 | `maximum_elements` | `2000000` | Value must be a whole number between 1 and 2e+06. Bound values before array allocation; graph snapshots are separate. |
 
+## Estimate monocular depth (`ml.monocular_depth`)
+
+ML / Depth estimation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Original uint8/uint16 or float32 [0,1]; returned unchanged.
+
+Input `mask` — Write selection. Excluded source pixels remain model context.
+
+Input `region` — Intersects Mask; known coordinate-frame conflicts fail.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contract_path` | `""` | Project-relative contract.json; uses its bundled, verified ONNX model. |
+| `receipt_mode` | `"summary"` | `summary`, `detailed`, `off` Summary: identity/settings/shapes. Detailed: tensor hashes. Off: no receipt. |
+| `fallback_policy` | `"error"` | `error`, `cpu_if_unavailable` Error by default; CPU fallback only for an unavailable requested target. |
+| `model_path` | `""` | Local ONNX or sealed Contract path; no implicit download or calibration. |
+| `input_name` | `"input"` |  |
+| `output_names` | `[]` |  |
+| `width` | `256` | Value must be a whole number between 1 and 4096. |
+| `height` | `256` | Value must be a whole number between 1 and 4096. |
+| `color_format` | `"rgb"` | `rgb`, `bgr`, `gray` |
+| `resize_mode` | `"stretch"` | `stretch`, `letterbox` Rounded letterbox or stretch with explicit half-pixel centers. |
+| `input_interpolation` | `"cubic"` | `linear`, `cubic`, `area` |
+| `padding_value` | `0.0` | Value must be a finite number between 0 and 1. |
+| `mean` | `[0.0, 0.0, 0.0]` | Per-channel normalized source values, subtracted before Std division. |
+| `std` | `[1.0, 1.0, 1.0]` | Positive per-channel divisors; avoid duplicating embedded normalization. |
+| `layout` | `"NHW"` | `NHW`, `NCHW`, `NHWC`, `HW`, `CHW`, `HWC` |
+| `convention` | `"relative_inverse_depth"` | `relative_inverse_depth`, `relative_depth`, `metric_depth`, `metric_inverse_depth` Declare model meaning. Relative outputs do not emit physical Depth. |
+| `head_scale` | `1.0` | Value must be a finite number between -1e+09 and 1e+09. Fixed nonzero affine scale before resampling; never fitted per image. |
+| `head_offset` | `0.0` | Value must be a finite number between -1e+09 and 1e+09. Fixed affine offset; display normalization never changes model values. |
+| `units` | `"m"` | `m`, `mm` Metric Depth units; metric-inverse model values use their reciprocal. |
+| `minimum_model_value` | `0.0` | Value must be a finite number between 0 and 1e+12. Affine values at/below this bound are invalid; zero is reserved. |
+| `maximum_model_value` | `0.0` | Value must be a finite number between 0 and 1e+12. Optional inclusive affine upper bound; zero disables. |
+| `minimum_depth` | `0.001` | Value must be a finite number between 0 and 1e+12. Metric lower bound after inversion; values must also be positive. |
+| `maximum_depth` | `100.0` | Value must be a finite number between 1e-12 and 1e+12. Metric upper bound; outside values become invalid, not clipped. |
+| `resampling` | `"linear"` | `nearest`, `linear` Interpolate affine model values before inverse-metric conversion. |
+| `minimum_valid_pixels` | `1` | Value must be a whole number between 1 and 4e+06. |
+| `minimum_valid_fraction` | `0.01` | Value must be a finite number between 0 and 1. Required selected-pixel coverage; not a confidence score. |
+| `export_estimate` | `true` | Emit JSON quantity map; disable to avoid per-pixel list overhead. |
+| `preview_mode` | `"auto_percentile"` | `auto_percentile`, `fixed` Display-only stretch. Numerical outputs never normalize per image. |
+| `display_min` | `0.0` |  |
+| `display_max` | `1.0` |  |
+| `engine` | `"classic"` | `auto`, `classic`, `new`, `ort` |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` |
+| `fusion` | `true` |  |
+| `maximum_source_pixels` | `1000000` | Value must be a whole number between 1 and 4e+06. Source-grid resampling/map bound before model I/O. |
+| `maximum_input_elements` | `3000000` | Value must be a whole number between 1 and 1.6e+07. Configured input tensor bound before allocation. |
+| `max_output_elements` | `1000000` | Value must be a whole number between 1 and 8e+06. |
+
 ## Pack separate detection heads (`ml.pack_detection_heads`)
 
 ML / Instance segmentation
