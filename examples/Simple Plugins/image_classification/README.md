@@ -70,3 +70,22 @@ Three projects replay 33 real labeled VegQual frames, with nine frozen exports.
 Both existing recipes and test splits are unchanged; their incorrect predictions
 remain visible. Scores and default charts exactly match the earlier implementation.
 Training remains independent, and Save As carries the model and labeled images.
+
+## Dataset checks and correction
+
+The [0.3.3 pinned-plugin training examples](training_workflow/README.md) add
+background checks for unreadable files, exact pixel duplicates, conflicting
+class labels and duplicate leakage across training/validation. Planned class and
+split counts stay visible; selecting a problem focuses its filmstrip entry for
+correction. Checks become stale after edits. They do not train or predict.
+
+Load that folder's **plugin.py first**, then open either original or retrained
+VegQual profile. Restart if another classifier version is already imported.
+This explicit example selects the standalone disk-image trainer for this session;
+it does not include the built-in trainer's **Capture from graph** extension.
+The built-in trainer and the host environment have not been modified. Preserve
+graph capture when integrating the new checks into the built-in trainer.
+
+Both native workflows pass audit, correction, retraining, Stage/Apply, reopen and
+exact model/image Save As. The original 33 runtime frames retain exact scores
+and charts. See the [license and attribution](training_workflow/SOURCES.md).

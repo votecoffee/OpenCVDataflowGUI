@@ -1,0 +1,1718 @@
+[
+  {
+    "image": "images/valid/fresh_potato/01.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250923154913_jpg.rf.8c72ccb33cb4bf2e7d657308c8980a5a.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250923154913_jpg.rf.8c72ccb33cb4bf2e7d657308c8980a5a.txt",
+    "yolo_xywh": [
+      0.46328125,
+      0.60390625,
+      0.70546875,
+      0.41328125
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_potato/02.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG_20251004_172234_jpg.rf.be5f2fce5d304193bfb92f8a34c70bf4.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG_20251004_172234_jpg.rf.be5f2fce5d304193bfb92f8a34c70bf4.txt",
+    "yolo_xywh": [
+      0.5171875,
+      0.4125,
+      0.41328125,
+      0.63671875
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_potato/03.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG_20251004_172644_jpg.rf.acce65f3defc7acc6a495fe2758d9064.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG_20251004_172644_jpg.rf.acce65f3defc7acc6a495fe2758d9064.txt",
+    "yolo_xywh": [
+      0.44609375,
+      0.5765625,
+      0.4734375,
+      0.51171875
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_potato/04.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG_20251004_174327_jpg.rf.c6580d2c0df653a98d3d3762388d2dc5.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG_20251004_174327_jpg.rf.c6580d2c0df653a98d3d3762388d2dc5.txt",
+    "yolo_xywh": [
+      0.5859375,
+      0.4890625,
+      0.2203125,
+      0.4546875
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_potato/05.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250923155805_jpg.rf.3554b50b53dd2ac8597b6535b6a11113.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250923155805_jpg.rf.3554b50b53dd2ac8597b6535b6a11113.txt",
+    "yolo_xywh": [
+      0.49453125,
+      0.53984375,
+      0.56015625,
+      0.75
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_Potato/01.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250923155539_jpg.rf.f860ae65fdca5bcea0980e359ce9fb2e.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250923155539_jpg.rf.f860ae65fdca5bcea0980e359ce9fb2e.txt",
+    "yolo_xywh": [
+      0.4125,
+      0.52421875,
+      0.61875,
+      0.71640625
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_Potato/02.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG_20251004_172500_jpg.rf.73503990947fbb49958de67af048d9a5.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG_20251004_172500_jpg.rf.73503990947fbb49958de67af048d9a5.txt",
+    "yolo_xywh": [
+      0.58984375,
+      0.4921875,
+      0.4640625,
+      0.4078125
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_Potato/03.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG_20251004_172328_jpg.rf.a68269bc05b0905834b358478c82f5c0.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG_20251004_172328_jpg.rf.a68269bc05b0905834b358478c82f5c0.txt",
+    "yolo_xywh": [
+      0.41328125,
+      0.5265625,
+      0.4546875,
+      0.70078125
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_Potato/04.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250923155003_jpg.rf.2c11f40d06e2f67680ec28b77eabfe35.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250923155003_jpg.rf.2c11f40d06e2f67680ec28b77eabfe35.txt",
+    "yolo_xywh": [
+      0.48359375,
+      0.515625,
+      0.5171875,
+      0.6578125
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_Potato/05.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/valid/images/IMG_20251004_172223_jpg.rf.ad4cbdb84966fd3ca402ebf5dc61ddf4.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG_20251004_172223_jpg.rf.ad4cbdb84966fd3ca402ebf5dc61ddf4.txt",
+    "yolo_xywh": [
+      0.43359375,
+      0.5171875,
+      0.48984375,
+      0.61171875
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_capsicum/01.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/1758873619502_jpg.rf.c3f1843521017f4dbfa9507568240d21.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/1758873619502_jpg.rf.c3f1843521017f4dbfa9507568240d21.txt",
+    "yolo_xywh": [
+      0.55,
+      0.4515625,
+      0.23828125,
+      0.3390625
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_capsicum/02.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250926093742_jpg.rf.35c327ceff616b6cddbf5d58fde52515.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250926093742_jpg.rf.35c327ceff616b6cddbf5d58fde52515.txt",
+    "yolo_xywh": [
+      0.5203125,
+      0.471875,
+      0.71796875,
+      0.56875
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_capsicum/03.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/1758873619354_jpg.rf.8f5ad70e7cc3d9eff32ccd9856af51e3.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/1758873619354_jpg.rf.8f5ad70e7cc3d9eff32ccd9856af51e3.txt",
+    "yolo_xywh": [
+      0.38203125,
+      0.73046875,
+      0.31796875,
+      0.45234375
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_capsicum/04.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250926093732_jpg.rf.02b377edadd0a9e3432b1b420cccba64.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250926093732_jpg.rf.02b377edadd0a9e3432b1b420cccba64.txt",
+    "yolo_xywh": [
+      0.49296875,
+      0.53828125,
+      0.5953125,
+      0.4734375
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/fresh_capsicum/05.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/1758873619508_jpg.rf.53085c121214b07f34b61cdb734a8b42.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/1758873619508_jpg.rf.53085c121214b07f34b61cdb734a8b42.txt",
+    "yolo_xywh": [
+      0.55234375,
+      0.44921875,
+      0.22421875,
+      0.32578125
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_capsicum/01.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250926092454_jpg.rf.6205d12652df8e0a163be28827cac7a6.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250926092454_jpg.rf.6205d12652df8e0a163be28827cac7a6.txt",
+    "yolo_xywh": [
+      0.46328125,
+      0.33671875,
+      0.78359375,
+      0.56484375
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_capsicum/02.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/IMG_20250926_093015_jpg.rf.b330d563d52fd842969e4b2011a31ec6.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG_20250926_093015_jpg.rf.b330d563d52fd842969e4b2011a31ec6.txt",
+    "yolo_xywh": [
+      0.278125,
+      0.559375,
+      0.490625,
+      0.34765625
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_capsicum/03.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250926092454_01_jpg.rf.9c87b7fc39562c9c0cb51c01d5535756.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250926092454_01_jpg.rf.9c87b7fc39562c9c0cb51c01d5535756.txt",
+    "yolo_xywh": [
+      0.4640625,
+      0.34453125,
+      0.82421875,
+      0.6
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_capsicum/04.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250926092744_jpg.rf.777f7c19b1a273232dbbbb71286de4db.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250926092744_jpg.rf.777f7c19b1a273232dbbbb71286de4db.txt",
+    "yolo_xywh": [
+      0.56875,
+      0.51640625,
+      0.75390625,
+      0.60078125
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/valid/defected_capsicum/05.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/valid/images/IMG20250926092456_jpg.rf.1f8ea0223b863e1e998a9777110d923e.jpg",
+    "source_annotation": "VegQual/VegMining/valid/labels/IMG20250926092456_jpg.rf.1f8ea0223b863e1e998a9777110d923e.txt",
+    "yolo_xywh": [
+      0.44375,
+      0.4671875,
+      0.7609375,
+      0.575
+    ],
+    "source_split": "valid"
+  },
+  {
+    "image": "images/test/fresh_potato/01.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/test/images/IMG_20251004_172904_jpg.rf.bd31ae4d6658c2d095408fab81b33fcf.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG_20251004_172904_jpg.rf.bd31ae4d6658c2d095408fab81b33fcf.txt",
+    "yolo_xywh": [
+      0.51015625,
+      0.53828125,
+      0.6859375,
+      0.3796875
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/fresh_potato/02.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/test/images/IMG_20251004_174831_jpg.rf.35064b63a9319c850366a2bab3537a2f.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG_20251004_174831_jpg.rf.35064b63a9319c850366a2bab3537a2f.txt",
+    "yolo_xywh": [
+      0.58046875,
+      0.5046875,
+      0.5078125,
+      0.35703125
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/fresh_potato/03.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/test/images/IMG_20251004_172926_jpg.rf.d9fb8b56d1b84a62fddef3c533a97dc5.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG_20251004_172926_jpg.rf.d9fb8b56d1b84a62fddef3c533a97dc5.txt",
+    "yolo_xywh": [
+      0.5578125,
+      0.41953125,
+      0.428125,
+      0.265625
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/fresh_potato/04.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/test/images/IMG20250923155158_jpg.rf.b2199a351180e89df136b4c9d6d4cc67.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250923155158_jpg.rf.b2199a351180e89df136b4c9d6d4cc67.txt",
+    "yolo_xywh": [
+      0.4109375,
+      0.521875,
+      0.5296875,
+      0.55234375
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_Potato/01.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/test/images/IMG20250923154803_jpg.rf.302f1703fdc2079aca353e488b7c7401.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250923154803_jpg.rf.302f1703fdc2079aca353e488b7c7401.txt",
+    "yolo_xywh": [
+      0.48671875,
+      0.5,
+      0.79140625,
+      0.6328125
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_Potato/02.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/test/images/IMG20250923155700_jpg.rf.8b2e04590fa99a8065985a6eeca607f0.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250923155700_jpg.rf.8b2e04590fa99a8065985a6eeca607f0.txt",
+    "yolo_xywh": [
+      0.48203125,
+      0.5265625,
+      0.56640625,
+      0.5875
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_Potato/03.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/test/images/IMG20250923155704_jpg.rf.c986223cebfe67bbb276e3e56667f518.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250923155704_jpg.rf.c986223cebfe67bbb276e3e56667f518.txt",
+    "yolo_xywh": [
+      0.52109375,
+      0.58125,
+      0.80078125,
+      0.46640625
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_Potato/04.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/test/images/IMG_20251004_172209_jpg.rf.ceff2da101eec8e9d3d753cac85f0480.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG_20251004_172209_jpg.rf.ceff2da101eec8e9d3d753cac85f0480.txt",
+    "yolo_xywh": [
+      0.49921875,
+      0.44453125,
+      0.4515625,
+      0.53046875
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/fresh_capsicum/01.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG20250926093743_jpg.rf.5ad023addc0e785cbba73c970c0edcaa.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250926093743_jpg.rf.5ad023addc0e785cbba73c970c0edcaa.txt",
+    "yolo_xywh": [
+      0.53203125,
+      0.47578125,
+      0.725,
+      0.56328125
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/fresh_capsicum/02.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG20250926093647_jpg.rf.6bfea49e865783539886513b4c5b4aa9.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250926093647_jpg.rf.6bfea49e865783539886513b4c5b4aa9.txt",
+    "yolo_xywh": [
+      0.5484375,
+      0.46875,
+      0.53671875,
+      0.39765625
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/fresh_capsicum/03.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG20250926093819_jpg.rf.15b35a1cb72fff0152837150da7afa81.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250926093819_jpg.rf.15b35a1cb72fff0152837150da7afa81.txt",
+    "yolo_xywh": [
+      0.49765625,
+      0.61484375,
+      0.6890625,
+      0.578125
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/fresh_capsicum/04.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG20250926092404_jpg.rf.75753e0abe56cac20e7be6c7ce1818d9.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250926092404_jpg.rf.75753e0abe56cac20e7be6c7ce1818d9.txt",
+    "yolo_xywh": [
+      0.4734375,
+      0.428125,
+      0.784375,
+      0.590625
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_capsicum/01.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG20250926092710_jpg.rf.490bc5f95b6378d51c4fa5a4b2120d74.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250926092710_jpg.rf.490bc5f95b6378d51c4fa5a4b2120d74.txt",
+    "yolo_xywh": [
+      0.6,
+      0.37109375,
+      0.65625,
+      0.690625
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_capsicum/02.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG_20250926_092235_jpg.rf.d0151d85321ae1ebe4b2d1b348f7a7b9.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG_20250926_092235_jpg.rf.d0151d85321ae1ebe4b2d1b348f7a7b9.txt",
+    "yolo_xywh": [
+      0.4625,
+      0.44140625,
+      0.45390625,
+      0.32890625
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_capsicum/03.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG20250926093651_jpg.rf.67887545d2c879dc693c743c823d20f9.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250926093651_jpg.rf.67887545d2c879dc693c743c823d20f9.txt",
+    "yolo_xywh": [
+      0.48828125,
+      0.5046875,
+      0.7,
+      0.60703125
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/test/defected_capsicum/04.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/test/images/IMG20250926092723_jpg.rf.c3bc8b3adf6df6c02f0dc59d23c412c0.jpg",
+    "source_annotation": "VegQual/VegMining/test/labels/IMG20250926092723_jpg.rf.c3bc8b3adf6df6c02f0dc59d23c412c0.txt",
+    "yolo_xywh": [
+      0.53515625,
+      0.43203125,
+      0.82890625,
+      0.60390625
+    ],
+    "source_split": "test"
+  },
+  {
+    "image": "images/train/fresh_potato/01.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172930_jpg.rf.305c85587a89e451f8b0812e28b089c4.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172930_jpg.rf.305c85587a89e451f8b0812e28b089c4.txt",
+    "yolo_xywh": [
+      0.66875,
+      0.3328125,
+      0.50078125,
+      0.3453125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/02.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172615_jpg.rf.e8ffae2756b4f955b0bde4386784683c.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172615_jpg.rf.e8ffae2756b4f955b0bde4386784683c.txt",
+    "yolo_xywh": [
+      0.553125,
+      0.35546875,
+      0.378125,
+      0.4453125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/03.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155505_jpg.rf.d31f0458a40efdb4c9337a8fa4190711.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155505_jpg.rf.d31f0458a40efdb4c9337a8fa4190711.txt",
+    "yolo_xywh": [
+      0.5171875,
+      0.47578125,
+      0.55234375,
+      0.52421875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/04.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172713_jpg.rf.47f468dcc0826e6cb073f9c2d6bff80b.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172713_jpg.rf.47f468dcc0826e6cb073f9c2d6bff80b.txt",
+    "yolo_xywh": [
+      0.51171875,
+      0.5515625,
+      0.60390625,
+      0.71640625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/05.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_174652_jpg.rf.6fc209979f65e8c1c4605d700b3289c0.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_174652_jpg.rf.6fc209979f65e8c1c4605d700b3289c0.txt",
+    "yolo_xywh": [
+      0.44921875,
+      0.5296875,
+      0.31328125,
+      0.446875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/06.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155514_jpg.rf.06d5e1145913696e29fe0e7155ad62ff.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155514_jpg.rf.06d5e1145913696e29fe0e7155ad62ff.txt",
+    "yolo_xywh": [
+      0.4703125,
+      0.52578125,
+      0.796875,
+      0.44375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/07.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172803_jpg.rf.2a2e6f6ce4900d4f1ae687ba45f03290.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172803_jpg.rf.2a2e6f6ce4900d4f1ae687ba45f03290.txt",
+    "yolo_xywh": [
+      0.46875,
+      0.41640625,
+      0.48046875,
+      0.45546875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/08.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172826_jpg.rf.9c01ea92f6a542ef1d0c5d470ed1e0ba.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172826_jpg.rf.9c01ea92f6a542ef1d0c5d470ed1e0ba.txt",
+    "yolo_xywh": [
+      0.52734375,
+      0.5046875,
+      0.49609375,
+      0.446875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/09.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_174635_jpg.rf.241e5fe7b4b773609c32c44a7f8df957.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_174635_jpg.rf.241e5fe7b4b773609c32c44a7f8df957.txt",
+    "yolo_xywh": [
+      0.59921875,
+      0.46875,
+      0.52109375,
+      0.47734375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/10.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172755_jpg.rf.34edae25da1d8a3731f8470e817c1e25.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172755_jpg.rf.34edae25da1d8a3731f8470e817c1e25.txt",
+    "yolo_xywh": [
+      0.5765625,
+      0.5375,
+      0.33671875,
+      0.47890625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/11.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155809_jpg.rf.192610a5f5f4305100140c1043342318.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155809_jpg.rf.192610a5f5f4305100140c1043342318.txt",
+    "yolo_xywh": [
+      0.43671875,
+      0.5953125,
+      0.4890625,
+      0.68515625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/12.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923154838_jpg.rf.b2fe84530c43065b31b36fbdbebaf28b.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923154838_jpg.rf.b2fe84530c43065b31b36fbdbebaf28b.txt",
+    "yolo_xywh": [
+      0.41875,
+      0.5546875,
+      0.39453125,
+      0.64296875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/13.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172506_jpg.rf.d781bb8d32834de9bec516bcd534acf0.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172506_jpg.rf.d781bb8d32834de9bec516bcd534acf0.txt",
+    "yolo_xywh": [
+      0.5859375,
+      0.36015625,
+      0.51484375,
+      0.43046875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/14.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172504_jpg.rf.cad00145e7dd3a6132145a5a4b094202.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172504_jpg.rf.cad00145e7dd3a6132145a5a4b094202.txt",
+    "yolo_xywh": [
+      0.5796875,
+      0.48515625,
+      0.48203125,
+      0.38046875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/15.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172901_jpg.rf.3973102298dad89aa3ecc71eab054d64.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172901_jpg.rf.3973102298dad89aa3ecc71eab054d64.txt",
+    "yolo_xywh": [
+      0.55546875,
+      0.48125,
+      0.5484375,
+      0.4421875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/16.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172703_jpg.rf.2ff6c41e031d0316b0692868ee6a153d.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172703_jpg.rf.2ff6c41e031d0316b0692868ee6a153d.txt",
+    "yolo_xywh": [
+      0.459375,
+      0.60703125,
+      0.58984375,
+      0.62578125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/17.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172840_jpg.rf.f71e3ca30a6e53a58207305dcdf62694.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172840_jpg.rf.f71e3ca30a6e53a58207305dcdf62694.txt",
+    "yolo_xywh": [
+      0.53984375,
+      0.57578125,
+      0.64765625,
+      0.42578125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/18.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20251004174533_jpg.rf.73a939f2ad92f7039e2f164e6f27e562.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20251004174533_jpg.rf.73a939f2ad92f7039e2f164e6f27e562.txt",
+    "yolo_xywh": [
+      0.4484375,
+      0.49609375,
+      0.3953125,
+      0.54375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/19.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_174736_jpg.rf.591e46827dbb54c557c5cfd8692c066d.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_174736_jpg.rf.591e46827dbb54c557c5cfd8692c066d.txt",
+    "yolo_xywh": [
+      0.50859375,
+      0.51796875,
+      0.38984375,
+      0.40546875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/20.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_174807_jpg.rf.be9717eb9c1a6648c6ea7699f22c98c0.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_174807_jpg.rf.be9717eb9c1a6648c6ea7699f22c98c0.txt",
+    "yolo_xywh": [
+      0.50390625,
+      0.50703125,
+      0.45234375,
+      0.29296875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/21.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20251004174420_jpg.rf.6e5e2f1389518cf1913e0663c4121765.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20251004174420_jpg.rf.6e5e2f1389518cf1913e0663c4121765.txt",
+    "yolo_xywh": [
+      0.5015625,
+      0.53046875,
+      0.7203125,
+      0.6625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/22.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172656_jpg.rf.3e3304a2664b27e54495e481600e191b.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172656_jpg.rf.3e3304a2664b27e54495e481600e191b.txt",
+    "yolo_xywh": [
+      0.41640625,
+      0.50546875,
+      0.58046875,
+      0.60546875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/23.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_174804_jpg.rf.539ad7f078ed5420186bd25a1ed49517.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_174804_jpg.rf.539ad7f078ed5420186bd25a1ed49517.txt",
+    "yolo_xywh": [
+      0.51875,
+      0.48125,
+      0.4953125,
+      0.2703125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_potato/24.jpg",
+    "label": "fresh_potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155444_jpg.rf.f5bc452a62d6061e7062ca92919f1ec1.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155444_jpg.rf.f5bc452a62d6061e7062ca92919f1ec1.txt",
+    "yolo_xywh": [
+      0.43203125,
+      0.48125,
+      0.4671875,
+      0.56484375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/01.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155152_jpg.rf.6520a6784f4fac93dbbe6b6bc2b79994.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155152_jpg.rf.6520a6784f4fac93dbbe6b6bc2b79994.txt",
+    "yolo_xywh": [
+      0.4359375,
+      0.546875,
+      0.48046875,
+      0.525
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/02.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923154721_jpg.rf.f6f8428574effb07dec1450fd9c29162.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923154721_jpg.rf.f6f8428574effb07dec1450fd9c29162.txt",
+    "yolo_xywh": [
+      0.52421875,
+      0.3921875,
+      0.4953125,
+      0.48125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/03.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923154943_jpg.rf.e41ae3ac7eb1256c68dab681fc1150a2.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923154943_jpg.rf.e41ae3ac7eb1256c68dab681fc1150a2.txt",
+    "yolo_xywh": [
+      0.39609375,
+      0.53828125,
+      0.58359375,
+      0.6703125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/04.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172526_jpg.rf.bc27830e87f1daf9301b7e312b225ba4.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172526_jpg.rf.bc27830e87f1daf9301b7e312b225ba4.txt",
+    "yolo_xywh": [
+      0.5796875,
+      0.45546875,
+      0.41484375,
+      0.36015625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/05.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172749_jpg.rf.5b09487d91b2df39a010749284d179e8.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172749_jpg.rf.5b09487d91b2df39a010749284d179e8.txt",
+    "yolo_xywh": [
+      0.5078125,
+      0.53046875,
+      0.51484375,
+      0.48359375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/06.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155031_jpg.rf.4100e3d9a8b96f6c9b194297e7911737.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155031_jpg.rf.4100e3d9a8b96f6c9b194297e7911737.txt",
+    "yolo_xywh": [
+      0.4125,
+      0.5359375,
+      0.50625,
+      0.5078125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/07.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172229_jpg.rf.43ab5f537a408e787db1f735f1027f40.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172229_jpg.rf.43ab5f537a408e787db1f735f1027f40.txt",
+    "yolo_xywh": [
+      0.521875,
+      0.40078125,
+      0.40625,
+      0.67265625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/08.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923154909_jpg.rf.9721fddf9c4a697f49cbb7dc03dc0f71.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923154909_jpg.rf.9721fddf9c4a697f49cbb7dc03dc0f71.txt",
+    "yolo_xywh": [
+      0.43203125,
+      0.50078125,
+      0.72109375,
+      0.3828125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/09.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172559_jpg.rf.30bd95046942d523315506d82508be63.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172559_jpg.rf.30bd95046942d523315506d82508be63.txt",
+    "yolo_xywh": [
+      0.51796875,
+      0.540625,
+      0.4375,
+      0.39296875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/10.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155044_jpg.rf.522498cc37a572faf9b45c241ef6705d.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155044_jpg.rf.522498cc37a572faf9b45c241ef6705d.txt",
+    "yolo_xywh": [
+      0.48359375,
+      0.53984375,
+      0.52421875,
+      0.56015625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/11.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923154827_jpg.rf.cf5f363197bb25b1b99ae5750bfb68a1.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923154827_jpg.rf.cf5f363197bb25b1b99ae5750bfb68a1.txt",
+    "yolo_xywh": [
+      0.53671875,
+      0.51640625,
+      0.51328125,
+      0.625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/12.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172546_jpg.rf.b6a4992730980170c2638edd9c3f3e9e.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172546_jpg.rf.b6a4992730980170c2638edd9c3f3e9e.txt",
+    "yolo_xywh": [
+      0.54453125,
+      0.45234375,
+      0.678125,
+      0.42265625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/13.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923154932_jpg.rf.997b1416d558d6a0b1b17df0e8a07632.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923154932_jpg.rf.997b1416d558d6a0b1b17df0e8a07632.txt",
+    "yolo_xywh": [
+      0.46484375,
+      0.3578125,
+      0.61015625,
+      0.390625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/14.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172253_jpg.rf.9c3390209554255b38430703f5f1ad55.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172253_jpg.rf.9c3390209554255b38430703f5f1ad55.txt",
+    "yolo_xywh": [
+      0.6046875,
+      0.453125,
+      0.36953125,
+      0.56171875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/15.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172459_jpg.rf.af15d35b60ab4c86232bb62544b5eb99.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172459_jpg.rf.af15d35b60ab4c86232bb62544b5eb99.txt",
+    "yolo_xywh": [
+      0.58359375,
+      0.49296875,
+      0.4390625,
+      0.36328125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/16.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172308_jpg.rf.9c86e6476b668857963ed7d904c2835a.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172308_jpg.rf.9c86e6476b668857963ed7d904c2835a.txt",
+    "yolo_xywh": [
+      0.56328125,
+      0.35234375,
+      0.446875,
+      0.5421875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/17.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172812_jpg.rf.84243bc80741c3c9651761d2f8b4a1bb.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172812_jpg.rf.84243bc80741c3c9651761d2f8b4a1bb.txt",
+    "yolo_xywh": [
+      0.63359375,
+      0.56640625,
+      0.39375,
+      0.503125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/18.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923154812_jpg.rf.58d839ccf8fd600e1e14fa14e4ede4a4.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923154812_jpg.rf.58d839ccf8fd600e1e14fa14e4ede4a4.txt",
+    "yolo_xywh": [
+      0.49453125,
+      0.53984375,
+      0.50703125,
+      0.64296875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/19.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155204_jpg.rf.2afd2eedc5d14da31455d6fb413a4fce.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155204_jpg.rf.2afd2eedc5d14da31455d6fb413a4fce.txt",
+    "yolo_xywh": [
+      0.42734375,
+      0.50390625,
+      0.5484375,
+      0.47265625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/20.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172553_jpg.rf.18141bcd00622be203a0094d940da4ea.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172553_jpg.rf.18141bcd00622be203a0094d940da4ea.txt",
+    "yolo_xywh": [
+      0.52421875,
+      0.49609375,
+      0.55234375,
+      0.3578125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/21.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155137_jpg.rf.2ae26d26efe8a5b485f272e90bb11ce6.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155137_jpg.rf.2ae26d26efe8a5b485f272e90bb11ce6.txt",
+    "yolo_xywh": [
+      0.43984375,
+      0.4640625,
+      0.4828125,
+      0.61875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/22.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172446_jpg.rf.62803e807ad3cede7482be0dca58ac46.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172446_jpg.rf.62803e807ad3cede7482be0dca58ac46.txt",
+    "yolo_xywh": [
+      0.590625,
+      0.43671875,
+      0.56484375,
+      0.48203125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/23.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG_20251004_172131_jpg.rf.2d27ec9416dd90d110050d943d00813f.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20251004_172131_jpg.rf.2d27ec9416dd90d110050d943d00813f.txt",
+    "yolo_xywh": [
+      0.4859375,
+      0.48984375,
+      0.359375,
+      0.33515625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_Potato/24.jpg",
+    "label": "defected_Potato",
+    "source_image": "VegQual/VegMining/train/images/IMG20250923155101_jpg.rf.ec2d27a36580ca08a3f1dff4c4e7a7a9.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250923155101_jpg.rf.ec2d27a36580ca08a3f1dff4c4e7a7a9.txt",
+    "yolo_xywh": [
+      0.4921875,
+      0.53515625,
+      0.55859375,
+      0.55234375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/01.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092742_jpg.rf.fb6addf65918e4c46934517e13335a04.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092742_jpg.rf.fb6addf65918e4c46934517e13335a04.txt",
+    "yolo_xywh": [
+      0.459375,
+      0.51015625,
+      0.75625,
+      0.6859375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/02.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093610_jpg.rf.d79bc4a37ea4b310bcfa5e734f090f86.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093610_jpg.rf.d79bc4a37ea4b310bcfa5e734f090f86.txt",
+    "yolo_xywh": [
+      0.49765625,
+      0.5203125,
+      0.6953125,
+      0.51015625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/03.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093810_jpg.rf.4a3809b889bdfde39921887b88879a47.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093810_jpg.rf.4a3809b889bdfde39921887b88879a47.txt",
+    "yolo_xywh": [
+      0.4359375,
+      0.55625,
+      0.52109375,
+      0.5328125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/04.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/1758873619488_jpg.rf.f8c761ef88ac79d8c2e85e6bd2ef1856.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/1758873619488_jpg.rf.f8c761ef88ac79d8c2e85e6bd2ef1856.txt",
+    "yolo_xywh": [
+      0.5359375,
+      0.5234375,
+      0.209375,
+      0.384375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/05.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093753_jpg.rf.962abae23bee61f9de4985bf474d0524.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093753_jpg.rf.962abae23bee61f9de4985bf474d0524.txt",
+    "yolo_xywh": [
+      0.39375,
+      0.48671875,
+      0.603125,
+      0.77421875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/06.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093557_jpg.rf.a677dec6203b2c534cf917f1327ed4da.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093557_jpg.rf.a677dec6203b2c534cf917f1327ed4da.txt",
+    "yolo_xywh": [
+      0.44375,
+      0.53125,
+      0.6203125,
+      0.5078125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/07.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092800_jpg.rf.12dfa1606a17c04dc6a2457bdb7c257f.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092800_jpg.rf.12dfa1606a17c04dc6a2457bdb7c257f.txt",
+    "yolo_xywh": [
+      0.55703125,
+      0.4578125,
+      0.85703125,
+      0.66875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/08.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093611_jpg.rf.78c0a5837ae6a5c42b5ad0b75aad35e1.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093611_jpg.rf.78c0a5837ae6a5c42b5ad0b75aad35e1.txt",
+    "yolo_xywh": [
+      0.50234375,
+      0.5375,
+      0.6796875,
+      0.51484375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/09.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093754_jpg.rf.72fbbe107d3c05c272e9b5e108c82703.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093754_jpg.rf.72fbbe107d3c05c272e9b5e108c82703.txt",
+    "yolo_xywh": [
+      0.42734375,
+      0.52578125,
+      0.5671875,
+      0.721875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/10.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092229_jpg.rf.450ba90cc16306c9c42e63ade51d381b.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092229_jpg.rf.450ba90cc16306c9c42e63ade51d381b.txt",
+    "yolo_xywh": [
+      0.5234375,
+      0.42265625,
+      0.72109375,
+      0.565625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/11.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093826_jpg.rf.9f5c395160c8b70c130c72cada6a9aa6.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093826_jpg.rf.9f5c395160c8b70c130c72cada6a9aa6.txt",
+    "yolo_xywh": [
+      0.4453125,
+      0.54609375,
+      0.596875,
+      0.46328125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/12.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/1758873619367_jpg.rf.cf51dfdf642758ca3943d80abb9b828a.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/1758873619367_jpg.rf.cf51dfdf642758ca3943d80abb9b828a.txt",
+    "yolo_xywh": [
+      0.38515625,
+      0.6015625,
+      0.3453125,
+      0.4765625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/13.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/1758873619340_jpg.rf.f99d743490beaf0addb532f3b5921caf.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/1758873619340_jpg.rf.f99d743490beaf0addb532f3b5921caf.txt",
+    "yolo_xywh": [
+      0.39765625,
+      0.60859375,
+      0.31015625,
+      0.36640625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/14.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092511_jpg.rf.aa0e6021588e4576858e8ae4fadab882.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092511_jpg.rf.aa0e6021588e4576858e8ae4fadab882.txt",
+    "yolo_xywh": [
+      0.51484375,
+      0.43359375,
+      0.81484375,
+      0.596875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/15.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092507_jpg.rf.5096aab24da916e2645064d8617a1f7d.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092507_jpg.rf.5096aab24da916e2645064d8617a1f7d.txt",
+    "yolo_xywh": [
+      0.47578125,
+      0.4625,
+      0.7296875,
+      0.546875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/16.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/1758873619373_jpg.rf.1f0cdcf9c4601e4e8074d9cc6eb29c14.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/1758873619373_jpg.rf.1f0cdcf9c4601e4e8074d9cc6eb29c14.txt",
+    "yolo_xywh": [
+      0.40390625,
+      0.534375,
+      0.30625,
+      0.4390625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/17.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093822_jpg.rf.c70edf5ad04fb837624f39e2b643f808.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093822_jpg.rf.c70edf5ad04fb837624f39e2b643f808.txt",
+    "yolo_xywh": [
+      0.4890625,
+      0.67578125,
+      0.74375,
+      0.54765625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/18.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092402_jpg.rf.134f93c97ea8076440552aafd0d60894.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092402_jpg.rf.134f93c97ea8076440552aafd0d60894.txt",
+    "yolo_xywh": [
+      0.5296875,
+      0.49609375,
+      0.90234375,
+      0.67265625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/19.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/1758873619494_jpg.rf.4ff941c411c0aa29daaf7763ea5bff05.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/1758873619494_jpg.rf.4ff941c411c0aa29daaf7763ea5bff05.txt",
+    "yolo_xywh": [
+      0.553125,
+      0.51796875,
+      0.22734375,
+      0.34609375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/20.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092506_jpg.rf.f19ddc5d3ee937d917f81dcaab41f97c.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092506_jpg.rf.f19ddc5d3ee937d917f81dcaab41f97c.txt",
+    "yolo_xywh": [
+      0.47265625,
+      0.47109375,
+      0.78203125,
+      0.5890625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/21.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092724_jpg.rf.50532cf7695d767453ddb72388dde6e1.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092724_jpg.rf.50532cf7695d767453ddb72388dde6e1.txt",
+    "yolo_xywh": [
+      0.55703125,
+      0.5484375,
+      0.82109375,
+      0.55703125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/22.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/1758873619346_jpg.rf.2dce6082e4736b710883c9132eca094c.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/1758873619346_jpg.rf.2dce6082e4736b710883c9132eca094c.txt",
+    "yolo_xywh": [
+      0.39765625,
+      0.6390625,
+      0.31484375,
+      0.403125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/23.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/1758873619360_jpg.rf.dc21761b3ae22dc6ed1a5104cd8db5a6.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/1758873619360_jpg.rf.dc21761b3ae22dc6ed1a5104cd8db5a6.txt",
+    "yolo_xywh": [
+      0.39609375,
+      0.70234375,
+      0.2921875,
+      0.4234375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/fresh_capsicum/24.jpg",
+    "label": "fresh_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092235_jpg.rf.149478f945fcfc95a45f882fc4c46929.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092235_jpg.rf.149478f945fcfc95a45f882fc4c46929.txt",
+    "yolo_xywh": [
+      0.46015625,
+      0.4703125,
+      0.796875,
+      0.6703125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/01.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092634_jpg.rf.2dadf1ac63c108953677300e576ed684.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092634_jpg.rf.2dadf1ac63c108953677300e576ed684.txt",
+    "yolo_xywh": [
+      0.56640625,
+      0.38125,
+      0.59921875,
+      0.46796875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/02.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG_20250926_092725_jpg.rf.b87c77a9fabc3e5e432fe16eca0ef9a5.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20250926_092725_jpg.rf.b87c77a9fabc3e5e432fe16eca0ef9a5.txt",
+    "yolo_xywh": [
+      0.50703125,
+      0.40703125,
+      0.6609375,
+      0.49921875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/03.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG_20250926_092808_jpg.rf.fef09a610e30b209e9cfd1d80676b20d.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20250926_092808_jpg.rf.fef09a610e30b209e9cfd1d80676b20d.txt",
+    "yolo_xywh": [
+      0.40859375,
+      0.5671875,
+      0.425,
+      0.3203125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/04.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092704_jpg.rf.0deec872a4814a58c40673c981a9db72.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092704_jpg.rf.0deec872a4814a58c40673c981a9db72.txt",
+    "yolo_xywh": [
+      0.4734375,
+      0.4546875,
+      0.6078125,
+      0.59609375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/05.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093119_jpg.rf.626ac69b62c5151f181ba3ba78daf72c.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093119_jpg.rf.626ac69b62c5151f181ba3ba78daf72c.txt",
+    "yolo_xywh": [
+      0.4828125,
+      0.55078125,
+      0.66640625,
+      0.54609375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/06.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092729_jpg.rf.4191e2faae563d7e1fac3fbadc0136f0.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092729_jpg.rf.4191e2faae563d7e1fac3fbadc0136f0.txt",
+    "yolo_xywh": [
+      0.4609375,
+      0.4875,
+      0.540625,
+      0.753125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/07.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092349_jpg.rf.006eac425627728c3241aaa6e02e95ae.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092349_jpg.rf.006eac425627728c3241aaa6e02e95ae.txt",
+    "yolo_xywh": [
+      0.48125,
+      0.615625,
+      0.51953125,
+      0.48984375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/08.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093112_jpg.rf.babdd289d783d9f0150353681ee07aed.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093112_jpg.rf.babdd289d783d9f0150353681ee07aed.txt",
+    "yolo_xywh": [
+      0.553125,
+      0.5671875,
+      0.66953125,
+      0.51640625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/09.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092342_jpg.rf.53f5e8d22ca7e42bd89f55641802c32a.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092342_jpg.rf.53f5e8d22ca7e42bd89f55641802c32a.txt",
+    "yolo_xywh": [
+      0.48828125,
+      0.371875,
+      0.75,
+      0.60078125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/10.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092730_jpg.rf.3efc991fd399c2bd0b2cf0bc2e17c0b1.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092730_jpg.rf.3efc991fd399c2bd0b2cf0bc2e17c0b1.txt",
+    "yolo_xywh": [
+      0.63984375,
+      0.625,
+      0.5296875,
+      0.74921875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/11.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092543_jpg.rf.d4afeb20c3d4c102d8b4a50fa53ec72a.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092543_jpg.rf.d4afeb20c3d4c102d8b4a50fa53ec72a.txt",
+    "yolo_xywh": [
+      0.503125,
+      0.3796875,
+      0.72578125,
+      0.5859375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/12.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092909_jpg.rf.b8756cb5a4beee7a23c67fd7cfb18d11.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092909_jpg.rf.b8756cb5a4beee7a23c67fd7cfb18d11.txt",
+    "yolo_xywh": [
+      0.4421875,
+      0.43203125,
+      0.77421875,
+      0.57890625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/13.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093554_jpg.rf.78df4af3d4d24db99c123d38098c489c.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093554_jpg.rf.78df4af3d4d24db99c123d38098c489c.txt",
+    "yolo_xywh": [
+      0.4625,
+      0.403125,
+      0.61328125,
+      0.46640625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/14.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092430_jpg.rf.24b4b6dae7267247a5cb8b62c178dddd.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092430_jpg.rf.24b4b6dae7267247a5cb8b62c178dddd.txt",
+    "yolo_xywh": [
+      0.52109375,
+      0.4828125,
+      0.7421875,
+      0.52421875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/15.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092857_jpg.rf.3644e9153cc3dd55729e1f5b0cd32244.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092857_jpg.rf.3644e9153cc3dd55729e1f5b0cd32244.txt",
+    "yolo_xywh": [
+      0.540625,
+      0.46640625,
+      0.64609375,
+      0.43203125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/16.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092448_jpg.rf.ab6d01246d7d2122b5a01f39f2ebb57f.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092448_jpg.rf.ab6d01246d7d2122b5a01f39f2ebb57f.txt",
+    "yolo_xywh": [
+      0.49921875,
+      0.3546875,
+      0.78984375,
+      0.58203125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/17.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926093823_jpg.rf.a2a9924739658bd1fd70e0da6eb7283a.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926093823_jpg.rf.a2a9924739658bd1fd70e0da6eb7283a.txt",
+    "yolo_xywh": [
+      0.42734375,
+      0.5359375,
+      0.65859375,
+      0.49765625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/18.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092707_jpg.rf.ba1d74c4baec768ad2193720955dd861.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092707_jpg.rf.ba1d74c4baec768ad2193720955dd861.txt",
+    "yolo_xywh": [
+      0.60625,
+      0.43984375,
+      0.69296875,
+      0.690625
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/19.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG_20250926_093014_jpg.rf.95fba2dd5d66f44a07eb436cb9c17292.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20250926_093014_jpg.rf.95fba2dd5d66f44a07eb436cb9c17292.txt",
+    "yolo_xywh": [
+      0.44375,
+      0.5015625,
+      0.5546875,
+      0.40546875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/20.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092713_jpg.rf.295f6c3aabda0c62fc664c691c28faaf.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092713_jpg.rf.295f6c3aabda0c62fc664c691c28faaf.txt",
+    "yolo_xywh": [
+      0.68203125,
+      0.540625,
+      0.53046875,
+      0.5984375
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/21.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092522_jpg.rf.6389fe9297fe5d8008b19dbc12ccc32c.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092522_jpg.rf.6389fe9297fe5d8008b19dbc12ccc32c.txt",
+    "yolo_xywh": [
+      0.5703125,
+      0.3984375,
+      0.70546875,
+      0.5703125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/22.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG_20250926_093127_jpg.rf.f77efb71f87cd332ec9b7ea25b58f2ef.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG_20250926_093127_jpg.rf.f77efb71f87cd332ec9b7ea25b58f2ef.txt",
+    "yolo_xywh": [
+      0.384375,
+      0.4703125,
+      0.49375,
+      0.36328125
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/23.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092458_jpg.rf.7c6e18db1c526d21e785d718dc2cd091.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092458_jpg.rf.7c6e18db1c526d21e785d718dc2cd091.txt",
+    "yolo_xywh": [
+      0.47890625,
+      0.365625,
+      0.821875,
+      0.6921875
+    ],
+    "source_split": "train"
+  },
+  {
+    "image": "images/train/defected_capsicum/24.jpg",
+    "label": "defected_capsicum",
+    "source_image": "VegQual/VegMining/train/images/IMG20250926092341_jpg.rf.ce47beb3b34faba8a1dfd0299a271629.jpg",
+    "source_annotation": "VegQual/VegMining/train/labels/IMG20250926092341_jpg.rf.ce47beb3b34faba8a1dfd0299a271629.txt",
+    "yolo_xywh": [
+      0.496875,
+      0.3890625,
+      0.78984375,
+      0.56171875
+    ],
+    "source_split": "train"
+  }
+]

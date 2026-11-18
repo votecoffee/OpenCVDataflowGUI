@@ -1,0 +1,25 @@
+{
+  "wheel_sha256": "8ce31516736a00e66e1761b9141fb3250446548f91054bfd4e7569dfe9beecbc",
+  "source_module_sha256": {
+    "opencv_simple_classifier/__init__.py": "25a3edad9725a725b3852c4bb736afb1530db0e7d3c0dcc2a90e013308065a31",
+    "opencv_simple_classifier/completed_review.py": "c639681b2f28762c8073b42da8c936cf1b5a010cc88905a9cf9ffcc951264e57",
+    "opencv_simple_classifier/dataflow.py": "c59c0c9e628f87c3115c35f606ca0963282eb5e7fa8fec83f2e53cf34c560ab0",
+    "opencv_simple_classifier/dataset_audit.py": "fb2c26e866c803603eb2f6cd893b435529bc9b28684b89641a11d29f667880ac",
+    "opencv_simple_classifier/graphics.py": "e03c1cda1a5a3f1d694d665aef600a153f74b6ad8b728c1dd7bff0796f897c15",
+    "opencv_simple_classifier/model.py": "5c8b510498e027d8288c4005c92f332582364d488e95bdd5468012f9a352201b",
+    "opencv_simple_classifier/qt_completed_review.py": "fbe72b746cc7bded15daff2c2c3a3e1fa3ef57f5bdc135473f43066fac4fd06d",
+    "opencv_simple_classifier/qt_review.py": "e395f6768b71d856c2971336e91eee4615dc2828bed79875fc2635a7b8b63362",
+    "opencv_simple_classifier/qt_training.py": "cae4bdec0e1f47e6cb3e22fd1477a741e63244561ace51bef738938f6aa43e19",
+    "opencv_simple_classifier/surface_texture.py": "03ecf12aec9d49af88bec149c79fbf1dedcceb0e7340ac19c9cc47a04b141617"
+  },
+  "changed_modules": [
+    "opencv_simple_classifier/qt_training.py"
+  ],
+  "added_modules": [
+    "opencv_simple_classifier/dataset_audit.py"
+  ],
+  "inference_training_and_staging_python_ast_unchanged": true,
+  "host_environment_modified": false,
+  "source_base_commit": "d65479d",
+  "followup": "Wraps class-count feedback in the training layout."
+}

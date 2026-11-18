@@ -1,0 +1,23 @@
+{
+  "source_checks": 33,
+  "wheel_loaded_checks": 33,
+  "packaged_host_checks": 3,
+  "native_training_workflows": 2,
+  "profiles_share_one_dataset": true,
+  "training_per_class": 24,
+  "validation_per_class": 5,
+  "earlier_runtime_frames": 33,
+  "earlier_numerical_results_exact": true,
+  "earlier_default_charts_exact": true,
+  "original_model_and_image_assets_preserved": true,
+  "exact_model_and_training_images_save_as": true,
+  "hands_on_operator_acceptance": false,
+  "host_environment_modified": false,
+  "environment": {
+    "python": "3.14.3",
+    "opencv": "5.0.0",
+    "qt": "6.12.0"
+  },
+  "scope": "Current-dataset diagnosis and training software workflow; no broad accuracy or historical source-identity claim",
+  "source_and_host_native_checks": true
+}

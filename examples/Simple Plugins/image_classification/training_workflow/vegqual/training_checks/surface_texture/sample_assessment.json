@@ -1,0 +1,28 @@
+{
+  "expected": "defected_Potato",
+  "image": "01.jpg",
+  "result": {
+    "label": "fresh_potato",
+    "score": 49.82737792102019,
+    "confusion": 91.65733238066937,
+    "probabilities": [
+      {
+        "label": "fresh_potato",
+        "score": 49.82737792102019
+      },
+      {
+        "label": "defected_Potato",
+        "score": 45.670445397641735
+      },
+      {
+        "label": "fresh_capsicum",
+        "score": 3.8381016303330378
+      },
+      {
+        "label": "defected_capsicum",
+        "score": 0.6640750510050377
+      }
+    ]
+  },
+  "scope": "Actual restored model/held-out sample; no correction or new inference gate."
+}

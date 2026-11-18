@@ -1,0 +1,1545 @@
+{
+  "ready": true,
+  "split": "explicit",
+  "classes": [
+    {
+      "label": "fresh_potato",
+      "assigned": 29,
+      "readable": 29,
+      "training": 24,
+      "validation": 5
+    },
+    {
+      "label": "defected_Potato",
+      "assigned": 29,
+      "readable": 29,
+      "training": 24,
+      "validation": 5
+    },
+    {
+      "label": "fresh_capsicum",
+      "assigned": 29,
+      "readable": 29,
+      "training": 24,
+      "validation": 5
+    },
+    {
+      "label": "defected_capsicum",
+      "assigned": 29,
+      "readable": 29,
+      "training": 24,
+      "validation": 5
+    }
+  ],
+  "issues": [],
+  "samples": [
+    {
+      "class_index": 0,
+      "image_index": 0,
+      "name": "01.jpg",
+      "shape": [
+        113,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "d9232e343c6f55442db6d2d2ba6095da671216cd153506ee87cf8cabcd093f76"
+    },
+    {
+      "class_index": 0,
+      "image_index": 1,
+      "name": "02.jpg",
+      "shape": [
+        192,
+        124,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "6bfab8379aec29be21da3d6854b6270101c5c4ed4a2e1004a3fbd7623db0ca23"
+    },
+    {
+      "class_index": 0,
+      "image_index": 2,
+      "name": "03.jpg",
+      "shape": [
+        192,
+        177,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "475451b580d9899ebf9cde85b69665b4e26251d9c9510a13883a2f80cf55ef53"
+    },
+    {
+      "class_index": 0,
+      "image_index": 3,
+      "name": "04.jpg",
+      "shape": [
+        192,
+        94,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "01a12fd4389cc7d03a21489219e7d7339bcc76904b471ebbdaf3c52c1fb85a1a"
+    },
+    {
+      "class_index": 0,
+      "image_index": 4,
+      "name": "05.jpg",
+      "shape": [
+        192,
+        143,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "f95d4abed017f43f0d78fcbdbf417356dea06330a9201aa6b074da71860e5591"
+    },
+    {
+      "class_index": 0,
+      "image_index": 5,
+      "name": "01.jpg",
+      "shape": [
+        133,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "90550bb5ee6bd4ffb8c8f39a9a068b27ed3b7ee6f33bc62a854e788ff1af05ed"
+    },
+    {
+      "class_index": 0,
+      "image_index": 6,
+      "name": "02.jpg",
+      "shape": [
+        192,
+        163,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "3be0581b330e4564babdb20fe05b28cb41c2afacea6f43bce6b5a2508ef1958e"
+    },
+    {
+      "class_index": 0,
+      "image_index": 7,
+      "name": "03.jpg",
+      "shape": [
+        182,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "116b72c6be984951a09cfe2b495aa05e877013bb47cb5c5877598921acc0c5c1"
+    },
+    {
+      "class_index": 0,
+      "image_index": 8,
+      "name": "04.jpg",
+      "shape": [
+        192,
+        162,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "a1ac0482903e8985c9660a9f3b24eae100c2335865acceaac5352c20f62d1572"
+    },
+    {
+      "class_index": 0,
+      "image_index": 9,
+      "name": "05.jpg",
+      "shape": [
+        192,
+        135,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "b99f489ad773ec602630f0268cb30a6d39e2e01ebb8c1af38a1055d2958bdf51"
+    },
+    {
+      "class_index": 0,
+      "image_index": 10,
+      "name": "06.jpg",
+      "shape": [
+        107,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "024c8109a0d8c129e0d953590f4d198f776f7cf18f91e4a984b3f230e724f685"
+    },
+    {
+      "class_index": 0,
+      "image_index": 11,
+      "name": "07.jpg",
+      "shape": [
+        181,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "c5ff6ae3c61f59e4d45c823f855cdf1851a4ff94010330594e8d0fbd1487a587"
+    },
+    {
+      "class_index": 0,
+      "image_index": 12,
+      "name": "08.jpg",
+      "shape": [
+        173,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "134523ee65a89b3465059dd795460f2d0142c5873b888967599750b1aff1c619"
+    },
+    {
+      "class_index": 0,
+      "image_index": 13,
+      "name": "09.jpg",
+      "shape": [
+        176,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "1cd6d5a01f320d9b598dc855d57fa08e759874d91d0cd37bc405823e8b5d28d9"
+    },
+    {
+      "class_index": 0,
+      "image_index": 14,
+      "name": "10.jpg",
+      "shape": [
+        192,
+        136,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "0e6bb2896b831103f0ee2fa792a5dac222c55716228319b507f47ac03d15ec1c"
+    },
+    {
+      "class_index": 0,
+      "image_index": 15,
+      "name": "11.jpg",
+      "shape": [
+        192,
+        137,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "2313e19951ac339531c957413684197e6cccbaa0b4e5cd4d260db895fb3e777f"
+    },
+    {
+      "class_index": 0,
+      "image_index": 16,
+      "name": "12.jpg",
+      "shape": [
+        192,
+        117,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "c946bca92bc581dfbd538ed9b375ec2e44507b89563dfe3a4dbdce3c33bfeb37"
+    },
+    {
+      "class_index": 0,
+      "image_index": 17,
+      "name": "13.jpg",
+      "shape": [
+        160,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "dc547852dae39e2bfd797432c95420f14b4bfe4340dfcd1f4684fc28422940b6"
+    },
+    {
+      "class_index": 0,
+      "image_index": 18,
+      "name": "14.jpg",
+      "shape": [
+        151,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "5b3c2c0e0d9e6626804b86675d5ffefa2d0fca16ae47a0af0cb42d194f2c0ca7"
+    },
+    {
+      "class_index": 0,
+      "image_index": 19,
+      "name": "15.jpg",
+      "shape": [
+        155,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "5d0891f0671104630fd2bd7783419846089cf15fc2b9318f9499fd3b6ee30006"
+    },
+    {
+      "class_index": 0,
+      "image_index": 20,
+      "name": "16.jpg",
+      "shape": [
+        192,
+        181,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "e461c11e37dc8952b4f8c8651df3bbdf94ef76eb674df3b0821fa7f0e0f7f7f8"
+    },
+    {
+      "class_index": 0,
+      "image_index": 21,
+      "name": "17.jpg",
+      "shape": [
+        126,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "73977edbd8e17b04d2a26ca62b4ab61eea13f812c442cd97a790f10735eadfe1"
+    },
+    {
+      "class_index": 0,
+      "image_index": 22,
+      "name": "18.jpg",
+      "shape": [
+        192,
+        140,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "6638a4d5cacc26ae7aca19c1c434973816fd0a96d7dd4be2874873041a7bacda"
+    },
+    {
+      "class_index": 0,
+      "image_index": 23,
+      "name": "19.jpg",
+      "shape": [
+        192,
+        185,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "32c7a0e11fe5eb96ce5eb85e07371538fa6dc4ddf2c77d7f8f5d4e7a572282cf"
+    },
+    {
+      "class_index": 0,
+      "image_index": 24,
+      "name": "20.jpg",
+      "shape": [
+        124,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "bfe737ca435bfec89db74210c823fd80105d9a4ce0f4021100ade943242c3290"
+    },
+    {
+      "class_index": 0,
+      "image_index": 25,
+      "name": "21.jpg",
+      "shape": [
+        176,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "c1a534d0c1e89c22359419082ec658eb3eef96a06573068af6f1ff6a69f1e586"
+    },
+    {
+      "class_index": 0,
+      "image_index": 26,
+      "name": "22.jpg",
+      "shape": [
+        192,
+        184,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "8ea0cd411ef1e25255a422dbea0f0192b937d95c1dd45aa4f44453fe0c8de1db"
+    },
+    {
+      "class_index": 0,
+      "image_index": 27,
+      "name": "23.jpg",
+      "shape": [
+        104,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "2995854e4b79da036d3248843bf4aac8e0949b97b7a53314827bc60d5ddef24d"
+    },
+    {
+      "class_index": 0,
+      "image_index": 28,
+      "name": "24.jpg",
+      "shape": [
+        192,
+        159,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "0760035cfaf7e0c44081bb3bbeaec8d19f84fea28fc0157bd3e0e3a6b70eb16a"
+    },
+    {
+      "class_index": 1,
+      "image_index": 0,
+      "name": "01.jpg",
+      "shape": [
+        192,
+        166,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "70f491f498bc3bcae6110d4d5fcbebad129fa152d8c1afb9052e339c521c8190"
+    },
+    {
+      "class_index": 1,
+      "image_index": 1,
+      "name": "02.jpg",
+      "shape": [
+        169,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "f646794ff5ba6ff67c61586494811081978c2492b6147a0fecc1030514e6b2d1"
+    },
+    {
+      "class_index": 1,
+      "image_index": 2,
+      "name": "03.jpg",
+      "shape": [
+        192,
+        125,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "4f4c6faf0ed299374bb3fb50edd4ddeaf4ae9df45dc38a2144cd65f8fd927d94"
+    },
+    {
+      "class_index": 1,
+      "image_index": 3,
+      "name": "04.jpg",
+      "shape": [
+        192,
+        151,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "8f3b46a0e61b7004a1be466f2dd6d3bdbf4a3b3cc20d30047528f57f1277677a"
+    },
+    {
+      "class_index": 1,
+      "image_index": 4,
+      "name": "05.jpg",
+      "shape": [
+        192,
+        153,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "34e8ff206654071a5788f13646884ebb938ea4966dfff1013bf04a71d2925c14"
+    },
+    {
+      "class_index": 1,
+      "image_index": 5,
+      "name": "01.jpg",
+      "shape": [
+        192,
+        176,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "4eec89f088af01f799badd9967dc8634f85bc426962afaf7fc03438d68c711aa"
+    },
+    {
+      "class_index": 1,
+      "image_index": 6,
+      "name": "02.jpg",
+      "shape": [
+        187,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "45bdb0dca6ee0d652d5ee75f7b215d255d4b04776dcd3ff390a0a21fd5678a19"
+    },
+    {
+      "class_index": 1,
+      "image_index": 7,
+      "name": "03.jpg",
+      "shape": [
+        192,
+        167,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "bbcda4b3cb709f1c2995b459497e2213c1ce98659996ff26bfc37d5624b994e3"
+    },
+    {
+      "class_index": 1,
+      "image_index": 8,
+      "name": "04.jpg",
+      "shape": [
+        167,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "89c1e89179ad48de1ac20c5fd4902a842a611aeeb9af15763f9daa0f1e6f0fa7"
+    },
+    {
+      "class_index": 1,
+      "image_index": 9,
+      "name": "05.jpg",
+      "shape": [
+        180,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "a7d13247bd16478fdc93ff3934ae810fb404030df6db6b89025551813a1159bb"
+    },
+    {
+      "class_index": 1,
+      "image_index": 10,
+      "name": "06.jpg",
+      "shape": [
+        192,
+        191,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "193fe99594e09fba257230c617b629b09ed9d1c9a298d68cef87ab15df6cd06a"
+    },
+    {
+      "class_index": 1,
+      "image_index": 11,
+      "name": "07.jpg",
+      "shape": [
+        192,
+        116,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "88b7bd651c74457494302b621fff7a974e3f5c75ed9bdd6bd28d9bac41eabbbc"
+    },
+    {
+      "class_index": 1,
+      "image_index": 12,
+      "name": "08.jpg",
+      "shape": [
+        102,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "ce86be951b7597a27b67cda5a293cecc015f4df1c909e7614d006ad23b9c6018"
+    },
+    {
+      "class_index": 1,
+      "image_index": 13,
+      "name": "09.jpg",
+      "shape": [
+        173,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "0e0e8a24782615f33b777095e941e13ee3c70c1e8eed4b79d84df8f3a5614e0a"
+    },
+    {
+      "class_index": 1,
+      "image_index": 14,
+      "name": "10.jpg",
+      "shape": [
+        192,
+        179,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "3e64521c072e4c8ca924c87a04532d6c056cee44717d020847db391e12ac1757"
+    },
+    {
+      "class_index": 1,
+      "image_index": 15,
+      "name": "11.jpg",
+      "shape": [
+        192,
+        158,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "e98363da4937b4d5c1182f57e4f66a1dc218cab81ed22d5fb8117a4d095ccc6f"
+    },
+    {
+      "class_index": 1,
+      "image_index": 16,
+      "name": "12.jpg",
+      "shape": [
+        120,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "865e9f752e44cbb817ac8f6a6d87cb1054b0c795d9ccd47ea33d3dab4aae73cf"
+    },
+    {
+      "class_index": 1,
+      "image_index": 17,
+      "name": "13.jpg",
+      "shape": [
+        123,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "cf66f47164585ae1fe832065e6b423d23fe89c6c6f7252c7bf6144aee7a2ab34"
+    },
+    {
+      "class_index": 1,
+      "image_index": 18,
+      "name": "14.jpg",
+      "shape": [
+        192,
+        126,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "2beb8fae6ac5291e8338655b17966656236d6db386bb2ebb0bf6fcd684228164"
+    },
+    {
+      "class_index": 1,
+      "image_index": 19,
+      "name": "15.jpg",
+      "shape": [
+        159,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "48025a2352b727e2e218c47581c150949771885aa41d3c68b6c2c5fad420707f"
+    },
+    {
+      "class_index": 1,
+      "image_index": 20,
+      "name": "16.jpg",
+      "shape": [
+        192,
+        158,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "2b45e265d1f7ee48789e42f63bbb3c67505fc67df4bccc8ecc16aebfbbac2310"
+    },
+    {
+      "class_index": 1,
+      "image_index": 21,
+      "name": "17.jpg",
+      "shape": [
+        192,
+        151,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "bb5338545b66b1bf97eabe87eb0f849ee289f6d567c973e1b10cdc60371a3f10"
+    },
+    {
+      "class_index": 1,
+      "image_index": 22,
+      "name": "18.jpg",
+      "shape": [
+        192,
+        152,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "5bb28aa3b4325eb432fca3362dd26dec39e68a9af4b48f2c692e1280b5cb1fcf"
+    },
+    {
+      "class_index": 1,
+      "image_index": 23,
+      "name": "19.jpg",
+      "shape": [
+        166,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "f7c02bad9d926dd0820b177f8bb06d598246bed337ccf9036d327639dcd15570"
+    },
+    {
+      "class_index": 1,
+      "image_index": 24,
+      "name": "20.jpg",
+      "shape": [
+        125,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "89883fcc2f13ef5be8a53ac1b13ee07d5f79aab9697b3a193f7b2433d4a3f2bc"
+    },
+    {
+      "class_index": 1,
+      "image_index": 25,
+      "name": "21.jpg",
+      "shape": [
+        192,
+        150,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "5a1f5b3a8d41147ab74d82c9606b43112272b9ba40270fd4ec3cd11041381fa6"
+    },
+    {
+      "class_index": 1,
+      "image_index": 26,
+      "name": "22.jpg",
+      "shape": [
+        164,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "f691dc888d8ed8f8a52e390fa441809a5ae6a13d9c9d340aa82761d62863bdc7"
+    },
+    {
+      "class_index": 1,
+      "image_index": 27,
+      "name": "23.jpg",
+      "shape": [
+        179,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "635373f1c57a3fcc5f5dd80a89ab3c14c9bb682d6a82b96dc0ae5304b20c2aa9"
+    },
+    {
+      "class_index": 1,
+      "image_index": 28,
+      "name": "24.jpg",
+      "shape": [
+        189,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "ca5782133aaa507e8250aa50fef5f7a3a04e60ee4ec7536a35a8555cdf32f2c0"
+    },
+    {
+      "class_index": 2,
+      "image_index": 0,
+      "name": "01.jpg",
+      "shape": [
+        192,
+        134,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "d242b0c3bb28de37657042c6d2380256b46dcd649b4bf198cbb2ffc0f97b9fcf"
+    },
+    {
+      "class_index": 2,
+      "image_index": 1,
+      "name": "02.jpg",
+      "shape": [
+        152,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "8102a9c99ccb11152c6c5568ac00225c77d9f916c21fe7af6e2959c01de73662"
+    },
+    {
+      "class_index": 2,
+      "image_index": 2,
+      "name": "03.jpg",
+      "shape": [
+        192,
+        135,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "0c3a72e5364ee11728a4e56ec9663f9a5f99db66a44c5ab587c1734631bb24d4"
+    },
+    {
+      "class_index": 2,
+      "image_index": 3,
+      "name": "04.jpg",
+      "shape": [
+        153,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "9be8eca35ed526736bdb447dcd687b402ca278e3a7f71fa2c5ebb2fbed51b245"
+    },
+    {
+      "class_index": 2,
+      "image_index": 4,
+      "name": "05.jpg",
+      "shape": [
+        192,
+        131,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "55ef26a302949e10a8108dca6fd936dd1a4aa957e74350dbfc874f23bacff4c3"
+    },
+    {
+      "class_index": 2,
+      "image_index": 5,
+      "name": "01.jpg",
+      "shape": [
+        174,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "b69ad65c20e60c3c44ad8fca10ed848a0212b85342d8d4c7f773f7242f26febf"
+    },
+    {
+      "class_index": 2,
+      "image_index": 6,
+      "name": "02.jpg",
+      "shape": [
+        141,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "bc1ead093eefab792b3c78ba7b3baa3c2591c25a28d7615e80d0b935e2265a9c"
+    },
+    {
+      "class_index": 2,
+      "image_index": 7,
+      "name": "03.jpg",
+      "shape": [
+        192,
+        189,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "97d2b0ce04b497eb10b2947809166d63aa2160f4931ebf87127c14ed9252cbf7"
+    },
+    {
+      "class_index": 2,
+      "image_index": 8,
+      "name": "04.jpg",
+      "shape": [
+        192,
+        105,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "5e272fd755a5a72a04b6cd0039d5eedf55689ca15cd0dec70f3ffd61a082e2d4"
+    },
+    {
+      "class_index": 2,
+      "image_index": 9,
+      "name": "05.jpg",
+      "shape": [
+        192,
+        150,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "d8374d0e514bf4704c316eb363c56cd8f06fdc715f9f0796c5235d747372e201"
+    },
+    {
+      "class_index": 2,
+      "image_index": 10,
+      "name": "06.jpg",
+      "shape": [
+        157,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "ca8878b039e341136dae5862a00d509a9c95543bd68140e51b0b698f0cd291d0"
+    },
+    {
+      "class_index": 2,
+      "image_index": 11,
+      "name": "07.jpg",
+      "shape": [
+        150,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "73ff7f74ebfe45f05fa0f3c8633b5e1ae5d96f63f0963f2b860a9d2312d103a1"
+    },
+    {
+      "class_index": 2,
+      "image_index": 12,
+      "name": "08.jpg",
+      "shape": [
+        146,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "19f309c9daefdd02ec4f717410823d046d4544884fb400d6c83272b06068d358"
+    },
+    {
+      "class_index": 2,
+      "image_index": 13,
+      "name": "09.jpg",
+      "shape": [
+        192,
+        151,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "568734a882ff97a8fdc886b98f87a66a67651034f020e52efc5e1e452b4cf626"
+    },
+    {
+      "class_index": 2,
+      "image_index": 14,
+      "name": "10.jpg",
+      "shape": [
+        150,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "0915503b21b3086671e2537a10f73e9f69c1fda3e63b562636b5b1abdc8b83f4"
+    },
+    {
+      "class_index": 2,
+      "image_index": 15,
+      "name": "11.jpg",
+      "shape": [
+        149,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "2ab69c91042540592c99cc089f0c874347ee7687eb06507777fa97db259b2901"
+    },
+    {
+      "class_index": 2,
+      "image_index": 16,
+      "name": "12.jpg",
+      "shape": [
+        192,
+        139,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "b4850b78add850b85f6898ec378c7ae04048f4f3e4dfbb52ecd0c8800d260ceb"
+    },
+    {
+      "class_index": 2,
+      "image_index": 17,
+      "name": "13.jpg",
+      "shape": [
+        192,
+        163,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "59ae30fec1c5b10ed99c4ef9b30833b91ec5ecdba6e5dce95cd3782025e648aa"
+    },
+    {
+      "class_index": 2,
+      "image_index": 18,
+      "name": "14.jpg",
+      "shape": [
+        141,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "43f7a9ca66ff992c1de831ca6d991b5bc2cc660f7d78158ede6909e4f2c69bc7"
+    },
+    {
+      "class_index": 2,
+      "image_index": 19,
+      "name": "15.jpg",
+      "shape": [
+        144,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "237c99606bb1cf5d20a7d066471c04d911b6fa906bac505c3c34ba01f1153de9"
+    },
+    {
+      "class_index": 2,
+      "image_index": 20,
+      "name": "16.jpg",
+      "shape": [
+        192,
+        135,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "0606048f28c5f4276410611faa17d235835984e8593e46e865312171d38fddeb"
+    },
+    {
+      "class_index": 2,
+      "image_index": 21,
+      "name": "17.jpg",
+      "shape": [
+        142,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "ed861a9b8b70df883842a766bf776abf4ce42abeedf49c699d70afdd4651a23b"
+    },
+    {
+      "class_index": 2,
+      "image_index": 22,
+      "name": "18.jpg",
+      "shape": [
+        143,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "7144244896ffdd6ba38bac164020faf0d2f47c80c5cca2d3eb7b4e713d508b3c"
+    },
+    {
+      "class_index": 2,
+      "image_index": 23,
+      "name": "19.jpg",
+      "shape": [
+        192,
+        127,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "fa60ae18001f0e3eb2aae2694656a12109be8ee8f5967c0a9b77708616369fab"
+    },
+    {
+      "class_index": 2,
+      "image_index": 24,
+      "name": "20.jpg",
+      "shape": [
+        144,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "16e3455ddb14df1c19e657942f549db00b034036ce8cd0006dd93efcdddbbd68"
+    },
+    {
+      "class_index": 2,
+      "image_index": 25,
+      "name": "21.jpg",
+      "shape": [
+        130,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "ee6fa151104f720a7c9136b3c856d124c70149b58470dd500eebab302902c5d1"
+    },
+    {
+      "class_index": 2,
+      "image_index": 26,
+      "name": "22.jpg",
+      "shape": [
+        192,
+        150,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "5af96e1e3277d50dfbd3b90ac96d65c81f3e1a49f40c6c331433e9981f561174"
+    },
+    {
+      "class_index": 2,
+      "image_index": 27,
+      "name": "23.jpg",
+      "shape": [
+        192,
+        132,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "9f5a59fd3ed62f5f7ebb497a06a0bd52ffe0c2c241365541d2c7cc8373b8d7c2"
+    },
+    {
+      "class_index": 2,
+      "image_index": 28,
+      "name": "24.jpg",
+      "shape": [
+        161,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "0ba13e0adb70f58ff087c667e07a3b3151de19b680ce93a0d4fba7294e434d2a"
+    },
+    {
+      "class_index": 3,
+      "image_index": 0,
+      "name": "01.jpg",
+      "shape": [
+        138,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "3d8a4e3728e81717e9ad1b2dc30d7dccf5c221719d9451dc10536e94f2b75314"
+    },
+    {
+      "class_index": 3,
+      "image_index": 1,
+      "name": "02.jpg",
+      "shape": [
+        136,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "e61b47278f9d6834afce7c720a3e61a7a7146746b7c2a67a3206da6ad045a3ce"
+    },
+    {
+      "class_index": 3,
+      "image_index": 2,
+      "name": "03.jpg",
+      "shape": [
+        139,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "e6665f0a24821eeaeb36655770b906868a1447c5e96e54e4224369cfd2919b69"
+    },
+    {
+      "class_index": 3,
+      "image_index": 3,
+      "name": "04.jpg",
+      "shape": [
+        153,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "ef626c50509610712382806712019b84bf6b16c23e0cb0e1a59d46715fa430a5"
+    },
+    {
+      "class_index": 3,
+      "image_index": 4,
+      "name": "05.jpg",
+      "shape": [
+        145,
+        192,
+        3
+      ],
+      "validation": true,
+      "readable": true,
+      "fingerprint": "4d7bb79f657756daf91d8a4c49de7b6324daa1d183288478043526290e5bcce6"
+    },
+    {
+      "class_index": 3,
+      "image_index": 5,
+      "name": "01.jpg",
+      "shape": [
+        150,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "64ed9a87efbacdcf9085a1e51e2232fe9405d832b9d136340f3dea7f67468d22"
+    },
+    {
+      "class_index": 3,
+      "image_index": 6,
+      "name": "02.jpg",
+      "shape": [
+        145,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "f6a39cea216540d3fe1304e2b7ec486302cd2157677bc2d801763dd5163b7325"
+    },
+    {
+      "class_index": 3,
+      "image_index": 7,
+      "name": "03.jpg",
+      "shape": [
+        145,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "f8a7e6ebeb79f52acef337d0e1af1a0ae4dac1e00918b9ae36c4ed7a7b9c5fbf"
+    },
+    {
+      "class_index": 3,
+      "image_index": 8,
+      "name": "04.jpg",
+      "shape": [
+        189,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "a0a285d3053d86b0d91a64b2ee89be90bb3535ac37ee0ee07ebba1f572ca97bb"
+    },
+    {
+      "class_index": 3,
+      "image_index": 9,
+      "name": "05.jpg",
+      "shape": [
+        157,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "4787271bbe48c03486139573c1445530ba3e5e41761228be995eeb38fc67c21e"
+    },
+    {
+      "class_index": 3,
+      "image_index": 10,
+      "name": "06.jpg",
+      "shape": [
+        192,
+        138,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "adffb4a3b86117d761b142b4841f759b3d22bee5f2abd98b09e00a077db1d3d4"
+    },
+    {
+      "class_index": 3,
+      "image_index": 11,
+      "name": "07.jpg",
+      "shape": [
+        182,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "a6c9b40bca6bf479446bc0e9e4f5fcd123b107860a816e26671ef6212bd1cb8e"
+    },
+    {
+      "class_index": 3,
+      "image_index": 12,
+      "name": "08.jpg",
+      "shape": [
+        148,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "9d2bfcfb7a73d22f88785ff21849fac92a694504055bd12071e9802989a51a11"
+    },
+    {
+      "class_index": 3,
+      "image_index": 13,
+      "name": "09.jpg",
+      "shape": [
+        154,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "d186e0c9935ad9131b35b82e9bd42c917fd7dbac1ed1432b178d4773d414cda4"
+    },
+    {
+      "class_index": 3,
+      "image_index": 14,
+      "name": "10.jpg",
+      "shape": [
+        192,
+        136,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "71328174452b3ba530be8051029a7ea48db262bc993352234bd7243e29b5f384"
+    },
+    {
+      "class_index": 3,
+      "image_index": 15,
+      "name": "11.jpg",
+      "shape": [
+        155,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "b0f9b413151397b97a0378d1096612996ef3bc858a288969ce02d0aff4d60edf"
+    },
+    {
+      "class_index": 3,
+      "image_index": 16,
+      "name": "12.jpg",
+      "shape": [
+        144,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "750e1e6c54b1c3940faadcf140f7321ae59cdff16befd28e575c7f02333db662"
+    },
+    {
+      "class_index": 3,
+      "image_index": 17,
+      "name": "13.jpg",
+      "shape": [
+        146,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "ebd4d228533a1f2f399876d4f2031d7dc35b031c05a7011b44a5651af06f00c3"
+    },
+    {
+      "class_index": 3,
+      "image_index": 18,
+      "name": "14.jpg",
+      "shape": [
+        136,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "5ae1436179a919e283fc622c0e4361634151ca11e34b41ea0713a3a383b4bf61"
+    },
+    {
+      "class_index": 3,
+      "image_index": 19,
+      "name": "15.jpg",
+      "shape": [
+        128,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "632ad24151e59bbfbd7124dcc5682e6424dddaf4ad93366dacac96db084793e2"
+    },
+    {
+      "class_index": 3,
+      "image_index": 20,
+      "name": "16.jpg",
+      "shape": [
+        141,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "45bfbfd0bd4addfab927a61e863827ef5d198617da8519be570708c5179d9548"
+    },
+    {
+      "class_index": 3,
+      "image_index": 21,
+      "name": "17.jpg",
+      "shape": [
+        145,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "87cd3b1bdfc897960cf49597d3b8892b777ce143e2bccc870f31c8a753f94055"
+    },
+    {
+      "class_index": 3,
+      "image_index": 22,
+      "name": "18.jpg",
+      "shape": [
+        191,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "900d29233fdeb68540db067eac5f57ab0fec6025d7d086315939777ef6847c5c"
+    },
+    {
+      "class_index": 3,
+      "image_index": 23,
+      "name": "19.jpg",
+      "shape": [
+        140,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "b0a50f3f5e181f0e5fc13d4a3a44ecd4b6516a316362024a7347c81b312c53c6"
+    },
+    {
+      "class_index": 3,
+      "image_index": 24,
+      "name": "20.jpg",
+      "shape": [
+        192,
+        170,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "15da2e4531a31f7619e4aadfedeee560033b95bcc17d989c922e48e71efffc4d"
+    },
+    {
+      "class_index": 3,
+      "image_index": 25,
+      "name": "21.jpg",
+      "shape": [
+        155,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "a8e568f966ee1aca94900591742bf1f191b4558345ce1b2cadbe0bd7e3f1988f"
+    },
+    {
+      "class_index": 3,
+      "image_index": 26,
+      "name": "22.jpg",
+      "shape": [
+        141,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "2005e50e82b758e6596403adf693b4ec8f0ed8570c0c166e2a8d1d7e890690ae"
+    },
+    {
+      "class_index": 3,
+      "image_index": 27,
+      "name": "23.jpg",
+      "shape": [
+        162,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "7dbe2ddb6b7aee1e4ddf4d94e5e48cac070c5d387f72f1b8df17a48800c66ceb"
+    },
+    {
+      "class_index": 3,
+      "image_index": 28,
+      "name": "24.jpg",
+      "shape": [
+        137,
+        192,
+        3
+      ],
+      "validation": false,
+      "readable": true,
+      "fingerprint": "6ebc50b346c864077afa2d6b93aa2fa5d6ad347fdbd4a96114e67f12626b2a01"
+    }
+  ]
+}

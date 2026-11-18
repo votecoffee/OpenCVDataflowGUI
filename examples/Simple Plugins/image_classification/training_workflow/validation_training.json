@@ -1,0 +1,56 @@
+[
+  {
+    "profile": "color_and_layout",
+    "assigned_images": 116,
+    "training": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "held_out": [
+      5,
+      5,
+      5,
+      5
+    ],
+    "original_health_restored": true,
+    "scan_does_not_predict": true,
+    "deliberate_problem_codes_detected": true,
+    "linked_correction": true,
+    "removed_assignments_keep_files": true,
+    "trained_staged_applied_reopened": true,
+    "exact_assets_after_save_as": true,
+    "original_assets_preserved": true,
+    "new_health": 70.0,
+    "manifest_sha256": "ca494a81c8836fb15e1886d804225bc2022c0e20d4096364f5fd363bc97e7eb7",
+    "scope": "Same fixed profiles/splits; diagnostic faults removed before fitting. Not an accuracy improvement claim."
+  },
+  {
+    "profile": "surface_texture",
+    "assigned_images": 116,
+    "training": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "held_out": [
+      5,
+      5,
+      5,
+      5
+    ],
+    "original_health_restored": true,
+    "scan_does_not_predict": true,
+    "deliberate_problem_codes_detected": true,
+    "linked_correction": true,
+    "removed_assignments_keep_files": true,
+    "trained_staged_applied_reopened": true,
+    "exact_assets_after_save_as": true,
+    "original_assets_preserved": true,
+    "new_health": 95.0,
+    "manifest_sha256": "85e458725f432f96eb289f14bdada9d4c1ece7d4fae3094c8edcf72fea037787",
+    "scope": "Same fixed profiles/splits; diagnostic faults removed before fitting. Not an accuracy improvement claim."
+  }
+]
