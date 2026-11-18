@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 56 | 1 | 5 | 62 | 90.3% |
+| 2. ML and DNN | 57 | 1 | 4 | 62 | 91.9% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 282 | 33 | 155 | 470 | 60.0% |
+| **Overall** | 283 | 33 | 154 | 470 | 60.2% |
 
 <!-- coverage-summary:end -->
 
@@ -395,7 +395,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S2-58 | Produce several super-resolution scales from one inference | dnn_superres.DnnSuperResImpl.upsampleMultioutput or named DNN outputs | Planned | Qualify a pinned model with at least two named scales. Verify Python output delivery or a tested equivalent, output order, source-coordinate transforms, and feature localization against the native-resolution reference. |
+| S2-58 | Produce several super-resolution scales from one inference | Named native TensorFlow DNN heads; dnn_superres pixel reference | Complete | ml.super_resolution_multi qualifies unchanged pinned LapSRN x8 2x/4x/8x heads in one Classic CPU forward. The native multioutput Python binding delivers no images and remains unqualified; the named-output equivalent matches separate native heads and native 8x pixels. Ordered groups/subsets, per-scale ports/grid/pyramid/ticket maps, color/alpha/depth, selection/baselines, aggregate bounds, snapshot/cache/error containment and portable license/assets are checked. Thirteen projects and an independent native-reference benchmark retain disk localization and erased/false detail, without claiming new measured detail or physical metrology. See multiscale-super-resolution.md. |
 
 ### Train and qualify image classifiers and detectors
 

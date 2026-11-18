@@ -10767,6 +10767,33 @@ Input `region` — Source-grid region. Full source remains model context; outsid
 | `maximum_input_pixels` | `1000000` | Value must be a whole number between 1 and 1.6e+07. Full-source inference with unselected context; no ROI speedup. |
 | `maximum_output_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. Bound predicted output size before resize and native inference. |
 
+## Multi-scale learned super-resolution (`ml.super_resolution_multi`)
+
+ML / Image restoration
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — GRAY/BGR/RGB/BGRA/RGBA. Interpolated alpha; no physical depth.
+
+Input `mask` — Optional source-grid nonzero selection; intersects Region and repeats to output.
+
+Input `region` — Source-grid region. Full source remains model context; outside uses baseline.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Frozen .pb: relative assets copy on Save As; absolute paths stay linked. |
+| `model_sha256` | `""` | Exact digest checked each run; imports a private snapshot on cache miss. |
+| `depth_mode` | `"uint8_only"` | `uint8_only`, `convert_full_scale` Quantizes uint16/float32 [0,1] to 8 bits, then restores source depth. |
+| `baseline_interpolation` | `"cubic"` | `nearest`, `linear`, `cubic`, `lanczos4` Full-source resize; also supplies unselected pixels and alpha. |
+| `backend` | `"opencv"` | `opencv`, `cuda`, `default` Unavailable targets fail. Layer placement is not measured. |
+| `target` | `"cpu"` | `cpu`, `opencl`, `opencl_fp16`, `cuda`, `cuda_fp16` CPU baseline; other available devices require their own qualification. |
+| `maximum_model_bytes` | `67108864` | Value must be a whole number between 1 and 2.68435e+08. Bound the exact model snapshot; does not bound native workspace. |
+| `maximum_input_pixels` | `1000000` | Value must be a whole number between 1 and 1.6e+07. Full-source inference with unselected context; no ROI speedup. |
+| `maximum_output_pixels` | `16000000` | Value must be a whole number between 1 and 6.4e+07. Aggregate pixels across all requested scales, bounded before inference/allocation. |
+| `output_scales` | `[2, 4, 8]` | Two or three distinct LapSRN scales from [2,4,8], in output-group order. |
+| `output_nodes` | `["NCHW_output_2x", "NCHW_output_4x", "NCHW_output_8x"]` | Exact native node names, aligned one-to-one with Output scales. No guessed heads. |
+| `preview_scale` | `"largest"` | `largest`, `2`, `4`, `8` Image/baseline/mask/geometry preview; Largest selects the largest requested scale. |
+
 ## Load OpenCV SVM classifier (`ml.svm_load`)
 
 ML / Classical classification

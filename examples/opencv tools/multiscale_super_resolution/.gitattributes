@@ -1,0 +1,3 @@
+*.json -text
+MODEL-LICENSE.txt -text
+.gitattributes -text

@@ -44,6 +44,10 @@ QOperator CPU exports with explicit float boundaries. **Compare image model tens
 reports numerical and classification agreement independently. Native rounding and
 engine differences remain explicit; raw 8-bit output codes require dequantization.
 
+[Multi-scale super-resolution](multiscale-super-resolution.md) returns requested
+LapSRN 2×/4×/8× images in one native forward. Each image keeps its own nominal
+grid and original ticket; benchmarks retain measured reference detail and losses.
+
 ## Installation
 
 Point/box [prompted segmentation](prompted-segmentation.md) uses the pinned

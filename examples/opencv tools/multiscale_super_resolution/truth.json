@@ -1,0 +1,50 @@
+{
+  "asset_sha256": {
+    "assets/LapSRN_x8.pb": "a00211938b2b4c7d23691525a9267d9d0bbb345cdb9f38a7fc917414a5a1884f",
+    "assets/alpha.png": "11e03613e0dec05576d1eab4dc8b1d9a9f761f929cbae8f7a638498e44ef0cd1",
+    "assets/color.png": "1ec52f7009bb130ea6444e58c1578731bcef727e4e298afb1cc465143d967382",
+    "assets/gray16.png": "88962a0d2c72908e93cf417573c0329175daa00574edad33423ef906e061f969",
+    "assets/noise.png": "f87ffe4eb852002f1bff5f29e7625b4d411402de374756576da4838209b4ccdd",
+    "assets/reference.png": "6bdc5404f601de508725c13c1122aa0dfb6cea59c955bcce85999dd6272c5462"
+  },
+  "cases": [
+    "geometry",
+    "color",
+    "alpha",
+    "gray16",
+    "float",
+    "selected_region",
+    "empty_region",
+    "reordered",
+    "subset",
+    "wrong_scale",
+    "budget_error",
+    "noise",
+    "coffee"
+  ],
+  "circle_center": [
+    70,
+    88
+  ],
+  "circle_roi": [
+    30,
+    45,
+    82,
+    86
+  ],
+  "dark_threshold": 110,
+  "model_sha256": "a00211938b2b4c7d23691525a9267d9d0bbb345cdb9f38a7fc917414a5a1884f",
+  "reduced_size": [
+    32,
+    24
+  ],
+  "reference_size": [
+    256,
+    192
+  ],
+  "scales": [
+    2,
+    4,
+    8
+  ]
+}

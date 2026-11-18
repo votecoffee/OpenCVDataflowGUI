@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "program": {
+    "name": "",
+    "description": "",
+    "enabled": false,
+    "variables": {},
+    "scripts": {
+      "startup": "",
+      "before_run": "",
+      "after_run": "",
+      "shutdown": ""
+    },
+    "script_timeout_seconds": 10.0,
+    "services": [],
+    "assets": [
+      "MODEL-LICENSE.txt",
+      "SOURCES.md"
+    ]
+  },
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "float32",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "downsample",
+      "type": "cv.resize",
+      "name": "Resize",
+      "parameters": {
+        "width": 32,
+        "height": 24,
+        "interpolation": "area",
+        "size_mode": "absolute",
+        "scale_x": 1.0,
+        "scale_y": 1.0,
+        "padding_value": 0.0
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "learned",
+      "type": "ml.super_resolution_multi",
+      "name": "Multi-scale learned super-resolution",
+      "parameters": {
+        "model_path": "assets/LapSRN_x8.pb",
+        "model_sha256": "a00211938b2b4c7d23691525a9267d9d0bbb345cdb9f38a7fc917414a5a1884f",
+        "depth_mode": "convert_full_scale",
+        "baseline_interpolation": "cubic",
+        "backend": "opencv",
+        "target": "cpu",
+        "maximum_model_bytes": 67108864,
+        "maximum_input_pixels": 1000000,
+        "maximum_output_pixels": 16000000,
+        "output_scales": [
+          2,
+          4,
+          8
+        ],
+        "output_nodes": [
+          "NCHW_output_2x",
+          "NCHW_output_4x",
+          "NCHW_output_8x"
+        ],
+        "preview_scale": "largest"
+      },
+      "position": [
+        760,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "images",
+        "baseline",
+        "processed_mask",
+        "geometry",
+        "info",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1150,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1530,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "LapSRN multi-scale sources and limits",
+      "description": "Graph and synthetic fixture: original OpenCVDataflowGUI MIT work. Unmodified pretrained LapSRN x8 export by Fanny Monori / TF-LapSRN, Apache 2.0, revision fc51c90af1b5801a357abc919160d7ff4f24b997. One native named forward delivers requested scales. Pixel grids are nominal; learned detail is reconstruction and may erase or invent inspection features. Not calibrated metrology. See MODEL-LICENSE.txt and SOURCES.md, retained on Save As.",
+      "parameters": {},
+      "position": [
+        0,
+        -460
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "downsample",
+      "input": "image"
+    },
+    {
+      "source": "downsample",
+      "output": "image",
+      "target": "learned",
+      "input": "image"
+    },
+    {
+      "source": "learned",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "learned",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

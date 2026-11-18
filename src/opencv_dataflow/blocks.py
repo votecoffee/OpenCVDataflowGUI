@@ -783,6 +783,7 @@ def builtin_registry():
     from .multi_inference import MULTI_INFERENCE_BLOCKS
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
+    from .multiscale_super_resolution import MultiScaleSuperResolution
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_index import NATIVE_INDEX_BLOCKS
     from .native_lightglue import NATIVE_LIGHTGLUE_BLOCKS
@@ -1241,6 +1242,7 @@ def builtin_registry():
         RecognizeTextBatch,
         RecognizeConstrainedText,
         SuperResolution,
+        MultiScaleSuperResolution,
         RestoreImage,
         MonocularDepth,
         LearnedStereo,

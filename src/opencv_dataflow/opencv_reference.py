@@ -7,6 +7,7 @@ import cv2
 # Keep this explicit so wrapper helpers and result drawing calls do not appear as
 # the tool's algorithm. A block can use several bindings or select one by mode.
 BINDINGS = {
+    "ml.super_resolution_multi": "dnn.readNetFromTensorflow dnn.Net.forward dnn.blobFromImage",
     "cv.crop_pose": "warpAffine erode",
     "ml.cascade_detect": (
         "CascadeClassifier CascadeClassifier.read CascadeClassifier.detectMultiScale "
