@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "image",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/heldout-normal.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hog",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false
+      },
+      "position": [
+        330,
+        139.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load",
+      "type": "ml.one_class_svm_load",
+      "name": "Load one-class SVM model",
+      "parameters": {
+        "path": "assets/reference.json"
+      },
+      "position": [
+        0,
+        303.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "ml.one_class_svm_predict",
+      "name": "Inspect image using one-class SVM",
+      "parameters": {},
+      "position": [
+        660,
+        114.0
+      ],
+      "exposed_inputs": [
+        "model",
+        "samples",
+        "image"
+      ],
+      "exposed_outputs": [
+        "anomaly_score",
+        "accepted",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "image",
+      "output": "image",
+      "target": "hog",
+      "input": "image"
+    },
+    {
+      "source": "image",
+      "output": "image",
+      "target": "inspect",
+      "input": "image"
+    },
+    {
+      "source": "hog",
+      "output": "descriptor",
+      "target": "inspect",
+      "input": "samples"
+    },
+    {
+      "source": "load",
+      "output": "model",
+      "target": "inspect",
+      "input": "model"
+    }
+  ]
+}

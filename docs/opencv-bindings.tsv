@@ -826,9 +826,9 @@ P2	method	cv2.ml.SVM.getCoef0	no static reference	-
 P2	method	cv2.ml.SVM.getDecisionFunction	method name only	-
 P2	method	cv2.ml.SVM.getDefaultGridPtr	no static reference	-
 P2	method	cv2.ml.SVM.getDegree	no static reference	-
-P2	method	cv2.ml.SVM.getGamma	no static reference	-
+P2	method	cv2.ml.SVM.getGamma	method name only	-
 P2	method	cv2.ml.SVM.getKernelType	method name only	-
-P2	method	cv2.ml.SVM.getNu	no static reference	-
+P2	method	cv2.ml.SVM.getNu	method name only	-
 P2	method	cv2.ml.SVM.getP	no static reference	-
 P2	method	cv2.ml.SVM.getSupportVectors	method name only	-
 P2	method	cv2.ml.SVM.getTermCriteria	no static reference	-
@@ -841,7 +841,7 @@ P2	method	cv2.ml.SVM.setCoef0	method name only	-
 P2	method	cv2.ml.SVM.setDegree	method name only	-
 P2	method	cv2.ml.SVM.setGamma	method name only	-
 P2	method	cv2.ml.SVM.setKernel	method name only	-
-P2	method	cv2.ml.SVM.setNu	no static reference	-
+P2	method	cv2.ml.SVM.setNu	method name only	-
 P2	method	cv2.ml.SVM.setP	no static reference	-
 P2	method	cv2.ml.SVM.setTermCriteria	method name only	-
 P2	method	cv2.ml.SVM.setType	method name only	-
@@ -989,7 +989,7 @@ P2	function	cv2.optflow.DenseRLOFOpticalFlow_create	no static reference	-
 P2	class	cv2.optflow.DualTVL1OpticalFlow	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.create	method name only	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getEpsilon	no static reference	-
-P2	method	cv2.optflow.DualTVL1OpticalFlow.getGamma	no static reference	-
+P2	method	cv2.optflow.DualTVL1OpticalFlow.getGamma	method name only	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getInnerIterations	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getLambda	no static reference	-
 P2	method	cv2.optflow.DualTVL1OpticalFlow.getMedianFiltering	no static reference	-
@@ -1485,7 +1485,7 @@ P2	method	cv2.ximgproc.EdgeBoxes.getClusterMinMag	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.getEdgeMergeThr	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.getEdgeMinMag	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.getEta	no static reference	-
-P2	method	cv2.ximgproc.EdgeBoxes.getGamma	no static reference	-
+P2	method	cv2.ximgproc.EdgeBoxes.getGamma	method name only	-
 P2	method	cv2.ximgproc.EdgeBoxes.getKappa	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.getMaxAspectRatio	no static reference	-
 P2	method	cv2.ximgproc.EdgeBoxes.getMaxBoxes	no static reference	-
@@ -4647,7 +4647,7 @@ P3	method	cv2.TickMeter.reset	no static reference	-
 P3	method	cv2.TickMeter.start	method name only	-
 P3	method	cv2.TickMeter.stop	method name only	-
 P3	class	cv2.Tonemap	no static reference	-
-P3	method	cv2.Tonemap.getGamma	no static reference	-
+P3	method	cv2.Tonemap.getGamma	method name only	-
 P3	method	cv2.Tonemap.process	method name only	-
 P3	method	cv2.Tonemap.setGamma	method name only	-
 P3	class	cv2.TonemapDrago	no static reference	-
@@ -4744,7 +4744,7 @@ P3	method	cv2.VariationalRefinement.getAlpha	no static reference	-
 P3	method	cv2.VariationalRefinement.getDelta	no static reference	-
 P3	method	cv2.VariationalRefinement.getEpsilon	no static reference	-
 P3	method	cv2.VariationalRefinement.getFixedPointIterations	no static reference	-
-P3	method	cv2.VariationalRefinement.getGamma	no static reference	-
+P3	method	cv2.VariationalRefinement.getGamma	method name only	-
 P3	method	cv2.VariationalRefinement.getOmega	no static reference	-
 P3	method	cv2.VariationalRefinement.getSorIterations	no static reference	-
 P3	method	cv2.VariationalRefinement.setAlpha	no static reference	-

@@ -10231,6 +10231,53 @@ Input `reference_features` — Normalized reference features from the same descr
 | `feature_family` | `"aliked"` | `aliked`, `disk`, `superpoint` Explicit descriptor family matching the ONNX checkpoint; no family inference. |
 | `maximum_attention_pairs` | `1048576` | Value must be a whole number between 1 and 1.67772e+07. Bound reference rows times query rows before native attention; not an internal RAM limit. |
 
+## Load one-class SVM model (`ml.one_class_svm_load`)
+
+ML / Anomaly inspection
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` |  |
+
+## Inspect image using one-class SVM (`ml.one_class_svm_predict`)
+
+ML / Anomaly inspection
+
+Inputs: `model` (data), `samples` (data), `image` (image, optional).
+
+Input `samples` — One descriptor using the same preprocessing contract as training.
+
+Input `image` — Optional unchanged review image from the same frame and ticket.
+
+No configurable algorithm parameters.
+
+## Save one-class SVM model (`ml.one_class_svm_save`)
+
+Output / ML models
+
+Inputs: `model` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"one-class-model.json"` |  |
+
+## Train one-class SVM on known-good images (`ml.one_class_svm_train`)
+
+ML / Training
+
+Inputs: `samples` (any).
+
+Input `samples` — Known-good descriptor rows or a FlowGroup of descriptor packets. At least three distinct rows after normalization; never mix feature settings.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `nu` | `0.1` | Value must be a finite number between 1e-05 and 0.99999. Native one-class training parameter for the RBF boundary. Use independent samples to measure rejection rates. |
+| `gamma` | `0.5` | Value must be a finite number between 1e-08 and 1e+06. RBF kernel scale. Recheck after changes to descriptor scaling. |
+| `normalization` | `"none"` | `none`, `l2` Stored row normalization used identically in training and scoring. |
+| `max_iterations` | `5000` | Value must be a whole number between 1 and 100000. Maximum native solver iterations. |
+| `epsilon` | `1e-06` | Value must be a finite number between 1e-12 and 1. Native solver tolerance. |
+| `minimum_inlier_margin` | `0.0` | Value must be a finite number between -512 and 512. Accept only margins strictly above this cutoff. 0 matches the native decision. Stored in the model revision. |
+
 ## Learned optical flow (`ml.optical_flow`)
 
 ML / Motion estimation

@@ -93,6 +93,9 @@ BINDINGS = {
     "ml.svm_train": "ml.SVM_create ml.SVM.train ml.SVM.write",
     "ml.svm_predict": "ml.SVM.predict",
     "ml.svm_load": "ml.SVM.read",
+    "ml.one_class_svm_train": "ml.SVM_create ml.SVM.train ml.SVM.getDecisionFunction",
+    "ml.one_class_svm_predict": "ml.SVM.predict ml.SVM.read",
+    "ml.one_class_svm_load": "ml.SVM.read",
     "cv.reference_shadows": "connectedComponentsWithStats erode",
     "inspect.logpolar_registration": (
         "dft warpPolar phaseCorrelate findTransformECCWithMask warpAffine"

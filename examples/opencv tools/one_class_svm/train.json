@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "image",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/good-00.png",
+          "assets/good-01.png",
+          "assets/good-02.png",
+          "assets/good-03.png",
+          "assets/good-04.png",
+          "assets/good-05.png",
+          "assets/good-06.png",
+          "assets/good-07.png",
+          "assets/good-08.png",
+          "assets/good-09.png",
+          "assets/good-10.png",
+          "assets/good-11.png",
+          "assets/good-12.png",
+          "assets/good-13.png",
+          "assets/good-14.png",
+          "assets/good-15.png",
+          "assets/good-16.png",
+          "assets/good-17.png",
+          "assets/good-18.png",
+          "assets/good-19.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        12.5
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "hog",
+      "type": "inspect.hog",
+      "name": "Histogram of oriented gradients",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false
+      },
+      "position": [
+        330,
+        25.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "descriptor",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 20,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        660,
+        0.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "ml.one_class_svm_train",
+      "name": "Train one-class SVM on known-good images",
+      "parameters": {
+        "nu": 0.1,
+        "gamma": 0.05,
+        "normalization": "none",
+        "max_iterations": 5000,
+        "epsilon": 1e-06,
+        "minimum_inlier_margin": 0.0
+      },
+      "position": [
+        990,
+        25.0
+      ],
+      "exposed_inputs": [
+        "samples"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "image",
+      "output": "image",
+      "target": "hog",
+      "input": "image"
+    },
+    {
+      "source": "hog",
+      "output": "descriptor",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "train",
+      "input": "samples"
+    }
+  ]
+}

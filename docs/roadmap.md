@@ -61,7 +61,9 @@ unchanged. Multi-output super-resolution (S2-58) advances the targeted cycle to
 versions**. Classifier confidence calibration (S2-59) advances the targeted
 cycle to **8/20**. The saved examples fit on labeled calibration captures,
 compare reliability on a separate set, and verify native ONNX acceptance and
-abstention. One-class image anomaly training (S2-60) is next. These are
+abstention. One-class image anomaly training (S2-60) advances the targeted
+cycle to **9/20**, with native score parity, sealed model reuse and controlled
+held-out image checks. HOG detector training (S2-61) is next. These are
 software/offline checks, without native ROS or physical equipment qualification.
 
 The preceding audit used committed source `9c9d6a7`: **8,034 passed, 36 skipped,
@@ -141,8 +143,9 @@ Native ONNX LightGlue (S2-53), native embedding retrieval (S2-54) and native DNN
 layer profiling (S2-55) and score-decay suppression (S2-56) are qualified;
 quantized image inference (S2-57) and multi-output super-resolution (S2-58) are also
 qualified. Classifier confidence calibration (S2-59) is complete on controlled
-images. One-class image anomaly training (S2-60) is next. Permitted real
-SuperPoint extraction remains open. This is software/offline qualification,
+images. One-class image anomaly training (S2-60) is qualified on controlled
+normal and defective images. HOG detector training (S2-61) is next. Permitted
+real SuperPoint extraction remains open. This is software/offline qualification,
 without native ROS or physical equipment acceptance.
 
 The previous broad checkpoint was `e9b9aaf`: **5,949 passed, 36 skipped** in
@@ -325,8 +328,17 @@ The test split compares raw and calibrated NLL, Brier score, ECE, and accepted
 coverage. The native ONNX synthetic example accepts 20 of 40 known controls
 with 90% conditional accuracy and abstains on all four ambiguous controls.
 Held-out ECE falls from 0.129 to 0.060 on this controlled split. ML/DNN is
-**58/62 (93.5%)**, overall **284/470 (60.4%)**. Next is **S2-60 one-class
-image anomaly training**. See [workflow and limits](classifier-confidence.md).
+**58/62 (93.5%)**, overall **284/470 (60.4%)** at this increment. See
+[workflow and limits](classifier-confidence.md).
+
+**One-class image anomaly training (S2-60)** fits native RBF SVMs on known-good
+HOG descriptors, preserves the declared preprocessing and cutoff in the
+reloaded model, and reports native and inspection judgments separately.
+Independent RBF calculations check signed margins. The synthetic normal
+passes and a gouge fails. The tilted normal demonstrates a false rejection
+outside the trained range. ML/DNN is **59/62 (95.2%)**, overall
+**285/470 (60.6%)**. Next is **S2-61 HOG detector training**. See
+[workflow and limits](one-class-svm.md).
 
 **Quantized image inference (S2-57)** qualifies pinned Q/DQ and QOperator exports
 through existing image/multi-input/batch inference contracts. Selected raw int8/
@@ -3841,7 +3853,7 @@ testable inspection workflows.
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
 | 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests; the current targeted cycle is 7/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
-| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **58/62 complete (93.5%)**. Native ONNX LightGlue (S2-53), bounded native embedding retrieval (S2-54), CPU DNN layer profiling (S2-55), score-decay suppression (S2-56), pinned quantized image inference (S2-57), multi-output super-resolution (S2-58) and classifier confidence calibration (S2-59) are qualified with their stated limits. Next qualify one-class image anomaly training (S2-60), then the remaining selected image-model workflows. The checklist retains real SuperPoint extraction (S2-15), one-class anomaly training, HOG detector training and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
+| 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **59/62 complete (95.2%)**. Native ONNX LightGlue (S2-53), bounded native embedding retrieval (S2-54), CPU DNN layer profiling (S2-55), score-decay suppression (S2-56), pinned quantized image inference (S2-57), multi-output super-resolution (S2-58), classifier confidence calibration (S2-59) and one-class anomaly training (S2-60) are qualified with their stated limits. Next qualify HOG detector training (S2-61). The checklist also retains real SuperPoint extraction (S2-15) and spatial vote grouping. Preserve the stated controlled-fixture limits of completed adapters; qualify accelerators per backend. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
 | 3 | 3D and calibrated geometry | Finish calibration revision management and offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |

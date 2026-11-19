@@ -1,0 +1,107 @@
+{
+  "schema": "one_class_svm_fixture_v1",
+  "training_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "heldout_seeds": [
+    101,
+    102
+  ],
+  "defect_xyxy": [
+    4,
+    14,
+    28,
+    18
+  ],
+  "assets_sha256": {
+    "good-00.png": "c2a5e691cd6e3b943564b7a09c23a2a37e07b03e251906436db5a8de78c6c32a",
+    "good-01.png": "5285b2dd0d182a4845cf2e17fc1b006801a5308c407452187c57c36911da1a55",
+    "good-02.png": "20816353fac51785f1193eb018e9e675a89393493a212e1c49d9bb7c06d95e02",
+    "good-03.png": "811ab486d63dce2dd0c30301d91a46fdc13e5e21b5d1b41065b854ce2cf414f4",
+    "good-04.png": "5f406f6b306596cc809084c4aa29d85c212ee253ae7ec1a7e616569d1e196f26",
+    "good-05.png": "6871727d3b2f799418f140bb9e367262cc83e15eac3ee05c30d5fb93b330d948",
+    "good-06.png": "2af0cdb86ece4529e894957c2e71e23c03654e2e357762b87111219936d5bdcf",
+    "good-07.png": "9e0bf4e0329e5584678810dd945409172002612c3673b4b19cac7d4847dc4e58",
+    "good-08.png": "cd120e33366862cf6ee30af1ade40e05c06f1910d4beeb879f4b2bd7d6e2dbe7",
+    "good-09.png": "78ad0b9c09fc6f483395e070716416a2af583d13b304dc482797e2b378ce8858",
+    "good-10.png": "50eef108b3814db99107e6f3068986723ec2c8b0c2559d914e2f91bda62d0029",
+    "good-11.png": "176cdad976a9ed4b2e5b82b7fcd67ad2351e619d56f95a666faa3f3f081a5056",
+    "good-12.png": "48d73777e406b560fb77f445e0dd837740d3012f4fefe1bc650869b4cbad875a",
+    "good-13.png": "f8ee4c2a8e83e45b7456d3db6347d5b0c40d184fc85209c41d57298d20ca9d8b",
+    "good-14.png": "196b1c5167442bbc7043b08d6bcc0047f86fcdc26bba39ce291c79e6599c9e8b",
+    "good-15.png": "5ce1c7417ea862e4882b7d0d5936f9a67cdc51cde9d7c6669dbb31833ef8f074",
+    "good-16.png": "77129df5531dcca94877b40628d92cc8d5ec1ecb4c5a2e3dfd4a61ec3b27fa7b",
+    "good-17.png": "56a0f5cfade24eb92a7b9f59d6729517e7d323811d96a61f8c8bdb484cd59d46",
+    "good-18.png": "0c7bbd3f37d97506f8a84f18c3bb573b4ace63a13177514e494e868d8205aa13",
+    "good-19.png": "993e87b060e058aa921e38482ada5a5bae3eaf9ccf14db8e8c4017f5d4b61be9",
+    "heldout-defect.png": "68f65ee8b31a350fdab69ac9f631f32daa637d30699dcbfb51922f293da9ce9a",
+    "heldout-normal.png": "689b279f94ee5dfe6c07fd88e31996054b878b5671c8ff454b55c6fb6715e97b",
+    "heldout-tilted.png": "ab6aa6f01598d3ab0ac3bdd1c216e1b9ded2c9392ed0c9f6b478844582866839",
+    "reference.json": "e479660d3dfae231c6b133981d03a0fe2b98f29a8b4f20604083ed5c379b3aaf",
+    "strict.json": "39d70ba7b8b4528aaeca399056d124b0b13bbda9996c9986e730d48fc41c2da0"
+  },
+  "results": {
+    "normal": {
+      "state": "pass",
+      "model_revision": "02339e3134cbb192bac5dbb9433501b69793bdf6d1fd72009a862f8e32d1ad35",
+      "raw_margin": 0.14359164237976074,
+      "anomaly_score": -0.14359164237976074,
+      "native_inlier": true,
+      "minimum_inlier_margin": 0.0,
+      "feature_contract_verified": true,
+      "accepted": true
+    },
+    "defect": {
+      "state": "fail",
+      "model_revision": "02339e3134cbb192bac5dbb9433501b69793bdf6d1fd72009a862f8e32d1ad35",
+      "raw_margin": -0.10068464279174805,
+      "anomaly_score": 0.10068464279174805,
+      "native_inlier": false,
+      "minimum_inlier_margin": 0.0,
+      "feature_contract_verified": true,
+      "accepted": false
+    },
+    "tilted_good": {
+      "state": "fail",
+      "model_revision": "02339e3134cbb192bac5dbb9433501b69793bdf6d1fd72009a862f8e32d1ad35",
+      "raw_margin": -0.3268986642360687,
+      "anomaly_score": 0.3268986642360687,
+      "native_inlier": false,
+      "minimum_inlier_margin": 0.0,
+      "feature_contract_verified": true,
+      "accepted": false
+    },
+    "strict_cutoff": {
+      "state": "fail",
+      "model_revision": "05841bd25c6aa6323701b99a5cc7164867f0f4052f4722cbfc642e1698714d30",
+      "raw_margin": 0.14359164237976074,
+      "anomaly_score": -0.14359164237976074,
+      "native_inlier": true,
+      "minimum_inlier_margin": 0.2,
+      "feature_contract_verified": true,
+      "accepted": false
+    },
+    "wrong_features": {
+      "state": "error"
+    }
+  }
+}

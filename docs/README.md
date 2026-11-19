@@ -90,6 +90,7 @@
 | Local HAAR/LBP cascades, native stage weights and neighbor support | [Cascade detection](cascade-detection.md) |
 | Measured-pose crops, per-part classifiers and parent/child source maps | [Pose crop classification](pose-crop-classification.md) |
 | Continuous image-model values, checked receipts and residual reports | [Image regression](image-regression.md) |
+| Known-good training, native one-class margins and sealed anomaly cutoffs | [One-class SVM](one-class-svm.md) |
 | Known-good local feature banks, source-grid anomaly maps and threshold decisions | [Local anomalies](local-anomaly.md) |
 | Paired exposure/blur/pose replay, localization and false-reject evaluation | [Input shifts](input-shifts.md) |
 | Current instance masks, temporal IDs, ambiguity and missing-track reports | [Instance tracking](instance-tracking.md) |

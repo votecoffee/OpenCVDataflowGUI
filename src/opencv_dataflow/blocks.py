@@ -797,6 +797,7 @@ def builtin_registry():
     from .ocr_batch import RecognizeTextBatch
     from .ocr_constraints import RecognizeConstrainedText
     from .offline_stabilization import StabilizeRecordedSequence
+    from .one_class_svm import ONE_CLASS_SVM_BLOCKS
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
     from .paced_video import PacedVideoFile
@@ -1254,6 +1255,7 @@ def builtin_registry():
         *ANNOY_BLOCKS,
         *NATIVE_INDEX_BLOCKS,
         *SVM_BLOCKS,
+        *ONE_CLASS_SVM_BLOCKS,
         *KNN_BLOCKS,
         *RTREES_BLOCKS,
         *CLASSIFICATION_EVALUATION_BLOCKS,
