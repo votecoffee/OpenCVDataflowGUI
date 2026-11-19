@@ -57,8 +57,8 @@ BUNDLES = {
         "aa1618f0bb6d0932656a69e26d690c635169a982abc6946e74e597b7025ec4c0",
     ),
     "opencv_simple_gdrnpp": (
-        "opencv_simple_gdrnpp-0.1.0.dev3-py3-none-any.whl",
-        "d8fd2193f010f1888eb5c36a40a10ca0e5498f5227acbf669f1a473231c6886c",
+        "opencv_simple_gdrnpp-0.1.0.dev4-py3-none-any.whl",
+        "caa246e0a0f9aa1d72f367014c5a78ffcac0c85020679b72b841c7bb9b3fd589",
     ),
 }
 BUNDLE_DIRECTORY = Path(__file__).resolve().parent / "simple_plugin_wheels"
