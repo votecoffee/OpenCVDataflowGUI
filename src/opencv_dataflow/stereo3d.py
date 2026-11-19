@@ -5,6 +5,14 @@ import copy
 import cv2
 import numpy as np
 
+from .calibration_revisions import (
+    REVISION,
+    applied_payload,
+    check_ref,
+    digest,
+    is_full_grid,
+    rig_revision,
+)
 from .core import Port, Result
 from .geometry3d_common import (
     Tool3D,
@@ -20,11 +28,13 @@ from .geometry3d_common import (
     rigid,
 )
 from .images import DepthArray, ImageArray, image_format, preview_rgb
-from .parameter_validation import NumericRange
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, frame, metadata
 from .pointclouds import PointCloud
 from .processing import finite, gray_image, integer
 from .selection import selection_mask
+
+STEREO_GRID = "stereo_calibration_grid"
 
 
 def rgbd_function(name):
@@ -115,6 +125,7 @@ def validate_rig(rig):
     tool.process(
         {"left_camera": rig["left"], "right_camera": rig["right"], "transform": rig["transform"]}
     )
+    rig_revision(rig)
     return require_pinhole(rig["left"]), require_pinhole(rig["right"]), rigid(rig["transform"])
 
 
@@ -240,9 +251,8 @@ class RectifyStereo(Tool3D):
     def process(self, inputs):
         rig, p = inputs["rig"], self.parameters
         (k1, d1, size), (k2, d2, _), pose = validate_rig(rig)
-        for image in (inputs["left"], inputs["right"]):
-            if image.shape[:2] != (size[1], size[0]):
-                raise ValueError("Stereo image sizes must match calibrated sizes")
+        for side in ("left", "right"):
+            camera_for_image(rig[side], inputs[side])
         alpha = finite(p["alpha"], "Alpha")
         if not -1 <= alpha <= 1:
             raise ValueError("Rectification alpha must be in [-1,1]")
@@ -284,6 +294,7 @@ class RectifyStereo(Tool3D):
                 "spatial": frame(output_size, f"{self.id}:rectified:{name}"),
             }
             payloads[name].pop("pyramid", None)
+            applied_payload(payloads[name], rig[name].get(REVISION))
         result["rectification"] = {
             "model": "stereo_rectification_v1",
             "Q": q.tolist(),
@@ -297,6 +308,15 @@ class RectifyStereo(Tool3D):
             "units": rig["units"],
             "frame": f"{rig['left']['frame']}:rectified",
         }
+        if REVISION in rig:
+            result["rectification"][REVISION] = rig[REVISION]
+            grid = digest(result["rectification"])
+            for side in ("left", "right"):
+                payloads[side][STEREO_GRID] = {
+                    "sha256": grid,
+                    "side": side,
+                    "spatial": copy.deepcopy(payloads[side]["spatial"]),
+                }
         return Result(result, payloads=payloads)
 
 
@@ -352,6 +372,20 @@ class StereoDisparity(Tool3D):
         a, b = (gray_image(inputs[n], (np.uint8,)) for n in ("left", "right"))
         if a.shape != b.shape:
             raise ValueError("Rectified stereo image dimensions must match")
+        left, right = (self.input_payloads[name] for name in ("left", "right"))
+        if STEREO_GRID in left or STEREO_GRID in right:
+            left_stamp, right_stamp = left.get(STEREO_GRID), right.get(STEREO_GRID)
+            if (
+                not isinstance(left_stamp, dict)
+                or not isinstance(right_stamp, dict)
+                or left_stamp.get("side") != "left"
+                or right_stamp.get("side") != "right"
+                or left_stamp.get("sha256") != right_stamp.get("sha256")
+                or left_stamp.get("spatial") != left.get("spatial")
+                or right_stamp.get("spatial") != right.get("spatial")
+                or not all(is_full_grid(p, a.shape[::-1]) for p in (left, right))
+            ):
+                raise ValidationError("Stereo images must share the same sealed rectification grid")
         p = self.parameters
         disparities = integer(p["num_disparities"], "Number disparities", 16, 4096)
         if disparities % 16 or disparities >= a.shape[1]:
@@ -466,6 +500,21 @@ class ReprojectDisparity(Tool3D):
             disparity.shape[0],
         ):
             raise ValueError("Disparity must match rectification image size")
+        disparity_payload = self.input_payloads["disparity"]
+        if REVISION in rec or STEREO_GRID in disparity_payload:
+            check_ref(rec.get(REVISION))
+            stamp = {
+                "sha256": digest(rec), "side": "left", "spatial": disparity_payload.get("spatial")
+            }
+            candidates = ("disparity", "image") if "image" in inputs else ("disparity",)
+            for name in candidates:
+                payload = self.input_payloads[name]
+                if (
+                    payload.get(STEREO_GRID) != stamp
+                    or payload.get("spatial") != stamp["spatial"]
+                    or not is_full_grid(payload, disparity.shape[::-1])
+                ):
+                    raise ValidationError("Disparity or color grid differs from sealed stereo Q")
         xyz = cv2.reprojectImageTo3D(
             disparity * finite(p["input_scale"], "Input scale", 0.00000001),
             matrix(rec["Q"], (4, 4), "Q"),

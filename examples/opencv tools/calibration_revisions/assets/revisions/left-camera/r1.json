@@ -1,0 +1,35 @@
+{
+  "model": "calibration_revision_v1",
+  "profile_id": "left-camera",
+  "revision": "r1",
+  "profile": {
+    "model": "camera_model_v1",
+    "camera_matrix": [
+      [
+        200.0,
+        0.0,
+        160.0
+      ],
+      [
+        0.0,
+        200.0,
+        90.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "distortion": [],
+    "image_size": [
+      320,
+      180
+    ],
+    "units": "m",
+    "frame": "left_camera",
+    "lens": "pinhole",
+    "rms_pixels": 0.0
+  },
+  "sha256": "bf7de02671a174ece62ccb83a4cc5e96de442dff3f6c0ed577dda92bdac7197b"
+}

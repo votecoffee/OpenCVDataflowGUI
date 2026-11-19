@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 
+from .calibration_revisions import REVISION
 from .core import Port, Result
 from .geometry3d_common import (
     Tool3D,
@@ -48,6 +49,10 @@ class CameraModel(Tool3D):
             model = inputs["calibration"]
             k, d, size = camera(model)
             lens = model.get("lens", "pinhole")
+            if REVISION in model:
+                if p["frame"] != model["frame"]:
+                    raise ValueError("A selected revision already defines its camera frame")
+                return Result({"camera": model})
             return Result(
                 {
                     "camera": camera_record(
@@ -57,6 +62,7 @@ class CameraModel(Tool3D):
                         model.get("units", p["units"]),
                         p["frame"],
                         lens,
+                        **({"rms_pixels": model["rms_pixels"]} if "rms_pixels" in model else {}),
                         **({"xi": model["xi"]} if lens == "omnidir" else {}),
                     )
                 }

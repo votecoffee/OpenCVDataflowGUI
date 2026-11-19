@@ -94,6 +94,11 @@ Cloud transforms reject unit or frame mismatches instead of guessing conversions
 - **ArUco 3D marker poses** detects markers and uses the specified physical edge
   length to return IDs, per-marker poses, reprojection errors and axes overlays.
 
+**Versioned camera and rig profiles** use an explicit revision and check the
+capture declaration and pixel grid before rectifying. Derived lens maps and
+stereo reprojection preserve the selected revision.
+[Setup and runnable examples](calibration-revisions.md)
+
 ## Review sparse stereo correspondences
 
 **Check epipolar correspondences** accepts ordered left and right point

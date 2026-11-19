@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.stereo_demo",
+      "name": "Synthetic stereo / RGB-D",
+      "parameters": {
+        "width": 320,
+        "height": 180,
+        "disparity": 8,
+        "focal_length": 200.0,
+        "baseline_m": 0.12,
+        "seed": 3
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "depth",
+        "camera",
+        "rig",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "calibration.declare_capture",
+      "name": "Declare capture calibration revision",
+      "parameters": {
+        "profile_id": "stereo",
+        "revision": "r2",
+        "camera_frame": "left_camera",
+        "sha256": "64166b340855528b66c2b49c09de3f89202c463eac85f50ec87d2a39722ad0c5"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "calibration.declare_capture",
+      "name": "Declare capture calibration revision",
+      "parameters": {
+        "profile_id": "stereo",
+        "revision": "r2",
+        "camera_frame": "right_camera",
+        "sha256": "64166b340855528b66c2b49c09de3f89202c463eac85f50ec87d2a39722ad0c5"
+      },
+      "position": [
+        330,
+        300
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "profile",
+      "type": "input.calibration",
+      "name": "Load calibration profile",
+      "parameters": {
+        "path": "assets/revisions",
+        "path_base": "project",
+        "profile_id": "stereo",
+        "revision": "r2"
+      },
+      "position": [
+        330,
+        635
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "3d.stereo_rectify",
+      "name": "Rectify stereo images",
+      "parameters": {
+        "alpha": 0.0,
+        "zero_disparity": true,
+        "width": 0,
+        "height": 0,
+        "interpolation": "linear",
+        "border_value": 0.0
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rig"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "rectification"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "disparity",
+      "type": "3d.disparity",
+      "name": "Stereo BM / SGBM disparity",
+      "parameters": {
+        "algorithm": "sgbm",
+        "min_disparity": 0,
+        "num_disparities": 32,
+        "block_size": 5,
+        "p1": 0,
+        "p2": 0,
+        "mode": "sgbm_3way",
+        "uniqueness_ratio": 10,
+        "speckle_window": 0,
+        "speckle_range": 2,
+        "disp12_max_diff": 1,
+        "prefilter_cap": 31,
+        "prefilter_size": 9,
+        "prefilter_type": "xsobel",
+        "texture_threshold": 10,
+        "wls": false,
+        "wls_lambda": 8000.0,
+        "wls_sigma": 1.5,
+        "wls_lr_threshold": 24,
+        "wls_depth_radius": -1,
+        "minimum_wls_confidence": 0.0
+      },
+      "position": [
+        1030,
+        0
+      ],
+      "exposed_inputs": [
+        "left",
+        "right"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "preview",
+        "confidence"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cloud",
+      "type": "3d.reproject",
+      "name": "Disparity to 3D cloud",
+      "parameters": {
+        "input_scale": 1.0,
+        "sample_step": 2,
+        "max_points": 200000,
+        "min_depth": 0.001,
+        "max_depth": 100.0
+      },
+      "position": [
+        1380,
+        0
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "rectification",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "depth",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credits",
+      "type": "layout.comment",
+      "name": "Calibration revision example",
+      "description": "Original synthetic stereo texture and known calibration by OpenCVDataflowGUI contributors (MIT). The scene was tagged independently as revision r2. The r2 stereo rig has a baseline of 0.12 m, and the older r1 rig has a baseline of 0.10 m.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "left",
+      "target": "left",
+      "input": "image"
+    },
+    {
+      "source": "scene",
+      "output": "right",
+      "target": "right",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "rectify",
+      "input": "left"
+    },
+    {
+      "source": "rectify",
+      "output": "left",
+      "target": "disparity",
+      "input": "left"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "rectify",
+      "input": "right"
+    },
+    {
+      "source": "rectify",
+      "output": "right",
+      "target": "disparity",
+      "input": "right"
+    },
+    {
+      "source": "profile",
+      "output": "profile",
+      "target": "rectify",
+      "input": "rig"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification",
+      "target": "cloud",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "left",
+      "target": "cloud",
+      "input": "image"
+    },
+    {
+      "source": "disparity",
+      "output": "disparity",
+      "target": "cloud",
+      "input": "disparity"
+    }
+  ]
+}

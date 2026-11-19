@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 35 | 26 | 70 | 131 | 26.7% |
+| 3. 3D imagery and point clouds | 36 | 25 | 70 | 131 | 27.5% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 290 | 30 | 150 | 470 | 61.7% |
+| **Overall** | 291 | 29 | 150 | 470 | 61.9% |
 
 <!-- coverage-summary:end -->
 
@@ -421,7 +421,7 @@ fixture or result needed to close the item.
 | S3-05 | Fit omnidirectional intrinsics | omnidir.calibrate, omnidir.projectPoints, omnidir.undistortPoints | Complete | 3d.omnidir_calibrate fits Mei intrinsics and xi from grid files or ChArUco batches, validates native selected-view identities, and gates the camera on count, coverage and residuals. The synthetic held-out target verifies edge reprojection and perspective remapping. See [workflow](vision-3d.md#camera-models-and-coordinate-frames). |
 | S3-06 | Planar registration and physical workplane | findHomography, perspectiveTransform, warpPerspective | Complete | calibration.fit_planar, calibration.validate_planar, calibration.rectify_workplane. Independent marker checks and a uniform physical image grid. |
 | S3-07 | Physical dimensions from calibrated 2D images | Planar point mapping and scaled shape fitting | Complete | calibration.inspect_planar_distance, inspect.workplane_rectangle, inspect.workplane_ellipse, inspect.strip_width. Ticketed dimensions and tolerance reasons with source-aligned graphics. |
-| S3-08 | Versioned camera and rig profiles | Versioned intrinsics, map and extrinsic records tied to an image grid | Partial | input.calibration, output.calibration, input.lens_maps and output.lens_maps cover profiles and maps. Add explicit revision selection and reject mismatched capture or grid metadata. |
+| S3-08 | Versioned camera and rig profiles | Named immutable intrinsics/extrinsic snapshots and versioned map metadata | Complete | Select exact revisions by profile ID and revision. Camera and stereo consumers check capture identity and the full pixel grid; archived maps and stereo Q retain their original bindings. Saved projects exercise matched and stale selection, map reuse and depth recovery. See [workflow](calibration-revisions.md). |
 | S3-09 | Project camera points and rays | projectPoints, undistortPoints and lens-family variants | Complete | 3d.project, 3d.undistort_points, 3d.rectify_camera. Pixel projection and ray/rectification fixtures for declared lens families. |
 | S3-10 | Pinhole object and fiducial pose | solvePnP, solvePnPRansac, solvePnPRefineLM/VVS, Rodrigues | Complete | 3d.pnp, 3d.aruco_pose. Known pinhole poses, inlier and reprojection checks, and camera-relative frames. Wide-angle object pose remains S3-130. |
 | S3-11 | Shared-pinhole relative pose and epipolar geometry | findFundamentalMat, findEssentialMat, recoverPose, computeCorrespondEpilines | Complete | 3d.fundamental, 3d.essential_pose, 3d.check_epipolar. Relative pose uses one shared pinhole camera model; fundamental fitting and epipolar checks operate on image correspondences. Reject outliers and report residuals. Separate camera models remain S3-131. |

@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "scene",
+      "type": "input.stereo_demo",
+      "name": "Synthetic stereo / RGB-D",
+      "parameters": {
+        "width": 320,
+        "height": 180,
+        "disparity": 8,
+        "focal_length": 200.0,
+        "baseline_m": 0.12,
+        "seed": 3
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "depth",
+        "camera",
+        "rig",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "calibration.declare_capture",
+      "name": "Declare capture calibration revision",
+      "parameters": {
+        "profile_id": "left-camera",
+        "revision": "r2",
+        "camera_frame": "left_camera",
+        "sha256": "6c18d0ad04a32cf12f3d553a579eb540e3b6cce8f6c5faafccee4889ffa01ac4"
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "maps",
+      "type": "input.lens_maps",
+      "name": "Load lens correction maps",
+      "parameters": {
+        "path": "assets/left-r2.npz",
+        "path_base": "project"
+      },
+      "position": [
+        330,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "map_x",
+        "map_y",
+        "rectified_calibration",
+        "valid_roi",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "corrected",
+      "type": "cv.remap",
+      "name": "Remap image coordinates",
+      "parameters": {
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credits",
+      "type": "layout.comment",
+      "name": "Calibration revision example",
+      "description": "Original synthetic stereo texture and known calibration by OpenCVDataflowGUI contributors (MIT). The scene was tagged independently as revision r2. The r2 stereo rig has a baseline of 0.12 m, and the older r1 rig has a baseline of 0.10 m.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "left",
+      "target": "left",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "corrected",
+      "input": "image"
+    },
+    {
+      "source": "maps",
+      "output": "map_x",
+      "target": "corrected",
+      "input": "map_x"
+    },
+    {
+      "source": "maps",
+      "output": "map_y",
+      "target": "corrected",
+      "input": "map_y"
+    }
+  ]
+}

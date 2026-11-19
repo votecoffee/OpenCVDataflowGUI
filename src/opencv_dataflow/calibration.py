@@ -6,6 +6,18 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from .calibration_revisions import (
+    REVISION,
+    SELECTOR_DEFAULTS,
+    SELECTOR_HELP,
+    applied_payload,
+    check_capture,
+    check_selector,
+    make_revision,
+    profile_path,
+    read_revision,
+    write_revision,
+)
 from .charuco import calibration_observations
 from .circle_grid import (
     CIRCLE_FLAGS,
@@ -21,6 +33,7 @@ from .geometry3d_common import camera
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import opencv_image, preview_rgb
 from .parameter_validation import NumericRange, ValidationError
+from .payloads import frame
 from .processing import finite, integer
 from .toolblocks import Binding, ToolBlock
 
@@ -317,6 +330,11 @@ class PixelToPhysical(Block):
 
 
 def camera_parameters(calibration):
+    if calibration.get("model") == "camera_model_v1":
+        from .geometry3d_common import require_pinhole
+
+        matrix, distortion, _ = require_pinhole(calibration)
+        return matrix, distortion if len(distortion) else np.zeros(5)
     if calibration.get("model") != "opencv_pinhole_v1":
         raise ValueError("Expected OpenCV pinhole calibration data")
     matrix = np.asarray(calibration["camera_matrix"], np.float64)
@@ -576,8 +594,17 @@ class Undistort(Block):
             replacement.shape != (3, 3) or not np.isfinite(replacement).all()
         ):
             raise ValueError("New camera matrix must be finite 3x3")
+        binding = calibration.get(REVISION)
+        source = self.input_payloads["image"]
+        check_capture(binding, source, calibration["image_size"])
         output = cv2.undistort(image, matrix, distortion, newCameraMatrix=replacement)
-        return Result({"image": output}, graphics={"undistorted": output})
+        payloads = {}
+        if binding is not None:
+            payload = dict(source)
+            payload.pop("pyramid", None)
+            payload["spatial"] = frame(calibration["image_size"], f"{self.id}:rectified")
+            payloads["image"] = applied_payload(payload, binding)
+        return Result({"image": output}, payloads=payloads, graphics={"undistorted": output})
 
 
 class ColorBalance(Block):
@@ -648,7 +675,19 @@ class ColorBalance(Block):
 
 
 def validate_profile(profile):
-    if isinstance(profile, dict) and profile.get("model") == "camera_model_v1":
+    if not isinstance(profile, dict):
+        raise ValidationError("Calibration profile must be a JSON object")
+    if profile.get("model") == "stereo_rig_v1":
+        from .stereo3d import validate_rig
+
+        left, _, _ = validate_rig(profile)
+        if (
+            profile.get("image_size") != list(left[2])
+            or profile.get("units") != profile["left"]["units"]
+        ):
+            raise ValidationError("Rig grid and units must match both cameras")
+        return
+    if profile.get("model") == "camera_model_v1":
         camera(profile)
         if "rms_pixels" in profile:
             finite(profile["rms_pixels"], "Calibration RMS", 0)
@@ -685,35 +724,57 @@ def require_planar_grid(mapping, image_shape, image_spatial, mapping_spatial, re
         raise ValidationError("Calibration and source must share the same coordinate frame")
 
 
-class LoadCalibration(Block):
+class CalibrationProfileFile(Block):
+    parameter_choices = {"path_base": ("working_directory", "project")}
+    parameter_help = {
+        **SELECTOR_HELP,
+        "path": "A JSON file in single-file mode or the root directory of named revisions.",
+        "path_base": "Base for a relative file or calibration directory.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        check_selector(p)
+        if not isinstance(p["path"], str) or (p["profile_id"] and not p["path"].strip()):
+            raise ValidationError("Choose a calibration path", "path")
+
+
+class LoadCalibration(CalibrationProfileFile):
     type_id, title, category = "input.calibration", "Load calibration profile", "Input"
     block_type, subtype = "Input", "Calibration profiles"
     outputs = (Port("profile", "data"),)
-    defaults = {"path": "", "path_base": "working_directory"}
-    parameter_choices = {"path_base": ("working_directory", "project")}
+    defaults = {"path": "", "path_base": "working_directory", **SELECTOR_DEFAULTS}
 
     def process(self, inputs):
-        path = Path(self.parameters["path"])
-        if self.parameters["path_base"] == "project" and not path.is_absolute():
-            if self.project_dir is None:
-                raise ValueError("Save or open the project before loading a relative profile")
-            path = self.project_dir / path
+        path, p = profile_path(self), self.parameters
+        if p["profile_id"]:
+            profile = read_revision(path, p["profile_id"], p["revision"])
+            message = f"Selected {p['profile_id']} / {p['revision']}"
+            return Result({"profile": profile}, message=message)
         profile = json.loads(path.read_text(encoding="utf-8"))
         validate_profile(profile)
         return Result({"profile": profile}, message=profile["model"])
 
 
-class SaveCalibration(Block):
+class SaveCalibration(CalibrationProfileFile):
     type_id, title, category = "output.calibration", "Save calibration profile", "Output"
     block_type, subtype = "Output", "Calibration profiles"
     inputs = (Port("profile", "data"),)
-    defaults = {"path": "calibration.json"}
+    defaults = {"path": "calibration.json", "path_base": "working_directory", **SELECTOR_DEFAULTS}
 
     def process(self, inputs):
-        profile = inputs["profile"]
+        profile, p = inputs["profile"], self.parameters
+        path = profile_path(self)
+        if p["profile_id"]:
+            snapshot = make_revision(profile, p["profile_id"], p["revision"])
+            write_revision(path, snapshot)
+            return Result(message=f"Saved {p['profile_id']} / {p['revision']}")
+        if isinstance(profile, dict) and REVISION in profile:
+            raise ValidationError("Save a selected profile with an explicit revision")
         validate_profile(profile)
         content = json.dumps(profile, indent=2, allow_nan=False) + "\n"
-        with Path(self.parameters["path"]).open("x", encoding="utf-8") as stream:
+        with path.open("x", encoding="utf-8") as stream:
             stream.write(content)
         return Result(message="Calibration profile saved")
 

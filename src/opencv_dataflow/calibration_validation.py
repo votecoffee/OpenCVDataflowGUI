@@ -16,6 +16,7 @@ from .calibration import (
     map_points,
     require_planar_grid,
 )
+from .calibration_revisions import REVISION, check_capture
 from .charuco import observation_board, observation_points
 from .core import Block, Port, Result
 from .geometry3d import PNP
@@ -141,6 +142,7 @@ class ValidateLensCalibration(GridCalibrationBlock):
         image_size = list(image.shape[:2][::-1])
         if profile.get("image_size") != image_size:
             raise ValidationError("Validation image dimensions must match the lens calibration")
+        check_capture(profile.get(REVISION), self.input_payloads["image"], image_size)
         board = None
         if "observation" in inputs:
             observation = inputs["observation"]
@@ -175,8 +177,8 @@ class ValidateLensCalibration(GridCalibrationBlock):
         if not np.isfinite(world).all():
             raise ValidationError("Grid spacing produces nonfinite board coordinates")
         method = p["pose_method"]
-        if wide_angle and profile["units"] != units:
-            raise ValidationError(f"Validation target units must match the {lens} profile")
+        if (wide_angle or REVISION in profile) and profile["units"] != units:
+            raise ValidationError("Validation target units must match the camera profile")
         if lens == "fisheye":
             found, rotation, translation = cv2.fisheye.solvePnP(
                 world[:, None], observed[:, None], camera, distortion, flags=PNP[method]

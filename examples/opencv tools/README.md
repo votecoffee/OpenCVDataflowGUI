@@ -19,6 +19,9 @@ multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera
 model and checks a separate target near the sensor edge.
 
+[Calibration revisions](calibration_revisions/README.md) demonstrates named
+rig versions, archived maps and a rejected capture mismatch.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

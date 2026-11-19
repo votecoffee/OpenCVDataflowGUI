@@ -5,7 +5,9 @@ import copy
 import cv2
 import numpy as np
 
+from .calibration_revisions import REVISION, camera_binding, check_capture
 from .core import Block
+from .payloads import metadata
 from .processing import finite, integer
 
 
@@ -70,6 +72,7 @@ def camera(value):
         raise ValueError("Camera frame must be named")
     if lens == "omnidir":
         finite(value.get("xi"), "Omnidirectional xi")
+    camera_binding(value)
     return k, d, size
 
 
@@ -144,6 +147,7 @@ def camera_for_image(model, image):
     k, d, size = camera(model)
     if size != (image.shape[1], image.shape[0]):
         raise ValueError("Camera image size differs from input; supply scaled/rectified intrinsics")
+    check_capture(model.get(REVISION), metadata(image), size)
     return k, d, size
 
 

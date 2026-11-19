@@ -636,6 +636,7 @@ def builtin_registry():
         SaveCalibration,
         Undistort,
     )
+    from .calibration_revisions import DeclareCalibrationCapture
     from .calibration_validation import (
         FitPlanarCalibration,
         InspectPlanarDistance,
@@ -1275,6 +1276,7 @@ def builtin_registry():
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
+        DeclareCalibrationCapture,
         FisheyeCalibration,
         OmnidirectionalCalibration,
         CheckEpipolarCorrespondences,

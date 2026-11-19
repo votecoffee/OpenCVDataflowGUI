@@ -10,6 +10,7 @@ import cv2
 import numpy as np
 
 from .calibration import camera_parameters
+from .calibration_revisions import REVISION, applied_payload, check_binding, check_capture
 from .core import Block, Port, Result
 from .geometry3d_common import matrix as finite_matrix
 from .geometry3d_common import points as finite_points
@@ -125,10 +126,18 @@ def _signature(values):
     return hashlib.sha256(json.dumps(values, sort_keys=True, allow_nan=False).encode()).hexdigest()
 
 
-def _lens_identity(matrix, distortion, source, target, size, rotation):
-    return _signature(
-        [matrix.tolist(), distortion.tolist(), source, target.tolist(), size, rotation.tolist()]
-    )
+def _lens_identity(matrix, distortion, source, target, size, rotation, binding=None):
+    fields = [
+        matrix.tolist(),
+        distortion.tolist(),
+        source,
+        target.tolist(),
+        size,
+        rotation.tolist(),
+    ]
+    if binding is not None:
+        fields.append(check_binding(binding))
+    return _signature(fields)
 
 
 def _corrected_frame(source_frame, identity, size):
@@ -142,8 +151,7 @@ def _map_frame(info):
 def lens_map_payloads(info):
     spatial = _map_frame(info)
     payloads = {
-        f"map_{axis}": {"spatial": spatial, _TAG: {**info, "axis": axis}}
-        for axis in ("x", "y")
+        f"map_{axis}": {"spatial": spatial, _TAG: {**info, "axis": axis}} for axis in ("x", "y")
     }
     payloads["rectified_calibration"] = {_CORRECTION_ID: info["id"]}
     return payloads
@@ -210,10 +218,12 @@ def lens_remap_payload(block, source_size, output_size, info):
     payload = dict(block.input_payloads["image"])
     spatial = payload["spatial"]
     source_frame = spatial if spatial["root_id"] is not None else [block.id, spatial]
+    binding = info.get(REVISION)
+    check_capture(binding, payload, source_size)
     payload["spatial"] = _corrected_frame(source_frame, info["id"], output_size)
     payload.pop("pyramid", None)
     payload.pop(_TAG, None)
-    return {"image": payload}
+    return {"image": applied_payload(payload, binding)}
 
 
 class PackRemapMap(Block):
@@ -305,6 +315,8 @@ class BuildLensMaps(Block):
         size = [int(p["width"]) or source[0], int(p["height"]) or source[1]]
         if size[0] * size[1] > MAX_MAP_PIXELS:
             raise ValidationError("Lens maps are limited to 64 million output pixels")
+        if "rms_pixels" not in profile:
+            raise ValidationError("Building lens maps requires a measured source calibration RMS")
         rms = finite(profile["rms_pixels"], "Lens calibration RMS", 0)
         if rms > float(p["max_rms_pixels"]):
             raise ValidationError("Lens calibration exceeds the allowed reprojection error")
@@ -352,7 +364,8 @@ class BuildLensMaps(Block):
         )
         if not np.isfinite(map_x).all() or not np.isfinite(map_y).all():
             raise ValidationError("Lens correction produced nonfinite map coordinates")
-        identity = _lens_identity(matrix, distortion, source, target, size, rotation)
+        binding = profile.get(REVISION)
+        identity = _lens_identity(matrix, distortion, source, target, size, rotation, binding)
         info = {
             "id": identity,
             "source_size": source,
@@ -360,6 +373,8 @@ class BuildLensMaps(Block):
             "rectified_calibration": rectified,
             "valid_roi": None if roi is NO_VALUE else roi,
         }
+        if binding is not None:
+            info[REVISION] = binding
         return Result(
             {"map_x": map_x, "map_y": map_y, "rectified_calibration": rectified, "valid_roi": roi},
             payloads=lens_map_payloads(info),
@@ -407,7 +422,8 @@ class UndistortLensPoints(Block):
         if not valid_lens_size(source) or not valid_lens_size(size) or np.any(zero):
             raise ValidationError("Use valid source and rectified lens profiles")
         rotation = finite_matrix(corrected.get("rectification_rotation"), (3, 3), "Rotation")
-        identity = _lens_identity(matrix, distortion, source, target, size, rotation)
+        binding = profile.get(REVISION)
+        identity = _lens_identity(matrix, distortion, source, target, size, rotation, binding)
         if self.input_payloads["rectified_calibration"].get(_CORRECTION_ID) != identity:
             raise ValidationError("The rectified profile must come from maps for this calibration")
 
@@ -415,6 +431,8 @@ class UndistortLensPoints(Block):
         if len(raw) > 100_000 or (raw < 0).any() or (raw >= source).any():
             raise ValidationError("Use up to 100,000 points inside the original image")
         payload = self.input_payloads["points"].copy()
+        check_capture(binding, payload, source)
+        applied_payload(payload, binding)
         spatial = payload.pop("spatial", None)
         pyramid = payload.pop("pyramid", None)
         if pyramid is not None:

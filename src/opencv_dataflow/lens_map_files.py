@@ -12,6 +12,7 @@ from zipfile import ZIP_STORED, ZipFile
 import numpy as np
 
 from .calibration import validate_profile
+from .calibration_revisions import REVISION, check_binding, digest
 from .core import Block, Port, Result
 from .parameter_validation import ValidationError
 from .payloads import NO_VALUE
@@ -40,7 +41,8 @@ def _path(block):
 def _validate_info(info):
     if (
         not isinstance(info, dict)
-        or set(info) != {"id", "source_size", "output_size", "rectified_calibration", "valid_roi"}
+        or set(info) - {REVISION}
+        != {"id", "source_size", "output_size", "rectified_calibration", "valid_roi"}
         or not isinstance(info["id"], str)
         or not re.fullmatch("[0-9a-f]{64}", info["id"])
         or not valid_lens_size(info["source_size"])
@@ -48,6 +50,8 @@ def _validate_info(info):
         or math.prod(info["output_size"]) > MAX_MAP_PIXELS
     ):
         raise ValidationError("Invalid lens map metadata")
+    if REVISION in info:
+        check_binding(info[REVISION])
     profile = info["rectified_calibration"]
     if (
         not isinstance(profile, dict)
@@ -132,6 +136,7 @@ class SaveLensMaps(Block):
         manifest = {
             "model": _MODEL,
             "info": info,
+            "info_sha256": digest(info),
             "sha256": {name: _digest(a) for name, a in arrays.items()},
         }
         metadata = json.dumps(manifest, allow_nan=False, sort_keys=True).encode("utf-8")
@@ -187,6 +192,10 @@ class LoadLensMaps(Block):
                     raise ValidationError("Invalid lens map file manifest")
                 info = manifest.get("info")
                 _validate_info(info)
+                if (REVISION in info or "info_sha256" in manifest) and manifest.get(
+                    "info_sha256"
+                ) != digest(info):
+                    raise ValidationError("Lens map metadata checksum mismatch")
                 shape = tuple(info["output_size"][::-1])
                 outputs = {}
                 for name in _PLANES:

@@ -1,0 +1,112 @@
+{
+  "model": "calibration_revision_v1",
+  "profile_id": "stereo",
+  "revision": "r1",
+  "profile": {
+    "model": "stereo_rig_v1",
+    "left": {
+      "model": "camera_model_v1",
+      "camera_matrix": [
+        [
+          200.0,
+          0.0,
+          160.0
+        ],
+        [
+          0.0,
+          200.0,
+          90.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "distortion": [],
+      "image_size": [
+        320,
+        180
+      ],
+      "units": "m",
+      "frame": "left_camera",
+      "lens": "pinhole"
+    },
+    "right": {
+      "model": "camera_model_v1",
+      "camera_matrix": [
+        [
+          200.0,
+          0.0,
+          160.0
+        ],
+        [
+          0.0,
+          200.0,
+          90.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "distortion": [],
+      "image_size": [
+        320,
+        180
+      ],
+      "units": "m",
+      "frame": "right_camera",
+      "lens": "pinhole"
+    },
+    "transform": {
+      "model": "pose_3d_v1",
+      "source_to_target": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -0.1
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "source_frame": "left_camera",
+      "target_frame": "right_camera",
+      "units": "m",
+      "rvec": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "translation": [
+        -0.1,
+        0.0,
+        0.0
+      ]
+    },
+    "image_size": [
+      320,
+      180
+    ],
+    "units": "m"
+  },
+  "sha256": "d297465df26a14e42f01583bd514b5ef4f57da38e0348a4acae24e2e6cbccd91"
+}

@@ -743,6 +743,19 @@ Inputs: `image` (image).
 | `green_gain` | `1.0` |  |
 | `blue_gain` | `1.0` |  |
 
+## Declare capture calibration revision (`calibration.declare_capture`)
+
+Calibration / Calibration profiles
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `profile_id` | `"camera-profile"` | Profile used by this source at capture time, from an independent record. |
+| `revision` | `"r1"` | Revision used when the camera acquired this image. |
+| `camera_frame` | `"camera"` | Optical frame of the camera that acquired this image. |
+| `sha256` | `""` | Optional SHA-256 from the recorded revision manifest. |
+
 ## Detect color chart (`calibration.detect_color_chart`)
 
 Calibration / Color
@@ -5418,8 +5431,10 @@ Ticket mode and fixed value are common inspector controls.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `path` | `""` |  |
-| `path_base` | `"working_directory"` | `working_directory`, `project` |
+| `path` | `""` | A JSON file in single-file mode or the root directory of named revisions. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` Base for a relative file or calibration directory. |
+| `profile_id` | `""` | Named profile in the calibration directory. Blank opens a single JSON file. |
+| `revision` | `""` | Exact revision to select. Required with a profile ID. |
 
 ## Camera (`input.camera`)
 
@@ -11299,7 +11314,10 @@ Inputs: `profile` (data).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `path` | `"calibration.json"` |  |
+| `path` | `"calibration.json"` | A JSON file in single-file mode or the root directory of named revisions. |
+| `path_base` | `"working_directory"` | `working_directory`, `project` Base for a relative file or calibration directory. |
+| `profile_id` | `""` | Named profile in the calibration directory. Blank opens a single JSON file. |
+| `revision` | `""` | Exact revision to select. Required with a profile ID. |
 
 ## Save PLY / PCD point cloud (`output.cloud`)
 

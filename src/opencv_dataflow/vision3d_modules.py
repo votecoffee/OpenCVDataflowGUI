@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 
+from .calibration_revisions import REVISION, applied_payload
 from .core import Port, Result
 from .features import overlay_image
 from .fiducial_detection import DICTIONARIES, MARKER_CHOICES, MARKER_OPTIONS, detector_parameters
@@ -86,6 +87,7 @@ class RectifyCamera3D(Tool3D):
         output = ImageArray(image, image_format(source))
         payload = {**metadata(source), "spatial": frame(output_size, f"{self.id}:rectified")}
         payload.pop("pyramid", None)
+        applied_payload(payload, model.get(REVISION))
         cam = camera_record(
             new_k,
             [],
