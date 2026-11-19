@@ -17,6 +17,7 @@ from .circle_grid import (
     validate_circle_options,
 )
 from .core import Block, Graph, Port, Result
+from .geometry3d_common import camera
 from .graphics_layers import GraphicDrawing, graphic_object
 from .images import opencv_image, preview_rgb
 from .parameter_validation import NumericRange, ValidationError
@@ -122,6 +123,45 @@ class GridCalibrationBlock(Block):
         p = self.parameters if parameters is None else parameters
         if p["detector"] in CIRCLE_FLAGS:
             validate_circle_options(p)
+
+    def _grid_views(self):
+        p = self.parameters
+        size, world = grid_settings(p)
+        paths = p["image_paths"]
+        if (
+            not isinstance(paths, list)
+            or len(paths) < 3
+            or any(not isinstance(path, (str, Path)) or not str(path).strip() for path in paths)
+            or len(set(paths)) != len(paths)
+        ):
+            raise ValueError("Provide at least three distinct grid image paths at varied poses")
+        paths = [Path(path) for path in paths]
+        if p["path_base"] == "project" and any(not path.is_absolute() for path in paths):
+            if self.project_dir is None:
+                raise ValueError(
+                    "Save or open the project before using relative calibration images"
+                )
+            paths = [self.project_dir / path for path in paths]
+        points, image_size = [], None
+        for path in paths:
+            image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED)
+            if image is None:
+                raise ValueError(f"Cannot decode calibration image: {path}")
+            current_size = (image.shape[1], image.shape[0])
+            if image_size is not None and current_size != image_size:
+                raise ValueError("All lens calibration images must have identical dimensions")
+            image_size = current_size
+            corners, _ = find_grid(image, size, self.parameters)
+            if any(np.sqrt(np.mean((corners - previous) ** 2)) < 0.5 for previous in points):
+                raise ValueError("Calibration views are duplicates; use varied board poses")
+            points.append(corners)
+        return (
+            [world.copy() for _ in points],
+            points,
+            image_size,
+            [path.name for path in paths],
+            p["units"],
+        )
 
 
 class CalibrationGrid(GridCalibrationBlock):
@@ -405,45 +445,6 @@ class LensCalibration(GridCalibrationBlock):
         "max_view_rms_pixels": "Maximum RMS of any fitted view in pixels. Zero skips this check.",
     }
 
-    def _grid_views(self):
-        p = self.parameters
-        size, world = grid_settings(p)
-        paths = p["image_paths"]
-        if (
-            not isinstance(paths, list)
-            or len(paths) < 3
-            or any(not isinstance(path, (str, Path)) or not str(path).strip() for path in paths)
-            or len(set(paths)) != len(paths)
-        ):
-            raise ValueError("Provide at least three distinct grid image paths at varied poses")
-        paths = [Path(path) for path in paths]
-        if p["path_base"] == "project" and any(not path.is_absolute() for path in paths):
-            if self.project_dir is None:
-                raise ValueError(
-                    "Save or open the project before using relative calibration images"
-                )
-            paths = [self.project_dir / path for path in paths]
-        points, image_size = [], None
-        for path in paths:
-            image = cv2.imdecode(np.frombuffer(path.read_bytes(), np.uint8), cv2.IMREAD_UNCHANGED)
-            if image is None:
-                raise ValueError(f"Cannot decode calibration image: {path}")
-            current_size = (image.shape[1], image.shape[0])
-            if image_size is not None and current_size != image_size:
-                raise ValueError("All lens calibration images must have identical dimensions")
-            image_size = current_size
-            corners, _ = find_grid(image, size, self.parameters)
-            if any(np.sqrt(np.mean((corners - previous) ** 2)) < 0.5 for previous in points):
-                raise ValueError("Calibration views are duplicates; use varied board poses")
-            points.append(corners)
-        return (
-            [world.copy() for _ in points],
-            points,
-            image_size,
-            [path.name for path in paths],
-            p["units"],
-        )
-
     def process(self, inputs):
         p = self.parameters
         maximum = float(p["max_rms_pixels"])
@@ -644,6 +645,11 @@ class ColorBalance(Block):
 
 
 def validate_profile(profile):
+    if isinstance(profile, dict) and profile.get("model") == "camera_model_v1":
+        camera(profile)
+        if "rms_pixels" in profile:
+            finite(profile["rms_pixels"], "Calibration RMS", 0)
+        return
     if profile.get("model") == "planar_homography_v1":
         map_points(profile, [profile["origin_pixel"]])
         error = float(profile["rms_error"])

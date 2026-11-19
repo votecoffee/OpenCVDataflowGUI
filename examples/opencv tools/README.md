@@ -14,6 +14,9 @@ For a first introduction to running and editing graphs, use the
 [Demos guided tour](../demos/README.md). [Custom tools](<../custom tools/README.md>)
 contains project-defined inspection algorithms and other-library integrations.
 
+[Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
+multiple grid images followed by held-out reprojection and rectification.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

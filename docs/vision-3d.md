@@ -19,6 +19,7 @@ Open these projects with **File → Open…**.
 | --- | --- |
 | [stereo cloud](<../examples/opencv tools/stereo_cloud/stereo_cloud.json>) | Rectified 8 px disparity from a known baseline reconstructs a 3 m plane. |
 | [RGB-D cloud](<../examples/demos/rgbd_cloud/rgbd_cloud.json>) | Metric depth, RGB color, pixel correspondence, XYZ filtering, voxel sampling and normals. |
+| [fisheye calibration](<../examples/opencv tools/fisheye_calibration/README.md>) | Fit eight image views, validate a separate view and rectify with the fitted intrinsics. |
 | [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
@@ -45,6 +46,18 @@ frame. The model is tied to one pixel grid; resized or rectified images need the
 matching intrinsics. These wrappers use positive focal lengths and zero skew.
 Pinhole distortion takes 0/4/5/8/12/14 coefficients; fisheye and omnidirectional
 models take four, with `xi` for omnidirectional projection.
+
+**Calibrate fisheye camera** fits intrinsics on the source grid with OpenCV 5.
+Use checkerboard or circle-grid image paths, or connect a batch of identified
+ChArUco observations. Each accepted camera is a `camera_model_v1` record with
+four coefficients and zero skew. Its fit report includes the sensor area
+spanned by the combined corner hull, per-view RMS, and target-to-camera
+poses in target units. The RMS, worst-view limit and minimum hull coverage
+gate the camera output. Save/load calibration profile blocks accept the camera
+record. Keep a target image out of the fit and connect it and the fitted
+camera to **Validate lens calibration**. That block fits a fresh target pose
+with the intrinsics held fixed and reports the fisheye reprojection errors.
+[Example and setup](<../examples/opencv tools/fisheye_calibration/README.md>)
 
 Rigid poses use a `pose_3d_v1` record and a 4×4 **source-to-target** matrix:
 `target_xyz = R @ source_xyz + t`. Rotation vectors use Rodrigues axis-angle in

@@ -619,12 +619,12 @@ P2	function	cv2.dnn.writeTextGraph	no static reference	-
 P2	function	cv2.fastNlMeansDenoising	literal reference	-
 P2	function	cv2.fastNlMeansDenoisingColored	literal reference	-
 P2	function	cv2.findTransformECC	no static reference	-
-P2	function	cv2.fisheye.calibrate	no static reference	-
+P2	function	cv2.fisheye.calibrate	literal reference	-
 P2	function	cv2.fisheye.distortPoints	no static reference	-
 P2	function	cv2.fisheye.estimateNewCameraMatrixForUndistortRectify	no static reference	-
 P2	function	cv2.fisheye.initUndistortRectifyMap	literal reference	-
 P2	function	cv2.fisheye.projectPoints	literal reference	-
-P2	function	cv2.fisheye.solvePnP	no static reference	-
+P2	function	cv2.fisheye.solvePnP	literal reference	-
 P2	function	cv2.fisheye.solvePnPRansac	no static reference	-
 P2	function	cv2.fisheye.stereoCalibrate	no static reference	-
 P2	function	cv2.fisheye.stereoRectify	no static reference	-

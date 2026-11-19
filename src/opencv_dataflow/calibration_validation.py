@@ -19,6 +19,7 @@ from .calibration import (
 from .charuco import observation_board, observation_points
 from .core import Block, Port, Result
 from .geometry3d import PNP
+from .geometry3d_common import camera as camera_model
 from .graphics_layers import GraphicDrawing, graphic_object
 from .outcomes import failed_input
 from .parameter_validation import NumericRange, ValidationError
@@ -29,10 +30,10 @@ from .tickets import ticket_key
 _MODEL = "pinhole_validation_v1"
 
 
-def _unmeasured(code, message):
+def _unmeasured(code, message, *, model=_MODEL):
     return Result(
         {
-            "report": {"model": _MODEL, "status": code},
+            "report": {"model": model, "status": code},
             "rms": NO_VALUE,
             "max_error": NO_VALUE,
         },
@@ -58,7 +59,10 @@ class ValidateLensCalibration(GridCalibrationBlock):
         Port("calibration", "data"),
         Port("observation", "data", required=False, required_when_connected=True),
     )
-    input_help = {"observation": "Optional identified ChArUco points from the validation image."}
+    input_help = {
+        "calibration": "A fitted pinhole lens profile or a fisheye camera model.",
+        "observation": "Optional identified ChArUco points from the validation image.",
+    }
     outputs = (Port("report", "data"), Port("rms", "number"), Port("max_error", "number"))
     defaults = {
         **GRID_OPTIONS,
@@ -123,7 +127,16 @@ class ValidateLensCalibration(GridCalibrationBlock):
     def process(self, inputs):
         p = self.parameters
         image, profile = inputs["image"], inputs["calibration"]
-        camera, distortion = camera_parameters(profile)
+        fisheye = (
+            isinstance(profile, dict)
+            and profile.get("model") == "camera_model_v1"
+            and profile.get("lens") == "fisheye"
+        )
+        report_model = "fisheye_validation_v1" if fisheye else _MODEL
+        if fisheye:
+            camera, distortion, _ = camera_model(profile)
+        else:
+            camera, distortion = camera_parameters(profile)
         image_size = list(image.shape[:2][::-1])
         if profile.get("image_size") != image_size:
             raise ValidationError("Validation image dimensions must match the lens calibration")
@@ -135,6 +148,7 @@ class ValidateLensCalibration(GridCalibrationBlock):
                 return _unmeasured(
                     "calibration_validation_observation_failed",
                     "ChArUco detection failed for the validation image",
+                    model=report_model,
                 )
             board, size, native_board, board_points = observation_board(observation)
             if list(size) != image_size:
@@ -149,7 +163,9 @@ class ValidateLensCalibration(GridCalibrationBlock):
             try:
                 observed, _ = find_grid(image, grid, p)
             except GridNotFoundError as exc:
-                return _unmeasured("calibration_validation_grid_not_found", str(exc))
+                return _unmeasured(
+                    "calibration_validation_grid_not_found", str(exc), model=report_model
+                )
             columns, units = grid[0], p["units"]
             corner_ids = list(range(len(observed)))
         if observed.shape != (len(world), 2) or not np.isfinite(observed).all():
@@ -158,12 +174,21 @@ class ValidateLensCalibration(GridCalibrationBlock):
         if not np.isfinite(world).all():
             raise ValidationError("Grid spacing produces nonfinite board coordinates")
         method = p["pose_method"]
-        found, rotation, translation = cv2.solvePnP(
-            world, observed, camera, distortion, flags=PNP[method]
-        )
+        if fisheye:
+            if profile["units"] != units:
+                raise ValidationError("Validation target units must match the fisheye profile")
+            found, rotation, translation = cv2.fisheye.solvePnP(
+                world[:, None], observed[:, None], camera, distortion, flags=PNP[method]
+            )
+        else:
+            found, rotation, translation = cv2.solvePnP(
+                world, observed, camera, distortion, flags=PNP[method]
+            )
         if not found or not np.isfinite(rotation).all() or not np.isfinite(translation).all():
             return _unmeasured(
-                "calibration_validation_pose_failed", "Could not estimate a board pose"
+                "calibration_validation_pose_failed",
+                "Could not estimate a board pose",
+                model=report_model,
             )
         rotation, translation = rotation.reshape(3), translation.reshape(3)
         depth = world @ cv2.Rodrigues(rotation)[0][2] + translation[2]
@@ -171,8 +196,14 @@ class ValidateLensCalibration(GridCalibrationBlock):
             return _unmeasured(
                 "calibration_validation_pose_failed",
                 "Estimated grid lies outside positive camera depth",
+                model=report_model,
             )
-        projected = cv2.projectPoints(world, rotation, translation, camera, distortion)[0]
+        if fisheye:
+            projected = cv2.fisheye.projectPoints(
+                world[:, None], rotation, translation, camera, distortion
+            )[0]
+        else:
+            projected = cv2.projectPoints(world, rotation, translation, camera, distortion)[0]
         projected = projected.reshape(-1, 2)
         residuals = projected - observed
         errors = np.linalg.norm(residuals, axis=1)
@@ -201,7 +232,7 @@ class ValidateLensCalibration(GridCalibrationBlock):
                 }
             )
         report = {
-            "model": _MODEL,
+            "model": report_model,
             "status": "measured",
             "image_size": image_size,
             "pose_method": method,

@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "3d.fisheye_calibrate",
+      "name": "Calibrate fisheye camera",
+      "parameters": {
+        "detector": "sb",
+        "normalize": true,
+        "exhaustive": true,
+        "accuracy": false,
+        "adaptive_threshold": true,
+        "fast_check": false,
+        "subpixel_window": 11,
+        "subpixel_iterations": 30,
+        "subpixel_epsilon": 0.001,
+        "circle_polarity": "dark",
+        "circle_clustering": false,
+        "circle_max_rectified_distance": 0.5,
+        "circle_min_area": 25.0,
+        "circle_max_area": 5000.0,
+        "circle_min_distance": 10.0,
+        "circle_min_threshold": 50.0,
+        "circle_max_threshold": 220.0,
+        "circle_threshold_step": 10.0,
+        "circle_min_repeatability": 2,
+        "circle_min_circularity": 0.0,
+        "circle_min_convexity": 0.95,
+        "circle_min_inertia_ratio": 0.1,
+        "image_paths": [
+          "assets/training-00.png",
+          "assets/training-01.png",
+          "assets/training-02.png",
+          "assets/training-03.png",
+          "assets/training-04.png",
+          "assets/training-05.png",
+          "assets/training-06.png",
+          "assets/training-07.png"
+        ],
+        "path_base": "project",
+        "columns": 9,
+        "rows": 6,
+        "spacing": 10.0,
+        "units": "mm",
+        "camera_frame": "camera",
+        "target_frame": "calibration_target",
+        "recompute_extrinsics": true,
+        "check_condition": true,
+        "fix_focal_length": false,
+        "fix_principal_point": false,
+        "fix_k1": false,
+        "fix_k2": false,
+        "fix_k3": true,
+        "fix_k4": true,
+        "max_iterations": 100,
+        "epsilon": 1e-09,
+        "max_rms_pixels": 0.4,
+        "max_view_rms_pixels": 0.6,
+        "minimum_coverage": 0.35
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "observations",
+        "initial_camera"
+      ],
+      "exposed_outputs": [
+        "camera",
+        "rms",
+        "fit_report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "heldout",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/held-out.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        330
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "validate",
+      "type": "calibration.validate_lens",
+      "name": "Validate lens calibration",
+      "parameters": {
+        "detector": "sb",
+        "normalize": true,
+        "exhaustive": true,
+        "accuracy": false,
+        "adaptive_threshold": true,
+        "fast_check": false,
+        "subpixel_window": 11,
+        "subpixel_iterations": 30,
+        "subpixel_epsilon": 0.001,
+        "circle_polarity": "dark",
+        "circle_clustering": false,
+        "circle_max_rectified_distance": 0.5,
+        "circle_min_area": 25.0,
+        "circle_max_area": 5000.0,
+        "circle_min_distance": 10.0,
+        "circle_min_threshold": 50.0,
+        "circle_max_threshold": 220.0,
+        "circle_threshold_step": 10.0,
+        "circle_min_repeatability": 2,
+        "circle_min_circularity": 0.0,
+        "circle_min_convexity": 0.95,
+        "circle_min_inertia_ratio": 0.1,
+        "columns": 9,
+        "rows": 6,
+        "spacing": 10.0,
+        "units": "mm",
+        "pose_method": "iterative",
+        "max_rms_pixels": 0.4,
+        "max_point_error_pixels": 0.9,
+        "residual_scale": 12.0
+      },
+      "position": [
+        390,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "calibration",
+        "observation"
+      ],
+      "exposed_outputs": [
+        "report",
+        "rms",
+        "max_error"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "3d.rectify_camera",
+      "name": "Rectify pinhole / fisheye / omnidir",
+      "parameters": {
+        "width": 0,
+        "height": 0,
+        "focal_scale": 1.0,
+        "rotation_vector": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "interpolation": "linear",
+        "border_value": 0.0
+      },
+      "position": [
+        390,
+        330
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "image",
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Synthetic fisheye targets",
+      "description": "Original simulated checkerboards by OpenCVDataflowGUI contributors, MIT. Eight tilted training views fit the profile. The separate held-out view checks reprojection and shows rectification. All coordinates are in millimeters and pixels.",
+      "parameters": {},
+      "position": [
+        0,
+        -280
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "camera",
+      "target": "validate",
+      "input": "calibration"
+    },
+    {
+      "source": "heldout",
+      "output": "image",
+      "target": "validate",
+      "input": "image"
+    },
+    {
+      "source": "fit",
+      "output": "camera",
+      "target": "rectify",
+      "input": "camera"
+    },
+    {
+      "source": "heldout",
+      "output": "image",
+      "target": "rectify",
+      "input": "image"
+    }
+  ]
+}
