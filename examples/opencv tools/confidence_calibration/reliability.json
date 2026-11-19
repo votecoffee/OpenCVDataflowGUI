@@ -1,0 +1,905 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "ml.fit_confidence_calibration",
+      "name": "Fit classifier confidence calibration",
+      "parameters": {
+        "classes": [
+          "red",
+          "blue"
+        ],
+        "score_kind": "logits",
+        "score_source": "267daba7cc923c27149fb9d6474148a1bd31fccb5e5b69e83abfc1e4389cce69",
+        "records": [
+          {
+            "id": "cal-000",
+            "capture_group": "cal-000",
+            "label": "red",
+            "scores": [
+              5.019598484039307,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-001",
+            "capture_group": "cal-001",
+            "label": "red",
+            "scores": [
+              5.019634246826172,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-002",
+            "capture_group": "cal-002",
+            "label": "red",
+            "scores": [
+              5.019598960876465,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-003",
+            "capture_group": "cal-003",
+            "label": "red",
+            "scores": [
+              5.01963472366333,
+              2.5097994804382324
+            ]
+          },
+          {
+            "id": "cal-004",
+            "capture_group": "cal-004",
+            "label": "red",
+            "scores": [
+              5.019598960876465,
+              2.5098023414611816
+            ]
+          },
+          {
+            "id": "cal-005",
+            "capture_group": "cal-005",
+            "label": "red",
+            "scores": [
+              5.019634246826172,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "cal-006",
+            "capture_group": "cal-006",
+            "label": "red",
+            "scores": [
+              5.019598484039307,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "cal-007",
+            "capture_group": "cal-007",
+            "label": "red",
+            "scores": [
+              5.019634246826172,
+              2.509791612625122
+            ]
+          },
+          {
+            "id": "cal-008",
+            "capture_group": "cal-008",
+            "label": "red",
+            "scores": [
+              5.019598960876465,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "cal-009",
+            "capture_group": "cal-009",
+            "label": "blue",
+            "scores": [
+              5.019634246826172,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "cal-010",
+            "capture_group": "cal-010",
+            "label": "blue",
+            "scores": [
+              5.019598484039307,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-011",
+            "capture_group": "cal-011",
+            "label": "blue",
+            "scores": [
+              5.019634246826172,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-012",
+            "capture_group": "cal-012",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              5.019598960876465
+            ]
+          },
+          {
+            "id": "cal-013",
+            "capture_group": "cal-013",
+            "label": "blue",
+            "scores": [
+              2.5097994804382324,
+              5.01963472366333
+            ]
+          },
+          {
+            "id": "cal-014",
+            "capture_group": "cal-014",
+            "label": "blue",
+            "scores": [
+              2.5098023414611816,
+              5.019598960876465
+            ]
+          },
+          {
+            "id": "cal-015",
+            "capture_group": "cal-015",
+            "label": "blue",
+            "scores": [
+              2.509791374206543,
+              5.019634246826172
+            ]
+          },
+          {
+            "id": "cal-016",
+            "capture_group": "cal-016",
+            "label": "blue",
+            "scores": [
+              2.509791135787964,
+              5.019598484039307
+            ]
+          },
+          {
+            "id": "cal-017",
+            "capture_group": "cal-017",
+            "label": "blue",
+            "scores": [
+              2.509791612625122,
+              5.019634246826172
+            ]
+          },
+          {
+            "id": "cal-018",
+            "capture_group": "cal-018",
+            "label": "blue",
+            "scores": [
+              2.509791374206543,
+              5.019598960876465
+            ]
+          },
+          {
+            "id": "cal-019",
+            "capture_group": "cal-019",
+            "label": "blue",
+            "scores": [
+              2.509791135787964,
+              5.019634246826172
+            ]
+          },
+          {
+            "id": "cal-020",
+            "capture_group": "cal-020",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              5.019598484039307
+            ]
+          },
+          {
+            "id": "cal-021",
+            "capture_group": "cal-021",
+            "label": "red",
+            "scores": [
+              2.5097992420196533,
+              5.019634246826172
+            ]
+          },
+          {
+            "id": "cal-022",
+            "capture_group": "cal-022",
+            "label": "red",
+            "scores": [
+              2.5097992420196533,
+              5.019598960876465
+            ]
+          },
+          {
+            "id": "cal-023",
+            "capture_group": "cal-023",
+            "label": "red",
+            "scores": [
+              2.5097994804382324,
+              5.01963472366333
+            ]
+          },
+          {
+            "id": "cal-024",
+            "capture_group": "cal-024",
+            "label": "red",
+            "scores": [
+              3.5137319564819336,
+              2.5098023414611816
+            ]
+          },
+          {
+            "id": "cal-025",
+            "capture_group": "cal-025",
+            "label": "red",
+            "scores": [
+              3.5137319564819336,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "cal-026",
+            "capture_group": "cal-026",
+            "label": "red",
+            "scores": [
+              3.5137319564819336,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "cal-027",
+            "capture_group": "cal-027",
+            "label": "red",
+            "scores": [
+              3.513730049133301,
+              2.509791612625122
+            ]
+          },
+          {
+            "id": "cal-028",
+            "capture_group": "cal-028",
+            "label": "red",
+            "scores": [
+              3.513730049133301,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "cal-029",
+            "capture_group": "cal-029",
+            "label": "red",
+            "scores": [
+              3.513730049133301,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "cal-030",
+            "capture_group": "cal-030",
+            "label": "red",
+            "scores": [
+              7.529353618621826,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-031",
+            "capture_group": "cal-031",
+            "label": "red",
+            "scores": [
+              7.529409885406494,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-032",
+            "capture_group": "cal-032",
+            "label": "red",
+            "scores": [
+              7.529421329498291,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "cal-033",
+            "capture_group": "cal-033",
+            "label": "red",
+            "scores": [
+              7.529411315917969,
+              2.5097994804382324
+            ]
+          },
+          {
+            "id": "cal-034",
+            "capture_group": "cal-034",
+            "label": "red",
+            "scores": [
+              3.5137319564819336,
+              2.5098023414611816
+            ]
+          },
+          {
+            "id": "cal-035",
+            "capture_group": "cal-035",
+            "label": "blue",
+            "scores": [
+              3.5137319564819336,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "cal-036",
+            "capture_group": "cal-036",
+            "label": "blue",
+            "scores": [
+              2.509791135787964,
+              3.5137319564819336
+            ]
+          },
+          {
+            "id": "cal-037",
+            "capture_group": "cal-037",
+            "label": "blue",
+            "scores": [
+              2.509791612625122,
+              3.513730049133301
+            ]
+          },
+          {
+            "id": "cal-038",
+            "capture_group": "cal-038",
+            "label": "blue",
+            "scores": [
+              2.509791374206543,
+              3.513730049133301
+            ]
+          },
+          {
+            "id": "cal-039",
+            "capture_group": "cal-039",
+            "label": "blue",
+            "scores": [
+              2.509791135787964,
+              3.513730049133301
+            ]
+          },
+          {
+            "id": "cal-040",
+            "capture_group": "cal-040",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              7.529353618621826
+            ]
+          },
+          {
+            "id": "cal-041",
+            "capture_group": "cal-041",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              7.529409885406494
+            ]
+          },
+          {
+            "id": "cal-042",
+            "capture_group": "cal-042",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              7.529421329498291
+            ]
+          },
+          {
+            "id": "cal-043",
+            "capture_group": "cal-043",
+            "label": "blue",
+            "scores": [
+              2.5097994804382324,
+              7.529411315917969
+            ]
+          },
+          {
+            "id": "cal-044",
+            "capture_group": "cal-044",
+            "label": "blue",
+            "scores": [
+              2.5098023414611816,
+              3.5137319564819336
+            ]
+          },
+          {
+            "id": "cal-045",
+            "capture_group": "cal-045",
+            "label": "blue",
+            "scores": [
+              2.509791374206543,
+              3.5137319564819336
+            ]
+          },
+          {
+            "id": "cal-046",
+            "capture_group": "cal-046",
+            "label": "blue",
+            "scores": [
+              2.509791135787964,
+              3.5137319564819336
+            ]
+          },
+          {
+            "id": "cal-047",
+            "capture_group": "cal-047",
+            "label": "red",
+            "scores": [
+              2.509791612625122,
+              3.513730049133301
+            ]
+          }
+        ],
+        "training_groups": [],
+        "minimum_temperature": 0.05,
+        "maximum_temperature": 20.0
+      },
+      "position": [
+        0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "records"
+      ],
+      "exposed_outputs": [
+        "calibration",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "evaluation",
+      "type": "ml.evaluate_confidence_calibration",
+      "name": "Evaluate classifier reliability",
+      "parameters": {
+        "classes": [
+          "red",
+          "blue"
+        ],
+        "score_kind": "logits",
+        "score_source": "267daba7cc923c27149fb9d6474148a1bd31fccb5e5b69e83abfc1e4389cce69",
+        "minimum_confidence": 0.78,
+        "minimum_margin": 0.2,
+        "bins": 10,
+        "records": [
+          {
+            "id": "test-000",
+            "capture_group": "test-000",
+            "label": "red",
+            "scores": [
+              4.392164707183838,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "test-001",
+            "capture_group": "test-001",
+            "label": "red",
+            "scores": [
+              4.392187595367432,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "test-002",
+            "capture_group": "test-002",
+            "label": "red",
+            "scores": [
+              4.3921403884887695,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "test-003",
+            "capture_group": "test-003",
+            "label": "red",
+            "scores": [
+              4.392161846160889,
+              2.5097994804382324
+            ]
+          },
+          {
+            "id": "test-004",
+            "capture_group": "test-004",
+            "label": "red",
+            "scores": [
+              4.392139911651611,
+              2.5098023414611816
+            ]
+          },
+          {
+            "id": "test-005",
+            "capture_group": "test-005",
+            "label": "red",
+            "scores": [
+              4.392162322998047,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "test-006",
+            "capture_group": "test-006",
+            "label": "red",
+            "scores": [
+              4.392141819000244,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "test-007",
+            "capture_group": "test-007",
+            "label": "blue",
+            "scores": [
+              4.3921637535095215,
+              2.509791612625122
+            ]
+          },
+          {
+            "id": "test-008",
+            "capture_group": "test-008",
+            "label": "blue",
+            "scores": [
+              4.3921403884887695,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "test-009",
+            "capture_group": "test-009",
+            "label": "blue",
+            "scores": [
+              4.39216423034668,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "test-010",
+            "capture_group": "test-010",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              4.392164707183838
+            ]
+          },
+          {
+            "id": "test-011",
+            "capture_group": "test-011",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              4.392187595367432
+            ]
+          },
+          {
+            "id": "test-012",
+            "capture_group": "test-012",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              4.3921403884887695
+            ]
+          },
+          {
+            "id": "test-013",
+            "capture_group": "test-013",
+            "label": "blue",
+            "scores": [
+              2.5097994804382324,
+              4.392161846160889
+            ]
+          },
+          {
+            "id": "test-014",
+            "capture_group": "test-014",
+            "label": "blue",
+            "scores": [
+              2.5098023414611816,
+              4.392139911651611
+            ]
+          },
+          {
+            "id": "test-015",
+            "capture_group": "test-015",
+            "label": "blue",
+            "scores": [
+              2.509791374206543,
+              4.392162322998047
+            ]
+          },
+          {
+            "id": "test-016",
+            "capture_group": "test-016",
+            "label": "blue",
+            "scores": [
+              2.509791135787964,
+              4.392141819000244
+            ]
+          },
+          {
+            "id": "test-017",
+            "capture_group": "test-017",
+            "label": "red",
+            "scores": [
+              2.509791612625122,
+              4.3921637535095215
+            ]
+          },
+          {
+            "id": "test-018",
+            "capture_group": "test-018",
+            "label": "red",
+            "scores": [
+              2.509791374206543,
+              4.3921403884887695
+            ]
+          },
+          {
+            "id": "test-019",
+            "capture_group": "test-019",
+            "label": "red",
+            "scores": [
+              2.509791135787964,
+              4.39216423034668
+            ]
+          },
+          {
+            "id": "test-020",
+            "capture_group": "test-020",
+            "label": "red",
+            "scores": [
+              7.058836460113525,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "test-021",
+            "capture_group": "test-021",
+            "label": "red",
+            "scores": [
+              7.058775424957275,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "test-022",
+            "capture_group": "test-022",
+            "label": "red",
+            "scores": [
+              7.058836460113525,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "test-023",
+            "capture_group": "test-023",
+            "label": "red",
+            "scores": [
+              7.058775424957275,
+              2.5097994804382324
+            ]
+          },
+          {
+            "id": "test-024",
+            "capture_group": "test-024",
+            "label": "red",
+            "scores": [
+              7.058836460113525,
+              2.5098023414611816
+            ]
+          },
+          {
+            "id": "test-025",
+            "capture_group": "test-025",
+            "label": "red",
+            "scores": [
+              7.058775424957275,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "test-026",
+            "capture_group": "test-026",
+            "label": "red",
+            "scores": [
+              7.058836460113525,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "test-027",
+            "capture_group": "test-027",
+            "label": "red",
+            "scores": [
+              7.058775424957275,
+              2.509791612625122
+            ]
+          },
+          {
+            "id": "test-028",
+            "capture_group": "test-028",
+            "label": "red",
+            "scores": [
+              7.058835983276367,
+              2.509791374206543
+            ]
+          },
+          {
+            "id": "test-029",
+            "capture_group": "test-029",
+            "label": "blue",
+            "scores": [
+              7.058775424957275,
+              2.509791135787964
+            ]
+          },
+          {
+            "id": "test-030",
+            "capture_group": "test-030",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              7.058836460113525
+            ]
+          },
+          {
+            "id": "test-031",
+            "capture_group": "test-031",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              7.058775424957275
+            ]
+          },
+          {
+            "id": "test-032",
+            "capture_group": "test-032",
+            "label": "blue",
+            "scores": [
+              2.5097992420196533,
+              7.058836460113525
+            ]
+          },
+          {
+            "id": "test-033",
+            "capture_group": "test-033",
+            "label": "blue",
+            "scores": [
+              2.5097994804382324,
+              7.058775424957275
+            ]
+          },
+          {
+            "id": "test-034",
+            "capture_group": "test-034",
+            "label": "blue",
+            "scores": [
+              2.5098023414611816,
+              7.058836460113525
+            ]
+          },
+          {
+            "id": "test-035",
+            "capture_group": "test-035",
+            "label": "blue",
+            "scores": [
+              2.509791374206543,
+              7.058775424957275
+            ]
+          },
+          {
+            "id": "test-036",
+            "capture_group": "test-036",
+            "label": "blue",
+            "scores": [
+              2.509791135787964,
+              7.058836460113525
+            ]
+          },
+          {
+            "id": "test-037",
+            "capture_group": "test-037",
+            "label": "blue",
+            "scores": [
+              2.509791612625122,
+              7.058775424957275
+            ]
+          },
+          {
+            "id": "test-038",
+            "capture_group": "test-038",
+            "label": "blue",
+            "scores": [
+              2.509791374206543,
+              7.058835983276367
+            ]
+          },
+          {
+            "id": "test-039",
+            "capture_group": "test-039",
+            "label": "red",
+            "scores": [
+              2.509791135787964,
+              7.058775424957275
+            ]
+          },
+          {
+            "id": "uncertain-0",
+            "capture_group": "uncertain-0",
+            "label": null,
+            "scores": [
+              2.5097992420196533,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "uncertain-1",
+            "capture_group": "uncertain-1",
+            "label": null,
+            "scores": [
+              2.7607758045196533,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "uncertain-2",
+            "capture_group": "uncertain-2",
+            "label": null,
+            "scores": [
+              2.9803783893585205,
+              2.5097992420196533
+            ]
+          },
+          {
+            "id": "uncertain-3",
+            "capture_group": "uncertain-3",
+            "label": null,
+            "scores": [
+              3.137237548828125,
+              2.5097994804382324
+            ]
+          }
+        ],
+        "calibration": {}
+      },
+      "position": [
+        330,
+        0.0
+      ],
+      "exposed_inputs": [
+        "records",
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "report",
+        "plot"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "calibration",
+      "target": "evaluation",
+      "input": "calibration"
+    }
+  ]
+}

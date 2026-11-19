@@ -72,6 +72,8 @@ For native forest weights, feature importance and held-out class votes, try [ran
 
 For labeled image sets, grouped splits, confusion matrices and explicit wrong/rejected/error controls, try [classifier evaluation](classifier_evaluation/README.md).
 
+For temperature fitting, held-out reliability and an abstaining native ONNX classifier, try [confidence calibration](confidence_calibration/README.md).
+
 For source-box labels, IoU matches, precision/recall/AP and duplicate/miss/error controls, try [detector evaluation](detector_evaluation/README.md).
 
 For explicit Classic/New/Auto loading, frozen snapshots and native rejection controls, try [ONNX engine dispatch](dnn_engines/README.md).

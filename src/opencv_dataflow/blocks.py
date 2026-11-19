@@ -661,6 +661,7 @@ def builtin_registry():
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
     from .color_tracking import ColorDistributionTracker
+    from .confidence_calibration import CONFIDENCE_BLOCKS
     from .connection_health import CONNECTION_HEALTH_BLOCKS
     from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
     from .contour_raster import RasterizeContours
@@ -1256,6 +1257,7 @@ def builtin_registry():
         *KNN_BLOCKS,
         *RTREES_BLOCKS,
         *CLASSIFICATION_EVALUATION_BLOCKS,
+        *CONFIDENCE_BLOCKS,
         EvaluateDetections,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,

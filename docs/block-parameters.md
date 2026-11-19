@@ -8545,6 +8545,22 @@ Inputs: `model` (data), `vector` (data).
 | `min_similarity` | `-1.0` | Dot metric only: minimum inner product; -1 disables. |
 | `minimum_results` | `1` |  |
 
+## Calibrate confidence and abstain (`ml.apply_confidence_calibration`)
+
+ML / Classification
+
+Inputs: `tensors` (data), `receipt` (data, optional), `calibration` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `classes` | `[]` | Ordered labels, one per score column. Order must match the classifier. |
+| `score_kind` | `"logits"` | `logits`, `probabilities` Raw logits or positive probabilities summing to one. Do not use top-K scores. |
+| `score_source` | `""` | SHA-256 identity of the scorer and preprocessing revision. With a wired DNN receipt, leave blank to derive it. |
+| `minimum_confidence` | `0.65` | Value must be a finite number between 0 and 1. Abstain below this calibrated top-class probability. |
+| `minimum_margin` | `0.05` | Value must be a finite number between 0 and 1. Abstain below this gap between the top two probabilities. |
+| `tensor_name` | `""` | Select a single [C] or [1,C] output by name. Blank requires one output. |
+| `calibration` | `{}` | Saved fit model; the wired model takes precedence. |
+
 ## Image visual-word histogram (`ml.bow_encode`)
 
 ML / Image retrieval
@@ -9433,6 +9449,23 @@ Inputs: `records` (any, optional).
 | `records` | `[]` | Per-image id, expected, prediction, status, optional score/score_kind. Status is predicted/rejected/missing/error. A validation report may be wired directly. |
 | `expected_cases` | `[]` | Full set: id, class_label, capture_group. Missing IDs remain scored. |
 
+## Evaluate classifier reliability (`ml.evaluate_confidence_calibration`)
+
+ML / Evaluation
+
+Inputs: `records` (data, optional), `calibration` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `classes` | `[]` | Ordered labels, one per score column. Order must match the classifier. |
+| `score_kind` | `"logits"` | `logits`, `probabilities` Raw logits or positive probabilities summing to one. Do not use top-K scores. |
+| `score_source` | `""` | SHA-256 identity of the scorer and preprocessing revision. With a wired DNN receipt, leave blank to derive it. |
+| `minimum_confidence` | `0.65` | Value must be a finite number between 0 and 1. Abstain below this calibrated top-class probability. |
+| `minimum_margin` | `0.05` | Value must be a finite number between 0 and 1. Abstain below this gap between the top two probabilities. |
+| `bins` | `10` | Value must be a whole number between 2 and 50. Equal-width top-confidence bins for expected calibration error and plots. |
+| `records` | `[]` | Separate test images with id, capture_group, label and complete scores. Use null label for deliberately ambiguous or unknown controls. |
+| `calibration` | `{}` | Saved fit model; the wired model takes precedence. |
+
 ## Evaluate image detections (`ml.evaluate_detections`)
 
 ML / Evaluation
@@ -9469,6 +9502,22 @@ Inputs: `observations` (any).
 | `minimum_pair_support_fraction` | `0.5` | Value must be a finite number between 0 and 1. Minimum shared scored pixels / full source canvas. |
 | `maximum_score_drop` | `-1.0` | Value must be a finite number between -1 and 1e+12. Negative disables the gate. Direction defines worse scores. |
 | `maximum_total_pixels` | `16777216` | Value must be a whole number between 1 and 6.4e+07. |
+
+## Fit classifier confidence calibration (`ml.fit_confidence_calibration`)
+
+ML / Training
+
+Inputs: `records` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `classes` | `[]` | Ordered labels, one per score column. Order must match the classifier. |
+| `score_kind` | `"logits"` | `logits`, `probabilities` Raw logits or positive probabilities summing to one. Do not use top-K scores. |
+| `score_source` | `""` | SHA-256 identity of the scorer and preprocessing revision. With a wired DNN receipt, leave blank to derive it. |
+| `records` | `[]` | Separate calibration images: id, capture_group, label, full scores. |
+| `training_groups` | `[]` | Known training capture groups; any overlap is rejected. |
+| `minimum_temperature` | `0.05` | Value must be a finite number between 0.01 and 100. Lower fit bound, less than one. |
+| `maximum_temperature` | `20.0` | Value must be a finite number between 0.01 and 100. Upper fit bound, greater than one. |
 
 ## Fuse tile detections (`ml.fuse_tile_detections`)
 
