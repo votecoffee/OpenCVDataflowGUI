@@ -45,8 +45,8 @@ BUNDLES = {
         "392947769d3245021ab2a5c43a8eaba40908cea3e9278973f7a6b007134c0b01",
     ),
     "opencv_simple_fringe_scan": (
-        "opencv_simple_fringe_scan-0.1.0.dev3-py3-none-any.whl",
-        "0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87",
+        "opencv_simple_fringe_scan-0.1.0.dev4-py3-none-any.whl",
+        "8bd391fbe0e7377cfa25f7136a698f2f7971d5b1bfcbc7335e9b381634724ee3",
     ),
     "opencv_simple_deflectometry": (
         "opencv_simple_deflectometry-0.1.0.dev3-py3-none-any.whl",

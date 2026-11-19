@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0.dev4",
+  "source_commit": "44eb0af",
+  "wheel_sha256": "8bd391fbe0e7377cfa25f7136a698f2f7971d5b1bfcbc7335e9b381634724ee3",
+  "wheel_bytes": 56474,
+  "source_tests": 73,
+  "wheel_tests": 73,
+  "native_workflows": [
+    {"case": "analytic_clean", "valid_pixels": 6912, "passed": true, "metric_cloud": true},
+    {"case": "connected_missing", "valid_pixels": 6415, "passed": false, "metric_cloud": true},
+    {"case": "warsaw_crown_phase", "valid_pixels": 56985, "passed": false, "metric_cloud": false}
+  ],
+  "all_cases_stage_apply_cancel_and_exact_recipe_save_as": true,
+  "all_cases_reports_and_raw_maps_and_graphics_and_xyz_rgb_exact": true,
+  "previous_native_replays_exact": 8,
+  "previous_frozen_exports_verified": 6,
+  "previous_file_pins_verified": 332,
+  "scope": "Software checks using the retained synthetic sequences and attributed external simulation"
+}

@@ -8,6 +8,9 @@ project JSON files directly; testing and development material is in `dev`.
 | --- | --- |
 | [inspection](<inspection/README.md>) | [analytic_clean.json](<inspection/analytic_clean.json>) |
 
+[Training walkthrough and checks](dev/training_workflow/README.md) show how to audit the
+pattern sequence, review calibration and stage a reference with dev4.
+
 Use the block's Configuration popup to inspect or edit retained training. In
 `training`, prefer a `*_trained.json` project when you want the finished staged setup.
 
