@@ -33,6 +33,9 @@ BINDINGS = {
     "sequence.track_vit": (
         "TrackerVit.create TrackerVit.init TrackerVit.update TrackerVit.getTrackingScore"
     ),
+    "ml.superpoint_onnx_features": (
+        "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward dilate resize cvtColor"
+    ),
     "ml.optical_flow": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.stereo_disparity": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.monocular_depth": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",

@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_features",
+      "type": "ml.superpoint_onnx_features",
+      "name": "SuperPoint ONNX features",
+      "parameters": {
+        "model_path": "../../../.local/models/superpoint-v6-dense.onnx",
+        "model_sha256": "56eb68c0c01637e1d8368156ffe4bfc6973faf328204458c0928c1d63ca9abde",
+        "maximum_model_bytes": 5300000,
+        "maximum_edge": 640,
+        "minimum_score": 0.005,
+        "nms_radius": 4,
+        "border": 4,
+        "minimum_count": 4,
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_features": 256,
+        "alpha_policy": "exclude"
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        310
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_features",
+      "type": "ml.superpoint_onnx_features",
+      "name": "SuperPoint ONNX features",
+      "parameters": {
+        "model_path": "../../../.local/models/superpoint-v6-dense.onnx",
+        "model_sha256": "56eb68c0c01637e1d8368156ffe4bfc6973faf328204458c0928c1d63ca9abde",
+        "maximum_model_bytes": 5300000,
+        "maximum_edge": 640,
+        "minimum_score": 0.005,
+        "nms_radius": 4,
+        "border": 4,
+        "minimum_count": 4,
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_features": 256,
+        "alpha_policy": "exclude"
+      },
+      "position": [
+        360,
+        310
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "ml.lightglue_superpoint",
+      "name": "LightGlue SuperPoint feature matcher",
+      "parameters": {
+        "weights_path": "../../../.local/models/superpoint_lightglue.pth",
+        "device": "cpu",
+        "layers": 9,
+        "filter_threshold": 0.1,
+        "depth_confidence": -1.0,
+        "width_confidence": -1.0,
+        "flash": false,
+        "mixed_precision": false,
+        "minimum_matches": 24,
+        "minimum_inliers": 20,
+        "minimum_inlier_ratio": 0.5,
+        "geometry": "ransac",
+        "ransac_threshold": 3.0,
+        "ransac_confidence": 0.995,
+        "ransac_iterations": 2000,
+        "weights_sha256": "6ff7040d0a497fc6639337946d7538dae07428c18f77a067a0b5a960e7cc551a",
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304
+      },
+      "position": [
+        720,
+        300
+      ],
+      "exposed_inputs": [
+        "image",
+        "query_features",
+        "reference_features"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "transform",
+        "pose",
+        "count",
+        "inliers",
+        "overlay",
+        "image",
+        "result_graphics"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlay",
+      "type": "cv.overlay_result_graphics",
+      "name": "Overlay result graphics",
+      "parameters": {
+        "excluded_graphics": {}
+      },
+      "position": [
+        1060,
+        300
+      ],
+      "exposed_inputs": [
+        "image",
+        "graphics_1",
+        "graphics_2"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Set filmstrip image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1400,
+        300
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credits",
+      "type": "layout.comment",
+      "name": "SuperPoint v6",
+      "description": "SuperPoint v6 checkpoint by Remi Pautrat and Paul-Edouard Sarlin (MIT). Original synthetic board images by OpenCVDataflowGUI contributors (MIT). The translation graph uses LightGlue by Lindenberger, Sarlin and Pollefeys (Apache-2.0). Prepare the two model assets explicitly as described in README.md. The known board shift is +8,+6 pixels with reduced contrast.",
+      "parameters": {},
+      "position": [
+        0,
+        -370
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_features",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_features",
+      "input": "image"
+    },
+    {
+      "source": "reference_features",
+      "output": "features",
+      "target": "match",
+      "input": "reference_features"
+    },
+    {
+      "source": "query_features",
+      "output": "features",
+      "target": "match",
+      "input": "query_features"
+    },
+    {
+      "source": "query_features",
+      "output": "image",
+      "target": "match",
+      "input": "image"
+    },
+    {
+      "source": "query_features",
+      "output": "image",
+      "target": "overlay",
+      "input": "image"
+    },
+    {
+      "source": "match",
+      "output": "result_graphics",
+      "target": "overlay",
+      "input": "graphics_1"
+    },
+    {
+      "source": "overlay",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

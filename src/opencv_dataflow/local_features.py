@@ -1,4 +1,4 @@
-"""Explicit local-descriptor tensor packing and optional learned matching, without extraction."""
+"""Explicit local-descriptor tensor packing and optional learned matching."""
 
 import copy
 import re

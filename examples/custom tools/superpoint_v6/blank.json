@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "blank",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/blank.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blank_features",
+      "type": "ml.superpoint_onnx_features",
+      "name": "SuperPoint ONNX features",
+      "parameters": {
+        "model_path": "../../../.local/models/superpoint-v6-dense.onnx",
+        "model_sha256": "56eb68c0c01637e1d8368156ffe4bfc6973faf328204458c0928c1d63ca9abde",
+        "maximum_model_bytes": 5300000,
+        "maximum_edge": 640,
+        "minimum_score": 0.005,
+        "nms_radius": 4,
+        "border": 4,
+        "minimum_count": 4,
+        "maximum_features": 1024,
+        "maximum_image_pixels": 4194304,
+        "graphics_maximum_features": 256,
+        "alpha_policy": "exclude"
+      },
+      "position": [
+        360,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credits",
+      "type": "layout.comment",
+      "name": "SuperPoint v6",
+      "description": "SuperPoint v6 checkpoint by Remi Pautrat and Paul-Edouard Sarlin (MIT). Original synthetic board images by OpenCVDataflowGUI contributors (MIT). The translation graph uses LightGlue by Lindenberger, Sarlin and Pollefeys (Apache-2.0). Prepare the two model assets explicitly as described in README.md. The known board shift is +8,+6 pixels with reduced contrast.",
+      "parameters": {},
+      "position": [
+        0,
+        -370
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "blank",
+      "output": "image",
+      "target": "blank_features",
+      "input": "image"
+    }
+  ]
+}

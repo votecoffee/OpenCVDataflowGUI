@@ -6,15 +6,60 @@
 the matching learned LightGlue checkpoint. The existing SIFT blocks retain their
 IDs, settings, RootSIFT descriptors and reference-image workflow.
 
-This is a **partial SuperPoint integration**: external tensor conversion and
-learned matching are qualified; a real SuperPoint detector/extractor fixture is
-still open. No SuperPoint detector, detector weights or inference source is
-bundled or downloaded. The
-[upstream licensing note](https://github.com/cvg/LightGlue#license) distinguishes
-Apache-2.0 LightGlue matcher weights from the separate restrictive SuperPoint
-detector/code/weight terms. A local model's use and redistribution require the
-appropriate rights. The bundled controls are original untrained arithmetic and
-prescribed descriptors; they do not establish learned detection accuracy.
+**SuperPoint ONNX features** (`ml.superpoint_onnx_features`) runs trained
+dense detector and descriptor heads locally using OpenCV 5. Both extraction
+paths emit `lightglue_superpoint_v1` feature records. They can feed the same
+matcher.
+
+## Trained SuperPoint v6 extraction
+
+Prepare the independently trained checkpoint by Rémi Pautrat and Paul-Edouard
+Sarlin with Python that has `torch` and `onnx` installed. The
+[upstream release](https://github.com/rpautrat/SuperPoint/blob/1411bbd68c50163555d39c1b26e9e046ebd48f27/README.md)
+explicitly identifies this v6 checkpoint as MIT-licensed. Its
+[MIT notice](third-party/superpoint-v6-MIT.txt) accompanies the export. The
+[original Magic Leap detector release](https://github.com/magicleap/SuperPointPretrainedNetwork/blob/master/LICENSE)
+has distinct terms. The example uses the independently trained MIT checkpoint
+and a separately prepared [Apache-2.0 LightGlue matcher](https://github.com/cvg/LightGlue/blob/main/LICENSE).
+
+```powershell
+.\.venv\Scripts\python scripts/prepare_superpoint_v6.py
+```
+
+The script checks the source SHA-256, loads weights only, and exports a single
+ONNX file with its license and receipt under ignored `.local/models`. It also
+accepts `--checkpoint` for an existing copy of the pinned checkpoint. The
+built-in extractor requires only OpenCV at run time. Graph execution reads
+local files. The example graphs pin the exported SHA-256 and bound the byte
+count before import. The application reuses the native network for the same
+digest, including across input sizes.
+
+The block expects one normalized grayscale `[1,1,H,W]` input and two named
+float32 output heads. `logits` is `[1,65,H/8,W/8]` with 64 row-major offsets
+and a no-keypoint channel. `descriptors` is `[1,256,H/8,W/8]`. The block
+softmaxes over all 65 channels, reconstructs the pixel heatmap, suppresses
+nearby peaks, and samples an L2-normalized descriptor field with bilinear
+interpolation. The CPU path is qualified for the v6 head layout.
+
+Gray or color source pixels may be uint8, uint16 or normalized float32. The
+block converts to normalized grayscale and downsizes proportionally when
+needed. Right/bottom padding brings each axis to a multiple of eight and at
+least 32 pixels. Peak scores use a strict lower threshold. An optional border
+is measured from the unpadded content. Coordinates map back to source pixel
+centers before region, mask and alpha filtering. The CNN still sees the full
+image. The strongest eligible points are retained up to the feature cap, with
+row-major order used to break score ties. Raw indices identify flattened
+padded-grid pixels. The output image retains its original pixels and format.
+
+The [four saved v6 projects](<../examples/custom tools/superpoint_v6/README.md>)
+qualify CPU extraction on original synthetic board images, a blank-image
+count failure, source-coordinate filtering after resize and padding, and a
+known planar shift through LightGlue. Dense heads, keypoint coordinates, and
+descriptor samples were checked against the upstream PyTorch implementation.
+Keypoint locations agreed exactly on all three images. The largest score
+difference was 0.0000035 and the largest descriptor component difference
+was 0.00000072. The controlled geometry test covers one board and lighting
+change.
 
 ## Tensor packing
 
@@ -88,13 +133,12 @@ Use the optional runtime installation in [ML setup](ml.md), then explicitly run:
 .\.venv\Scripts\python scripts/prepare_ml_assets.py --superpoint-matcher
 ```
 
-This downloads only the Apache-2.0 LightGlue matcher into ignored `.local/models`,
-records source/size/SHA-256 and preserves existing files. It does not prepare a
-SuperPoint detector. Local-export preparation remains outside graph execution.
+This prepares the Apache-2.0 LightGlue matcher in ignored `.local/models`,
+records its source, size and SHA-256, and preserves existing files. Prepare
+the trained v6 detector separately when using the ONNX extraction path.
 
 The [seven controls](<../examples/custom tools/local_features/README.md>) use
 the same +8/+6 textured image pair as the SIFT regression. Original prescribed
 keypoints/descriptors qualify packing, matching and geometry without a detector.
-The comparison project also runs genuine SIFT extraction on that pair. A real
-permitted SuperPoint extractor, its export conventions and detector repeatability
-still need independent qualification before S2-15 can become Complete.
+The comparison project also runs SIFT extraction on that pair. The separate
+trained v6 projects provide the learned detector evidence.

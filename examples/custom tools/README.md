@@ -17,7 +17,8 @@ under [Demos](../demos/README.md). Python plugin authoring examples remain in
 [All examples](../README.md)
 
 For external descriptor tensors, learned matching and explicit detector limits,
-try [local features](local_features/README.md).
+try [local features](local_features/README.md). The [SuperPoint v6 projects](superpoint_v6/README.md)
+show trained extraction and planar matching with a known shift.
 
 For real learned extraction, known transforms and separate PCB photographs,
 try [DISK and LightGlue](disk_matching/README.md).

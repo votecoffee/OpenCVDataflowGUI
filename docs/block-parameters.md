@@ -10945,6 +10945,33 @@ Input `region` — Source-grid region. Full source remains model context; outsid
 | `output_nodes` | `["NCHW_output_2x", "NCHW_output_4x", "NCHW_output_8x"]` | Exact native node names, aligned one-to-one with Output scales. No guessed heads. |
 | `preview_scale` | `"largest"` | `largest`, `2`, `4`, `8` Image/baseline/mask/geometry preview; Largest selects the largest requested scale. |
 
+## SuperPoint ONNX features (`ml.superpoint_onnx_features`)
+
+ML / Feature matching
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray/color uint8, uint16, or normalized float32. Output keeps source pixels.
+
+Input `mask` — Optional source-grid filter after peak selection.
+
+Input `region` — Optional source-grid region intersected with Mask after peak selection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Local ONNX file; never downloaded during execution. Save As rebases the path. |
+| `model_sha256` | `""` | Optional exact 64-hex SHA-256; checked against the bounded import snapshot. |
+| `maximum_model_bytes` | `134217728` | Value must be a whole number between 1 and 5.36871e+08. Bound model bytes read before hashing/import; not an internal DNN RAM limit. |
+| `maximum_edge` | `640` | Value must be a whole number between 32 and 2048. Downscale only when needed. Pad the network grid to a multiple of eight. |
+| `minimum_score` | `0.005` | Value must be a finite number between 0 and 1. Retain peak probabilities strictly above this value. |
+| `nms_radius` | `4` | Value must be a whole number between 0 and 32. Square suppression radius in network pixels. Zero disables suppression. |
+| `border` | `4` | Value must be a whole number between 0 and 64. Exclude this many network pixels around the unpadded content. |
+| `minimum_count` | `4` | Value must be a whole number between 0 and 4096. Minimum retained keypoints for a passing tool result. |
+| `maximum_features` | `1024` | Value must be a whole number between 1 and 4096. Keep the strongest eligible points. Ties use network row-major order. |
+| `maximum_image_pixels` | `4194304` | Value must be a whole number between 1 and 1.67772e+07. Bound source work before conversion. Axes are limited to 16384. |
+| `graphics_maximum_features` | `256` | Value must be a whole number between 1 and 4096. Cap result markers independently of the numeric features. |
+| `alpha_policy` | `"exclude"` | `exclude`, `ignore` Exclude fully transparent source centers or explicitly ignore alpha. |
+
 ## Load OpenCV SVM classifier (`ml.svm_load`)
 
 ML / Classical classification

@@ -904,6 +904,7 @@ def builtin_registry():
     from .subpixel_crop import CropSubpixel
     from .super_resolution import SuperResolution
     from .superpixels import SuperpixelsLSC, SuperpixelsSEEDS, SuperpixelsSLIC
+    from .superpoint_features import SuperPointONNXFeatures
     from .svm_blocks import SVM_BLOCKS
     from .table_sort import SortNumericTable
     from .template_instances import FindTemplateInstances
@@ -1267,6 +1268,7 @@ def builtin_registry():
         EvaluateDetections,
         *LIGHTGLUE_BLOCKS,
         *LOCAL_FEATURE_BLOCKS,
+        SuperPointONNXFeatures,
         *NATIVE_LIGHTGLUE_BLOCKS,
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,

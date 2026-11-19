@@ -54,4 +54,4 @@ also appear on every project canvas.
 
 The [feature contract](../../../docs/local-features.md) explains shapes,
 coordinate conventions, masks, descriptor normalization, provenance and limits.
-S2-15 remains **Partial** until a real permitted extractor fixture is qualified.
+For a trained detector, see the separate [SuperPoint v6 projects](../superpoint_v6/README.md).

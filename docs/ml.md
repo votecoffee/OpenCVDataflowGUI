@@ -219,8 +219,10 @@ checkpoint. Use `prepare_ml_assets.py --disk` to prepare all three pinned files.
 n16rot and n32 presets, native subpixel/NMS controls and an independent strict
 score floor. Kornia 0.9 or newer is required; `prepare_ml_assets.py --aliked`
 prepares the three detector checkpoints and matching LightGlue weights.
-The explicit `prepare_ml_assets.py --superpoint-matcher` option prepares only the
-Apache-2.0 matcher, with a pinned SHA-256; no SuperPoint detector is downloaded.
+The explicit `prepare_ml_assets.py --superpoint-matcher` option prepares the
+Apache-2.0 matcher with a pinned SHA-256. The separate
+[SuperPoint v6 preparation](local-features.md#trained-superpoint-v6-extraction)
+exports the independently trained MIT checkpoint for OpenCV 5 CPU inference.
 
 **LightGlue SIFT features** captures a portable reference feature model containing
 keypoints, RootSIFT descriptors, scales, orientations and coordinate context. It

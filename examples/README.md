@@ -434,6 +434,7 @@ Project-defined inspection algorithms, region/metrology tools and integrations w
 | [Flat-field illumination correction](<custom tools/flat_field/README.md>) | Remove a lighting gradient using bright and dark references while retaining a synthetic defect. |
 | [Lens map files](<custom tools/lens_map_files/README.md>) | Reload a saved map pair and straighten a synthetic grid using the restored maps. |
 | [LightGlue feature matching](<custom tools/lightglue_match/README.md>) | Match a synthetic textured reference into a scene using SIFT features and LightGlue. |
+| [SuperPoint v6 extraction and matching](<custom tools/superpoint_v6/README.md>) | Run a pinned trained detector in OpenCV 5, filter a resized image by region, and check planar translation with LightGlue. |
 | [External local features](<custom tools/local_features/README.md>) | Pack exported feature tensors, test learned matching and compare SIFT on the same pair; prescribed controls do not qualify a SuperPoint detector. |
 | [DISK and LightGlue](<custom tools/disk_matching/README.md>) | Run real local-weight features on controlled pairs and separate VisA PCB photographs; inspect source poses, local regions and filmstrip graphics. |
 | [ALIKED and LightGlue](<custom tools/aliked_matching/README.md>) | Compare three learned presets, explicit threshold/score policies, original-image poses and real VisA PCB matching. |
