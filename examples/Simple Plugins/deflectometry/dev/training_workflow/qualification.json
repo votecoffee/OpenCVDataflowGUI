@@ -1,0 +1,20 @@
+{
+  "version": "0.1.0.dev4",
+  "source_commit": "be392d8",
+  "wheel_sha256": "cd5cf37592a65ea29453098c64ac5204b59a5a5523e4a96d917ebf03740d5308",
+  "wheel_bytes": 45362,
+  "source_tests": 67,
+  "wheel_tests": 67,
+  "host_autoload_replay_and_save_as_checks": 5,
+  "native_workflows": [
+    {"case": "analytic_clean", "comparable_pixels": 6912, "changed_pixels": 0, "passed": true},
+    {"case": "connected_change", "comparable_pixels": 6912, "changed_pixels": 293, "passed": false},
+    {"case": "sofast_self_review", "comparable_pixels": 114356, "changed_pixels": 0, "passed": true}
+  ],
+  "all_cases_restore_audit_preview_stage_apply_cancel_and_exact_recipe_save_as": true,
+  "all_cases_reports_maps_and_graphics_exact": true,
+  "previous_native_replays_exact": 9,
+  "previous_frozen_exports_verified": 6,
+  "previous_file_pins_verified": 399,
+  "scope": "Wrapped-phase software checks. SOFAST uses uncalibrated code values in a self-comparison."
+}

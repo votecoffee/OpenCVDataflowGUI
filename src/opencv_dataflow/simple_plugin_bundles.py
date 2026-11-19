@@ -49,8 +49,8 @@ BUNDLES = {
         "8bd391fbe0e7377cfa25f7136a698f2f7971d5b1bfcbc7335e9b381634724ee3",
     ),
     "opencv_simple_deflectometry": (
-        "opencv_simple_deflectometry-0.1.0.dev3-py3-none-any.whl",
-        "417c4699aed97edbba0f531038cbb8fb9a88d9d6d8b3e426fe70996340aec7f9",
+        "opencv_simple_deflectometry-0.1.0.dev4-py3-none-any.whl",
+        "cd5cf37592a65ea29453098c64ac5204b59a5a5523e4a96d917ebf03740d5308",
     ),
     "opencv_simple_foundation_pose": (
         "opencv_simple_foundation_pose-0.1.0.dev4-py3-none-any.whl",
