@@ -87,6 +87,7 @@
 | SIFT/ORB visual vocabularies, portable image galleries and exact retrieval | [Visual words](visual-words.md) |
 | Configured landmark skeletons, multi-score heads and pretrained point suppression | [Object landmarks](object-landmarks.md) |
 | Native HOG searches, portable detectors and linear image-SVM export | [HOG detection](hog-detection.md) |
+| Class-aware box grouping, native spatial votes and stable detection IDs | [Spatial votes](spatial-vote-grouping.md) |
 | HOG crop training, background mining and held-out full-image evaluation | [HOG detector training](hog-detector-training.md) |
 | Local HAAR/LBP cascades, native stage weights and neighbor support | [Cascade detection](cascade-detection.md) |
 | Measured-pose crops, per-part classifiers and parent/child source maps | [Pose crop classification](pose-crop-classification.md) |

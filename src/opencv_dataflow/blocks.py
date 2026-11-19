@@ -673,6 +673,7 @@ def builtin_registry():
     from .detection_decode import DecodeDetections
     from .detection_evaluation import EvaluateDetections
     from .detection_fusion import FuseTileDetections
+    from .detection_votes import GroupDetectionVotes
     from .differential_exposure import DifferentialExposure
     from .disk_features import DISK_BLOCKS
     from .distortion_fixture import DistortImageFixture
@@ -1207,6 +1208,7 @@ def builtin_registry():
         DecodeDetections,
         FuseTileDetections,
         SuppressDetections,
+        GroupDetectionVotes,
         CompareImageTensors,
         DecodeRotatedDetections,
         DecodeSegmentation,

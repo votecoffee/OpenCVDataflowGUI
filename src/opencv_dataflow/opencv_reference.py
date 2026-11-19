@@ -327,6 +327,7 @@ BINDINGS = {
     "inspect.thin_mask": "ximgproc.thinning",
     "inspect.watershed": "watershed",
     "ml.decode_detections": "dnn.NMSBoxes",
+    "ml.group_detection_votes": "groupRectangles",
     "ml.soft_nms": "dnn.softNMSBoxes dnn.NMSBoxes",
     "ml.fuse_tile_detections": "dnn.NMSBoxes",
     "ml.box_appearance": "calcHist cvtColor",

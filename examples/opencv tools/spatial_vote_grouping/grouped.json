@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/scene.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        25.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "infer",
+      "type": "ml.dnn",
+      "name": "DNN ONNX inference",
+      "parameters": {
+        "contract_path": "",
+        "receipt_mode": "summary",
+        "fallback_policy": "error",
+        "model_path": "assets/proposals.onnx",
+        "width": 112,
+        "height": 80,
+        "color_format": "rgb",
+        "resize_mode": "stretch",
+        "padding_value": 0.0,
+        "scale": 0.00392156862745098,
+        "mean": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "std": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "input_name": "image",
+        "output_names": [],
+        "engine": "new",
+        "backend": "opencv",
+        "target": "cpu",
+        "fusion": true,
+        "max_output_elements": 1000000
+      },
+      "position": [
+        330,
+        25.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "tensors",
+        "preprocessing"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "ml.decode_detections",
+      "name": "Decode object detections",
+      "parameters": {
+        "output_name": "rows",
+        "format": "xyxy_score_class",
+        "boxes_output_name": "bboxes",
+        "classes_output_name": "labels",
+        "scores_output_name": "scores",
+        "count_output_name": "",
+        "box_coordinate_order": "xyxy",
+        "layout": "rows",
+        "coordinate_units": "network_pixels",
+        "grid_decode": "none",
+        "strides": [
+          8,
+          16,
+          32
+        ],
+        "score_activation": "probability",
+        "labels": [
+          "part",
+          "fixture"
+        ],
+        "accepted_class_ids": [],
+        "class_id_offset": 0,
+        "confidence_threshold": 0.0,
+        "objectness_threshold": 0.0,
+        "nms_enabled": false,
+        "class_agnostic_nms": false,
+        "nms_iou": 0.45,
+        "nms_eta": 1.0,
+        "nms_top_k": 0,
+        "border_policy": "clip",
+        "minimum_count": 1,
+        "maximum_count": 0,
+        "maximum_raw_rows": 100000,
+        "maximum_candidates": 10000,
+        "maximum_results": 1000,
+        "maximum_image_pixels": 16777216
+      },
+      "position": [
+        660,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "tensors",
+        "preprocessing"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vote",
+      "type": "ml.group_detection_votes",
+      "name": "Group detections by spatial votes",
+      "parameters": {
+        "epsilon": 0.2,
+        "minimum_votes": 2,
+        "singleton_policy": "drop",
+        "rounding": "cover",
+        "minimum_count": 1,
+        "maximum_count": 0,
+        "maximum_candidates": 2048
+      },
+      "position": [
+        990,
+        12.5
+      ],
+      "exposed_inputs": [
+        "collection",
+        "image"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Synthetic spatial votes (MIT)",
+      "description": "Original synthetic scene and prescribed ONNX proposals. Two adjacent parts produce three and two votes. Two coincident fixture votes stay separate by class. One isolated vote is optional.",
+      "parameters": {},
+      "position": [
+        0,
+        425.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "infer",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "decode",
+      "input": "image"
+    },
+    {
+      "source": "infer",
+      "output": "tensors",
+      "target": "decode",
+      "input": "tensors"
+    },
+    {
+      "source": "infer",
+      "output": "preprocessing",
+      "target": "decode",
+      "input": "preprocessing"
+    },
+    {
+      "source": "decode",
+      "output": "collection",
+      "target": "vote",
+      "input": "collection"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "vote",
+      "input": "image"
+    }
+  ]
+}

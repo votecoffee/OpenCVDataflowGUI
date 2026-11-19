@@ -9591,6 +9591,26 @@ Input `tiles` — Flat FlowGroup from Join of matching exported segmentation rec
 | `maximum_resample_elements` | `8000000` | Value must be a whole number between 1 and 3.2e+07. Bound classes x reference pixels before accumulation. |
 | `maximum_mapped_elements` | `64000000` | Value must be a whole number between 1 and 2.56e+08. Conservative tiles x classes x reference pixels work limit. |
 
+## Group detections by spatial votes (`ml.group_detection_votes`)
+
+ML / Object detection
+
+Inputs: `collection` (data), `image` (image, optional).
+
+Input `collection` — Axis-aligned boxes in one zero-origin image, with class IDs.
+
+Input `image` — Optional unchanged source image for overlays. Must match the box context.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `epsilon` | `0.2` | Value must be a finite number between 0 and 1. Relative tolerance on all four rectangle edges. Neighbor chains join transitively within each class. Zero joins exact integer duplicates. |
+| `minimum_votes` | `2` | Value must be a whole number between 2 and 4096. Minimum group size. OpenCV can suppress a small contained group. |
+| `singleton_policy` | `"drop"` | `drop`, `keep` Keep or drop isolated single votes. Groups of two or more must still meet Minimum votes. |
+| `rounding` | `"cover"` | `cover`, `nearest` Use visible bbox. Cover rounds outward; Nearest rounds edges to nearest. The grouped result is an integer rectangle. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 4096. Minimum number of retained representative boxes for inspection pass. |
+| `maximum_count` | `0` | Value must be a whole number between 0 and 4096. Maximum retained boxes; zero disables the upper count gate. |
+| `maximum_candidates` | `2048` | Value must be a whole number between 1 and 4096. Bound the input count before pairwise grouping. |
+
 ## HOG sliding-window detection (`ml.hog_detect`)
 
 ML / HOG detection

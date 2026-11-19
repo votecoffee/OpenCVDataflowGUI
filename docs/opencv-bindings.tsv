@@ -2937,7 +2937,7 @@ P3	method	cv2.GraphicalCodeDetector.detectAndDecodeBytes	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.detectAndDecodeBytesMulti	no static reference	-
 P3	method	cv2.GraphicalCodeDetector.detectAndDecodeMulti	method name only	-
 P3	method	cv2.GraphicalCodeDetector.detectMulti	method name only	-
-P3	function	cv2.groupRectangles	no static reference	-
+P3	function	cv2.groupRectangles	literal reference	-
 P3	class	cv2.GScalar	no static reference	-
 P3	class	cv2.GScalarDesc	no static reference	-
 P3	class	cv2.GStreamingCompiled	no static reference	-

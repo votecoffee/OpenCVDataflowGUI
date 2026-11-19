@@ -33,7 +33,7 @@ def native_box(bounds, policy):
     return [int(n) for n in (*edges[:2], *size)]
 
 
-def source_context(block, data, size):
+def source_context(block, data, size, *, operation="Suppression"):
     contexts = [
         block.input_payloads.get("image", {}),
         data.get("context", {}),
@@ -44,18 +44,18 @@ def source_context(block, data, size):
         check_spatial(context, size)
     require_same_frame(
         [ValuePacket(None, p) for p in contexts],
-        message="Suppression inputs belong to different image frames",
+        message=f"{operation} inputs belong to different image frames",
     )
     frames = [p["spatial"] for p in contexts if "spatial" in p]
     if frames and any(f["root_size"] != frames[0]["root_size"] for f in frames[1:]):
-        raise ValidationError("Suppression input root dimensions disagree")
+        raise ValidationError(f"{operation} input root dimensions disagree")
     for key in ("pyramid", "recipe_ref"):
         values = [p[key] for p in contexts if key in p]
         if values and any(v != values[0] for v in values[1:]):
-            raise ValidationError(f"Suppression input {key} contexts disagree")
+            raise ValidationError(f"{operation} input {key} contexts disagree")
     tickets = [p["ticket"] for p in contexts if "ticket" in p]
     if tickets and any(ticket_key(t) != ticket_key(tickets[0]) for t in tickets[1:]):
-        raise ValidationError("Suppression inputs belong to different acquisition tickets")
+        raise ValidationError(f"{operation} inputs belong to different acquisition tickets")
     context = copy.deepcopy(contexts[0])
     for p in contexts[1:]:
         for key in ("spatial", "pyramid", "ticket", "recipe_ref"):
