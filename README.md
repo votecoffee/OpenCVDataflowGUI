@@ -66,7 +66,8 @@ results. To build your own small project:
 
 **Run all** replays recorded sequences once from the start, or runs the job once
 when there is no sequence. **Continuous** loops the recordings until **Stop**.
-The status bar shows the active mode.
+The status bar shows the active mode. For a deployed inspection, use the
+[operator runtime](docs/operator-runtime.md) with its own run controls and ticket history.
 
 Use **Program → Settings and scripts…** for [startup/run/shutdown hooks and managed services](docs/program-lifecycle.md), including self-starting ROS demos.
 

@@ -285,9 +285,12 @@ def publish_result(block, values, result=None, kind="tool_result", message=""):
 class TicketResults:
     """One shared consumer per root job; identity matches Join/FIFO ticket semantics."""
 
-    def __init__(self, max_tickets=500, events_per_ticket=128, max_bytes=16 * 1024 * 1024):
+    def __init__(
+        self, max_tickets=500, events_per_ticket=128, max_bytes=16 * 1024 * 1024, *, journal=None,
+    ):
         if min(max_tickets, events_per_ticket, max_bytes) < 1:
             raise ValueError("Ticket history limits must be positive")
+        self.journal = journal
         self.max_tickets, self.events_per_ticket = max_tickets, events_per_ticket
         self.max_bytes = max_bytes
         self.retained_bytes = 0
@@ -395,6 +398,8 @@ class TicketResults:
                     final=bool(judgment),
                     conflict=len(row["judgments"]) > 1,
                 )
+            if self.journal is not None:
+                self.journal.record(row)
             while len(self.rows) > self.max_tickets or self.retained_bytes > self.max_bytes:
                 _, evicted = self.rows.popitem(last=False)
                 self.retained_bytes -= evicted["retained_bytes"]
@@ -438,7 +443,7 @@ class TicketResults:
 
         with self.lock:
             row = self.rows.get(ticket_key(ticket))
-            if summary and row is None:
+            if (summary or self.journal is not None) and row is None:
                 now = mark()
                 self.consume(
                     {
@@ -475,6 +480,8 @@ class TicketResults:
                     ),
                     "elapsed_ms": elapsed,
                 }
+            if row is not None and self.journal is not None:
+                self.journal.record(row)
             self.production.record(
                 ticket,
                 accepted,

@@ -12,7 +12,7 @@ from pathlib import Path
 
 
 class WindowsJob:
-    def __init__(self):
+    def __init__(self, memory_limit=None):
         from ctypes import wintypes as w
 
         class Basic(ctypes.Structure):
@@ -66,6 +66,9 @@ class WindowsJob:
             raise ctypes.WinError(ctypes.get_last_error())
         limits = Limits()
         limits.Basic.Flags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE; no breakaway.
+        if memory_limit is not None:
+            limits.Basic.Flags |= 0x200  # JOB_OBJECT_LIMIT_JOB_MEMORY
+            limits.JobMemory = memory_limit
         if not self.api.SetInformationJobObject(
             self.handle, 9, ctypes.byref(limits), ctypes.sizeof(limits)
         ):
@@ -86,7 +89,7 @@ class WindowsJob:
 class ManagedProcess:
     """The target cannot spawn children before ownership is established."""
 
-    def __init__(self, argv, cwd, environment):
+    def __init__(self, argv, cwd, environment, *, memory_limit=None):
         self.job = None
         self.process = None
         self.child_pid = None
@@ -98,7 +101,7 @@ class ManagedProcess:
         self.closed = False
         try:
             if os.name == "nt":
-                self.job = WindowsJob()
+                self.job = WindowsJob(memory_limit)
             self.process = subprocess.Popen(
                 [
                     sys.executable,

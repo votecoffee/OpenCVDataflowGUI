@@ -27,6 +27,8 @@ ml-test = ["onnx>=1.17,<2", "annoy>=1.17.3,<2"]
 opencv-dataflow = "opencv_dataflow.app:main"
 opencv-dataflow-run = "opencv_dataflow.runner:main"
 opencv-dataflow-api = "opencv_dataflow.assistant_cli:main"
+opencv-dataflow-runtime = "opencv_dataflow.operator_runtime:main"
+opencv-dataflow-operator = "opencv_dataflow.operator_window:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

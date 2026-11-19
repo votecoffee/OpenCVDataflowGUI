@@ -17,6 +17,7 @@
 | Topic | Reference |
 | --- | --- |
 | Blocks, persistence, errors, conversions and scheduling | [Architecture](architecture.md) |
+| Windows operator window, bounded execution, deployment and SQLite ticket history | [Operator runtime](operator-runtime.md) |
 | Program startup/run/shutdown scripts and owned ROS/external services | [Program lifecycle](program-lifecycle.md) |
 | Reusable subgraphs and interfaces | [ToolBlocks](toolblocks.md) |
 | Custom Python blocks | [Plugin skill](../skills/opencv-dataflow-plugins/SKILL.md), [plugin contract](../skills/opencv-dataflow-plugins/references/plugin-contract.md) |
