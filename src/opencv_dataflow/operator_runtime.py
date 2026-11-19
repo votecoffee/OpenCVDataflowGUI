@@ -142,7 +142,7 @@ def run(project, history, *, options=None, plugins=(), cancelled=lambda: False, 
                     process.close(timeout=grace)
             finally:
                 finish(history, session, status, message)
-        progress(f"{status.upper()} Ã‚Â· {message}")
+        progress(f"{status.upper()} | {message}")
     return code
 
 
