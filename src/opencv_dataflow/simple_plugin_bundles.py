@@ -53,8 +53,8 @@ BUNDLES = {
         "cd5cf37592a65ea29453098c64ac5204b59a5a5523e4a96d917ebf03740d5308",
     ),
     "opencv_simple_foundation_pose": (
-        "opencv_simple_foundation_pose-0.1.0.dev4-py3-none-any.whl",
-        "aa1618f0bb6d0932656a69e26d690c635169a982abc6946e74e597b7025ec4c0",
+        "opencv_simple_foundation_pose-0.1.0.dev5-py3-none-any.whl",
+        "5919efd2ab82b22702fead9d115c8574e965e48594ebf77102473ffe30e0d30a",
     ),
     "opencv_simple_gdrnpp": (
         "opencv_simple_gdrnpp-0.1.0.dev4-py3-none-any.whl",

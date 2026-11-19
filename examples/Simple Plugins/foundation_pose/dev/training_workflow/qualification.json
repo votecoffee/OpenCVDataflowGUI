@@ -1,0 +1,24 @@
+[
+  {
+    "case": "held_out_frame13",
+    "preview": "connected",
+    "selected_reference_pixels": 10130,
+    "measured_reference_pixels": 10078,
+    "candidates": 2,
+    "accepted": 0,
+    "registrations_after_check_and_first_preview": 1,
+    "exact_graph_candidates_overlay_and_cloud": true,
+    "stage_apply_cancel_and_exact_save_as": true
+  },
+  {
+    "case": "wrong_object",
+    "preview": "independent",
+    "selected_reference_pixels": 10130,
+    "measured_reference_pixels": 10078,
+    "candidates": 2,
+    "accepted": 0,
+    "registrations_after_check_and_first_preview": 1,
+    "exact_graph_candidates_overlay_and_cloud": true,
+    "stage_apply_cancel_and_exact_save_as": true
+  }
+]

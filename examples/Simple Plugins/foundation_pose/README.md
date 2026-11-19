@@ -14,7 +14,8 @@ block's setup popup. These machine-local choices persist across projects; see
 [pose runtime setup](../../../docs/simple-pose-runtimes.md). Use `run_project.json`
 for actual inference or `review_project.json` for file-only recorded results.
 
-Use the block's Configuration popup to inspect or edit retained training.
+Open **Set up object…** to review the CAD and RGB-D reference, inspect mask/depth
+support or check the worker and weights. [Setup walkthrough and replay](dev/training_workflow/README.md).
 
 [Detailed setup, sources and limitations](dev/README.md) ·
 [Development and verification files](dev/)
