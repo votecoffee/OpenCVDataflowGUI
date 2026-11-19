@@ -1,6 +1,6 @@
 # Shipped Simple Plugin packages
 
-These unchanged, checksum-pinned wheels are also present in the public examples.
+These checksum-pinned wheels ship with the application.
 The application uses them for known lazy providers without installing dependencies.
 Each wheel retains its original LICENSE and any third-party notices. Customer data,
 model weights and private projects are excluded. SimpleClassify is bundled separately.
@@ -19,6 +19,6 @@ model weights and private projects are excluded. SimpleClassify is bundled separ
 | fringe_scan | 0.1.0.dev3 | [opencv_simple_fringe_scan-0.1.0.dev3-py3-none-any.whl](<../../../examples/Simple Plugins/fringe_scan/dev/releases/opencv_simple_fringe_scan-0.1.0.dev3-py3-none-any.whl>) | `0106d63746e36244358454432e9f707628989134e5af2288de3e436c18737f87` |
 | deflectometry | 0.1.0.dev3 | [opencv_simple_deflectometry-0.1.0.dev3-py3-none-any.whl](<../../../examples/Simple Plugins/deflectometry/dev/releases/opencv_simple_deflectometry-0.1.0.dev3-py3-none-any.whl>) | `417c4699aed97edbba0f531038cbb8fb9a88d9d6d8b3e426fe70996340aec7f9` |
 | foundation_pose | 0.1.0.dev4 | [opencv_simple_foundation_pose-0.1.0.dev4-py3-none-any.whl](<../../../examples/Simple Plugins/foundation_pose/dev/completed_runtime/releases/opencv_simple_foundation_pose-0.1.0.dev4-py3-none-any.whl>) | `aa1618f0bb6d0932656a69e26d690c635169a982abc6946e74e597b7025ec4c0` |
-| gdrnpp | 0.1.0.dev2 | [opencv_simple_gdrnpp-0.1.0.dev2-py3-none-any.whl](<../../../examples/Simple Plugins/gdrnpp/dev/readonly_rejections/releases/opencv_simple_gdrnpp-0.1.0.dev2-py3-none-any.whl>) | `3303c4d487a4ebd9a67902b925cc893a3eb38a842980e2ceb55a1bd6a48b1ff3` |
+| gdrnpp | 0.1.0.dev3 | [Bundled adapter](opencv_simple_gdrnpp-0.1.0.dev3-py3-none-any.whl) | `d8fd2193f010f1888eb5c36a40a10ca0e5498f5227acbf669f1a473231c6886c` |
 
 See [loading and version rules](../../../docs/simple-plugin-loading.md).

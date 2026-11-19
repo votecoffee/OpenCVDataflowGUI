@@ -5,8 +5,7 @@ automatically. Open a project or add a tool from its toolbox category; **Load Py
 plugin** and `--plugin` are unnecessary for the shipped examples. This applies to
 local private projects using the same stable block types, too.
 
-The app includes checksum-pinned, unchanged pure-Python wheels already distributed
-with its public examples. These also ship in the installed application wheel.
+The app includes checksum-pinned pure-Python wheels. These also ship in the installed application wheel.
 There is no download, `pip install`, OpenCV replacement or dependency resolution
 when opening a project. Embedded package licenses and notices remain intact;
 [versions and sources](../src/opencv_dataflow/simple_plugin_wheels/README.md)
@@ -48,8 +47,10 @@ require their trusted plugin to be loaded explicitly.
 ## Execution setup remains separate
 
 Opening and static validation do not launch workers, install models, start ROS or
-connect to equipment. FoundationPose/GDRNPP inference requires the model and worker
-runtime configured by its recipe; their saved-result reviews remain available
-without inference. Simulation motion still requires its explicitly enabled external
-services. A loaded block is evidence of a resolved integration, not working hardware
-or a qualified trained model.
+connect to equipment. FoundationPose and GDRNPP keep their isolated Python runtime
+in machine-local settings, separate from portable project recipes. FoundationPose
+also remembers its pinned weights folder in Runtime. GDRNPP remembers a default
+verified model folder in Setup; an explicit block model folder takes precedence.
+See [pose runtime setup](simple-pose-runtimes.md). Their saved-result reviews remain
+available without inference. Simulation motion still requires its explicitly enabled
+external services. A loaded block does not establish hardware or model accuracy.
