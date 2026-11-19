@@ -40,7 +40,7 @@ class OperatorWindow(QWidget):
         self.resize(840, 570)
         form = QFormLayout(self)
         self.project = QLineEdit(str(project or ""))
-        self.browse = QPushButton("Openâ€¦")
+        self.browse = QPushButton("Open…")
         self.browse.clicked.connect(self.choose_project)
         project_row = QHBoxLayout()
         project_row.addWidget(self.project)
@@ -135,10 +135,10 @@ class OperatorWindow(QWidget):
                 reasons = detail.get("final_fail_reasons", detail.get("fail_reasons", []))
                 reason_text = ", ".join(r["code"] for r in reasons)
                 elapsed = detail.get("completion", {}).get("elapsed_ms")
-                duration = f" Â· {elapsed:.1f} ms" if elapsed is not None else ""
-                reason_text = f" Â· {reason_text}" if reason_text else ""
+                duration = f" · {elapsed:.1f} ms" if elapsed is not None else ""
+                reason_text = f" · {reason_text}" if reason_text else ""
                 lines.append(
-                    f"{row['updated']} Â· {detail['ticket']['value']} Â· "
+                    f"{row['updated']} · {detail['ticket']['value']} · "
                     f"{row['status'].upper()}{duration}{reason_text}"
                 )
             value = "\n".join(lines)

@@ -50,7 +50,7 @@ def execute(config, cancelled, publish):
         else:
             graph.start_program(cancelled)
         while not cancelled():
-            publish("cycle", f"Cycle {cycles + 1} Ãƒâ€šÃ‚Â· acquiring or processing")
+            publish("cycle", f"Cycle {cycles + 1} | acquiring or processing")
             if queued is not None:
                 if not queued.run_one():
                     break
@@ -68,7 +68,7 @@ def execute(config, cancelled, publish):
             stats = graph.ticket_results.statistics()
             failed |= any(b.state == "fail" for b in blocks)
             publish(
-                "idle", f"Cycle {cycles} complete Ãƒâ€šÃ‚Â· ticket statistics {json.dumps(stats)}"
+                "idle", f"Cycle {cycles} complete | ticket statistics {json.dumps(stats)}"
             )
             if single_cycle:
                 break
@@ -90,7 +90,7 @@ def execute(config, cancelled, publish):
     if cancelled():
         return 130, "Stopped"
     stats = graph.ticket_results.statistics()
-    return int(failed), f"Completed {cycles} cycle(s) Ã‚Â· ticket statistics {json.dumps(stats)}"
+    return int(failed), f"Completed {cycles} cycle(s) | ticket statistics {json.dumps(stats)}"
 
 
 def main():
