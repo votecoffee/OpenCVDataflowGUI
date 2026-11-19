@@ -151,7 +151,10 @@ class GridCalibrationBlock(Block):
             if image_size is not None and current_size != image_size:
                 raise ValueError("All lens calibration images must have identical dimensions")
             image_size = current_size
-            corners, _ = find_grid(image, size, self.parameters)
+            try:
+                corners, _ = find_grid(image, size, self.parameters)
+            except GridNotFoundError as exc:
+                raise GridNotFoundError(f"{path.name}: {exc}") from exc
             if any(np.sqrt(np.mean((corners - previous) ** 2)) < 0.5 for previous in points):
                 raise ValueError("Calibration views are duplicates; use varied board poses")
             points.append(corners)

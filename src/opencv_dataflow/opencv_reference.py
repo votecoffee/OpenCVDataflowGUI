@@ -117,6 +117,7 @@ BINDINGS = {
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",
     "3d.reproject": "reprojectImageTo3D",
+    "3d.omnidir_calibrate": "omnidir.calibrate omnidir.projectPoints convexHull contourArea",
     "3d.fisheye_calibrate": "fisheye.calibrate fisheye.projectPoints convexHull contourArea",
     "3d.stereo_calibrate": "stereoCalibrate",
     "3d.stereo_rectify": "stereoRectify",
@@ -126,7 +127,10 @@ BINDINGS = {
     "calibration.chessboard_quality": "findChessboardCornersSB estimateChessboardSharpness",
     "calibration.grid": "findChessboardCorners findChessboardCornersSB findHomography",
     "calibration.lens": "calibrateCameraExtended",
-    "calibration.validate_lens": "solvePnP projectPoints fisheye.solvePnP fisheye.projectPoints",
+    "calibration.validate_lens": (
+        "solvePnP projectPoints fisheye.solvePnP fisheye.projectPoints "
+        "omnidir.undistortPoints omnidir.projectPoints"
+    ),
     "calibration.lens_maps": "initUndistortRectifyMap getOptimalNewCameraMatrix",
     "calibration.undistort": "undistort",
     "calibration.undistort_lens_points": "undistortPoints projectPoints",

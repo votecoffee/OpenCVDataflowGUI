@@ -20,6 +20,7 @@ Open these projects with **File → Open…**.
 | [stereo cloud](<../examples/opencv tools/stereo_cloud/stereo_cloud.json>) | Rectified 8 px disparity from a known baseline reconstructs a 3 m plane. |
 | [RGB-D cloud](<../examples/demos/rgbd_cloud/rgbd_cloud.json>) | Metric depth, RGB color, pixel correspondence, XYZ filtering, voxel sampling and normals. |
 | [fisheye calibration](<../examples/opencv tools/fisheye_calibration/README.md>) | Fit eight image views, validate a separate view and rectify with the fitted intrinsics. |
+| [omnidirectional calibration](<../examples/opencv tools/omnidir_calibration/README.md>) | Fit the Mei lens and mirror parameter, check a held-out edge target, and rectify to a perspective view. |
 | [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
@@ -58,6 +59,15 @@ record. Keep a target image out of the fit and connect it and the fitted
 camera to **Validate lens calibration**. That block fits a fresh target pose
 with the intrinsics held fixed and reports the fisheye reprojection errors.
 [Example and setup](<../examples/opencv tools/fisheye_calibration/README.md>)
+
+**Calibrate omnidirectional camera** uses the same target inputs and fits the
+Mei camera model, including mirror parameter `xi`. The fit report lists the
+original indices selected by OpenCV and any omitted views. The default requires
+all views. **Allow subset** accepts the retained group when it meets the minimum
+view count, coverage and RMS limits. Save it as a camera profile or connect it
+to **Validate lens calibration** or **Rectify pinhole / fisheye / omnidir**.
+Held-out reprojection solves a fresh target pose from forward camera rays.
+[Example and fit controls](<../examples/opencv tools/omnidir_calibration/README.md>)
 
 Rigid poses use a `pose_3d_v1` record and a 4×4 **source-to-target** matrix:
 `target_xyz = R @ source_xyz + t`. Rotation vectors use Rodrigues axis-angle in

@@ -296,6 +296,11 @@ Input `initial_camera` — Optional fisheye seed with four coefficients on the s
 | `units` | `"mm"` | `mm`, `m`, `unitless` Grid spacing units for image paths. An observation batch supplies its own. |
 | `camera_frame` | `"camera"` | Frame name for the fitted camera and target-to-camera pose outputs. |
 | `target_frame` | `"calibration_target"` | Local coordinate frame of the calibration target. |
+| `max_iterations` | `100` | Value must be a whole number between 1 and 1000. Maximum iterations for the OpenCV solve. |
+| `epsilon` | `1e-09` | Value must be a finite number between 0 and 1. Relative focal/principal-point change. An epsilon of zero or locking both uses the iteration limit. |
+| `max_rms_pixels` | `1.0` | Value must be a finite number at least 1e-09. Accept at most this overall reprojection RMS in source pixels. |
+| `max_view_rms_pixels` | `0.0` | Value must be a finite number at least 0. Accept at most this RMS per view. Zero disables that gate. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Minimum fraction of the sensor spanned by the joint corner hull. |
 | `recompute_extrinsics` | `true` | Refit target-to-camera poses during intrinsic optimization. |
 | `check_condition` | `true` | Have OpenCV reject ill-conditioned extrinsic updates. |
 | `fix_focal_length` | `false` | Keep both focal lengths from the connected initial camera. |
@@ -304,11 +309,6 @@ Input `initial_camera` — Optional fisheye seed with four coefficients on the s
 | `fix_k2` | `false` | Fix fisheye coefficient k2 at zero. |
 | `fix_k3` | `false` | Fix fisheye coefficient k3 at zero. |
 | `fix_k4` | `false` | Fix fisheye coefficient k4 at zero. |
-| `max_iterations` | `100` | Value must be a whole number between 1 and 1000. Maximum iterations for the OpenCV solve. |
-| `epsilon` | `1e-09` | Value must be a finite number between 0 and 1. Relative focal/principal-point change. An epsilon of zero or locking both uses the iteration limit. |
-| `max_rms_pixels` | `1.0` | Value must be a finite number at least 1e-09. Accept at most this overall reprojection RMS in source pixels. |
-| `max_view_rms_pixels` | `0.0` | Value must be a finite number at least 0. Accept at most this RMS per view. Zero disables that gate. |
-| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Minimum fraction of the sensor spanned by the joint corner hull. |
 
 ## Fundamental matrix (`3d.fundamental`)
 
@@ -383,6 +383,61 @@ Inputs: `source_depth` (depth), `target_depth` (depth), `camera` (data), `source
 | `max_translation_m` | `0.15` |  |
 | `max_rotation_degrees` | `15.0` |  |
 | `normal_window` | `"5"` | `1`, `3`, `5`, `7` |
+
+## Calibrate omnidirectional camera (`3d.omnidir_calibrate`)
+
+3D vision / Calibration
+
+Inputs: `observations` (any, optional).
+
+Input `observations` — Batch or list of ChArUco observations of one board and camera grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `detector` | `"sb"` | `sb`, `classic`, `circles_symmetric`, `circles_asymmetric` |
+| `normalize` | `true` |  |
+| `exhaustive` | `true` |  |
+| `accuracy` | `false` |  |
+| `adaptive_threshold` | `true` |  |
+| `fast_check` | `false` |  |
+| `subpixel_window` | `11` |  |
+| `subpixel_iterations` | `30` |  |
+| `subpixel_epsilon` | `0.001` |  |
+| `circle_polarity` | `"dark"` | `dark`, `light` Dark dots on a light field or light dots on a dark field. |
+| `circle_clustering` | `false` | Use clustering for perspective distortion on an uncluttered target. |
+| `circle_max_rectified_distance` | `0.5` | Value must be a finite number between 1e-06 and 10. Clustering tolerance in normalized board spacing units. |
+| `circle_min_area` | `25.0` | Value must be a finite number between 1e-06 and 6.4e+07. Minimum candidate area in image pixels squared. |
+| `circle_max_area` | `5000.0` | Value must be a finite number between 1e-06 and 6.4e+07. Exclusive upper candidate area in image pixels squared. |
+| `circle_min_distance` | `10.0` | Value must be a finite number between 1e-06 and 16384. Minimum separation of distinct blobs in image pixels. |
+| `circle_min_threshold` | `50.0` | Value must be a finite number between 0 and 255. Start of the 8-bit candidate threshold sweep. |
+| `circle_max_threshold` | `220.0` | Value must be a finite number between 0 and 255. Exclusive end of the 8-bit candidate threshold sweep. |
+| `circle_threshold_step` | `10.0` | Value must be a finite number between 1 and 255. Increment for the candidate threshold sweep. |
+| `circle_min_repeatability` | `2` | Value must be a whole number between 1 and 255. Minimum number of thresholds that must detect a candidate. |
+| `circle_min_circularity` | `0.0` | Value must be a finite number between 0 and 1. Minimum contour circularity. Zero disables the filter. |
+| `circle_min_convexity` | `0.95` | Value must be a finite number between 0 and 1. Minimum contour convexity. Zero disables the filter. |
+| `circle_min_inertia_ratio` | `0.1` | Value must be a finite number between 0 and 1. Minimum minor-to-major inertia ratio. Zero disables the filter. |
+| `image_paths` | `[]` | Three to 64 checkerboard/circle-grid images. Leave empty for Observations. |
+| `path_base` | `"project"` | `project`, `working_directory` Base folder for relative calibration image paths. |
+| `columns` | `9` | Value must be a whole number between 3 and 1000. Number of inner chessboard corners or circle centers in each row. |
+| `rows` | `6` | Value must be a whole number between 3 and 1000. Number of rows of inner chessboard corners or circle centers. |
+| `spacing` | `10.0` | Value must be a finite number at least 1e-09. Feature pitch. For asymmetric circles, same-row pitch is twice this value. |
+| `units` | `"mm"` | `mm`, `m`, `unitless` Grid spacing units for image paths. An observation batch supplies its own. |
+| `camera_frame` | `"camera"` | Frame name for the fitted camera and target-to-camera pose outputs. |
+| `target_frame` | `"calibration_target"` | Local coordinate frame of the calibration target. |
+| `max_iterations` | `300` | Value must be a whole number between 1 and 1000. Maximum iterations for the OpenCV solve. |
+| `epsilon` | `1e-09` | Value must be a finite number between 0 and 1. Relative parameter-update threshold. Zero uses the iteration limit. |
+| `max_rms_pixels` | `1.0` | Value must be a finite number at least 1e-09. Accept at most this overall reprojection RMS in source pixels. |
+| `max_view_rms_pixels` | `0.0` | Value must be a finite number at least 0. Accept at most this RMS per view. Zero disables that gate. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Minimum fraction of the sensor spanned by the joint corner hull. |
+| `fix_focal_length` | `false` | Keep the focal lengths estimated by native initialization. |
+| `fix_principal_point` | `false` | Keep the native initial principal point at the sensor center. |
+| `fix_xi` | `false` | Keep the native initial mirror parameter xi. |
+| `fix_k1` | `false` | Hold coefficient k1 at zero. |
+| `fix_k2` | `false` | Hold coefficient k2 at zero. |
+| `fix_p1` | `false` | Hold coefficient p1 at zero. |
+| `fix_p2` | `false` | Hold coefficient p2 at zero. |
+| `minimum_views` | `3` | Value must be a whole number between 3 and 64. Smallest accepted number of fitted views, including after exclusions. |
+| `view_policy` | `"require_all"` | `require_all`, `allow_subset` Require every view or accept those that pass initialization. |
 
 ## 3D object pose (PnP) (`3d.pnp`)
 
@@ -1012,7 +1067,7 @@ Calibration / Lens distortion
 
 Inputs: `image` (image), `calibration` (data), `observation` (data, optional).
 
-Input `calibration` — A fitted pinhole lens profile or a fisheye camera model.
+Input `calibration` — A fitted pinhole, fisheye or omnidirectional lens profile.
 
 Input `observation` — Optional identified ChArUco points from the validation image.
 

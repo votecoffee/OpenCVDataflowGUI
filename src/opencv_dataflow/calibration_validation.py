@@ -60,7 +60,7 @@ class ValidateLensCalibration(GridCalibrationBlock):
         Port("observation", "data", required=False, required_when_connected=True),
     )
     input_help = {
-        "calibration": "A fitted pinhole lens profile or a fisheye camera model.",
+        "calibration": "A fitted pinhole, fisheye or omnidirectional lens profile.",
         "observation": "Optional identified ChArUco points from the validation image.",
     }
     outputs = (Port("report", "data"), Port("rms", "number"), Port("max_error", "number"))
@@ -127,13 +127,14 @@ class ValidateLensCalibration(GridCalibrationBlock):
     def process(self, inputs):
         p = self.parameters
         image, profile = inputs["image"], inputs["calibration"]
-        fisheye = (
-            isinstance(profile, dict)
-            and profile.get("model") == "camera_model_v1"
-            and profile.get("lens") == "fisheye"
+        lens = (
+            profile.get("lens")
+            if isinstance(profile, dict) and profile.get("model") == "camera_model_v1"
+            else None
         )
-        report_model = "fisheye_validation_v1" if fisheye else _MODEL
-        if fisheye:
+        wide_angle = lens in ("fisheye", "omnidir")
+        report_model = f"{lens}_validation_v1" if wide_angle else _MODEL
+        if wide_angle:
             camera, distortion, _ = camera_model(profile)
         else:
             camera, distortion = camera_parameters(profile)
@@ -174,11 +175,27 @@ class ValidateLensCalibration(GridCalibrationBlock):
         if not np.isfinite(world).all():
             raise ValidationError("Grid spacing produces nonfinite board coordinates")
         method = p["pose_method"]
-        if fisheye:
-            if profile["units"] != units:
-                raise ValidationError("Validation target units must match the fisheye profile")
+        if wide_angle and profile["units"] != units:
+            raise ValidationError(f"Validation target units must match the {lens} profile")
+        if lens == "fisheye":
             found, rotation, translation = cv2.fisheye.solvePnP(
                 world[:, None], observed[:, None], camera, distortion, flags=PNP[method]
+            )
+        elif lens == "omnidir":
+            xi = float(profile["xi"])
+            if xi < 0:
+                raise ValidationError("Omnidirectional validation requires nonnegative xi")
+            rays = cv2.omnidir.undistortPoints(
+                observed[:, None], camera, distortion, np.array([xi]), np.eye(3)
+            )
+            if not np.isfinite(rays).all():
+                return _unmeasured(
+                    "calibration_validation_pose_failed",
+                    "Could not recover finite forward camera rays",
+                    model=report_model,
+                )
+            found, rotation, translation = cv2.solvePnP(
+                world, rays, np.eye(3), None, flags=PNP[method]
             )
         else:
             found, rotation, translation = cv2.solvePnP(
@@ -198,9 +215,13 @@ class ValidateLensCalibration(GridCalibrationBlock):
                 "Estimated grid lies outside positive camera depth",
                 model=report_model,
             )
-        if fisheye:
+        if lens == "fisheye":
             projected = cv2.fisheye.projectPoints(
                 world[:, None], rotation, translation, camera, distortion
+            )[0]
+        elif lens == "omnidir":
+            projected = cv2.omnidir.projectPoints(
+                world[:, None], rotation, translation, camera, xi, distortion
             )[0]
         else:
             projected = cv2.projectPoints(world, rotation, translation, camera, distortion)[0]

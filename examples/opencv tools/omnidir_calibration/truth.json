@@ -1,0 +1,52 @@
+{
+  "size": [
+    640,
+    480
+  ],
+  "camera_matrix": [
+    [
+      453.0,
+      0.0,
+      319.0
+    ],
+    [
+      0.0,
+      447.0,
+      238.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "xi": 0.75,
+  "distortion": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "training": [
+    "training-01.png",
+    "training-02.png",
+    "training-03.png",
+    "training-04.png",
+    "training-05.png",
+    "training-06.png",
+    "training-07.png",
+    "training-08.png",
+    "training-09.png",
+    "training-10.png"
+  ],
+  "heldout_rvec": [
+    0.17,
+    -0.15,
+    0.08
+  ],
+  "heldout_translation": [
+    -119,
+    -53,
+    79
+  ]
+}

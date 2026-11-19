@@ -16,6 +16,8 @@ contains project-defined inspection algorithms and other-library integrations.
 
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
+[Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera
+model and checks a separate target near the sensor edge.
 
 [All examples](../README.md)
 

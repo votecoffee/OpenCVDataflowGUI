@@ -937,7 +937,7 @@ P2	method	cv2.MSER.setMinDiversity	no static reference	-
 P2	method	cv2.MSER.setMinMargin	no static reference	-
 P2	method	cv2.MSER.setPass2Only	method name only	-
 P2	function	cv2.MSER_create	literal reference	-
-P2	function	cv2.omnidir.calibrate	no static reference	-
+P2	function	cv2.omnidir.calibrate	literal reference	-
 P2	function	cv2.omnidir.initUndistortRectifyMap	literal reference	-
 P2	function	cv2.omnidir.projectPoints	literal reference	-
 P2	function	cv2.omnidir.stereoCalibrate	no static reference	-

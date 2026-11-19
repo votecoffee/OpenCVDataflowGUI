@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 34 | 27 | 70 | 131 | 26.0% |
+| 3. 3D imagery and point clouds | 35 | 26 | 70 | 131 | 26.7% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 289 | 31 | 150 | 470 | 61.5% |
+| **Overall** | 290 | 30 | 150 | 470 | 61.7% |
 
 <!-- coverage-summary:end -->
 
@@ -418,7 +418,7 @@ fixture or result needed to close the item.
 | S3-02 | Checkerboard or circle-grid pinhole calibration | calibrateCameraExtended, projectPoints | Complete | calibration.lens, calibration.validate_lens. Fit intrinsics and distortion and check independent target reprojections. |
 | S3-03 | Pinhole remapping and aligned image points | initUndistortRectifyMap, undistortPoints, remap | Complete | calibration.lens_maps, calibration.undistort_lens_points, calibration.undistort. Verify map/image dimensions, coverage and corrected points. |
 | S3-04 | Fit fisheye intrinsics from target images | fisheye.calibrate, fisheye.projectPoints, fisheye.solvePnP | Complete | 3d.fisheye_calibrate accepts grid files or ChArUco batches and emits a gated camera profile with per-view poses, RMS and corner hull. Saved synthetic views verify held-out fisheye reprojection, rectification map coverage and profile reuse. See [workflow](vision-3d.md#camera-models-and-coordinate-frames). |
-| S3-05 | Fit omnidirectional intrinsics | omnidir.calibrate, omnidir.projectPoints | Partial | 3d.camera and 3d.rectify_camera consume an existing model. Estimate intrinsics and xi and verify held-out edge observations. |
+| S3-05 | Fit omnidirectional intrinsics | omnidir.calibrate, omnidir.projectPoints, omnidir.undistortPoints | Complete | 3d.omnidir_calibrate fits Mei intrinsics and xi from grid files or ChArUco batches, validates native selected-view identities, and gates the camera on count, coverage and residuals. The synthetic held-out target verifies edge reprojection and perspective remapping. See [workflow](vision-3d.md#camera-models-and-coordinate-frames). |
 | S3-06 | Planar registration and physical workplane | findHomography, perspectiveTransform, warpPerspective | Complete | calibration.fit_planar, calibration.validate_planar, calibration.rectify_workplane. Independent marker checks and a uniform physical image grid. |
 | S3-07 | Physical dimensions from calibrated 2D images | Planar point mapping and scaled shape fitting | Complete | calibration.inspect_planar_distance, inspect.workplane_rectangle, inspect.workplane_ellipse, inspect.strip_width. Ticketed dimensions and tolerance reasons with source-aligned graphics. |
 | S3-08 | Versioned camera and rig profiles | Versioned intrinsics, map and extrinsic records tied to an image grid | Partial | input.calibration, output.calibration, input.lens_maps and output.lens_maps cover profiles and maps. Add explicit revision selection and reject mismatched capture or grid metadata. |

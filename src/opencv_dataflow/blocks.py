@@ -800,6 +800,7 @@ def builtin_registry():
     from .ocr_batch import RecognizeTextBatch
     from .ocr_constraints import RecognizeConstrainedText
     from .offline_stabilization import StabilizeRecordedSequence
+    from .omnidir_calibration import OmnidirectionalCalibration
     from .one_class_svm import ONE_CLASS_SVM_BLOCKS
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
@@ -1275,6 +1276,7 @@ def builtin_registry():
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
         FisheyeCalibration,
+        OmnidirectionalCalibration,
         CheckEpipolarCorrespondences,
         *STEREO3D_BLOCKS,
         *CLOUD_BLOCKS,
