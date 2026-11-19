@@ -166,6 +166,14 @@ def native_hog(g, levels=64):
     )
 
 
+def linear_detector_coefficients(svm, positive_index):
+    """OpenCV's binary linear raw margin is oriented toward native class zero."""
+    rho, alpha, indices = svm.getDecisionFunction(0)
+    vector = alpha.reshape(-1) @ svm.getSupportVectors()[indices.reshape(-1)]
+    sign = 1 if positive_index == 0 else -1
+    return np.r_[sign * vector, -sign * rho]
+
+
 def svm_geometry(model):
     value = model.get("feature_contract")
     if (
@@ -277,12 +285,9 @@ class HOGDetectorModel(_Detector):
                 raise ValidationError(
                     "Use a binary linear SVM and one of its class labels", "positive_label"
                 )
-            rho, alpha, indices = svm.getDecisionFunction(0)
-            vector = alpha.reshape(-1) @ svm.getSupportVectors()[indices.reshape(-1)]
-            sign = 1 if labels.index(p["positive_label"]) == 0 else -1
             model = make_model(
                 g,
-                np.r_[sign * vector, -sign * rho],
+                linear_detector_coefficients(svm, labels.index(p["positive_label"])),
                 p["positive_label"],
                 {
                     "preset": "linear_svm",

@@ -14,6 +14,10 @@ BINDINGS = {
         "CascadeClassifier.detectMultiScale2 CascadeClassifier.detectMultiScale3"
     ),
     "ml.hog_detect": "HOGDescriptor HOGDescriptor.setSVMDetector HOGDescriptor.detectMultiScale",
+    "ml.hog_detector_train": (
+        "HOGDescriptor.compute HOGDescriptor.detect HOGDescriptor.setSVMDetector "
+        "ml.SVM_create ml.SVM.train ml.SVM.getDecisionFunction"
+    ),
     "ml.hog_detector_model": "HOGDescriptor.getDefaultPeopleDetector "
     "HOGDescriptor.getDaimlerPeopleDetector ml.SVM.getDecisionFunction",
     "ml.visual_features": "SIFT_create ORB_create",

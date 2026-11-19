@@ -723,6 +723,7 @@ def builtin_registry():
     from .hit_miss import HitOrMiss
     from .hog import HOGFeatures
     from .hog_detection import HOG_DETECTION_BLOCKS
+    from .hog_training import TrainHOGDetector
     from .illumination import AdaptiveBackgroundCorrection, FlatFieldCorrection
     from .image_blend import BlendWeightMaps
     from .image_codecs import DecodeImage, EncodeImage
@@ -983,6 +984,7 @@ def builtin_registry():
         Histogram,
         HOGFeatures,
         *HOG_DETECTION_BLOCKS,
+        TrainHOGDetector,
         DetectCascade,
         CalibrationGrid,
         DetectArucoMarkers,

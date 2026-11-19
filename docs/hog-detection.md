@@ -1,5 +1,8 @@
 # HOG sliding-window detection
 
+For training from labeled crops and mining separate background images, see
+[HOG detector training](hog-detector-training.md).
+
 `ml.hog_detect` searches an image using OpenCV's native HOG detector. It is a
 separate operation from `inspect.hog`, which measures one complete window.
 Use the [thirteen projects](<../examples/opencv tools/hog_detection/README.md>)

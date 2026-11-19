@@ -15,10 +15,10 @@ native calls or graph blocks implement it.
 | Stage | Complete | Partial | Planned | Total | Coverage |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
-| 2. ML and DNN | 59 | 1 | 2 | 62 | 95.2% |
+| 2. ML and DNN | 60 | 1 | 1 | 62 | 96.8% |
 | 3. 3D imagery and point clouds | 33 | 28 | 70 | 131 | 25.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 285 | 33 | 152 | 470 | 60.6% |
+| **Overall** | 286 | 33 | 151 | 470 | 60.9% |
 
 <!-- coverage-summary:end -->
 
@@ -403,7 +403,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S2-59 | Calibrate classifier confidence and abstain on uncertain images | OpenCV DNN ordered logit tensors, temperature scaling, held-out score tables | Complete | Fit a versioned calibration from separate labeled groups, verify class order and score provenance at application, withhold labels on abstention, and compare NLL, Brier, ECE and coverage on held-out known and ambiguous synthetic controls. See [confidence calibration](classifier-confidence.md). |
 | S2-60 | Learn an image anomaly score from known-good examples | ml.SVM with ONE_CLASS and a verified decision-score convention | Complete | Train and reload a native RBF model on known-good image descriptors. Compare raw margins with native labels and independent RBF evaluation. Verify held-out normal, gouge, tilted normal, preprocessing mismatch and revised cutoff on synthetic controls. See [one-class anomaly inspection](one-class-svm.md). |
-| S2-61 | Train a HOG sliding-window detector from image crops | HOGDescriptor.compute, linear ml.SVM and HOGDescriptor.setSVMDetector | Planned | Train from labeled windows, mine false positives from separate backgrounds, and reload the detector vector with its HOG geometry. Verify score orientation and recall on held-out full images. |
+| S2-61 | Train a HOG sliding-window detector from image crops | HOGDescriptor.compute, linear ml.SVM and HOGDescriptor.setSVMDetector | Complete | Fit from labeled windows, retain verified hard negatives from separate backgrounds, and reload detector weights with their HOG geometry. On three synthetic holdouts the before/after comparison keeps four of four target detections and reduces three false positives to zero. See [detector training](hog-detector-training.md). |
 | S2-62 | Consolidate repeated detections by spatial votes | groupRectangles and class-aware grouping | Planned | Merge repeated candidates into a representative box and vote count. Verify grouping tolerance, singleton policy, stable source IDs and separation of adjacent parts and different classes. |
 
 ## Stage 3 — 3D imagery and point clouds

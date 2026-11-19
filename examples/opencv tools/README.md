@@ -74,6 +74,8 @@ For labeled image sets, grouped splits, confusion matrices and explicit wrong/re
 
 For temperature fitting, held-out reliability and an abstaining native ONNX classifier, try [confidence calibration](confidence_calibration/README.md).
 
+For crop training, bounded false-positive mining and held-out full scenes, try [HOG detector training](hog_detector_training/README.md).
+
 For known-good descriptor training and a sealed margin cutoff, try [one-class SVM inspection](one_class_svm/README.md).
 
 For source-box labels, IoU matches, precision/recall/AP and duplicate/miss/error controls, try [detector evaluation](detector_evaluation/README.md).

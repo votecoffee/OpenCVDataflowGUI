@@ -9662,6 +9662,41 @@ Inputs: `model` (data).
 | --- | --- | --- |
 | `path` | `"hog-detector.json"` |  |
 
+## Train HOG detector with hard negatives (`ml.hog_detector_train`)
+
+ML / HOG detection
+
+Inputs: `positives` (any), `negatives` (any), `backgrounds` (any, optional).
+
+Input `positives` — Batch at least two target crops of exactly the configured window size.
+
+Input `negatives` — Batch at least two negative crops of the same window size.
+
+Input `backgrounds` — Optional target-free scene or batch, separate from the crop and test sets.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `cell_size` | `[8, 8]` | [Width, height] of a cell in pixels. |
+| `block_size` | `[16, 16]` | [Width, height] in pixels. Both dimensions must be multiples of cell size. |
+| `block_stride` | `[8, 8]` | [X, Y] stride in pixels, in whole cells no larger than the block. |
+| `bins` | `9` | Value must be a whole number between 2 and 36. Gradient orientation bins per cell. |
+| `win_sigma` | `-1.0` | Value must be a finite number between -1 and 4096. Gaussian weighting sigma in pixels. −1 uses OpenCV's automatic value. |
+| `l2_hys_threshold` | `0.2` | Value must be a finite number between 0.0001 and 1. Clipping threshold before the second block normalization. |
+| `gamma_correction` | `true` | Apply square-root gamma correction before measuring gradients. |
+| `signed_gradient` | `false` | Use 360° directions. Off treats opposite directions as equivalent. |
+| `window_size` | `[32, 32]` | Exact crop [width,height] in pixels. Resize or crop upstream. |
+| `working_encoding` | `"gray"` | `gray`, `bgr` Canonical grayscale or BGR used in both training and detection. |
+| `label` | `"part"` | Object class name emitted by the exported detector. |
+| `c` | `2.0` | Value must be a finite number between 1e-06 and 1e+06. Penalty for the native linear C-SVC fit. |
+| `max_iterations` | `5000` | Value must be a whole number between 1 and 100000. Maximum native fitting iterations. |
+| `epsilon` | `1e-06` | Value must be a finite number between 1e-12 and 1. Native solver termination tolerance. |
+| `positive_weight` | `1.0` | Value must be a finite number between 1e-06 and 1000. Training cost multiplier for labeled positives. |
+| `negative_weight` | `1.0` | Value must be a finite number between 1e-06 and 1000. Training cost multiplier for both original and mined negatives. |
+| `mining_stride` | `[8, 8]` | Fixed-scale background scan stride. Must be a multiple of block stride. |
+| `mining_threshold` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Native margin threshold when mining a background window. |
+| `maximum_hard_negatives` | `64` | Value must be a whole number between 1 and 256. Maximum distinct mined descriptors retained for one refit. |
+| `maximum_mining_windows` | `20000` | Value must be a whole number between 1 and 100000. Combined native window count limit across separate backgrounds. |
+
 ## Controlled inspection image shift (`ml.image_input_shift`)
 
 ML / Input-shift evaluation

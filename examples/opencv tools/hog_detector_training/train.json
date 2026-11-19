@@ -1,0 +1,345 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "positive_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/positive-0.png",
+          "assets/positive-1.png",
+          "assets/positive-2.png",
+          "assets/positive-3.png",
+          "assets/positive-4.png",
+          "assets/positive-5.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "negative_source",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/negative-0.png",
+          "assets/negative-1.png",
+          "assets/negative-2.png",
+          "assets/negative-3.png",
+          "assets/negative-4.png",
+          "assets/negative-5.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        303.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mining_a",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/mining-a.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        606.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mining_b",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/mining-b.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        909.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "positive_batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 6,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        330,
+        114.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "negative_batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 6,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        330,
+        442.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "background_batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 2,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        330,
+        770.0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "ml.hog_detector_train",
+      "name": "Train HOG detector with hard negatives",
+      "parameters": {
+        "cell_size": [
+          8,
+          8
+        ],
+        "block_size": [
+          16,
+          16
+        ],
+        "block_stride": [
+          8,
+          8
+        ],
+        "bins": 9,
+        "win_sigma": -1.0,
+        "l2_hys_threshold": 0.2,
+        "gamma_correction": true,
+        "signed_gradient": false,
+        "window_size": [
+          32,
+          32
+        ],
+        "working_encoding": "gray",
+        "label": "part",
+        "c": 2.0,
+        "max_iterations": 5000,
+        "epsilon": 1e-06,
+        "positive_weight": 1.0,
+        "negative_weight": 1.0,
+        "mining_stride": [
+          8,
+          8
+        ],
+        "mining_threshold": 0.0,
+        "maximum_hard_negatives": 20,
+        "maximum_mining_windows": 20000
+      },
+      "position": [
+        660,
+        454.5
+      ],
+      "exposed_inputs": [
+        "positives",
+        "negatives",
+        "backgrounds"
+      ],
+      "exposed_outputs": [
+        "model",
+        "baseline_model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "attribution",
+      "type": "layout.comment",
+      "name": "Synthetic HOG training controls (MIT)",
+      "description": "Original MIT crops and scenes. Run all to collect six windows per class, mine two separate target-free frames, then refit and compare the models.",
+      "parameters": {},
+      "position": [
+        0,
+        1284.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "positive_source",
+      "output": "image",
+      "target": "positive_batch",
+      "input": "item_1"
+    },
+    {
+      "source": "negative_source",
+      "output": "image",
+      "target": "negative_batch",
+      "input": "item_1"
+    },
+    {
+      "source": "mining_a",
+      "output": "image",
+      "target": "background_batch",
+      "input": "item_1"
+    },
+    {
+      "source": "mining_b",
+      "output": "image",
+      "target": "background_batch",
+      "input": "item_2"
+    },
+    {
+      "source": "positive_batch",
+      "output": "group",
+      "target": "train",
+      "input": "positives"
+    },
+    {
+      "source": "negative_batch",
+      "output": "group",
+      "target": "train",
+      "input": "negatives"
+    },
+    {
+      "source": "background_batch",
+      "output": "group",
+      "target": "train",
+      "input": "backgrounds"
+    }
+  ]
+}

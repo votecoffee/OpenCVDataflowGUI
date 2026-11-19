@@ -1,0 +1,353 @@
+{
+  "schema": "hog_hard_negative_fixture_v1",
+  "training": {
+    "positive_crops": 6,
+    "negative_crops": 6,
+    "image_hashes": {
+      "positive": [
+        "6dac039443e425c3b4863bbf57dfb9ce02fbf81e6d18d4c2084ade2a69d556ec",
+        "38098a51d6c19819c0665ec9d54c959682ef57fc8d5adcc62bb44cd8041d9525",
+        "23b0bdf92646140bb17104821e94c24d9bee367c0c9805bbe95dcb8a3d5989df",
+        "2636415d9ec472519e73ef2ecf3644677ed9d57974b21c0f21ce31376865a38e",
+        "afdf1d2bfc02da5c75ca40db6a3ff9624d6a0fdd3b4e83ba2f423abb3399751e",
+        "670b88a8e5d1c134801e324824e665ea3698ad1e9a65484284911db70c32c265"
+      ],
+      "negative": [
+        "b01924dac84ffe8d567e357bd801e3281c3c2d605230123feeead46643067c42",
+        "29d249fda8e88cd3a1a141a1aff219b801d27388525556baf1b98489b49e6275",
+        "f92e304755d172836573caf85aff51d9fc16c32d83e6cf968d14c8dec44e84a7",
+        "a7f065d4d1d782c669f9ebd1ad6e403564fc9afd96881d29c0b17405ac5c8971",
+        "5053f7480259cc284cd9e3f8de6adf5a5e08e1129cd5092cb81e8b7a80930439",
+        "a4a33258408e47ebed2460cdd6cee36e42aa06d62fd72dfee4fe095cf4b64ec2"
+      ],
+      "background": [
+        "5a70ed7df757f0edaa0e32b850bb1b14f19e94aba92ad4b3aa4f483b44ff5cb0",
+        "70fd3f3646d0ed595d4fa37613e86d5e97ec02f7ce7d11cfe10c483fe24a0648"
+      ]
+    },
+    "mining_windows": [
+      135,
+      135
+    ],
+    "mining_candidates_before": [
+      46,
+      43
+    ],
+    "mining_candidates_after": [
+      0,
+      0
+    ],
+    "selected_mined_negatives": [
+      {
+        "background": 1,
+        "origin_xy": [
+          64,
+          48
+        ],
+        "baseline_margin": 0.7528016620781273
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          16,
+          16
+        ],
+        "baseline_margin": 0.7432619705796242
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          104,
+          16
+        ],
+        "baseline_margin": 0.7415369618684053
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          80,
+          56
+        ],
+        "baseline_margin": 0.4506414011120796
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          56,
+          56
+        ],
+        "baseline_margin": 0.4470956325531006
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          16,
+          0
+        ],
+        "baseline_margin": 0.43677125684916973
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          8,
+          24
+        ],
+        "baseline_margin": 0.4329411815851927
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          104,
+          0
+        ],
+        "baseline_margin": 0.43214258924126625
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          88,
+          48
+        ],
+        "baseline_margin": 0.4285675846040249
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          64,
+          32
+        ],
+        "baseline_margin": 0.4221407100558281
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          104,
+          48
+        ],
+        "baseline_margin": 0.4187461584806442
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          96,
+          24
+        ],
+        "baseline_margin": 0.4121193625032902
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          80,
+          48
+        ],
+        "baseline_margin": 0.39840191043913364
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          32,
+          16
+        ],
+        "baseline_margin": 0.39838617760688066
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          80,
+          40
+        ],
+        "baseline_margin": 0.3960049953311682
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          8,
+          8
+        ],
+        "baseline_margin": 0.39492523577064276
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          16,
+          32
+        ],
+        "baseline_margin": 0.3749099806882441
+      },
+      {
+        "background": 0,
+        "origin_xy": [
+          88,
+          32
+        ],
+        "baseline_margin": 0.37118938006460667
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          64,
+          64
+        ],
+        "baseline_margin": 0.3553121769800782
+      },
+      {
+        "background": 1,
+        "origin_xy": [
+          96,
+          8
+        ],
+        "baseline_margin": 0.3509703781455755
+      }
+    ],
+    "max_mining_margin_difference": 3.500131784406335e-08,
+    "baseline_fit": {
+      "positive_correct": 6,
+      "negative_correct": 6,
+      "maximum_margin_difference": 9.885161977862822e-08
+    },
+    "final_fit": {
+      "positive_correct": 6,
+      "negative_correct": 26,
+      "maximum_margin_difference": 1.9806176543291087e-07
+    },
+    "baseline_revision": "3fec7a2ef1f29df9be49965e04128c0c578ed5d8a4610b70816cecbd6c9d732b",
+    "model_revision": "eb555bf020e104b0cb8edc5f7a4c6284b9912088f05cc288c18df4db454ba788"
+  },
+  "heldout_boxes": {
+    "heldout_parts": [
+      [
+        16,
+        24,
+        32,
+        32
+      ],
+      [
+        96,
+        56,
+        32,
+        32
+      ]
+    ],
+    "heldout_second": [
+      [
+        8,
+        48,
+        32,
+        32
+      ],
+      [
+        104,
+        16,
+        32,
+        32
+      ]
+    ],
+    "heldout_background": []
+  },
+  "observed_boxes": {
+    "heldout_parts": {
+      "before": [
+        [
+          16.0,
+          24.0,
+          32.0,
+          32.0
+        ],
+        [
+          72.0,
+          8.0,
+          32.0,
+          32.0
+        ],
+        [
+          96.0,
+          56.0,
+          32.0,
+          32.0
+        ]
+      ],
+      "after": [
+        [
+          16.0,
+          24.0,
+          32.0,
+          32.0
+        ],
+        [
+          96.0,
+          56.0,
+          32.0,
+          32.0
+        ]
+      ]
+    },
+    "heldout_second": {
+      "before": [
+        [
+          8.0,
+          48.0,
+          32.0,
+          32.0
+        ],
+        [
+          56.0,
+          32.0,
+          32.0,
+          32.0
+        ],
+        [
+          104.0,
+          16.0,
+          32.0,
+          32.0
+        ]
+      ],
+      "after": [
+        [
+          8.0,
+          48.0,
+          32.0,
+          32.0
+        ],
+        [
+          104.0,
+          16.0,
+          32.0,
+          32.0
+        ]
+      ]
+    },
+    "heldout_background": {
+      "before": [
+        [
+          48.0,
+          40.0,
+          32.0,
+          32.0
+        ]
+      ],
+      "after": []
+    }
+  },
+  "assets_sha256": {
+    "baseline.json": "0326f1c49d3ae6a10b67a193d122ff03a00a68cca43a515184be79ad56d89321",
+    "detector.json": "5cfd543037917e78b9e03b91860f9ccd00c28fc88c669ab5e906623c371ad11b",
+    "mining-a.png": "e3ee2671bc3f451c96072cd51b8d2f2bd407e1cb5dfb5825f265492f4d6853e0",
+    "mining-b.png": "55fede9493c52b3da61ca907976291cb16262164c195c58479592ef77cdd6951",
+    "negative-0.png": "3bf8dd13e58722ca22a9ea141f14f9c9712fc54b50ec84d8fb410510fe546078",
+    "negative-1.png": "20e22402f00beac2d32ae28cd21d7f3d9108e6317ed550e61a267312fd9c641b",
+    "negative-2.png": "03ec3803fb41247a99380ab7b5b0c7b17029d01fc7fdca5c6485e32683960228",
+    "negative-3.png": "aab8f5d01a348ef33c1b76c4aa93e698c7fe0b2d06be127d1839c39683d4f5e0",
+    "negative-4.png": "b8c97fafc867e2892e0e5e9795a579691c621f3bce72412d56bfa1e49e702624",
+    "negative-5.png": "0036fa1b31678dd295e0b2af98b3371ec25a4879182cc81c37abdc0b44665096",
+    "positive-0.png": "ebfad118eaf10dc7b424523105a708e94475d37a077a87e8f81abd93842e18e9",
+    "positive-1.png": "19dc8b493fb7aca51cfe3c33e83cf3eda2acec47106a5c0f95eaf873d3cd9453",
+    "positive-2.png": "f155ab4f261c26294e2ee46ab06b250027aaa6efb3167fee116ce954e85da734",
+    "positive-3.png": "117efe962a89c43aeb6d228d98dcf0b3294fdee966bc4aa37197443eff9c2d26",
+    "positive-4.png": "5067cbf25e93c433457fe1f5b239eae3541d827ef7e14d9db6f6e63627136bb7",
+    "positive-5.png": "09ac371802415bce89a2796f54d68acd1f29370ebbe49b471481283e640c6b4e",
+    "query-a.png": "2062f5e9e329fd56d1670f78c836da1ec5c92fa9a9f588bd764f18a3e9a9d46e",
+    "query-b.png": "4e07f974f67a71f210b7bb19e9ad873c2fc5d007ea2b18c20d3807111009732b",
+    "query-empty.png": "c13ee756bde9d5c00e48db35f5d14cfde112f2b32842b827e44e644cdb41c117"
+  }
+}
