@@ -161,7 +161,8 @@ BLOCK_MODULES = {
         "3d.stereo_rectify 3d.stereo_rectified_camera 3d.rectify_camera "
         "3d.check_epipolar 3d.refine_epipolar "
         "3d.rectify_uncalibrated_stereo 3d.fisheye_calibrate "
-        "3d.omnidir_calibrate 3d.wide_stereo_calibrate calibration.refine_target"
+        "3d.omnidir_calibrate 3d.wide_stereo_calibrate calibration.refine_target "
+        "calibration.marked_checkerboard"
     ),
     "geometry": "inspect.affine inspect.homography collection.clip_lines 3d.estimate_matched_transform",
     "features": (
@@ -309,6 +310,9 @@ _NATIVE_NAMES = {
     "sequence.lk_grid_flow": ("calcOpticalFlowPyrLK",),
     "sequence.track_points": ("calcOpticalFlowPyrLK",),
     "calibration.lens": ("calibrateCamera", "calib3d"),
+    "calibration.marked_checkerboard": (
+        "findChessboardCornersSBWithMeta", "oversized checkerboard", "marker origin"
+    ),
     "calibration.refine_target": ("calibrateCameraRO", "calibrateCameraROExtended", "release object"),
     "inspect.homography": ("findHomography", "calib3d"),
     "3d.pnp": ("solvePnP", "calib3d"),

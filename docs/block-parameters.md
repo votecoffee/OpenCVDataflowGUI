@@ -2653,6 +2653,24 @@ Inputs: `calibration` (data).
 | `rotation_vector` | `[0.0, 0.0, 0.0]` | Optional rectification rotation as a Rodrigues vector in radians. |
 | `max_rms_pixels` | `1.0` | Value must be a finite number at least 1e-09. Maximum source calibration reprojection RMS in pixels. |
 
+## Detect marked checkerboard (`calibration.marked_checkerboard`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_columns` | `7` | Value must be a whole number between 3 and 64. Requested inner corner columns. Larger mode treats it as a minimum. |
+| `minimum_rows` | `5` | Value must be a whole number between 3 and 64. Requested inner corner rows. Larger mode treats it as a minimum. |
+| `allow_larger` | `true` | Allow OpenCV to extend beyond the requested grid when visible. |
+| `normalize` | `true` | Equalize the detector's grayscale input. |
+| `exhaustive` | `false` | Enable OpenCV's expanded search for the grid. |
+| `accuracy` | `false` | Upsample internally for subpixel localization. |
+| `target_id` | `"checkerboard"` | Name this physical target consistently across captures. |
+| `spacing` | `10.0` | Value must be a finite number between 1e-08 and 1e+06. Physical distance between adjacent corner intersections. |
+| `units` | `"mm"` | `mm`, `m`, `unitless` |
+
 ## Pixel to physical (`calibration.pixel_to_physical`)
 
 Calibration / Grid and coordinates

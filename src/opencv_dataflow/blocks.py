@@ -814,6 +814,7 @@ def builtin_registry():
         CreateDiagonalMatrix,
         MeasureMatrixDiagonal,
     )
+    from .marked_checkerboard import DetectMarkedCheckerboard
     from .matrix_svd import MatrixSVD
     from .metadata_blocks import CreateImageMetadata
     from .mil_tracking import MILSequence
@@ -1062,6 +1063,7 @@ def builtin_registry():
         CalibrationGrid,
         DetectArucoMarkers,
         DetectCharucoBoard,
+        DetectMarkedCheckerboard,
         GenerateFiducialTarget,
         LensCalibration,
         LoadTargetCalibrationObservations,

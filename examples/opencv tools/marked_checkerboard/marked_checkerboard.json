@@ -1,0 +1,315 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Anchor a partially visible checkerboard",
+      "description": "Synthetic targets by OpenCVDataflowGUI contributors (MIT). Compare IDs for the same physical corners in the full, cropped and rotated views. The last view intentionally crops out the dots and cannot assign physical IDs.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "file_full_board",
+      "type": "input.file",
+      "name": "Full board",
+      "parameters": {
+        "path": "assets/full_board.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "full_board",
+      "type": "calibration.marked_checkerboard",
+      "name": "Detect marked checkerboard",
+      "description": "Identify visible corners of an oversized checkerboard by its three-dot origin.",
+      "parameters": {
+        "minimum_columns": 17,
+        "minimum_rows": 13,
+        "allow_larger": false,
+        "normalize": true,
+        "exhaustive": false,
+        "accuracy": false,
+        "target_id": "fixture_board",
+        "spacing": 12.0,
+        "units": "mm"
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "image_points",
+        "object_points",
+        "corner_ids",
+        "native_metadata",
+        "corner_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "file_crop_a",
+      "type": "input.file",
+      "name": "Crop a",
+      "parameters": {
+        "path": "assets/crop_a.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        228
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "crop_a",
+      "type": "calibration.marked_checkerboard",
+      "name": "Detect marked checkerboard",
+      "description": "Identify visible corners of an oversized checkerboard by its three-dot origin.",
+      "parameters": {
+        "minimum_columns": 7,
+        "minimum_rows": 5,
+        "allow_larger": true,
+        "normalize": true,
+        "exhaustive": false,
+        "accuracy": false,
+        "target_id": "fixture_board",
+        "spacing": 12.0,
+        "units": "mm"
+      },
+      "position": [
+        420,
+        228
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "image_points",
+        "object_points",
+        "corner_ids",
+        "native_metadata",
+        "corner_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "file_crop_b",
+      "type": "input.file",
+      "name": "Crop b",
+      "parameters": {
+        "path": "assets/crop_b.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        456
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "crop_b",
+      "type": "calibration.marked_checkerboard",
+      "name": "Detect marked checkerboard",
+      "description": "Identify visible corners of an oversized checkerboard by its three-dot origin.",
+      "parameters": {
+        "minimum_columns": 7,
+        "minimum_rows": 5,
+        "allow_larger": true,
+        "normalize": true,
+        "exhaustive": false,
+        "accuracy": false,
+        "target_id": "fixture_board",
+        "spacing": 12.0,
+        "units": "mm"
+      },
+      "position": [
+        420,
+        456
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "image_points",
+        "object_points",
+        "corner_ids",
+        "native_metadata",
+        "corner_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "file_no_marker",
+      "type": "input.file",
+      "name": "No marker",
+      "parameters": {
+        "path": "assets/no_marker.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        684
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "no_marker",
+      "type": "calibration.marked_checkerboard",
+      "name": "Detect marked checkerboard",
+      "description": "Identify visible corners of an oversized checkerboard by its three-dot origin.",
+      "parameters": {
+        "minimum_columns": 7,
+        "minimum_rows": 5,
+        "allow_larger": true,
+        "normalize": true,
+        "exhaustive": false,
+        "accuracy": false,
+        "target_id": "fixture_board",
+        "spacing": 12.0,
+        "units": "mm"
+      },
+      "position": [
+        420,
+        684
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "image_points",
+        "object_points",
+        "corner_ids",
+        "native_metadata",
+        "corner_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "file_full_board",
+      "output": "image",
+      "target": "full_board",
+      "input": "image"
+    },
+    {
+      "source": "file_crop_a",
+      "output": "image",
+      "target": "crop_a",
+      "input": "image"
+    },
+    {
+      "source": "file_crop_b",
+      "output": "image",
+      "target": "crop_b",
+      "input": "image"
+    },
+    {
+      "source": "file_no_marker",
+      "output": "image",
+      "target": "no_marker",
+      "input": "image"
+    }
+  ]
+}

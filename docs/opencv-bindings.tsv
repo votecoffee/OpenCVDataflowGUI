@@ -2746,7 +2746,7 @@ P3	function	cv2.filterSpeckles	literal reference	-
 P3	function	cv2.find4QuadCornerSubpix	no static reference	-
 P3	function	cv2.findChessboardCorners	literal reference	-
 P3	function	cv2.findChessboardCornersSB	literal reference	-
-P3	function	cv2.findChessboardCornersSBWithMeta	no static reference	-
+P3	function	cv2.findChessboardCornersSBWithMeta	literal reference	-
 P3	function	cv2.findCirclesGrid	literal reference	-
 P3	function	cv2.findContoursLinkRuns	literal reference	-
 P3	function	cv2.findEssentialMat	literal reference	-

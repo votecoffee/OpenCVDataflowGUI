@@ -118,6 +118,17 @@ subset, then scores the remaining points. The fixed-target mode provides
 a nominal-geometry control with the same input and reporting.
 [Warped target and nominal control](<../examples/opencv tools/refine_calibration_target/README.md>)
 
+**Detect marked checkerboard** uses OpenCV's sector-based detector and
+three-dot metadata to identify visible corners of an oversized target.
+It reports the native cell grid and emits corresponding subpixel XY and
+planar XYZ for each signed board ID. The origin is the corner of the
+black-dot cell in the canonical target frame. Cropping or rotating a
+front-face view preserves the IDs of shared corners. A view with missing
+or unresolved markers emits its detection report without physical IDs.
+Set the measured spacing and match the camera pixel grid when using the
+points to solve pose.
+[Full target, rotated crop and lost marker](<../examples/opencv tools/marked_checkerboard/README.md>)
+
 ## Review sparse stereo correspondences
 
 **Check epipolar correspondences** accepts ordered left and right point

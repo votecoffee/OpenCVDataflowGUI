@@ -32,6 +32,9 @@ per-camera fit residuals and cross-camera prediction on held-out targets.
 [Refine calibration target geometry](refine_calibration_target/README.md)
 estimates repeatable target deviations and checks held-out reprojection.
 
+[Marked and oversized checkerboards](marked_checkerboard/README.md) recovers
+matched board coordinates from overlapping views and diagnoses a missing marker.
+
 [Multi-camera rig calibration](multicamera_rig/README.md) fits a three-view
 chain and validates it on disjoint captures.
 
