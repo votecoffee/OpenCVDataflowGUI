@@ -1249,6 +1249,34 @@ Inputs: `left_camera` (data), `right_camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
 
+## Track metric object silhouette (`3d.track_silhouette`)
+
+3D vision / Pose tracking
+
+Inputs: `image` (image), `camera` (data), `mesh` (mesh, optional), `initial_pose` (data, optional), `reset` (data, optional).
+
+Input `image` — Consecutive uint8 frames from one stream, with a visible object boundary.
+
+Input `camera` — Pinhole intrinsics for these undistorted frames.
+
+Input `mesh` — Metric outward-wound triangle mesh. Overrides Model.
+
+Input `initial_pose` — Seed for startup or reset. Overrides the configured pose.
+
+Input `reset` — True clears tracking and tries the seed on this frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `{}` | Object-space mesh with vertices, triangle faces, units (m/mm) and frame. |
+| `initial_pose` | `{}` | pose_3d_v1 record for the first frame or after an explicit reset. |
+| `search_lines` | `120` | Value must be a whole number between 16 and 512. Number of normal searches spaced along the projected silhouette. |
+| `search_radius_px` | `10` | Value must be a whole number between 2 and 96. Distance in pixels searched on each side of the predicted silhouette. |
+| `minimum_edge_response` | `30` | Value must be a whole number between 1 and 255. Minimum intensity difference across an edge sample. |
+| `minimum_match_fraction` | `0.7` | Value must be a finite number between 0.1 and 1. Minimum fraction of the requested searches with a valid edge. |
+| `maximum_reprojection_rms_px` | `1.25` | Value must be a finite number between 0.05 and 32. Maximum RMS error along the edge normals. |
+| `pose_updates` | `4` | Value must be a whole number between 1 and 20. Number of silhouette correspondence and pose-fit updates per frame. |
+| `fit_iterations` | `24` | Value must be a whole number between 1 and 80. Maximum least-squares evaluations per pose update. |
+
 ## Triangulate 3D points (`3d.triangulate`)
 
 3D vision / Reconstruction

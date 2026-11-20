@@ -4111,9 +4111,9 @@ P3	function	cv2.rapid.convertCorrespondencies	no static reference	-
 P3	function	cv2.rapid.drawCorrespondencies	no static reference	-
 P3	function	cv2.rapid.drawSearchLines	no static reference	-
 P3	function	cv2.rapid.drawWireframe	no static reference	-
-P3	function	cv2.rapid.extractControlPoints	no static reference	-
-P3	function	cv2.rapid.extractLineBundle	no static reference	-
-P3	function	cv2.rapid.findCorrespondencies	no static reference	-
+P3	function	cv2.rapid.extractControlPoints	literal reference	-
+P3	function	cv2.rapid.extractLineBundle	literal reference	-
+P3	function	cv2.rapid.findCorrespondencies	literal reference	-
 P3	class	cv2.rapid.GOSTracker	no static reference	-
 P3	method	cv2.rapid.GOSTracker.create	method name only	-
 P3	function	cv2.rapid.GOSTracker_create	no static reference	-

@@ -912,6 +912,7 @@ def builtin_registry():
         InspectWorkplaneRectangle,
         RotatedRectangleOverlap,
     )
+    from .silhouette_tracking import TrackObjectSilhouette
     from .simple_classifier.dataflow import ClassifyImage
     from .simpleitk_blocks import SIMPLEITK_BLOCKS
     from .skeleton import PruneSkeleton, Skeletonize
@@ -1350,6 +1351,7 @@ def builtin_registry():
         *PTCLOUD3D_BLOCKS,
         *PHASE_SHIFT_BLOCKS,
         UnwrapFringePhase,
+        TrackObjectSilhouette,
         *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         StereoDemo,

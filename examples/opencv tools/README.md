@@ -94,6 +94,9 @@ registers noisy partial scans and measures correspondence error and overlap.
 [Measured fringe phase unwrapping](phase_unwrap/README.md) uses a shadow mask
 and independent references for two disconnected regions.
 
+[Metric silhouette pose tracking](silhouette_tracking/README.md) follows a known
+part in video and compares its recovered pose against synthetic ground truth.
+
 [Phase-shift fringe replay](phase_shift/README.md) recovers absolute subpixel
 projector coordinates and marks low-signal and inconsistent captures.
 

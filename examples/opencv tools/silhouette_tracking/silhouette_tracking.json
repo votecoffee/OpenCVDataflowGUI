@@ -1,0 +1,279 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Track a known part through video",
+      "description": "Synthetic part motion and metric geometry by OpenCVDataflowGUI contributors (MIT). Run All replays 12 frames. Inspect the mesh, matched edges, and tracking report.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "video",
+      "type": "input.video_file",
+      "name": "Video file",
+      "parameters": {
+        "path": "assets/part_motion.avi",
+        "path_base": "project",
+        "backend": "opencv_mjpeg",
+        "start_frame": 0,
+        "end_frame": 12,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 490.0,
+        "fy": 487.0,
+        "cx": 220.0,
+        "cy": 160.0,
+        "width": 440,
+        "height": 320,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "fixture_optical"
+      },
+      "position": [
+        0,
+        220
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tracker",
+      "type": "3d.track_silhouette",
+      "name": "Track metric object silhouette",
+      "parameters": {
+        "model": {
+          "vertices": [
+            [
+              -60,
+              -40,
+              -20
+            ],
+            [
+              60,
+              -40,
+              -20
+            ],
+            [
+              60,
+              40,
+              -20
+            ],
+            [
+              -60,
+              40,
+              -20
+            ],
+            [
+              -60,
+              -40,
+              20
+            ],
+            [
+              60,
+              -40,
+              20
+            ],
+            [
+              60,
+              40,
+              20
+            ],
+            [
+              -60,
+              40,
+              20
+            ]
+          ],
+          "faces": [
+            [
+              2,
+              1,
+              0
+            ],
+            [
+              3,
+              2,
+              0
+            ],
+            [
+              4,
+              5,
+              6
+            ],
+            [
+              4,
+              6,
+              7
+            ],
+            [
+              5,
+              4,
+              0
+            ],
+            [
+              1,
+              5,
+              0
+            ],
+            [
+              6,
+              5,
+              1
+            ],
+            [
+              2,
+              6,
+              1
+            ],
+            [
+              7,
+              6,
+              2
+            ],
+            [
+              3,
+              7,
+              2
+            ],
+            [
+              4,
+              7,
+              3
+            ],
+            [
+              0,
+              4,
+              3
+            ]
+          ],
+          "units": "mm",
+          "frame": "reference_part"
+        },
+        "initial_pose": {
+          "model": "pose_3d_v1",
+          "source_to_target": [
+            [
+              0.882661508361709,
+              -0.1859950665855326,
+              -0.43164163013138135,
+              2.0
+            ],
+            [
+              0.08051239759510215,
+              0.9646276896308686,
+              -0.25102026657403753,
+              -2.0
+            ],
+            [
+              0.4630619996178925,
+              0.18681342457986244,
+              0.8664146402887148,
+              523.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "source_frame": "reference_part",
+          "target_frame": "fixture_optical",
+          "units": "mm",
+          "rvec": [
+            0.22999999999999987,
+            -0.46999999999999975,
+            0.13999999999999993
+          ],
+          "translation": [
+            2.0,
+            -2.0,
+            523.0
+          ]
+        },
+        "search_lines": 120,
+        "search_radius_px": 10,
+        "minimum_edge_response": 30,
+        "minimum_match_fraction": 0.7,
+        "maximum_reprojection_rms_px": 1.25,
+        "pose_updates": 4,
+        "fit_iterations": 24
+      },
+      "position": [
+        395,
+        95
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "camera",
+        "mesh",
+        "initial_pose",
+        "reset"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "tracked",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Tracked mesh"
+    }
+  ],
+  "connections": [
+    {
+      "source": "video",
+      "output": "image",
+      "target": "tracker",
+      "input": "image"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "tracker",
+      "input": "camera"
+    }
+  ]
+}

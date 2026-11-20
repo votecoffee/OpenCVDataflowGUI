@@ -516,6 +516,15 @@ references withhold the corresponding region. The output carries the
 phase camera grid and records anchored and relative labels in its payload.
 [Shadow and independent reference example](<../examples/opencv tools/phase_unwrap/README.md>)
 
+**Track metric object silhouette** starts with a named metric triangle mesh,
+an undistorted pinhole camera and an approximate object-to-camera pose.
+The tracker searches normal to the predicted boundary, refines pose against
+observed edges and checks the support and reprojection RMS. It emits a pose
+in meters with the frame ticket. If tracking is lost, send a Boolean reset
+and a current seed to resume. Use the compact report and selectable mesh
+and matched-edge drawings to inspect the fit.
+[Recorded silhouette example](<../examples/opencv tools/silhouette_tracking/README.md>)
+
 **Calibrate camera and projector** fits the camera-to-projector transform
 from matched target views on two pinhole grids. It can refine projector
 intrinsics on their own grid while keeping camera intrinsics fixed.

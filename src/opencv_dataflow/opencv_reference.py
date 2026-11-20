@@ -130,6 +130,10 @@ BINDINGS = {
         "phase_unwrapping.PhaseUnwrapping.unwrapPhaseMap "
         "phase_unwrapping.HistogramPhaseUnwrapping.getInverseReliabilityMap"
     ),
+    "3d.track_silhouette": (
+        "rapid.extractControlPoints rapid.extractLineBundle rapid.findCorrespondencies "
+        "projectPoints Rodrigues"
+    ),
     "3d.phase_shift_patterns": (
         "structured_light.SinusoidalPattern.create structured_light.SinusoidalPattern.generate"
     ),
