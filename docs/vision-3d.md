@@ -272,6 +272,27 @@ filter. The depth keeps its type, units, ticket and grid. The validity and
 confidence-rejection masks use the same grid.
 [Depth smoothing example](<../examples/opencv tools/depth_smoothing/README.md>)
 
+**Fuse registered depth views** combines two to four positive axial-Z
+rasters on one target camera grid. Register the views first. The default
+alignment checks known pixel frames. Pixel Grid declares that separately
+loaded rasters already share a grid. Known tickets must agree. Tagged
+m/mm depth keeps its unit interpretation, and the result is in meters.
+
+Each optional confidence image uses float values on [0, 1] or full-scale
+uint8/uint16 values. Omitted confidence gives weight one. After rejecting
+invalid depth and low confidence, the block averages samples within the
+configured distance behind the nearest trusted surface. It uses no
+neighboring pixels. Minimum Support can require agreement from several
+views. A mask or region limits the evaluation, and Minimum Coverage gates
+the fraction of selected pixels that fuse successfully.
+
+The output confidence is the mean weight of contributing samples at
+each fused pixel. Support Count records eligible nearest-surface samples
+even where they fall short of Minimum Support. Conflict Mask identifies
+pixels with farther eligible samples. The report separates missing and
+insufficient support.
+[Registered fusion and thin-foreground example](<../examples/opencv tools/registered_depth_fusion/README.md>)
+
 **Evaluate camera depth** compares camera Z on aligned pixel grids.
 Tagged depth uses its m/mm units. For untagged rasters, set the units
 and, for raw uint16, the units per sample for each input. Zero, negative

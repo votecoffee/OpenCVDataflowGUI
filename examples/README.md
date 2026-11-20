@@ -191,6 +191,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Depth-backed region reprojection](<opencv tools/depth_region_projection/README.md>) | Transfer a synthetic physical patch from fisheye to omnidirectional pixels and measure its target coverage. |
 | [Confidence-weighted depth smoothing](<opencv tools/depth_smoothing/README.md>) | Reduce noise on two depth planes separated by a sharp step and project retained samples into a point cloud. |
 | [Camera depth evaluation](<opencv tools/depth_reference/README.md>) | Compare meter and millimeter depth maps, quantify a shifted step, and inspect independent validity holes. |
+| [Registered depth fusion](<opencv tools/registered_depth_fusion/README.md>) | Blend common surfaces by confidence, recover complementary depth and retain a two-pixel-wide foreground feature. |
 | [Support plane and foreground separation](<opencv tools/depth_plane/README.md>) | Recover a tilted work surface, measure signed distances, and backproject only the raised foreground. |
 | [Calibrated cloud visibility](<opencv tools/cloud_visibility/README.md>) | Render a color cloud in the camera grid and compare visible and occluded samples to reference depth. |
 | [Calibration revisions](<opencv tools/calibration_revisions/README.md>) | Select rig revisions, verify capture identity and reload a pinned lens map. |

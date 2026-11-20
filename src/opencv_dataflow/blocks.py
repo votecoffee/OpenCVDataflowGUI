@@ -674,6 +674,7 @@ def builtin_registry():
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
     from .depth_evaluation import EvaluateDepth
+    from .depth_fusion import FuseRegisteredDepth
     from .depth_plane import SeparateDepthPlane
     from .depth_region_projection import ReprojectDepthRegion
     from .depth_smoothing import SmoothDepth
@@ -1042,6 +1043,7 @@ def builtin_registry():
         FillDepthHoles,
         SmoothDepth,
         EvaluateDepth,
+        FuseRegisteredDepth,
         ReprojectDepthRegion,
         SeparateDepthPlane,
         LoadCalibration,

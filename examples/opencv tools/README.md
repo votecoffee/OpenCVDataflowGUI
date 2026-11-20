@@ -58,6 +58,9 @@ a physical patch across different lens models and checks the projected support.
 [Confidence-weighted depth smoothing](depth_smoothing/README.md) preserves a
 sharp step and rejects unreliable depth samples before cloud reconstruction.
 
+[Registered depth fusion](registered_depth_fusion/README.md) blends aligned
+range images with confidence and retains a narrow foreground.
+
 [Camera depth evaluation](depth_reference/README.md) checks mixed-unit depth
 error, validity and coverage over a known step.
 

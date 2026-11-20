@@ -127,6 +127,7 @@ BINDINGS = {
     ),
     "3d.cloud_project": "projectPoints",
     "3d.evaluate_depth": "applyColorMap",
+    "3d.fuse_registered_depth": "merge",
     "3d.reproject_depth_region": (
         "undistortPoints fisheye.undistortPoints omnidir.undistortPoints "
         "projectPoints fisheye.projectPoints omnidir.projectPoints"

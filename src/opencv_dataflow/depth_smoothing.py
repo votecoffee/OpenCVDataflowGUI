@@ -11,6 +11,21 @@ from .selection import selection_mask
 from .tickets import ticket_key
 
 
+def normalize_depth_confidence(confidence):
+    if confidence.dtype in (np.uint8, np.uint16):
+        return np.asarray(confidence, np.float32) / np.iinfo(confidence.dtype).max
+    values = np.asarray(confidence)
+    if (
+        values.dtype not in (np.float32, np.float64)
+        or not np.isfinite(values).all()
+        or np.any((values < 0) | (values > 1))
+    ):
+        raise ValidationError(
+            "Confidence must be finite float in [0, 1] or uint8/uint16 full scale"
+        )
+    return np.asarray(values, np.float32)
+
+
 class SmoothDepth(Tool3D):
     type_id, title, subtype = "3d.smooth_depth", "Smooth depth while preserving edges", "Depth"
     payload_reference = "depth"
@@ -81,18 +96,7 @@ class SmoothDepth(Tool3D):
             and ticket_key(depth_ticket) != ticket_key(confidence_ticket)
         ):
             raise ValidationError("Confidence and depth must refer to the same ticket")
-        if confidence.dtype in (np.uint8, np.uint16):
-            return np.asarray(confidence, np.float32) / np.iinfo(confidence.dtype).max
-        values = np.asarray(confidence)
-        if (
-            values.dtype not in (np.float32, np.float64)
-            or not np.isfinite(values).all()
-            or np.any((values < 0) | (values > 1))
-        ):
-            raise ValidationError(
-                "Confidence must be finite float in [0, 1] or uint8/uint16 full scale"
-            )
-        return np.asarray(values, np.float32)
+        return normalize_depth_confidence(confidence)
 
     def process(self, inputs):
         source = inputs["depth"]

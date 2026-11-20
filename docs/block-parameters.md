@@ -518,6 +518,42 @@ Inputs: `points_left` (data), `points_right` (data).
 | `confidence` | `0.99` |  |
 | `iterations` | `2000` |  |
 
+## Fuse registered depth views (`3d.fuse_registered_depth`)
+
+3D vision / Depth
+
+Inputs: `depth_a` (depth), `depth_b` (depth), `depth_c` (depth, optional), `depth_d` (depth, optional), `confidence_a` (image, optional), `confidence_b` (image, optional), `confidence_c` (image, optional), `confidence_d` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `depth_a` — Positive axial Z registered to Depth A's pixel grid.
+
+Input `depth_b` — Positive axial Z registered to Depth A's pixel grid.
+
+Input `depth_c` — Positive axial Z registered to Depth A's pixel grid.
+
+Input `depth_d` — Positive axial Z registered to Depth A's pixel grid.
+
+Input `confidence_a` — Float [0,1] or uint8/uint16 full scale. Omit for weight 1.
+
+Input `confidence_b` — Float [0,1] or uint8/uint16 full scale. Omit for weight 1.
+
+Input `confidence_c` — Float [0,1] or uint8/uint16 full scale. Omit for weight 1.
+
+Input `confidence_d` — Float [0,1] or uint8/uint16 full scale. Omit for weight 1.
+
+Input `mask` — Optional uint8 selection on the common grid.
+
+Input `region` — Optional region intersected with Mask. Outputs outside are invalid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Check known frames, or assert independently loaded grids are registered. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for an untagged depth raster. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 sample. |
+| `minimum_confidence` | `0.1` | Value must be a finite number between 0 and 1. Discard lower confidence. Zero confidence is always invalid. |
+| `surface_tolerance_m` | `0.02` | Value must be a finite number between 0 and 100. Use samples up to this distance behind the nearest trusted Z. |
+| `minimum_support` | `1` | Value must be a whole number between 1 and 4. Require this many views agreeing on the nearest surface. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required fused fraction of selected pixels. |
+
 ## Generate Gray-code patterns (`3d.graycode`)
 
 3D vision / Structured light

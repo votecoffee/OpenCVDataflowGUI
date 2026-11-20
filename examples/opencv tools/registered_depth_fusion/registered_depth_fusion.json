@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Fuse registered depth without blurring the edge",
+      "description": "Original synthetic range images by OpenCVDataflowGUI contributors (MIT). Two aligned views have complementary holes and unequal confidence. One view sees a narrow foreground object. The other sees the background there.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth_a",
+      "type": "input.depth_file",
+      "name": "Depth A",
+      "parameters": {
+        "path": "assets/depth_a.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 1000,
+        "display_max": 2200
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-depth-fusion"
+      }
+    },
+    {
+      "id": "depth_b",
+      "type": "input.depth_file",
+      "name": "Depth B",
+      "parameters": {
+        "path": "assets/depth_b.png",
+        "path_base": "project",
+        "units_per_sample": 0.001,
+        "units": "m",
+        "display_min": 1,
+        "display_max": 2.2
+      },
+      "position": [
+        0,
+        205
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-depth-fusion"
+      }
+    },
+    {
+      "id": "confidence_a",
+      "type": "input.file",
+      "name": "Confidence A",
+      "parameters": {
+        "path": "assets/confidence_a.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        410
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-depth-fusion"
+      }
+    },
+    {
+      "id": "confidence_b",
+      "type": "input.file",
+      "name": "Confidence B",
+      "parameters": {
+        "path": "assets/confidence_b.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        615
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-depth-fusion"
+      }
+    },
+    {
+      "id": "truth",
+      "type": "input.depth_file",
+      "name": "Truth",
+      "parameters": {
+        "path": "assets/truth.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 1000,
+        "display_max": 2200
+      },
+      "position": [
+        0,
+        820
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-depth-fusion"
+      }
+    },
+    {
+      "id": "fuse",
+      "type": "3d.fuse_registered_depth",
+      "name": "Fuse registered depth views",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "minimum_confidence": 0.1,
+        "surface_tolerance_m": 0.06,
+        "minimum_support": 1,
+        "minimum_coverage": 0.99
+      },
+      "position": [
+        415,
+        200
+      ],
+      "exposed_inputs": [
+        "depth_a",
+        "depth_b",
+        "depth_c",
+        "depth_d",
+        "confidence_a",
+        "confidence_b",
+        "confidence_c",
+        "confidence_d",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "valid_mask",
+        "confidence",
+        "support_count",
+        "conflict_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Fusion support"
+    },
+    {
+      "id": "verify",
+      "type": "3d.evaluate_depth",
+      "name": "Compare against known depth",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_units": "mm",
+        "reference_units": "mm",
+        "estimate_units_per_sample": 1.0,
+        "reference_units_per_sample": 1.0,
+        "error_tolerance_mm": 32,
+        "minimum_coverage": 0.99,
+        "maximum_bad_fraction": 0,
+        "preview_max_mm": 10.0
+      },
+      "position": [
+        840,
+        430
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "residual",
+        "overlap_mask",
+        "bad_mask",
+        "missing_mask",
+        "estimate_only_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth_a",
+      "output": "depth",
+      "target": "fuse",
+      "input": "depth_a"
+    },
+    {
+      "source": "depth_b",
+      "output": "depth",
+      "target": "fuse",
+      "input": "depth_b"
+    },
+    {
+      "source": "confidence_a",
+      "output": "image",
+      "target": "fuse",
+      "input": "confidence_a"
+    },
+    {
+      "source": "confidence_b",
+      "output": "image",
+      "target": "fuse",
+      "input": "confidence_b"
+    },
+    {
+      "source": "fuse",
+      "output": "depth",
+      "target": "verify",
+      "input": "estimate"
+    },
+    {
+      "source": "truth",
+      "output": "depth",
+      "target": "verify",
+      "input": "reference"
+    }
+  ]
+}
