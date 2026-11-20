@@ -71,6 +71,9 @@ traces intensity, confidence and source indices through measured-row operations.
 [Point-cloud surface quality](cloud_surface_quality/README.md) estimates
 oriented normals and curvature and reports sparse or ambiguous neighborhoods.
 
+[Cylinder and bore measurement](cloud_cylinder/README.md) recovers metric shaft
+and bore diameters from partial scans and shows the fit's supporting rows.
+
 [Robust plane and sphere fitting](cloud_model_fitting/README.md) recovers
 metric models and row-aligned residuals from two scans with known outliers.
 

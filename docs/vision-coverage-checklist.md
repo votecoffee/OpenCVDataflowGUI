@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 114 | 5 | 12 | 131 | 87.0% |
+| 3. 3D imagery and point clouds | 115 | 5 | 11 | 131 | 87.8% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 369 | 9 | 92 | 470 | 78.5% |
+| **Overall** | 370 | 9 | 91 | 470 | 78.7% |
 
 <!-- coverage-summary:end -->
 
@@ -553,7 +553,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S3-113 | Register cameras with non-overlapping views | registerCamerasExtended | Complete | Register cameras with fixed pinhole or fisheye intrinsics using separate point subsets from synchronized views. The [two-camera example](<../examples/opencv tools/nonoverlap_camera_registration/README.md>) checks independent reprojection and frame closure and detects a 9 mm held-out shift. |
 | S3-114 | Rectify three collinear cameras | stereoRectify, initUndistortRectifyMap, remap, undistortPoints, reprojectImageTo3D | Complete | Build one horizontal pinhole grid with separate signed depth models for each baseline. The [three-camera example](<../examples/opencv tools/collinear_stereo/README.md>) checks target rows and dense depth. Offline checks cover vertical inputs, opposite baselines and rejected rig drift. |
-| S3-115 | Cylindrical surface and bore measurement from a point cloud | Robust 3D cylinder fit with radial residuals | Planned | Recover axis and diameter on known outer and inner surfaces with partial coverage and outliers. Report usable angular and axial support, units and degenerate fits. Use a qualified solver because OpenCV's native sample-consensus models cover planes and spheres. |
+| S3-115 | Cylindrical surface and bore measurement from a point cloud | Bounded sample consensus and SciPy radial least squares | Complete | `3d.cloud_cylinder` reports a metric axis and diameter, original scan-row support, and observed angular and axial coverage. The [shaft and bore example](<../examples/custom tools/cloud_cylinder/README.md>) recovers both diameters within 0.04 mm. Tests reject planes, lines, rings and under-supported walls. |
 
 ### Projector geometry, camera profiles and fiducials
 

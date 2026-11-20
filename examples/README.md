@@ -203,6 +203,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Surface measurement against a datum](<custom tools/cloud_datum/README.md>) | Distinguish nominal, uniformly raised and warped scans using signed deviations and coverage. |
 | [Cloud inspection attributes](<custom tools/cloud_inspection_attributes/README.md>) | Trace intensity, confidence and the original row indices through a merge, filter and sample. |
 | [Point-cloud normals and curvature](<custom tools/cloud_surface_quality/README.md>) | Measure local surfaces on a plane and sphere, reject degenerate rows and pass the accepted fits into region growing. |
+| [Cylinder and bore measurement](<custom tools/cloud_cylinder/README.md>) | Measure known shaft and bore diameters from noisy partial scans with labeled clutter. |
 | [Robust plane and sphere fitting](<custom tools/cloud_model_fitting/README.md>) | Recover two known metric surfaces from PLY scans with labeled clutter and compare inlier and outlier indices. |
 | [Normal-based cloud region growing](<custom tools/cloud_region_growing/README.md>) | Separate two touching faces by normal direction and isolate high-curvature seam rows. |
 | [Euclidean point-cloud clustering](<custom tools/cloud_clustering/README.md>) | Separate three measured pads and reject small and oversized groups while preserving scan row IDs. |

@@ -288,6 +288,31 @@ Input `reference` — Nominal XYZ with optional oriented normals, in the measure
 | `tie_tolerance_m` | `1e-09` | Value must be a finite number between 0 and 1e+12. Withhold row identity and sign for near-tied distances. |
 | `max_points_per_cloud` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum number of points admitted per cloud. |
 
+## Measure point-cloud cylinder or bore (`3d.cloud_cylinder`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `seed_pose` (data, optional).
+
+Input `cloud` — Metric XYZ. Optional unit normals can seed the fit regardless of their sign.
+
+Input `seed_pose` — Optional fixture-to-cloud metric pose. Its Z axis and origin seed the fit.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `surface` | `"outer"` | `outer`, `bore` Bore mode signs inward radial error as positive. Outer mode signs outward. |
+| `inlier_tolerance_m` | `0.001` | Value must be a finite number between 1e-09 and 1e+12. Inclusive radial distance from the fitted wall. |
+| `minimum_inliers` | `24` | Value must be a whole number between 12 and 1e+06. Required supporting rows after full-cloud classification. |
+| `minimum_inlier_fraction` | `0.55` | Value must be a finite number between 0 and 1. Required supporting fraction of all input rows. |
+| `minimum_angular_span_deg` | `60.0` | Value must be a finite number between 30 and 359. Required observed angle, excluding the largest angular gap. |
+| `minimum_axial_span_m` | `0.005` | Value must be a finite number between 0 and 1e+12. Required 2–98% axial span. At least four tolerances are needed. |
+| `minimum_diameter_m` | `0.0` | Value must be a finite number between 0 and 1e+12. Lower diameter acceptance limit. Zero disables it. |
+| `maximum_diameter_m` | `0.0` | Value must be a finite number between 0 and 1e+12. Upper diameter acceptance limit. Zero disables it. |
+| `maximum_fit_samples` | `4096` | Value must be a whole number between 12 and 16384. Maximum representative rows used to find and refine cylinder fits. |
+| `maximum_trials` | `256` | Value must be a whole number between 1 and 1024. Maximum reproducible sample-consensus hypotheses. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Seed for sample selection and hypothesis order. |
+| `max_input_points` | `250000` | Value must be a whole number between 12 and 1e+06. Maximum supported rows for full-cloud classification. |
+
 ## Measure surface against a datum (`3d.cloud_datum`)
 
 3D vision / Point clouds

@@ -1,0 +1,38 @@
+{
+  "shaft": {
+    "axis": [
+      0.38509777697749453,
+      -0.47630514520900635,
+      0.7904638580064361
+    ],
+    "center_m": [
+      0.087,
+      -0.051,
+      0.52
+    ],
+    "radius_m": 0.021,
+    "diameter_m": 0.042,
+    "input_points": 745,
+    "wall_points": 590,
+    "arc_deg": 140,
+    "axial_span_m": 0.08
+  },
+  "bore": {
+    "axis": [
+      -0.64,
+      0.48,
+      0.6
+    ],
+    "center_m": [
+      -0.063,
+      0.095,
+      0.35
+    ],
+    "radius_m": 0.0125,
+    "diameter_m": 0.025,
+    "input_points": 739,
+    "wall_points": 584,
+    "arc_deg": 104,
+    "axial_span_m": 0.053
+  }
+}

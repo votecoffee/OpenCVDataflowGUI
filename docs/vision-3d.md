@@ -622,6 +622,15 @@ available in Debug and Balanced.
   preserve source attributes and order. Sphere radius limits can constrain
   the search. Degenerate or insufficiently supported fits report a failure
   without emitting a model. [Plane and sphere example](<../examples/custom tools/cloud_model_fitting/README.md>)
+- **Measure point-cloud cylinder or bore** fits a single cylindrical
+  wall using bounded sample consensus and robust radial refinement.
+  Input normals or an optional metric fixture pose can seed the fit.
+  The block measures diameter and a pose along the supported axis,
+  reports angular and axial coverage, and preserves original scan rows
+  in its split clouds. Positive residuals mean added material on either
+  an outer wall or a bore. Diameter limits can fail a valid measurement.
+  Insufficient coverage or ill-conditioned geometry withholds the fit.
+  [Shaft and bore example](<../examples/custom tools/cloud_cylinder/README.md>)
 - **Grow point-cloud surface regions** links metric XYZ neighbors that meet
   the unsigned normal-angle limit. It uses normals stored in the cloud, or
   estimates normals in bounded local PCA fits. Curvature can come from the

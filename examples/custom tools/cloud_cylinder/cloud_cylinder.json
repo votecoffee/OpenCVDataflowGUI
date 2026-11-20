@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure shaft and bore diameters",
+      "description": "Original synthetic scans by OpenCVDataflowGUI contributors (MIT). Recover a 42 mm shaft and a 25 mm bore from partial cylindrical walls. Green points support the fit. Orange points are outside the radial tolerance.",
+      "parameters": {},
+      "position": [
+        0,
+        -290
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shaft_scan",
+      "type": "input.cloud",
+      "name": "Load partial shaft scan",
+      "parameters": {
+        "path": "assets/shaft.ply",
+        "units": "mm",
+        "frame": "shaft_fixture",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shaft",
+      "type": "3d.cloud_cylinder",
+      "name": "Measure shaft wall",
+      "description": "Fit a cylindrical wall through clutter and measure diameter and supported axis.",
+      "parameters": {
+        "surface": "outer",
+        "inlier_tolerance_m": 0.00035,
+        "minimum_inliers": 24,
+        "minimum_inlier_fraction": 0.55,
+        "minimum_angular_span_deg": 60.0,
+        "minimum_axial_span_m": 0.005,
+        "minimum_diameter_m": 0.041600000000000005,
+        "maximum_diameter_m": 0.0424,
+        "maximum_fit_samples": 4096,
+        "maximum_trials": 256,
+        "random_seed": 0,
+        "max_input_points": 250000
+      },
+      "position": [
+        452,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "seed_pose"
+      ],
+      "exposed_outputs": [
+        "model",
+        "axis_pose",
+        "diameter_m",
+        "inliers",
+        "outliers",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bore_scan",
+      "type": "input.cloud",
+      "name": "Load partial bore scan",
+      "parameters": {
+        "path": "assets/bore.ply",
+        "units": "m",
+        "frame": "bore_fixture",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        0,
+        260
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bore",
+      "type": "3d.cloud_cylinder",
+      "name": "Measure bore wall",
+      "description": "Fit a cylindrical wall through clutter and measure diameter and supported axis.",
+      "parameters": {
+        "surface": "bore",
+        "inlier_tolerance_m": 0.00035,
+        "minimum_inliers": 24,
+        "minimum_inlier_fraction": 0.55,
+        "minimum_angular_span_deg": 60.0,
+        "minimum_axial_span_m": 0.005,
+        "minimum_diameter_m": 0.0246,
+        "maximum_diameter_m": 0.025400000000000002,
+        "maximum_fit_samples": 4096,
+        "maximum_trials": 256,
+        "random_seed": 0,
+        "max_input_points": 250000
+      },
+      "position": [
+        452,
+        260
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "seed_pose"
+      ],
+      "exposed_outputs": [
+        "model",
+        "axis_pose",
+        "diameter_m",
+        "inliers",
+        "outliers",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "shaft_scan",
+      "output": "cloud",
+      "target": "shaft",
+      "input": "cloud"
+    },
+    {
+      "source": "bore_scan",
+      "output": "cloud",
+      "target": "bore",
+      "input": "cloud"
+    }
+  ]
+}

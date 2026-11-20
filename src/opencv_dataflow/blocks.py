@@ -655,6 +655,7 @@ def builtin_registry():
     from .chromatic_aberration import ChromaticModel, CorrectChromaticAberration, LoadChromaticModel
     from .circle_fitting import FitCircleArc
     from .classification_evaluation import CLASSIFICATION_EVALUATION_BLOCKS
+    from .cloud_cylinder import MeasureCloudCylinder
     from .cloud_datum import MeasureCloudDatum
     from .cloud_extents import MeasureOrientedCloud
     from .cloud_features import RegisterCloudFeatures
@@ -1412,6 +1413,7 @@ def builtin_registry():
         ClusterPointCloud,
         GrowCloudRegions,
         FitCloudModel,
+        MeasureCloudCylinder,
         MeasureCloudSurfaceQuality,
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
