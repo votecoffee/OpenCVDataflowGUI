@@ -176,6 +176,14 @@ source-to-target pose. It emits target-grid depth in meters. **Organized RGB-D
 normals** uses native FALS, SRI or cross-product normals and retains valid pixel
 correspondence. Sampling/point limits bound cloud outputs on large images.
 
+**Project cloud and check visibility** rasterizes metric cloud samples to the
+target pinhole grid using calibrated intrinsics and an optional rigid transform.
+It exports nearest camera Z, coverage and RGB when the cloud has colors.
+The optional target depth compares predicted surface samples with observed Z.
+The block keeps absent or farther-than-expected observations in the unverified
+class. Its visible, occluded and unverified clouds preserve source attributes.
+[Cloud visibility example](<../examples/opencv tools/cloud_visibility/README.md>)
+
 ## Point clouds and surface matching
 
 `PointCloud` is a typed `cloud` port value with finite Nx3 XYZ, units, a named

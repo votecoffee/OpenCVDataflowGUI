@@ -162,7 +162,7 @@ BLOCK_MODULES = {
     "bgsegm": "sequence.gsoc_background sequence.lsbp_background",
     "videoio": "input.camera",
     "objdetect": "3d.aruco_pose",
-    "ptcloud": "3d.depth_cloud 3d.separate_depth_plane",
+    "ptcloud": "3d.depth_cloud 3d.separate_depth_plane 3d.cloud_project",
     "rgbd": "3d.register_depth",
     "structured_light": "3d.graycode 3d.graycode_decode",
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match",
@@ -188,6 +188,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
     "3d.separate_depth_plane": ("depthTo3d", "RANSAC", "foreground segmentation"),
     "3d.smooth_depth": ("jointBilateralFilter", "confidence-weighted depth denoising"),
     "inspect.differential_exposure": ("boxFilter", "illumination", "reference comparison"),

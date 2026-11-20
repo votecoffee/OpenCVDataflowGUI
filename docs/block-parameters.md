@@ -121,6 +121,31 @@ Inputs: `cloud` (cloud).
 | `flip_viewpoint` | `true` |  |
 | `viewpoint` | `[0.0, 0.0, 0.0]` |  |
 
+## Project cloud and check visibility (`3d.cloud_project`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `camera` (data), `transform` (data, optional), `reference_depth` (depth, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `camera` — Target pinhole model and image dimensions, including applicable distortion.
+
+Input `transform` — Rigid cloud-to-camera pose. Omit only when the cloud is in the camera frame.
+
+Input `reference_depth` — Optional measured camera Z on this exact target grid.
+
+Input `mask` — Limit results and visibility assessment to these target pixels.
+
+Input `region` — Select target pixels, intersecting the mask when supplied.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_z_m` | `0.001` | Value must be a finite number between 1e-06 and 100000. Ignore samples nearer than this positive camera Z. |
+| `maximum_z_m` | `10.0` | Value must be a finite number between 1e-06 and 100000. Ignore samples farther than this camera Z. |
+| `surface_tolerance_m` | `0.0` | Value must be a finite number between 0 and 100. Maximum Z behind the nearest sample to share its visible surface. |
+| `reference_tolerance_m` | `0.01` | Value must be a finite number between 0 and 100. Maximum Z difference for agreement with observed target depth. |
+| `reference_units` | `"m"` | `m`, `mm` Length units for a depth reference without declared units. |
+| `reference_units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 reference count. |
+
 ## Render point cloud (`3d.cloud_render`)
 
 3D vision / Point clouds

@@ -181,6 +181,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Wide-angle stereo](<opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, rectify a held-out view pair and recover metric depth. |
 | [Confidence-weighted depth smoothing](<opencv tools/depth_smoothing/README.md>) | Reduce noise on two depth planes separated by a sharp step and project retained samples into a point cloud. |
 | [Support plane and foreground separation](<opencv tools/depth_plane/README.md>) | Recover a tilted work surface, measure signed distances, and backproject only the raised foreground. |
+| [Calibrated cloud visibility](<opencv tools/cloud_visibility/README.md>) | Render a color cloud in the camera grid and compare visible and occluded samples to reference depth. |
 | [Calibration revisions](<opencv tools/calibration_revisions/README.md>) | Select rig revisions, verify capture identity and reload a pinned lens map. |
 | [Fisheye camera calibration](<opencv tools/fisheye_calibration/README.md>) | Fit a wide-angle camera from eight board views, validate a held-out image and rectify with the fitted profile. |
 | [Omnidirectional camera calibration](<opencv tools/omnidir_calibration/README.md>) | Fit a Mei-model camera, validate a held-out target near the sensor edge and rectify to a perspective grid. |

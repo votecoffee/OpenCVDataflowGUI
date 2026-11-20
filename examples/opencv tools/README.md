@@ -31,6 +31,9 @@ sharp step and rejects unreliable depth samples before cloud reconstruction.
 [Support plane and foreground separation](depth_plane/README.md) extracts
 raised parts above a tilted surface into a foreground-only point cloud.
 
+[Calibrated cloud visibility](cloud_visibility/README.md) renders depth and
+color and checks visible surfaces against observed camera depth.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "cloud",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/overlap.ply",
+        "units": "m",
+        "frame": "inspection_camera",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "synthetic-overlap"
+      }
+    },
+    {
+      "id": "reference",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/observed_mm.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 0,
+        "display_max": 2000
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "synthetic-overlap"
+      }
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 64.0,
+        "fy": 64.0,
+        "cx": 39.5,
+        "cy": 31.5,
+        "width": 80,
+        "height": 64,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "inspection_camera"
+      },
+      "position": [
+        0,
+        550
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.cloud_project",
+      "name": "Project cloud and check visibility",
+      "parameters": {
+        "minimum_z_m": 0.001,
+        "maximum_z_m": 2.0,
+        "surface_tolerance_m": 0.0,
+        "reference_tolerance_m": 0.01,
+        "reference_units": "m",
+        "reference_units_per_sample": 0.001
+      },
+      "position": [
+        385,
+        220
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "camera",
+        "transform",
+        "reference_depth",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "coverage_mask",
+        "color",
+        "visible_mask",
+        "occluded_mask",
+        "unverified_mask",
+        "visible_cloud",
+        "occluded_cloud",
+        "unverified_cloud",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "color"
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Synthetic camera visibility control",
+      "description": "Original fixtures by OpenCVDataflowGUI contributors (MIT). Two modeled surfaces overlap. Observed depth adds one closer occluder, one hole, and one farther return.",
+      "parameters": {},
+      "position": [
+        0,
+        -280
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "cloud",
+      "output": "cloud",
+      "target": "project",
+      "input": "cloud"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    },
+    {
+      "source": "reference",
+      "output": "depth",
+      "target": "project",
+      "input": "reference_depth"
+    }
+  ]
+}

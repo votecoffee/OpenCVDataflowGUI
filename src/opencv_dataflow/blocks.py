@@ -653,6 +653,7 @@ def builtin_registry():
     from .circle_fitting import FitCircleArc
     from .classification_evaluation import CLASSIFICATION_EVALUATION_BLOCKS
     from .cloud_io import CLOUD_IO_BLOCKS
+    from .cloud_projection import ProjectCloudVisibility
     from .cloud_tools import CLOUD_BLOCKS
     from .cluster_models import CLUSTER_MODEL_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
@@ -1289,6 +1290,7 @@ def builtin_registry():
         CalibrateWideStereo,
         *CLOUD_BLOCKS,
         *CLOUD_IO_BLOCKS,
+        ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
         StereoDemo,

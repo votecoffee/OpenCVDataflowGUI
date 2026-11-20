@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 39 | 24 | 68 | 131 | 29.8% |
+| 3. 3D imagery and point clouds | 41 | 23 | 67 | 131 | 31.3% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 294 | 28 | 148 | 470 | 62.6% |
+| **Overall** | 296 | 27 | 147 | 470 | 63.0% |
 
 <!-- coverage-summary:end -->
 
@@ -437,7 +437,7 @@ fixture or result needed to close the item.
 | S3-21 | PLY and ASCII PCD cloud interchange and preview | PLY, ASCII PCD, point attributes and orthographic preview | Complete | input.cloud, output.cloud, 3d.cloud_render. Round-trip imported or camera-derived clouds and display a bounded sample. |
 | S3-22 | Camera surface registration | Point-to-plane ICP, point-pair feature detector | Complete | 3d.icp, 3d.ppf_train, 3d.ppf_match. Align two camera-derived surfaces and verify the recovered pose and score. |
 | S3-23 | Depth plane and foreground separation | depthTo3d, robust plane fitting and organized masks | Complete | 3d.separate_depth_plane fits one support plane under clutter and returns signed orthogonal residuals, same-grid masks and foreground-only depth. [Tilted-plane example](<../examples/opencv tools/depth_plane/README.md>) verifies known foreground, background, recess and invalid pixels. |
-| S3-24 | Image-space visibility of reconstructed surfaces | Project points and z-buffer on target intrinsics | Planned | Identify occluded versus visible surface samples and compare the predicted mask with known scene depth. |
+| S3-24 | Image-space visibility of reconstructed surfaces | Project points and z-buffer on target intrinsics | Complete | 3d.cloud_project distinguishes visible, self-occluded, reference-occluded and unverified samples. [Layered-scene example](<../examples/opencv tools/cloud_visibility/README.md>) verifies exact masks against independent depth and visibility labels. |
 | S3-25 | RGB-D odometry | rgbd.Odometry | Complete | 3d.odometry. Estimate relative camera motion from two aligned RGB-D frames with a reproducible fixture. |
 | S3-26 | Posed depth fusion | OpenCV TSDF integration | Complete | 3d.tsdf_fuse. Integrate posed depth frames with explicit bounds and recover a surface cloud. |
 | S3-27 | Mesh extraction from fused depth | TSDF surface extraction or marching cubes | Partial | 3d.tsdf_fuse produces a surface cloud. Verify mesh faces, units, and a bounded export on known geometry. |
@@ -470,7 +470,7 @@ fixture or result needed to close the item.
 | S3-49 | Decode, sample and report metric depth | Depth units and integer pixel sampling | Complete | input.depth_file, inspect.depth_sample. Report invalid samples as missing and preserve image locations and units. |
 | S3-50 | Camera-derived cloud transform and measurement | Rigid XYZ transform with frame and unit checks | Complete | 3d.cloud_transform, 3d.cloud_measure. Verify known camera pose, physical extents and output frame. |
 | S3-51 | Unorganized cloud normals from reconstructed points | Local neighborhood normals | Complete | 3d.cloud_normals. Recover normals of a known camera-derived surface with explicit neighbor support. |
-| S3-52 | Project camera clouds into a depth or color image | Intrinsic projection and a depth buffer | Partial | 3d.cloud_render provides an orthographic preview. Emit metric camera-aligned depth and coverage using declared intrinsics and occlusion rules. |
+| S3-52 | Project camera clouds into a depth or color image | Intrinsic projection and a depth buffer | Complete | 3d.cloud_project emits calibrated pinhole Z, coverage and nearest-sample RGB. Tests verify distortion, pose frames and units, target selections, and same-pixel depth and color tie rules. |
 | S3-53 | Evaluate camera depth against a reference | Unit-normalized depth error, validity overlap | Planned | Compare known depth planes and depth steps and report residual maps and missing regions. |
 | S3-54 | Calibrate a rig with three or more image streams | calibrateMultiview, calibrateMultiviewExtended | Planned | Recover a known same-lens-model rig from partial views with explicit visibility masks. Verify per-view residuals, independent reprojections and frame closure. |
 | S3-55 | Reproject a depth-backed region across wide-angle camera views | Camera rays, metric depth and target-camera projection | Planned | Map a physical patch between wide-angle cameras and verify it lands on the same scene area with coverage. |
