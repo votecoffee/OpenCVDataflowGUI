@@ -56,6 +56,9 @@ rotated cuboid and compares PCA with known fixture axes.
 [Virtual point-cloud sections](cloud_sections/README.md) measures two
 fixture-relative profiles on a stepped channel and verifies a gap.
 
+[Surface measurement against a datum](cloud_datum/README.md) checks signed
+height, peak-to-valley spread and grid coverage on three registered scans.
+
 [Cloud inspection attributes](cloud_inspection_attributes/README.md)
 traces intensity, confidence and source indices through measured-row operations.
 

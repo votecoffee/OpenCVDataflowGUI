@@ -288,6 +288,34 @@ Input `reference` — Nominal XYZ with optional oriented normals, in the measure
 | `tie_tolerance_m` | `1e-09` | Value must be a finite number between 0 and 1e+12. Withhold row identity and sign for near-tied distances. |
 | `max_points_per_cloud` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum number of points admitted per cloud. |
 
+## Measure surface against a datum (`3d.cloud_datum`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `datum` (data).
+
+Input `cloud` — Measured points in meters or millimeters.
+
+Input `datum` — Fitted plane or pose mapping datum-local XY and positive Z into the cloud.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `u_min_m` | `-0.1` | Value must be a finite number between -1e+12 and 1e+12. Inclusive lower U edge of the measured footprint in meters. |
+| `u_max_m` | `0.1` | Value must be a finite number between -1e+12 and 1e+12. Inclusive upper U edge of the measured footprint in meters. |
+| `v_min_m` | `-0.1` | Value must be a finite number between -1e+12 and 1e+12. Inclusive lower V edge of the measured footprint in meters. |
+| `v_max_m` | `0.1` | Value must be a finite number between -1e+12 and 1e+12. Inclusive upper V edge of the measured footprint in meters. |
+| `grid_width` | `32` | Value must be a whole number between 1 and 1024. Number of equal cells along U. |
+| `grid_height` | `32` | Value must be a whole number between 1 and 1024. Number of equal cells along V. Image rows go from high V to low V. |
+| `minimum_points_per_cell` | `1` | Value must be a whole number between 1 and 2e+06. Required samples to publish a cell value in the deviation map. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required fraction of footprint cells with sufficient samples. |
+| `nominal_height_m` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Expected signed height from the datum along its positive normal. |
+| `negative_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Inclusive allowed distance below the nominal height. |
+| `positive_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Inclusive allowed distance above the nominal height. |
+| `minimum_in_tolerance_fraction` | `1.0` | Value must be a finite number between 0 and 1. Required fraction of in-window points inside the band. |
+| `check_peak_to_valley` | `false` | Apply a limit to overall datum-parallel height spread. |
+| `maximum_peak_to_valley_m` | `0.004` | Value must be a finite number between 0 and 1e+12. Maximum observed highest minus lowest datum height. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 2e+06. Maximum number of cloud rows admitted to measurement. |
+
 ## Filter point cloud (`3d.cloud_filter`)
 
 3D vision / Point clouds

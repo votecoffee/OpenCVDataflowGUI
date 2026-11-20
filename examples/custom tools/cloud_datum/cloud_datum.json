@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Check height and coverage against a fixture datum",
+      "description": "Original synthetic scans by OpenCVDataflowGUI contributors (MIT). Nominal passes. Raised remains nearly flat and fails height. Warped fails height, coverage, and peak-to-valley spread.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "datum",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.25,
+          -0.46,
+          0.31
+        ],
+        "translation": [
+          0.42,
+          -0.125,
+          0.68
+        ],
+        "source_frame": "fixture",
+        "target_frame": "station",
+        "units": "m"
+      },
+      "position": [
+        10,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "nominal_scan",
+      "type": "input.cloud",
+      "name": "Nominal surface",
+      "parameters": {
+        "path": "assets/nominal.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        10,
+        210
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "nominal",
+      "type": "3d.cloud_datum",
+      "name": "Check nominal surface",
+      "description": "Measure signed heights, datum-parallel flatness and observed grid support.",
+      "parameters": {
+        "u_min_m": 0.0,
+        "u_max_m": 0.08,
+        "v_min_m": 0.0,
+        "v_max_m": 0.08,
+        "grid_width": 4,
+        "grid_height": 4,
+        "minimum_points_per_cell": 1,
+        "minimum_coverage": 0.97,
+        "nominal_height_m": 0.002,
+        "negative_tolerance_m": 0.001,
+        "positive_tolerance_m": 0.001,
+        "minimum_in_tolerance_fraction": 1.0,
+        "check_peak_to_valley": true,
+        "maximum_peak_to_valley_m": 0.003,
+        "max_input_points": 250000
+      },
+      "position": [
+        470,
+        210
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "datum"
+      ],
+      "exposed_outputs": [
+        "deviation",
+        "coverage_mask",
+        "defect_mask",
+        "defects",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "deviation"
+    },
+    {
+      "id": "raised_scan",
+      "type": "input.cloud",
+      "name": "Raised surface",
+      "parameters": {
+        "path": "assets/raised.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        10,
+        520
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "raised",
+      "type": "3d.cloud_datum",
+      "name": "Check raised surface",
+      "description": "Measure signed heights, datum-parallel flatness and observed grid support.",
+      "parameters": {
+        "u_min_m": 0.0,
+        "u_max_m": 0.08,
+        "v_min_m": 0.0,
+        "v_max_m": 0.08,
+        "grid_width": 4,
+        "grid_height": 4,
+        "minimum_points_per_cell": 1,
+        "minimum_coverage": 0.97,
+        "nominal_height_m": 0.002,
+        "negative_tolerance_m": 0.001,
+        "positive_tolerance_m": 0.001,
+        "minimum_in_tolerance_fraction": 1.0,
+        "check_peak_to_valley": true,
+        "maximum_peak_to_valley_m": 0.003,
+        "max_input_points": 250000
+      },
+      "position": [
+        470,
+        520
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "datum"
+      ],
+      "exposed_outputs": [
+        "deviation",
+        "coverage_mask",
+        "defect_mask",
+        "defects",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "deviation"
+    },
+    {
+      "id": "warped_scan",
+      "type": "input.cloud",
+      "name": "Warped surface",
+      "parameters": {
+        "path": "assets/warped.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        10,
+        830
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "warped",
+      "type": "3d.cloud_datum",
+      "name": "Check warped surface",
+      "description": "Measure signed heights, datum-parallel flatness and observed grid support.",
+      "parameters": {
+        "u_min_m": 0.0,
+        "u_max_m": 0.08,
+        "v_min_m": 0.0,
+        "v_max_m": 0.08,
+        "grid_width": 4,
+        "grid_height": 4,
+        "minimum_points_per_cell": 1,
+        "minimum_coverage": 0.97,
+        "nominal_height_m": 0.002,
+        "negative_tolerance_m": 0.001,
+        "positive_tolerance_m": 0.001,
+        "minimum_in_tolerance_fraction": 1.0,
+        "check_peak_to_valley": true,
+        "maximum_peak_to_valley_m": 0.003,
+        "max_input_points": 250000
+      },
+      "position": [
+        470,
+        830
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "datum"
+      ],
+      "exposed_outputs": [
+        "deviation",
+        "coverage_mask",
+        "defect_mask",
+        "defects",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "deviation"
+    }
+  ],
+  "connections": [
+    {
+      "source": "nominal_scan",
+      "output": "cloud",
+      "target": "nominal",
+      "input": "cloud"
+    },
+    {
+      "source": "datum",
+      "output": "transform",
+      "target": "nominal",
+      "input": "datum"
+    },
+    {
+      "source": "raised_scan",
+      "output": "cloud",
+      "target": "raised",
+      "input": "cloud"
+    },
+    {
+      "source": "datum",
+      "output": "transform",
+      "target": "raised",
+      "input": "datum"
+    },
+    {
+      "source": "warped_scan",
+      "output": "cloud",
+      "target": "warped",
+      "input": "cloud"
+    },
+    {
+      "source": "datum",
+      "output": "transform",
+      "target": "warped",
+      "input": "datum"
+    }
+  ]
+}

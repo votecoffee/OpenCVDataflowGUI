@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 105 | 6 | 20 | 131 | 80.2% |
+| 3. 3D imagery and point clouds | 106 | 6 | 19 | 131 | 80.9% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 360 | 10 | 100 | 470 | 76.6% |
+| **Overall** | 361 | 10 | 99 | 470 | 76.8% |
 
 <!-- coverage-summary:end -->
 
@@ -539,7 +539,7 @@ fixture or result needed to close the item.
 | S3-103 | Bounded tiled processing for large inspection clouds | Spatial tiling with query halos and streaming reduction | Complete | `input.cloud_tiled_radius` filters vertex-only binary PLY scans through a bounded disk index and radius halos. The [example](<../examples/custom tools/tiled_cloud_radius/README.md>) verifies seam counts, ordered export and source IDs; a generated 2,073,601-row grid checks analytic counts and peak memory. |
 | S3-104 | Replay recorded point-cloud sequences | File-backed frame groups and scan timestamp provenance | Complete | `input.cloud_recording` reads one PLY, PCD or OBJ scan per graph cycle with exact nanosecond timestamps, frames and units. The [mixed-format example](<../examples/custom tools/recorded_cloud_sequence/README.md>) verifies order and per-item metadata through batching. Tests cover missing files, malformed manifests, resource limits and EOF. |
 | S3-105 | Virtual point-cloud sections and profiles | Plane-aligned slab selection and metric profile sampling | Complete | `3d.cloud_section` measures observed bin widths, plane distances and coverage in a cloud or fixture frame. The [two-section example](<../examples/custom tools/cloud_sections/README.md>) verifies missing support and preserved source rows on a rotated scan. |
-| S3-106 | Surface flatness and height against a datum | Plane residuals and signed metric deviation statistics | Planned | Evaluate a known planar reference and several raised or warped scans. Emit deviation and coverage maps with documented datum and tolerance semantics. |
+| S3-106 | Surface flatness and height against a datum | Plane residuals and signed metric deviation statistics | Complete | `3d.cloud_datum` checks signed height, datum-parallel peak-to-valley and fixed-grid coverage. The [three-scan example](<../examples/custom tools/cloud_datum/README.md>) distinguishes uniform lift, warp and missing support and retains original defect rows. |
 | S3-107 | Triangle mesh validity and measurement | Topology checks and geometric reductions | Planned | Report bad indices, nonmanifold edges, holes, area and volume on known fixtures. Emit volume only where topology makes it meaningful. |
 | S3-108 | Mesh simplification for bounded review | Qualified decimation with error and attribute checks | Planned | Reduce a dense scan mesh to a requested face budget and verify geometric deviation, preserved boundaries and attribute integrity. |
 | S3-109 | Refine imperfect calibration-target geometry | calibrateCameraROExtended | Planned | Fit known small target-coordinate deviations and verify held-out reprojection, scale anchors and reported target uncertainty. |

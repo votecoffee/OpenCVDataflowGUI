@@ -712,6 +712,22 @@ point attributes. The report gives signed distances to the section plane
 and the overall observed extents in meters.
 [Stepped channel example](<../examples/custom tools/cloud_sections/README.md>)
 
+**Measure surface against a datum** accepts a fixture pose or fitted plane
+in the cloud frame. The pose's local XY defines the datum and local +Z
+defines positive height. A plane uses its supplied normal and the closest
+point to the cloud origin. Its U axis follows projected cloud X, or
+projected cloud Y when X is nearly parallel to the normal.
+
+In the fixed U/V footprint, signed deviation is height minus nominal.
+Separate inclusive limits apply below and above nominal. Peak-to-valley
+is the height spread between enclosing planes parallel to the datum.
+The deviation raster shows the greatest absolute deviation in each
+supported cell, with its sign. The defect mask and original defect rows
+include every height violation, including observations in sparse cells.
+Coverage counts cells meeting **Minimum points per cell** over the whole
+footprint. The raster starts at high V and decreases with image row.
+[Nominal, raised and warped surface example](<../examples/custom tools/cloud_datum/README.md>)
+
 ## Motion, fusion and structured light
 
 **RGB-D frame odometry** wraps OpenCV 5 `ptcloud` two-frame motion with depth,

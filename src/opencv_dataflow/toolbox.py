@@ -219,6 +219,7 @@ _NATIVE_NAMES = {
     "3d.tsdf_hash": ("HashTSDF", "sparse volume", "bounded growth"),
     "3d.cloud_compare": ("dimensional comparison", "cloud deviation", "point to plane", "overlap"),
     "3d.cloud_merge": ("scan merge", "registered views", "duplicate suppression", "provenance"),
+    "3d.cloud_datum": ("datum", "flatness", "surface height", "peak to valley"),
     "3d.cloud_section": ("cross section", "metric slab", "width profile"),
     "3d.cloud_oriented_extents": ("oriented bounding box", "PCA", "dimensions", "pose"),
     "3d.estimate_matched_transform": ("estimateAffine3D", "estimateTranslation3D", "3D landmarks"),
