@@ -29,6 +29,9 @@ try [ALIKED and LightGlue](aliked_matching/README.md).
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
 For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).
 
+[Euclidean cloud clustering](cloud_clustering/README.md) separates parts by
+XYZ distance and filters components by point count and physical size.
+
 [Point-cloud outlier rejection](cloud_outlier_rejection/README.md) compares density
 rules and verifies retained corners and flange points on a colored PLY.
 

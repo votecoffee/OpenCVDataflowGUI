@@ -515,6 +515,13 @@ available in Debug and Balanced.
   expose original row indices and preserve the corresponding colors, normals
   and pixels. Centroid mode averages positions and colors. [Voxel sampling
   example](<../examples/custom tools/voxel_representatives/README.md>)
+- **Cluster point cloud by distance** groups scan rows linked by an
+  inclusive XYZ radius in meters. It filters groups by point count and
+  longest XYZ axis extent. Each accepted cluster includes bounds and original
+  row indices. Optional labels align with the input rows and use 0 for
+  rejected rows. Both cloud outputs preserve scan order and point attributes.
+  Point, neighbor-pair and accepted-cluster limits bound the work and results.
+  [Tray clustering example](<../examples/custom tools/cloud_clustering/README.md>)
 - **Reject point-cloud outliers** splits a metric scan into retained and
   removed rows. Radius mode counts other rows within an inclusive distance
   in meters and retains rows at or above the minimum count. Statistical

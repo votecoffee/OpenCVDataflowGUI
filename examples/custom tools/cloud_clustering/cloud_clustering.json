@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Separate measured parts",
+      "description": "Original synthetic cloud by OpenCVDataflowGUI contributors (MIT). Three pads on a tray are separated by known clearances. A two-point stray group and a long edge fail the count and size limits.",
+      "parameters": {},
+      "position": [
+        0,
+        -270
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/tray_parts.ply",
+        "units": "mm",
+        "frame": "parts_tray",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        50
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cluster",
+      "type": "3d.cloud_cluster",
+      "name": "Cluster point cloud by distance",
+      "description": "Group nearby scan rows into parts and filter groups by count and physical size.",
+      "parameters": {
+        "radius_m": 0.006,
+        "minimum_points": 4,
+        "maximum_points": 0,
+        "minimum_extent_m": 0.0,
+        "maximum_extent_m": 0.03,
+        "max_input_points": 250000,
+        "max_neighbor_pairs": 2000000,
+        "max_clusters": 256
+      },
+      "position": [
+        410,
+        50
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "rejected_cloud",
+        "clusters",
+        "labels",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "cluster",
+      "input": "cloud"
+    }
+  ]
+}

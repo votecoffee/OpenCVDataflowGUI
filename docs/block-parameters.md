@@ -244,6 +244,25 @@ Input `region` — Limit rejection to this region, intersected with the mask if 
 | `input_units` | `"m"` | `m`, `mm` Physical units for a depth array without explicit units. |
 | `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per uint16 count, in the chosen input units. |
 
+## Cluster point cloud by distance (`3d.cloud_cluster`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+Input `cloud` — Metric XYZ in meters or millimeters. Original scan rows retain IDs.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius_m` | `0.01` | Value must be a finite number between 1e-09 and 1e+12. Inclusive XYZ distance in meters. Neighbor chains form one cluster. |
+| `minimum_points` | `3` | Value must be a whole number between 1 and 1e+06. Smallest accepted point count per cluster. |
+| `maximum_points` | `0` | Value must be a whole number between 0 and 1e+06. Largest accepted point count per cluster. Zero disables this limit. |
+| `minimum_extent_m` | `0.0` | Value must be a finite number between 0 and 1e+12. Smallest accepted longest XYZ axis extent in meters. |
+| `maximum_extent_m` | `0.0` | Value must be a finite number between 0 and 1e+12. Largest accepted longest XYZ axis extent. Zero disables this limit. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum cloud size admitted to the spatial index. |
+| `max_neighbor_pairs` | `2000000` | Value must be a whole number between 1 and 6e+06. Maximum unique unordered pairs admitted to the radius graph. |
+| `max_clusters` | `256` | Value must be a whole number between 1 and 4096. Maximum accepted clusters per result. Exceeding this limit fails the run. |
+
 ## Filter point cloud (`3d.cloud_filter`)
 
 3D vision / Point clouds
