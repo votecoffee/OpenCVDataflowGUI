@@ -1076,12 +1076,12 @@ P2	function	cv2.SIFT_create	literal reference	-
 P2	class	cv2.stereo.MatchQuasiDense	no static reference	-
 P2	method	cv2.stereo.MatchQuasiDense.apply	method name only	-
 P2	class	cv2.stereo.PropagationParameters	no static reference	-
-P2	class	cv2.stereo.QuasiDenseStereo	no static reference	-
-P2	method	cv2.stereo.QuasiDenseStereo.create	method name only	-
-P2	method	cv2.stereo.QuasiDenseStereo.getDenseMatches	no static reference	-
+P2	class	cv2.stereo.QuasiDenseStereo	literal reference	-
+P2	method	cv2.stereo.QuasiDenseStereo.create	literal reference	-
+P2	method	cv2.stereo.QuasiDenseStereo.getDenseMatches	method name only	-
 P2	method	cv2.stereo.QuasiDenseStereo.getDisparity	no static reference	-
 P2	method	cv2.stereo.QuasiDenseStereo.getMatch	no static reference	-
-P2	method	cv2.stereo.QuasiDenseStereo.getSparseMatches	no static reference	-
+P2	method	cv2.stereo.QuasiDenseStereo.getSparseMatches	method name only	-
 P2	method	cv2.stereo.QuasiDenseStereo.loadParameters	no static reference	-
 P2	method	cv2.stereo.QuasiDenseStereo.process	method name only	-
 P2	method	cv2.stereo.QuasiDenseStereo.saveParameters	no static reference	-

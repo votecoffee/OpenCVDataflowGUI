@@ -877,6 +877,7 @@ def builtin_registry():
     from .pyramids import PYRAMID_BLOCKS
     from .qr_append import ReadQRAppend
     from .qr_encoding import EncodeQRCode
+    from .quasi_dense_stereo import QuasiDenseDisparity
     from .raster_hough_lines import HoughPolarLines
     from .raw_sensor import RAW_SENSOR_BLOCKS
     from .recipe_blocks import RecipeField, RecipeSelect
@@ -1344,6 +1345,7 @@ def builtin_registry():
         RecordedRGBD,
         RegisterRGBD,
         BinaryStereoDisparity,
+        QuasiDenseDisparity,
         FilterDisparitySpeckles,
         EvaluateDisparity,
         CalibrateWideStereo,

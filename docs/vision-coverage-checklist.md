@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 71 | 15 | 45 | 131 | 54.2% |
+| 3. 3D imagery and point clouds | 72 | 15 | 44 | 131 | 55.0% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 326 | 19 | 125 | 470 | 69.4% |
+| **Overall** | 327 | 19 | 124 | 470 | 69.6% |
 
 <!-- coverage-summary:end -->
 
@@ -495,7 +495,7 @@ fixture or result needed to close the item.
 | S3-69 | Three-dimensional model pose from image and depth templates | linemod.ColorGradient.create, linemod.DepthNormal.create and linemod.Detector.match | Complete | 3d.train_linemod_pose and 3d.match_linemod_pose select a trained rotation and verify metric translation on a registered RGB-D grid. The [held-out plate example](<../examples/opencv tools/linemod_pose/README.md>) checks pose, match support and reprojection. |
 | S3-70 | Multi-view calibration with coded custom targets | aruco.ArucoDetector, calibrateCamera, fisheye.calibrate, solvePnP and projectPoints | Complete | input.coded_rig_observations decodes a surveyed marker layout. The existing rig fit and held-out checks accept partial corner sets. The [three-camera image fixture](<../examples/opencv tools/coded_multicamera_rig/README.md>) verifies complementary IDs with 0.59 px held-out RMS. |
 | S3-71 | Depth-fusion trajectory estimation | Odometry.compute, Volume.integrate and Volume.raycast | Complete | 3d.track_depth_fusion composes metric depth odometry and verifies each proposed pose on a fixed TSDF surface. The [recorded control](<../examples/opencv tools/depth_trajectory/README.md>) tracks 9 of 10 frames with 1.11 mm maximum translation error and resumes after a missing frame. |
-| S3-72 | Quasi-dense stereo correspondence | stereo.QuasiDenseStereo | Planned | Grow correspondences from stereo feature matches and compare disparity and support against known image pairs. |
+| S3-72 | Quasi-dense stereo correspondence | stereo.QuasiDenseStereo | Complete | 3d.quasi_dense_disparity grows native seeds into signed pairwise disparity with support and reverse checks. The [two-plane stereo fixtures](<../examples/opencv tools/quasi_dense_stereo/README.md>) verify both baseline signs and calibrated depth. |
 
 ### Depth cleanup, point-cloud processing and mesh workflows
 

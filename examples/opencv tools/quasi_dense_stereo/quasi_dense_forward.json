@@ -1,0 +1,533 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Quasi-dense stereo, forward baseline",
+      "description": "Original synthetic stereo images by OpenCVDataflowGUI contributors (MIT). Seed matches grow over two textured depths. Inspect disparity and validity checks before reprojecting the reconstructed planes.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "quasi-dense-two-plane"
+      }
+    },
+    {
+      "id": "camera_left",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 144.0,
+        "fy": 144.0,
+        "cx": 111.5,
+        "cy": 71.5,
+        "width": 224,
+        "height": 144,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "left_optical"
+      },
+      "position": [
+        0,
+        500
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/right.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "quasi-dense-two-plane"
+      }
+    },
+    {
+      "id": "camera_right",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 144.0,
+        "fy": 144.0,
+        "cx": 111.5,
+        "cy": 71.5,
+        "width": 224,
+        "height": 144,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "right_optical"
+      },
+      "position": [
+        0,
+        705
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Independent signed disparity reference",
+      "parameters": {
+        "path": "assets/truth_forward.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        1200,
+        530
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "quasi-dense-two-plane"
+      }
+    },
+    {
+      "id": "baseline",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          -0.125,
+          0.0,
+          0.0
+        ],
+        "source_frame": "left_optical",
+        "target_frame": "right_optical",
+        "units": "m"
+      },
+      "position": [
+        0,
+        920
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rig",
+      "type": "3d.stereo_rig",
+      "name": "Define stereo rig",
+      "parameters": {},
+      "position": [
+        310,
+        685
+      ],
+      "exposed_inputs": [
+        "left_camera",
+        "right_camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "rig"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "3d.stereo_rectify",
+      "name": "Rectify stereo images",
+      "parameters": {
+        "alpha": 0.0,
+        "zero_disparity": true,
+        "fisheye_balance": 0.0,
+        "fisheye_fov_scale": 1.0,
+        "omnidir_focal_length": 0.0,
+        "width": 0,
+        "height": 0,
+        "interpolation": "nearest",
+        "border_value": 0.0
+      },
+      "position": [
+        570,
+        240
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rig"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "rectification"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "exclusion",
+      "type": "region.shape",
+      "name": "Exclude the right-view patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          104,
+          62,
+          12,
+          19
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": true
+      },
+      "position": [
+        925,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "matcher",
+      "type": "3d.quasi_dense_disparity",
+      "name": "Quasi-dense stereo disparity",
+      "parameters": {
+        "border_x": 15,
+        "border_y": 15,
+        "correlation_radius": 5,
+        "minimum_correlation": 0.72,
+        "texture_threshold": 200.0,
+        "neighborhood_radius": 5,
+        "gradient_radius": 1,
+        "lk_template_size": 15,
+        "lk_max_level": 3,
+        "lk_iterations": 20,
+        "lk_epsilon": 0.003,
+        "feature_quality": 0.01,
+        "feature_separation": 5,
+        "maximum_features": 500,
+        "min_disparity": 5,
+        "max_disparity": 13,
+        "maximum_vertical_error_px": 0,
+        "left_right_check": true,
+        "left_right_tolerance_px": 0,
+        "max_reported_pairs": 256,
+        "minimum_coverage": 0.63
+      },
+      "position": [
+        1200,
+        240
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rectification",
+        "left_mask",
+        "right_mask",
+        "left_region",
+        "right_region"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "vertical_offset",
+        "valid_mask",
+        "support_mask",
+        "matches",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Quasi-dense disparity"
+    },
+    {
+      "id": "evaluate",
+      "type": "3d.evaluate_disparity",
+      "name": "Evaluate stereo disparity",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_samples_per_pixel": 16.0,
+        "reference_samples_per_pixel": 16.0,
+        "estimate_invalid_mode": "nonfinite_only",
+        "estimate_invalid_code": 0.0,
+        "reference_invalid_mode": "also_use_code",
+        "reference_invalid_code": 0,
+        "bad_threshold_px": 0.5,
+        "minimum_coverage": 0.65,
+        "maximum_bad_fraction": 0.015,
+        "confidence_cutoff": 0.5,
+        "preview_max_px": 4.0
+      },
+      "position": [
+        1590,
+        505
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "confidence",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "absolute_error",
+        "evaluated_mask",
+        "bad_mask",
+        "missing_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cloud",
+      "type": "3d.reproject",
+      "name": "Disparity to 3D cloud",
+      "parameters": {
+        "input_scale": 1.0,
+        "sample_step": 2,
+        "max_points": 200000,
+        "min_depth": 0.001,
+        "max_depth": 3.8
+      },
+      "position": [
+        1590,
+        135
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "rectification",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "depth",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera_left",
+      "output": "camera",
+      "target": "rig",
+      "input": "left_camera"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "rectify",
+      "input": "left"
+    },
+    {
+      "source": "rectify",
+      "output": "left",
+      "target": "matcher",
+      "input": "left"
+    },
+    {
+      "source": "camera_right",
+      "output": "camera",
+      "target": "rig",
+      "input": "right_camera"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "rectify",
+      "input": "right"
+    },
+    {
+      "source": "rectify",
+      "output": "right",
+      "target": "matcher",
+      "input": "right"
+    },
+    {
+      "source": "baseline",
+      "output": "transform",
+      "target": "rig",
+      "input": "transform"
+    },
+    {
+      "source": "rig",
+      "output": "rig",
+      "target": "rectify",
+      "input": "rig"
+    },
+    {
+      "source": "rectify",
+      "output": "right",
+      "target": "exclusion",
+      "input": "image"
+    },
+    {
+      "source": "exclusion",
+      "output": "mask",
+      "target": "matcher",
+      "input": "right_mask"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification",
+      "target": "matcher",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification",
+      "target": "cloud",
+      "input": "rectification"
+    },
+    {
+      "source": "matcher",
+      "output": "disparity",
+      "target": "evaluate",
+      "input": "estimate"
+    },
+    {
+      "source": "matcher",
+      "output": "disparity",
+      "target": "cloud",
+      "input": "disparity"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "evaluate",
+      "input": "reference"
+    }
+  ]
+}

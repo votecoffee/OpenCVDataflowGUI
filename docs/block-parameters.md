@@ -924,6 +924,50 @@ Inputs: `points` (data), `camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
 
+## Quasi-dense stereo disparity (`3d.quasi_dense_disparity`)
+
+3D vision / Stereo
+
+Inputs: `left` (image), `right` (image), `rectification` (data, optional), `left_mask` (image, optional), `right_mask` (image, optional), `left_region` (region, optional), `right_region` (region, optional).
+
+Input `left` — Rectified uint8 left image. Outputs use this pixel grid.
+
+Input `right` — Rectified uint8 right image on the same resolution.
+
+Input `rectification` — Optional matching rectification with left and right support ROIs.
+
+Input `left_mask` — Nonzero native-correlation patch support after propagation on the left.
+
+Input `right_mask` — Nonzero native-correlation patch support after propagation on the right.
+
+Input `left_region` — Optional left selection intersected with Left mask.
+
+Input `right_region` — Optional right selection intersected with Right mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `border_x` | `15` | Value must be a whole number between 1 and 255. Horizontal guard for native propagation and its correlation patch. |
+| `border_y` | `15` | Value must be a whole number between 1 and 255. Vertical guard for native propagation and its correlation patch. |
+| `correlation_radius` | `5` | Value must be a whole number between 1 and 16. Half-width of the square native correlation window in pixels. |
+| `minimum_correlation` | `0.5` | Value must be a finite number between 0 and 0.9999. Minimum zero-mean normalized correlation for native propagation. |
+| `texture_threshold` | `200.0` | Value must be a finite number between 0 and 255. Maximum local intensity jump for a propagation candidate. |
+| `neighborhood_radius` | `5` | Value must be a whole number between 1 and 12. Native propagation neighborhood half-width around each seed. |
+| `gradient_radius` | `1` | Value must be a whole number between 0 and 3. Maximum candidate displacement change from each seed. |
+| `lk_template_size` | `3` | Value must be a positive odd integer between 3 and 51. Odd Lucas–Kanade tracking window used to find sparse seeds. |
+| `lk_max_level` | `3` | Value must be a whole number between 0 and 6. Top Lucas–Kanade pyramid index. Zero uses only the original image. |
+| `lk_iterations` | `3` | Value must be a whole number between 1 and 100. Maximum Lucas–Kanade iterations per level. |
+| `lk_epsilon` | `0.003` | Value must be a finite number between 0 and 1. Lucas–Kanade convergence threshold in pixels. |
+| `feature_quality` | `0.01` | Value must be a finite number between 1e-06 and 1. Good Features to Track response relative to the strongest corner. |
+| `feature_separation` | `10` | Value must be a whole number between 0 and 256. Minimum separation between initially selected corners. |
+| `maximum_features` | `500` | Value must be a whole number between 1 and 10000. Maximum corner seeds submitted to Lucas–Kanade. |
+| `min_disparity` | `-64` | Value must be a whole number between -2047 and 2047. Smallest accepted signed left X minus right X in pixels. |
+| `max_disparity` | `64` | Value must be a whole number between -2047 and 2047. Largest accepted signed left X minus right X in pixels. |
+| `maximum_vertical_error_px` | `0` | Value must be a whole number between 0 and 32. Largest vertical mismatch. Use zero for calibrated depth. |
+| `left_right_check` | `true` | Require agreement from a separate right-to-left propagation pass. |
+| `left_right_tolerance_px` | `0` | Value must be a whole number between 0 and 16. Maximum reverse-coordinate difference on either axis. |
+| `max_reported_pairs` | `256` | Value must be a whole number between 0 and 2048. Maximum listed coordinate pairs. Zero leaves the list empty. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Minimum matched fraction of eligible left centers. |
+
 ## Reconstruct sparse multi-view landmarks (`3d.reconstruct_sparse_views`)
 
 3D vision / Reconstruction

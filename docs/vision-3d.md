@@ -200,6 +200,13 @@ reverse check also tests the winning correspondence. Use Valid Mask
 to identify disparities retained after both checks.
 [Known-shift comparison with SGBM](<../examples/opencv tools/binary_stereo/README.md>)
 
+**Quasi-dense stereo disparity** grows OpenCV corner seeds into matching
+pixel pairs. It reports signed horizontal disparity, vertical offsets,
+eligible left support, and a validity mask in the rectified left grid.
+Calibrated ROIs and optional per-view masks and regions constrain each
+pair's correlation patch. A reverse pass can verify correspondence.
+[Forward and reverse baseline examples](<../examples/opencv tools/quasi_dense_stereo/README.md>)
+
 **Match stereo exposure and color** estimates a right-to-left gain or
 gain plus bias per gray or RGB channel. Wire a reliable left-grid
 floating-point disparity guide in pixel units. Finite disparities map
