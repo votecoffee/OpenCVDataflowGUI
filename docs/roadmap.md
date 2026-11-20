@@ -50,7 +50,13 @@ Oriented cloud extents and pose (S3-98) advances it to **16/20**.
 Per-point inspection attributes (S3-99) advances it to **17/20**.
 Organized multi-plane detection (S3-100) advances it to **18/20**.
 Metric matched transforms (S3-101) advance it to **19/20**.
-Registered camera texture baking (S3-102) reaches **20/20**.
+Registered camera texture baking (S3-102) closes the cycle at **20/20**.
+The offscreen checkpoint on `7439ec9c` covered 97 geometry, runtime and
+desktop test files. **1,142 of 1,146 tests passed**, including all 701
+geometry checks. The four failures reproduced with matching messages on the
+previous installed build (`ee76d081`): one classifier catalog fixture lacks
+class settings and three 3D review fixtures refer to old project paths.
+The geometry suite emitted 52 existing scikit-image deprecation warnings.
 
 A full-suite checkpoint ran on committed source `9b3f11dc` in four
 offscreen workers. It completed all **10,066 collected tests** in
