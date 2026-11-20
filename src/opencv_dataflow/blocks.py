@@ -954,6 +954,7 @@ def builtin_registry():
     from .tiff_page_access import TiffPageAccess
     from .tiled_mosaic import RegisterScanLayout, RenderMosaicTile
     from .tilted_statistics import TiltedWindowStatistics
+    from .tof_depth_cleanup import CleanToFDepth
     from .tracking_appearance import DescribeBoxAppearance
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
@@ -1057,6 +1058,7 @@ def builtin_registry():
         DepthSample,
         FillDepthHoles,
         SmoothDepth,
+        CleanToFDepth,
         EvaluateDepth,
         FuseRegisteredDepth,
         ReprojectDepthRegion,

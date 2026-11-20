@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Replay a time-of-flight depth step",
+      "description": "Original synthetic RGB-D fixture by OpenCVDataflowGUI contributors (MIT). Run All replays three frames with a moving depth step, known confidence dropouts, mixed edge samples and isolated outliers. Compare raw depth, cleaned depth and the rejection diagnostic before reconstructing the point cloud.",
+      "parameters": {},
+      "position": [
+        0,
+        -255
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/recording.json",
+        "repeat": "stop",
+        "maximum_skew_ms": 5.0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "clean",
+      "type": "3d.clean_tof_depth",
+      "name": "Clean time-of-flight depth",
+      "parameters": {
+        "minimum_confidence": 0.25,
+        "reject_flying_pixels": true,
+        "reject_isolated_outliers": true,
+        "radius": 2,
+        "agreement_m": 0.025,
+        "minimum_separation_m": 0.12,
+        "edge_support": 2,
+        "outlier_support": 6,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        390,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "confidence",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "raw_depth",
+        "valid_mask",
+        "rejected_mask",
+        "reason_codes",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "depth"
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 95.0,
+        "fy": 95.0,
+        "cx": 47.5,
+        "cy": 27.5,
+        "width": 96,
+        "height": 56,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "tof_depth_optical"
+      },
+      "position": [
+        390,
+        300
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cloud",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        810,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "replay",
+      "output": "depth",
+      "target": "clean",
+      "input": "depth"
+    },
+    {
+      "source": "replay",
+      "output": "confidence",
+      "target": "clean",
+      "input": "confidence"
+    },
+    {
+      "source": "clean",
+      "output": "depth",
+      "target": "cloud",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "cloud",
+      "input": "camera"
+    }
+  ]
+}

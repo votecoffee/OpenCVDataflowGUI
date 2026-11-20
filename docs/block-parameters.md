@@ -193,6 +193,31 @@ Input `right_image` — Optional right source image for diagnostics.
 | `minimum_inlier_ratio` | `1.0` | Value must be a finite number between 0 and 1. Minimum fraction of all input pairs that must meet the tolerance. |
 | `max_drawn_pairs` | `32` | Value must be a whole number between 0 and 512. Draw this many pairs in input order. Zero hides epipolar graphics. |
 
+## Clean time-of-flight depth (`3d.clean_tof_depth`)
+
+3D vision / Depth
+
+Inputs: `depth` (depth), `confidence` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `confidence` — Aligned monochrome float in [0, 1] or full-scale uint8/uint16.
+
+Input `mask` — Limit rejection to this mask. Neighbors outside it can contribute.
+
+Input `region` — Limit rejection to this region, intersected with the mask if supplied.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_confidence` | `0.25` | Value must be a finite number between 0 and 1. Only positive confidence at or above this value is trusted. |
+| `reject_flying_pixels` | `true` | Reject samples bracketed by nearer and farther ranges. |
+| `reject_isolated_outliers` | `true` | Reject isolated samples offset from a coherent local surface. |
+| `radius` | `2` | Value must be a whole number between 1 and 4. Square neighborhood radius in pixels. Borders use real pixels only. |
+| `agreement_m` | `0.025` | Value must be a finite number between 1e-06 and 100. A trusted neighbor within this distance in meters protects the sample. |
+| `minimum_separation_m` | `0.12` | Value must be a finite number between 1e-06 and 1000. Minimum distance to a conflicting neighbor, in meters. |
+| `edge_support` | `2` | Value must be a whole number between 1 and 40. Minimum trusted neighbors on each side of a flying-pixel candidate. |
+| `outlier_support` | `6` | Value must be a whole number between 1 and 80. Minimum trusted neighbors on a coherent surface with a depth span of up to twice the agreement distance. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for a depth array without explicit units. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per uint16 count, in the chosen input units. |
+
 ## Filter point cloud (`3d.cloud_filter`)
 
 3D vision / Point clouds

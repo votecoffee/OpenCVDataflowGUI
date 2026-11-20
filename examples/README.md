@@ -188,6 +188,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Stereo disparity evaluation](<opencv tools/disparity_reference/README.md>) | Compare a synthetic estimate against fixed-point truth and inspect whole-field and regional error, coverage and confidence. |
 | [Binary Census stereo](<opencv tools/binary_stereo/README.md>) | Compare integer Census matching and native SGBM on a known shift, an exposure change and a masked patch. |
 | [Quasi-dense stereo](<opencv tools/quasi_dense_stereo/README.md>) | Propagate corner matches and reconstruct two planes with positive and negative disparity. |
+| [Time-of-flight depth cleanup](<custom tools/tof_depth_cleanup/README.md>) | Replay a moving depth step, flag suspect samples and reconstruct the retained depths. |
 | [Stereo exposure and color](<opencv tools/stereo_color/README.md>) | Fit correction in one region of a calibrated pair and compare StereoBM in a held-out region. |
 | [Recorded RGB-D](<opencv tools/recorded_rgbd/README.md>) | Replay staggered color and depth, align confidence with the nearest surface and build a colored point cloud. |
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |

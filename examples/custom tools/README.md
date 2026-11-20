@@ -28,3 +28,7 @@ try [ALIKED and LightGlue](aliked_matching/README.md).
 
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
 For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).
+
+[Time-of-flight depth cleanup](tof_depth_cleanup/README.md) flags low-confidence,
+mixed-edge and isolated depth samples while preserving the raw exposure and true
+depth step.

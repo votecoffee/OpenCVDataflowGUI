@@ -315,6 +315,19 @@ filter. The depth keeps its type, units, ticket and grid. The validity and
 confidence-rejection masks use the same grid.
 [Depth smoothing example](<../examples/opencv tools/depth_smoothing/README.md>)
 
+**Clean time-of-flight depth** uses sensor confidence and a neighborhood on the
+source depth grid to reject suspect samples. A depth within the agreement
+distance of a trusted neighbor is protected from geometry rejection. Farther
+and nearer neighbors can identify a mixed edge sample, and a coherent,
+well-supported surface can identify a one-sided isolated outlier. Both
+distances are in meters. A mask or region limits which samples can be rejected.
+The cleaned depth invalidates rejected samples and keeps all other values,
+their units and their spatial and capture metadata. Raw depth and the reason
+codes remain available for review. Per-frame geometry is a heuristic for
+artifacts such as multipath. Its thresholds require qualification on the
+actual sensor and scene.
+[Time-of-flight depth cleanup example](<../examples/custom tools/tof_depth_cleanup/README.md>)
+
 **Fuse registered depth views** combines two to four positive axial-Z
 rasters on one target camera grid. Register the views first. The default
 alignment checks known pixel frames. Pixel Grid declares that separately

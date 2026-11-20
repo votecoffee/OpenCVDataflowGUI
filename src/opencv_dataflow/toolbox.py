@@ -215,6 +215,7 @@ _NATIVE_NAMES = {
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
     "3d.separate_depth_plane": ("depthTo3d", "RANSAC", "foreground segmentation"),
     "3d.smooth_depth": ("jointBilateralFilter", "confidence-weighted depth denoising"),
+    "3d.clean_tof_depth": ("ToF", "flying pixels", "depth artifact rejection"),
     "inspect.differential_exposure": ("boxFilter", "illumination", "reference comparison"),
     "cv.resample_mask": ("integral", "area coverage", "validity mask"),
     "cv.stack_blur": ("stackBlur", "large-radius smoothing"),

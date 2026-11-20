@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 72 | 15 | 44 | 131 | 55.0% |
+| 3. 3D imagery and point clouds | 73 | 15 | 43 | 131 | 55.7% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 327 | 19 | 124 | 470 | 69.6% |
+| **Overall** | 328 | 19 | 123 | 470 | 69.8% |
 
 <!-- coverage-summary:end -->
 
@@ -501,7 +501,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S3-73 | Time-of-flight depth cleanup | Depth confidence, neighborhood checks and edge-aware filtering | Planned | Use recorded depth with a range step and low-confidence samples. Flag flying pixels and multipath-like outliers while preserving real discontinuities and raw sample provenance. |
+| S3-73 | Time-of-flight depth cleanup | Depth confidence and edge-aware neighborhood rejection | Complete | `3d.clean_tof_depth` emits original and cleaned depth, validity, rejection reasons and retained counts on the same grid. The [three-frame RGB-D replay](<../examples/custom tools/tof_depth_cleanup/README.md>) flags labeled flying-pixel and isolated depth outliers and preserves the true step, thin feature and raw exposure metadata. |
 | S3-74 | Sparse pixel-to-point backprojection | depthTo3dSparse | Planned | Backproject selected image points without constructing a full cloud. Verify XYZ, units, frame, invalid points, and original pixel indices. |
 | S3-75 | Normalize and quantize a metric depth image | rescaleDepth and typed depth conversion | Planned | Round-trip integer and float depth with explicit scale, invalid codes, clipping and quantization error. |
 | S3-76 | Warp a registered RGB-D frame by camera pose | warpFrame | Planned | Transform depth and color from a known moving view and verify destination depth, mask, and occlusion. |
