@@ -244,6 +244,7 @@ _NATIVE_NAMES = {
     "input.cloud_tiled_radius": ("large scan", "tiled PLY", "radius neighbors"),
     "3d.cloud_outlier": ("point density", "remove noise", "statistical outlier removal"),
     "3d.cloud_sample": ("randomSampling", "farthestPointSampling", "downsample", "FPS"),
+    "3d.cloud_perturb": ("addNoisePC", "getRandomPose", "synthetic point cloud", "seeded noise"),
     "3d.cloud_voxel": ("voxelGridSampling", "nearest centroid", "representative point"),
     "3d.normalize_depth": ("rescaleDepth", "depth units", "decode depth"),
     "3d.warp_rgbd_pose": ("warpFrame", "RGB-D pose", "camera viewpoint"),

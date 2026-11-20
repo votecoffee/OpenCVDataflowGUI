@@ -631,6 +631,16 @@ available in Debug and Balanced.
   indices match the cloud's sampling order and keep source colors, normals
   and pixels.
   [Cloud sampling example](<../examples/custom tools/cloud_sampling/README.md>)
+- **Perturb point-cloud fixture** transforms up to 4,096 source rows into a
+  named frame and returns a clean and a noisy cloud, the exact pose and the
+  original-to-output row pairs. Fixed poses use an axis-angle vector in
+  degrees and rotate about the source frame's origin. Seeded poses use a
+  bounded angle and translation. Noise is per-axis Gaussian or uniform in
+  the target frame. Independent random streams keep each surviving row's
+  noise stable when the dropout fraction changes. Retained pixels describe
+  original capture provenance. The report measures the realized noise
+  in the emitted float32 point coordinates.
+  [Seeded pose, sampling and tolerance example](<../examples/custom tools/perturbed_cloud_fixture/README.md>)
 - **Query point-cloud octree** finds exact nearest neighbors or the nearest
   hits inside an inclusive radius. Choose a fit or explicit cube in meters,
   then set its depth or maximum cell side. Cloud XYZ and query XYZ can be

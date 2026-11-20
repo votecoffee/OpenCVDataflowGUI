@@ -271,7 +271,7 @@ An exposed Python API still needs a fixture before the capability is complete.
 | `cv2.ppf_match_3d.ICP`, `cv2.ppf_match_3d.PPF3DDetector`, `cv2.ppf_match_3d.Pose3D`, `cv2.ppf_match_3d.PoseCluster3D` | Exposed. ICP pairs, overlap and local pose constraints qualify native refinement independently. PPF matching optionally reranks local refinements by model coverage and RMSE and suppresses duplicate poses. | S3-22, S3-90–S3-91 |
 | `cv2.ppf_match_3d.computeNormalsPC3d`, `cv2.ppf_match_3d.samplePCByQuantization`, `cv2.ppf_match_3d.transformPCPose` | Exposed. The app already has typed normal, voxel and transform operations. Keep equivalent native variants in those contracts. | S3-50–S3-51, S3-60, S3-79, S3-84 |
 | `cv2.ppf_match_3d.loadPLYSimple`, `cv2.ppf_match_3d.writePLY`, `cv2.ppf_match_3d.writePLYVisibleNormals` | Exposed. Reuse cloud interchange for PLY. Normal-debug rendering helpers belong to review graphics. | S3-21, S3-85 |
-| `cv2.ppf_match_3d.addNoisePC`, `cv2.ppf_match_3d.getRandomPose` | Exposed. Keep native random helpers under a reproducible synthetic scan and pose fixture contract. | S3-111 |
+| `cv2.ppf_match_3d.addNoisePC`, `cv2.ppf_match_3d.getRandomPose` | Exposed native helpers. `3d.cloud_perturb` implements the seeded fixture workflow with independent local streams, bounded pose controls, and known geometry and correspondences. | S3-111 |
 
 Sources for the crosswalk include the pinned
 [point-cloud header](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/ptcloud/include/opencv2/ptcloud.hpp),

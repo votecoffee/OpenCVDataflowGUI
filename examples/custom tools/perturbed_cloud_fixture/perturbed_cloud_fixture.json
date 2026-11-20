@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Test a known scan pose and noise",
+      "description": "Original synthetic geometry by OpenCVDataflowGUI contributors (MIT). The fixture generates a known rigid transform, drops 38 rows and adds seeded metric noise. Downstream blocks sample, recover the pose, and compare the noisy scan against the clean scan at two tolerances.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Two-surface reference",
+      "parameters": {
+        "path": "assets/reference.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        0,
+        10
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture",
+      "type": "3d.cloud_perturb",
+      "name": "Seeded pose and noisy scan",
+      "description": "Make a seeded scan with an exact pose, a clean counterpart and row matches.",
+      "parameters": {
+        "seed": 7631,
+        "pose_mode": "seeded",
+        "rotation_vector_deg": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "max_rotation_deg": 15.0,
+        "translation": [
+          25.0,
+          19.0,
+          31.0
+        ],
+        "target_frame": "fixture_scan",
+        "noise_distribution": "gaussian",
+        "noise_scale": [
+          0.2,
+          0.15,
+          0.1
+        ],
+        "dropout_fraction": 0.2
+      },
+      "position": [
+        410,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "seed"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "clean",
+        "pose",
+        "pairs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "3d.estimate_matched_transform",
+      "name": "Recover the known rigid pose",
+      "description": "Fit and verify a metric transform from known cloud-row correspondences.",
+      "parameters": {
+        "model": "rigid",
+        "output_units": "mm",
+        "inlier_threshold_m": 0.001,
+        "minimum_inlier_fraction": 0.6,
+        "ransac_confidence": 0.99,
+        "maximum_trials": 256,
+        "random_seed": 0
+      },
+      "position": [
+        870,
+        0
+      ],
+      "exposed_inputs": [
+        "source",
+        "target",
+        "pairs"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "similarity",
+        "affine",
+        "inlier_pairs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "3d.cloud_sample",
+      "name": "Sample the perturbed scan",
+      "description": "Select original cloud rows by seeded random or greedy farthest-point sampling.",
+      "parameters": {
+        "method": "farthest",
+        "budget": "count",
+        "max_points": 24,
+        "sample_fraction": 0.1,
+        "seed": 7631,
+        "minimum_spacing": 0.0,
+        "max_distance_evaluations": 50000000
+      },
+      "position": [
+        870,
+        230
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "indices",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "wide",
+      "type": "3d.cloud_compare",
+      "name": "0.8 mm tolerance",
+      "description": "Measure bidirectional overlap and deviations between aligned scans.",
+      "parameters": {
+        "comparison": "distance",
+        "correspondence_radius_m": 0.001,
+        "distance_tolerance_m": 0.0008,
+        "negative_tolerance_m": 0.002,
+        "positive_tolerance_m": 0.002,
+        "minimum_measured_overlap": 0.9,
+        "minimum_reference_overlap": 0.9,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_normal_angle_deg": 60.0,
+        "tie_tolerance_m": 1e-09,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        870,
+        460
+      ],
+      "exposed_inputs": [
+        "measured",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "measured_defects",
+        "unmatched_measured",
+        "missing_reference",
+        "measured_pairs",
+        "reference_pairs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tight",
+      "type": "3d.cloud_compare",
+      "name": "0.08 mm tolerance",
+      "description": "Measure bidirectional overlap and deviations between aligned scans.",
+      "parameters": {
+        "comparison": "distance",
+        "correspondence_radius_m": 0.001,
+        "distance_tolerance_m": 8e-05,
+        "negative_tolerance_m": 0.002,
+        "positive_tolerance_m": 0.002,
+        "minimum_measured_overlap": 0.9,
+        "minimum_reference_overlap": 0.9,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_normal_angle_deg": 60.0,
+        "tie_tolerance_m": 1e-09,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        870,
+        690
+      ],
+      "exposed_inputs": [
+        "measured",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "measured_defects",
+        "unmatched_measured",
+        "missing_reference",
+        "measured_pairs",
+        "reference_pairs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "fixture",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "fit",
+      "input": "source"
+    },
+    {
+      "source": "fixture",
+      "output": "cloud",
+      "target": "fit",
+      "input": "target"
+    },
+    {
+      "source": "fixture",
+      "output": "pairs",
+      "target": "fit",
+      "input": "pairs"
+    },
+    {
+      "source": "fixture",
+      "output": "cloud",
+      "target": "sample",
+      "input": "cloud"
+    },
+    {
+      "source": "fixture",
+      "output": "cloud",
+      "target": "wide",
+      "input": "measured"
+    },
+    {
+      "source": "fixture",
+      "output": "clean",
+      "target": "wide",
+      "input": "reference"
+    },
+    {
+      "source": "fixture",
+      "output": "cloud",
+      "target": "tight",
+      "input": "measured"
+    },
+    {
+      "source": "fixture",
+      "output": "clean",
+      "target": "tight",
+      "input": "reference"
+    }
+  ]
+}

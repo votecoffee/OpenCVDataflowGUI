@@ -95,6 +95,9 @@ and centroids in the same per-axis voxel grid.
 [Point-cloud sampling](cloud_sampling/README.md) compares coverage at an
 equal point budget and preserves the source cloud's row IDs.
 
+[Perturbed point-cloud fixture](perturbed_cloud_fixture/README.md) verifies
+sampling, pose recovery and tolerances against seeded scan ground truth.
+
 [Point-cloud octree queries](cloud_octree_query/README.md) check nearest and
 radius results against known coordinates in a colored PLY.
 

@@ -657,6 +657,7 @@ def builtin_registry():
     from .cloud_datum import MeasureCloudDatum
     from .cloud_extents import MeasureOrientedCloud
     from .cloud_features import RegisterCloudFeatures
+    from .cloud_fixture import PerturbCloudFixture
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_recording import RecordedCloud
     from .cloud_merge import MergeCloudScans
@@ -1390,6 +1391,7 @@ def builtin_registry():
         CalibrateWideStereo,
         *CLOUD_BLOCKS,
         SampleCloud,
+        PerturbCloudFixture,
         RegisterCloudFeatures,
         *CLOUD_IO_BLOCKS,
         RecordedCloud,

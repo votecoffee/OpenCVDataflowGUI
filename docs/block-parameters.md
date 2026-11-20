@@ -466,6 +466,26 @@ Input `cloud` — XYZ in meters or millimeters. Coincident rows retain separate 
 | `standard_deviations` | `2.0` | Value must be a finite number between 0 and 100. Retain local means up to the global mean plus this multiple of SD. |
 | `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum cloud size admitted to the index. |
 
+## Perturb point-cloud fixture (`3d.cloud_perturb`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `seed` (number, optional).
+
+Input `cloud` — Supply 1 to 4,096 source rows. Sample larger clouds before this block.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Private random seed. The connected seed takes precedence. |
+| `pose_mode` | `"fixed"` | `fixed`, `seeded` Use an explicit pose or draw one within the configured bounds. |
+| `rotation_vector_deg` | `[0.0, 0.0, 0.0]` | Fixed axis-angle vector. Its magnitude sets the angle in degrees. |
+| `max_rotation_deg` | `20.0` | Value must be a finite number between 0 and 180. Seeded pose draws a uniform angle from zero to this limit. |
+| `translation` | `[0.0, 0.0, 0.0]` | Fixed XYZ offset or seeded +/- bounds in cloud units. |
+| `target_frame` | `"fixture_target"` | Named coordinate frame of the two generated clouds. |
+| `noise_distribution` | `"gaussian"` | `gaussian`, `uniform` Independent Gaussian or uniform draws in the target XYZ axes. |
+| `noise_scale` | `[0.0, 0.0, 0.0]` | Gaussian standard deviation or uniform half-width for each target axis. |
+| `dropout_fraction` | `0.0` | Value must be a finite number between 0 and 0.99. Fraction of source rows to remove at random, rounded down. |
+
 ## Project cloud and check visibility (`3d.cloud_project`)
 
 3D vision / Point clouds
