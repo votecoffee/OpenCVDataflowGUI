@@ -28,8 +28,10 @@ class ImageArray(np.ndarray):
 class DepthArray(np.ndarray):
     """Physical depth plane with units and a separate display range."""
 
-    def __new__(cls, values, units="m", display_min=0.0, display_max=5.0):
-        obj = np.asarray(values, dtype=np.float32).view(cls)
+    def __new__(cls, values, units="m", display_min=0.0, display_max=5.0, *, dtype=np.float32):
+        if np.dtype(dtype) not in (np.float32, np.float64):
+            raise ValueError("DepthArray requires float32 or float64")
+        obj = np.asarray(values, dtype=dtype).view(cls)
         obj.units, obj.display_min, obj.display_max = units, display_min, display_max
         obj.metadata = copy.deepcopy(getattr(values, "metadata", {}))
         return obj

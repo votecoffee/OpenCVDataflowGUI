@@ -177,7 +177,7 @@ BLOCK_MODULES = {
     "objdetect": "3d.aruco_pose input.coded_rig_observations",
     "ptcloud": (
         "3d.depth_cloud 3d.backproject_depth_pixels 3d.separate_depth_plane 3d.cloud_project 3d.evaluate_depth "
-        "3d.reproject_depth_region 3d.fuse_registered_depth "
+        "3d.reproject_depth_region 3d.fuse_registered_depth 3d.normalize_depth "
         "3d.depth_components 3d.depth_silhouette 3d.track_depth_fusion"
     ),
     "rgbd": "3d.register_depth",
@@ -214,6 +214,8 @@ _NATIVE_NAMES = {
     "3d.tsdf_mesh": ("TSDF", "marching cubes", "surface reconstruction"),
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
     "3d.backproject_depth_pixels": ("depthTo3dSparse", "sparse depth", "metric XYZ"),
+    "3d.normalize_depth": ("rescaleDepth", "depth units", "decode depth"),
+    "3d.quantize_depth": ("depth codes", "depth units", "encode depth"),
     "3d.separate_depth_plane": ("depthTo3d", "RANSAC", "foreground segmentation"),
     "3d.smooth_depth": ("jointBilateralFilter", "confidence-weighted depth denoising"),
     "3d.clean_tof_depth": ("ToF", "flying pixels", "depth artifact rejection"),

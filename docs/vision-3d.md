@@ -316,6 +316,22 @@ emits a sparse cloud. Tagged floating-point images retain their declared depth
 units on input. Choose meters or millimeters for the cloud.
 [Depth-step example](<../examples/opencv tools/sparse_depth_backprojection/README.md>)
 
+**Decode and scale metric depth** converts uint16 measurements or existing
+floating-point depth to meters or millimeters, with Float32 and Float64 output
+and a separate validity mask. Untagged uint16 inputs use the configured scale
+in meters per code and invalid code. Code zero is always invalid. Tagged
+uint16 values carry the scale and invalid code from the encoder.
+
+**Quantize metric depth to uint16** rounds positive metric values to the
+nearest code, with exact ties going to the even code. Reserve 0 or 65535.
+Choose whether ranges below or above the positive code interval should
+clamp or become invalid. The out-of-range mask identifies both cases. The
+report gives separate maximum absolute and RMS errors for in-range rounding
+and all retained samples, including any clamped values. Decode the codes
+before passing them to geometry blocks. The encoding metadata travels with
+graph connections. Record it separately when exporting codes to a PNG.
+[Metric depth round-trip example](<../examples/opencv tools/metric_depth_encoding/README.md>)
+
 **Fill small depth holes** copies nearby valid samples into small invalid
 regions and emits a mask identifying the estimates. Its default settings
 preserve border-connected gaps. [Depth hole filling example](<../examples/custom tools/depth_hole_filling/README.md>)

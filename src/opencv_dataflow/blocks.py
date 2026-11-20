@@ -679,6 +679,7 @@ def builtin_registry():
     from .depth_components import MeasureDepthComponents
     from .depth_evaluation import EvaluateDepth
     from .depth_fusion import FuseRegisteredDepth
+    from .depth_encoding import NormalizeMetricDepth, QuantizeMetricDepth
     from .depth_plane import SeparateDepthPlane
     from .depth_region_projection import ReprojectDepthRegion
     from .depth_silhouette import MeasureDepthSilhouette
@@ -1059,6 +1060,8 @@ def builtin_registry():
         DepthSample,
         FillDepthHoles,
         SmoothDepth,
+        NormalizeMetricDepth,
+        QuantizeMetricDepth,
         CleanToFDepth,
         EvaluateDepth,
         FuseRegisteredDepth,

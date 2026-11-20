@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Round-trip sensor codes",
+      "description": "Original synthetic depth raster by OpenCVDataflowGUI contributors (MIT). Encode at 1/1024 meter per code, then decode using the scale carried with the image. The report separates rounding error from clamping at the two range limits.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/depth_m.tiff",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 2.0
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode",
+      "type": "3d.quantize_depth",
+      "name": "Quantize metric depth to uint16",
+      "description": "Encode physical depth as uint16 with a reserved invalid code and error report.",
+      "parameters": {
+        "input_units": "m",
+        "meters_per_code": 0.0009765625,
+        "invalid_code": 65535,
+        "out_of_range": "clip"
+      },
+      "position": [
+        360,
+        30
+      ],
+      "exposed_inputs": [
+        "depth"
+      ],
+      "exposed_outputs": [
+        "codes",
+        "valid_mask",
+        "out_of_range_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "3d.normalize_depth",
+      "name": "Decode and scale metric depth",
+      "description": "Convert sensor depth codes or floating depth to a physical depth image.",
+      "parameters": {
+        "input_units": "m",
+        "meters_per_code": 0.001,
+        "invalid_code": 65535,
+        "output_units": "mm",
+        "output_format": "float64",
+        "display_max_m": 2.0
+      },
+      "position": [
+        745,
+        30
+      ],
+      "exposed_inputs": [
+        "samples"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "valid_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "depth",
+      "target": "encode",
+      "input": "depth"
+    },
+    {
+      "source": "encode",
+      "output": "codes",
+      "target": "decode",
+      "input": "samples"
+    }
+  ]
+}

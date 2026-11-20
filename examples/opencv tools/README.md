@@ -67,6 +67,9 @@ rig versions, archived maps and a rejected capture mismatch.
 [Wide-angle stereo](wide_angle_stereo/README.md) uses both lens families
 with held-out perspective rectification and metric reconstruction.
 
+[Metric depth encoding](metric_depth_encoding/README.md) round-trips a physical
+depth image through uint16 with scale, clipping and quantization error.
+
 [Sparse depth backprojection](sparse_depth_backprojection/README.md) lifts ordered
 pixels into calibrated XYZ and reports which requests have valid depth.
 

@@ -4255,7 +4255,7 @@ P3	function	cv2.registerDepth	no static reference	-
 P3	function	cv2.remap	literal reference	-
 P3	function	cv2.repeat	literal reference	-
 P3	function	cv2.reprojectImageTo3D	literal reference	-
-P3	function	cv2.rescaleDepth	no static reference	-
+P3	function	cv2.rescaleDepth	literal reference	-
 P3	function	cv2.resize	literal reference	-
 P3	function	cv2.resizeWindow	no static reference	-
 P3	class	cv2.RgbdNormals	no static reference	-

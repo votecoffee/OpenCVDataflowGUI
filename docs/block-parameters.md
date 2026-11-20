@@ -769,6 +769,23 @@ Input `model` — A trained bank from Train RGB-D pose template.
 | `minimum_anchor_fraction` | `0.65` | Value must be a finite number between 0.25 and 1. Minimum fraction of trained anchors supporting the same shift. |
 | `maximum_reprojection_rms_px` | `2.5` | Value must be a finite number between 0.1 and 20. Maximum return projection error at the inlier anchors. |
 
+## Decode and scale metric depth (`3d.normalize_depth`)
+
+3D vision / Depth
+
+Inputs: `samples` (depth).
+
+Input `samples` — Positive camera Z or uint16 sensor codes with optional scale metadata.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_units` | `"m"` | `m`, `mm` Units of untagged floating inputs. A typed depth supplies its own units. |
+| `meters_per_code` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical step for a uint16 input without encoding metadata. |
+| `invalid_code` | `65535` | Value must be a whole number between 0 and 65535. Additional invalid code for untagged uint16. Zero is always invalid. |
+| `output_units` | `"m"` | `m`, `mm` Units of the decoded metric values. |
+| `output_format` | `"float32"` | `float32`, `float64` Values outside the selected float format's range are invalid. |
+| `display_max_m` | `5.0` | Value must be a finite number between 0.001 and 100000. Depth preview upper bound in meters. Independent of conversion. |
+
 ## RGB-D frame odometry (`3d.odometry`)
 
 3D vision / RGB-D motion
@@ -974,6 +991,19 @@ Inputs: `cloud` (cloud).
 Inputs: `points` (data), `camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
+
+## Quantize metric depth to uint16 (`3d.quantize_depth`)
+
+3D vision / Depth
+
+Inputs: `depth` (depth).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_units` | `"m"` | `m`, `mm` Units of untagged floating inputs. A typed depth supplies its own units. |
+| `meters_per_code` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical step size. Round in-range values to the nearest code. |
+| `invalid_code` | `65535` | `0`, `65535` Reserve code zero or 65535. Code zero never represents positive depth. |
+| `out_of_range` | `"invalidate"` | `invalidate`, `clip` Invalidate or clamp positive depth outside the representable range. |
 
 ## Quasi-dense stereo disparity (`3d.quasi_dense_disparity`)
 

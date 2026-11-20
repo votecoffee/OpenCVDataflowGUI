@@ -149,6 +149,7 @@ BINDINGS = {
     ),
     "3d.cloud_project": "projectPoints",
     "3d.backproject_depth_pixels": "depthTo3dSparse",
+    "3d.normalize_depth": "rescaleDepth",
     "3d.evaluate_depth": "applyColorMap",
     "3d.fuse_registered_depth": "merge",
     "3d.reproject_depth_region": (
