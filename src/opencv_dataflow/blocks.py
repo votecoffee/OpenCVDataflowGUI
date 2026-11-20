@@ -869,6 +869,7 @@ def builtin_registry():
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
     from .ridge_response import RidgeResponse
+    from .robot_world import RobotWorldHandEye
     from .ros2_blocks import ROS2_BLOCKS
     from .rotated_detection import DecodeRotatedDetections
     from .rotating_panorama import StitchRotatingPanorama
@@ -1005,6 +1006,7 @@ def builtin_registry():
         ValidateLensCalibration,
         CheckChessboardQuality,
         HandEyeCalibration,
+        RobotWorldHandEye,
         BuildLensMaps,
         LensMapDisplacement,
         UndistortLensPoints,

@@ -11,7 +11,7 @@ from .payloads import NO_VALUE, FlowGroup
 from .tickets import ticket_key
 
 
-def _samples(value, label):
+def _samples(value, label, *, minimum=3):
     if isinstance(value, FlowGroup):
         if any(failed_input(item) for item in value.items):
             raise ValidationError(f"All {label} samples must pass")
@@ -23,14 +23,14 @@ def _samples(value, label):
         poses, tickets = value, None
     else:
         raise ValidationError(f"Provide {label} poses as a list or a ticketed group")
-    if not 3 <= len(poses) <= 64:
-        raise ValidationError(f"Provide 3 to 64 {label} poses")
+    if not minimum <= len(poses) <= 64:
+        raise ValidationError(f"Provide {minimum} to 64 {label} poses")
     return poses, tickets
 
 
-def _paired_samples(robot, target):
-    gripper, robot_tickets = _samples(robot, "gripper-to-base")
-    board, target_tickets = _samples(target, "target-to-camera")
+def _paired_samples(robot, target, *, minimum=3):
+    gripper, robot_tickets = _samples(robot, "gripper-to-base", minimum=minimum)
+    board, target_tickets = _samples(target, "target-to-camera", minimum=minimum)
     if len(gripper) != len(board):
         raise ValidationError("Gripper and target pose counts must match")
     if robot_tickets is None and target_tickets is None:

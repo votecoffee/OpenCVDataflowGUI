@@ -1274,6 +1274,34 @@ Input `region` — Only sample valid pixels inside this source-grid region.
 | `registration` | `"same_frame"` | `same_frame`, `fixed_grid` Fixed grid uses a saved calibration on the same camera pixel grid. Same frame requires the calibration's frame metadata to match. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 
+## Calibrate robot-world and hand–eye (`calibration.robot_world_hand_eye`)
+
+Calibration / Robot coordinates
+
+Inputs: `gripper_poses` (any, optional), `target_poses` (any, optional), `heldout_gripper_poses` (any, optional), `heldout_target_poses` (any, optional).
+
+Input `gripper_poses` — Gripper-to-base poses in training order or a ticketed group.
+
+Input `target_poses` — Target-to-camera poses from corresponding training images.
+
+Input `heldout_gripper_poses` — Independent gripper-to-base poses for validation.
+
+Input `heldout_target_poses` — Independent target-to-camera observations for validation.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Optional JSON with paired training and optional held-out pose arrays. |
+| `path_base` | `"project"` | `project`, `working_directory` Base for a relative observations file. |
+| `arrangement` | `"fixed_camera"` | `fixed_camera`, `robot_mounted_camera` Fixed camera and moving target, or moving camera and fixed target. |
+| `gripper_frame` | `"gripper"` |  |
+| `base_frame` | `"base"` |  |
+| `target_frame` | `"target"` |  |
+| `camera_frame` | `"camera"` |  |
+| `rotation_weight_mm` | `100.0` | Value must be a finite number between 0.001 and 100000. Translation-equivalent residual per radian during joint refinement. |
+| `maximum_evaluations` | `200` | Value must be a whole number between 1 and 1000. Limit joint least-squares evaluations. |
+| `max_translation_rms_mm` | `2.0` | Value must be a finite number between 0 and 100000. Translation RMS limit on each supplied split. Zero disables it. |
+| `max_rotation_rms_degrees` | `1.0` | Value must be a finite number between 0 and 180. Rotation RMS limit on each supplied split. Zero disables it. |
+
 ## Undistort lens (`calibration.undistort`)
 
 Calibration / Lens distortion

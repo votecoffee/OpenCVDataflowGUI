@@ -40,6 +40,9 @@ projector coordinates and marks low-signal and inconsistent captures.
 [Camera/projector reconstruction](camera_projector/README.md) fits separate
 pixel grids and verifies metric depth on a held-out stepped scene.
 
+[Robot-world and hand–eye calibration](robot_world/README.md) fits both
+rigid transforms for fixed and robot-mounted cameras and checks held-out images.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

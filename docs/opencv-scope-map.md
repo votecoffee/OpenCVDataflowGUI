@@ -328,7 +328,7 @@ Python and five C++ entries without a direct binding.
 | `cv2.calibrateMultiview`, `cv2.calibrateMultiviewExtended` | Exposed. Shared target geometry and visibility belong to rig calibration. | S3-54 |
 | `cv2.registerCameras`, `cv2.registerCamerasExtended` | Exposed. Verify registration with fixed intrinsics on non-overlapping target observations. | S3-113 |
 | `cv2.stereoCalibrate`, `cv2.stereoCalibrateExtended`, `cv2.fisheye.calibrate`, `cv2.fisheye.stereoCalibrate` | Exposed. Track lens models and per-view stereo residuals in their owning workflows. | S3-04, S3-13–S3-14, S3-45 |
-| `cv::calibrateHandEye`, `cv::calibrateRobotWorldHandEye` | C++ functions without direct bindings. Eye-in-hand has an offline graph solver. Joint robot-world and fixed-camera checks remain open. | S3-31–S3-32 |
+| `cv::calibrateHandEye`, `cv::calibrateRobotWorldHandEye` | C++ functions without direct bindings. Eye-in-hand has an offline graph solver. Fixed-camera and joint robot-world/hand–eye calibration have an offline solver checked against held-out ChArUco images. | S3-31–S3-32 |
 | `cv2.stereoRectify`, `cv2.stereoRectifyUncalibrated`, `cv2.fisheye.stereoRectify` | Exposed. Qualify calibrated, uncalibrated and wide-angle image pairs separately. | S3-13–S3-14, S3-44 |
 | `cv::rectify3Collinear` | C++ function without a direct binding. Qualify a three-camera rig across two baselines. | S3-114 |
 | `cv2.StereoMatcher`, `cv2.StereoBM`, `cv2.StereoSGBM`, `cv2.validateDisparity` | Exposed. Matchers and consistency checks belong to disparity and confidence. | S3-15–S3-16 |

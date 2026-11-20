@@ -94,7 +94,10 @@ IMPLEMENTATION_MODULES = {
         "animation_blocks codec_probe image_codecs metadata_blocks multipage_blocks tiff_files "
         "tiff_page_access"
     ),
-    "calib": "calibration calibration_validation chessboard_quality hand_eye remap_maps workplane",
+    "calib": (
+        "calibration calibration_validation chessboard_quality hand_eye remap_maps "
+        "robot_world workplane"
+    ),
     "geometry": "circle_fitting contour_analysis convex_overlap geometry3d line_pair shape_fitting "
     "translation_registration triangulation voronoi",
     "video": (

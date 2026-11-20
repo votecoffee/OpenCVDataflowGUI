@@ -26,6 +26,7 @@ Open these projects with **File → Open…**.
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
 | [Phase-shift fringe replay](<../examples/opencv tools/phase_shift/README.md>) | Decode absolute subpixel projector X or Y from a six-exposure group with low-confidence gaps. |
 | [Camera/projector reconstruction](<../examples/opencv tools/camera_projector/README.md>) | Fit a rig at different resolutions and reconstruct a held-out depth step. |
+| [Robot-world and hand–eye](<../examples/opencv tools/robot_world/README.md>) | Jointly fit two poses and predict held-out board images with a fixed or robot-mounted camera. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 | [TSDF mesh](<../examples/skimage tools/tsdf_mesh/README.md>) | Extract a metric triangle surface and preserve the gap in observed depth. |
 
@@ -277,14 +278,32 @@ ray angle, and error in each device's own pixel coordinates. Use the
 single-file calibration blocks to save and reuse the resulting rig.
 [Calibration and stepped-depth example](<../examples/opencv tools/camera_projector/README.md>)
 
+## Robot-world calibration
+
+**Calibrate robot-world and hand–eye** fits a transform from the moving object
+to the gripper and a transform from the stationary object to the robot base.
+For a fixed camera those objects are the target and camera respectively. For
+a robot-mounted camera they are the camera and the target. Both arrangements
+consume gripper-to-base and target-to-camera observations. Use multiple views
+with rotations about at least two independent axes and one common length unit.
+Ticketed pose groups pair by ticket and holdout tickets must be disjoint.
+
+The solver initializes from Park relative motion, then jointly refines the two
+rigid transforms against pose closure using SciPy least squares. It reports
+translation RMS in millimeters and angular RMS in degrees, independently for
+training and held-out samples. Both transforms are withheld if the solver fails
+to converge or if either supplied split exceeds its configured limits.
+[Fixed and robot-mounted camera examples](<../examples/opencv tools/robot_world/README.md>)
+
 ## Build and verification boundaries
 
 **OpenCV 3D capabilities** reports bindings in the installed build. The Windows
 OpenCV 5 contrib wheel exposes geometry, calibration, stereo, ptcloud and the
 contrib modules used here, with several RGB-D functions directly under `cv2`.
-It has no Python SFM/viz or hand-eye solver. KinFu variants have bindings but
-their constructors are disabled in this build. The native TSDF block is tested
-separately and does not require KinFu. Live robot integration, hand-eye calibration,
+This wheel lacks Python SFM/viz and the native hand–eye and robot-world solvers.
+KinFu variants expose Python bindings with disabled constructors in this build.
+The native TSDF block is qualified separately from KinFu. Robot-world results
+come from offline synthetic fixtures. Physical hand–eye calibration,
 camera/projector commissioning and arbitrary third-party rigs remain unverified.
 
 - [OpenCV 5 module organization](https://github.com/opencv/opencv/wiki/OpenCV-5)

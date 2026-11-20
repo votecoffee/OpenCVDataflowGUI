@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 44 | 21 | 66 | 131 | 33.6% |
+| 3. 3D imagery and point clouds | 45 | 20 | 66 | 131 | 34.4% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 299 | 25 | 146 | 470 | 63.6% |
+| **Overall** | 300 | 24 | 146 | 470 | 63.8% |
 
 <!-- coverage-summary:end -->
 
@@ -445,7 +445,7 @@ fixture or result needed to close the item.
 | S3-29 | Phase-shift structured light | SinusoidalPattern.generate, three-step demodulation and temporal unwrapping | Complete | 3d.phase_shift_patterns and 3d.phase_shift_decode generate coarse/fine fringes and recover absolute projector X or Y with modulation and validity. [Independent captures](<../examples/opencv tools/phase_shift/README.md>) confirm subpixel coordinates and preserve a shadow gap. Native ideal PSP and the small-period generation limit are verified. |
 | S3-30 | Camera-projector calibration and reconstruction | Projector as inverse camera, stereo calibration and triangulation | Complete | 3d.camera_projector_calibrate and 3d.camera_projector_reconstruct fit independent pixel grids and emit metric camera-Z and point clouds from dense phase maps or sparse Gray-code pairs. [Held-out stepped scene](<../examples/opencv tools/camera_projector/README.md>) verifies depth, shadow support, reprojection gating and calibration save/reuse. |
 | S3-31 | Eye-in-hand calibration from camera observations | calibrateHandEye, target reprojection and pose composition | Complete | calibration.hand_eye, 3d.pnp, 3d.compose. Offline target-to-camera and gripper-to-base fixture with held-out target consistency. |
-| S3-32 | Fixed-camera and robot-world calibration | Eye-to-hand frame arrangement and joint robot-world/hand–eye solver | Partial | calibration.hand_eye supports eye-in-hand. Verify fixed-camera and joint solutions against held-out image-derived target observations. Confirm Python solver availability or validate a tested offline solver. |
+| S3-32 | Fixed-camera and robot-world calibration | Eye-to-hand frame arrangement and joint robot-world/hand–eye solver | Complete | calibration.robot_world_hand_eye jointly fits the mount and station for fixed and robot-mounted cameras with Park initialization and SciPy refinement. [Held-out ChArUco images](<../examples/opencv tools/robot_world/README.md>) verify transform direction and pixel reprojection. |
 | S3-33 | Sparse multi-view reconstruction | Feature tracks, recoverPose, multi-view triangulation, bundle adjustment | Partial | 3d.essential_pose and 3d.triangulate handle a pair. Verify tracks across three or more supplied or estimated camera views with missing observations and stable landmark IDs. Measure reprojection and scale behavior after refinement; qualify a tested triangulator because native sfm bindings are absent from the pinned wheel. |
 
 ### Calibration, stereo and depth extensions
