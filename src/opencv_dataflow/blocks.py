@@ -924,6 +924,7 @@ def builtin_registry():
     from .run_contours import RunContours
     from .scan_stitching import StitchScanSequence
     from .scanline_motion import EstimateScanlineMotion
+    from .scanner_range_image import ScannerRangeImage
     from .scene_scale import RecoverSceneScale
     from .segmentation import SEGMENTATION_BLOCKS
     from .segmentation_fusion import FuseTileSegmentation
@@ -1391,6 +1392,7 @@ def builtin_registry():
         CalibrateWideStereo,
         *CLOUD_BLOCKS,
         SampleCloud,
+        ScannerRangeImage,
         PerturbCloudFixture,
         RegisterCloudFeatures,
         *CLOUD_IO_BLOCKS,

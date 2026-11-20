@@ -511,6 +511,30 @@ Input `region` — Select target pixels, intersecting the mask when supplied.
 | `reference_units` | `"m"` | `m`, `mm` Length units for a depth reference without declared units. |
 | `reference_units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 reference count. |
 
+## Organize scanner point cloud (`3d.cloud_range_image`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `transform` (data, optional).
+
+Input `cloud` — XYZ measured from the scanner origin or linked to it by a rigid pose.
+
+Input `transform` — Optional metric pose mapping the cloud frame into the named scanner frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `scanner_frame` | `"scanner"` | Scanner axes are X forward, Y left and Z up. |
+| `columns` | `720` | Value must be a whole number between 1 and 8192. Number of equally spaced azimuth bins. |
+| `rows` | `32` | Value must be a whole number between 1 and 1024. Number of equally spaced elevation bins when custom edges are empty. |
+| `azimuth_start_deg` | `-180.0` | Value must be a finite number between -180 and 180. Azimuth edge at column zero, measured from +X toward +Y. |
+| `azimuth_span_deg` | `360.0` | Value must be a finite number between 1e-05 and 360. Angular width of the grid. Use 360 degrees for a full revolution. |
+| `elevation_min_deg` | `-25.0` | Value must be a finite number between -90 and 90. Lower edge for the uniform elevation grid. |
+| `elevation_max_deg` | `15.0` | Value must be a finite number between -90 and 90. Upper exclusive edge for the uniform elevation grid. |
+| `elevation_edges_deg` | `[]` | Optional calibrated edges in ascending order, from low to high. |
+| `minimum_range_m` | `0.01` | Value must be a finite number between 1e-09 and 1e+06. Inclusive minimum radial distance to accept. |
+| `maximum_range_m` | `150.0` | Value must be a finite number between 1e-09 and 1e+06. Inclusive maximum radial distance to accept. |
+| `return_policy` | `"nearest"` | `nearest`, `farthest`, `strongest` Select closest, farthest, or strongest measured intensity in each bin. |
+
 ## Grow point-cloud surface regions (`3d.cloud_region_grow`)
 
 3D vision / Point clouds

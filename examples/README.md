@@ -210,6 +210,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Voxel representatives](<custom tools/voxel_representatives/README.md>) | Pick measured representatives from a cloud with independently sized X, Y and Z voxels. |
 | [Point-cloud sampling](<custom tools/cloud_sampling/README.md>) | Compare equal-budget random and farthest-point samples of a colored cloud. |
 | [Perturbed point-cloud fixture](<custom tools/perturbed_cloud_fixture/README.md>) | Generate a known scan pose and noise, trace sampled rows and test registration and tolerances. |
+| [Scanner range image](<custom tools/scanner_range_image/README.md>) | Rasterize angular scan returns and compare nearest, farthest and strongest ownership. |
 | [Point-cloud octree queries](<custom tools/cloud_octree_query/README.md>) | Find nearest and radius neighbors on an imported metric cloud with stable point IDs. |
 | [RGB-D pose warp](<opencv tools/rgbd_pose_warp/README.md>) | Reproject registered depth and color through a known pose and inspect which source wins at occlusion. |
 | [Metric depth encoding](<opencv tools/metric_depth_encoding/README.md>) | Encode a metric image to uint16 and decode it with preserved scale, invalid codes and error statistics. |

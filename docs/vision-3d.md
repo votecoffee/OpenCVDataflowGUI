@@ -519,6 +519,17 @@ The block keeps absent or farther-than-expected observations in the unverified
 class. Its visible, occluded and unverified clouds preserve source attributes.
 [Cloud visibility example](<../examples/opencv tools/cloud_visibility/README.md>)
 
+**Organize scanner point cloud** projects metric XYZ to a spherical raster
+using the scanner origin and axes, with an optional cloud-to-scanner pose.
+Set azimuth start and span, and use uniform elevation bins or calibrated
+ascending elevation edges. Each occupied bin selects the nearest,
+farthest or strongest return. The selected intensity and source row
+describe the same point, while return counts show all admitted samples
+before selection. Empty range bins use NaN and have a clear validity
+mask. All output rasters carry their angular grid. They use image ports
+and are rejected by camera-depth inputs.
+[Scanner range image example](<../examples/custom tools/scanner_range_image/README.md>)
+
 ## Point clouds and surface matching
 
 `PointCloud` is a typed `cloud` port value with finite Nx3 XYZ, units, a named

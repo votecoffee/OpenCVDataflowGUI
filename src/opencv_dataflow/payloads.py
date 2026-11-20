@@ -16,6 +16,7 @@ class FlowSignal(Enum):
 
 
 NO_VALUE = FlowSignal.EMPTY
+SPHERICAL_RANGE_GRID = "spherical_range_grid"
 
 
 @dataclass

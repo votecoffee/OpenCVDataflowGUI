@@ -98,6 +98,9 @@ equal point budget and preserves the source cloud's row IDs.
 [Perturbed point-cloud fixture](perturbed_cloud_fixture/README.md) verifies
 sampling, pose recovery and tolerances against seeded scan ground truth.
 
+[Scanner range image](scanner_range_image/README.md) rasterizes angular
+returns with intensity, source IDs and a choice of return policy.
+
 [Point-cloud octree queries](cloud_octree_query/README.md) check nearest and
 radius results against known coordinates in a colored PLY.
 

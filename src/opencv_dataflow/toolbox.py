@@ -225,6 +225,7 @@ _NATIVE_NAMES = {
     "3d.cloud_oriented_extents": ("oriented bounding box", "PCA", "dimensions", "pose"),
     "3d.estimate_matched_transform": ("estimateAffine3D", "estimateTranslation3D", "3D landmarks"),
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
+    "3d.cloud_range_image": ("range image", "LiDAR", "spherical projection", "return intensity"),
     "3d.backproject_depth_pixels": ("depthTo3dSparse", "sparse depth", "metric XYZ"),
     "3d.cloud_octree_query": ("octree", "nearest neighbors", "radius search"),
     "3d.cloud_cluster": ("euclidean clustering", "connected components", "part segmentation"),

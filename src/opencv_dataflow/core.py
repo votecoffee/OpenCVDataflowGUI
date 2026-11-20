@@ -27,6 +27,7 @@ from .outcomes import (
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import (
     NO_VALUE,
+    SPHERICAL_RANGE_GRID,
     FlowGroup,
     ImagePyramid,
     ValuePacket,
@@ -705,8 +706,10 @@ class Block:
 def validate_value(port, value):
     if value is NO_VALUE:
         return
+    wire_payload = None
     if isinstance(value, ValuePacket):
         validate_payload(value.payload)
+        wire_payload = value.payload
         value = value.value
     if isinstance(value, FlowGroup):
         value.__post_init__()
@@ -764,6 +767,10 @@ def validate_value(port, value):
             or value.dtype not in (np.uint16, np.float32, np.float64)
         ):
             raise TypeError(f"{port.name} requires a 2D uint16 or floating depth image")
+        if SPHERICAL_RANGE_GRID in (wire_payload or {}) or SPHERICAL_RANGE_GRID in (
+            getattr(value, "metadata", None) or {}
+        ):
+            raise TypeError(f"{port.name} cannot accept a spherical scanner raster as camera depth")
     elif port.kind == "image":
         if not isinstance(value, np.ndarray) or value.size == 0 or value.ndim not in (2, 3):
             raise TypeError(f"{port.name} requires a nonempty image array")

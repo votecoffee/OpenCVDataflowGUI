@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 111 | 5 | 15 | 131 | 84.7% |
+| 3. 3D imagery and point clouds | 112 | 5 | 14 | 131 | 85.5% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 366 | 9 | 95 | 470 | 77.9% |
+| **Overall** | 367 | 9 | 94 | 470 | 78.1% |
 
 <!-- coverage-summary:end -->
 
@@ -545,7 +545,7 @@ fixture or result needed to close the item.
 | S3-109 | Refine imperfect calibration-target geometry | calibrateCameraROExtended | Complete | `calibration.refine_target` fits shared XYZ with a measured scale baseline and reports per-coordinate standard deviations. The [warped target example](<../examples/opencv tools/refine_calibration_target/README.md>) verifies known geometry and lower reprojection error on independent views and points. |
 | S3-110 | Marker-aware and oversized checkerboard detection | findChessboardCornersSBWithMeta | Complete | `calibration.marked_checkerboard` returns raw cell codes and stable signed board IDs, XYZ and subpixel XY from the three-dot marker. The [full and cropped target example](<../examples/opencv tools/marked_checkerboard/README.md>) verifies physical matching through rotation and perspective, and withholds coordinates when the dots are absent. |
 | S3-111 | Reproducible perturbed cloud fixtures | ppf_match_3d.addNoisePC and getRandomPose or a seeded equivalent | Complete | `3d.cloud_perturb` emits a seeded or fixed rigid pose, clean and noisy clouds, and exact row pairs. Independent streams stabilize pose, noise and dropout. The [fixture project](<../examples/custom tools/perturbed_cloud_fixture/README.md>) verifies sampling, registration and tolerance checks. |
-| S3-112 | Organize a scanner cloud into a range image | Calibrated angular projection and range conflict resolution | Planned | Map a known rotating or angular scan onto a declared grid, retaining intensity, source indices, invalid bins and multiple-return handling. |
+| S3-112 | Organize a scanner cloud into a range image | Calibrated angular projection and range conflict resolution | Complete | `3d.cloud_range_image` maps metric samples into a scanner frame and bins radial range, intensity, source IDs and return counts. The [angular returns project](<../examples/custom tools/scanner_range_image/README.md>) verifies seam wrapping, nonuniform elevation, invalid cells, and nearest, farthest and strongest policies. |
 
 ### Additional multi-camera and point-cloud geometry
 

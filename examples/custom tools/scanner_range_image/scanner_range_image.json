@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare scanner returns on an angular grid",
+      "description": "Synthetic scanner returns by OpenCVDataflowGUI contributors (MIT). The grid wraps across 180 degrees and has three unequal elevation bands. The same bin contains four returns. Compare its range, intensity and source ID for nearest, farthest and strongest policies.",
+      "parameters": {},
+      "position": [
+        0,
+        -265
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load angular returns",
+      "parameters": {
+        "path": "assets/angular_returns.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "3d.pose",
+      "name": "Building to scanner",
+      "parameters": {
+        "rvec": [
+          0,
+          0,
+          1.5707963267948966
+        ],
+        "translation": [
+          0,
+          0,
+          -0.5
+        ],
+        "source_frame": "building",
+        "target_frame": "scanner",
+        "units": "m"
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "nearest",
+      "type": "3d.cloud_range_image",
+      "name": "Nearest returns",
+      "description": "Rasterize metric scanner returns into calibrated azimuth and elevation bins.",
+      "parameters": {
+        "scanner_frame": "scanner",
+        "columns": 6,
+        "rows": 32,
+        "azimuth_start_deg": 165.0,
+        "azimuth_span_deg": 60.0,
+        "elevation_min_deg": -25.0,
+        "elevation_max_deg": 15.0,
+        "elevation_edges_deg": [
+          -15.0,
+          -5.0,
+          4.0,
+          25.0
+        ],
+        "minimum_range_m": 0.5,
+        "maximum_range_m": 15.0,
+        "return_policy": "nearest"
+      },
+      "position": [
+        440,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "range",
+        "intensity",
+        "valid_mask",
+        "source_rows",
+        "source_indices",
+        "return_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "farthest",
+      "type": "3d.cloud_range_image",
+      "name": "Farthest returns",
+      "description": "Rasterize metric scanner returns into calibrated azimuth and elevation bins.",
+      "parameters": {
+        "scanner_frame": "scanner",
+        "columns": 6,
+        "rows": 32,
+        "azimuth_start_deg": 165.0,
+        "azimuth_span_deg": 60.0,
+        "elevation_min_deg": -25.0,
+        "elevation_max_deg": 15.0,
+        "elevation_edges_deg": [
+          -15.0,
+          -5.0,
+          4.0,
+          25.0
+        ],
+        "minimum_range_m": 0.5,
+        "maximum_range_m": 15.0,
+        "return_policy": "farthest"
+      },
+      "position": [
+        440,
+        265
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "range",
+        "intensity",
+        "valid_mask",
+        "source_rows",
+        "source_indices",
+        "return_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "strongest",
+      "type": "3d.cloud_range_image",
+      "name": "Strongest returns",
+      "description": "Rasterize metric scanner returns into calibrated azimuth and elevation bins.",
+      "parameters": {
+        "scanner_frame": "scanner",
+        "columns": 6,
+        "rows": 32,
+        "azimuth_start_deg": 165.0,
+        "azimuth_span_deg": 60.0,
+        "elevation_min_deg": -25.0,
+        "elevation_max_deg": 15.0,
+        "elevation_edges_deg": [
+          -15.0,
+          -5.0,
+          4.0,
+          25.0
+        ],
+        "minimum_range_m": 0.5,
+        "maximum_range_m": 15.0,
+        "return_policy": "strongest"
+      },
+      "position": [
+        440,
+        530
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "range",
+        "intensity",
+        "valid_mask",
+        "source_rows",
+        "source_indices",
+        "return_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "empty",
+      "type": "3d.cloud_range_image",
+      "name": "Empty returns",
+      "description": "Rasterize metric scanner returns into calibrated azimuth and elevation bins.",
+      "parameters": {
+        "scanner_frame": "scanner",
+        "columns": 6,
+        "rows": 32,
+        "azimuth_start_deg": 25.0,
+        "azimuth_span_deg": 60.0,
+        "elevation_min_deg": -25.0,
+        "elevation_max_deg": 15.0,
+        "elevation_edges_deg": [
+          -15.0,
+          -5.0,
+          4.0,
+          25.0
+        ],
+        "minimum_range_m": 0.5,
+        "maximum_range_m": 15.0,
+        "return_policy": "nearest"
+      },
+      "position": [
+        440,
+        795
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "range",
+        "intensity",
+        "valid_mask",
+        "source_rows",
+        "source_indices",
+        "return_count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "nearest",
+      "input": "cloud"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "nearest",
+      "input": "transform"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "farthest",
+      "input": "cloud"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "farthest",
+      "input": "transform"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "strongest",
+      "input": "cloud"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "strongest",
+      "input": "transform"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "empty",
+      "input": "cloud"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "empty",
+      "input": "transform"
+    }
+  ]
+}
