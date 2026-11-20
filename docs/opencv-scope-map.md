@@ -74,7 +74,7 @@ they can count as complete.
 | `reg` | Image pair registration with configurable mapper and residual checks. | S4-72 |
 | `rgbd` | Typed depth and color, registration, pose tracking and depth fusion. 3d.fuse_registered_depth blends confidence-weighted surfaces on a common registered camera grid with explicit support and disagreement. Recorded RGB-D qualifies timestamp association, independent optical grids and confidence-preserving registration. Camera-frame acceptance is required before claiming a model or backend. | S3-18–S3-20, S3-23–S3-26, S3-49, S3-52–S3-53, S3-56–S3-57, S3-59, S3-62, S3-64, S3-66, S3-71 |
 | `saliency` | Static and motion maps and ranked objectness proposals with separate fixtures. | S4-53–S4-54, S4-97 |
-| `sfm` | Image-derived multi-view reconstruction and metric anchors. Qualify the relevant bindings or a tested solver. | S3-33, S3-58, S3-65 |
+| `sfm` | Image-derived multi-view reconstruction and metric anchors. 3d.recover_scene_scale fits a native uniform similarity from landmark IDs and verifies independent metric targets. | S3-33, S3-58, S3-65 |
 | `shape` | Shape context, appearance-assisted ranking, Hausdorff distance and spline registration. | S4-50–S4-52, S4-95 |
 | `signal` | Resample measured image profiles with explicit pitch and verified alias rejection. General signal utilities stay internal. | S1-173 |
 | `structured_light` | Gray code, phase shift and calibrated projector/camera reconstruction. | S3-28–S3-30, S3-67 |
@@ -424,7 +424,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | `cv2.triangulatePoints`, `cv2.convertPointsFromHomogeneous`, `cv2.convertPointsToHomogeneous`, `cv::convertPointsHomogeneous` | Coordinate normalization belongs inside calibrated projection and triangulation. | S3-12, S3-65 |
 | `cv2.correctMatches`, `cv2.sampsonDistance` | 3d.refine_epipolar scores error with a vectorized equivalent of sampsonDistance and invokes native correctMatches for accepted candidates. | S3-43 |
 | `cv2.estimateAffine2D`, `cv2.estimateAffinePartial2D`, `cv2.estimateTranslation2D`, `cv2.findHomography` | Use typed inliers and geometry for reference alignment and planar mapping. | S1-48, S3-06 |
-| `cv2.estimateAffine3D`, `cv2.estimateTranslation3D`, `cv2.composeRT` | Keep relative pose composition and metric landmark transforms with their owning workflows. | S3-31, S3-50, S3-101 |
+| `cv2.estimateAffine3D`, `cv2.estimateTranslation3D`, `cv2.composeRT` | Keep relative pose composition and metric landmark transforms with their owning workflows. The uniform-scale estimateAffine3D overload recovers the metric reconstruction gauge. | S3-31, S3-50, S3-65, S3-101 |
 | `cv2.calibrationMatrixValues`, `cv2.decomposeProjectionMatrix`, `cv2.RQDecomp3x3` | Recover an interpretable camera profile. Keep raw factorization internal. | S3-117 |
 | `cv2.decomposeHomographyMat`, `cv2.filterHomographyDecompByVisibleRefpoints` | Recover image-to-image motion hypotheses and reject candidates with invalid visibility. | S3-118 |
 | `cv::LevMarq`, `cv2.matMulDeriv` | Solver and matrix-derivative internals stay behind calibrated image workflows. | — |

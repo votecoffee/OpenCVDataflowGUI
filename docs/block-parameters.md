@@ -911,6 +911,27 @@ Input `views` — Three to sixteen packed landmark views as a list or flow group
 | `robust_scale_px` | `1.0` | Value must be a finite number between 0.01 and 100. Soft-L1 scale in pixels for the optional reprojection fit. |
 | `maximum_evaluations` | `100` | Value must be a whole number between 1 and 250. Maximum least-squares evaluations for the optional refinement. |
 
+## Recover metric scene scale (`3d.recover_scene_scale`)
+
+3D vision / Reconstruction
+
+Inputs: `cloud` (cloud), `views` (data, optional), `controls` (data, optional).
+
+Input `cloud` — Unitless reconstructed cloud with a unique landmark ID for each point.
+
+Input `views` — Optional reconstructed views in the same unitless frame. Re-emitted in meters.
+
+Input `controls` — Wired control record. Takes precedence over the Controls parameter.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `controls` | `{}` | Metric frame, units, anchors and optional disjoint holdouts. |
+| `anchor_tolerance_m` | `0.005` | Value must be a finite number between 1e-07 and 1000. Maximum metric residual for a surveyed training landmark to agree. |
+| `minimum_anchor_inlier_ratio` | `0.65` | Value must be a finite number between 0 and 1. Minimum share of declared anchors accepted by the fit. |
+| `maximum_holdout_error_m` | `0.01` | Value must be a finite number between 1e-07 and 1000. Largest allowed error at any independent holdout landmark. |
+| `maximum_trials` | `192` | Value must be a whole number between 1 and 1024. Maximum random three-anchor fits after trying all matched anchors. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Seed used for reproducible sampling of anchor triplets. |
+
 ## Rectify pinhole / fisheye / omnidir (`3d.rectify_camera`)
 
 3D vision / Camera models

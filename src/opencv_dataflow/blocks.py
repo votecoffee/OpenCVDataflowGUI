@@ -896,6 +896,7 @@ def builtin_registry():
     from .run_contours import RunContours
     from .scan_stitching import StitchScanSequence
     from .scanline_motion import EstimateScanlineMotion
+    from .scene_scale import RecoverSceneScale
     from .segmentation import SEGMENTATION_BLOCKS
     from .segmentation_fusion import FuseTileSegmentation
     from .selection_remap import RemapSelection, RemapSelectionPacked
@@ -1319,6 +1320,7 @@ def builtin_registry():
         PlanarPoseHypotheses,
         MakeLandmarkView,
         ReconstructSparseViews,
+        RecoverSceneScale,
         DeclareCalibrationCapture,
         FisheyeCalibration,
         OmnidirectionalCalibration,

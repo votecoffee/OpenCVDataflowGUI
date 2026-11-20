@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 64 | 17 | 50 | 131 | 48.9% |
+| 3. 3D imagery and point clouds | 65 | 16 | 50 | 131 | 49.6% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 319 | 21 | 130 | 470 | 67.9% |
+| **Overall** | 320 | 20 | 130 | 470 | 68.1% |
 
 <!-- coverage-summary:end -->
 
@@ -488,7 +488,7 @@ fixture or result needed to close the item.
 | S3-62 | Color and depth from a synchronized recorded stream | Timestamp pairing, explicit registration and depth confidence | Complete | input.rgbd_recording pairs explicit acquisition timestamps, reports unmatched frames, and emits one ticket per pair. 3d.register_rgbd projects nearest depth and its confidence onto the color grid. The [staggered replay example](<../examples/opencv tools/recorded_rgbd/README.md>) covers independent intrinsics, a 40 mm baseline, confidence rejection, and colored XYZ. |
 | S3-63 | Stereo exposure and color consistency | Pairwise color correction on rectified correspondence support | Complete | 3d.stereo_color_match fits robust gain or gain/bias on left-grid disparity, keeping right-grid geometry and encoding. The [calibrated comparison](<../examples/opencv tools/stereo_color/README.md>) raises held-out StereoBM coverage from 95.24% to 98.11% and reduces disparity MAE. |
 | S3-64 | Recover calibrated object dimensions from a depth silhouette | Depth backprojection and physical contour measurement | Complete | 3d.depth_silhouette measures datum-relative visible length, width and thickness, and flags invalid boundary samples. The [tilted two-part fixture](<../examples/opencv tools/depth_silhouette/README.md>) recovers both widths and lengths within 1 mm and locates all 57 missing boundary samples. |
-| S3-65 | Scene-scale recovery from multi-view observations | Multi-view triangulation with known metric anchors | Partial | 3d.essential_pose supplies unit-scale motion. Verify metric recovery and error with held-out 3D targets. |
+| S3-65 | Scene-scale recovery from multi-view observations | Multi-view triangulation with known metric anchors | Complete | 3d.recover_scene_scale fits a robust positive similarity from 3D landmark IDs, emits metric clouds and poses, and gates on independent checks. The [four-view example](<../examples/opencv tools/scene_scale/README.md>) rejects a bad anchor and measures 0.740 mm RMS over eight held-out targets. |
 | S3-66 | Stereo-to-depth consistency across multiple baselines | Stereo reprojection and cross-view depth checks | Planned | Fuse valid baselines while identifying occlusion or outlier disparity on an independently measured depth fixture. |
 | S3-67 | Phase unwrapping for measured fringe images | phase_unwrapping.HistogramPhaseUnwrapping and getInverseReliabilityMap | Planned | Recover a known wrapped surface phase. Verify a shadow mask, per-pixel inverse reliability and separately referenced connected regions. |
 | S3-68 | Camera pose tracking against an object silhouette | rapid silhouette trackers and projected object geometry | Planned | Track a known metric object in video with reprojection checks and explicit loss and reset behavior. |

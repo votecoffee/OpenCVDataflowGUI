@@ -100,6 +100,9 @@ rigid transforms for fixed and robot-mounted cameras and checks held-out images.
 [Sparse multi-view reconstruction](sparse_multiview/README.md) packs four
 ChArUco views into a sparse cloud and compares fixed and refined camera poses.
 
+[Metric scene-scale recovery](scene_scale/README.md) aligns a unitless cloud
+and camera poses to a metric survey frame and checks eight holdout points.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

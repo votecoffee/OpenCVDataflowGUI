@@ -550,8 +550,16 @@ shared, non-collinear tracks with enough angular separation. The cloud retains
 the anchors' world frame and units, including unitless coordinates when no
 metric baseline was supplied. Landmark IDs are stored alongside cloud rows in
 metadata. This workflow takes supplied correspondences and initial camera
-poses. The separate scene-scale item (S3-65) tracks scale recovery when camera
-motion starts at unknown scale. [Four-view example and independent holdout](<../examples/opencv tools/sparse_multiview/README.md>)
+poses. [Four-view example and independent holdout](<../examples/opencv tools/sparse_multiview/README.md>)
+
+**Recover metric scene scale** fits a positive scale, proper rotation and
+translation from a unitless reconstruction to measured landmark coordinates.
+Use at least three non-collinear anchors and one consistent camera gauge.
+The solver pairs landmarks by ID, uses consensus to reject bad anchors and
+reserves optional disjoint holdouts for the final acceptance check. It emits
+the point cloud and optional world-to-camera poses in meters on the surveyed
+frame, preserving the input intrinsics and reprojections.
+[Scale recovery with independent metric targets](<../examples/opencv tools/scene_scale/README.md>)
 
 - [OpenCV multi-view DLT reference](https://docs.opencv.org/5.0/extra_modules/triangulation.html)
 - [SciPy sparse least-squares reference](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)

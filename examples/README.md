@@ -257,6 +257,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |
 | [Sparse multi-view reconstruction](<opencv tools/sparse_multiview/README.md>) | Rebuild 35 partially observed ChArUco landmarks and refine two poses with a fixed metric baseline. |
+| [Metric scene-scale recovery](<opencv tools/scene_scale/README.md>) | Scale a unitless four-view reconstruction with surveyed landmarks and verify eight held-out targets. |
 | [Hann window](<opencv tools/hann_window/README.md>) | Compare Fourier leakage before and after tapering an off-bin sinusoid. |
 | [High-bit-depth codecs](<opencv tools/high_bit_depth_codecs/README.md>) | Verify exact 16-bit PNG and JPEG 2000 color/alpha or grayscale round trips, with explicit codec controls. |
 | [Histogram thresholds](<opencv tools/histogram_thresholds/README.md>) | Visualize percentiles, mean, and median, and wire measured cutoffs into three threshold masks. |

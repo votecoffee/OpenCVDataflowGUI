@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Recover metric scale from four views",
+      "description": "Original synthetic observations by the OpenCVDataflowGUI contributors (MIT). The recorded views begin in a unitless gauge. Fit ten measured controls, including one deliberate outlier. Eight independent landmarks check the world alignment.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "unitless",
+      "type": "3d.reconstruct_sparse_views",
+      "name": "Reconstruct sparse multi-view landmarks",
+      "parameters": {
+        "path": "assets/views.json",
+        "refinement": "points",
+        "anchor_view_ids": [],
+        "minimum_ray_angle_deg": 0.5,
+        "maximum_error_px": 0.8,
+        "robust_scale_px": 1.0,
+        "maximum_evaluations": 100
+      },
+      "position": [
+        0,
+        35
+      ],
+      "exposed_inputs": [
+        "views"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "views",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "metric",
+      "type": "3d.recover_scene_scale",
+      "name": "Recover metric scene scale",
+      "parameters": {
+        "controls": {
+          "model": "metric_landmark_controls_v1",
+          "frame": "survey_frame",
+          "units": "mm",
+          "anchors": [
+            {
+              "id": "P08",
+              "xyz": [
+                -21.324577771181936,
+                -383.3155558754209,
+                1174.2635876473523
+              ]
+            },
+            {
+              "id": "P02",
+              "xyz": [
+                -2.39113746446845,
+                -188.30124376896134,
+                1258.2970580604056
+              ]
+            },
+            {
+              "id": "P00",
+              "xyz": [
+                -89.2762293246006,
+                -401.7691591493241,
+                1154.6554375677288
+              ]
+            },
+            {
+              "id": "P07",
+              "xyz": [
+                78.43428246189076,
+                -252.04986406839785,
+                1525.2522392834978
+              ]
+            },
+            {
+              "id": "P04",
+              "xyz": [
+                32.68981782404759,
+                -330.35054005299594,
+                1350.5710373303198
+              ]
+            },
+            {
+              "id": "P09",
+              "xyz": [
+                -36.48840246725344,
+                -420.1486012060824,
+                1421.1216944624432
+              ]
+            },
+            {
+              "id": "P11",
+              "xyz": [
+                -140.49182571468828,
+                -272.3153983576193,
+                1493.9955453488005
+              ]
+            },
+            {
+              "id": "P03",
+              "xyz": [
+                -22.462480131915708,
+                -309.554992952178,
+                1281.3573839416183
+              ]
+            },
+            {
+              "id": "P01",
+              "xyz": [
+                -2.8967465801908454,
+                -216.9583401768615,
+                1209.6812464386614
+              ]
+            },
+            {
+              "id": "P06",
+              "xyz": [
+                152.36592960738022,
+                -175.99902490785792,
+                1559.449475182361
+              ]
+            }
+          ],
+          "holdouts": [
+            {
+              "id": "P12",
+              "xyz": [
+                2.8754333748634564,
+                -204.93686425773328,
+                1530.6418274797877
+              ]
+            },
+            {
+              "id": "P13",
+              "xyz": [
+                44.51409889919597,
+                -205.4885182644086,
+                1492.118814294963
+              ]
+            },
+            {
+              "id": "P14",
+              "xyz": [
+                84.53854835152949,
+                -262.17165317683487,
+                1288.5846580508567
+              ]
+            },
+            {
+              "id": "P15",
+              "xyz": [
+                1.5897256282953465,
+                -396.04953311935793,
+                1214.37603155258
+              ]
+            },
+            {
+              "id": "P16",
+              "xyz": [
+                -120.79639842052869,
+                -266.1452845270112,
+                1485.4413270395996
+              ]
+            },
+            {
+              "id": "P17",
+              "xyz": [
+                19.80699747013806,
+                -318.82993318732025,
+                1140.560653881723
+              ]
+            },
+            {
+              "id": "P18",
+              "xyz": [
+                -110.93048342527173,
+                -160.29082092595146,
+                1357.6606302770363
+              ]
+            },
+            {
+              "id": "P19",
+              "xyz": [
+                106.85213402700069,
+                -355.11142634197313,
+                1436.4622322748244
+              ]
+            }
+          ]
+        },
+        "anchor_tolerance_m": 0.003,
+        "minimum_anchor_inlier_ratio": 0.65,
+        "maximum_holdout_error_m": 0.003,
+        "maximum_trials": 192,
+        "random_seed": 0
+      },
+      "position": [
+        385,
+        35
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "views",
+        "controls"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "views",
+        "similarity",
+        "scale_m_per_unit",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "extent",
+      "type": "3d.cloud_measure",
+      "name": "Measure the reconstructed cloud in meters",
+      "parameters": {},
+      "position": [
+        760,
+        35
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "unitless",
+      "output": "cloud",
+      "target": "metric",
+      "input": "cloud"
+    },
+    {
+      "source": "unitless",
+      "output": "views",
+      "target": "metric",
+      "input": "views"
+    },
+    {
+      "source": "metric",
+      "output": "cloud",
+      "target": "extent",
+      "input": "cloud"
+    }
+  ]
+}

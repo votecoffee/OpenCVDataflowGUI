@@ -2496,7 +2496,7 @@ P3	function	cv2.equalizeHist	literal reference	-
 P3	function	cv2.erode	literal reference	-
 P3	class	cv2.error	literal reference	-
 P3	function	cv2.estimateAffine2D	literal reference	-
-P3	function	cv2.estimateAffine3D	no static reference	-
+P3	function	cv2.estimateAffine3D	literal reference	-
 P3	function	cv2.estimateAffinePartial2D	literal reference	-
 P3	function	cv2.estimateChessboardSharpness	literal reference	-
 P3	function	cv2.estimateTranslation2D	literal reference	-
