@@ -187,6 +187,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Disparity speckle removal](<opencv tools/disparity_speckles/README.md>) | Clean equivalent fixed-point and signed float maps and check the exact removed footprint. |
 | [Stereo disparity evaluation](<opencv tools/disparity_reference/README.md>) | Compare a synthetic estimate against fixed-point truth and inspect whole-field and regional error, coverage and confidence. |
 | [Binary Census stereo](<opencv tools/binary_stereo/README.md>) | Compare integer Census matching and native SGBM on a known shift, an exposure change and a masked patch. |
+| [RGB-D pose warp](<opencv tools/rgbd_pose_warp/README.md>) | Reproject registered depth and color through a known pose and inspect which source wins at occlusion. |
 | [Metric depth encoding](<opencv tools/metric_depth_encoding/README.md>) | Encode a metric image to uint16 and decode it with preserved scale, invalid codes and error statistics. |
 | [Sparse depth backprojection](<opencv tools/sparse_depth_backprojection/README.md>) | Lift selected depth pixels into metric camera XYZ with per-request diagnostics. |
 | [Quasi-dense stereo](<opencv tools/quasi_dense_stereo/README.md>) | Propagate corner matches and reconstruct two planes with positive and negative disparity. |

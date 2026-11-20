@@ -302,6 +302,18 @@ decrease when the target view has lower magnification.
    Depth limits are in rig units. Use `input_scale=0.0625` for raw OpenCV int16
    disparity and `1` for this app's already-scaled disparity.
 
+**Warp RGB-D by camera pose** reprojects a registered depth image and
+optional color into a named target optical frame. The source and target use
+the same undistorted pinhole intrinsics and image size, with positive focal
+lengths and principal point. Supply a pose that maps source 3D coordinates to
+target coordinates. A mask and region select source pixels. OpenCV floors
+the projected coordinates and retains the nearest positive target Z at each
+destination pixel. A hole has NaN depth, a zero validity mask and source
+index −1. Valid source indices are zero-based and row-major. The optional
+color keeps its encoding and precision using the same winning source pixels.
+The emitted camera record and pixel grid identify the destination frame.
+[RGB-D pose warp example](<../examples/opencv tools/rgbd_pose_warp/README.md>)
+
 **Backproject depth pixels** takes a list of image XY requests and an
 undistorted pinhole camera calibrated for the input depth grid. Nearest
 sampling snaps to an integer pixel center, with ties rounded upward. Integer

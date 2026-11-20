@@ -1631,6 +1631,32 @@ Input `right_views` — Right observed pixels, in the same capture and landmark 
 | `max_view_rms` | `1.5` | Value must be a finite number at least 0. Maximum cross-camera RMS for one camera and capture. Zero disables it. |
 | `max_anchor_rms` | `1.0` | Value must be a finite number at least 0. Maximum single-camera pose fit RMS per capture. Zero disables it. |
 
+## Warp RGB-D by camera pose (`3d.warp_rgbd_pose`)
+
+3D vision / RGB-D
+
+Inputs: `depth` (depth), `camera` (data), `transform` (data), `color` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `depth` — Registered axial camera Z. Positive finite samples can contribute.
+
+Input `camera` — Undistorted pinhole intrinsics with positive focal lengths and principal point.
+
+Input `transform` — Source-optical-to-target-optical rigid pose in meters or millimeters.
+
+Input `color` — Optional registered grayscale, three-channel, or four-channel image.
+
+Input `mask` — Optional uint8 source selection. Excluded samples cannot win the z-buffer.
+
+Input `region` — Optional source region intersected with the mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `color_alignment` | `"require_same_grid"` | `require_same_grid`, `assume_registered` Require matching known grids or declare separately stored rasters already registered. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for depth without declared units. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per uint16 sample. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required fraction of the destination grid with a visible sample. |
+| `display_max_m` | `5.0` | Value must be a finite number between 0.001 and 1000. Preview upper bound in meters. Does not clip geometric depth. |
+
 ## Calibrate wide-angle stereo (`3d.wide_stereo_calibrate`)
 
 3D vision / Calibration

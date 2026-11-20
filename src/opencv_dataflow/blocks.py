@@ -893,6 +893,7 @@ def builtin_registry():
     from .restoration import RESTORATION_BLOCKS
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
+    from .rgbd_warp import WarpRGBDByPose
     from .ridge_response import RidgeResponse
     from .robot_world import RobotWorldHandEye
     from .ros2_blocks import ROS2_BLOCKS
@@ -1351,6 +1352,7 @@ def builtin_registry():
         StereoRectifiedCamera,
         RecordedRGBD,
         RegisterRGBD,
+        WarpRGBDByPose,
         BinaryStereoDisparity,
         QuasiDenseDisparity,
         FilterDisparitySpeckles,

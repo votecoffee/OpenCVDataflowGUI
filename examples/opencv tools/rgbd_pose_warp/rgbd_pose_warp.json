@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Move a calibrated RGB-D view",
+      "description": "Original synthetic RGB-D frame by OpenCVDataflowGUI contributors (MIT). Translate points 0.75 m right and 1.0 m forward into the target frame. Inspect the warped color, camera Z and validity where depth samples compete.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/recording.json",
+        "repeat": "stop",
+        "maximum_skew_ms": 5.0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 16.0,
+        "fy": 16.0,
+        "cx": 28.0,
+        "cy": 20.0,
+        "width": 56,
+        "height": 40,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "registered_camera"
+      },
+      "position": [
+        0,
+        215
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          750,
+          0,
+          1000
+        ],
+        "source_frame": "registered_camera",
+        "target_frame": "moved_camera",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        425
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "warp",
+      "type": "3d.warp_rgbd_pose",
+      "name": "Warp RGB-D by camera pose",
+      "description": "Reproject registered depth and color into a new optical frame.",
+      "parameters": {
+        "color_alignment": "assume_registered",
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "minimum_coverage": 0.25,
+        "display_max_m": 5.0
+      },
+      "position": [
+        400,
+        170
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "transform",
+        "color",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "color",
+        "valid_mask",
+        "source_index",
+        "camera",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "color"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "depth",
+      "target": "warp",
+      "input": "depth"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "warp",
+      "input": "color"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "warp",
+      "input": "camera"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "warp",
+      "input": "transform"
+    }
+  ]
+}
