@@ -29,6 +29,9 @@ try [ALIKED and LightGlue](aliked_matching/README.md).
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
 For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).
 
+[Robust plane and sphere fitting](cloud_model_fitting/README.md) recovers
+metric models and row-aligned residuals from two scans with known outliers.
+
 [Normal-based cloud region growing](cloud_region_growing/README.md)
 separates touching faces and isolates high-curvature seam rows.
 

@@ -515,6 +515,13 @@ available in Debug and Balanced.
   expose original row indices and preserve the corresponding colors, normals
   and pixels. Centroid mode averages positions and colors. [Voxel sampling
   example](<../examples/custom tools/voxel_representatives/README.md>)
+- **Fit point-cloud plane or sphere** uses seeded sample consensus and
+  refines the best model using its support. The block classifies the entire
+  scan at the selected metric tolerance and returns coefficients, signed
+  residuals, and source-row IDs for inliers and outliers. Cloud outputs
+  preserve source attributes and order. Sphere radius limits can constrain
+  the search. Degenerate or insufficiently supported fits report a failure
+  without emitting a model. [Plane and sphere example](<../examples/custom tools/cloud_model_fitting/README.md>)
 - **Grow point-cloud surface regions** links metric XYZ neighbors that meet
   the unsigned normal-angle limit. It uses normals stored in the cloud, or
   estimates normals in bounded local PCA fits. Curvature can come from the

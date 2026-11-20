@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Fit a metric plane and sphere",
+      "description": "Original synthetic clouds by OpenCVDataflowGUI contributors (MIT). Recover two known surfaces from interleaved scan rows with clutter. View the metric fit and compare its inlier and outlier indices.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plane_source",
+      "type": "input.cloud",
+      "name": "Load plane scan",
+      "parameters": {
+        "path": "assets/plane.ply",
+        "units": "mm",
+        "frame": "tilted_fixture",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plane",
+      "type": "3d.cloud_model_fit",
+      "name": "Fit plane through clutter",
+      "description": "Fit one metric plane or sphere robustly and separate supporting scan rows.",
+      "parameters": {
+        "model": "plane",
+        "inlier_tolerance_m": 0.0005,
+        "minimum_inliers": 20,
+        "minimum_inlier_fraction": 0.55,
+        "minimum_sphere_radius_m": 0.03,
+        "maximum_sphere_radius_m": 0.046,
+        "maximum_fit_samples": 4096,
+        "maximum_trials": 192,
+        "random_seed": 0,
+        "max_input_points": 250000
+      },
+      "position": [
+        435,
+        40
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "model",
+        "inliers",
+        "outliers",
+        "inlier_indices",
+        "outlier_indices",
+        "signed_residuals_m",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sphere_source",
+      "type": "input.cloud",
+      "name": "Load sphere scan",
+      "parameters": {
+        "path": "assets/sphere.ply",
+        "units": "mm",
+        "frame": "ball_fixture",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        320
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sphere",
+      "type": "3d.cloud_model_fit",
+      "name": "Fit sphere through clutter",
+      "description": "Fit one metric plane or sphere robustly and separate supporting scan rows.",
+      "parameters": {
+        "model": "sphere",
+        "inlier_tolerance_m": 0.0005,
+        "minimum_inliers": 20,
+        "minimum_inlier_fraction": 0.55,
+        "minimum_sphere_radius_m": 0.03,
+        "maximum_sphere_radius_m": 0.046,
+        "maximum_fit_samples": 4096,
+        "maximum_trials": 192,
+        "random_seed": 0,
+        "max_input_points": 250000
+      },
+      "position": [
+        435,
+        320
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "model",
+        "inliers",
+        "outliers",
+        "inlier_indices",
+        "outlier_indices",
+        "signed_residuals_m",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "plane_source",
+      "output": "cloud",
+      "target": "plane",
+      "input": "cloud"
+    },
+    {
+      "source": "sphere_source",
+      "output": "cloud",
+      "target": "sphere",
+      "input": "cloud"
+    }
+  ]
+}

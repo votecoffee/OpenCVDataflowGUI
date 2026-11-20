@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from .core import Port, Result
-from .geometry3d_common import Tool3D
+from .geometry3d_common import Tool3D, fit_plane_normal, plane_sample_normal
 from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
@@ -20,12 +20,9 @@ def fit_support_plane(points, tolerance, trials, rng):
     best, best_score = None, (2, -np.inf)
     for _ in range(trials):
         a, b, c = points[rng.choice(len(points), size=3, replace=False)]
-        ab, ac = b - a, c - a
-        normal = np.cross(ab, ac)
-        length = np.linalg.norm(normal)
-        if length <= 1e-8 * np.linalg.norm(ab) * np.linalg.norm(ac):
+        normal = plane_sample_normal(a, b, c)
+        if normal is None:
             continue
-        normal /= length
         errors = np.abs(np.einsum("ij,j->i", points, normal) - a @ normal)
         inlier = errors <= tolerance
         residual = errors[inlier]
@@ -38,12 +35,10 @@ def fit_support_plane(points, tolerance, trials, rng):
         return None
 
     for _ in range(3):
-        support = points[best]
-        center = support.mean(axis=0)
-        _, singular, directions = np.linalg.svd(support - center, full_matrices=False)
-        if singular[1] <= 1e-8 * singular[0]:
+        fitted = fit_plane_normal(points[best])
+        if fitted is None:
             return None
-        normal = directions[-1]
+        normal, center = fitted
         offset = float(-center @ normal)
         updated = np.abs(np.einsum("ij,j->i", points, normal) + offset) <= tolerance
         if np.array_equal(best, updated):

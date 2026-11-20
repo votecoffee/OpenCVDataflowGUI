@@ -285,6 +285,27 @@ Inputs: `cloud` (cloud).
 
 No configurable algorithm parameters.
 
+## Fit point-cloud plane or sphere (`3d.cloud_model_fit`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+Input `cloud` — Unorganized XYZ in meters or millimeters in a single named frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `"plane"` | `plane`, `sphere` Choose a plane or a sphere model. |
+| `inlier_tolerance_m` | `0.003` | Value must be a finite number between 1e-09 and 1e+12. Inclusive perpendicular or radial distance to the surface. |
+| `minimum_inliers` | `20` | Value must be a whole number between 3 and 1e+06. Smallest accepted support count across all input rows. |
+| `minimum_inlier_fraction` | `0.55` | Value must be a finite number between 0 and 1. Smallest accepted support fraction across all input rows. |
+| `minimum_sphere_radius_m` | `0.0` | Value must be a finite number between 0 and 1e+12. Smallest allowed sphere radius in meters. |
+| `maximum_sphere_radius_m` | `0.0` | Value must be a finite number between 0 and 1e+12. Largest allowed sphere radius in meters. Zero disables it. |
+| `maximum_fit_samples` | `4096` | Value must be a whole number between 3 and 16384. Limit rows used for sample consensus and refitting. |
+| `maximum_trials` | `192` | Value must be a whole number between 1 and 1024. Maximum random model hypotheses to try. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Seed for reproducible sample selection and hypothesis order. |
+| `max_input_points` | `250000` | Value must be a whole number between 3 and 1e+06. Maximum rows admitted for full-cloud classification. |
+
 ## Estimate point-cloud normals (`3d.cloud_normals`)
 
 3D vision / Surface matching

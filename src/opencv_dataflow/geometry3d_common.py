@@ -15,6 +15,25 @@ class Tool3D(Block):
     category, block_type, subtype = "3D vision", "3D vision", "Geometry"
 
 
+def plane_sample_normal(a, b, c):
+    """Return the unit normal of a noncollinear three-point sample."""
+    ab, ac = b - a, c - a
+    normal = np.cross(ab, ac)
+    length = np.linalg.norm(normal)
+    if length <= 1e-8 * np.linalg.norm(ab) * np.linalg.norm(ac):
+        return None
+    return normal / length
+
+
+def fit_plane_normal(points):
+    """Return the orthogonal least-squares normal and a point on the plane."""
+    center = points.mean(axis=0)
+    _, singular, directions = np.linalg.svd(points - center, full_matrices=False)
+    if singular[1] <= 1e-8 * singular[0]:
+        return None
+    return directions[-1], center
+
+
 def matrix(value, shape, name="Matrix"):
     value = np.asarray(value, np.float64)
     if value.shape != shape or not np.isfinite(value).all():
