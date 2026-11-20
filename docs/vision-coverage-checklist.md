@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 38 | 24 | 69 | 131 | 29.0% |
+| 3. 3D imagery and point clouds | 39 | 24 | 68 | 131 | 29.8% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 293 | 28 | 149 | 470 | 62.3% |
+| **Overall** | 294 | 28 | 148 | 470 | 62.6% |
 
 <!-- coverage-summary:end -->
 
@@ -436,7 +436,7 @@ fixture or result needed to close the item.
 | S3-20 | Organized depth normals | RgbdNormals | Complete | 3d.depth_normals. Verify normal orientation, pixel correspondence and invalid samples on depth planes. |
 | S3-21 | PLY and ASCII PCD cloud interchange and preview | PLY, ASCII PCD, point attributes and orthographic preview | Complete | input.cloud, output.cloud, 3d.cloud_render. Round-trip imported or camera-derived clouds and display a bounded sample. |
 | S3-22 | Camera surface registration | Point-to-plane ICP, point-pair feature detector | Complete | 3d.icp, 3d.ppf_train, 3d.ppf_match. Align two camera-derived surfaces and verify the recovered pose and score. |
-| S3-23 | Depth plane and foreground separation | Robust plane fitting on backprojected pixels, organized masks | Planned | Fit a plane under clutter and emit signed depth residuals and foreground masks on the camera grid. |
+| S3-23 | Depth plane and foreground separation | depthTo3d, robust plane fitting and organized masks | Complete | 3d.separate_depth_plane fits one support plane under clutter and returns signed orthogonal residuals, same-grid masks and foreground-only depth. [Tilted-plane example](<../examples/opencv tools/depth_plane/README.md>) verifies known foreground, background, recess and invalid pixels. |
 | S3-24 | Image-space visibility of reconstructed surfaces | Project points and z-buffer on target intrinsics | Planned | Identify occluded versus visible surface samples and compare the predicted mask with known scene depth. |
 | S3-25 | RGB-D odometry | rgbd.Odometry | Complete | 3d.odometry. Estimate relative camera motion from two aligned RGB-D frames with a reproducible fixture. |
 | S3-26 | Posed depth fusion | OpenCV TSDF integration | Complete | 3d.tsdf_fuse. Integrate posed depth frames with explicit bounds and recover a surface cloud. |

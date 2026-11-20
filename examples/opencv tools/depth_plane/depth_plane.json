@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/depth_mm.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 950,
+        "display_max": 1750
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 149.0,
+        "fy": 157.0,
+        "cx": 78.4,
+        "cy": 54.8,
+        "width": 160,
+        "height": 112,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "depth_camera"
+      },
+      "position": [
+        0,
+        285
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "separate",
+      "type": "3d.separate_depth_plane",
+      "name": "Separate support plane and foreground",
+      "parameters": {
+        "inlier_tolerance_m": 0.004,
+        "foreground_min_m": 0.015,
+        "minimum_inliers": 30,
+        "minimum_inlier_fraction": 0.55,
+        "maximum_fit_samples": 4096,
+        "maximum_trials": 192,
+        "random_seed": 0,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "plane",
+        "signed_distance_m",
+        "plane_mask",
+        "foreground_mask",
+        "foreground_depth",
+        "valid_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "foreground_mask"
+    },
+    {
+      "id": "objects",
+      "type": "3d.depth_cloud",
+      "name": "Foreground point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        720,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Synthetic support plane and parts",
+      "description": "Original depth and truth labels by OpenCVDataflowGUI contributors (MIT). A sloped support plane has two raised objects, a recess, a thin raised patch below the foreground cutoff, and invalid samples.",
+      "parameters": {},
+      "position": [
+        0,
+        -310
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "separate",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "separate",
+      "input": "camera"
+    },
+    {
+      "source": "separate",
+      "output": "foreground_depth",
+      "target": "objects",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "objects",
+      "input": "camera"
+    }
+  ]
+}

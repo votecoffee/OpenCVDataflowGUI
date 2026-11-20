@@ -557,6 +557,32 @@ Inputs: `disparity` (image), `rectification` (data), `image` (image, optional), 
 | `min_depth` | `0.001` |  |
 | `max_depth` | `100.0` |  |
 
+## Separate support plane and foreground (`3d.separate_depth_plane`)
+
+3D vision / RGB-D
+
+Inputs: `depth` (depth), `camera` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `depth` — Physical camera Z depth. Zero, negative, and nonfinite samples are ignored.
+
+Input `camera` — Undistorted pinhole intrinsics for this depth grid.
+
+Input `mask` — Limit points eligible for fitting. Classification still covers the entire frame.
+
+Input `region` — Limit points eligible for fitting, intersecting with the mask when supplied.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `inlier_tolerance_m` | `0.004` | Value must be a finite number between 1e-06 and 1000. Maximum orthogonal distance to count as plane support. |
+| `foreground_min_m` | `0.015` | Value must be a finite number between 1e-06 and 1000. Minimum signed distance toward the camera to mark foreground. |
+| `minimum_inliers` | `30` | Value must be a whole number between 3 and 1e+08. Minimum accepted plane pixels in the fitting selection. |
+| `minimum_inlier_fraction` | `0.55` | Value must be a finite number between 0 and 1. Minimum plane fraction among valid selected depth pixels. |
+| `maximum_fit_samples` | `4096` | Value must be a whole number between 3 and 16384. Maximum number of randomly sampled points for fitting. |
+| `maximum_trials` | `192` | Value must be a whole number between 1 and 1024. Maximum number of three-point hypotheses to evaluate. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Fixed seed for reproducible sampling and model hypotheses. |
+| `input_units` | `"m"` | `m`, `mm` Units for a depth input without a declared physical encoding. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 count. |
+
 ## Smooth depth while preserving edges (`3d.smooth_depth`)
 
 3D vision / Depth

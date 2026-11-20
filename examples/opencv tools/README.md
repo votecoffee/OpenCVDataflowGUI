@@ -28,6 +28,9 @@ with held-out perspective rectification and metric reconstruction.
 [Confidence-weighted depth smoothing](depth_smoothing/README.md) preserves a
 sharp step and rejects unreliable depth samples before cloud reconstruction.
 
+[Support plane and foreground separation](depth_plane/README.md) extracts
+raised parts above a tilted surface into a foreground-only point cloud.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

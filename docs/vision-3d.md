@@ -156,6 +156,14 @@ filter. The depth keeps its type, units, ticket and grid. The validity and
 confidence-rejection masks use the same grid.
 [Depth smoothing example](<../examples/opencv tools/depth_smoothing/README.md>)
 
+**Separate support plane and foreground** fits one dominant plane using valid
+backprojected pixels. A mask or region can limit the fit to exposed support.
+Classification still covers the whole image. Signed distances are in meters
+perpendicular to the plane and positive on the camera side. The foreground-only
+depth preserves the input type, units and grid. The block requires minimum
+plane support before it emits classifications or foreground depth.
+[Support-plane example](<../examples/opencv tools/depth_plane/README.md>)
+
 **Depth to point cloud** calls OpenCV's RGB-D projection using undistorted
 pinhole intrinsics. `DepthArray` supplies its declared m/mm units. Untagged
 integer depths use the configured units-per-sample; untagged floats use the
