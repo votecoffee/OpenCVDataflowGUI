@@ -176,6 +176,12 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [BRISK registration](<opencv tools/brisk_registration/README.md>) | Detect and match BRISK keypoints before estimating a known image shift. |
 | [Camera motion stabilization](<opencv tools/camera_stabilization/README.md>) | Replay known camera jitter and compare raw and corrected error against an anchor frame. |
 | [Channels and image pyramids](<opencv tools/channels_pyramids/README.md>) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
+| [Planar fiducial targets](<opencv tools/fiducial_targets/README.md>) | Generate and verify a single marker, an ID-ordered ArUco grid and a legacy ChArUco board with physical print dimensions. |
+| [Planar pose hypotheses](<opencv tools/planar_pose_hypotheses/README.md>) | Compare candidate poses on near-frontal and oblique views of the same target. |
+| [Epipolar match refinement](<opencv tools/epipolar_refinement/README.md>) | Score noisy stereo points, filter bad matches and validate each accepted correction against known projections. |
+| [Uncalibrated stereo rectification](<opencv tools/uncalibrated_stereo/README.md>) | Estimate rectification from matches, compare held-out vertical alignment and inspect shared support. |
+| [Stereo calibration quality](<opencv tools/stereo_calibration_quality/README.md>) | Compare per-camera fit residuals and independently rendered holdouts. |
+| [Stereo disparity search](<opencv tools/stereo_disparity_search/README.md>) | Compare manual and depth-based search ranges and check support around masks. |
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |
 | [ChArUco calibration validation](<opencv tools/validate_charuco_calibration/README.md>) | Check the fitted profile on a separate cropped board and identify the worst corner. |
 | [Wide-angle stereo](<opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, rectify a held-out view pair and recover metric depth. |
@@ -237,6 +243,8 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Gram matrix](<opencv tools/gram_matrix/README.md>) | Compute feature covariance and reuse the learned offset for a new batch. |
 | [Guided edge-preserving filter](<opencv tools/guided_filter/README.md>) | Smooth a noisy image while preserving its main intensity edge. |
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
+| [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |
+| [Sparse multi-view reconstruction](<opencv tools/sparse_multiview/README.md>) | Rebuild 35 partially observed ChArUco landmarks and refine two poses with a fixed metric baseline. |
 | [Hann window](<opencv tools/hann_window/README.md>) | Compare Fourier leakage before and after tapering an off-bin sinusoid. |
 | [High-bit-depth codecs](<opencv tools/high_bit_depth_codecs/README.md>) | Verify exact 16-bit PNG and JPEG 2000 color/alpha or grayscale round trips, with explicit codec controls. |
 | [Histogram thresholds](<opencv tools/histogram_thresholds/README.md>) | Visualize percentiles, mean, and median, and wire measured cutoffs into three threshold masks. |
@@ -364,6 +372,8 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Stitch an ordered inspection scan](<opencv tools/stitch_scan_sequence/README.md>) | Automatically register a three-tile scan and measure only covered pixels. |
 | [Stitch overlapping inspection views](<opencv tools/stitch_image_pair/README.md>) | Reconstruct a scan from two crops and verify covered pixels against the original. |
 | [Structured-light Gray code](<opencv tools/structured_light/README.md>) | Generate synthetic Gray-code pattern images and decode projector correspondences. |
+| [Phase-shift structured light](<opencv tools/phase_shift/README.md>) | Replay six exposures and recover subpixel projector X or Y through a shadow gap. |
+| [Camera/projector calibration and reconstruction](<opencv tools/camera_projector/README.md>) | Fit a two-device rig and reconstruct a separate depth step from projector correspondences. |
 | [Subpixel patch extraction](<opencv tools/subpixel_crop/README.md>) | Crop around a refined template center and map patch coordinates back to the scene. |
 | [Subpixel template locations](<opencv tools/subpixel_template/README.md>) | Compare integer and refined template matches against two known fractional placements. |
 | [Temporal non-local means](<opencv tools/temporal_nlm/README.md>) | Denoise the middle frame of a short sequence and preserve its ticket. |

@@ -14,6 +14,7 @@ from .calibration_revisions import (
     rig_revision,
 )
 from .core import Port, Result
+from .disparity_search import plan_disparity_search
 from .geometry3d_common import (
     Tool3D,
     camera_for_image,
@@ -124,12 +125,74 @@ def validate_rig(rig):
     return left, right, rigid(rig["transform"])
 
 
+STEREO_VIEW_INPUTS = tuple(
+    Port(name, "data") for name in ("object_views", "left_views", "right_views")
+)
+
+
+def stereo_observation_lists(inputs, minimum=3):
+    groups = [inputs[port.name] for port in STEREO_VIEW_INPUTS]
+    if (
+        any(not isinstance(group, list) for group in groups)
+        or len(groups[0]) < minimum
+        or len({len(group) for group in groups}) != 1
+    ):
+        raise ValidationError(f"Stereo evaluation needs at least {minimum} matched views")
+    output = ([], [], [])
+    for obj, left, right in zip(*groups, strict=True):
+        xyz, a, b = (points(obj, 3, 4), points(left, 2, 4), points(right, 2, 4))
+        if len(xyz) != len(a) or len(a) != len(b):
+            raise ValidationError("Stereo calibration point counts differ within a view")
+        for target, view in zip(output, (xyz, a, b), strict=True):
+            target.append(view)
+    return output
+
+
+def _pinhole_fit_report(rms, per_view, objects, rotations, offsets):
+    errors = np.asarray(per_view, dtype=np.float64)
+    if (
+        errors.shape != (len(objects), 2)
+        or not np.isfinite(errors).all()
+        or np.any(errors < 0)
+        or not np.isfinite(rms)
+        or len(rotations) != len(objects)
+        or len(offsets) != len(objects)
+    ):
+        raise ValidationError("Native stereo fit returned invalid residuals")
+    counts = np.asarray([len(xyz) for xyz in objects])
+    aggregate = np.sqrt(np.average(errors**2, weights=counts, axis=0))
+    worst_index, worst_side = np.unravel_index(errors.argmax(), errors.shape)
+    views = []
+    for i, (err, rv, tv) in enumerate(zip(errors, rotations, offsets, strict=True)):
+        rv, tv = np.asarray(rv).reshape(3), np.asarray(tv).reshape(3)
+        if not np.isfinite(rv).all() or not np.isfinite(tv).all():
+            raise ValidationError("Native stereo fit returned a nonfinite target pose")
+        views.append(
+            {
+                "index": i,
+                "points": int(counts[i]),
+                "left_rms_pixels": float(err[0]),
+                "right_rms_pixels": float(err[1]),
+                "target_to_left_rvec": rv.tolist(),
+                "target_to_left_translation": tv.tolist(),
+            }
+        )
+    return {
+        "model": "stereo_pinhole_fit_report_v1",
+        "rms_pixels": float(rms),
+        "left_rms_pixels": float(aggregate[0]),
+        "right_rms_pixels": float(aggregate[1]),
+        "worst_view_rms_pixels": float(errors.max()),
+        "worst_view_index": int(worst_index),
+        "worst_view_camera": ("left", "right")[worst_side],
+        "views": views,
+    }
+
+
 class CalibrateStereo(Tool3D):
     type_id, title, subtype = "3d.stereo_calibrate", "Calibrate stereo cameras", "Calibration"
     inputs = (
-        Port("object_views", "data"),
-        Port("left_views", "data"),
-        Port("right_views", "data"),
+        *STEREO_VIEW_INPUTS,
         Port("left_camera", "data"),
         Port("right_camera", "data"),
     )
@@ -138,6 +201,7 @@ class CalibrateStereo(Tool3D):
         Port("rms", "number"),
         Port("fundamental", "data"),
         Port("essential", "data"),
+        Port("fit_report", "data"),
     )
     defaults = {
         "fix_intrinsics": True,
@@ -155,7 +219,19 @@ class CalibrateStereo(Tool3D):
         "iterations": 100,
         "epsilon": 1e-6,
         "max_rms": 2.0,
+        "max_view_rms": 0.0,
     }
+    parameter_ranges = {
+        "iterations": NumericRange(1, 10_000, whole=True),
+        "epsilon": NumericRange(0),
+        "max_rms": NumericRange(0),
+        "max_view_rms": NumericRange(0),
+    }
+    parameter_help = {
+        "max_rms": "Maximum joint reprojection RMS in pixels.",
+        "max_view_rms": "Maximum RMS for any camera in any fit view. Zero skips this check.",
+    }
+    process_inputs_readonly = True
 
     def process(self, inputs):
         left, right = inputs["left_camera"], inputs["right_camera"]
@@ -163,27 +239,13 @@ class CalibrateStereo(Tool3D):
         k2, d2, size2 = require_pinhole(right)
         if size != size2 or left["units"] != right["units"]:
             raise ValueError("Stereo camera sizes/units must match")
-        groups = [inputs[k] for k in ("object_views", "left_views", "right_views")]
-        if (
-            any(not isinstance(g, list) for g in groups)
-            or not len(groups[0]) >= 3
-            or len({len(g) for g in groups}) != 1
-        ):
-            raise ValueError(
-                "Stereo calibration needs at least three matched object/left/right views"
-            )
-        object_views, a, b = [], [], []
-        for obj, xy_left, xy_right in zip(*groups):
-            obj, xy_left, xy_right = (
-                points(obj, 3, 4),
-                points(xy_left, 2, 4),
-                points(xy_right, 2, 4),
-            )
-            if not len(obj) == len(xy_left) == len(xy_right):
-                raise ValueError("Stereo calibration point counts differ within a view")
-            object_views.append(obj.astype(np.float32))
-            a.append(xy_left.astype(np.float32))
-            b.append(xy_right.astype(np.float32))
+        units = self.input_payloads["object_views"].get("object_point_units")
+        if units is not None and units != left["units"]:
+            raise ValidationError("Stereo object point units must match the camera models")
+        object_views, a, b = (
+            [view.astype(np.float32) for view in group]
+            for group in stereo_observation_lists(inputs)
+        )
         p = self.parameters
         flags = cv2.CALIB_FIX_INTRINSIC if p["fix_intrinsics"] else cv2.CALIB_USE_INTRINSIC_GUESS
         for key, flag in {
@@ -196,7 +258,7 @@ class CalibrateStereo(Tool3D):
         }.items():
             if p[key]:
                 flags |= flag
-        values = cv2.stereoCalibrate(
+        values = cv2.stereoCalibrateExtended(
             object_views,
             a,
             b,
@@ -205,6 +267,8 @@ class CalibrateStereo(Tool3D):
             k2,
             d2,
             size,
+            None,
+            None,
             flags=flags,
             criteria=(
                 cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS,
@@ -212,16 +276,38 @@ class CalibrateStereo(Tool3D):
                 finite(p["epsilon"], "Epsilon", 0),
             ),
         )
-        rms, k1, d1, k2, d2, r, t, e, f = values
+        rms, k1, d1, k2, d2, r, t, e, f, rotations, offsets, per_view = values
+        report = _pinhole_fit_report(rms, per_view, object_views, rotations, offsets)
         left = camera_record(k1, d1, size, left["units"], left["frame"])
         right = camera_record(k2, d2, size, right["units"], right["frame"])
         pose = pose_record(pose_matrix(r, t), left["frame"], right["frame"], left["units"])
         rig = stereo_rig_record(left, right, pose)
-        passed = rms <= finite(p["max_rms"], "Maximum RMS", 0)
+        report.update(left_frame=left["frame"], right_frame=right["frame"], units=left["units"])
+        reasons = []
+        if rms > float(p["max_rms"]):
+            reasons.append("stereo_calibration_rms")
+        view_limit = float(p["max_view_rms"])
+        if view_limit and report["worst_view_rms_pixels"] > view_limit:
+            reasons.append(
+                {
+                    "code": "stereo_calibration_view_rms",
+                    "message": (
+                        f"View {report['worst_view_index']} {report['worst_view_camera']} camera "
+                        f"RMS {report['worst_view_rms_pixels']:.4g} px exceeds {view_limit:.4g} px"
+                    ),
+                }
+            )
         return Result(
-            {"rig": rig, "rms": float(rms), "essential": e.tolist(), "fundamental": f.tolist()},
-            passed=passed,
-            fail_reasons=[] if passed else ["stereo_calibration_rms"],
+            {
+                "rig": rig,
+                "rms": float(rms),
+                "essential": e.tolist(),
+                "fundamental": f.tolist(),
+                "fit_report": report,
+            },
+            passed=not reasons,
+            fail_reasons=reasons,
+            message=f"{len(object_views)} stereo views, {rms:.4g} px joint RMS",
         )
 
 
@@ -319,15 +405,26 @@ class RectifyStereo(Tool3D):
 
 class StereoDisparity(Tool3D):
     type_id, title, subtype = "3d.disparity", "Stereo BM / SGBM disparity", "Stereo"
-    inputs = (Port("left"), Port("right"))
+    inputs = (
+        Port("left"),
+        Port("right"),
+        Port("rectification", "data", required=False, required_when_connected=True),
+        Port("left_mask", required=False, required_when_connected=True),
+        Port("right_mask", required=False, required_when_connected=True),
+    )
     outputs = (
         Port("disparity"),
         Port("valid_mask"),
         Port("preview"),
         Port("confidence", required=False),
+        Port("support_mask", required=False),
+        Port("search_report", "data"),
     )
     defaults = {
         "algorithm": "sgbm",
+        "search_mode": "manual",
+        "minimum_depth": 0.1,
+        "maximum_depth": 5.0,
         "min_disparity": 0,
         "num_disparities": 64,
         "block_size": 5,
@@ -350,26 +447,40 @@ class StereoDisparity(Tool3D):
         "minimum_wls_confidence": 0.0,
     }
     parameter_ranges = {
+        "minimum_depth": NumericRange(0),
+        "maximum_depth": NumericRange(0),
         "wls_lr_threshold": NumericRange(0, 4096, whole=True),
         "wls_depth_radius": NumericRange(-1, 255, whole=True),
         "minimum_wls_confidence": NumericRange(0, 1),
     }
     parameter_help = {
+        "search_mode": "Choose a manual pixel search or derive one from calibrated depth limits.",
+        "minimum_depth": "Near depth bound in the units of Stereo rectification.",
+        "maximum_depth": "Far depth bound in the units of Stereo rectification.",
         "wls_lr_threshold": "WLS left-right consistency tolerance in sixteenths of a pixel.",
         "wls_depth_radius": "Radius near depth jumps. -1 uses the native default.",
         "minimum_wls_confidence": "Reject WLS estimates below this value. Zero disables gating.",
     }
     parameter_choices = {
         "algorithm": ("bm", "sgbm"),
+        "search_mode": ("manual", "depth"),
         "mode": ("sgbm", "sgbm_3way", "hh", "hh4"),
         "prefilter_type": ("xsobel", "normalized"),
     }
+
+    input_help = {
+        "rectification": "Optional calibrated ROI data. Required for depth-based search.",
+        "left_mask": "Optional valid support mask in left-image coordinates.",
+        "right_mask": "Optional valid support mask in right-image coordinates.",
+    }
+    payload_reference = "left"
 
     def process(self, inputs):
         a, b = (gray_image(inputs[n], (np.uint8,)) for n in ("left", "right"))
         if a.shape != b.shape:
             raise ValueError("Rectified stereo image dimensions must match")
         left, right = (self.input_payloads[name] for name in ("left", "right"))
+        rectification = inputs.get("rectification")
         if STEREO_GRID in left or STEREO_GRID in right:
             left_stamp, right_stamp = left.get(STEREO_GRID), right.get(STEREO_GRID)
             if (
@@ -383,18 +494,38 @@ class StereoDisparity(Tool3D):
                 or not all(is_full_grid(p, a.shape[::-1]) for p in (left, right))
             ):
                 raise ValidationError("Stereo images must share the same sealed rectification grid")
+            if rectification is not None and digest(rectification) != left_stamp.get("sha256"):
+                raise ValidationError("Search rectification differs from the sealed stereo images")
+        elif isinstance(rectification, dict) and REVISION in rectification:
+            raise ValidationError("A versioned search requires its sealed rectified stereo images")
         p = self.parameters
-        disparities = integer(p["num_disparities"], "Number disparities", 16, 4096)
-        if disparities % 16 or disparities >= a.shape[1]:
-            raise ValueError("num_disparities must be a multiple of 16 smaller than image width")
         block_size = integer(
             p["block_size"], "Block size", 5 if p["algorithm"] == "bm" else 1, 255, odd=True
         )
         if block_size >= min(a.shape):
             raise ValueError("Stereo block must fit inside the image")
-        minimum = integer(p["min_disparity"], "Minimum disparity", -4096, 4096)
+        search = plan_disparity_search(inputs, p, a.shape, block_size)
+        minimum, disparities = search.minimum, search.count
+        if search.support is not None and not search.support.any():
+            return Result(
+                {
+                    "disparity": np.full(a.shape, np.nan, np.float32),
+                    "valid_mask": search.support,
+                    "preview": np.zeros((*a.shape, 3), np.uint8),
+                    "confidence": NO_VALUE,
+                    "support_mask": search.support,
+                    "search_report": search.report,
+                },
+                passed=False,
+                score=0.0,
+                fail_reasons=["stereo_search_no_support"],
+                message="No full matching footprints in the selected range and image support",
+            )
         if p["algorithm"] == "bm":
             matcher = cv2.StereoBM_create(disparities, block_size)
+            if search.rois is not None:
+                matcher.setROI1(search.rois[0])
+                matcher.setROI2(search.rois[1])
             matcher.setTextureThreshold(
                 integer(p["texture_threshold"], "Texture threshold", 0, 10000)
             )
@@ -446,6 +577,8 @@ class StereoDisparity(Tool3D):
             confidence[~np.isfinite(confidence)] = 0
             np.clip(confidence, 0, 1, out=confidence)
         valid = raw > (minimum - 1) * 16
+        if search.support is not None:
+            valid &= search.support != 0
         if confidence is not NO_VALUE:
             confidence[~valid] = 0
             valid &= confidence >= float(p["minimum_wls_confidence"])
@@ -464,6 +597,8 @@ class StereoDisparity(Tool3D):
                 "valid_mask": valid.astype(np.uint8) * 255,
                 "preview": preview,
                 "confidence": confidence,
+                "support_mask": NO_VALUE if search.support is None else search.support,
+                "search_report": search.report,
             },
             passed=bool(valid.any()),
             score=float(valid.mean()),

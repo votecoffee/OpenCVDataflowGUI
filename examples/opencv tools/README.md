@@ -14,6 +14,24 @@ For a first introduction to running and editing graphs, use the
 [Demos guided tour](../demos/README.md). [Custom tools](<../custom tools/README.md>)
 contains project-defined inspection algorithms and other-library integrations.
 
+[Planar fiducial targets](fiducial_targets/README.md) generates printable
+ArUco markers, ArUco grids and ChArUco boards and checks digital detection.
+
+[Planar pose hypotheses](planar_pose_hypotheses/README.md) shows how close
+reprojection scores can leave a plane orientation ambiguous.
+
+[Epipolar match refinement](epipolar_refinement/README.md) scores noisy
+pairs in two camera grids and checks corrected positions on a known rig.
+
+[Uncalibrated stereo rectification](uncalibrated_stereo/README.md) uses
+image matches to align scanlines and emit per-view and shared support masks.
+
+[Stereo calibration quality](stereo_calibration_quality/README.md) checks
+per-camera fit residuals and cross-camera prediction on held-out targets.
+
+[Stereo disparity search](stereo_disparity_search/README.md) derives a
+smaller search from calibrated depth limits and verifies valid support.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera
@@ -33,6 +51,18 @@ raised parts above a tilted surface into a foreground-only point cloud.
 
 [Calibrated cloud visibility](cloud_visibility/README.md) renders depth and
 color and checks visible surfaces against observed camera depth.
+
+[Phase-shift fringe replay](phase_shift/README.md) recovers absolute subpixel
+projector coordinates and marks low-signal and inconsistent captures.
+
+[Camera/projector reconstruction](camera_projector/README.md) fits separate
+pixel grids and verifies metric depth on a held-out stepped scene.
+
+[Robot-world and hand–eye calibration](robot_world/README.md) fits both
+rigid transforms for fixed and robot-mounted cameras and checks held-out images.
+
+[Sparse multi-view reconstruction](sparse_multiview/README.md) packs four
+ChArUco views into a sparse cloud and compares fixed and refined camera poses.
 
 [All examples](../README.md)
 

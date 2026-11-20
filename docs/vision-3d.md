@@ -23,7 +23,11 @@ Open these projects with **File → Open…**.
 | [fisheye calibration](<../examples/opencv tools/fisheye_calibration/README.md>) | Fit eight image views, validate a separate view and rectify with the fitted intrinsics. |
 | [omnidirectional calibration](<../examples/opencv tools/omnidir_calibration/README.md>) | Fit the Mei lens and mirror parameter, check a held-out edge target, and rectify to a perspective view. |
 | [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
+| [Sparse multi-view reconstruction](<../examples/opencv tools/sparse_multiview/README.md>) | Triangulate labelled features from four partial target views and refine their poses using two fixed anchors. |
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
+| [Phase-shift fringe replay](<../examples/opencv tools/phase_shift/README.md>) | Decode absolute subpixel projector X or Y from a six-exposure group with low-confidence gaps. |
+| [Camera/projector reconstruction](<../examples/opencv tools/camera_projector/README.md>) | Fit a rig at different resolutions and reconstruct a held-out depth step. |
+| [Robot-world and hand–eye](<../examples/opencv tools/robot_world/README.md>) | Jointly fit two poses and predict held-out board images with a fixed or robot-mounted camera. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 | [TSDF mesh](<../examples/skimage tools/tsdf_mesh/README.md>) | Extract a metric triangle surface and preserve the gap in observed depth. |
 
@@ -116,7 +120,45 @@ overlay and graphics layer uses its own view's coordinate frame. A matrix
 from **Fundamental matrix** carries the source point frames, so the review
 can reject a mismatch such as using a raw-view matrix on rectified points.
 
+**Score and refine epipolar correspondences** computes square-root Sampson
+error in pixels for ordered stereo matches. Evaluate mode forwards the raw
+pairs that meet the limit. Correct mode passes those pairs to OpenCV optimal
+correction and checks the remaining residual, per-view displacement and
+known image bounds. Undefined epipolar directions, including exact epipoles,
+are rejected before correction. The report and **Inliers** mask follow input
+order. **Indices** identifies the rows retained in the compact left and right
+point outputs. Each output and preview keeps its own view's frame.
+[Noisy stereo match example](<../examples/opencv tools/epipolar_refinement/README.md>)
+
 ## Stereo and depth
+
+**Rectify uncalibrated stereo images** fits two pixel homographies from
+matched points and a fundamental matrix. It accepts an optional inlier mask,
+filters undefined and high-error correspondences, and uses the right image
+dimensions as the default shared canvas. The report measures vertical fit
+error and valid overlap. It rejects homographies with a projective horizon
+crossing either source image. Each output image and support mask retains
+its view's source mapping. **Common valid** is their intersection on the
+left rectified grid. Use a calibrated stereo rig for metric reprojection.
+[Held-out alignment and support example](<../examples/opencv tools/uncalibrated_stereo/README.md>)
+
+**Calibrate stereo cameras** reports joint RMS and a capture-by-camera
+breakdown for pinhole rigs. An optional per-view limit catches a single
+bad capture with a low pooled error. **Validate stereo calibration** keeps
+the intrinsics and relative pose fixed. It estimates a target pose from
+one camera's observations and scores the projection in the other camera,
+then swaps the roles. The report compares these cross-camera errors to the
+single-camera pose fits for every held-out capture.
+[Fit and held-out stereo example](<../examples/opencv tools/stereo_calibration_quality/README.md>)
+
+**Stereo BM / SGBM disparity** can derive a signed pixel search from near
+and far depth limits using the calibrated rectification Q. The native
+search count rounds up to a multiple of 16. Connecting rectification or
+per-view support masks enables checks for complete search footprints.
+The block reports the native ROI, the signed-disparity-safe rectangle,
+and the final support fraction after mask holes. Pixels outside support
+have invalid disparity, zero validity and zero confidence.
+[Known-disparity example](<../examples/opencv tools/stereo_disparity_search/README.md>)
 
 **Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional
 pair from matched target views. The fisheye fitter can retain or refine
@@ -257,14 +299,101 @@ pairs and validity, without guessing metric 3D. Use calibrated camera/projector
 projection matrices and valid pairs for triangulation. Pattern projection,
 trigger timing and physical capture are external to this synthetic example.
 
+**Generate phase-shift patterns** emits a single-cycle coarse triplet and
+a fine triplet in 120° steps for one projector axis. **Decode absolute
+phase-shift coordinates** uses the coarse estimate to select the fine fringe
+cycle per pixel. It emits subpixel coordinates and phase on the camera grid
+with modulation, ambiguity and validity diagnostics. Absolute X and Y use
+separate capture sequences and a stationary, aligned scene.
+[Capture examples](<../examples/opencv tools/phase_shift/README.md>)
+
+**Calibrate camera and projector** fits the camera-to-projector transform
+from matched target views on two pinhole grids. It can refine projector
+intrinsics on their own grid while keeping camera intrinsics fixed.
+**Reconstruct structured-light depth** takes dense X/Y phase maps or sparse
+Gray-code pairs, and emits metric camera-Z, a point cloud, validity and
+reprojection error. Triangulation checks positive depth at both devices,
+ray angle, and error in each device's own pixel coordinates. Use the
+single-file calibration blocks to save and reuse the resulting rig.
+[Calibration and stepped-depth example](<../examples/opencv tools/camera_projector/README.md>)
+
+## Planar fiducial targets
+
+**Generate planar fiducial target** creates a single ArUco marker, an ArUco
+grid or a ChArUco board from a predefined dictionary. Configure the marker
+IDs, border width, physical lengths, DPI and white margin. The raster uses
+integer pixel geometry. At the reported page size it preserves the configured
+ArUco marker edge or the ChArUco square pitch. The report gives the effective
+dimensions of all rasterized features in the selected physical units.
+
+Export the raw image and set the full print dimensions using the reported
+width and height. Use the measured dimensions of the printed board for
+calibration. The runnable example verifies each layout using image detection,
+including custom IDs and legacy ChArUco parity.
+[Target generator example](<../examples/opencv tools/fiducial_targets/README.md>)
+
+## Planar pose hypotheses
+
+**Planar pose hypotheses** uses a calibrated pinhole camera and matched points
+on a plane. Use general IPPE with at least four coplanar correspondences or
+IPPE square with a centered, ordered marker square. It scores both native
+solutions in the original distorted pixel grid, filters nonpositive depth,
+and removes numerical duplicates. Each emitted candidate reports a rigid
+object-to-camera transform in the supplied frames and camera units.
+
+The block emits **Hypotheses** and flags **Ambiguous** when the top scores fall
+within the configured RMS gap. **Pose** emits only when the ambiguity gate
+allows a single transform. Connecting the source image adds drawable normals
+to the preview. [Near-frontal and oblique example](<../examples/opencv tools/planar_pose_hypotheses/README.md>)
+
+## Sparse multi-view reconstruction
+
+Pack each calibrated pinhole view with its world-to-camera pose and landmark
+IDs paired to distorted image pixels. Use three to 16 views sharing a world
+frame and length unit, with up to 512 unique landmarks. A track contains the
+visible observations for one ID. Undistorted bearings initialize each track
+with multi-view direct linear triangulation. Tracks with weak parallax,
+nonpositive depth, or excessive pixel error are reported and excluded.
+
+Refinement minimizes distortion-aware reprojection residuals with a robust
+loss. Points-only mode preserves every supplied pose. Joint mode holds two
+anchor poses fixed and adjusts the other extrinsics. Use a known baseline and
+shared, non-collinear tracks with enough angular separation. The cloud retains
+the anchors' world frame and units, including unitless coordinates when no
+metric baseline was supplied. Landmark IDs are stored alongside cloud rows in
+metadata. This workflow takes supplied correspondences and initial camera
+poses. The separate scene-scale item (S3-65) tracks scale recovery when camera
+motion starts at unknown scale. [Four-view example and independent holdout](<../examples/opencv tools/sparse_multiview/README.md>)
+
+- [OpenCV multi-view DLT reference](https://docs.opencv.org/5.0/extra_modules/triangulation.html)
+- [SciPy sparse least-squares reference](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)
+
+## Robot-world calibration
+
+**Calibrate robot-world and hand–eye** fits a transform from the moving object
+to the gripper and a transform from the stationary object to the robot base.
+For a fixed camera those objects are the target and camera respectively. For
+a robot-mounted camera they are the camera and the target. Both arrangements
+consume gripper-to-base and target-to-camera observations. Use multiple views
+with rotations about at least two independent axes and one common length unit.
+Ticketed pose groups pair by ticket and holdout tickets must be disjoint.
+
+The solver initializes from Park relative motion, then jointly refines the two
+rigid transforms against pose closure using SciPy least squares. It reports
+translation RMS in millimeters and angular RMS in degrees, independently for
+training and held-out samples. Both transforms are withheld if the solver fails
+to converge or if either supplied split exceeds its configured limits.
+[Fixed and robot-mounted camera examples](<../examples/opencv tools/robot_world/README.md>)
+
 ## Build and verification boundaries
 
 **OpenCV 3D capabilities** reports bindings in the installed build. The Windows
 OpenCV 5 contrib wheel exposes geometry, calibration, stereo, ptcloud and the
 contrib modules used here, with several RGB-D functions directly under `cv2`.
-It has no Python SFM/viz or hand-eye solver. KinFu variants have bindings but
-their constructors are disabled in this build. The native TSDF block is tested
-separately and does not require KinFu. Live robot integration, hand-eye calibration,
+This wheel lacks Python SFM/viz and the native hand–eye and robot-world solvers.
+KinFu variants expose Python bindings with disabled constructors in this build.
+The native TSDF block is qualified separately from KinFu. Robot-world results
+come from offline synthetic fixtures. Physical hand–eye calibration,
 camera/projector commissioning and arbitrary third-party rigs remain unverified.
 
 - [OpenCV 5 module organization](https://github.com/opencv/opencv/wiki/OpenCV-5)

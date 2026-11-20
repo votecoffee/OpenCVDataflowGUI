@@ -677,6 +677,11 @@ class ColorBalance(Block):
 def validate_profile(profile):
     if not isinstance(profile, dict):
         raise ValidationError("Calibration profile must be a JSON object")
+    if profile.get("model") == "camera_projector_rig_v1":
+        from .camera_projector import reconstruct_pair
+
+        reconstruct_pair(profile)
+        return
     if profile.get("model") == "stereo_rig_v1":
         from .stereo3d import validate_rig
 

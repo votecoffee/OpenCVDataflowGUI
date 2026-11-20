@@ -165,10 +165,10 @@ P2	method	cv2.aruco.ArucoDetector.setDictionary	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.setRefineParameters	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.write	method name only	-
 P2	class	cv2.aruco.Board	no static reference	-
-P2	method	cv2.aruco.Board.generateImage	no static reference	-
+P2	method	cv2.aruco.Board.generateImage	method name only	-
 P2	method	cv2.aruco.Board.getDictionary	no static reference	-
 P2	method	cv2.aruco.Board.getIds	method name only	-
-P2	method	cv2.aruco.Board.getObjPoints	no static reference	-
+P2	method	cv2.aruco.Board.getObjPoints	method name only	-
 P2	method	cv2.aruco.Board.getRightBottomCorner	no static reference	-
 P2	method	cv2.aruco.Board.matchImagePoints	method name only	-
 P2	class	cv2.aruco.CharucoBoard	literal reference	-
@@ -195,7 +195,7 @@ P2	class	cv2.aruco.DetectorParameters	literal reference	-
 P2	method	cv2.aruco.DetectorParameters.readDetectorParameters	no static reference	-
 P2	method	cv2.aruco.DetectorParameters.writeDetectorParameters	no static reference	-
 P2	class	cv2.aruco.Dictionary	no static reference	-
-P2	method	cv2.aruco.Dictionary.generateImageMarker	no static reference	-
+P2	method	cv2.aruco.Dictionary.generateImageMarker	method name only	-
 P2	method	cv2.aruco.Dictionary.getBitsFromByteList	no static reference	-
 P2	method	cv2.aruco.Dictionary.getByteListFromBits	no static reference	-
 P2	method	cv2.aruco.Dictionary.getDistanceToId	no static reference	-
@@ -209,9 +209,9 @@ P2	function	cv2.aruco.drawDetectedCornersCharuco	no static reference	-
 P2	function	cv2.aruco.drawDetectedDiamonds	no static reference	-
 P2	function	cv2.aruco.drawDetectedMarkers	literal reference	-
 P2	function	cv2.aruco.extendDictionary	no static reference	-
-P2	function	cv2.aruco.generateImageMarker	no static reference	-
+P2	function	cv2.aruco.generateImageMarker	literal reference	-
 P2	function	cv2.aruco.getPredefinedDictionary	literal reference	-
-P2	class	cv2.aruco.GridBoard	no static reference	-
+P2	class	cv2.aruco.GridBoard	literal reference	-
 P2	method	cv2.aruco.GridBoard.getGridSize	no static reference	-
 P2	method	cv2.aruco.GridBoard.getMarkerLength	no static reference	-
 P2	method	cv2.aruco.GridBoard.getMarkerSeparation	no static reference	-
@@ -1971,7 +1971,7 @@ P3	function	cv2.calcCovarMatrix	literal reference	-
 P3	function	cv2.calcHist	literal reference	-
 P3	function	cv2.calcOpticalFlowFarneback	literal reference	-
 P3	function	cv2.calcOpticalFlowPyrLK	literal reference	-
-P3	function	cv2.calibrateCamera	no static reference	-
+P3	function	cv2.calibrateCamera	literal reference	-
 P3	function	cv2.calibrateCameraExtended	literal reference	-
 P3	function	cv2.calibrateCameraRO	no static reference	-
 P3	function	cv2.calibrateCameraROExtended	no static reference	-
@@ -2103,7 +2103,7 @@ P3	function	cv2.cornerHarris	literal reference	-
 P3	function	cv2.cornerMinEigenVal	literal reference	-
 P3	function	cv2.cornerSubPix	literal reference	-
 P3	function	cv2.correctChromaticAberration	literal reference	-
-P3	function	cv2.correctMatches	no static reference	-
+P3	function	cv2.correctMatches	literal reference	-
 P3	function	cv2.countNonZero	literal reference	-
 P3	function	cv2.createAffineTransformer	no static reference	-
 P3	function	cv2.createAlignMTB	literal reference	-
@@ -2877,7 +2877,7 @@ P3	function	cv2.getTextSize	literal reference	-
 P3	function	cv2.getThreadNum	no static reference	-
 P3	function	cv2.getTickFrequency	literal reference	-
 P3	function	cv2.getTrackbarPos	no static reference	-
-P3	function	cv2.getValidDisparityROI	no static reference	-
+P3	function	cv2.getValidDisparityROI	literal reference	-
 P3	function	cv2.getVersionMajor	no static reference	-
 P3	function	cv2.getVersionMinor	no static reference	-
 P3	function	cv2.getVersionRevision	no static reference	-
@@ -4452,7 +4452,7 @@ P3	function	cv2.solveCubic	literal reference	-
 P3	function	cv2.solveLP	literal reference	-
 P3	function	cv2.solveP3P	no static reference	-
 P3	function	cv2.solvePnP	literal reference	-
-P3	function	cv2.solvePnPGeneric	no static reference	-
+P3	function	cv2.solvePnPGeneric	literal reference	-
 P3	function	cv2.solvePnPRansac	literal reference	-
 P3	function	cv2.solvePnPRefineLM	literal reference	-
 P3	function	cv2.solvePnPRefineVVS	literal reference	-
@@ -4505,14 +4505,14 @@ P3	method	cv2.StereoBM.getUniquenessRatio	no static reference	-
 P3	method	cv2.StereoBM.setPreFilterCap	method name only	-
 P3	method	cv2.StereoBM.setPreFilterSize	method name only	-
 P3	method	cv2.StereoBM.setPreFilterType	method name only	-
-P3	method	cv2.StereoBM.setROI1	no static reference	-
-P3	method	cv2.StereoBM.setROI2	no static reference	-
+P3	method	cv2.StereoBM.setROI1	method name only	-
+P3	method	cv2.StereoBM.setROI2	method name only	-
 P3	method	cv2.StereoBM.setSmallerBlockSize	no static reference	-
 P3	method	cv2.StereoBM.setTextureThreshold	method name only	-
 P3	method	cv2.StereoBM.setUniquenessRatio	method name only	-
 P3	function	cv2.StereoBM_create	literal reference	-
-P3	function	cv2.stereoCalibrate	literal reference	-
-P3	function	cv2.stereoCalibrateExtended	no static reference	-
+P3	function	cv2.stereoCalibrate	no static reference	-
+P3	function	cv2.stereoCalibrateExtended	literal reference	-
 P3	class	cv2.StereoMatcher	no static reference	-
 P3	method	cv2.StereoMatcher.compute	method name only	-
 P3	method	cv2.StereoMatcher.getBlockSize	no static reference	-
@@ -4528,7 +4528,7 @@ P3	method	cv2.StereoMatcher.setNumDisparities	no static reference	-
 P3	method	cv2.StereoMatcher.setSpeckleRange	method name only	-
 P3	method	cv2.StereoMatcher.setSpeckleWindowSize	method name only	-
 P3	function	cv2.stereoRectify	literal reference	-
-P3	function	cv2.stereoRectifyUncalibrated	no static reference	-
+P3	function	cv2.stereoRectifyUncalibrated	literal reference	-
 P3	class	cv2.StereoSGBM	no static reference	-
 P3	method	cv2.StereoSGBM.create	method name only	-
 P3	method	cv2.StereoSGBM.getMode	no static reference	-
@@ -4550,12 +4550,12 @@ P3	method	cv2.structured_light.GrayCodePattern.getProjPixel	method name only	-
 P3	method	cv2.structured_light.GrayCodePattern.setBlackThreshold	method name only	-
 P3	method	cv2.structured_light.GrayCodePattern.setWhiteThreshold	method name only	-
 P3	function	cv2.structured_light.GrayCodePattern_create	no static reference	-
-P3	class	cv2.structured_light.SinusoidalPattern	no static reference	-
+P3	class	cv2.structured_light.SinusoidalPattern	literal reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.computeDataModulationTerm	no static reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.computePhaseMap	no static reference	-
-P3	method	cv2.structured_light.SinusoidalPattern.create	method name only	-
+P3	method	cv2.structured_light.SinusoidalPattern.create	literal reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.findProCamMatches	no static reference	-
-P3	method	cv2.structured_light.SinusoidalPattern.Params	method name only	-
+P3	method	cv2.structured_light.SinusoidalPattern.Params	literal reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.unwrapPhaseMap	no static reference	-
 P3	function	cv2.structured_light.SinusoidalPattern_create	no static reference	-
 P3	class	cv2.structured_light.StructuredLightPattern	no static reference	-

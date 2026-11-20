@@ -645,6 +645,7 @@ def builtin_registry():
     )
     from .calipers import BeadCalipers
     from .camera_health import CameraHealth
+    from .camera_projector import CAMERA_PROJECTOR_BLOCKS
     from .cascade_detection import DetectCascade
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
@@ -686,6 +687,7 @@ def builtin_registry():
     from .ecc_registration import AlignECC
     from .edge_agreement import CompareEdgeMaps
     from .epipolar import CheckEpipolarCorrespondences
+    from .epipolar_refinement import RefineEpipolarCorrespondences
     from .example_plugins import invert as invert_example
     from .example_plugins import mean_inspection as mean_example
     from .examples3d import StereoDemo
@@ -699,6 +701,7 @@ def builtin_registry():
     )
     from .feature_evaluation import EvaluateImageFeatures
     from .features import FEATURE_BLOCKS
+    from .fiducial_targets import GenerateFiducialTarget
     from .fisheye_calibration import FisheyeCalibration
     from .flat_field_reference import BuildFlatFieldReference
     from .flow_files import SaveFlowFile
@@ -814,9 +817,11 @@ def builtin_registry():
     from .path_continuity import InspectPathContinuity
     from .path_strip import UnwrapPathStrip
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
+    from .phase_shift import PHASE_SHIFT_BLOCKS
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
     from .pixel_moments import PixelMoments
+    from .planar_pose import PlanarPoseHypotheses
     from .plugins import (
         BIN_PICKING_TYPES,
         GEOMETRIC_MATCHER_TYPES,
@@ -867,6 +872,7 @@ def builtin_registry():
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
     from .ridge_response import RidgeResponse
+    from .robot_world import RobotWorldHandEye
     from .ros2_blocks import ROS2_BLOCKS
     from .rotated_detection import DecodeRotatedDetections
     from .rotating_panorama import StitchRotatingPanorama
@@ -897,11 +903,13 @@ def builtin_registry():
     from .slanted_edge import MeasureSlantedEdge
     from .soft_nms import SuppressDetections
     from .spanning_tree import MinimumSpanningTree
+    from .sparse_multiview import MakeLandmarkView, ReconstructSparseViews
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
     from .stabilization_fill import FillStabilizationBorders
     from .stack_blur import StackBlur
     from .stereo3d import STEREO3D_BLOCKS
+    from .stereo_validation import ValidateStereoCalibration
     from .stream_stabilization import StabilizeStream
     from .strip_defects import GroupStripDefects, JudgeStripDefects
     from .strip_graphics import MapStripGraphics
@@ -925,6 +933,7 @@ def builtin_registry():
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
     from .tsdf_mesh import TSDF_MESH_BLOCKS
+    from .uncalibrated_stereo import RectifyUncalibratedStereo
     from .video_buffer import DecodeVideo
     from .video_files import VideoFile, WriteVideo
     from .video_time import VideoAtTime
@@ -999,10 +1008,12 @@ def builtin_registry():
         CalibrationGrid,
         DetectArucoMarkers,
         DetectCharucoBoard,
+        GenerateFiducialTarget,
         LensCalibration,
         ValidateLensCalibration,
         CheckChessboardQuality,
         HandEyeCalibration,
+        RobotWorldHandEye,
         BuildLensMaps,
         LensMapDisplacement,
         UndistortLensPoints,
@@ -1283,10 +1294,16 @@ def builtin_registry():
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
+        PlanarPoseHypotheses,
+        MakeLandmarkView,
+        ReconstructSparseViews,
         DeclareCalibrationCapture,
         FisheyeCalibration,
         OmnidirectionalCalibration,
         CheckEpipolarCorrespondences,
+        RefineEpipolarCorrespondences,
+        RectifyUncalibratedStereo,
+        ValidateStereoCalibration,
         *STEREO3D_BLOCKS,
         CalibrateWideStereo,
         *CLOUD_BLOCKS,
@@ -1294,6 +1311,8 @@ def builtin_registry():
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
+        *PHASE_SHIFT_BLOCKS,
+        *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         StereoDemo,
     ):

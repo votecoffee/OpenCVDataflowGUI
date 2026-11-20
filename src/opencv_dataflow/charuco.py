@@ -6,7 +6,13 @@ import cv2
 import numpy as np
 
 from .core import Block, Port, Result
-from .fiducial_detection import DICTIONARIES, MARKER_CHOICES, MARKER_OPTIONS, detector_parameters
+from .fiducial_detection import (
+    DICTIONARIES,
+    MARKER_CHOICES,
+    MARKER_OPTIONS,
+    board_marker_ids,
+    detector_parameters,
+)
 from .geometry3d_common import image_size, require_pinhole
 from .graphics_layers import GraphicDrawing, graphic_object
 from .outcomes import failed_input
@@ -23,26 +29,8 @@ def _make_board(p):
     if marker >= square:
         raise ValidationError("Marker length must be less than square length", "marker_length")
     dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]])
-    capacity = len(dictionary.bytesList)
-    marker_count = size[0] * size[1] // 2
-    if marker_count > capacity:
-        raise ValidationError("The dictionary has fewer IDs than board markers", "dictionary")
-    ids = p["marker_ids"]
-    if not isinstance(ids, list) or (
-        ids
-        and (
-            len(ids) != marker_count
-            or any(type(i) is not int or not 0 <= i < capacity for i in ids)
-            or len(set(ids)) != marker_count
-        )
-    ):
-        raise ValidationError(
-            f"Provide {marker_count} unique marker IDs in 0..{capacity - 1}, or an empty list",
-            "marker_ids",
-        )
-    board = cv2.aruco.CharucoBoard(
-        size, square, marker, dictionary, np.asarray(ids, dtype=np.int32) if ids else None
-    )
+    ids = board_marker_ids(p["marker_ids"], size[0] * size[1] // 2, dictionary)
+    board = cv2.aruco.CharucoBoard(size, square, marker, dictionary, ids)
     board.setLegacyPattern(bool(p["legacy_pattern"]))
     return board
 

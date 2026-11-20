@@ -59,6 +59,61 @@ Inputs: `calibration` (data, optional).
 | `units` | `"m"` | `m`, `mm`, `unitless` |
 | `frame` | `"camera"` |  |
 
+## Calibrate camera and projector (`3d.camera_projector_calibrate`)
+
+3D vision / Structured light
+
+Inputs: `camera` (data), `projector` (data), `object_views` (data, optional), `camera_views` (data, optional), `projector_views` (data, optional).
+
+Input `camera` — Calibrated pinhole camera. Camera intrinsics stay fixed.
+
+Input `projector` — Projector pinhole model with fixed intrinsics or an initial guess.
+
+Input `object_views` — Per-view target XYZ arrays in the declared metric units.
+
+Input `camera_views` — Per-view camera XY arrays in target point order.
+
+Input `projector_views` — Per-view decoded projector XY arrays in that same order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Optional JSON object with object_views, camera_views and projector_views. |
+| `path_base` | `"project"` | `project`, `working_directory` Base for a relative observations file. |
+| `projector_intrinsics` | `"fixed"` | `fixed`, `refine` Use fixed intrinsics or fit the projector on its own pixel grid. |
+| `iterations` | `100` | Value must be a whole number between 1 and 1000. |
+| `epsilon` | `1e-08` | Value must be a finite number between 0 and 1. |
+| `max_rms_px` | `1.0` | Value must be a finite number between 1e-06 and 1000. Maximum acceptable RMS across both devices and all views. |
+| `max_view_rms_px` | `2.0` | Value must be a finite number between 0 and 1000. Per-device RMS limit per view. Zero disables it. |
+
+## Reconstruct structured-light depth (`3d.camera_projector_reconstruct`)
+
+3D vision / Structured light
+
+Inputs: `rig` (data), `projector_x` (image, optional), `projector_y` (image, optional), `camera_points` (data, optional), `projector_points` (data, optional), `valid` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `projector_x` — Dense X-coordinate map on the camera grid. Connect with projector_y.
+
+Input `projector_y` — Dense Y-coordinate map on that same camera grid.
+
+Input `camera_points` — Sparse integer camera pixels, such as the Gray-code decoder output.
+
+Input `projector_points` — Sparse projector XY pixels matching camera_points in order.
+
+Input `valid` — Optional sparse Boolean flag list in point order.
+
+Input `mask` — Limit measurements to selected camera pixels.
+
+Input `region` — Limit measurements to a camera region, intersecting the optional mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sample_step` | `1` | Value must be a whole number between 1 and 512. Dense sampling stride in pixels. Sparse point order is retained. |
+| `max_points` | `1000000` | Value must be a whole number between 1 and 1e+06. Limit the number of submitted valid correspondences before triangulation. |
+| `minimum_ray_angle_degrees` | `0.25` | Value must be a finite number between 0.001 and 90. Reject nearly parallel camera/projector ray pairs. |
+| `max_reprojection_error_px` | `0.75` | Value must be a finite number between 1e-05 and 1000. Maximum allowed pixel error on either optical device. |
+| `minimum_z_m` | `0.001` | Value must be a finite number between 1e-06 and 100000. Minimum accepted positive camera depth in meters. |
+| `maximum_z_m` | `5.0` | Value must be a finite number between 1e-06 and 100000. Maximum accepted camera depth in meters. |
+
 ## OpenCV 3D capabilities (`3d.capabilities`)
 
 3D vision / Diagnostics
@@ -223,11 +278,20 @@ Inputs: `depth` (depth), `camera` (data), `image` (image, optional), `mask` (ima
 
 3D vision / Stereo
 
-Inputs: `left` (image), `right` (image).
+Inputs: `left` (image), `right` (image), `rectification` (data, optional), `left_mask` (image, optional), `right_mask` (image, optional).
+
+Input `rectification` — Optional calibrated ROI data. Required for depth-based search.
+
+Input `left_mask` — Optional valid support mask in left-image coordinates.
+
+Input `right_mask` — Optional valid support mask in right-image coordinates.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `algorithm` | `"sgbm"` | `bm`, `sgbm` |
+| `search_mode` | `"manual"` | `manual`, `depth` Choose a manual pixel search or derive one from calibrated depth limits. |
+| `minimum_depth` | `0.1` | Value must be a finite number at least 0. Near depth bound in the units of Stereo rectification. |
+| `maximum_depth` | `5.0` | Value must be a finite number at least 0. Far depth bound in the units of Stereo rectification. |
 | `min_disparity` | `0` |  |
 | `num_disparities` | `64` |  |
 | `block_size` | `5` |  |
@@ -385,6 +449,20 @@ Inputs: `source` (cloud), `target` (cloud), `initial_pose` (data, optional).
 | `pyramid_levels` | `4` |  |
 | `max_residual` | `0.05` |  |
 
+## Pack calibrated landmark view (`3d.landmark_view`)
+
+3D vision / Reconstruction
+
+Inputs: `camera` (data), `world_to_camera` (data), `landmark_ids` (data), `image_points` (data).
+
+Input `image_points` — Original (distorted) XY pixels in the camera model's calibrated grid.
+
+Input `landmark_ids` — Persistent cross-view landmark IDs in point order, such as ChArUco IDs.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `view_id` | `"view"` | Unique capture ID in the group of calibrated views. |
+
 ## RGB-D frame odometry (`3d.odometry`)
 
 3D vision / RGB-D motion
@@ -464,6 +542,58 @@ Input `observations` — Batch or list of ChArUco observations of one board and 
 | `minimum_views` | `3` | Value must be a whole number between 3 and 64. Smallest accepted number of fitted views, including after exclusions. |
 | `view_policy` | `"require_all"` | `require_all`, `allow_subset` Require every view or accept those that pass initialization. |
 
+## Decode absolute phase-shift coordinates (`3d.phase_shift_decode`)
+
+3D vision / Structured light
+
+Inputs: `patterns` (any), `specification` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `patterns` — Aligned monochrome captures in coarse then fine 0/120/240 degree order.
+
+Input `specification` — Projector axis and temporal sequence from Generate phase-shift patterns.
+
+Input `mask` — Limit phase decoding to the selected camera pixels.
+
+Input `region` — Select camera pixels, intersecting the mask when supplied.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_modulation` | `0.03` | Value must be a finite number between 0 and 1. Minimum normalized sine amplitude in each triplet. |
+| `minimum_mean` | `0.04` | Value must be a finite number between 0 and 1. Minimum normalized mean exposure in each triplet. |
+| `maximum_cycle_error_fraction` | `0.25` | Value must be a finite number between 0.001 and 0.49. Maximum coarse-to-fine error, in fine periods. |
+| `reject_saturation` | `false` | Reject a pixel if any capture reaches either intensity rail. |
+
+## Generate phase-shift patterns (`3d.phase_shift_patterns`)
+
+3D vision / Structured light
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `640` | Value must be a whole number between 8 and 4096. |
+| `height` | `480` | Value must be a whole number between 8 and 4096. |
+| `axis` | `"x"` | `x`, `y` Projector coordinate the fringes encode. X uses vertical stripes. |
+| `fine_periods` | `8` | Value must be a whole number between 2 and 64. Requested fine cycles. OpenCV uses a whole-pixel fringe period. |
+
+## Planar pose hypotheses (`3d.planar_pose_hypotheses`)
+
+3D vision / Geometry
+
+Inputs: `object_points` (data), `image_points` (data), `camera` (data), `image` (image, optional).
+
+Input `object_points` — At least four coplanar XYZ points in camera length units.
+
+Input `image_points` — Corresponding distorted XY pixels in the calibrated pinhole image.
+
+Input `image` — Optional source image for drawing the candidates' plane normals.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ippe"` | `ippe`, `ippe_square` IPPE for coplanar points. IPPE square for four centered marker corners. |
+| `source_frame` | `"object"` | Coordinate frame of the supplied object points. |
+| `max_rms_px` | `3.0` | Value must be a finite number at least 0. Maximum distortion-aware pixel RMS for each plausible candidate. |
+| `ambiguity_gap_px` | `0.2` | Value must be a finite number at least 0. Largest best-to-second RMS gap still considered ambiguous. |
+| `normal_length` | `0.0` | Value must be a finite number at least 0. Preview normal length in object units. Zero scales it to the target. |
+
 ## 3D object pose (PnP) (`3d.pnp`)
 
 3D vision / Geometry
@@ -539,6 +669,24 @@ Inputs: `points` (data), `camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
 
+## Reconstruct sparse multi-view landmarks (`3d.reconstruct_sparse_views`)
+
+3D vision / Reconstruction
+
+Inputs: `views` (any, optional).
+
+Input `views` — Three to sixteen packed landmark views as a list or flow group.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Optional project-relative or absolute JSON array of packed views. |
+| `refinement` | `"points"` | `none`, `points`, `poses_and_points` Fit points alone or jointly with camera poses. |
+| `anchor_view_ids` | `[]` | Two fixed view IDs for the joint fit. Empty uses the first two views. |
+| `minimum_ray_angle_deg` | `0.5` | Value must be a finite number between 0.01 and 90. Minimum maximum acute separation between a track's camera rays. |
+| `maximum_error_px` | `3.0` | Value must be a finite number between 0.01 and 100. Reject a landmark if any contributing view exceeds this pixel error. |
+| `robust_scale_px` | `1.0` | Value must be a finite number between 0.01 and 100. Soft-L1 scale in pixels for the optional reprojection fit. |
+| `maximum_evaluations` | `100` | Value must be a whole number between 1 and 250. Maximum least-squares evaluations for the optional refinement. |
+
 ## Rectify pinhole / fisheye / omnidir (`3d.rectify_camera`)
 
 3D vision / Camera models
@@ -553,6 +701,59 @@ Inputs: `image` (image), `camera` (data).
 | `rotation_vector` | `[0.0, 0.0, 0.0]` |  |
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
 | `border_value` | `0.0` |  |
+
+## Rectify uncalibrated stereo images (`3d.rectify_uncalibrated_stereo`)
+
+3D vision / Stereo
+
+Inputs: `points_left` (data), `points_right` (data), `matrix` (data), `left_image` (image), `right_image` (image), `inliers` (data, optional).
+
+Input `points_left` — First list of paired points in left-image pixels.
+
+Input `points_right` — Corresponding points in right-image pixels, in the same pair order.
+
+Input `matrix` — Fundamental matrix F for left-to-right mapping, where p_rightᵀ F p_left = 0.
+
+Input `left_image` — Left source grid where the matched points and matrix were computed.
+
+Input `right_image` — Right source grid. Its dimensions define the default common canvas.
+
+Input `inliers` — Optional boolean mask in input pair order, such as from Fundamental matrix.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `0` | Value must be zero or a whole number between 2 and 8192. Common output width. Zero uses the right image width. |
+| `height` | `0` | Value must be zero or a whole number between 2 and 8192. Common output height. Zero uses the right image height. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Nearest or linear sampling. Masks require the whole sampling footprint. |
+| `border_value` | `0.0` | Value must be a finite number. Constant fill in each input image's sample units. |
+| `maximum_input_error_px` | `2.0` | Value must be a finite number between 0 and 100000. Filter fit matches by square-root Sampson error. Zero disables. |
+| `maximum_vertical_rms_px` | `1.5` | Value must be a finite number between 0 and 100000. Maximum rectified RMS of the fitted pairs' vertical disparity. |
+| `minimum_common_support` | `0.1` | Value must be a finite number between 0 and 1. Minimum mutually valid fraction of the rectified canvas. |
+
+## Score and refine epipolar correspondences (`3d.refine_epipolar`)
+
+3D vision / Reconstruction
+
+Inputs: `points_left` (data), `points_right` (data), `matrix` (data), `left_image` (image, optional), `right_image` (image, optional).
+
+Input `points_left` — First list of paired points in left-image pixels.
+
+Input `points_right` — Corresponding points in right-image pixels, in the same pair order.
+
+Input `matrix` — Fundamental matrix F for left-to-right mapping, where p_rightᵀ F p_left = 0.
+
+Input `left_image` — Optional left source image for diagnostics.
+
+Input `right_image` — Optional right source image for diagnostics.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"correct"` | `evaluate`, `correct` Evaluate accepts original points. Correct applies OpenCV optimal correction. |
+| `maximum_sampson_px` | `2.0` | Value must be a finite number between 0 and 100000. Reject raw pairs above this square-root Sampson error in pixels. |
+| `maximum_shift_px` | `3.0` | Value must be a finite number between 0 and 100000. Maximum correction displacement in either image, in pixels. |
+| `corrected_tolerance_px` | `0.0001` | Value must be a finite number between 1e-09 and 100. Maximum residual square-root Sampson error after correction. |
+| `minimum_inlier_ratio` | `1.0` | Value must be a finite number between 0 and 1. Fraction of all input pairs that must remain accepted to pass. |
+| `max_drawn_pairs` | `64` | Value must be a whole number between 0 and 512. Maximum input pairs per preview. Zero disables correction drawings. |
 
 ## Register depth to camera (`3d.register_depth`)
 
@@ -650,9 +851,10 @@ Inputs: `object_views` (data), `left_views` (data), `right_views` (data), `left_
 | `fix_k4` | `false` |  |
 | `fix_k5` | `false` |  |
 | `fix_k6` | `false` |  |
-| `iterations` | `100` |  |
-| `epsilon` | `1e-06` |  |
-| `max_rms` | `2.0` |  |
+| `iterations` | `100` | Value must be a whole number between 1 and 10000. |
+| `epsilon` | `1e-06` | Value must be a finite number at least 0. |
+| `max_rms` | `2.0` | Value must be a finite number at least 0. Maximum joint reprojection RMS in pixels. |
+| `max_view_rms` | `0.0` | Value must be a finite number at least 0. Maximum RMS for any camera in any fit view. Zero skips this check. |
 
 ## Rectify stereo images (`3d.stereo_rectify`)
 
@@ -747,6 +949,26 @@ Inputs: `points` (data), `camera` (data).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `output` | `"normalized"` | `normalized`, `pixels` |
+
+## Validate stereo calibration (`3d.validate_stereo_calibration`)
+
+3D vision / Stereo
+
+Inputs: `rig` (data), `object_views` (data), `left_views` (data), `right_views` (data).
+
+Input `rig` — Previously fitted pinhole rig, with a fixed left-to-right pose.
+
+Input `object_views` — Held-out target landmarks, one ordered array per stereo capture.
+
+Input `left_views` — Left observed pixels, in the same capture and landmark order.
+
+Input `right_views` — Right observed pixels, in the same capture and landmark order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_rms` | `1.0` | Value must be a finite number at least 0. Maximum pooled cross-camera reprojection RMS, in pixels. |
+| `max_view_rms` | `1.5` | Value must be a finite number at least 0. Maximum cross-camera RMS for one camera and capture. Zero disables it. |
+| `max_anchor_rms` | `1.0` | Value must be a finite number at least 0. Maximum single-camera pose fit RMS per capture. Zero disables it. |
 
 ## Calibrate wide-angle stereo (`3d.wide_stereo_calibrate`)
 
@@ -989,6 +1211,26 @@ Input `region` — Optional anchor-grid region intersected with the calibration 
 | `maximum_noise` | `0.02` | Value must be a finite number at least 0. Maximum channel noise: full-scale fraction or float sample units. |
 | `retain_noise` | `false` | Emit noise maps; Check noise computes them even when not retained. |
 
+## Generate planar fiducial target (`calibration.generate_fiducial_target`)
+
+Calibration / Grid and coordinates
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `layout` | `"charuco"` | `aruco_marker`, `aruco_grid`, `charuco` Single encoded marker, regular marker grid or a ChArUco chessboard. |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` Predefined ArUco or AprilTag family. Match it in the detector. |
+| `marker_ids` | `[]` | IDs in board order. Leave empty to start at zero. |
+| `columns` | `7` | Value must be a whole number between 1 and 64. Markers across an ArUco grid or squares across a ChArUco board. |
+| `rows` | `5` | Value must be a whole number between 1 and 64. Markers down an ArUco grid or squares down a ChArUco board. |
+| `marker_length` | `22.0` | Value must be a finite number between 1e-06 and 10000. Outer black edge length in the selected units. |
+| `marker_separation` | `8.0` | Value must be a finite number between 1e-06 and 10000. White edge-to-edge spacing in an ArUco grid. |
+| `square_length` | `30.0` | Value must be a finite number between 1e-06 and 10000. ChArUco square pitch. Preserved at the reported print size. |
+| `legacy_pattern` | `false` | Use the OpenCV pre-4.6 ChArUco parity for even row counts. |
+| `border_bits` | `1` | Value must be a whole number between 1 and 10. Width of the black frame in code modules. Match it in the detector. |
+| `margin` | `8.0` | Value must be a finite number between 0 and 10000. White page margin on every side, in the selected length units. |
+| `units` | `"mm"` | `mm`, `m` Length units for the target configuration, geometry and print size. |
+| `dpi` | `300` | Value must be a whole number between 36 and 2400. Desired render density. The reported effective density accounts for rounding. |
+
 ## Calibration grid (`calibration.grid`)
 
 Calibration / Grid and coordinates
@@ -1186,6 +1428,34 @@ Input `region` — Only sample valid pixels inside this source-grid region.
 | `maximum_rms_error` | `1.0` | Value must be a finite number at least 0. Maximum allowed planar calibration error in its physical units. |
 | `registration` | `"same_frame"` | `same_frame`, `fixed_grid` Fixed grid uses a saved calibration on the same camera pixel grid. Same frame requires the calibration's frame metadata to match. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
+
+## Calibrate robot-world and hand–eye (`calibration.robot_world_hand_eye`)
+
+Calibration / Robot coordinates
+
+Inputs: `gripper_poses` (any, optional), `target_poses` (any, optional), `heldout_gripper_poses` (any, optional), `heldout_target_poses` (any, optional).
+
+Input `gripper_poses` — Gripper-to-base poses in training order or a ticketed group.
+
+Input `target_poses` — Target-to-camera poses from corresponding training images.
+
+Input `heldout_gripper_poses` — Independent gripper-to-base poses for validation.
+
+Input `heldout_target_poses` — Independent target-to-camera observations for validation.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Optional JSON with paired training and optional held-out pose arrays. |
+| `path_base` | `"project"` | `project`, `working_directory` Base for a relative observations file. |
+| `arrangement` | `"fixed_camera"` | `fixed_camera`, `robot_mounted_camera` Fixed camera and moving target, or moving camera and fixed target. |
+| `gripper_frame` | `"gripper"` |  |
+| `base_frame` | `"base"` |  |
+| `target_frame` | `"target"` |  |
+| `camera_frame` | `"camera"` |  |
+| `rotation_weight_mm` | `100.0` | Value must be a finite number between 0.001 and 100000. Translation-equivalent residual per radian during joint refinement. |
+| `maximum_evaluations` | `200` | Value must be a whole number between 1 and 1000. Limit joint least-squares evaluations. |
+| `max_translation_rms_mm` | `2.0` | Value must be a finite number between 0 and 100000. Translation RMS limit on each supplied split. Zero disables it. |
+| `max_rotation_rms_degrees` | `1.0` | Value must be a finite number between 0 and 180. Rotation RMS limit on each supplied split. Zero disables it. |
 
 ## Undistort lens (`calibration.undistort`)
 

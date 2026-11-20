@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "fit",
+      "type": "calibration.robot_world_hand_eye",
+      "name": "Calibrate robot-world and hand\u2013eye",
+      "parameters": {
+        "path": "assets/fixed_camera.json",
+        "path_base": "project",
+        "arrangement": "fixed_camera",
+        "gripper_frame": "gripper",
+        "base_frame": "base",
+        "target_frame": "target",
+        "camera_frame": "camera",
+        "rotation_weight_mm": 100.0,
+        "maximum_evaluations": 200,
+        "max_translation_rms_mm": 1.5,
+        "max_rotation_rms_degrees": 0.4
+      },
+      "position": [
+        355,
+        0
+      ],
+      "exposed_inputs": [
+        "gripper_poses",
+        "target_poses",
+        "heldout_gripper_poses",
+        "heldout_target_poses"
+      ],
+      "exposed_outputs": [
+        "mount_to_gripper",
+        "station_to_base",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Offline calibration control",
+      "description": "Original synthetic ChArUco images and robot poses by OpenCVDataflowGUI contributors (MIT). Twelve image-derived poses train the fit. Four separate image-derived poses check the fitted transforms.",
+      "parameters": {},
+      "position": [
+        0,
+        0
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Planar pose ambiguity",
+      "description": "Original synthetic ChArUco images by OpenCVDataflowGUI contributors (MIT). The two views use the same board and calibrated camera. Compare the number and reprojection error of positive-depth pose candidates.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 861.0,
+        "fy": 854.0,
+        "cx": 397.4,
+        "cy": 299.3,
+        "width": 800,
+        "height": 600,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        290,
+        -210
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_near_frontal",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/near_frontal.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_near_frontal",
+      "type": "calibration.charuco",
+      "name": "Detect ChArUco board",
+      "parameters": {
+        "columns": 7,
+        "rows": 5,
+        "square_length": 30.0,
+        "marker_length": 22.0,
+        "units": "mm",
+        "dictionary": "4x4_50",
+        "marker_ids": [],
+        "legacy_pattern": false,
+        "minimum_corners": 16,
+        "min_adjacent_markers": 2,
+        "check_markers": true,
+        "try_refine_markers": false,
+        "refine_max_distance": 10.0,
+        "refine_error_correction": 3.0,
+        "refine_check_all_orders": true,
+        "corner_refinement": "none",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        290,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "near_frontal",
+      "type": "3d.planar_pose_hypotheses",
+      "name": "Near-frontal pose hypotheses",
+      "parameters": {
+        "method": "ippe",
+        "source_frame": "board",
+        "max_rms_px": 8.0,
+        "ambiguity_gap_px": 0.2,
+        "normal_length": 0.0
+      },
+      "position": [
+        595,
+        0
+      ],
+      "exposed_inputs": [
+        "object_points",
+        "image_points",
+        "camera",
+        "image"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "hypotheses",
+        "ambiguous",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_oblique",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/oblique.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        260
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_oblique",
+      "type": "calibration.charuco",
+      "name": "Detect ChArUco board",
+      "parameters": {
+        "columns": 7,
+        "rows": 5,
+        "square_length": 30.0,
+        "marker_length": 22.0,
+        "units": "mm",
+        "dictionary": "4x4_50",
+        "marker_ids": [],
+        "legacy_pattern": false,
+        "minimum_corners": 16,
+        "min_adjacent_markers": 2,
+        "check_markers": true,
+        "try_refine_markers": false,
+        "refine_max_distance": 10.0,
+        "refine_error_correction": 3.0,
+        "refine_check_all_orders": true,
+        "corner_refinement": "none",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        290,
+        260
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "oblique",
+      "type": "3d.planar_pose_hypotheses",
+      "name": "Oblique pose hypotheses",
+      "parameters": {
+        "method": "ippe",
+        "source_frame": "board",
+        "max_rms_px": 8.0,
+        "ambiguity_gap_px": 0.2,
+        "normal_length": 0.0
+      },
+      "position": [
+        595,
+        260
+      ],
+      "exposed_inputs": [
+        "object_points",
+        "image_points",
+        "camera",
+        "image"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "hypotheses",
+        "ambiguous",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "load_near_frontal",
+      "output": "image",
+      "target": "detect_near_frontal",
+      "input": "image"
+    },
+    {
+      "source": "load_near_frontal",
+      "output": "image",
+      "target": "near_frontal",
+      "input": "image"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "detect_near_frontal",
+      "input": "camera"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "near_frontal",
+      "input": "camera"
+    },
+    {
+      "source": "detect_near_frontal",
+      "output": "object_points",
+      "target": "near_frontal",
+      "input": "object_points"
+    },
+    {
+      "source": "detect_near_frontal",
+      "output": "image_points",
+      "target": "near_frontal",
+      "input": "image_points"
+    },
+    {
+      "source": "load_oblique",
+      "output": "image",
+      "target": "detect_oblique",
+      "input": "image"
+    },
+    {
+      "source": "load_oblique",
+      "output": "image",
+      "target": "oblique",
+      "input": "image"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "detect_oblique",
+      "input": "camera"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "oblique",
+      "input": "camera"
+    },
+    {
+      "source": "detect_oblique",
+      "output": "object_points",
+      "target": "oblique",
+      "input": "object_points"
+    },
+    {
+      "source": "detect_oblique",
+      "output": "image_points",
+      "target": "oblique",
+      "input": "image_points"
+    }
+  ]
+}

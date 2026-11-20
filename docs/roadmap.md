@@ -23,7 +23,27 @@ pose, calibration or encoder evidence. See the [example data policy](../examples
 Use targeted tests and a runnable example for each implementation increment.
 Run a broader regression check after roughly 20 increments, or earlier when a
 specific concern involves shared execution, persistence or plugin contracts.
-The latest broad checkpoint started on committed source `ce1e8542` and passed
+The latest broad checkpoint ran on committed source `9b3f11dc` in four
+offscreen workers. It completed all **10,066 collected tests** in
+**997.17 seconds** with **9,965 passes, 36 skips, 65 failures, and 64
+warnings**. All 65 failure cases replayed on archived pre-mesh source
+`2851b0c9` with matching error messages after normalizing test scratch paths.
+They include 53 file-not-found results in legacy example tests, exact fixture
+regeneration failures, DNN test stubs and classifier calibration defaults.
+All four new mesh checks passed in the checkpoint, and the installed example
+passed headlessly. The checkout stayed clean and all 61 installed package
+versions stayed unchanged. This checkpoint completed the twenty-increment
+cycle through S3-27. Phase-shift structured light (S3-29) starts the next
+targeted cycle at **1/20**. Camera/projector calibration and reconstruction
+(S3-30) advances it to **2/20** and fixed-camera/robot-world calibration
+(S3-32) to **3/20**. Sparse multi-view reconstruction (S3-33) brings it to **4/20**
+and planar fiducial target generation (S3-37) to **5/20**. Planar pose
+hypotheses (S3-42) brings it to **6/20** and epipolar match refinement
+(S3-43) to **7/20**. Uncalibrated stereo rectification (S3-44) brings it to **8/20**
+and stereo calibration residuals (S3-45) to **9/20**. Stereo disparity
+search and support (S3-46) brings it to **10/20**.
+
+The preceding broad checkpoint started on committed source `ce1e8542` and passed
 **9,429 tests, with 36 expected skips and 12 existing warnings**, in 1,687.44
 seconds offscreen (9,465 cases). All **400 runtime-module hashes** and **61
 installed-package versions** stayed unchanged. A concurrent plugin-example
@@ -431,6 +451,91 @@ and preserves an unobserved strip. Two-view fusion and bounded binary PLY
 export are qualified independently. Stage 3 is **42/131 (32.1%)** and
 overall coverage is **297/470 (63.2%)**.
 [Example](<../examples/skimage tools/tsdf_mesh/README.md>)
+
+**Phase-shift structured light (S3-29)** recovers subpixel absolute projector
+X or Y using six captures. The two independent synthetic projects each
+recover 7,167 coordinates within 0.001 projector pixel, reject the 510
+low-signal samples and 99 inconsistent cycles, and preserve the shadow
+gap. Native generation and ideal PSP/unwrap behavior are qualified on
+OpenCV 5.0.0. Stage 3 is **43/131 (32.8%)**, with **298/470 (63.4%)**
+overall. [Examples](<../examples/opencv tools/phase_shift/README.md>)
+
+**Camera/projector calibration and reconstruction (S3-30)** fits separate
+pinhole grids and triangulates sparse Gray-code or dense phase
+correspondences. Fourteen training views recover a 138.6 mm baseline at
+0.011 px RMS. A separate simulated step yields 16,789 valid points within
+0.19 mm of ground truth and rejects all 72 bad correspondences. Stage 3
+is **44/131 (33.6%)**, with **299/470 (63.6%)** overall.
+[Example](<../examples/opencv tools/camera_projector/README.md>)
+
+**Fixed-camera and joint robot-world calibration (S3-32)** recovers the mount
+and station transforms in both mounting arrangements. Twelve image-derived
+poses train each fit and four held-out ChArUco views verify independent closure.
+The largest per-view reprojection RMS is 0.123 px for the fixed camera and
+0.462 px for the robot-mounted camera. OpenCV 5.0.0's Python wheel lacks the
+native joint solver, so the block initializes with Park and jointly refines both
+transforms with SciPy. Stage 3 is **45/131 (34.4%)**, with **300/470 (63.8%)**
+overall. [Examples](<../examples/opencv tools/robot_world/README.md>)
+
+**Sparse multi-view reconstruction (S3-33)** triangulates supplied feature
+tracks with missing observations and optionally refines camera extrinsics and
+landmarks together against two fixed pose anchors. Across four rendered
+ChArUco views all 35 landmarks retain their IDs, including 19 with missing
+observations. Joint refinement reduces 3D error from 1.865 mm to 0.265 mm RMS
+and held-out fifth-view reprojection from 0.662 px to 0.166 px RMS.
+Stage 3 is **46/131 (35.1%)**, with **301/470 (64.0%)** overall.
+[Example](<../examples/opencv tools/sparse_multiview/README.md>)
+
+**Planar fiducial target generation (S3-37)** renders single ArUco markers,
+ArUco grids and ChArUco boards using predefined dictionaries and integer
+pixel geometry, with effective physical sizes for export and printing. The
+saved graph decodes all intended IDs and corners. Fractional settings also
+round-trip through a lossless PNG, and meters and millimeters produce the same
+raster and equivalent geometry. Stage 3 is **47/131 (35.9%)**, with **302/470
+(64.3%)** overall. [Example](<../examples/opencv tools/fiducial_targets/README.md>)
+
+**Planar pose hypotheses (S3-42)** evaluates both native IPPE candidates
+using distortion-aware reprojection and positive depth. A near-frontal
+ChArUco view retains two candidates separated by 0.093 px RMS and 3.88°
+and withholds the single pose. An oblique view separates the scores by
+4.817 px and recovers the pose within 0.068 mm and 0.027° of render truth.
+IPPE square is qualified with distorted points and the documented corner
+order. Stage 3 is **48/131 (36.6%)**, with **303/470 (64.5%)** overall.
+[Example](<../examples/opencv tools/planar_pose_hypotheses/README.md>)
+
+**Epipolar match refinement (S3-43)** scores ordered matches using the
+square root of Sampson distance and applies native optimal correction to
+plausible pairs. The two-grid synthetic stereo example rejects all three
+injected outliers and retains 29 pairs. Their Sampson RMS drops from 0.612 px
+to below 10⁻⁹ px and position error against clean projections drops from
+0.837 px to 0.717 px RMS. Stage 3 is **49/131 (37.4%)**, with **304/470
+(64.7%)** overall. [Example](<../examples/opencv tools/epipolar_refinement/README.md>)
+
+**Uncalibrated stereo rectification (S3-44)** estimates horizontal
+scanline alignment from image matches and a fundamental matrix. The
+saved graph uses 52 of 56 matches, rejects all four injected mismatches
+and retains 87.55% shared raster support. Twenty held-out matches improve
+from 22.23 px to 0.261 px vertical RMS. Stage 3 is **50/131 (38.2%)**,
+with **305/470 (64.9%)** overall.
+[Example](<../examples/opencv tools/uncalibrated_stereo/README.md>)
+
+**Stereo calibration residuals (S3-45)** reports per-camera and per-capture
+fit errors from OpenCV's extended pinhole solver. The holdout block predicts
+each camera from a pose recovered in the other using the fixed rig. The
+synthetic example fits ten views at 0.089 px joint RMS and checks three
+separate ChArUco image pairs at 0.071 px cross-camera RMS. A corrupted
+training observation trips the view limit below the pooled limit, and a
+2.5 mm baseline error fails the holdout. Stage 3 is **51/131 (38.9%)**,
+with **306/470 (65.1%)** overall.
+[Example](<../examples/opencv tools/stereo_calibration_quality/README.md>)
+
+**Stereo disparity search and support (S3-46)** derives a signed range from
+calibrated depth and checks full left and right matching footprints. The
+synthetic stereo pair reduces the native search from 64 to 16 disparities.
+With the same masks, support increases from 60.5% to 76.9%. Both branches
+recover 8 px median disparity and the narrowed branch reprojects to 3 m.
+Stage 3 is **52/131 (39.7%)**, with **307/470 (65.3%)** overall.
+[Example](<../examples/opencv tools/stereo_disparity_search/README.md>)
 
 **Quantized image inference (S2-57)** qualifies pinned Q/DQ and QOperator exports
 through existing image/multi-input/batch inference contracts. Selected raw int8/
@@ -3944,9 +4049,9 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The current targeted cycle is 20/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The latest checkpoint closed the targeted cycle through S3-27. The current targeted cycle is 10/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **62/62 complete (100%)** within the tracked checklist. The final item qualifies trained MIT SuperPoint v6 extraction and planar LightGlue matching on controlled CPU examples. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
-| 3 | 3D and calibrated geometry | **42/131 complete (32.1%)**. Fused-depth mesh extraction (S3-27), cloud projection and visibility (S3-24 and S3-52), support-plane separation (S3-23), depth cleanup (S3-19), wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
+| 3 | 3D and calibrated geometry | **52/131 complete (39.7%)**. Stereo disparity search and support (S3-46), stereo calibration residuals (S3-45), uncalibrated stereo rectification (S3-44), epipolar match refinement (S3-43), planar pose hypotheses (S3-42), planar fiducial target generation (S3-37), sparse multi-view reconstruction (S3-33), fixed-camera and joint robot-world calibration (S3-32), camera/projector reconstruction (S3-30), phase-shift structured light (S3-29), fused-depth mesh extraction (S3-27), cloud projection and visibility (S3-24 and S3-52), support-plane separation (S3-23), depth cleanup (S3-19), wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
 

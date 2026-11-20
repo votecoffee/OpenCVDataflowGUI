@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "recipes": {
+    "model": "recipe_catalog_v1",
+    "recipes": [
+      {
+        "model": "vision_recipe_v1",
+        "id": "SyntheticStereo",
+        "revision": 1,
+        "settings": {
+          "left": [
+            [
+              481.2023955076715,
+              373.60766996752307
+            ],
+            [
+              473.0487598286436,
+              124.99121359148113
+            ],
+            [
+              271.17491293393584,
+              273.8577843796793
+            ],
+            [
+              528.4233517217027,
+              164.31406396782194
+            ],
+            [
+              419.1057686339672,
+              265.73004520088375
+            ],
+            [
+              289.30156226068516,
+              340.0665962740742
+            ],
+            [
+              417.41127093469015,
+              254.56136461881258
+            ],
+            [
+              299.0376738215891,
+              278.4795682837423
+            ],
+            [
+              281.8193991447442,
+              375.8372985822437
+            ],
+            [
+              492.64916355236335,
+              194.62973784477853
+            ],
+            [
+              399.54789554415083,
+              165.04067850235523
+            ],
+            [
+              514.6485052020023,
+              331.20551964303957
+            ],
+            [
+              450.79034998238166,
+              251.8197097398316
+            ],
+            [
+              463.80521506637984,
+              185.65046026807775
+            ],
+            [
+              265.236143937025,
+              274.9301033537275
+            ],
+            [
+              375.81161911624014,
+              240.4052416494259
+            ],
+            [
+              435.4157977025962,
+              223.19435097222652
+            ],
+            [
+              403.15797290273343,
+              272.98627038816784
+            ],
+            [
+              467.6578635788796,
+              208.78628798467153
+            ],
+            [
+              310.52422928872016,
+              223.81669630201915
+            ],
+            [
+              418.7600990718961,
+              156.7797215522005
+            ],
+            [
+              556.6523654254091,
+              359.9329924294139
+            ],
+            [
+              408.8291946712524,
+              197.46957737679455
+            ],
+            [
+              535.5096162244758,
+              183.31648692701813
+            ],
+            [
+              553.6292539417746,
+              248.91884596245566
+            ],
+            [
+              266.864791166635,
+              364.19950353546426
+            ],
+            [
+              185.1594494567739,
+              351.63883725841043
+            ],
+            [
+              281.402394632547,
+              215.7951220449818
+            ],
+            [
+              353.93329230293284,
+              208.24038375719516
+            ],
+            [
+              279.553840250531,
+              337.1748858185015
+            ],
+            [
+              184.54156189623495,
+              227.67857407587368
+            ],
+            [
+              449.5665234049984,
+              353.8054713762639
+            ]
+          ],
+          "right": [
+            [
+              445.1166965425865,
+              369.58750939868077
+            ],
+            [
+              428.152931543743,
+              136.53289278576932
+            ],
+            [
+              256.81401112033024,
+              259.15350853923275
+            ],
+            [
+              505.2257304178028,
+              174.0125250184365
+            ],
+            [
+              396.8143701544657,
+              262.4387726406754
+            ],
+            [
+              255.34091852785852,
+              337.266046523662
+            ],
+            [
+              395.47994773026056,
+              251.69941863510408
+            ],
+            [
+              268.14164233384344,
+              267.36676699942285
+            ],
+            [
+              237.75867866370163,
+              358.06711752293484
+            ],
+            [
+              467.98094375898825,
+              202.40024263144505
+            ],
+            [
+              381.9764187456393,
+              165.36983976509444
+            ],
+            [
+              482.9141703427398,
+              334.3445296991269
+            ],
+            [
+              422.3078583094372,
+              252.98616760702356
+            ],
+            [
+              442.41513267274786,
+              189.19268291361251
+            ],
+            [
+              256.78566793184933,
+              259.90628443421053
+            ],
+            [
+              350.97762541664645,
+              235.9801599923078
+            ],
+            [
+              416.8830497215246,
+              222.97854860835176
+            ],
+            [
+              385.575805529503,
+              267.32867208726367
+            ],
+            [
+              452.7742174540426,
+              212.12903770561692
+            ],
+            [
+              272.8083639070107,
+              203.17741254189266
+            ],
+            [
+              375.9267436918935,
+              163.0683525562243
+            ],
+            [
+              520.9234112124689,
+              364.6498221084705
+            ],
+            [
+              367.7323222805406,
+              201.52192495991528
+            ],
+            [
+              520.4281448454335,
+              192.8805306174811
+            ],
+            [
+              522.2239636223517,
+              256.6682117160469
+            ],
+            [
+              245.97195646797647,
+              344.2703827576078
+            ],
+            [
+              148.30953684309605,
+              326.4033629046502
+            ],
+            [
+              262.7857192471134,
+              206.17873959249243
+            ],
+            [
+              325.03606419314417,
+              217.23872390164163
+            ],
+            [
+              262.6399282779777,
+              318.6290456321876
+            ],
+            [
+              154.3524441847678,
+              214.13122712408682
+            ],
+            [
+              421.1772351354777,
+              349.44794777454734
+            ]
+          ],
+          "fundamental": [
+            [
+              -5.87459988194576e-09,
+              -3.109243780517659e-08,
+              4.050042607015689e-05
+            ],
+            [
+              1.0500386363620547e-09,
+              -9.348883472230229e-09,
+              0.000256151582671519
+            ],
+            [
+              -4.5999427126846436e-05,
+              -0.00022554901049095163,
+              0.0006341568468156839
+            ]
+          ]
+        },
+        "models": {},
+        "digest": "6ec2106639f428ddd31171ffe53c26ef87e2600fc05f1891de3a8e6f6f8096e7"
+      }
+    ],
+    "default": {
+      "id": "SyntheticStereo",
+      "revision": 1,
+      "digest": "6ec2106639f428ddd31171ffe53c26ef87e2600fc05f1891de3a8e6f6f8096e7"
+    }
+  },
+  "blocks": [
+    {
+      "id": "description",
+      "type": "layout.comment",
+      "name": "Stereo match correction",
+      "description": "Original synthetic correspondences by OpenCVDataflowGUI contributors (MIT). There are 32 noisy pairs and three intentional bad matches. The known fundamental matrix is stored in the recipe. Select the correction block to review per-view movements and rejected pairs.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "refine",
+      "type": "3d.refine_epipolar",
+      "name": "Score and refine epipolar correspondences",
+      "parameters": {
+        "mode": "correct",
+        "maximum_sampson_px": 2.0,
+        "maximum_shift_px": 2.0,
+        "corrected_tolerance_px": 0.0001,
+        "minimum_inlier_ratio": 0.9,
+        "max_drawn_pairs": 64
+      },
+      "position": [
+        390,
+        110
+      ],
+      "exposed_inputs": [
+        "points_left",
+        "points_right",
+        "matrix",
+        "left_image",
+        "right_image"
+      ],
+      "exposed_outputs": [
+        "points_left",
+        "points_right",
+        "indices",
+        "inliers",
+        "inlier_ratio",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "check",
+      "type": "3d.check_epipolar",
+      "name": "Check epipolar correspondences",
+      "parameters": {
+        "max_distance": 0.0002,
+        "minimum_inlier_ratio": 1.0,
+        "max_drawn_pairs": 0
+      },
+      "position": [
+        765,
+        110
+      ],
+      "exposed_inputs": [
+        "points_left",
+        "points_right",
+        "matrix",
+        "left_image",
+        "right_image"
+      ],
+      "exposed_outputs": [
+        "lines_left",
+        "lines_right",
+        "inliers",
+        "inlier_ratio",
+        "report",
+        "left_overlay",
+        "right_overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "points_left",
+      "type": "recipe.field",
+      "name": "Left observed points",
+      "parameters": {
+        "path": "settings.left",
+        "missing": "error"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "recipe",
+        "value"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left_input",
+      "type": "input.file",
+      "name": "Left synthetic view",
+      "parameters": {
+        "path": "assets/left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        415
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "points_right",
+      "type": "recipe.field",
+      "name": "Right observed points",
+      "parameters": {
+        "path": "settings.right",
+        "missing": "error"
+      },
+      "position": [
+        0,
+        145
+      ],
+      "exposed_inputs": [
+        "recipe",
+        "value"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right_input",
+      "type": "input.file",
+      "name": "Right synthetic view",
+      "parameters": {
+        "path": "assets/right.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        560
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fundamental",
+      "type": "recipe.field",
+      "name": "Known fundamental matrix",
+      "parameters": {
+        "path": "settings.fundamental",
+        "missing": "error"
+      },
+      "position": [
+        0,
+        290
+      ],
+      "exposed_inputs": [
+        "recipe",
+        "value"
+      ],
+      "exposed_outputs": [
+        "value"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "points_left",
+      "output": "value",
+      "target": "refine",
+      "input": "points_left"
+    },
+    {
+      "source": "left_input",
+      "output": "image",
+      "target": "refine",
+      "input": "left_image"
+    },
+    {
+      "source": "refine",
+      "output": "points_left",
+      "target": "check",
+      "input": "points_left"
+    },
+    {
+      "source": "points_right",
+      "output": "value",
+      "target": "refine",
+      "input": "points_right"
+    },
+    {
+      "source": "right_input",
+      "output": "image",
+      "target": "refine",
+      "input": "right_image"
+    },
+    {
+      "source": "refine",
+      "output": "points_right",
+      "target": "check",
+      "input": "points_right"
+    },
+    {
+      "source": "fundamental",
+      "output": "value",
+      "target": "refine",
+      "input": "matrix"
+    },
+    {
+      "source": "fundamental",
+      "output": "value",
+      "target": "check",
+      "input": "matrix"
+    }
+  ]
+}

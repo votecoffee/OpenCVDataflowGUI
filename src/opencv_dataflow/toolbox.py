@@ -94,9 +94,12 @@ IMPLEMENTATION_MODULES = {
         "animation_blocks codec_probe image_codecs metadata_blocks multipage_blocks tiff_files "
         "tiff_page_access"
     ),
-    "calib": "calibration calibration_validation chessboard_quality hand_eye remap_maps workplane",
+    "calib": (
+        "calibration calibration_validation chessboard_quality hand_eye remap_maps "
+        "robot_world workplane"
+    ),
     "geometry": "circle_fitting contour_analysis convex_overlap geometry3d line_pair shape_fitting "
-    "translation_registration triangulation voronoi",
+    "planar_pose sparse_multiview translation_registration triangulation voronoi",
     "video": (
         "background_reference color_tracking ecc_registration flow_files flow_refinement "
         "flow_warp frame_interpolation "
@@ -109,7 +112,7 @@ IMPLEMENTATION_MODULES = {
         "capture_settings network_video paced_video video_buffer video_files "
         "video_time video_timing"
     ),
-    "objdetect": "aruco_markers charuco code_readers qr_encoding qr_append",
+    "objdetect": "aruco_markers charuco code_readers fiducial_targets qr_encoding qr_append",
     "xobjdetect": "hog hog_detection cascade_detection",
     "dnn": "batch_inference detection_decode detection_fusion dnn_blocks dnn_profiling soft_nms "
     "tensor_comparison multiscale_super_resolution "
@@ -147,7 +150,9 @@ BLOCK_MODULES = {
     "imgcodecs": "input.file input.depth_file input.raw_yuv input.raw_sensor output.image",
     "calib": (
         "3d.camera 3d.project 3d.undistort_points 3d.stereo_rig 3d.stereo_calibrate "
-        "3d.stereo_rectify 3d.rectify_camera 3d.check_epipolar 3d.fisheye_calibrate "
+        "3d.validate_stereo_calibration "
+        "3d.stereo_rectify 3d.rectify_camera 3d.check_epipolar 3d.refine_epipolar "
+        "3d.rectify_uncalibrated_stereo 3d.fisheye_calibrate "
         "3d.omnidir_calibrate 3d.wide_stereo_calibrate"
     ),
     "geometry": "inspect.affine inspect.homography collection.clip_lines",
@@ -164,7 +169,10 @@ BLOCK_MODULES = {
     "objdetect": "3d.aruco_pose",
     "ptcloud": "3d.depth_cloud 3d.separate_depth_plane 3d.cloud_project",
     "rgbd": "3d.register_depth",
-    "structured_light": "3d.graycode 3d.graycode_decode",
+    "structured_light": (
+        "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode "
+        "3d.camera_projector_calibrate 3d.camera_projector_reconstruct"
+    ),
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match",
     "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask 3d.smooth_depth",
     "mcc": "calibration.detect_color_chart",
@@ -253,6 +261,7 @@ _NATIVE_NAMES = {
     "calibration.lens": ("calibrateCamera", "calib3d"),
     "inspect.homography": ("findHomography", "calib3d"),
     "3d.pnp": ("solvePnP", "calib3d"),
+    "3d.planar_pose_hypotheses": ("solvePnPGeneric", "IPPE", "IPPE square"),
     "ml.dnn": ("dnn.readNetFromONNX", "readNetFromONNX"),
 }
 

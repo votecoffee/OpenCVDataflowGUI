@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Planar fiducial targets",
+      "description": "Patterns generated in the graph with OpenCV predefined dictionaries. Each branch verifies marker or corner IDs. Use the raw image and the physical print size from its target output when making a printed target.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "make_marker",
+      "type": "calibration.generate_fiducial_target",
+      "name": "Single ArUco marker",
+      "parameters": {
+        "layout": "aruco_marker",
+        "dictionary": "5x5_50",
+        "marker_ids": [
+          23
+        ],
+        "columns": 7,
+        "rows": 5,
+        "marker_length": 22.0,
+        "marker_separation": 8.0,
+        "square_length": 30.0,
+        "legacy_pattern": false,
+        "border_bits": 2,
+        "margin": 8.0,
+        "units": "mm",
+        "dpi": 127
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "target"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "read_marker",
+      "type": "inspect.aruco_markers",
+      "name": "Detect ArUco markers",
+      "parameters": {
+        "dictionary": "5x5_50",
+        "corner_refinement": "subpixel",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 2,
+        "error_correction_rate": 0.6,
+        "required_ids": [
+          23
+        ],
+        "minimum_markers": 1,
+        "point": "center",
+        "draw_overlay": true
+      },
+      "position": [
+        405,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "markers",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "make_grid",
+      "type": "calibration.generate_fiducial_target",
+      "name": "ArUco grid board",
+      "parameters": {
+        "layout": "aruco_grid",
+        "dictionary": "4x4_50",
+        "marker_ids": [
+          38,
+          37,
+          36,
+          35,
+          34,
+          33,
+          32,
+          31,
+          30,
+          29,
+          28,
+          27,
+          26,
+          25,
+          24
+        ],
+        "columns": 5,
+        "rows": 3,
+        "marker_length": 18.35,
+        "marker_separation": 6.2,
+        "square_length": 30.0,
+        "legacy_pattern": false,
+        "border_bits": 1,
+        "margin": 8.0,
+        "units": "mm",
+        "dpi": 190
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "target"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "read_grid",
+      "type": "inspect.aruco_markers",
+      "name": "Detect ArUco markers",
+      "parameters": {
+        "dictionary": "4x4_50",
+        "corner_refinement": "subpixel",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6,
+        "required_ids": [
+          38,
+          37,
+          36,
+          35,
+          34,
+          33,
+          32,
+          31,
+          30,
+          29,
+          28,
+          27,
+          26,
+          25,
+          24
+        ],
+        "minimum_markers": 15,
+        "point": "center",
+        "draw_overlay": true
+      },
+      "position": [
+        405,
+        230
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "markers",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "make_charuco",
+      "type": "calibration.generate_fiducial_target",
+      "name": "Legacy ChArUco board",
+      "parameters": {
+        "layout": "charuco",
+        "dictionary": "4x4_50",
+        "marker_ids": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        "columns": 6,
+        "rows": 4,
+        "marker_length": 22.0,
+        "marker_separation": 8.0,
+        "square_length": 30.0,
+        "legacy_pattern": true,
+        "border_bits": 1,
+        "margin": 8.0,
+        "units": "mm",
+        "dpi": 127
+      },
+      "position": [
+        0,
+        460
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "target"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "read_charuco",
+      "type": "calibration.charuco",
+      "name": "Detect ChArUco board",
+      "parameters": {
+        "columns": 6,
+        "rows": 4,
+        "square_length": 30.0,
+        "marker_length": 22.0,
+        "units": "mm",
+        "dictionary": "4x4_50",
+        "marker_ids": [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28
+        ],
+        "legacy_pattern": true,
+        "minimum_corners": 15,
+        "min_adjacent_markers": 2,
+        "check_markers": true,
+        "try_refine_markers": false,
+        "refine_max_distance": 10.0,
+        "refine_error_correction": 3.0,
+        "refine_check_all_orders": true,
+        "corner_refinement": "none",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        405,
+        460
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "make_marker",
+      "output": "image",
+      "target": "read_marker",
+      "input": "image"
+    },
+    {
+      "source": "make_grid",
+      "output": "image",
+      "target": "read_grid",
+      "input": "image"
+    },
+    {
+      "source": "make_charuco",
+      "output": "image",
+      "target": "read_charuco",
+      "input": "image"
+    }
+  ]
+}

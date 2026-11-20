@@ -36,6 +36,7 @@ BINDINGS = {
     "ml.superpoint_onnx_features": (
         "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward dilate resize cvtColor"
     ),
+    "3d.reconstruct_sparse_views": "undistortPoints projectPoints",
     "ml.optical_flow": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.stereo_disparity": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.monocular_depth": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
@@ -110,19 +111,28 @@ BINDINGS = {
     "cv.focus_stack": "Sobel Laplacian GaussianBlur boxFilter erode",
     "inspect.mask_boundary": "distanceTransform erode findContours",
     "3d.aruco_pose": "aruco.ArucoDetector.detectMarkers solvePnP",
-    "3d.disparity": "StereoBM.create StereoSGBM.create",
+    "3d.disparity": "StereoBM.create StereoSGBM.create getValidDisparityROI",
     "3d.essential_pose": "findEssentialMat recoverPose",
     "3d.check_epipolar": "computeCorrespondEpilines",
+    "3d.refine_epipolar": "sampsonDistance correctMatches",
+    "3d.rectify_uncalibrated_stereo": "stereoRectifyUncalibrated warpPerspective",
     "3d.fundamental": "findFundamentalMat",
+    "3d.planar_pose_hypotheses": "solvePnPGeneric projectPoints",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",
+    "3d.phase_shift_patterns": (
+        "structured_light.SinusoidalPattern.create structured_light.SinusoidalPattern.generate"
+    ),
     "3d.cloud_project": "projectPoints",
+    "3d.camera_projector_calibrate": "calibrateCamera stereoCalibrateExtended",
+    "3d.camera_projector_reconstruct": "undistortPoints triangulatePoints projectPoints",
     "3d.reproject": "reprojectImageTo3D",
     "3d.smooth_depth": "ximgproc.jointBilateralFilter",
     "3d.separate_depth_plane": "depthTo3d findContours approxPolyDP",
     "3d.omnidir_calibrate": "omnidir.calibrate omnidir.projectPoints convexHull contourArea",
     "3d.fisheye_calibrate": "fisheye.calibrate fisheye.projectPoints convexHull contourArea",
-    "3d.stereo_calibrate": "stereoCalibrate",
+    "3d.stereo_calibrate": "stereoCalibrateExtended",
+    "3d.validate_stereo_calibration": "solvePnP solvePnPRefineLM projectPoints",
     "3d.wide_stereo_calibrate": "fisheye.stereoCalibrate omnidir.stereoCalibrate",
     "3d.stereo_rectify": (
         "stereoRectify fisheye.stereoRectify omnidir.stereoRectify "
@@ -131,6 +141,9 @@ BINDINGS = {
     ),
     "3d.triangulate": "triangulatePoints",
     "3d.undistort_points": "undistortPoints fisheye.undistortPoints omnidir.undistortPoints",
+    "calibration.generate_fiducial_target": (
+        "aruco.generateImageMarker aruco.Board.generateImage"
+    ),
     "calibration.charuco": "aruco.CharucoDetector.detectBoard",
     "calibration.chessboard_quality": "findChessboardCornersSB estimateChessboardSharpness",
     "calibration.grid": "findChessboardCorners findChessboardCornersSB findHomography",

@@ -36,12 +36,7 @@ def _visible_segment(line, size):
     return (first, last) if visible else None
 
 
-class CheckEpipolarCorrespondences(Tool3D):
-    type_id, title, subtype = (
-        "3d.check_epipolar",
-        "Check epipolar correspondences",
-        "Reconstruction",
-    )
+class _EpipolarPairTool(Tool3D):
     inputs = (
         Port("points_left", "data"),
         Port("points_right", "data"),
@@ -49,26 +44,6 @@ class CheckEpipolarCorrespondences(Tool3D):
         Port("left_image", required=False, required_when_connected=True),
         Port("right_image", required=False, required_when_connected=True),
     )
-    outputs = (
-        Port("lines_left", "data"),
-        Port("lines_right", "data"),
-        Port("inliers", "data"),
-        Port("inlier_ratio", "number"),
-        Port("report", "data"),
-        Port("left_overlay", required=False),
-        Port("right_overlay", required=False),
-    )
-    defaults = {"max_distance": 1.5, "minimum_inlier_ratio": 1.0, "max_drawn_pairs": 32}
-    parameter_ranges = {
-        "max_distance": NumericRange(0, 100_000),
-        "minimum_inlier_ratio": NumericRange(0, 1),
-        "max_drawn_pairs": NumericRange(0, 512, whole=True),
-    }
-    parameter_help = {
-        "max_distance": "Both point-to-line distances must be at or below this pixel tolerance.",
-        "minimum_inlier_ratio": "Minimum fraction of all input pairs that must meet the tolerance.",
-        "max_drawn_pairs": "Draw this many pairs in input order. Zero hides epipolar graphics.",
-    }
     input_help = {
         "points_left": "First list of paired points in left-image pixels.",
         "points_right": "Corresponding points in right-image pixels, in the same pair order.",
@@ -76,9 +51,6 @@ class CheckEpipolarCorrespondences(Tool3D):
         "left_image": "Optional left source image for diagnostics.",
         "right_image": "Optional right source image for diagnostics.",
     }
-    process_inputs_readonly = True
-    composes_result_image = True
-    payload_reference = "points_left"
 
     def _view(self, inputs, side):
         key = f"points_{side}"
@@ -116,6 +88,51 @@ class CheckEpipolarCorrespondences(Tool3D):
                 raise ValidationError(f"{side.title()} points must lie inside their image grid")
         return xy, context, image, size
 
+    def _read_pair(self, inputs):
+        left, right = (self._view(inputs, side) for side in ("left", "right"))
+        if len(left[0]) != len(right[0]):
+            raise ValidationError("Left and right point counts must match")
+        f = matrix(inputs["matrix"], (3, 3), "Fundamental matrix")
+        magnitude = np.max(np.abs(f))
+        if magnitude == 0:
+            raise ValidationError("Fundamental matrix must have rank two")
+        f = f / magnitude
+        singular = np.linalg.svd(f, compute_uv=False)
+        if singular[1] <= singular[0] * 1e-12 or singular[2] > singular[1] * 1e-5:
+            raise ValidationError("Fundamental matrix must have rank two")
+        return left, right, f
+
+
+class CheckEpipolarCorrespondences(_EpipolarPairTool):
+    type_id, title, subtype = (
+        "3d.check_epipolar",
+        "Check epipolar correspondences",
+        "Reconstruction",
+    )
+    outputs = (
+        Port("lines_left", "data"),
+        Port("lines_right", "data"),
+        Port("inliers", "data"),
+        Port("inlier_ratio", "number"),
+        Port("report", "data"),
+        Port("left_overlay", required=False),
+        Port("right_overlay", required=False),
+    )
+    defaults = {"max_distance": 1.5, "minimum_inlier_ratio": 1.0, "max_drawn_pairs": 32}
+    parameter_ranges = {
+        "max_distance": NumericRange(0, 100_000),
+        "minimum_inlier_ratio": NumericRange(0, 1),
+        "max_drawn_pairs": NumericRange(0, 512, whole=True),
+    }
+    parameter_help = {
+        "max_distance": "Both point-to-line distances must be at or below this pixel tolerance.",
+        "minimum_inlier_ratio": "Minimum fraction of all input pairs that must meet the tolerance.",
+        "max_drawn_pairs": "Draw this many pairs in input order. Zero hides epipolar graphics.",
+    }
+    process_inputs_readonly = True
+    composes_result_image = True
+    payload_reference = "points_left"
+
     def _graphics(self, xy, lines, valid, inliers, image, size):
         if size is None:
             return (), NO_VALUE
@@ -135,18 +152,7 @@ class CheckEpipolarCorrespondences(Tool3D):
         return tuple(objects), overlay
 
     def process(self, inputs):
-        left, right = (self._view(inputs, side) for side in ("left", "right"))
-        if len(left[0]) != len(right[0]):
-            raise ValidationError("Left and right point counts must match")
-        f = matrix(inputs["matrix"], (3, 3), "Fundamental matrix")
-        magnitude = np.max(np.abs(f))
-        if magnitude == 0:
-            raise ValidationError("Fundamental matrix must have rank two")
-        f = f / magnitude
-        singular = np.linalg.svd(f, compute_uv=False)
-        if singular[1] <= singular[0] * 1e-12 or singular[2] > singular[1] * 1e-5:
-            raise ValidationError("Fundamental matrix must have rank two")
-
+        left, right, f = self._read_pair(inputs)
         views = (left, right)
         left_lines, left_valid = _epilines(right[0], 2, f)
         right_lines, right_valid = _epilines(left[0], 1, f)
