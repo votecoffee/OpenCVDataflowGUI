@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Label planar surfaces and leave foreground unmatched",
+      "description": "Original analytic depth scene by OpenCVDataflowGUI contributors (MIT). OpenCV finds the frontal and tilted surfaces. The curved foreground remains unmatched, and the two missing-depth patches keep their own label.",
+      "parameters": {},
+      "position": [
+        0,
+        -225
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/plane_scene.png",
+        "path_base": "project",
+        "units_per_sample": 0.001,
+        "units": "m",
+        "display_min": 0.6,
+        "display_max": 1.4
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 145,
+        "fy": 145,
+        "cx": 83.5,
+        "cy": 49.5,
+        "width": 168,
+        "height": 100,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "plane_camera"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "planes",
+      "type": "3d.organized_planes",
+      "name": "Find planes on a depth grid",
+      "description": "Detect multiple metric planes and label their verified members.",
+      "parameters": {
+        "block_size": 16,
+        "minimum_plane_pixels": 900,
+        "threshold_m": 0.005,
+        "sensor_error_a": 0.0,
+        "sensor_error_b": 0.0,
+        "sensor_error_c": 0.0,
+        "normal_method": "fals",
+        "normal_window": "5",
+        "minimum_planes": 2,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        380,
+        40
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "labels",
+        "planes",
+        "valid_mask",
+        "unmatched_mask",
+        "unmatched_depth",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "planes",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "planes",
+      "input": "camera"
+    }
+  ]
+}

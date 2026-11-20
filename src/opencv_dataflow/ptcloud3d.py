@@ -36,6 +36,15 @@ def depth_intrinsics(model, depth):
     return k, size
 
 
+def organized_normals(xyz, k, method, window_size):
+    h, w = xyz.shape[:2]
+    method = getattr(cv2, f"RGBD_NORMALS_RGBD_NORMALS_METHOD_{NORMAL_METHODS[method]}")
+    computer = rgbd_function("RgbdNormals_create")(
+        rows=h, cols=w, depth=cv2.CV_32F, K=k, window_size=window_size, method=method
+    )
+    return computer.apply(xyz)
+
+
 class DepthNormals(Tool3D):
     type_id, title, subtype = "3d.depth_normals", "Organized RGB-D normals", "RGB-D"
     inputs = (
@@ -62,14 +71,10 @@ class DepthNormals(Tool3D):
 
     def process(self, inputs):
         p, model, depth = self.parameters, inputs["camera"], inputs["depth"]
-        k, (w, h) = depth_intrinsics(model, depth)
+        k, _ = depth_intrinsics(model, depth)
         values = metric_depth(depth, p["units_per_sample"], p["input_units"])
         xyz = rgbd_function("depthTo3d")(values, k)
-        method = getattr(cv2, f"RGBD_NORMALS_RGBD_NORMALS_METHOD_{NORMAL_METHODS[p['method']]}")
-        computer = rgbd_function("RgbdNormals_create")(
-            rows=h, cols=w, depth=cv2.CV_32F, K=k, window_size=int(p["window_size"]), method=method
-        )
-        normal = computer.apply(xyz)[..., :3]
+        normal = organized_normals(xyz, k, p["method"], int(p["window_size"]))[..., :3]
         length = np.linalg.norm(normal, axis=2)
         valid = np.isfinite(normal).all(axis=2) & np.isfinite(values) & (length > 1e-8)
         mask = selection_mask(inputs, depth)

@@ -220,6 +220,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Registered depth fusion](<opencv tools/registered_depth_fusion/README.md>) | Blend common surfaces by confidence, recover complementary depth and retain a two-pixel-wide foreground feature. |
 | [Multi-baseline stereo depth](<opencv tools/multi_baseline_depth/README.md>) | Register three stereo baselines and compare consensus, occlusion and outliers against held-out depth. |
 | [Support plane and foreground separation](<opencv tools/depth_plane/README.md>) | Recover a tilted work surface, measure signed distances, and backproject only the raised foreground. |
+| [Organized multi-plane detection](<opencv tools/organized_plane_detection/README.md>) | Label a frontal plane, a tilted plane, unmatched foreground and missing depth on one calibrated grid. |
 | [Depth component measurement](<opencv tools/depth_components/README.md>) | Separate touching foreground parts by depth, compare physical widths and rebuild an exact source mask. |
 | [Calibrated depth silhouette](<opencv tools/depth_silhouette/README.md>) | Measure two raised parts against a tilted datum and flag every deliberately missing edge sample. |
 | [Calibrated mesh projection](<opencv tools/mesh_projection/README.md>) | Render overlapping triangles to RGB and metric depth with clipping, winding culling and coverage. |

@@ -106,6 +106,9 @@ parts at different depths and filters the reconstructed mask by metric width.
 [Support plane and foreground separation](depth_plane/README.md) extracts
 raised parts above a tilted surface into a foreground-only point cloud.
 
+[Organized multi-plane detection](organized_plane_detection/README.md)
+labels two distinct planes, unmatched foreground, and invalid depth.
+
 [Calibrated mesh projection](mesh_projection/README.md) rasterizes overlapping
 triangles with a metric depth buffer and winding culling.
 

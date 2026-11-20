@@ -158,6 +158,7 @@ BINDINGS = {
     "3d.cloud_project": "projectPoints",
     "3d.backproject_depth_pixels": "depthTo3dSparse",
     "3d.organized_mesh": "depthTo3d",
+    "3d.organized_planes": "depthTo3d RgbdNormals findPlanes",
     "3d.cloud_oriented_extents": "PCACompute2 Rodrigues",
     "3d.normalize_depth": "rescaleDepth",
     "3d.warp_rgbd_pose": "warpFrame",

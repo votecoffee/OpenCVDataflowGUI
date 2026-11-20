@@ -840,6 +840,7 @@ def builtin_registry():
     from .omnidir_calibration import OmnidirectionalCalibration
     from .one_class_svm import ONE_CLASS_SVM_BLOCKS
     from .organized_mesh import MeshOrganizedDepth
+    from .organized_planes import FindOrganizedPlanes
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
     from .paced_video import PacedVideoFile
@@ -1402,6 +1403,7 @@ def builtin_registry():
         *TSDF_MESH_BLOCKS,
         ProjectMesh,
         MeshOrganizedDepth,
+        FindOrganizedPlanes,
         CompareScanToMesh,
         StereoDemo,
     ):

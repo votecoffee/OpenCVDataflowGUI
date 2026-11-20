@@ -428,6 +428,14 @@ depth preserves the input type, units and grid. The block requires minimum
 plane support before it emits classifications or foreground depth.
 [Support-plane example](<../examples/opencv tools/depth_plane/README.md>)
 
+**Find planes on a depth grid** runs OpenCV's organized plane detector
+with optional native normal estimation. It refits each supported plane
+and verifies its orthogonal residual in meters. Use the uint16 labels to
+distinguish numbered planes, unmatched valid depth (0), and invalid or
+excluded pixels (65535). The outputs also include calibrated equations
+and unmatched depth on the original grid.
+[Multi-plane example](<../examples/opencv tools/organized_plane_detection/README.md>)
+
 **Measure depth components** takes axial Z and undistorted pinhole
 intrinsics on the same grid. Apply near and far cutoffs and optionally
 a Mask or Region. A foreground mask from **Separate support plane and

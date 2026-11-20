@@ -1147,6 +1147,34 @@ Input `region` — Optional source-grid region intersected with the raster selec
 | `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Length in input units per untagged uint16 sample. |
 | `output_units` | `"m"` | `m`, `mm` Length units stored in the output mesh. |
 
+## Find planes on a depth grid (`3d.organized_planes`)
+
+3D vision / RGB-D
+
+Inputs: `depth` (depth), `camera` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `depth` — Positive axial camera Z. Zero, nonfinite and uint16 65535 are invalid.
+
+Input `camera` — Matching undistorted pinhole intrinsics and optical frame.
+
+Input `mask` — Optional raster selection on the source pixel grid.
+
+Input `region` — Optional region intersected with the raster selection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `block_size` | `40` | Value must be a whole number between 4 and 256. OpenCV seed tile side length in pixels. |
+| `minimum_plane_pixels` | `1600` | Value must be a whole number between 3 and 1.04858e+06. Minimum native and verified support for one plane. |
+| `threshold_m` | `0.01` | Value must be a finite number between 1e-06 and 1000. Native detection distance and final orthogonal residual limit in meters. |
+| `sensor_error_a` | `0.0` | Value must be a finite number between -1000 and 1000. OpenCV native quadratic sensor error coefficient for metric Z. |
+| `sensor_error_b` | `0.0` | Value must be a finite number between -1000 and 1000. OpenCV native linear sensor error coefficient for metric Z. |
+| `sensor_error_c` | `0.0` | Value must be a finite number between -1000 and 1000. OpenCV native constant sensor error term in meters. |
+| `normal_method` | `"fals"` | `none`, `fals`, `sri`, `cross_product` Organized OpenCV normal estimator, or geometry-only detection. |
+| `normal_window` | `"5"` | `1`, `3`, `5`, `7` Native organized normal window in pixels. |
+| `minimum_planes` | `1` | Value must be a whole number between 1 and 254. Minimum verified planes required to pass. |
+| `input_units` | `"m"` | `m`, `mm` Length units of untagged depth. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Length in input units represented by one uint16 count. |
+
 ## Pack posed RGB-D view (`3d.pack_posed_rgbd`)
 
 3D vision / RGB-D
