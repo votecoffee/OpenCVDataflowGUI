@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure a stepped channel at two heights",
+      "description": "Original synthetic scan by OpenCVDataflowGUI contributors (MIT). Two sections share a fixture pose but use separate heights. The lower section has an intentional gap at the center bin. Compare observed widths and coverage, then inspect the original selected point rows.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scan",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/stepped_channel.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        0,
+        20
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.32,
+          -0.27,
+          0.44
+        ],
+        "translation": [
+          0.26,
+          -0.09,
+          0.35
+        ],
+        "source_frame": "fixture",
+        "target_frame": "bench_scan",
+        "units": "m"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lower",
+      "type": "3d.cloud_section",
+      "name": "Lower channel section",
+      "description": "Select a metric slab and measure observed widths on a fixed section grid.",
+      "parameters": {
+        "plane": "xy",
+        "offset_m": 0.025,
+        "thickness_m": 0.0025,
+        "u_min_m": 0.0,
+        "u_max_m": 0.125,
+        "restrict_v": true,
+        "v_min_m": -0.02,
+        "v_max_m": 0.02,
+        "bins": 5,
+        "minimum_points_per_bin": 2,
+        "minimum_coverage": 0.75,
+        "max_input_points": 250000
+      },
+      "position": [
+        460,
+        20
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "section",
+        "profile",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "upper",
+      "type": "3d.cloud_section",
+      "name": "Upper channel section",
+      "description": "Select a metric slab and measure observed widths on a fixed section grid.",
+      "parameters": {
+        "plane": "xy",
+        "offset_m": 0.055,
+        "thickness_m": 0.0025,
+        "u_min_m": 0.0,
+        "u_max_m": 0.125,
+        "restrict_v": true,
+        "v_min_m": -0.02,
+        "v_max_m": 0.02,
+        "bins": 5,
+        "minimum_points_per_bin": 2,
+        "minimum_coverage": 0.75,
+        "max_input_points": 250000
+      },
+      "position": [
+        460,
+        330
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "pose"
+      ],
+      "exposed_outputs": [
+        "section",
+        "profile",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scan",
+      "output": "cloud",
+      "target": "lower",
+      "input": "cloud"
+    },
+    {
+      "source": "fixture",
+      "output": "transform",
+      "target": "lower",
+      "input": "pose"
+    },
+    {
+      "source": "scan",
+      "output": "cloud",
+      "target": "upper",
+      "input": "cloud"
+    },
+    {
+      "source": "fixture",
+      "output": "transform",
+      "target": "upper",
+      "input": "pose"
+    }
+  ]
+}

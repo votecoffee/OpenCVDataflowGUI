@@ -698,6 +698,20 @@ and may still be measured with a known reference rotation. Extents
 enclose the observed points along the chosen axes.
 [Oriented cloud example](<../examples/custom tools/oriented_cloud_extents/README.md>)
 
+**Measure point-cloud section** selects a slab parallel to XY, XZ, or YZ in
+the cloud frame or a connected fixture pose. Set the signed offset along
+the unused positive axis and the full thickness, both in meters. The first
+and second axes of the plane define U and V. Set the U interval and number
+of bins, with optional V limits.
+
+Each supported bin reports its observed V envelope, width, and the source
+points that set the extrema. Empty or undersampled bins remain gaps.
+**Minimum coverage** checks the fraction of the configured U interval with
+supported bins. The selected cloud retains original XYZ, frame, units and
+point attributes. The report gives signed distances to the section plane
+and the overall observed extents in meters.
+[Stepped channel example](<../examples/custom tools/cloud_sections/README.md>)
+
 ## Motion, fusion and structured light
 
 **RGB-D frame odometry** wraps OpenCV 5 `ptcloud` two-frame motion with depth,

@@ -53,6 +53,9 @@ depth-jump limit changes which neighboring pixels are joined into triangles.
 [Oriented cloud extents](oriented_cloud_extents/README.md) measures a
 rotated cuboid and compares PCA with known fixture axes.
 
+[Virtual point-cloud sections](cloud_sections/README.md) measures two
+fixture-relative profiles on a stepped channel and verifies a gap.
+
 [Cloud inspection attributes](cloud_inspection_attributes/README.md)
 traces intensity, confidence and source indices through measured-row operations.
 

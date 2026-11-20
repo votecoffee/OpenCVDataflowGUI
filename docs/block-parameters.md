@@ -517,6 +517,31 @@ Input `cloud` — Original XYZ rows, optionally with measured colors, normals an
 | `minimum_spacing` | `0.0` | Value must be a finite number between 0 and 1e+39. Farthest mode stops below this distance in the cloud's units. |
 | `max_distance_evaluations` | `50000000` | Value must be a whole number between 1 and 2.5e+08. Farthest mode reports failure if it hits this work limit. |
 
+## Measure point-cloud section (`3d.cloud_section`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `pose` (data, optional).
+
+Input `cloud` — Metric point cloud in meters or millimeters.
+
+Input `pose` — Optional rigid transform from the section reference frame into the cloud.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `plane` | `"xy"` | `xy`, `xz`, `yz` First axis is U, second is V, and the unused positive axis is the normal. |
+| `offset_m` | `0.0` | Value must be a finite number between -1e+12 and 1e+12. Move the section origin along the positive normal, in meters. |
+| `thickness_m` | `0.004` | Value must be a finite number between 1e-09 and 1e+12. Full symmetric thickness about the section plane, in meters. |
+| `u_min_m` | `-0.05` | Value must be a finite number between -1e+12 and 1e+12. First limit of the sampled U interval, in meters. |
+| `u_max_m` | `0.05` | Value must be a finite number between -1e+12 and 1e+12. Last limit of the sampled U interval, in meters. |
+| `restrict_v` | `false` | Also limit the selection across the section width. |
+| `v_min_m` | `-0.05` | Value must be a finite number between -1e+12 and 1e+12. Inclusive lower V limit in meters when restriction is enabled. |
+| `v_max_m` | `0.05` | Value must be a finite number between -1e+12 and 1e+12. Inclusive upper V limit in meters when restriction is enabled. |
+| `bins` | `50` | Value must be a whole number between 1 and 2048. Number of evenly spaced profile bins across the U interval. |
+| `minimum_points_per_bin` | `2` | Value must be a whole number between 1 and 2e+06. A bin needs this many observed points to report dimensions. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required fraction of the configured U interval with supported bins. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 2e+06. Maximum number of cloud rows accepted for measurement. |
+
 ## Measure point-cloud normals and curvature (`3d.cloud_surface_quality`)
 
 3D vision / Point clouds
