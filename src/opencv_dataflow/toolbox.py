@@ -188,6 +188,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "3d.tsdf_mesh": ("TSDF", "marching cubes", "surface reconstruction"),
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
     "3d.separate_depth_plane": ("depthTo3d", "RANSAC", "foreground segmentation"),
     "3d.smooth_depth": ("jointBilateralFilter", "confidence-weighted depth denoising"),
@@ -278,6 +279,8 @@ def block_entry(block):
         path = ("SimpleITK", subtype)
     elif file == "multiscale_ridges":
         path = ("scikit-image", "Filtering")
+    elif type_id == "3d.tsdf_mesh":
+        path = ("scikit-image", subtype)
     elif file == "skimage_regions":
         path = ("scikit-image", "Measurements")
     elif file == "skimage_thresholds":

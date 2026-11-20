@@ -18,6 +18,7 @@ PORT_COLORS = {
     "data": "#a8b4c7",
     "any": "#c2cbd5",
     "cloud": "#f09273",
+    "mesh": "#efae81",
     "graphics": "#ef91c7",
 }
 
@@ -32,6 +33,7 @@ PORT_LABELS = {
     "data": "Other structured data / tickets · slate",
     "any": "Any / unresolved type · gray",
     "cloud": "3D point cloud · coral",
+    "mesh": "3D triangle mesh · peach",
     "graphics": "Result graphics · pink",
 }
 

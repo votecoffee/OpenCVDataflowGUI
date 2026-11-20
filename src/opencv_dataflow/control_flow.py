@@ -6,6 +6,7 @@ import json
 import numpy as np
 
 from .core import Block, Port, Result
+from .meshes import TriangleMesh
 from .payloads import NO_VALUE, FlowGroup, ValuePacket
 from .pointclouds import PointCloud
 from .processing import finite, integer
@@ -28,7 +29,7 @@ def identity(value):
 def byte_size(value):
     if isinstance(value, PointCloud):
         return value.nbytes + len(json.dumps(value.metadata).encode())
-    if isinstance(value, np.ndarray):
+    if isinstance(value, (np.ndarray, TriangleMesh)):
         return value.nbytes
     if isinstance(value, ValuePacket):
         return byte_size(value.value) + len(json.dumps(value.payload).encode())

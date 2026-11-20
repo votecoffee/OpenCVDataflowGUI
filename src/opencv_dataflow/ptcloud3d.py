@@ -224,6 +224,42 @@ class RGBDOdometry(Tool3D):
         )
 
 
+def tsdf_views(inputs, model):
+    if ("depth" in inputs) == ("frames" in inputs):
+        raise ValueError("Connect either one depth plane or a group of posed depth frames")
+    group = inputs.get("frames")
+    if group is not None and not isinstance(group, FlowGroup):
+        raise ValueError("Frames must be a FlowGroup of depth planes")
+    depths = [packet.value for packet in group.items] if group else [inputs["depth"]]
+    poses = inputs["poses"] if isinstance(inputs["poses"], list) else [inputs["poses"]]
+    if len(poses) != len(depths):
+        raise ValueError("Supply one camera-to-volume/world pose per depth frame")
+    if any(
+        not isinstance(depth, np.ndarray)
+        or depth.ndim != 2
+        or depth.dtype not in (np.uint16, np.float32, np.float64)
+        for depth in depths
+    ):
+        raise ValueError("TSDF frames must be depth arrays, not color images")
+    k, (w, h) = depth_intrinsics(model, depths[0])
+    target = poses[0]["target_frame"]
+    transforms = []
+    for depth, pose in zip(depths, poses):
+        depth_intrinsics(model, depth)
+        if (
+            pose["source_frame"] != model.get("frame", "camera")
+            or pose["target_frame"] != target
+            or pose["units"] not in ("m", "mm")
+        ):
+            raise ValueError(
+                "TSDF poses must share one metric world frame and match camera source frame"
+            )
+        transform = rigid(pose).astype(np.float32)
+        transform[:3, 3] *= 0.001 if pose["units"] == "mm" else 1.0
+        transforms.append(transform)
+    return depths, transforms, target, k, (w, h)
+
+
 class FuseTSDF(Tool3D):
     type_id, title, subtype = (
         "3d.tsdf_fuse",
@@ -256,38 +292,7 @@ class FuseTSDF(Tool3D):
         if not hasattr(cv2, "Volume") or not hasattr(cv2, "VolumeSettings"):
             raise RuntimeError("OpenCV 5 ptcloud Volume bindings are unavailable")
         p, model = self.parameters, inputs["camera"]
-        if ("depth" in inputs) == ("frames" in inputs):
-            raise ValueError("Connect either one depth plane or a group of posed depth frames")
-        group = inputs.get("frames")
-        if group is not None and not isinstance(group, FlowGroup):
-            raise ValueError("Frames must be a FlowGroup of depth planes")
-        depths = [packet.value for packet in group.items] if group else [inputs["depth"]]
-        poses = inputs["poses"] if isinstance(inputs["poses"], list) else [inputs["poses"]]
-        if len(poses) != len(depths):
-            raise ValueError("Supply one camera-to-volume/world pose per depth frame")
-        if any(
-            not isinstance(depth, np.ndarray)
-            or depth.ndim != 2
-            or depth.dtype not in (np.uint16, np.float32, np.float64)
-            for depth in depths
-        ):
-            raise ValueError("TSDF frames must be depth arrays, not color images")
-        k, (w, h) = depth_intrinsics(model, depths[0])
-        target = poses[0]["target_frame"]
-        transforms = []
-        for depth, pose in zip(depths, poses):
-            depth_intrinsics(model, depth)
-            if (
-                pose["source_frame"] != model.get("frame", "camera")
-                or pose["target_frame"] != target
-                or pose["units"] not in ("m", "mm")
-            ):
-                raise ValueError(
-                    "TSDF poses must share one metric world frame and match camera source frame"
-                )
-            transform = rigid(pose).astype(np.float32)
-            transform[:3, 3] *= 0.001 if pose["units"] == "mm" else 1.0
-            transforms.append(transform)
+        depths, transforms, target, k, (w, h) = tsdf_views(inputs, model)
         resolution = tuple(integer(v, "Volume dimension", 8, 256) for v in p["resolution"])
         if (
             len(resolution) != 3

@@ -730,6 +730,12 @@ def validate_value(port, value):
         if not isinstance(value, PointCloud):
             raise TypeError(f"{port.name} requires a PointCloud, not XYZ image pixels")
         value.__post_init__()
+    elif port.kind == "mesh":
+        from .meshes import TriangleMesh
+
+        if not isinstance(value, TriangleMesh):
+            raise TypeError(f"{port.name} requires a TriangleMesh")
+        value.validate()
     elif port.kind == "dct":
         from .spectral import DCTCoefficients
 

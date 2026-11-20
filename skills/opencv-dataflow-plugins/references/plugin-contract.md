@@ -27,7 +27,7 @@ JSON. Imports/constructors should not start acquisition, training or device I/O.
 | `process(inputs)` | Return `Result`; execution uses the base `execute` wrapper |
 | `close()` | Release native handles/workers/resources; safe when called repeatedly |
 
-Port kinds include `image`, `depth`, `pyramid`, `cloud`, `graphics`, `any`, `data`,
+Port kinds include `image`, `depth`, `pyramid`, `cloud`, `mesh`, `graphics`, `any`, `data`,
 `number`, `integer`, `float`, `boolean`, `text`. Pose/region/collection schemas may
 travel on `data` ports with semantic visual types. Use the receiver's schema checks;
 JSON-compatible alone does not imply semantic compatibility. Connections allow

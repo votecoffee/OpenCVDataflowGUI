@@ -924,6 +924,7 @@ def builtin_registry():
     from .tracking_appearance import DescribeBoxAppearance
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
+    from .tsdf_mesh import TSDF_MESH_BLOCKS
     from .video_buffer import DecodeVideo
     from .video_files import VideoFile, WriteVideo
     from .video_time import VideoAtTime
@@ -1293,6 +1294,7 @@ def builtin_registry():
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
+        *TSDF_MESH_BLOCKS,
         StereoDemo,
     ):
         registry.register(block)

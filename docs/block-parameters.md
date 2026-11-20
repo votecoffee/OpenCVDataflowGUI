@@ -713,6 +713,31 @@ Inputs: `depth` (depth, optional), `frames` (any, optional), `poses` (data), `ca
 | `sample_step` | `1` |  |
 | `max_points` | `200000` |  |
 
+## Fuse posed depth into a mesh (`3d.tsdf_mesh`)
+
+3D vision / Volumetric reconstruction
+
+Inputs: `depth` (depth, optional), `frames` (any, optional), `poses` (data), `camera` (data).
+
+Input `depth` — Connect either one depth plane or a group of depth planes.
+
+Input `poses` — One camera-to-world pose per frame in the same order, using one world frame.
+
+Input `camera` — Undistorted pinhole intrinsics for all depth frames.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `resolution` | `[64, 64, 64]` | XYZ sample counts. At most 2,097,152 samples once multiplied. |
+| `volume_origin_m` | `[-0.64, -0.64, 0.5]` | World XYZ of the first lattice sample, in meters. |
+| `voxel_size_m` | `0.02` | Value must be a finite number between 1e-05 and 100. World lattice spacing in meters. |
+| `truncation_m` | `0.06` | Value must be a finite number between 1e-05 and 100. Signed-distance band behind the surface, in meters. |
+| `maximum_z_m` | `5.0` | Value must be a finite number between 0.0001 and 10000. Farthest usable observed camera Z, in meters. |
+| `minimum_observations` | `1` | Value must be a whole number between 1 and 32. Required observations at each of a surface cell's eight corners. |
+| `max_weight` | `32` | Value must be a whole number between 1 and 32. Saturation of each voxel's running-average weight. |
+| `max_faces` | `250000` | Value must be a whole number between 1 and 1e+06. Withhold meshes over this triangle count. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for depth without an explicit encoding. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 count. |
+
 ## Undistort camera points (`3d.undistort_points`)
 
 3D vision / Camera models
@@ -11522,6 +11547,17 @@ Inputs: `map_x` (image), `map_y` (image).
 | --- | --- | --- |
 | `path` | `"lens_maps.npz"` |  |
 | `path_base` | `"working_directory"` | `working_directory`, `project` |
+
+## Save triangle mesh as PLY (`output.mesh_ply`)
+
+Output / 3D geometry
+
+Inputs: `mesh` (mesh).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `"surface.ply"` | Write a new PLY. Resolve relative paths from the saved project folder. |
+| `max_faces` | `250000` | Value must be a whole number between 1 and 1e+06. |
 
 ## Save mosaic layout (`output.mosaic_layout`)
 

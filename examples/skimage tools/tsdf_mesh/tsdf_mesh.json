@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/tilted_surface_mm.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 0.0,
+        "display_max": 1500
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 100.0,
+        "fy": 100.0,
+        "cx": 47.5,
+        "cy": 35.5,
+        "width": 96,
+        "height": 72,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        270
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.08,
+          0.0
+        ],
+        "translation": [
+          0.04,
+          -0.01,
+          0.035
+        ],
+        "source_frame": "camera",
+        "target_frame": "world",
+        "units": "m"
+      },
+      "position": [
+        0,
+        525
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "surface",
+      "type": "3d.tsdf_mesh",
+      "name": "Fuse posed depth into a mesh",
+      "parameters": {
+        "resolution": [
+          60,
+          50,
+          40
+        ],
+        "volume_origin_m": [
+          -0.48,
+          -0.38,
+          0.72
+        ],
+        "voxel_size_m": 0.02,
+        "truncation_m": 0.06,
+        "maximum_z_m": 5.0,
+        "minimum_observations": 1,
+        "max_weight": 32,
+        "max_faces": 250000,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        400,
+        235
+      ],
+      "exposed_inputs": [
+        "depth",
+        "frames",
+        "poses",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Synthetic posed depth and measured gap",
+      "description": "Original depth by OpenCVDataflowGUI contributors (MIT). The depth camera views a known tilted plane in world coordinates. An eight-pixel strip has no observations. The extracted mesh preserves the gap.",
+      "parameters": {},
+      "position": [
+        0,
+        -270
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "surface",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "surface",
+      "input": "camera"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "surface",
+      "input": "poses"
+    }
+  ]
+}

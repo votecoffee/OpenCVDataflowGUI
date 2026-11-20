@@ -25,6 +25,7 @@ Open these projects with **File → Open…**.
 | [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
+| [TSDF mesh](<../examples/skimage tools/tsdf_mesh/README.md>) | Extract a metric triangle surface and preserve the gap in observed depth. |
 
 Run once, then use **Results > 3D point-cloud viewer…**. Choose a retained cloud
 output and adjust yaw, pitch and point size. Debug/Balanced retain actual cloud
@@ -230,6 +231,15 @@ RGB or joint RGB-D modes. Supply matched intrinsics for both frames and, for
 intensity modes, the corresponding registered images. Outputs map source-frame
 points into the target frame in meters. The block does not track a global map
 or accumulate trajectory state by itself.
+
+**Fuse posed depth into a mesh** integrates camera Z into a bounded metric
+distance field and uses scikit-image marching cubes on supported cells. It
+accepts one depth image or a group of posed images. All eight corners of a
+surface cell must satisfy the configured observation count. `TriangleMesh`
+carries vertices, triangle indices, units and the world frame on a typed
+`mesh` port. **Save triangle mesh as PLY** writes a new bounded binary PLY.
+The mesh path requires the optional `skimage` extra.
+[Mesh example](<../examples/skimage tools/tsdf_mesh/README.md>)
 
 **Fuse posed depth frames (TSDF)** uses native OpenCV 5 `Volume`/`VolumeSettings`.
 It builds a bounded dense volume per activation from a depth image or FlowGroup,

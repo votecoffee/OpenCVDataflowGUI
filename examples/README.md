@@ -36,7 +36,7 @@ Classify examples by their primary learning goal:
 | --- | --- |
 | `demos` | Guided introductions to application capabilities and the editor/runtime workflow. |
 | `opencv tools` | OpenCV operations and module workflows, including short processing chains. |
-| `skimage tools` | scikit-image measurements, thresholding and morphology. |
+| `skimage tools` | scikit-image measurements, thresholding, morphology and mesh extraction. |
 | `custom tools` | Our own inspection algorithms and tools, plus other-library integrations. |
 | `applications` | Complete inspection tasks such as picking parts, inspecting defects or reading labels. |
 | `control flow tools` | Splitting, joining, branching, queues, batching, recipes and ticket coordination. |
@@ -401,13 +401,14 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 
 ## scikit-image tools
 
-Measurements, thresholding and morphology using scikit-image. See [setup and examples](<skimage tools/README.md>).
+Measurements, thresholding, morphology and mesh extraction using scikit-image. See [setup and examples](<skimage tools/README.md>).
 
 | Example | Demonstrates |
 | --- | --- |
 | [scikit-image advanced thresholding](<skimage tools/skimage_thresholding/README.md>) | Compare Multi-Otsu classes, global estimators and local thresholds without reducing 16-bit intensity units. |
 | [scikit-image region measurements](<skimage tools/skimage_region_properties/README.md>) | Measure shape, topology, moments and channel intensities; select a ring and reconstruct its mask. |
 | [Skeletonization and spur pruning](<skimage tools/skeleton_pruning/README.md>) | Extract a binary centerline and visualize the short branches removed from it. |
+| [TSDF mesh extraction](<skimage tools/tsdf_mesh/README.md>) | Fuse posed depth into metric triangles while preserving holes in the observed surface. |
 
 ## SimpleITK Tools
 
