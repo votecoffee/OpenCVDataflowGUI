@@ -127,6 +127,8 @@ BINDINGS = {
     ),
     "3d.cloud_project": "projectPoints",
     "3d.evaluate_depth": "applyColorMap",
+    "3d.calibrate_multicamera": "calibrateMultiviewExtended Rodrigues",
+    "3d.validate_multicamera": "solvePnP solvePnPRefineLM projectPoints fisheye.projectPoints",
     "3d.camera_projector_calibrate": "calibrateCamera stereoCalibrateExtended",
     "3d.camera_projector_reconstruct": "undistortPoints triangulatePoints projectPoints",
     "3d.reproject": "reprojectImageTo3D",

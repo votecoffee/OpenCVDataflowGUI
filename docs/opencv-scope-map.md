@@ -325,7 +325,7 @@ Python and five C++ entries without a direct binding.
 | `cv::estimateRigidTransform` | Deprecated C++ function. Maintain the supported affine estimators in the existing alignment contract. | S1-48 |
 | `cv2.calibrateCamera`, `cv2.calibrateCameraExtended`, `cv2.initCameraMatrix2D` | Exposed. Initial camera matrix and diagnostics belong to pinhole calibration. | S3-02 |
 | `cv2.calibrateCameraRO`, `cv2.calibrateCameraROExtended` | Exposed. Qualify refined target geometry and its residuals. | S3-109 |
-| `cv2.calibrateMultiview`, `cv2.calibrateMultiviewExtended` | Exposed. Shared target geometry and visibility belong to rig calibration. | S3-54 |
+| `cv2.calibrateMultiview`, `cv2.calibrateMultiviewExtended` | 3d.calibrate_multicamera calls the extended variant for initialization links and per-view errors, using explicit missing-view masks. 3d.validate_multicamera checks a fixed rig with held-out cross-camera predictions. | S3-54 |
 | `cv2.registerCameras`, `cv2.registerCamerasExtended` | Exposed. Verify registration with fixed intrinsics on non-overlapping target observations. | S3-113 |
 | `cv2.stereoCalibrate`, `cv2.stereoCalibrateExtended`, `cv2.fisheye.calibrate`, `cv2.fisheye.stereoCalibrate` | Pinhole stereo fitting uses the extended API for separate per-camera and per-view residuals. The pinhole validator measures cross-camera errors on held-out views. Wide-angle lens fitting uses its own contract. | S3-04, S3-13–S3-14, S3-45 |
 | `cv::calibrateHandEye`, `cv::calibrateRobotWorldHandEye` | C++ functions without direct bindings. Eye-in-hand has an offline graph solver. Fixed-camera and joint robot-world/hand–eye calibration have an offline solver checked against held-out ChArUco images. | S3-31–S3-32 |

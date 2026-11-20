@@ -39,6 +39,28 @@ Inputs: `image` (image), `camera` (data).
 | `axis_length` | `0.02` |  |
 | `max_reprojection_error` | `3.0` |  |
 
+## Calibrate multi-camera rig (`3d.calibrate_multicamera`)
+
+3D vision / Calibration
+
+Inputs: `observations` (data), `camera_models` (data, optional).
+
+Input `observations` — Named target captures, with a camera-by-capture visibility matrix.
+
+Input `camera_models` — Ordered existing camera records for Fixed intrinsics mode.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `lens` | `"pinhole"` | `pinhole`, `fisheye` All cameras must use the same lens family. |
+| `intrinsics` | `"fit"` | `fit`, `fixed` Fit per-camera optics first, or use the connected models unchanged. |
+| `pinhole_distortion` | `"standard"` | `standard`, `rational` Fit the five-coefficient or eight-coefficient pinhole model. |
+| `initialization` | `"register_cameras"` | `register_cameras`, `stereo_calibrate` OpenCV pairwise baseline initializer before joint rig optimization. |
+| `minimum_shared_views` | `3` | Value must be a whole number between 1 and 64. Minimum shared captures required for each initializing link. |
+| `max_iterations` | `60` | Value must be a whole number between 1 and 200. Iteration limit for the native rig optimization. |
+| `epsilon` | `1e-09` | Value must be a finite number between 1e-15 and 0.1. Native rig optimization termination tolerance. |
+| `max_rms_px` | `1.0` | Value must be a finite number at least 0. Maximum fitted overall reprojection RMS. Zero disables the limit. |
+| `max_view_rms_px` | `2.0` | Value must be a finite number at least 0. Maximum fitted camera/capture RMS. Zero disables the limit. |
+
 ## Camera intrinsic model (`3d.camera`)
 
 3D vision / Camera models
@@ -1033,6 +1055,22 @@ Inputs: `points` (data), `camera` (data).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `output` | `"normalized"` | `normalized`, `pixels` |
+
+## Validate multi-camera rig (`3d.validate_multicamera`)
+
+3D vision / Calibration
+
+Inputs: `rig` (data), `observations` (data).
+
+Input `rig` — A fixed rig from the calibration block.
+
+Input `observations` — Independent captures with the original camera order and new capture IDs.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_rms_px` | `1.0` | Value must be a finite number at least 0. Maximum pooled held-out cross-camera RMS. Zero disables the limit. |
+| `max_view_rms_px` | `2.0` | Value must be a finite number at least 0. Maximum RMS for a single cross-camera prediction. Zero disables. |
+| `max_anchor_rms_px` | `0.8` | Value must be a finite number at least 0. Maximum RMS for a pose fitted in one view. Zero disables. |
 
 ## Validate stereo calibration (`3d.validate_stereo_calibration`)
 
@@ -6174,6 +6212,17 @@ Ticket mode and fixed value are common inspector controls.
 | `enabled` | `false` |  |
 | `include_retained` | `true` | Accept the retained message replayed when a subscription starts. |
 | `ticket_field` | `""` | Optional top-level JSON field containing an external ticket value. |
+
+## Load rig observations (`input.multicamera_observations`)
+
+Input / Calibration
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | JSON observations file. Relative paths use the project directory. |
 
 ## Network video (`input.network_video`)
 

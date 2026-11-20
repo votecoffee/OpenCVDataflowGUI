@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 55 | 18 | 58 | 131 | 42.0% |
+| 3. 3D imagery and point clouds | 56 | 18 | 57 | 131 | 42.7% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 310 | 22 | 138 | 470 | 66.0% |
+| **Overall** | 311 | 22 | 137 | 470 | 66.2% |
 
 <!-- coverage-summary:end -->
 
@@ -472,7 +472,7 @@ fixture or result needed to close the item.
 | S3-51 | Unorganized cloud normals from reconstructed points | Local neighborhood normals | Complete | 3d.cloud_normals. Recover normals of a known camera-derived surface with explicit neighbor support. |
 | S3-52 | Project camera clouds into a depth or color image | Intrinsic projection and a depth buffer | Complete | 3d.cloud_project emits calibrated pinhole Z, coverage and nearest-sample RGB. Tests verify distortion, pose frames and units, target selections, and same-pixel depth and color tie rules. |
 | S3-53 | Evaluate camera depth against a reference | Unit-normalized depth error, validity overlap | Complete | 3d.evaluate_depth reports signed millimeter residuals, validity overlap, missing and estimate-only pixels, and independently gated coverage and errors. The [two-plane example](<../examples/opencv tools/depth_reference/README.md>) checks exact mixed-unit comparison and a one-pixel step shift. A focused check evaluates native stereo reprojection against a known 3 m plane. |
-| S3-54 | Calibrate a rig with three or more image streams | calibrateMultiview, calibrateMultiviewExtended | Planned | Recover a known same-lens-model rig from partial views with explicit visibility masks. Verify per-view residuals, independent reprojections and frame closure. |
+| S3-54 | Calibrate a rig with three or more image streams | calibrateMultiview, calibrateMultiviewExtended | Complete | 3d.calibrate_multicamera and 3d.validate_multicamera recover wholly pinhole or wholly fisheye rigs with a camera-by-capture visibility mask. The [three-camera chain](<../examples/opencv tools/multicamera_rig/README.md>) verifies per-view RMS, known transforms and frame closure, and independently scores disjoint held-out captures. |
 | S3-55 | Reproject a depth-backed region across wide-angle camera views | Camera rays, metric depth and target-camera projection | Planned | Map a physical patch between wide-angle cameras and verify it lands on the same scene area with coverage. |
 | S3-56 | Range image fusion with depth confidence | Weighted depth accumulation in camera coordinates | Planned | Fuse registered depth views and verify confidence, occlusion boundaries and preserved thin objects. |
 | S3-57 | Depth-derived foreground component measurement | Organized depth thresholding and connected components | Planned | Separate image-space parts at different depths and report physical size and source masks. |

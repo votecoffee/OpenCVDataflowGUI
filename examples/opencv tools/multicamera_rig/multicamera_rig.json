@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Calibrate three cameras with missing views",
+      "description": "Original synthetic rig and target captures by OpenCVDataflowGUI contributors (MIT). Camera B bridges two sets of captures. Cameras A and C never see the target in the same training capture. The validation set uses independent target poses.",
+      "parameters": {},
+      "position": [
+        0,
+        -235
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "input.multicamera_observations",
+      "name": "Training captures",
+      "parameters": {
+        "path": "assets/train.json"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "synthetic-rig-calibration"
+      }
+    },
+    {
+      "id": "holdout",
+      "type": "input.multicamera_observations",
+      "name": "Independent validation captures",
+      "parameters": {
+        "path": "assets/holdout.json"
+      },
+      "position": [
+        0,
+        265
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "synthetic-rig-calibration"
+      }
+    },
+    {
+      "id": "fit",
+      "type": "3d.calibrate_multicamera",
+      "name": "Calibrate multi-camera rig",
+      "parameters": {
+        "lens": "pinhole",
+        "intrinsics": "fit",
+        "pinhole_distortion": "standard",
+        "initialization": "register_cameras",
+        "minimum_shared_views": 3,
+        "max_iterations": 60,
+        "epsilon": 1e-09,
+        "max_rms_px": 0.08,
+        "max_view_rms_px": 0.12
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "observations",
+        "camera_models"
+      ],
+      "exposed_outputs": [
+        "rig",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "holdout_check",
+      "type": "3d.validate_multicamera",
+      "name": "Validate multi-camera rig",
+      "parameters": {
+        "max_rms_px": 0.09,
+        "max_view_rms_px": 0.18,
+        "max_anchor_rms_px": 0.12
+      },
+      "position": [
+        710,
+        220
+      ],
+      "exposed_inputs": [
+        "rig",
+        "observations"
+      ],
+      "exposed_outputs": [
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "train",
+      "output": "observations",
+      "target": "fit",
+      "input": "observations"
+    },
+    {
+      "source": "fit",
+      "output": "rig",
+      "target": "holdout_check",
+      "input": "rig"
+    },
+    {
+      "source": "holdout",
+      "output": "observations",
+      "target": "holdout_check",
+      "input": "observations"
+    }
+  ]
+}

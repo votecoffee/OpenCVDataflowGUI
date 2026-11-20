@@ -1985,7 +1985,7 @@ P3	method	cv2.CalibrateDebevec.setLambda	method name only	-
 P3	method	cv2.CalibrateDebevec.setRandom	no static reference	-
 P3	method	cv2.CalibrateDebevec.setSamples	no static reference	-
 P3	function	cv2.calibrateMultiview	no static reference	-
-P3	function	cv2.calibrateMultiviewExtended	no static reference	-
+P3	function	cv2.calibrateMultiviewExtended	literal reference	-
 P3	class	cv2.CalibrateRobertson	no static reference	-
 P3	method	cv2.CalibrateRobertson.getMaxIter	no static reference	-
 P3	method	cv2.CalibrateRobertson.getRadiance	no static reference	-

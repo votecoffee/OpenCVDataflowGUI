@@ -796,6 +796,11 @@ def builtin_registry():
     from .motion_trajectory_io import LoadMotionTrajectory, SaveMotionTrajectory
     from .mqtt import MQTT_BLOCKS
     from .multi_inference import MULTI_INFERENCE_BLOCKS
+    from .multicamera_calibration import (
+        CalibrateMulticameraRig,
+        LoadMulticameraObservations,
+        ValidateMulticameraRig,
+    )
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
     from .multiscale_super_resolution import MultiScaleSuperResolution
@@ -1308,6 +1313,9 @@ def builtin_registry():
         RefineEpipolarCorrespondences,
         RectifyUncalibratedStereo,
         ValidateStereoCalibration,
+        LoadMulticameraObservations,
+        CalibrateMulticameraRig,
+        ValidateMulticameraRig,
         *STEREO3D_BLOCKS,
         FilterDisparitySpeckles,
         EvaluateDisparity,

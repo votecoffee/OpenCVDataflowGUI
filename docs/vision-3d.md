@@ -151,6 +151,22 @@ then swaps the roles. The report compares these cross-camera errors to the
 single-camera pose fits for every held-out capture.
 [Fit and held-out stereo example](<../examples/opencv tools/stereo_calibration_quality/README.md>)
 
+**Calibrate multi-camera rig** fits three to eight pinhole cameras or three
+to eight fisheye cameras. Supply synchronized target observations, camera
+names and sizes, and a camera-by-capture visibility mask. A visible cell
+uses the full ordered point set for the shared target. Each camera must be
+connected through shared captures, which may form a chain. Fit the intrinsics
+from the same observations or connect fixed camera models. Output poses map
+the first camera's coordinates into each named camera's coordinates in the
+target's declared meters or millimeters.
+
+**Validate multi-camera rig** keeps the rig fixed and uses independent
+captures. For each co-visible capture it fits the target in one camera and
+projects the target through the rig into the other cameras. Fit and holdout
+reports include a camera-by-capture RMS table. Debug heatmaps show missing
+cells in black. No rig is published when the fit exceeds its error limits.
+[Three-camera chain example](<../examples/opencv tools/multicamera_rig/README.md>)
+
 **Stereo BM / SGBM disparity** can derive a signed pixel search from near
 and far depth limits using the calibrated rectification Q. The native
 search count rounds up to a multiple of 16. Connecting rectification or
