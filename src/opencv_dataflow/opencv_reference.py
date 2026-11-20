@@ -115,6 +115,7 @@ BINDINGS = {
     "3d.essential_pose": "findEssentialMat recoverPose",
     "3d.check_epipolar": "computeCorrespondEpilines",
     "3d.refine_epipolar": "sampsonDistance correctMatches",
+    "3d.rectify_uncalibrated_stereo": "stereoRectifyUncalibrated warpPerspective",
     "3d.fundamental": "findFundamentalMat",
     "3d.planar_pose_hypotheses": "solvePnPGeneric projectPoints",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",

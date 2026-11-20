@@ -932,6 +932,7 @@ def builtin_registry():
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
     from .tsdf_mesh import TSDF_MESH_BLOCKS
+    from .uncalibrated_stereo import RectifyUncalibratedStereo
     from .video_buffer import DecodeVideo
     from .video_files import VideoFile, WriteVideo
     from .video_time import VideoAtTime
@@ -1300,6 +1301,7 @@ def builtin_registry():
         OmnidirectionalCalibration,
         CheckEpipolarCorrespondences,
         RefineEpipolarCorrespondences,
+        RectifyUncalibratedStereo,
         *STEREO3D_BLOCKS,
         CalibrateWideStereo,
         *CLOUD_BLOCKS,

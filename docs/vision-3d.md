@@ -132,6 +132,16 @@ point outputs. Each output and preview keeps its own view's frame.
 
 ## Stereo and depth
 
+**Rectify uncalibrated stereo images** fits two pixel homographies from
+matched points and a fundamental matrix. It accepts an optional inlier mask,
+filters undefined and high-error correspondences, and uses the right image
+dimensions as the default shared canvas. The report measures vertical fit
+error and valid overlap. It rejects homographies with a projective horizon
+crossing either source image. Each output image and support mask retains
+its view's source mapping. **Common valid** is their intersection on the
+left rectified grid. Use a calibrated stereo rig for metric reprojection.
+[Held-out alignment and support example](<../examples/opencv tools/uncalibrated_stereo/README.md>)
+
 **Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional
 pair from matched target views. The fisheye fitter can retain or refine
 supplied intrinsics. The omnidirectional fitter initializes both cameras

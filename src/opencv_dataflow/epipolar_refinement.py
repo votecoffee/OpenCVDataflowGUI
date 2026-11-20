@@ -12,7 +12,7 @@ from .payloads import NO_VALUE
 from .result_graphics import ACCEPTED, REJECTED
 
 
-def _sampson(left, right, fundamental):
+def sampson_pixels(left, right, fundamental):
     """Square-root Sampson distance, with undefined directions left as NaN."""
     a, b = [np.c_[view, np.ones(len(view))] for view in (left, right)]
     line_left, line_right = b @ fundamental, a @ fundamental.T
@@ -53,7 +53,7 @@ def _refine(fundamental, src, dst, indices, views, parameters):
     shifts[bounded, 0] = np.linalg.norm(left[bounded] - src[indices[bounded]], axis=1)
     shifts[bounded, 1] = np.linalg.norm(right[bounded] - dst[indices[bounded]], axis=1)
     residual = np.full(len(indices), np.nan)
-    residual[bounded] = _sampson(left[bounded], right[bounded], fundamental)
+    residual[bounded] = sampson_pixels(left[bounded], right[bounded], fundamental)
     status = np.select(
         (
             ~finite,
@@ -136,7 +136,7 @@ class RefineEpipolarCorrespondences(_EpipolarPairTool):
         left, right, f = self._read_pair(inputs)
         views = (left, right)
         a, b = left[0], right[0]
-        score = _sampson(a, b, f)
+        score = sampson_pixels(a, b, f)
         defined = np.isfinite(score)
         eligible = defined & (score <= float(p["maximum_sampson_px"]))
         candidates = np.flatnonzero(eligible)

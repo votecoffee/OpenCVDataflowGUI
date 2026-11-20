@@ -4528,7 +4528,7 @@ P3	method	cv2.StereoMatcher.setNumDisparities	no static reference	-
 P3	method	cv2.StereoMatcher.setSpeckleRange	method name only	-
 P3	method	cv2.StereoMatcher.setSpeckleWindowSize	method name only	-
 P3	function	cv2.stereoRectify	literal reference	-
-P3	function	cv2.stereoRectifyUncalibrated	no static reference	-
+P3	function	cv2.stereoRectifyUncalibrated	literal reference	-
 P3	class	cv2.StereoSGBM	no static reference	-
 P3	method	cv2.StereoSGBM.create	method name only	-
 P3	method	cv2.StereoSGBM.getMode	no static reference	-

@@ -693,6 +693,34 @@ Inputs: `image` (image), `camera` (data).
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
 | `border_value` | `0.0` |  |
 
+## Rectify uncalibrated stereo images (`3d.rectify_uncalibrated_stereo`)
+
+3D vision / Stereo
+
+Inputs: `points_left` (data), `points_right` (data), `matrix` (data), `left_image` (image), `right_image` (image), `inliers` (data, optional).
+
+Input `points_left` — First list of paired points in left-image pixels.
+
+Input `points_right` — Corresponding points in right-image pixels, in the same pair order.
+
+Input `matrix` — Fundamental matrix F for left-to-right mapping, where p_rightᵀ F p_left = 0.
+
+Input `left_image` — Left source grid where the matched points and matrix were computed.
+
+Input `right_image` — Right source grid. Its dimensions define the default common canvas.
+
+Input `inliers` — Optional boolean mask in input pair order, such as from Fundamental matrix.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `0` | Value must be zero or a whole number between 2 and 8192. Common output width. Zero uses the right image width. |
+| `height` | `0` | Value must be zero or a whole number between 2 and 8192. Common output height. Zero uses the right image height. |
+| `interpolation` | `"linear"` | `nearest`, `linear` Nearest or linear sampling. Masks require the whole sampling footprint. |
+| `border_value` | `0.0` | Value must be a finite number. Constant fill in each input image's sample units. |
+| `maximum_input_error_px` | `2.0` | Value must be a finite number between 0 and 100000. Filter fit matches by square-root Sampson error. Zero disables. |
+| `maximum_vertical_rms_px` | `1.5` | Value must be a finite number between 0 and 100000. Maximum rectified RMS of the fitted pairs' vertical disparity. |
+| `minimum_common_support` | `0.1` | Value must be a finite number between 0 and 1. Minimum mutually valid fraction of the rectified canvas. |
+
 ## Score and refine epipolar correspondences (`3d.refine_epipolar`)
 
 3D vision / Reconstruction

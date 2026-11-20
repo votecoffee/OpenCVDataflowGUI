@@ -23,6 +23,9 @@ reprojection scores can leave a plane orientation ambiguous.
 [Epipolar match refinement](epipolar_refinement/README.md) scores noisy
 pairs in two camera grids and checks corrected positions on a known rig.
 
+[Uncalibrated stereo rectification](uncalibrated_stereo/README.md) uses
+image matches to align scanlines and emit per-view and shared support masks.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera
