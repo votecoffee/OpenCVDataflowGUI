@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Project calibrated triangles",
+      "description": "Original synthetic fixture by OpenCVDataflowGUI contributors (MIT). A blue face extends beyond the left edge. An orange face crosses the near and far planes and occludes part of the blue face. A yellow face has the opposite winding.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mesh",
+      "type": "input.mesh",
+      "name": "Load triangle mesh (OBJ / PLY)",
+      "parameters": {
+        "path": "assets/calibrated_triangles.ply",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        35
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 39.0,
+        "fy": 32.0,
+        "cx": 19.2,
+        "cy": 23.7,
+        "width": 49,
+        "height": 41,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "inspection_camera"
+      },
+      "position": [
+        0,
+        320
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "all",
+      "type": "3d.mesh_project",
+      "name": "Render all windings",
+      "description": "Rasterize a metric triangle mesh onto a rectified calibrated camera grid.",
+      "parameters": {
+        "minimum_z_m": 0.55,
+        "maximum_z_m": 2.7,
+        "output_mode": "color_and_depth",
+        "culling": "none",
+        "shading": "interpolated",
+        "max_triangles": 100000,
+        "max_pixel_tests": 25000000
+      },
+      "position": [
+        460,
+        35
+      ],
+      "exposed_inputs": [
+        "mesh",
+        "camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "color",
+        "depth",
+        "coverage_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "color"
+    },
+    {
+      "id": "cull",
+      "type": "3d.mesh_project",
+      "name": "Cull counterclockwise faces",
+      "description": "Rasterize a metric triangle mesh onto a rectified calibrated camera grid.",
+      "parameters": {
+        "minimum_z_m": 0.55,
+        "maximum_z_m": 2.7,
+        "output_mode": "color_and_depth",
+        "culling": "counterclockwise",
+        "shading": "interpolated",
+        "max_triangles": 100000,
+        "max_pixel_tests": 25000000
+      },
+      "position": [
+        460,
+        320
+      ],
+      "exposed_inputs": [
+        "mesh",
+        "camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "color",
+        "depth",
+        "coverage_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "color"
+    }
+  ],
+  "connections": [
+    {
+      "source": "mesh",
+      "output": "mesh",
+      "target": "all",
+      "input": "mesh"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "all",
+      "input": "camera"
+    },
+    {
+      "source": "mesh",
+      "output": "mesh",
+      "target": "cull",
+      "input": "mesh"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "cull",
+      "input": "camera"
+    }
+  ]
+}

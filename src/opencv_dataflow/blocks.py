@@ -968,6 +968,7 @@ def builtin_registry():
     from .tracking_appearance import DescribeBoxAppearance
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
+    from .mesh_projection import ProjectMesh
     from .tsdf_mesh import TSDF_MESH_BLOCKS
     from .uncalibrated_stereo import RectifyUncalibratedStereo
     from .video_buffer import DecodeVideo
@@ -1386,6 +1387,7 @@ def builtin_registry():
         MatchLINEMODPose,
         *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
+        ProjectMesh,
         StereoDemo,
     ):
         registry.register(block)

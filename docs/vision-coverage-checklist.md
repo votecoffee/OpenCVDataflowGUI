@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 86 | 12 | 33 | 131 | 65.6% |
+| 3. 3D imagery and point clouds | 87 | 12 | 32 | 131 | 66.4% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 341 | 16 | 113 | 470 | 72.6% |
+| **Overall** | 342 | 16 | 112 | 470 | 72.8% |
 
 <!-- coverage-summary:end -->
 
@@ -515,7 +515,7 @@ fixture or result needed to close the item.
 | S3-84 | Local cloud curvature and normal quality | Bounded neighborhood PCA, orientation and quality diagnostics | Complete | `3d.cloud_surface_quality` measures plane and sphere curvature, validates normal orientation, and rejects sparse or ambiguous neighborhoods. The [surface-scan example](<../examples/custom tools/cloud_surface_quality/README.md>) feeds the accepted cloud and aligned curvature into region growing. |
 | S3-85 | Native OBJ point-cloud interchange | ASCII OBJ with qualified native OpenCV interoperability | Complete | `input.cloud` and `output.cloud` preserve ordered XYZ, aligned normals, and normalized RGB, with explicit frame and units. The [OBJ/PLY example](<../examples/custom tools/cloud_obj_interchange/README.md>) compares equivalent scans and tests cover both directions of native OBJ and PLY exchange. |
 | S3-86 | Triangle mesh interchange | Validated OBJ/PLY files with native OpenCV interoperability | Complete | `input.mesh` and `output.mesh_ply` exchange triangles, vertex normals, RGB, texture coordinates, units and frame. The [folded-panel example](<../examples/custom tools/mesh_interchange/README.md>) matches topology and attributes in both formats. Tests reject invalid indices and split OBJ attribute seams. |
-| S3-87 | Project a mesh to color and depth images | triangleRasterize, triangleRasterizeColor, triangleRasterizeDepth | Planned | Rasterize known overlapping triangles with near/far clipping and culling. Verify camera convention, metric depth, colors and masks. |
+| S3-87 | Project a mesh to color and depth images | triangleRasterize, triangleRasterizeColor, triangleRasterizeDepth | Complete | `3d.mesh_project` clips metric triangles onto a rectified pinhole grid and emits RGB, camera Z and a coverage mask. The [overlapping-triangles example](<../examples/opencv tools/mesh_projection/README.md>) matches independent rays for occlusion, clipping and winding. |
 | S3-88 | Cloud-to-cloud dimensional comparison | Bidirectional nearest-neighbor distances and overlap checks | Planned | Compare aligned measured and reference clouds, report signed distances where normals are reliable, and verify overlap and tolerance failures. |
 | S3-89 | Compare an inspection scan to a reference mesh | Closest triangle distances and local reference normals | Planned | Measure a calibrated surface deviation on known geometry, with boundary and unsupported areas reported separately. |
 | S3-90 | ICP overlap and local registration diagnostics | Point-to-plane ICP and paired inlier residuals | Partial | 3d.icp returns a pose and residual. Verify overlap, inlier counts and rejection of poor or ambiguous alignment with a known partial-overlap pair. |

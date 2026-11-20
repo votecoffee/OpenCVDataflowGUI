@@ -100,6 +100,9 @@ parts at different depths and filters the reconstructed mask by metric width.
 [Support plane and foreground separation](depth_plane/README.md) extracts
 raised parts above a tilted surface into a foreground-only point cloud.
 
+[Calibrated mesh projection](mesh_projection/README.md) rasterizes overlapping
+triangles with a metric depth buffer and winding culling.
+
 [Calibrated cloud visibility](cloud_visibility/README.md) renders depth and
 color and checks visible surfaces against observed camera depth.
 

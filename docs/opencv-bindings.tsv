@@ -4706,13 +4706,13 @@ P3	class	cv2.TrackerVit_Params	no static reference	-
 P3	function	cv2.transform	literal reference	-
 P3	function	cv2.transpose	literal reference	-
 P3	function	cv2.transposeND	no static reference	-
-P3	function	cv2.triangleRasterize	no static reference	-
-P3	function	cv2.triangleRasterizeColor	no static reference	-
-P3	function	cv2.triangleRasterizeDepth	no static reference	-
-P3	class	cv2.TriangleRasterizeSettings	no static reference	-
-P3	method	cv2.TriangleRasterizeSettings.setCullingMode	no static reference	-
-P3	method	cv2.TriangleRasterizeSettings.setGlCompatibleMode	no static reference	-
-P3	method	cv2.TriangleRasterizeSettings.setShadingType	no static reference	-
+P3	function	cv2.triangleRasterize	literal reference	-
+P3	function	cv2.triangleRasterizeColor	literal reference	-
+P3	function	cv2.triangleRasterizeDepth	literal reference	-
+P3	class	cv2.TriangleRasterizeSettings	literal reference	-
+P3	method	cv2.TriangleRasterizeSettings.setCullingMode	method name only	-
+P3	method	cv2.TriangleRasterizeSettings.setGlCompatibleMode	method name only	-
+P3	method	cv2.TriangleRasterizeSettings.setShadingType	method name only	-
 P3	function	cv2.triangulatePoints	literal reference	-
 P3	class	cv2.UMat	literal reference	-
 P3	method	cv2.UMat.context	method name only	-

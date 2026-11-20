@@ -627,6 +627,14 @@ order. **Save triangle mesh** writes ASCII OBJ or binary little endian PLY
 to a new path. Both formats preserve units and frame through Dataflow comments.
 [Triangle interchange example](<../examples/custom tools/mesh_interchange/README.md>)
 
+**Project mesh to color and depth** renders the nearest triangles on a
+rectified pinhole camera grid with explicit near and far planes and winding
+culling. The mesh and camera frames must match or be connected by a metric
+transform. RGB shading can interpolate vertex colors, use the first vertex,
+or fill white. Depth is optical-axis Z in meters with NaN for uncovered
+pixels. The coverage mask is valid for every output mode.
+[Calibrated mesh projection example](<../examples/opencv tools/mesh_projection/README.md>)
+
 **Fuse posed depth frames (TSDF)** uses native OpenCV 5 `Volume`/`VolumeSettings`.
 It builds a bounded dense volume per activation from a depth image or FlowGroup,
 with one calibrated camera-to-world pose per frame. It emits a world-frame

@@ -912,6 +912,28 @@ Input `model` — A trained bank from Train RGB-D pose template.
 | `minimum_anchor_fraction` | `0.65` | Value must be a finite number between 0.25 and 1. Minimum fraction of trained anchors supporting the same shift. |
 | `maximum_reprojection_rms_px` | `2.5` | Value must be a finite number between 0.1 and 20. Maximum return projection error at the inlier anchors. |
 
+## Project mesh to color and depth (`3d.mesh_project`)
+
+3D vision / Mesh geometry
+
+Inputs: `mesh` (mesh), `camera` (data), `transform` (data, optional).
+
+Input `mesh` — Triangle mesh in meters or millimeters with optional per-vertex RGB.
+
+Input `camera` — Rectified pinhole intrinsics, image size and named optical frame.
+
+Input `transform` — Optional mesh-to-camera rigid transform in metric units.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_z_m` | `0.05` | Value must be a finite number between 1e-06 and 100000. Positive near clip plane in camera meters. |
+| `maximum_z_m` | `10.0` | Value must be a finite number between 1e-06 and 100000. Far clip plane in camera meters. |
+| `output_mode` | `"color_and_depth"` | `color_and_depth`, `color_only`, `depth_only` Select color, depth or both. All modes use nearest-depth visibility. |
+| `culling` | `"none"` | `none`, `clockwise`, `counterclockwise` Discard the selected winding as seen on the image. Image Y points down. |
+| `shading` | `"interpolated"` | `interpolated`, `flat`, `white` Use interpolated RGB, the first triangle vertex RGB, or white. |
+| `max_triangles` | `100000` | Value must be a whole number between 1 and 250000. Maximum input and clipped output triangle count. |
+| `max_pixel_tests` | `25000000` | Value must be a whole number between 1 and 2.5e+08. Conservative limit on candidate pixels across clipped triangle bounds. |
+
 ## Decode and scale metric depth (`3d.normalize_depth`)
 
 3D vision / Depth

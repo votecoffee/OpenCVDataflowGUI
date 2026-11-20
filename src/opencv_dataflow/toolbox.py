@@ -176,7 +176,7 @@ BLOCK_MODULES = {
     "videoio": "input.camera",
     "objdetect": "3d.aruco_pose input.coded_rig_observations",
     "ptcloud": (
-        "3d.depth_cloud 3d.backproject_depth_pixels 3d.separate_depth_plane 3d.cloud_project 3d.evaluate_depth "
+        "3d.depth_cloud 3d.backproject_depth_pixels 3d.separate_depth_plane 3d.cloud_project 3d.mesh_project 3d.evaluate_depth "
         "3d.reproject_depth_region 3d.fuse_registered_depth 3d.normalize_depth "
         "3d.warp_rgbd_pose "
         "3d.depth_components 3d.depth_silhouette 3d.track_depth_fusion"
@@ -220,6 +220,7 @@ _NATIVE_NAMES = {
     "3d.cloud_region_grow": ("region growing", "surface segmentation", "normal curvature"),
     "3d.cloud_model_fit": ("ransac", "fit plane", "fit sphere", "sample consensus"),
     "3d.cloud_surface_quality": ("estimate normals", "curvature", "local PCA"),
+    "3d.mesh_project": ("triangleRasterize", "triangleRasterizeColor", "triangleRasterizeDepth"),
     "input.mesh": ("obj", "ply", "loadMesh"),
     "output.mesh_ply": ("obj", "ply", "saveMesh"),
     "input.cloud": ("obj", "ply", "pcd", "loadPointCloud"),
