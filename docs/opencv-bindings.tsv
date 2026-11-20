@@ -3968,11 +3968,11 @@ P3	function	cv2.perspectiveTransform	literal reference	-
 P3	function	cv2.phase	no static reference	-
 P3	class	cv2.phase_unwrapping.HistogramPhaseUnwrapping	no static reference	-
 P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.create	method name only	-
-P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.getInverseReliabilityMap	no static reference	-
+P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.getInverseReliabilityMap	method name only	-
 P3	method	cv2.phase_unwrapping.HistogramPhaseUnwrapping.Params	method name only	-
 P3	function	cv2.phase_unwrapping.HistogramPhaseUnwrapping_create	no static reference	-
 P3	class	cv2.phase_unwrapping.PhaseUnwrapping	no static reference	-
-P3	method	cv2.phase_unwrapping.PhaseUnwrapping.unwrapPhaseMap	no static reference	-
+P3	method	cv2.phase_unwrapping.PhaseUnwrapping.unwrapPhaseMap	method name only	-
 P3	class	cv2.phase_unwrapping_HistogramPhaseUnwrapping	alias	cv2.phase_unwrapping.HistogramPhaseUnwrapping
 P3	method	cv2.phase_unwrapping_HistogramPhaseUnwrapping.create	alias	cv2.phase_unwrapping.HistogramPhaseUnwrapping.create
 P3	method	cv2.phase_unwrapping_HistogramPhaseUnwrapping.getInverseReliabilityMap	alias	cv2.phase_unwrapping.HistogramPhaseUnwrapping.getInverseReliabilityMap
@@ -4556,7 +4556,7 @@ P3	method	cv2.structured_light.SinusoidalPattern.computePhaseMap	no static refer
 P3	method	cv2.structured_light.SinusoidalPattern.create	literal reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.findProCamMatches	no static reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.Params	literal reference	-
-P3	method	cv2.structured_light.SinusoidalPattern.unwrapPhaseMap	no static reference	-
+P3	method	cv2.structured_light.SinusoidalPattern.unwrapPhaseMap	method name only	-
 P3	function	cv2.structured_light.SinusoidalPattern_create	no static reference	-
 P3	class	cv2.structured_light.StructuredLightPattern	no static reference	-
 P3	method	cv2.structured_light.StructuredLightPattern.decode	method name only	-

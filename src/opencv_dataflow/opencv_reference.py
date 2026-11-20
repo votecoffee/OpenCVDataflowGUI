@@ -125,6 +125,11 @@ BINDINGS = {
     "3d.planar_pose_hypotheses": "solvePnPGeneric projectPoints",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",
+    "3d.unwrap_phase": (
+        "phase_unwrapping.HistogramPhaseUnwrapping.create "
+        "phase_unwrapping.PhaseUnwrapping.unwrapPhaseMap "
+        "phase_unwrapping.HistogramPhaseUnwrapping.getInverseReliabilityMap"
+    ),
     "3d.phase_shift_patterns": (
         "structured_light.SinusoidalPattern.create structured_light.SinusoidalPattern.generate"
     ),

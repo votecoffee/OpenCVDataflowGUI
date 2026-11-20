@@ -505,6 +505,17 @@ with modulation, ambiguity and validity diagnostics. Absolute X and Y use
 separate capture sequences and a stationary, aligned scene.
 [Capture examples](<../examples/opencv tools/phase_shift/README.md>)
 
+**Unwrap measured fringe phase** accepts a float single-channel wrapped
+phase image in radians and an optional lit-pixel mask. OpenCV produces
+the unwrapped phase and local inverse reliability. Four-connected
+regions retain independent cycle counts. Wire known reference phases
+at selected pixels to fix each region's integer offset. Relative mode
+uses the first eligible pixel's wrapped cycle when a reference is absent.
+Required mode flags missing references. Conflicting or inaccurate
+references withhold the corresponding region. The output carries the
+phase camera grid and records anchored and relative labels in its payload.
+[Shadow and independent reference example](<../examples/opencv tools/phase_unwrap/README.md>)
+
 **Calibrate camera and projector** fits the camera-to-projector transform
 from matched target views on two pinhole grids. It can refine projector
 intrinsics on their own grid while keeping camera intrinsics fixed.

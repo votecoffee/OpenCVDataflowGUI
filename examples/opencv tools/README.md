@@ -91,6 +91,9 @@ color and checks visible surfaces against observed camera depth.
 [Local cloud feature registration](cloud_feature_registration/README.md)
 registers noisy partial scans and measures correspondence error and overlap.
 
+[Measured fringe phase unwrapping](phase_unwrap/README.md) uses a shadow mask
+and independent references for two disconnected regions.
+
 [Phase-shift fringe replay](phase_shift/README.md) recovers absolute subpixel
 projector coordinates and marks low-signal and inconsistent captures.
 

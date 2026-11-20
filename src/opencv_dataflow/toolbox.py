@@ -58,6 +58,7 @@ OPENCV_MODULES = {
     "img_hash": "Image Hashing",
     "rgbd": "RGB-D Processing",
     "structured_light": "Structured Light",
+    "phase_unwrapping": "Phase Unwrapping",
     "surface_matching": "Surface Matching",
     "tracking": "Tracking",
     "ximgproc": "Extended Image Processing",
@@ -178,6 +179,7 @@ BLOCK_MODULES = {
         "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode "
         "3d.camera_projector_calibrate 3d.camera_projector_reconstruct"
     ),
+    "phase_unwrapping": "3d.unwrap_phase",
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match 3d.register_cloud_features",
     "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask 3d.smooth_depth",
     "mcc": "calibration.detect_color_chart",

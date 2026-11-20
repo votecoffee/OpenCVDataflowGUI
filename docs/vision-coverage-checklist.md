@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 66 | 16 | 49 | 131 | 50.4% |
+| 3. 3D imagery and point clouds | 67 | 16 | 48 | 131 | 51.1% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 321 | 20 | 129 | 470 | 68.3% |
+| **Overall** | 322 | 20 | 128 | 470 | 68.5% |
 
 <!-- coverage-summary:end -->
 
@@ -490,7 +490,7 @@ fixture or result needed to close the item.
 | S3-64 | Recover calibrated object dimensions from a depth silhouette | Depth backprojection and physical contour measurement | Complete | 3d.depth_silhouette measures datum-relative visible length, width and thickness, and flags invalid boundary samples. The [tilted two-part fixture](<../examples/opencv tools/depth_silhouette/README.md>) recovers both widths and lengths within 1 mm and locates all 57 missing boundary samples. |
 | S3-65 | Scene-scale recovery from multi-view observations | Multi-view triangulation with known metric anchors | Complete | 3d.recover_scene_scale fits a robust positive similarity from 3D landmark IDs, emits metric clouds and poses, and gates on independent checks. The [four-view example](<../examples/opencv tools/scene_scale/README.md>) rejects a bad anchor and measures 0.740 mm RMS over eight held-out targets. |
 | S3-66 | Stereo-to-depth consistency across multiple baselines | Stereo reprojection and cross-view depth checks | Complete | Rectified camera geometry and RGB-D registration place three Q-derived depths on one grid. The [multi-baseline example](<../examples/opencv tools/multi_baseline_depth/README.md>) recovers 72 outlier-affected pixels, leaves 36 equal votes unresolved, and compares retained depth with a held-out synthetic reference. |
-| S3-67 | Phase unwrapping for measured fringe images | phase_unwrapping.HistogramPhaseUnwrapping and getInverseReliabilityMap | Planned | Recover a known wrapped surface phase. Verify a shadow mask, per-pixel inverse reliability and separately referenced connected regions. |
+| S3-67 | Phase unwrapping for measured fringe images | phase_unwrapping.HistogramPhaseUnwrapping and getInverseReliabilityMap | Complete | 3d.unwrap_phase wraps the native histogram and inverse reliability, masks shadows and references each four-connected region independently. The [measured-fringe fixture](<../examples/opencv tools/phase_unwrap/README.md>) recovers 8,127 pixels with 0.0000106 rad RMS error. |
 | S3-68 | Camera pose tracking against an object silhouette | rapid silhouette trackers and projected object geometry | Planned | Track a known metric object in video with reprojection checks and explicit loss and reset behavior. |
 | S3-69 | Three-dimensional model pose from image and depth templates | linemod image gradients and depth normal templates | Planned | Recover an object pose from matched RGB-D templates and verify confidence and image registration. |
 | S3-70 | Multi-view calibration with coded custom targets | ccalib and observed camera-target correspondences | Planned | Qualify a custom target across cameras with held-out frame closure. Confirm the relevant Python APIs or use a tested solver. |

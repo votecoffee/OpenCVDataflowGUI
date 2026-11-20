@@ -1317,6 +1317,30 @@ Inputs: `points` (data), `camera` (data).
 | --- | --- | --- |
 | `output` | `"normalized"` | `normalized`, `pixels` |
 
+## Unwrap measured fringe phase (`3d.unwrap_phase`)
+
+3D vision / Structured light
+
+Inputs: `wrapped_phase` (image), `shadow_mask` (image, optional), `region` (data, optional), `references` (data, optional).
+
+Input `wrapped_phase` — Single-channel float radians in [-π, π]. Nonfinite values are masked.
+
+Input `shadow_mask` — Nonzero pixels are illuminated and eligible for unwrapping.
+
+Input `region` — Optional selection intersected with Shadow Mask.
+
+Input `references` — Wired list of known phases. Takes precedence over the References parameter.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_mode` | `"relative"` | `relative`, `required` Leave components relative or require an absolute reference in each. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Check known mask frames, or declare an independently loaded mask aligned. |
+| `references` | `[]` | List of records with a whole [x,y] pixel and known phase_rad. |
+| `anchor_tolerance_rad` | `0.03` | Value must be a finite number between 1e-05 and 3. Maximum residual after adding the best whole number of cycles. |
+| `histogram_threshold` | `29.608813203268074` | Value must be a finite number between 0.001 and 315.826. Inverse-reliability split between fine and coarse histogram bins. |
+| `small_bins` | `10` | Value must be a whole number between 1 and 256. Number of bins below the histogram threshold. |
+| `large_bins` | `5` | Value must be a whole number between 1 and 256. Number of bins above the histogram threshold. |
+
 ## Validate multi-camera rig (`3d.validate_multicamera`)
 
 3D vision / Calibration

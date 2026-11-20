@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Phase across a shadow gap",
+      "description": "Synthetic phase and fringe exposures by OpenCVDataflowGUI contributors (MIT). The shadow divides the scene into two regions with independent unknown cycles. Compare relative output with the branch referenced to three independent samples.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "wrapped",
+      "type": "input.file",
+      "name": "Wrapped phase from three fringe exposures",
+      "parameters": {
+        "path": "assets/wrapped_phase.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        35
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "two-phase-regions"
+      }
+    },
+    {
+      "id": "shadow",
+      "type": "input.file",
+      "name": "Lit pixels",
+      "parameters": {
+        "path": "assets/shadow_mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "two-phase-regions"
+      }
+    },
+    {
+      "id": "relative",
+      "type": "3d.unwrap_phase",
+      "name": "Relative phase per region",
+      "parameters": {
+        "reference_mode": "relative",
+        "alignment": "pixel_grid",
+        "references": [],
+        "anchor_tolerance_rad": 0.03,
+        "histogram_threshold": 29.608813203268074,
+        "small_bins": 10,
+        "large_bins": 5
+      },
+      "position": [
+        400,
+        35
+      ],
+      "exposed_inputs": [
+        "wrapped_phase",
+        "shadow_mask",
+        "region",
+        "references"
+      ],
+      "exposed_outputs": [
+        "unwrapped_phase",
+        "inverse_reliability",
+        "component_labels",
+        "valid_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Unwrapped phase"
+    },
+    {
+      "id": "referenced",
+      "type": "3d.unwrap_phase",
+      "name": "Absolute references per region",
+      "parameters": {
+        "reference_mode": "required",
+        "alignment": "pixel_grid",
+        "references": [
+          {
+            "pixel": [
+              10,
+              15
+            ],
+            "phase_rad": -12.737946944041187
+          },
+          {
+            "pixel": [
+              92,
+              14
+            ],
+            "phase_rad": 27.956386279037517
+          },
+          {
+            "pixel": [
+              121,
+              41
+            ],
+            "phase_rad": 31.637867071200933
+          }
+        ],
+        "anchor_tolerance_rad": 0.03,
+        "histogram_threshold": 29.608813203268074,
+        "small_bins": 10,
+        "large_bins": 5
+      },
+      "position": [
+        400,
+        295
+      ],
+      "exposed_inputs": [
+        "wrapped_phase",
+        "shadow_mask",
+        "region",
+        "references"
+      ],
+      "exposed_outputs": [
+        "unwrapped_phase",
+        "inverse_reliability",
+        "component_labels",
+        "valid_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Unwrapped phase"
+    }
+  ],
+  "connections": [
+    {
+      "source": "wrapped",
+      "output": "image",
+      "target": "relative",
+      "input": "wrapped_phase"
+    },
+    {
+      "source": "shadow",
+      "output": "image",
+      "target": "relative",
+      "input": "shadow_mask"
+    },
+    {
+      "source": "wrapped",
+      "output": "image",
+      "target": "referenced",
+      "input": "wrapped_phase"
+    },
+    {
+      "source": "shadow",
+      "output": "image",
+      "target": "referenced",
+      "input": "shadow_mask"
+    }
+  ]
+}

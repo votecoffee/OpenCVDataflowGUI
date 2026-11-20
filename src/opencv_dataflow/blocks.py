@@ -832,6 +832,7 @@ def builtin_registry():
     from .path_strip import UnwrapPathStrip
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
     from .phase_shift import PHASE_SHIFT_BLOCKS
+    from .phase_unwrap import UnwrapFringePhase
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
     from .pixel_moments import PixelMoments
@@ -1348,6 +1349,7 @@ def builtin_registry():
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
         *PHASE_SHIFT_BLOCKS,
+        UnwrapFringePhase,
         *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         StereoDemo,
