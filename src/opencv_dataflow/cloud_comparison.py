@@ -24,7 +24,7 @@ class NearestRows:
     ambiguous: np.ndarray
 
 
-def _nearest_rows(source, target, radius, tie_tolerance, cancelled):
+def nearest_cloud_rows(source, target, radius, tie_tolerance, cancelled):
     """Return exact nearest distances and unique target row IDs within radius."""
     index = np.full(len(source), -1, np.int32)
     distance = np.full(len(source), np.nan)
@@ -309,10 +309,10 @@ class CompareCloudDimensions(Tool3D):
             return cancelled_result()
         xyz = measured.points.astype(np.float64) * METERS[measured.units]
         nominal = reference.points.astype(np.float64) * METERS[reference.units]
-        forward = _nearest_rows(xyz, nominal, radius, tie, self._cancelled)
+        forward = nearest_cloud_rows(xyz, nominal, radius, tie, self._cancelled)
         if forward is None or self._cancelled():
             return cancelled_result()
-        reverse = _nearest_rows(nominal, xyz, radius, tie, self._cancelled)
+        reverse = nearest_cloud_rows(nominal, xyz, radius, tie, self._cancelled)
         if reverse is None or self._cancelled():
             return cancelled_result()
         measured_result = _compare_direction(

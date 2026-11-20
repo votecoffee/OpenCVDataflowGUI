@@ -601,8 +601,13 @@ available in Debug and Balanced.
   [Partial-scan example](<../examples/opencv tools/cloud_feature_registration/README.md>)
 - **Estimate point-cloud normals** uses contrib plane fitting. **Point-to-plane
   ICP** refines alignment of oriented clouds, optionally initialized with a
-  known pose. It emits the transformed source cloud and native residual. Use
-  an initial pose for separated clouds; ICP is local registration.
+  known pose. Optional quality checks bound correspondence search and gate
+  the pose by overlap in both directions, reciprocal-pair count, Euclidean
+  RMSE and local point-to-plane observability. The report retains the native
+  residual and the pair output retains both original row indices. A rejected
+  fit keeps its diagnostics and withholds the aligned cloud and pose. Use
+  an initial pose for separated clouds. ICP refines local alignment.
+  [ICP quality example](<../examples/opencv tools/icp_registration/README.md>)
 - **Train 3D PPF surface model** prepares a portable oriented-point model.
   **Match 3D PPF surface model** trains/caches the native detector for that model
   and emits ranked voted poses in scene coordinates. Downsample dense models

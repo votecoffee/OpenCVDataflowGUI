@@ -220,6 +220,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Calibrated mesh projection](<opencv tools/mesh_projection/README.md>) | Render overlapping triangles to RGB and metric depth with clipping, winding culling and coverage. |
 | [Calibrated cloud visibility](<opencv tools/cloud_visibility/README.md>) | Render a color cloud in the camera grid and compare visible and occluded samples to reference depth. |
 | [Local cloud feature registration](<opencv tools/cloud_feature_registration/README.md>) | Align partial noisy scans, inspect one-to-one inliers and verify a known pose. |
+| [ICP registration quality](<opencv tools/icp_registration/README.md>) | Refine a seed pose, check partial overlap, and reject an unconstrained plane match. |
 | [Calibration revisions](<opencv tools/calibration_revisions/README.md>) | Select rig revisions, verify capture identity and reload a pinned lens map. |
 | [Fisheye camera calibration](<opencv tools/fisheye_calibration/README.md>) | Fit a wide-angle camera from eight board views, validate a held-out image and rectify with the fitted profile. |
 | [Omnidirectional camera calibration](<opencv tools/omnidir_calibration/README.md>) | Fit a Mei-model camera, validate a held-out target near the sensor edge and rectify to a perspective grid. |

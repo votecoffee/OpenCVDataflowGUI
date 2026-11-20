@@ -885,13 +885,27 @@ Inputs: `patterns` (any), `points` (data, optional), `white` (image, optional), 
 
 Inputs: `source` (cloud), `target` (cloud), `initial_pose` (data, optional).
 
+Input `source` — Moving point cloud with unit normals.
+
+Input `target` — Fixed point cloud with unit normals using the same length units.
+
+Input `initial_pose` — Optional rigid transform from source frame to target frame.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `iterations` | `100` |  |
-| `tolerance` | `0.005` |  |
-| `rejection_scale` | `2.5` |  |
-| `pyramid_levels` | `4` |  |
-| `max_residual` | `0.05` |  |
+| `iterations` | `100` | Value must be a whole number between 1 and 10000. Maximum native ICP iterations. |
+| `tolerance` | `0.005` | Value must be a finite number at least 1e-12. Native ICP convergence tolerance. |
+| `rejection_scale` | `2.5` | Value must be a finite number at least 1e-12. Native outlier rejection scale. |
+| `pyramid_levels` | `4` | Value must be a whole number between 1 and 10. Number of levels in the native ICP refinement. |
+| `max_residual` | `0.05` | Value must be a finite number at least 0. Maximum residual returned by OpenCV. |
+| `quality_checks` | `false` | Check the refined pose with independent nearest-point diagnostics. |
+| `correspondence_radius` | `0.01` | Value must be a finite number between 1e-12 and 1e+20. Inclusive overlap radius in the input clouds' length units. |
+| `minimum_source_overlap` | `0.25` | Value must be a finite number between 0 and 1. Minimum fraction of source rows with a nearby target. |
+| `minimum_target_overlap` | `0.25` | Value must be a finite number between 0 and 1. Minimum fraction of target rows with a nearby source. |
+| `minimum_inliers` | `6` | Value must be a whole number between 6 and 1e+06. Minimum number of unique reciprocal nearest pairs. |
+| `maximum_inlier_rmse` | `0.0` | Value must be a finite number between 0 and 1e+20. Inlier RMSE limit in cloud units. Zero disables it. |
+| `minimum_constraint_ratio` | `0.001` | Value must be a finite number between 1e-06 and 1. Minimum smallest-to-largest singular value ratio of the normalized pose Jacobian. |
+| `max_points_per_cloud` | `250000` | Value must be a whole number between 6 and 1e+06. Maximum points per input when quality checks are enabled. |
 
 ## Pack calibrated landmark view (`3d.landmark_view`)
 

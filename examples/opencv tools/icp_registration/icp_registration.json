@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Check the support for an ICP pose",
+      "description": "Original synthetic fixture by OpenCVDataflowGUI contributors (MIT). Two curved crops share 288 points. The plane has full overlap but cannot constrain all six pose axes.",
+      "parameters": {},
+      "position": [
+        0,
+        -285
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "curved_source",
+      "type": "input.cloud",
+      "name": "Load curved source",
+      "parameters": {
+        "path": "assets/curved_source.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "icp-overlap-fixture"
+      }
+    },
+    {
+      "id": "curved_target",
+      "type": "input.cloud",
+      "name": "Load curved target",
+      "parameters": {
+        "path": "assets/curved_target.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        220
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "icp-overlap-fixture"
+      }
+    },
+    {
+      "id": "plane_source",
+      "type": "input.cloud",
+      "name": "Load plane source",
+      "parameters": {
+        "path": "assets/plane_source.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        440
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "icp-overlap-fixture"
+      }
+    },
+    {
+      "id": "plane_target",
+      "type": "input.cloud",
+      "name": "Load plane target",
+      "parameters": {
+        "path": "assets/plane_target.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        660
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "icp-overlap-fixture"
+      }
+    },
+    {
+      "id": "seed",
+      "type": "3d.pose",
+      "name": "Define approximate scan pose",
+      "parameters": {
+        "rvec": [
+          0.0043,
+          -0.003,
+          0.0058
+        ],
+        "translation": [
+          0.0017,
+          -0.0023,
+          0.0033
+        ],
+        "source_frame": "source_scan",
+        "target_frame": "target_scan",
+        "units": "m"
+      },
+      "position": [
+        0,
+        880
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "align",
+      "type": "3d.icp",
+      "name": "Accept partial curved overlap",
+      "description": "Refine a local pose and optionally verify overlap and geometric constraints.",
+      "parameters": {
+        "iterations": 100,
+        "tolerance": 0.005,
+        "rejection_scale": 2.5,
+        "pyramid_levels": 1,
+        "max_residual": 0.05,
+        "quality_checks": true,
+        "correspondence_radius": 0.003,
+        "minimum_source_overlap": 0.6,
+        "minimum_target_overlap": 0.6,
+        "minimum_inliers": 6,
+        "maximum_inlier_rmse": 0.001,
+        "minimum_constraint_ratio": 0.001,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        550,
+        110
+      ],
+      "exposed_inputs": [
+        "source",
+        "target",
+        "initial_pose"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "cloud",
+        "residual",
+        "report",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "strict",
+      "type": "3d.icp",
+      "name": "Require 90% overlap",
+      "description": "Refine a local pose and optionally verify overlap and geometric constraints.",
+      "parameters": {
+        "iterations": 100,
+        "tolerance": 0.005,
+        "rejection_scale": 2.5,
+        "pyramid_levels": 1,
+        "max_residual": 0.05,
+        "quality_checks": true,
+        "correspondence_radius": 0.003,
+        "minimum_source_overlap": 0.9,
+        "minimum_target_overlap": 0.9,
+        "minimum_inliers": 6,
+        "maximum_inlier_rmse": 0.001,
+        "minimum_constraint_ratio": 0.001,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        550,
+        380
+      ],
+      "exposed_inputs": [
+        "source",
+        "target",
+        "initial_pose"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "cloud",
+        "residual",
+        "report",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plane",
+      "type": "3d.icp",
+      "name": "Reject unconstrained plane fit",
+      "description": "Refine a local pose and optionally verify overlap and geometric constraints.",
+      "parameters": {
+        "iterations": 100,
+        "tolerance": 0.005,
+        "rejection_scale": 2.5,
+        "pyramid_levels": 1,
+        "max_residual": 0.05,
+        "quality_checks": true,
+        "correspondence_radius": 0.003,
+        "minimum_source_overlap": 0.9,
+        "minimum_target_overlap": 0.9,
+        "minimum_inliers": 6,
+        "maximum_inlier_rmse": 0.001,
+        "minimum_constraint_ratio": 0.001,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        550,
+        650
+      ],
+      "exposed_inputs": [
+        "source",
+        "target",
+        "initial_pose"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "cloud",
+        "residual",
+        "report",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "curved_source",
+      "output": "cloud",
+      "target": "align",
+      "input": "source"
+    },
+    {
+      "source": "curved_target",
+      "output": "cloud",
+      "target": "align",
+      "input": "target"
+    },
+    {
+      "source": "seed",
+      "output": "transform",
+      "target": "align",
+      "input": "initial_pose"
+    },
+    {
+      "source": "curved_source",
+      "output": "cloud",
+      "target": "strict",
+      "input": "source"
+    },
+    {
+      "source": "curved_target",
+      "output": "cloud",
+      "target": "strict",
+      "input": "target"
+    },
+    {
+      "source": "seed",
+      "output": "transform",
+      "target": "strict",
+      "input": "initial_pose"
+    },
+    {
+      "source": "plane_source",
+      "output": "cloud",
+      "target": "plane",
+      "input": "source"
+    },
+    {
+      "source": "plane_target",
+      "output": "cloud",
+      "target": "plane",
+      "input": "target"
+    },
+    {
+      "source": "seed",
+      "output": "transform",
+      "target": "plane",
+      "input": "initial_pose"
+    }
+  ]
+}

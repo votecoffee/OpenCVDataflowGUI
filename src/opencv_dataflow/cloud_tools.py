@@ -9,7 +9,8 @@ import numpy as np
 
 from .core import Port, Result
 from .geometry3d_common import Tool3D, cloud_graphics, pose_record, rigid, transformed_cloud
-from .parameter_validation import NumericRange
+from .icp_diagnostics import evaluate_icp
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, image_with_payload
 from .pointclouds import PointCloud, render_cloud
 from .processing import finite, integer
@@ -240,63 +241,257 @@ def cloud_with_normals(cloud):
 
 class ICPCloud(Tool3D):
     type_id, title, subtype = "3d.icp", "Point-to-plane ICP registration", "Surface matching"
+    description = "Refine a local pose and optionally verify overlap and geometric constraints."
+    payload_reference = "source"
     inputs = (
         Port("source", "cloud"),
         Port("target", "cloud"),
         Port("initial_pose", "data", required=False),
     )
-    outputs = (Port("pose", "data"), Port("cloud", "cloud"), Port("residual", "number"))
+    outputs = (
+        Port("pose", "data"),
+        Port("cloud", "cloud"),
+        Port("residual", "number"),
+        Port("report", "data"),
+        Port("inliers", "data", required=False),
+    )
     defaults = {
         "iterations": 100,
         "tolerance": 0.005,
         "rejection_scale": 2.5,
         "pyramid_levels": 4,
         "max_residual": 0.05,
+        "quality_checks": False,
+        "correspondence_radius": 0.01,
+        "minimum_source_overlap": 0.25,
+        "minimum_target_overlap": 0.25,
+        "minimum_inliers": 6,
+        "maximum_inlier_rmse": 0.0,
+        "minimum_constraint_ratio": 0.001,
+        "max_points_per_cloud": 250_000,
     }
+    parameter_ranges = {
+        "iterations": NumericRange(1, 10000, whole=True),
+        "tolerance": NumericRange(1e-12),
+        "rejection_scale": NumericRange(1e-12),
+        "pyramid_levels": NumericRange(1, 10, whole=True),
+        "max_residual": NumericRange(0),
+        "correspondence_radius": NumericRange(1e-12, 1e20),
+        "minimum_source_overlap": NumericRange(0, 1),
+        "minimum_target_overlap": NumericRange(0, 1),
+        "minimum_inliers": NumericRange(6, 1_000_000, whole=True),
+        "maximum_inlier_rmse": NumericRange(0, 1e20),
+        "minimum_constraint_ratio": NumericRange(1e-6, 1),
+        "max_points_per_cloud": NumericRange(6, 1_000_000, whole=True),
+    }
+    parameter_help = {
+        "iterations": "Maximum native ICP iterations.",
+        "tolerance": "Native ICP convergence tolerance.",
+        "rejection_scale": "Native outlier rejection scale.",
+        "pyramid_levels": "Number of levels in the native ICP refinement.",
+        "max_residual": "Maximum residual returned by OpenCV.",
+        "quality_checks": "Check the refined pose with independent nearest-point diagnostics.",
+        "correspondence_radius": "Inclusive overlap radius in the input clouds' length units.",
+        "minimum_source_overlap": "Minimum fraction of source rows with a nearby target.",
+        "minimum_target_overlap": "Minimum fraction of target rows with a nearby source.",
+        "minimum_inliers": "Minimum number of unique reciprocal nearest pairs.",
+        "maximum_inlier_rmse": "Inlier RMSE limit in cloud units. Zero disables it.",
+        "minimum_constraint_ratio": (
+            "Minimum smallest-to-largest singular value ratio of the normalized pose Jacobian."
+        ),
+        "max_points_per_cloud": "Maximum points per input when quality checks are enabled.",
+    }
+    input_help = {
+        "source": "Moving point cloud with unit normals.",
+        "target": "Fixed point cloud with unit normals using the same length units.",
+        "initial_pose": "Optional rigid transform from source frame to target frame.",
+    }
+    output_help = {
+        "pose": "Accepted source-to-target pose.",
+        "cloud": "Accepted source cloud transformed into the target frame.",
+        "residual": "Residual returned by OpenCV, in its native convention.",
+        "report": "Native status, overlap, paired errors and local pose constraints.",
+        "inliers": "Reciprocal row indices with Euclidean and signed plane errors.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        p = self.parameters if parameters is None else parameters
+        super().validate_parameters(p)
+        if not isinstance(p["quality_checks"], bool):
+            raise ValidationError("Quality checks must be on or off", "quality_checks")
+        if p["quality_checks"] and float(p["maximum_inlier_rmse"]) > float(
+            p["correspondence_radius"]
+        ):
+            raise ValidationError(
+                "Maximum inlier RMSE must be at most the correspondence radius",
+                "maximum_inlier_rmse",
+                "correspondence_radius",
+            )
+        if p["quality_checks"] and p["minimum_inliers"] > p["max_points_per_cloud"]:
+            raise ValidationError(
+                "Minimum inliers must fit within the point budget",
+                "minimum_inliers",
+                "max_points_per_cloud",
+            )
+
+    def _check_candidate(self, matrix, source, target, outputs, reasons):
+        p = self.parameters
+        radius = float(p["correspondence_radius"])
+        xyz = source.points @ matrix[:3, :3].T + matrix[:3, 3]
+        quality = evaluate_icp(xyz, target, radius, self._cancelled)
+        if quality is None or self._cancelled():
+            return None
+        metrics, src, dst, distances, plane, forward = quality
+        outputs["report"]["quality"] = dict(metrics, correspondence_radius=radius)
+        for direction in ("source", "target"):
+            overlap = metrics[f"{direction}_overlap_fraction"]
+            if overlap < float(p[f"minimum_{direction}_overlap"]):
+                reasons.append(
+                    {
+                        "code": f"icp_{direction}_overlap",
+                        "message": f"{direction.title()} overlap is {overlap:.1%}",
+                    }
+                )
+        if metrics["inlier_count"] < p["minimum_inliers"]:
+            reasons.append(
+                {
+                    "code": "icp_inliers",
+                    "message": f"Only {metrics['inlier_count']} reciprocal pairs",
+                }
+            )
+        if metrics["constraint_ratio"] < float(p["minimum_constraint_ratio"]):
+            reasons.append(
+                {
+                    "code": "icp_degenerate",
+                    "message": "Inliers weakly constrain or leave pose axes free",
+                }
+            )
+        rmse = metrics["inlier_rmse"]
+        maximum_rmse = float(p["maximum_inlier_rmse"])
+        if maximum_rmse and rmse is not None and rmse > maximum_rmse:
+            reasons.append(
+                {
+                    "code": "icp_inlier_rmse",
+                    "message": f"Inlier RMSE is {rmse:.6g} {source.units}",
+                }
+            )
+        if "inliers" in self.exposed_outputs:
+            outputs["inliers"] = {
+                "model": "icp_inliers_v1",
+                "units": source.units,
+                "source_index": src.tolist(),
+                "target_index": dst.tolist(),
+                "distance": distances.tolist(),
+                "point_to_plane": plane.tolist(),
+            }
+        if not self.capture_graphics:
+            return {}
+        colors = np.full((len(xyz), 3), 128, np.uint8)
+        colors[forward.index >= 0] = (65, 150, 235)
+        colors[forward.ambiguous] = (245, 184, 60)
+        colors[src] = (45, 205, 100)
+        return cloud_graphics(self, PointCloud(xyz, source.units, target.frame, colors=colors))
 
     def process(self, inputs):
         source, target, p = inputs["source"], inputs["target"], self.parameters
         if source.units != target.units:
-            raise ValueError("ICP cloud length units must match")
+            raise ValidationError("ICP cloud length units must match", "source", "target")
+        if (
+            p["quality_checks"]
+            and max(len(source.points), len(target.points)) > p["max_points_per_cloud"]
+        ):
+            raise ValidationError("ICP input exceeds the point budget", "max_points_per_cloud")
         initial = inputs.get("initial_pose")
         transform = np.eye(4)
-        if initial:
+        if initial is not None:
             if (
-                initial["source_frame"] != source.frame
-                or initial["target_frame"] != target.frame
-                or initial["units"] != source.units
+                not isinstance(initial, dict)
+                or initial.get("source_frame") != source.frame
+                or initial.get("target_frame") != target.frame
+                or initial.get("units") != source.units
             ):
-                raise ValueError("Initial ICP pose frames/units do not match the clouds")
+                raise ValidationError(
+                    "Initial ICP pose frames/units must match the clouds", "initial_pose"
+                )
             transform = rigid(initial)
-        model = transformed_cloud(source, transform, target.frame)
+        report = {
+            "units": source.units,
+            "source_frame": source.frame,
+            "target_frame": target.frame,
+            "source_points": len(source.points),
+            "target_points": len(target.points),
+            "native_status": None,
+            "native_residual": None,
+            "quality_checks": bool(p["quality_checks"]),
+            "quality": None,
+        }
+        outputs = dict(
+            pose=NO_VALUE, cloud=NO_VALUE, residual=NO_VALUE, report=report, inliers=NO_VALUE
+        )
+
+        def cancelled():
+            return Result(
+                outputs,
+                passed=False,
+                message="ICP cancelled",
+                fail_reasons=["icp_cancelled"],
+            )
+
+        if self._cancelled():
+            return cancelled()
+        model = (
+            transformed_cloud(source, transform, target.frame) if initial is not None else source
+        )
         icp = surface_module().ICP(
-            integer(p["iterations"], "Iterations", 1, 10000),
-            finite(p["tolerance"], "Tolerance", 1e-12),
-            finite(p["rejection_scale"], "Rejection scale", 1e-12),
-            integer(p["pyramid_levels"], "Pyramid levels", 1, 10),
+            int(p["iterations"]),
+            float(p["tolerance"]),
+            float(p["rejection_scale"]),
+            int(p["pyramid_levels"]),
         )
         status, residual, delta = icp.registerModelToScene(
             cloud_with_normals(model), cloud_with_normals(target)
         )
-        passed = (
-            status == 0
-            and np.isfinite(residual)
-            and residual <= finite(p["max_residual"], "Maximum residual", 0)
+        report.update(
+            native_status=int(status),
+            native_residual=float(residual) if np.isfinite(residual) else None,
         )
-        pose, result = NO_VALUE, NO_VALUE
-        if passed:
-            pose = pose_record(rigid(delta) @ transform, source.frame, target.frame, source.units)
+        outputs["residual"] = report["native_residual"] if np.isfinite(residual) else 1e30
+        if self._cancelled():
+            return cancelled()
+        reasons = []
+        if status != 0 or not np.isfinite(residual) or residual > float(p["max_residual"]):
+            reasons.append(
+                {
+                    "code": "icp_registration",
+                    "message": f"OpenCV ICP status {status}, residual {residual:.6g}",
+                }
+            )
+        matrix = None
+        if status == 0 and np.isfinite(residual):
+            try:
+                matrix = rigid(rigid(delta) @ transform)
+            except ValueError:
+                reasons.append(
+                    {"code": "icp_pose_invalid", "message": "OpenCV returned an invalid rigid pose"}
+                )
+
+        graphics = {}
+        if matrix is not None and p["quality_checks"]:
+            graphics = self._check_candidate(matrix, source, target, outputs, reasons)
+            if graphics is None or self._cancelled():
+                return cancelled()
+        if not reasons:
+            pose = pose_record(matrix, source.frame, target.frame, source.units)
             result = transformed_cloud(source, pose, target.frame)
+            outputs.update(pose=pose, cloud=result)
+            if not p["quality_checks"]:
+                graphics = cloud_graphics(self, result)
         return Result(
-            {
-                "pose": pose,
-                "cloud": result,
-                "residual": float(residual) if np.isfinite(residual) else 1e30,
-            },
-            passed=passed,
-            graphics=cloud_graphics(self, result) if passed else {},
-            message=f"OpenCV ICP residual {residual:.6g}",
-            fail_reasons=[] if passed else ["icp_registration"],
+            outputs,
+            passed=not reasons,
+            graphics=graphics,
+            message=reasons[0]["message"] if reasons else f"OpenCV ICP residual {residual:.6g}",
+            fail_reasons=reasons,
         )
 
 
