@@ -889,6 +889,39 @@ Inputs: `disparity` (image), `rectification` (data), `image` (image, optional), 
 | `min_depth` | `0.001` |  |
 | `max_depth` | `100.0` |  |
 
+## Reproject depth-backed region (`3d.reproject_depth_region`)
+
+3D vision / Depth and RGB-D
+
+Inputs: `source_depth` (depth), `source_camera` (data), `target_camera` (data), `transform` (data), `mask` (image, optional), `region` (data, optional), `target_image` (image, optional), `target_depth` (depth, optional).
+
+Input `source_depth` — Positive axial Z on the supplied source camera's pixel grid.
+
+Input `region` — Select a patch in source depth pixels. With Mask, use their intersection.
+
+Input `mask` — Optional uint8 source selection.
+
+Input `target_image` — Optional target raster that supplies output coordinates and an overlay.
+
+Input `target_depth` — Optional observed axial Z used to test projection visibility.
+
+Input `transform` — Rigid source-optical to target-optical pose, in meters or millimeters.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `source_units` | `"m"` | `m`, `mm` Physical unit of an untagged source depth image. |
+| `source_units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 source sample. |
+| `target_units` | `"m"` | `m`, `mm` Physical unit of an untagged target depth image. |
+| `target_units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 target sample. |
+| `visibility_policy` | `"reject_occluded"` | `reject_occluded`, `require_agreement` Keep unverified projections, or require matching target depth. |
+| `reference_tolerance_m` | `0.01` | Value must be a finite number at least 0. Allowed axial-Z difference for target depth agreement. |
+| `minimum_target_z_m` | `0.001` | Value must be a finite number between 1e-06 and 100000. Clip target camera Z below this positive distance. |
+| `maximum_target_z_m` | `10.0` | Value must be a finite number between 1e-06 and 100000. Clip target camera Z above this distance. |
+| `inverse_tolerance_px` | `0.25` | Value must be a finite number between 1e-06 and 4. Maximum source pixel round-trip error for a usable ray. |
+| `minimum_retained_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required fraction of selected source pixels retained. |
+| `emit_region` | `true` | Encode the exact target mask as a reusable scanline region. |
+| `maximum_region_runs` | `100000` | Value must be a whole number between 1 and 1e+06. Bound the exact region encoding. |
+
 ## Separate support plane and foreground (`3d.separate_depth_plane`)
 
 3D vision / RGB-D

@@ -596,7 +596,7 @@ and video stabilization classes require a different backend or a tested equivale
 | --- | --- | --- |
 | `cv::ccalib::CustomPattern`, `cv::randpattern::RandomPatternCornerFinder`, `cv::randpattern::RandomPatternGenerator`, `cv::multicalib::MultiCameraCalibration` | Separate repeatable target preparation and partial-view detection from the rig fit. These source classes lack direct wheel bindings. | S3-70, S3-126 |
 | `cv2.omnidir.calibrate` | Fit a lens model with held-out edge reprojections. | S3-05 |
-| `cv2.omnidir.initUndistortRectifyMap`, `cv2.omnidir.projectPoints`, `cv2.omnidir.undistortImage`, `cv2.omnidir.undistortPoints` | Share the lens projection contract with camera rays, calibrated remap and coverage. | S3-05, S3-09, S3-55 |
+| `cv2.omnidir.initUndistortRectifyMap`, `cv2.omnidir.projectPoints`, `cv2.omnidir.undistortImage`, `cv2.omnidir.undistortPoints` | Share the lens projection contract with camera rays, calibrated remap and coverage. 3d.reproject_depth_region uses these rays to transfer a region across camera grids with metric Z and target visibility diagnostics. | S3-05, S3-09, S3-55 |
 | `cv2.omnidir.stereoCalibrate`, `cv2.omnidir.stereoRectify` | Fit and rectify the wide-angle pair before disparity or depth validation. | S3-14 |
 | `cv2.omnidir.stereoReconstruct` | Qualify wide-angle disparity and metric cloud output together. | S3-124 |
 | `cv2.phase_unwrapping.HistogramPhaseUnwrapping`, `cv2.phase_unwrapping.HistogramPhaseUnwrapping.Params`, `cv2.phase_unwrapping.PhaseUnwrapping` | Keep phase output, shadow support and inverse reliability in a calibrated fringe workflow. | S3-67 |

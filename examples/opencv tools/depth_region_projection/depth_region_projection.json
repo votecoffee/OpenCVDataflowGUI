@@ -1,0 +1,362 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Transfer a depth-backed patch",
+      "description": "Original synthetic depth planes and camera models by OpenCVDataflowGUI contributors (MIT). A fisheye source patch transfers to an omnidirectional target. A nearer target object occludes part of the patch and a hole has no observed depth.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.depth_file",
+      "name": "Source depth",
+      "parameters": {
+        "path": "assets/source.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 600,
+        "display_max": 1600
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "wide-angle-plane"
+      }
+    },
+    {
+      "id": "target",
+      "type": "input.depth_file",
+      "name": "Target depth",
+      "parameters": {
+        "path": "assets/target.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 600,
+        "display_max": 1600
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "wide-angle-plane"
+      }
+    },
+    {
+      "id": "source_camera",
+      "type": "3d.camera",
+      "name": "Fisheye source camera",
+      "parameters": {
+        "fx": 96,
+        "fy": 93,
+        "cx": 79.5,
+        "cy": 54.5,
+        "width": 160,
+        "height": 110,
+        "distortion": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lens": "fisheye",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "source_optical"
+      },
+      "position": [
+        0,
+        470
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target_camera",
+      "type": "3d.camera",
+      "name": "Omnidirectional target camera",
+      "parameters": {
+        "fx": 122,
+        "fy": 120,
+        "cx": 71.5,
+        "cy": 49.5,
+        "width": 144,
+        "height": 100,
+        "distortion": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lens": "omnidir",
+        "xi": 0.55,
+        "units": "m",
+        "frame": "target_optical"
+      },
+      "position": [
+        0,
+        650
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.14,
+          0.0
+        ],
+        "translation": [
+          -70.0,
+          13.0,
+          40.0
+        ],
+        "source_frame": "source_optical",
+        "target_frame": "target_optical",
+        "units": "mm"
+      },
+      "position": [
+        315,
+        455
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patch",
+      "type": "region.shape",
+      "name": "Select physical patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          42,
+          26,
+          73,
+          51
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        315,
+        30
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "transfer",
+      "type": "3d.reproject_depth_region",
+      "name": "Reproject depth-backed region",
+      "parameters": {
+        "source_units": "m",
+        "source_units_per_sample": 0.001,
+        "target_units": "m",
+        "target_units_per_sample": 0.001,
+        "visibility_policy": "require_agreement",
+        "reference_tolerance_m": 0.012,
+        "minimum_target_z_m": 0.001,
+        "maximum_target_z_m": 10.0,
+        "inverse_tolerance_px": 0.25,
+        "minimum_retained_fraction": 0.55,
+        "emit_region": true,
+        "maximum_region_runs": 100000
+      },
+      "position": [
+        685,
+        70
+      ],
+      "exposed_inputs": [
+        "source_depth",
+        "source_camera",
+        "target_camera",
+        "transform",
+        "mask",
+        "region",
+        "target_image",
+        "target_depth"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "depth",
+        "source_support",
+        "occluded_mask",
+        "unverified_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Coverage"
+    },
+    {
+      "id": "measure",
+      "type": "region.measure",
+      "name": "Measure transferred support",
+      "parameters": {
+        "min_area": 0,
+        "max_area": 0,
+        "min_coverage": 0.0,
+        "max_coverage": 1.0
+      },
+      "position": [
+        1100,
+        255
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "area",
+        "coverage",
+        "centroid",
+        "bounds",
+        "data"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "depth",
+      "target": "patch",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "depth",
+      "target": "transfer",
+      "input": "source_depth"
+    },
+    {
+      "source": "target",
+      "output": "depth",
+      "target": "transfer",
+      "input": "target_depth"
+    },
+    {
+      "source": "source_camera",
+      "output": "camera",
+      "target": "transfer",
+      "input": "source_camera"
+    },
+    {
+      "source": "target_camera",
+      "output": "camera",
+      "target": "transfer",
+      "input": "target_camera"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "transfer",
+      "input": "transform"
+    },
+    {
+      "source": "patch",
+      "output": "region",
+      "target": "transfer",
+      "input": "region"
+    },
+    {
+      "source": "target",
+      "output": "depth",
+      "target": "measure",
+      "input": "image"
+    },
+    {
+      "source": "transfer",
+      "output": "region",
+      "target": "measure",
+      "input": "region"
+    }
+  ]
+}

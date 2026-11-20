@@ -35,20 +35,24 @@ def camera_coordinates(cloud, target_frame, pose):
     return xyz @ transform[:3, :3].T + transform[:3, 3] * METERS[pose["units"]]
 
 
+def pixel_cells(uv, size):
+    """Return in-grid rows and their nearest pixel cells using half-open borders."""
+    inside = np.isfinite(uv).all(axis=1) & (uv >= -0.5).all(axis=1)
+    inside &= (uv < [size[0] - 0.5, size[1] - 0.5]).all(axis=1)
+    x, y = np.floor(uv[inside] + 0.5).astype(np.int32).T
+    return inside, y * size[0] + x
+
+
 def raster_indices(xyz, candidates, k, distortion, size):
-    """Use nearest pixel centers, with half-open border cells and bounded native scratch."""
-    width, height = size
+    """Use nearest pixel centers with bounded native scratch."""
     cells = np.full(len(candidates), -1, np.int32)
     zero = np.zeros(3, np.float64)
     for start in range(0, len(candidates), 16384):
         band = slice(start, start + 16384)
         uv, _ = cv2.projectPoints(xyz[candidates[band]], zero, zero, k, distortion)
-        uv = uv.reshape(-1, 2)
-        inside = np.isfinite(uv).all(axis=1) & (uv >= -0.5).all(axis=1)
-        inside &= (uv < [width - 0.5, height - 0.5]).all(axis=1)
-        x, y = np.floor(uv[inside] + 0.5).astype(np.int32).T
+        inside, indices = pixel_cells(uv.reshape(-1, 2), size)
         band_cells = cells[band]
-        band_cells[inside] = y * width + x
+        band_cells[inside] = indices
     return cells
 
 

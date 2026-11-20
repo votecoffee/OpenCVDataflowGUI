@@ -128,6 +128,33 @@ def pose_matrix(rotation, translation):
     return rigid(result)
 
 
+def project_camera_pixels(xyz, model, k, d, rvec, translation):
+    """Project using the declared lens family and return an Nx2 pixel array."""
+    lens = model.get("lens", "pinhole")
+    if lens == "fisheye":
+        pixels, _ = cv2.fisheye.projectPoints(xyz[:, None], rvec, translation, k, d)
+    elif lens == "omnidir":
+        pixels, _ = cv2.omnidir.projectPoints(xyz[:, None], rvec, translation, k, model["xi"], d)
+    else:
+        pixels, _ = cv2.projectPoints(xyz, rvec, translation, k, d)
+    return pixels.reshape(-1, 2)
+
+
+def undistort_camera_pixels(xy, model, k, d, projection=None):
+    """Return normalized or pinhole-projected rays in an Nx2 array."""
+    xy = xy.reshape(-1, 1, 2)
+    lens = model.get("lens", "pinhole")
+    if lens == "fisheye":
+        result = cv2.fisheye.undistortPoints(xy, k, d, P=projection)
+    elif lens == "omnidir":
+        result = cv2.omnidir.undistortPoints(xy, k, d, np.array([model["xi"]]), np.eye(3))
+        if projection is not None:
+            result = cv2.perspectiveTransform(result, projection)
+    else:
+        result = cv2.undistortPoints(xy, k, d, P=projection)
+    return result.reshape(-1, 2)
+
+
 def stereo_cameras(left, right):
     a, b = camera(left), camera(right)
     lens = left.get("lens", "pinhole")

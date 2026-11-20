@@ -13,8 +13,10 @@ from .geometry3d_common import (
     points,
     pose_matrix,
     pose_record,
+    project_camera_pixels,
     require_pinhole,
     rigid,
+    undistort_camera_pixels,
 )
 from .payloads import NO_VALUE
 from .pointclouds import PointCloud
@@ -170,13 +172,7 @@ class ProjectPoints3D(Tool3D):
         t = rigid(pose)
         lens = model.get("lens", "pinhole")
         rvec = cv2.Rodrigues(t[:3, :3])[0]
-        if lens == "fisheye":
-            pixels, _ = cv2.fisheye.projectPoints(xyz[:, None], rvec, t[:3, 3], k, d)
-        elif lens == "omnidir":
-            pixels, _ = cv2.omnidir.projectPoints(xyz[:, None], rvec, t[:3, 3], k, model["xi"], d)
-        else:
-            pixels, _ = cv2.projectPoints(xyz, rvec, t[:3, 3], k, d)
-        pixels = pixels.reshape(-1, 2)
+        pixels = project_camera_pixels(xyz, model, k, d, rvec, t[:3, 3])
         z = (xyz @ t[:3, :3].T + t[:3, 3])[:, 2]
         visible = (
             (z > 0)
@@ -208,18 +204,10 @@ class UndistortPoints3D(Tool3D):
     def process(self, inputs):
         model = inputs["camera"]
         k, d, _ = camera(model)
-        xy = points(inputs["points"], 2).reshape(-1, 1, 2)
+        xy = points(inputs["points"], 2)
         projection = k if self.parameters["output"] == "pixels" else None
-        lens = model.get("lens", "pinhole")
-        if lens == "fisheye":
-            result = cv2.fisheye.undistortPoints(xy, k, d, P=projection)
-        elif lens == "omnidir":
-            result = cv2.omnidir.undistortPoints(xy, k, d, np.array([model["xi"]]), np.eye(3))
-            if projection is not None:
-                result = cv2.perspectiveTransform(result, k)
-        else:
-            result = cv2.undistortPoints(xy, k, d, P=projection)
-        return Result({"points": result.reshape(-1, 2).tolist()})
+        result = undistort_camera_pixels(xy, model, k, d, projection)
+        return Result({"points": result.tolist()})
 
 
 PNP = {

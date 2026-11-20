@@ -224,6 +224,24 @@ for the existing disparity and cloud blocks. Fisheye exposes balance and FOV
 scale. Omnidirectional rectification exposes the shared output focal length.
 [Input format and examples](<../examples/opencv tools/wide_angle_stereo/README.md>)
 
+**Reproject depth-backed region** transfers a source selection through a
+rigid source-to-target camera pose. Each camera can be pinhole, fisheye
+or omnidirectional. It lifts selected pixels using positive axial camera
+Z, checks the inverse lens model by round trip, and projects them into
+the target. Supply metric depths and named optical frames. The target
+pixel keeps the nearest projected Z, with source scanline order breaking
+exact ties. Output preserves the sampled footprint as a mask and an
+optional exact raster region. It leaves unsampled pixels empty.
+
+An optional target depth map rejects projections behind a measured
+surface. Require Agreement also rejects projections with missing
+reference depth or with positive clearance in front of it. Otherwise
+these projections remain eligible and are marked unverified. The report
+distinguishes clipped, colliding, occluded and unverified samples. It
+also reports the fraction of selected source pixels retained, which can
+decrease when the target view has lower magnification.
+[Fisheye-to-omnidirectional example](<../examples/opencv tools/depth_region_projection/README.md>)
+
 1. Define a rig with left/right intrinsic models and a left-to-right rigid pose,
    or fit it using **Calibrate stereo cameras** and corresponding calibration
    point arrays across at least three views.

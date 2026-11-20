@@ -52,6 +52,9 @@ rig versions, archived maps and a rejected capture mismatch.
 [Wide-angle stereo](wide_angle_stereo/README.md) uses both lens families
 with held-out perspective rectification and metric reconstruction.
 
+[Depth-backed region reprojection](depth_region_projection/README.md) transfers
+a physical patch across different lens models and checks the projected support.
+
 [Confidence-weighted depth smoothing](depth_smoothing/README.md) preserves a
 sharp step and rejects unreliable depth samples before cloud reconstruction.
 

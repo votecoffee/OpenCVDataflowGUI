@@ -188,6 +188,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |
 | [ChArUco calibration validation](<opencv tools/validate_charuco_calibration/README.md>) | Check the fitted profile on a separate cropped board and identify the worst corner. |
 | [Wide-angle stereo](<opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, rectify a held-out view pair and recover metric depth. |
+| [Depth-backed region reprojection](<opencv tools/depth_region_projection/README.md>) | Transfer a synthetic physical patch from fisheye to omnidirectional pixels and measure its target coverage. |
 | [Confidence-weighted depth smoothing](<opencv tools/depth_smoothing/README.md>) | Reduce noise on two depth planes separated by a sharp step and project retained samples into a point cloud. |
 | [Camera depth evaluation](<opencv tools/depth_reference/README.md>) | Compare meter and millimeter depth maps, quantify a shifted step, and inspect independent validity holes. |
 | [Support plane and foreground separation](<opencv tools/depth_plane/README.md>) | Recover a tilted work surface, measure signed distances, and backproject only the raised foreground. |
