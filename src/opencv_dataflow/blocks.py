@@ -657,6 +657,7 @@ def builtin_registry():
     from .cloud_features import RegisterCloudFeatures
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_octree import QueryCloudOctree
+    from .cloud_outliers import RejectCloudOutliers
     from .cloud_projection import ProjectCloudVisibility
     from .cloud_sampling import SampleCloud
     from .cloud_tools import CLOUD_BLOCKS
@@ -1365,6 +1366,7 @@ def builtin_registry():
         RegisterCloudFeatures,
         *CLOUD_IO_BLOCKS,
         QueryCloudOctree,
+        RejectCloudOutliers,
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,

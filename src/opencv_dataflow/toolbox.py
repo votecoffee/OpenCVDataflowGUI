@@ -216,6 +216,7 @@ _NATIVE_NAMES = {
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
     "3d.backproject_depth_pixels": ("depthTo3dSparse", "sparse depth", "metric XYZ"),
     "3d.cloud_octree_query": ("octree", "nearest neighbors", "radius search"),
+    "3d.cloud_outlier": ("point density", "remove noise", "statistical outlier removal"),
     "3d.cloud_sample": ("randomSampling", "farthestPointSampling", "downsample", "FPS"),
     "3d.cloud_voxel": ("voxelGridSampling", "nearest centroid", "representative point"),
     "3d.normalize_depth": ("rescaleDepth", "depth units", "decode depth"),

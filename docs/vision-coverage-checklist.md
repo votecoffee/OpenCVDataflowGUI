@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 79 | 14 | 38 | 131 | 60.3% |
+| 3. 3D imagery and point clouds | 80 | 14 | 37 | 131 | 61.1% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 334 | 18 | 118 | 470 | 71.1% |
+| **Overall** | 335 | 18 | 117 | 470 | 71.3% |
 
 <!-- coverage-summary:end -->
 
@@ -508,7 +508,7 @@ fixture or result needed to close the item.
 | S3-77 | Point-cloud octree and spatial queries | Bounded sparse octree for exact KNN and radius search | Complete | `3d.cloud_octree_query` supports fitted or explicit metric cubes, depth or resolution, inclusive radius, stable source rows and bounded storage. The [imported cloud example](<../examples/custom tools/cloud_octree_query/README.md>) checks IDs and distances against brute force. Native OpenCV 5.0.0 construction and KNN provenance need separate qualification. |
 | S3-78 | Random and farthest-point cloud sampling | Bounded, seeded sampling with NumPy | Complete | `3d.cloud_sample` supports count and fraction budgets, exact greedy farthest-point selection, an optional spacing cutoff and original rows with attributes. The [equal-budget PLY example](<../examples/custom tools/cloud_sampling/README.md>) checks original IDs, reproducibility and coverage. The OpenCV 5.0.0 wheel lacks these sampling bindings. |
 | S3-79 | Representative-point voxel sampling | NumPy equivalent of voxelGridSampling | Complete | `3d.cloud_voxel` adds X/Y/Z spacing and selects the original row nearest each voxel centroid. The [anisotropic voxel example](<../examples/custom tools/voxel_representatives/README.md>) checks negative and boundary coordinates, deterministic ties and preserved row attributes. The pinned Python wheel lacks the native sampling binding. |
-| S3-80 | Radius and statistical cloud outlier rejection | Spatial queries and local neighbor statistics | Planned | Recover a known surface from sparse noise and report removed indices, density settings, and retained edge detail. |
+| S3-80 | Radius and statistical cloud outlier rejection | Bounded cKDTree queries and local neighbor statistics | Complete | `3d.cloud_outlier` reports density settings, original kept and removed row IDs, and metric thresholds. The [folded-panel example](<../examples/custom tools/cloud_outlier_rejection/README.md>) removes six labeled outliers and retains all 198 surface and edge points using both methods. |
 | S3-81 | Euclidean cloud clustering | Radius-neighbor connected components in XYZ | Planned | Separate several imported parts with known clearances, retain source IDs, and reject clusters by physical size or count. |
 | S3-82 | Normal-based cloud region growing | RegionGrowing3D or equivalent neighborhood segmentation | Planned | Separate touching surfaces by normal and curvature with stable labels. Qualify an alternate build or a tested fallback because the pinned wheel lacks the native binding. |
 | S3-83 | Robust plane and sphere fitting on unorganized clouds | SACSegmentation RANSAC models or equivalent fitting | Planned | Fit known metric planes and spheres amid outliers and report coefficients, inliers, residuals, and failed degeneracy. The pinned wheel lacks the native class. |

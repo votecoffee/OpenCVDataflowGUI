@@ -187,6 +187,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Disparity speckle removal](<opencv tools/disparity_speckles/README.md>) | Clean equivalent fixed-point and signed float maps and check the exact removed footprint. |
 | [Stereo disparity evaluation](<opencv tools/disparity_reference/README.md>) | Compare a synthetic estimate against fixed-point truth and inspect whole-field and regional error, coverage and confidence. |
 | [Binary Census stereo](<opencv tools/binary_stereo/README.md>) | Compare integer Census matching and native SGBM on a known shift, an exposure change and a masked patch. |
+| [Point-cloud outlier rejection](<custom tools/cloud_outlier_rejection/README.md>) | Compare radius and statistical filtering on a folded panel with six known noise points. |
 | [Voxel representatives](<custom tools/voxel_representatives/README.md>) | Pick measured representatives from a cloud with independently sized X, Y and Z voxels. |
 | [Point-cloud sampling](<custom tools/cloud_sampling/README.md>) | Compare equal-budget random and farthest-point samples of a colored cloud. |
 | [Point-cloud octree queries](<custom tools/cloud_octree_query/README.md>) | Find nearest and radius neighbors on an imported metric cloud with stable point IDs. |

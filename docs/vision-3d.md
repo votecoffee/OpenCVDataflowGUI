@@ -515,6 +515,16 @@ available in Debug and Balanced.
   expose original row indices and preserve the corresponding colors, normals
   and pixels. Centroid mode averages positions and colors. [Voxel sampling
   example](<../examples/custom tools/voxel_representatives/README.md>)
+- **Reject point-cloud outliers** splits a metric scan into retained and
+  removed rows. Radius mode counts other rows within an inclusive distance
+  in meters and retains rows at or above the minimum count. Statistical
+  mode averages each row's K nearest other distances and keeps means at
+  or below the global mean plus the selected multiple of population standard
+  deviation. K adapts to the number of available rows. Coincident rows
+  count separately. Both outputs preserve source order, units, frame,
+  colors, normals and source pixels. The index size and per-query memory
+  are bounded with an input point budget and batches.
+  [Folded-panel example](<../examples/custom tools/cloud_outlier_rejection/README.md>)
 - **Sample point cloud** chooses original rows by seeded random sampling
   without replacement or greedy farthest-point sampling. Set a maximum count
   or a capped fraction in the inspector. Farthest mode can stop when the next

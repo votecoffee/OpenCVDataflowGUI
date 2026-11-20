@@ -303,6 +303,23 @@ Input `queries` — List of XYZ rows in the cloud frame, or record with points, 
 | `resolution_m` | `0.01` | Value must be a finite number between 1e-09 and 2e+12. Maximum cell side at deepest level in resolution mode. |
 | `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Reject larger input clouds before building temporary index arrays. |
 
+## Reject point-cloud outliers (`3d.cloud_outlier`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+Input `cloud` — XYZ in meters or millimeters. Coincident rows retain separate identities.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"radius"` | `radius`, `statistical` Filter by neighborhood count or mean distance to nearest neighbors. |
+| `radius_m` | `0.01` | Value must be a finite number between 1e-09 and 1e+12. Inclusive radius in meters, independent of the cloud's stored units. |
+| `minimum_neighbors` | `3` | Value must be a whole number between 1 and 1e+06. Radius count required to retain a row. The query row is excluded. |
+| `statistical_neighbors` | `12` | Value must be a whole number between 1 and 256. Requested nearest other rows, capped by the available points. |
+| `standard_deviations` | `2.0` | Value must be a finite number between 0 and 100. Retain local means up to the global mean plus this multiple of SD. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum cloud size admitted to the index. |
+
 ## Project cloud and check visibility (`3d.cloud_project`)
 
 3D vision / Point clouds

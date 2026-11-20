@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Recover a folded surface",
+      "description": "Original synthetic cloud by OpenCVDataflowGUI contributors (MIT). A base and raised flange contain 198 measured points. Compare which rows the two density rules remove, including the panel corners and flange tip.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/noisy_folded_panel.ply",
+        "units": "mm",
+        "frame": "folded_panel",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "radius",
+      "type": "3d.cloud_outlier",
+      "name": "Reject point-cloud outliers",
+      "description": "Split a metric cloud by neighborhood density while retaining original rows.",
+      "parameters": {
+        "method": "radius",
+        "radius_m": 0.008,
+        "minimum_neighbors": 3,
+        "statistical_neighbors": 12,
+        "standard_deviations": 2.0,
+        "max_input_points": 250000
+      },
+      "position": [
+        425,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "removed_cloud",
+        "kept_indices",
+        "removed_indices",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "statistical",
+      "type": "3d.cloud_outlier",
+      "name": "Reject point-cloud outliers",
+      "description": "Split a metric cloud by neighborhood density while retaining original rows.",
+      "parameters": {
+        "method": "statistical",
+        "radius_m": 0.01,
+        "minimum_neighbors": 3,
+        "statistical_neighbors": 6,
+        "standard_deviations": 1.5,
+        "max_input_points": 250000
+      },
+      "position": [
+        425,
+        300
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "removed_cloud",
+        "kept_indices",
+        "removed_indices",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "radius",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "statistical",
+      "input": "cloud"
+    }
+  ]
+}
