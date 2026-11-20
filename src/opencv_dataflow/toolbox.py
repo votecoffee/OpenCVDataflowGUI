@@ -99,7 +99,7 @@ IMPLEMENTATION_MODULES = {
         "robot_world workplane"
     ),
     "geometry": "circle_fitting contour_analysis convex_overlap geometry3d line_pair shape_fitting "
-    "sparse_multiview translation_registration triangulation voronoi",
+    "planar_pose sparse_multiview translation_registration triangulation voronoi",
     "video": (
         "background_reference color_tracking ecc_registration flow_files flow_refinement "
         "flow_warp frame_interpolation "
@@ -259,6 +259,7 @@ _NATIVE_NAMES = {
     "calibration.lens": ("calibrateCamera", "calib3d"),
     "inspect.homography": ("findHomography", "calib3d"),
     "3d.pnp": ("solvePnP", "calib3d"),
+    "3d.planar_pose_hypotheses": ("solvePnPGeneric", "IPPE", "IPPE square"),
     "ml.dnn": ("dnn.readNetFromONNX", "readNetFromONNX"),
 }
 

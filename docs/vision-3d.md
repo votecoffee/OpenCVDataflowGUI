@@ -294,6 +294,20 @@ calibration. The runnable example verifies each layout using image detection,
 including custom IDs and legacy ChArUco parity.
 [Target generator example](<../examples/opencv tools/fiducial_targets/README.md>)
 
+## Planar pose hypotheses
+
+**Planar pose hypotheses** uses a calibrated pinhole camera and matched points
+on a plane. Use general IPPE with at least four coplanar correspondences or
+IPPE square with a centered, ordered marker square. It scores both native
+solutions in the original distorted pixel grid, filters nonpositive depth,
+and removes numerical duplicates. Each emitted candidate reports a rigid
+object-to-camera transform in the supplied frames and camera units.
+
+The block emits **Hypotheses** and flags **Ambiguous** when the top scores fall
+within the configured RMS gap. **Pose** emits only when the ambiguity gate
+allows a single transform. Connecting the source image adds drawable normals
+to the preview. [Near-frontal and oblique example](<../examples/opencv tools/planar_pose_hypotheses/README.md>)
+
 ## Sparse multi-view reconstruction
 
 Pack each calibrated pinhole view with its world-to-camera pose and landmark

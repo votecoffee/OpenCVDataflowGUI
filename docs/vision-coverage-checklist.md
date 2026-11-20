@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 47 | 19 | 65 | 131 | 35.9% |
+| 3. 3D imagery and point clouds | 48 | 19 | 64 | 131 | 36.6% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 302 | 23 | 145 | 470 | 64.3% |
+| **Overall** | 303 | 23 | 144 | 470 | 64.5% |
 
 <!-- coverage-summary:end -->
 
@@ -460,7 +460,7 @@ fixture or result needed to close the item.
 | S3-39 | Inspect lens-map displacement | Source/remap point displacement magnitude and mask | Complete | calibration.lens_map_displacement. Verify distortion vectors and map validity against known displacement. |
 | S3-40 | Camera matrix optimization for useful output support | getOptimalNewCameraMatrix, initUndistortRectifyMap | Complete | calibration.lens_maps. Compare cropped and extended fields of view and report output intrinsics. |
 | S3-41 | Fixed and projective planar pixel-to-world mapping | Homogeneous pixel-to-physical transform | Complete | calibration.pixel_to_physical. Map known ordered landmarks without resampling the image. |
-| S3-42 | Multiple planar pose hypotheses | solvePnPGeneric with IPPE or other supported methods | Planned | Retain plausible poses with reprojection scores and test near-ambiguous planar views. |
+| S3-42 | Multiple planar pose hypotheses | solvePnPGeneric with IPPE and IPPE_SQUARE | Complete | 3d.planar_pose_hypotheses ranks positive-depth solutions in distorted pixels, flags close scores and withholds the single-pose output. The [rendered target pair](<../examples/opencv tools/planar_pose_hypotheses/README.md>) verifies ambiguous and decisive views against reference poses. |
 | S3-43 | Sparse epipolar error and correspondence refinement | sampsonDistance, correctMatches | Planned | Verify geometric residuals and correction on noisy point pairs, including degenerate epipoles. |
 | S3-44 | Uncalibrated stereo rectification | stereoRectifyUncalibrated, warpPerspective | Planned | Rectify two image grids from image matches and verify vertical residual and valid support. |
 | S3-45 | Stereo calibration residuals by camera and capture | stereoCalibrateExtended, projectPoints | Partial | 3d.stereo_calibrate reports fit RMS. Verify per-view/per-camera residuals against known held-out target data. |

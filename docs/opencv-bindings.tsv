@@ -4452,7 +4452,7 @@ P3	function	cv2.solveCubic	literal reference	-
 P3	function	cv2.solveLP	literal reference	-
 P3	function	cv2.solveP3P	no static reference	-
 P3	function	cv2.solvePnP	literal reference	-
-P3	function	cv2.solvePnPGeneric	no static reference	-
+P3	function	cv2.solvePnPGeneric	literal reference	-
 P3	function	cv2.solvePnPRansac	literal reference	-
 P3	function	cv2.solvePnPRefineLM	literal reference	-
 P3	function	cv2.solvePnPRefineVVS	literal reference	-

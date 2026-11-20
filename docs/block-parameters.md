@@ -565,6 +565,26 @@ Input `region` — Select camera pixels, intersecting the mask when supplied.
 | `axis` | `"x"` | `x`, `y` Projector coordinate the fringes encode. X uses vertical stripes. |
 | `fine_periods` | `8` | Value must be a whole number between 2 and 64. Requested fine cycles. OpenCV uses a whole-pixel fringe period. |
 
+## Planar pose hypotheses (`3d.planar_pose_hypotheses`)
+
+3D vision / Geometry
+
+Inputs: `object_points` (data), `image_points` (data), `camera` (data), `image` (image, optional).
+
+Input `object_points` — At least four coplanar XYZ points in camera length units.
+
+Input `image_points` — Corresponding distorted XY pixels in the calibrated pinhole image.
+
+Input `image` — Optional source image for drawing the candidates' plane normals.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ippe"` | `ippe`, `ippe_square` IPPE for coplanar points. IPPE square for four centered marker corners. |
+| `source_frame` | `"object"` | Coordinate frame of the supplied object points. |
+| `max_rms_px` | `3.0` | Value must be a finite number at least 0. Maximum distortion-aware pixel RMS for each plausible candidate. |
+| `ambiguity_gap_px` | `0.2` | Value must be a finite number at least 0. Largest best-to-second RMS gap still considered ambiguous. |
+| `normal_length` | `0.0` | Value must be a finite number at least 0. Preview normal length in object units. Zero scales it to the target. |
+
 ## 3D object pose (PnP) (`3d.pnp`)
 
 3D vision / Geometry

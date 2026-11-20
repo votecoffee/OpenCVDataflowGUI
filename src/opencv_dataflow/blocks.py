@@ -820,6 +820,7 @@ def builtin_registry():
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
     from .pixel_moments import PixelMoments
+    from .planar_pose import PlanarPoseHypotheses
     from .plugins import (
         BIN_PICKING_TYPES,
         GEOMETRIC_MATCHER_TYPES,
@@ -1290,6 +1291,7 @@ def builtin_registry():
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
+        PlanarPoseHypotheses,
         MakeLandmarkView,
         ReconstructSparseViews,
         DeclareCalibrationCapture,
