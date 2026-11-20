@@ -235,6 +235,12 @@
     ],
     "image_classification": [
       {
+        "folder": "core50_capture_groups",
+        "projects": [
+          "project.json"
+        ]
+      },
+      {
         "folder": "vegqual",
         "projects": [
           "color_and_layout.json",

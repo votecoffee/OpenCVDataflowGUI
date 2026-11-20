@@ -1,0 +1,1061 @@
+{
+  "schema": 1,
+  "profile": "surface_texture",
+  "classes": [
+    {
+      "label": "plug_adapters",
+      "images": [
+        {
+          "path": "assets/frames/s01_o01_025.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o01_075.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o01_125.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o01_175.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o01_225.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o01_275.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o02_028.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o02_078.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o02_127.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o02_176.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o02_226.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o02_275.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s05_o01_025.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o01_075.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o01_125.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o01_175.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o01_225.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o01_275.png",
+          "validation": false,
+          "specimen_id": "o1",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o02_025.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o02_075.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o02_125.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o02_175.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o02_225.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o02_275.png",
+          "validation": false,
+          "specimen_id": "o2",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s07_o03_018.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o03_056.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o03_093.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o03_131.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o03_168.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o03_206.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o03_243.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o03_281.png",
+          "validation": false,
+          "specimen_id": "o3",
+          "recording_id": "s7"
+        }
+      ]
+    },
+    {
+      "label": "mobile_phones",
+      "images": [
+        {
+          "path": "assets/frames/s01_o06_025.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o06_075.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o06_125.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o06_175.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o06_225.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o06_275.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o07_025.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o07_075.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o07_125.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o07_175.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o07_225.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o07_275.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s05_o06_025.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o06_075.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o06_125.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o06_175.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o06_225.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o06_275.png",
+          "validation": false,
+          "specimen_id": "o6",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o07_025.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o07_075.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o07_125.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o07_175.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o07_225.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o07_275.png",
+          "validation": false,
+          "specimen_id": "o7",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s07_o08_018.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o08_056.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o08_093.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o08_131.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o08_168.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o08_206.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o08_243.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o08_281.png",
+          "validation": false,
+          "specimen_id": "o8",
+          "recording_id": "s7"
+        }
+      ]
+    },
+    {
+      "label": "scissors",
+      "images": [
+        {
+          "path": "assets/frames/s01_o11_025.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o11_075.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o11_125.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o11_175.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o11_225.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o11_275.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o12_025.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o12_075.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o12_125.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o12_175.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o12_225.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o12_275.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s05_o11_027.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o11_077.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o11_126.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o11_176.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o11_225.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o11_275.png",
+          "validation": false,
+          "specimen_id": "o11",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o12_027.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o12_077.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o12_126.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o12_176.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o12_225.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o12_275.png",
+          "validation": false,
+          "specimen_id": "o12",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s07_o13_018.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o13_056.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o13_093.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o13_131.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o13_168.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o13_206.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o13_243.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o13_281.png",
+          "validation": false,
+          "specimen_id": "o13",
+          "recording_id": "s7"
+        }
+      ]
+    },
+    {
+      "label": "light_bulbs",
+      "images": [
+        {
+          "path": "assets/frames/s01_o16_025.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o16_075.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o16_125.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o16_175.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o16_225.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o16_275.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o17_025.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o17_075.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o17_125.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o17_175.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o17_225.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s01_o17_275.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s1"
+        },
+        {
+          "path": "assets/frames/s05_o16_026.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o16_076.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o16_126.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o16_175.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o16_225.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o16_275.png",
+          "validation": false,
+          "specimen_id": "o16",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o17_031.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o17_080.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o17_129.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o17_177.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o17_226.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s05_o17_275.png",
+          "validation": false,
+          "specimen_id": "o17",
+          "recording_id": "s5"
+        },
+        {
+          "path": "assets/frames/s07_o18_018.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o18_056.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o18_093.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o18_131.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o18_168.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o18_206.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o18_243.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        },
+        {
+          "path": "assets/frames/s07_o18_281.png",
+          "validation": false,
+          "specimen_id": "o18",
+          "recording_id": "s7"
+        }
+      ]
+    }
+  ],
+  "health": {
+    "train_counts": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "validation_counts": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "matrix": [
+      [
+        3,
+        4,
+        0,
+        1
+      ],
+      [
+        0,
+        8,
+        0,
+        0
+      ],
+      [
+        1,
+        3,
+        4,
+        0
+      ],
+      [
+        3,
+        4,
+        0,
+        1
+      ]
+    ],
+    "split": "grouped",
+    "predictions": [
+      {
+        "class_index": 0,
+        "image_index": 24,
+        "predicted_index": 1,
+        "score": 32.967690049930994,
+        "confusion": 71.32217707906493
+      },
+      {
+        "class_index": 0,
+        "image_index": 25,
+        "predicted_index": 1,
+        "score": 32.32314505292004,
+        "confusion": 76.72164009922878
+      },
+      {
+        "class_index": 0,
+        "image_index": 26,
+        "predicted_index": 0,
+        "score": 28.702206507774886,
+        "confusion": 88.7627319044947
+      },
+      {
+        "class_index": 0,
+        "image_index": 27,
+        "predicted_index": 0,
+        "score": 28.993957904635838,
+        "confusion": 94.93704936364423
+      },
+      {
+        "class_index": 0,
+        "image_index": 28,
+        "predicted_index": 0,
+        "score": 28.320040948932867,
+        "confusion": 98.64586941897484
+      },
+      {
+        "class_index": 0,
+        "image_index": 29,
+        "predicted_index": 1,
+        "score": 31.412562345138756,
+        "confusion": 85.34572769844704
+      },
+      {
+        "class_index": 0,
+        "image_index": 30,
+        "predicted_index": 1,
+        "score": 28.53259850139188,
+        "confusion": 93.74886658498833
+      },
+      {
+        "class_index": 0,
+        "image_index": 31,
+        "predicted_index": 3,
+        "score": 31.475757317766035,
+        "confusion": 87.52468054016823
+      },
+      {
+        "class_index": 1,
+        "image_index": 24,
+        "predicted_index": 1,
+        "score": 32.3948190379979,
+        "confusion": 73.564731245522
+      },
+      {
+        "class_index": 1,
+        "image_index": 25,
+        "predicted_index": 1,
+        "score": 30.45685498401181,
+        "confusion": 88.6754019585438
+      },
+      {
+        "class_index": 1,
+        "image_index": 26,
+        "predicted_index": 1,
+        "score": 35.275410131972876,
+        "confusion": 67.56404786574036
+      },
+      {
+        "class_index": 1,
+        "image_index": 27,
+        "predicted_index": 1,
+        "score": 32.11969955368911,
+        "confusion": 74.37394532284588
+      },
+      {
+        "class_index": 1,
+        "image_index": 28,
+        "predicted_index": 1,
+        "score": 35.03738686790456,
+        "confusion": 64.15504101627846
+      },
+      {
+        "class_index": 1,
+        "image_index": 29,
+        "predicted_index": 1,
+        "score": 40.224531729155245,
+        "confusion": 55.61090134310053
+      },
+      {
+        "class_index": 1,
+        "image_index": 30,
+        "predicted_index": 1,
+        "score": 33.05832913401764,
+        "confusion": 79.5945878684001
+      },
+      {
+        "class_index": 1,
+        "image_index": 31,
+        "predicted_index": 1,
+        "score": 31.90064358697673,
+        "confusion": 89.78413908971848
+      },
+      {
+        "class_index": 2,
+        "image_index": 24,
+        "predicted_index": 2,
+        "score": 39.57269757567737,
+        "confusion": 72.0121050973368
+      },
+      {
+        "class_index": 2,
+        "image_index": 25,
+        "predicted_index": 2,
+        "score": 39.997534127165416,
+        "confusion": 70.35600336559361
+      },
+      {
+        "class_index": 2,
+        "image_index": 26,
+        "predicted_index": 2,
+        "score": 30.757976784524583,
+        "confusion": 83.11065663032132
+      },
+      {
+        "class_index": 2,
+        "image_index": 27,
+        "predicted_index": 1,
+        "score": 41.143481471283515,
+        "confusion": 57.768304246766945
+      },
+      {
+        "class_index": 2,
+        "image_index": 28,
+        "predicted_index": 0,
+        "score": 27.696320686219032,
+        "confusion": 93.34410639488581
+      },
+      {
+        "class_index": 2,
+        "image_index": 29,
+        "predicted_index": 2,
+        "score": 33.4397761915744,
+        "confusion": 76.37775855132371
+      },
+      {
+        "class_index": 2,
+        "image_index": 30,
+        "predicted_index": 1,
+        "score": 35.25149527727352,
+        "confusion": 74.45364925477347
+      },
+      {
+        "class_index": 2,
+        "image_index": 31,
+        "predicted_index": 1,
+        "score": 38.01410985968424,
+        "confusion": 69.88845724441619
+      },
+      {
+        "class_index": 3,
+        "image_index": 24,
+        "predicted_index": 1,
+        "score": 38.67114366142159,
+        "confusion": 62.477709117462496
+      },
+      {
+        "class_index": 3,
+        "image_index": 25,
+        "predicted_index": 0,
+        "score": 30.617962795000924,
+        "confusion": 92.6287819560435
+      },
+      {
+        "class_index": 3,
+        "image_index": 26,
+        "predicted_index": 0,
+        "score": 30.36711773913064,
+        "confusion": 98.09001050463924
+      },
+      {
+        "class_index": 3,
+        "image_index": 27,
+        "predicted_index": 0,
+        "score": 29.2213768520273,
+        "confusion": 93.65280379742063
+      },
+      {
+        "class_index": 3,
+        "image_index": 28,
+        "predicted_index": 3,
+        "score": 27.84226963590506,
+        "confusion": 96.97765937785972
+      },
+      {
+        "class_index": 3,
+        "image_index": 29,
+        "predicted_index": 1,
+        "score": 42.08494921144353,
+        "confusion": 61.96739493020249
+      },
+      {
+        "class_index": 3,
+        "image_index": 30,
+        "predicted_index": 1,
+        "score": 50.2687051304817,
+        "confusion": 44.74625900929004
+      },
+      {
+        "class_index": 3,
+        "image_index": 31,
+        "predicted_index": 1,
+        "score": 35.70447374015974,
+        "confusion": 64.25564092860738
+      }
+    ]
+  }
+}

@@ -14,6 +14,7 @@ import cv2
 import numpy as np
 
 from .surface_texture import SurfaceModel, describe_surface
+from .training_split import GROUP_FIELDS, plan_split
 
 MODEL_SCHEMA = 1
 APPEARANCE = "appearance"
@@ -26,6 +27,15 @@ class Example:
     path: Path
     validation: bool = False
     display_name: str = ""
+    specimen_id: str = ""
+    recording_id: str = ""
+
+    def __post_init__(self):
+        for field_name, label in GROUP_FIELDS:
+            value = getattr(self, field_name)
+            if not isinstance(value, str) or any(ord(char) < 32 for char in value):
+                raise ValueError(f"{label} ID must be single-line text")
+            object.__setattr__(self, field_name, value.strip())
 
     @property
     def name(self):
@@ -191,36 +201,37 @@ def train_classifier(assignments, *, profile=APPEARANCE):
         raise ValueError("Create at least two uniquely named classes")
     if any(not label or label != label.strip() for label in labels):
         raise ValueError("Class labels must be nonempty and trimmed")
-    explicit = any(example.validation for samples in assignments.values() for example in samples)
     seen = {}
+    fingerprints, features = {}, {}
     train_x, train_y, val_x, val_y = [], [], [], []
     val_image_indices = []
     train_counts, val_counts = [], []
     for index, (label, samples) in enumerate(assignments.items()):
-        rows = []
         for image_index, example in enumerate(samples):
             pixels = read_image(example.path)
             key = pixel_digest(pixels)
             if key in seen:
                 raise ValueError(f"Duplicate image assignment in {label!r} and {seen[key]!r}")
             seen[key] = label
-            rows.append((key, example.validation, image_index, _features(pixels, profile)))
-        if explicit:
-            train = [row for row in rows if not row[1]]
-            valid = [row for row in rows if row[1]]
-        else:
-            holdout = max(1, len(rows) // 5)
-            ordered = sorted(rows, key=lambda row: row[0])
-            valid, train = ordered[:holdout], ordered[holdout:]
+            fingerprints[index, image_index] = key
+            features[index, image_index] = _features(pixels, profile)
+    split = plan_split(assignments, fingerprints)
+    if split.overlaps:
+        raise ValueError(split.overlaps[0].message)
+    if split.error:
+        raise ValueError(split.error)
+    for index, (label, train, valid) in enumerate(
+        zip(labels, split.training, split.validation, strict=True)
+    ):
         if not train or not valid:
             raise ValueError(f"{label!r} needs at least one training and one validation image")
         train_counts.append(len(train))
         val_counts.append(len(valid))
-        train_x.extend(row[3] for row in train)
+        train_x.extend(features[index, j] for j in train)
         train_y.extend([index] * len(train))
-        val_x.extend(row[3] for row in valid)
+        val_x.extend(features[index, j] for j in valid)
         val_y.extend([index] * len(valid))
-        val_image_indices.extend(row[2] for row in valid)
+        val_image_indices.extend(valid)
 
     model = _fit_classifier(labels, np.asarray(train_x), np.asarray(train_y, np.int32), profile)
     weights = model._weights(np.asarray(val_x))
@@ -236,7 +247,7 @@ def train_classifier(assignments, *, profile=APPEARANCE):
             actual, image_index, predicted, scores["score"], scores["confusion"]
         ))
     health = TrainingHealth(
-        train_counts, val_counts, matrix.tolist(), "explicit" if explicit else "automatic",
+        train_counts, val_counts, matrix.tolist(), split.mode,
         predictions, profile,
     )
     return model, health
@@ -275,6 +286,10 @@ def stage_classifier(project_dir, assignments, model, health, *, revision=None):
                 row = {"path": relative.as_posix(), "validation": example.validation}
                 if example.display_name:
                     row["display_name"] = example.display_name
+                for field_name, _ in GROUP_FIELDS:
+                    value = getattr(example, field_name)
+                    if value:
+                        row[field_name] = value
                 rows.append(row)
             classes.append({"label": label, "images": rows})
         if model.surface is not None:
@@ -315,7 +330,8 @@ def load_assignments(project_dir, manifest):
     assignments = {
         entry["label"]: [
             Example(
-                _project_path(root, row["path"]), row["validation"], row.get("display_name", "")
+                _project_path(root, row["path"]), row["validation"], row.get("display_name", ""),
+                **{name: row.get(name, "") for name, _ in GROUP_FIELDS},
             )
             for row in entry["images"]
         ]
