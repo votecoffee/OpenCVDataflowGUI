@@ -154,8 +154,10 @@ single-camera pose fits for every held-out capture.
 **Calibrate multi-camera rig** fits three to eight pinhole cameras or three
 to eight fisheye cameras. Supply synchronized target observations, camera
 names and sizes, and a camera-by-capture visibility mask. A visible cell
-uses the full ordered point set for the shared target. Each camera must be
-connected through shared captures, which may form a chain. Fit the intrinsics
+uses the ordered target point slots. Use JSON null for a missing point and
+retain at least six distinct correspondences in each usable view. Select
+**Register cameras** initialization for partial views. Camera pairs connect
+through shared captures, which may form a chain. Fit the intrinsics
 from the same observations or connect fixed camera models. Output poses map
 the first camera's coordinates into each named camera's coordinates in the
 target's declared meters or millimeters.
@@ -166,6 +168,13 @@ projects the target through the rig into the other cameras. Fit and holdout
 reports include a camera-by-capture RMS table. Debug heatmaps show missing
 cells in black. No rig is published when the fit exceeds its error limits.
 [Three-camera chain example](<../examples/opencv tools/multicamera_rig/README.md>)
+
+**Load coded rig captures** reads synchronized images and a surveyed ArUco
+layout from a manifest. The layout can place markers of different sizes and
+orientations in the target plane. The loader identifies corners by decoded ID,
+reports duplicate and missing views, and preserves missing point slots. The
+partial-view fit and held-out checks use each camera's observed corners.
+[Custom coded target example](<../examples/opencv tools/coded_multicamera_rig/README.md>)
 
 **Stereo BM / SGBM disparity** can derive a signed pixel search from near
 and far depth limits using the calibrated rectification Q. The native

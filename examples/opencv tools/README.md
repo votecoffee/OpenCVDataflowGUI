@@ -32,6 +32,9 @@ per-camera fit residuals and cross-camera prediction on held-out targets.
 [Multi-camera rig calibration](multicamera_rig/README.md) fits a three-view
 chain and validates it on disjoint captures.
 
+[Custom coded rig calibration](coded_multicamera_rig/README.md) decodes
+partially visible marker IDs and checks a fitted rig on independent images.
+
 [Stereo disparity search](stereo_disparity_search/README.md) derives a
 smaller search from calibrated depth limits and verifies valid support.
 

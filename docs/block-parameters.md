@@ -83,10 +83,10 @@ Input `camera_models` — Ordered existing camera records for Fixed intrinsics m
 | `lens` | `"pinhole"` | `pinhole`, `fisheye` All cameras must use the same lens family. |
 | `intrinsics` | `"fit"` | `fit`, `fixed` Fit per-camera optics first, or use the connected models unchanged. |
 | `pinhole_distortion` | `"standard"` | `standard`, `rational` Fit the five-coefficient or eight-coefficient pinhole model. |
-| `initialization` | `"register_cameras"` | `register_cameras`, `stereo_calibrate` OpenCV pairwise baseline initializer before joint rig optimization. |
+| `initialization` | `"register_cameras"` | `register_cameras`, `stereo_calibrate` Use Register cameras when any target view is partial. |
 | `minimum_shared_views` | `3` | Value must be a whole number between 1 and 64. Minimum shared captures required for each initializing link. |
-| `max_iterations` | `60` | Value must be a whole number between 1 and 200. Iteration limit for the native rig optimization. |
-| `epsilon` | `1e-09` | Value must be a finite number between 1e-15 and 0.1. Native rig optimization termination tolerance. |
+| `max_iterations` | `60` | Value must be a whole number between 1 and 200. Iteration limit for rig adjustment and per-camera optics. |
+| `epsilon` | `1e-09` | Value must be a finite number between 1e-15 and 0.1. Rig adjustment termination tolerance. |
 | `max_rms_px` | `1.0` | Value must be a finite number at least 0. Maximum fitted overall reprojection RMS. Zero disables the limit. |
 | `max_view_rms_px` | `2.0` | Value must be a finite number at least 0. Maximum fitted camera/capture RMS. Zero disables the limit. |
 
@@ -6449,6 +6449,31 @@ Ticket mode and fixed value are common inspector controls.
 | `units` | `"m"` | `m`, `mm`, `unitless` |
 | `frame` | `"file"` |  |
 | `max_points` | `1000000` |  |
+
+## Load coded rig captures (`input.coded_rig_observations`)
+
+Input / Calibration
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+Inputs: `target` (data, optional).
+
+Input `target` — Optional surveyed layout. Overrides the target in the manifest.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | JSON camera-by-capture manifest. Relative paths use the project directory. |
+| `minimum_markers` | `2` | Value must be a whole number between 2 and 32. Minimum number of target IDs detected in a view. |
+| `corner_refinement` | `"subpixel"` | `none`, `subpixel`, `contour`, `apriltag` |
+| `adaptive_min` | `3` | Value must be a whole number between 3 and 255. |
+| `adaptive_max` | `23` | Value must be a whole number between 3 and 1000. |
+| `adaptive_step` | `10` | Value must be a whole number between 1 and 100. |
+| `adaptive_constant` | `7.0` | Value must be a finite number. |
+| `min_perimeter_rate` | `0.03` | Value must be a finite number at least 0.0001. |
+| `max_perimeter_rate` | `4.0` | Value must be a finite number at least 0.0001. |
+| `min_border_distance` | `3` | Value must be a whole number between 0 and 1000. |
+| `error_correction_rate` | `0.6` | Value must be a finite number between 0 and 1. |
 
 ## Conveyor demo frames (`input.conveyor_demo`)
 

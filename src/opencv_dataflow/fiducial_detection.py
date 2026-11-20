@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 
-from .parameter_validation import ValidationError
+from .parameter_validation import NumericRange, ValidationError
 from .processing import finite, integer
 
 DICTIONARIES = {
@@ -28,6 +28,17 @@ MARKER_OPTIONS = {
     "min_border_distance": 3,
     "border_bits": 1,
     "error_correction_rate": 0.6,
+}
+MARKER_RANGES = {
+    "adaptive_min": NumericRange(3, 255, whole=True),
+    "adaptive_max": NumericRange(3, 1000, whole=True),
+    "adaptive_step": NumericRange(1, 100, whole=True),
+    "adaptive_constant": NumericRange(),
+    "min_perimeter_rate": NumericRange(0.0001),
+    "max_perimeter_rate": NumericRange(0.0001),
+    "min_border_distance": NumericRange(0, 1000, whole=True),
+    "border_bits": NumericRange(1, 10, whole=True),
+    "error_correction_rate": NumericRange(0, 1),
 }
 MARKER_CHOICES = {
     "dictionary": tuple(DICTIONARIES),

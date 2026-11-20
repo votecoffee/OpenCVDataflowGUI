@@ -149,7 +149,10 @@ BINDINGS = {
         "undistortPoints fisheye.undistortPoints omnidir.undistortPoints "
         "projectPoints fisheye.projectPoints omnidir.projectPoints"
     ),
-    "3d.calibrate_multicamera": "calibrateMultiviewExtended Rodrigues",
+    "input.coded_rig_observations": "aruco.ArucoDetector.detectMarkers aruco.drawDetectedMarkers",
+    "3d.calibrate_multicamera": (
+        "calibrateMultiviewExtended calibrateCamera fisheye.calibrate solvePnP projectPoints"
+    ),
     "3d.validate_multicamera": "solvePnP solvePnPRefineLM projectPoints fisheye.projectPoints",
     "3d.camera_projector_calibrate": "calibrateCamera stereoCalibrateExtended",
     "3d.camera_projector_reconstruct": "undistortPoints triangulatePoints projectPoints",

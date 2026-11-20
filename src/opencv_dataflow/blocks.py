@@ -662,6 +662,7 @@ def builtin_registry():
     from .clustering import KMeansImage, KMeansSamples
     from .code_readers import CODE_READER_BLOCKS
     from .codec_probe import ProbeImageFile
+    from .coded_rig_observations import LoadCodedRigObservations
     from .collection_tools import COLLECTION_BLOCKS
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
@@ -1333,6 +1334,7 @@ def builtin_registry():
         RectifyUncalibratedStereo,
         ValidateStereoCalibration,
         LoadMulticameraObservations,
+        LoadCodedRigObservations,
         CalibrateMulticameraRig,
         ValidateMulticameraRig,
         *STEREO3D_BLOCKS,

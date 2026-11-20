@@ -7,7 +7,13 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .features import overlay_image
-from .fiducial_detection import DICTIONARIES, MARKER_CHOICES, MARKER_OPTIONS, detector_parameters
+from .fiducial_detection import (
+    DICTIONARIES,
+    MARKER_CHOICES,
+    MARKER_OPTIONS,
+    MARKER_RANGES,
+    detector_parameters,
+)
 from .graphics_layers import GraphicDrawing, draw_object, graphic_object
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
@@ -46,15 +52,7 @@ class DetectArucoMarkers(Block):
     }
     parameter_choices = {**MARKER_CHOICES, "point": ("center", *_POINT_CORNERS)}
     parameter_ranges = {
-        "adaptive_min": NumericRange(3, 255, whole=True),
-        "adaptive_max": NumericRange(3, 1000, whole=True),
-        "adaptive_step": NumericRange(1, 100, whole=True),
-        "adaptive_constant": NumericRange(),
-        "min_perimeter_rate": NumericRange(0.0001),
-        "max_perimeter_rate": NumericRange(0.0001),
-        "min_border_distance": NumericRange(0, 1000, whole=True),
-        "border_bits": NumericRange(1, 10, whole=True),
-        "error_correction_rate": NumericRange(0, 1),
+        **MARKER_RANGES,
         "minimum_markers": NumericRange(1, whole=True),
     }
     parameter_help = {

@@ -37,6 +37,11 @@ class Observations:
     objects: np.ndarray
     pixels: np.ndarray
     visible: np.ndarray
+    point_visible: np.ndarray
+
+    @property
+    def partial(self):
+        return not self.point_visible[self.visible].all()
 
 
 def _names(values, label, minimum, maximum):
@@ -96,22 +101,35 @@ def _observations(record):
     ):
         raise ValidationError("Supply a camera-by-capture table of ordered image points")
     pixels = np.zeros((*visible.shape, len(objects), 2), np.float32)
+    point_visible = np.zeros(pixels.shape[:-1], bool)
     for c, f in zip(*np.where(visible), strict=True):
-        view = np.asarray(input_pixels[c][f], dtype=np.float32)
+        label = f"{frames[c]} / {captures[f]}"
+        raw_view = input_pixels[c][f]
         if (
-            view.shape != (len(objects), 2)
+            not isinstance(raw_view, (list, tuple, np.ndarray))
+            or (isinstance(raw_view, np.ndarray) and raw_view.ndim == 0)
+            or len(raw_view) != len(objects)
+        ):
+            raise ValidationError(f"Visible view {label} needs one slot per ordered target point")
+        observed = np.array([point is not None for point in raw_view], bool)
+        view = np.asarray([point for point in raw_view if point is not None], dtype=np.float32)
+        if (
+            view.shape != (int(observed.sum()), 2)
+            or len(view) < 6
             or not np.isfinite(view).all()
             or np.any(view < 0)
             or np.any(view >= sizes[c])
-            or np.unique(view, axis=0).shape[0] != len(objects)
+            or np.unique(view, axis=0).shape[0] != len(view)
             or np.linalg.matrix_rank(view - view[0]) < 2
+            or np.linalg.matrix_rank(objects[observed] - objects[observed][0]) < 2
         ):
             raise ValidationError(
-                f"Visible view {frames[c]} / {captures[f]} needs a full ordered, "
-                "noncollinear set of finite in-frame target points"
+                f"Visible view {label} needs a full ordered table with at least six distinct, "
+                "noncollinear in-frame correspondences. Use null for missing points"
             )
-        pixels[c, f] = view
-    return Observations(units, frames, sizes, captures, objects, pixels, visible)
+        point_visible[c, f] = observed
+        pixels[c, f, observed] = view
+    return Observations(units, frames, sizes, captures, objects, pixels, visible, point_visible)
 
 
 class LoadMulticameraObservations(Block):
@@ -193,6 +211,7 @@ def _report_table(obs, rms):
         "camera_frames": list(obs.frames),
         "capture_ids": list(obs.captures),
         "visibility": obs.visible.astype(int).tolist(),
+        "point_counts": obs.point_visible.sum(axis=2).tolist(),
         "per_camera_capture_rms_px": [
             [float(v) if np.isfinite(v) else None for v in row] for row in rms
         ],
@@ -296,10 +315,10 @@ class CalibrateMulticameraRig(Tool3D):
         "lens": "All cameras must use the same lens family.",
         "intrinsics": "Fit per-camera optics first, or use the connected models unchanged.",
         "pinhole_distortion": "Fit the five-coefficient or eight-coefficient pinhole model.",
-        "initialization": "OpenCV pairwise baseline initializer before joint rig optimization.",
+        "initialization": "Use Register cameras when any target view is partial.",
         "minimum_shared_views": "Minimum shared captures required for each initializing link.",
-        "max_iterations": "Iteration limit for the native rig optimization.",
-        "epsilon": "Native rig optimization termination tolerance.",
+        "max_iterations": "Iteration limit for rig adjustment and per-camera optics.",
+        "epsilon": "Rig adjustment termination tolerance.",
         "max_rms_px": "Maximum fitted overall reprojection RMS. Zero disables the limit.",
         "max_view_rms_px": "Maximum fitted camera/capture RMS. Zero disables the limit.",
     }
@@ -310,8 +329,6 @@ class CalibrateMulticameraRig(Tool3D):
     parallel_safe = process_inputs_readonly = True
 
     def process(self, inputs):
-        if not hasattr(cv2, "calibrateMultiviewExtended"):
-            raise ValidationError("This OpenCV build lacks calibrateMultiviewExtended")
         p = self.parameters
         obs = _observations(inputs["observations"])
         fixed = p["intrinsics"] == "fixed"
@@ -326,8 +343,21 @@ class CalibrateMulticameraRig(Tool3D):
             raise ValidationError("Fitting intrinsics needs a target in the XY plane")
         optics = _optics(inputs["camera_models"], obs, p["lens"]) if fixed else None
         shared = _overlaps(obs.visible, int(p["minimum_shared_views"]))
-        native, board_scale = _native_fit(obs, p, optics)
-        rms, ks, ds, rvs, ts, pairs, _, _, view_rms = native
+        converged = True
+        if obs.partial:
+            if p["initialization"] != "register_cameras":
+                raise ValidationError(
+                    "Partial target views require Register cameras", "initialization"
+                )
+            from .multicamera_partial import fit_partial_rig
+
+            fit = fit_partial_rig(obs, p, optics, shared)
+            rms, ks, ds, rvs, ts, pairs, view_rms, board_scale, converged = fit
+        else:
+            if not hasattr(cv2, "calibrateMultiviewExtended"):
+                raise ValidationError("This OpenCV build lacks calibrateMultiviewExtended")
+            native, board_scale = _native_fit(obs, p, optics)
+            rms, ks, ds, rvs, ts, pairs, _, _, view_rms = native
         if (
             not np.isfinite(rms)
             or rms < 0
@@ -337,18 +367,20 @@ class CalibrateMulticameraRig(Tool3D):
             or pairs.shape != (len(obs.frames) - 1, 2)
             or np.any((pairs < 0) | (pairs >= len(obs.frames)))
         ):
-            raise ValidationError("Native calibration returned incomplete or invalid diagnostics")
+            raise ValidationError("Calibration returned incomplete or invalid diagnostics")
         errors = np.where(obs.visible, view_rms, np.nan)
         worst = float(np.nanmax(errors))
         report = {
             "model": "multicamera_fit_v1",
+            "solver": "partial_observations" if obs.partial else "native_multiview",
+            **({"converged": converged} if obs.partial else {}),
             "rms_px": float(rms),
             "worst_view_rms_px": worst,
             "initialization_pairs": [[obs.frames[i], obs.frames[j]] for i, j in pairs],
             "shared_captures": shared.tolist(),
             **_report_table(obs, errors),
         }
-        reasons = []
+        reasons = [] if converged else ["multicamera_fit_iteration_limit"]
         if (limit := float(p["max_rms_px"])) and rms > limit:
             reasons.append("multicamera_fit_rms")
         if (view_limit := float(p["max_view_rms_px"])) and worst > view_limit:
@@ -491,11 +523,13 @@ class ValidateMulticameraRig(Tool3D):
             if len(visible) < 2:
                 continue
             for c in visible:
-                anchor = _anchor_pose(xyz, obs.pixels[c, f], optics[c], lens)
+                points = obs.point_visible[c, f]
+                observed_xyz, observed_pixels = xyz[points], obs.pixels[c, f, points]
+                anchor = _anchor_pose(observed_xyz, observed_pixels, optics[c], lens)
                 anchor_rms = (
                     None
                     if anchor is None
-                    else _project_error(xyz, obs.pixels[c, f], optics[c], anchor, lens)
+                    else _project_error(observed_xyz, observed_pixels, optics[c], anchor, lens)
                 )
                 if anchor_rms is None:
                     reasons.add("multicamera_holdout_anchor_pose")
@@ -506,9 +540,10 @@ class ValidateMulticameraRig(Tool3D):
                 for other in visible:
                     if other == c:
                         continue
+                    other_points = obs.point_visible[other, f]
                     error = _project_error(
-                        xyz,
-                        obs.pixels[other, f],
+                        xyz[other_points],
+                        obs.pixels[other, f, other_points],
                         optics[other],
                         transforms[other] @ board_to_rig,
                         lens,
@@ -518,6 +553,7 @@ class ValidateMulticameraRig(Tool3D):
                             "capture_id": capture,
                             "fit_camera": obs.frames[c],
                             "test_camera": obs.frames[other],
+                            "test_points": int(other_points.sum()),
                             "anchor_rms_px": anchor_rms,
                             "rms_px": error,
                         }
@@ -530,7 +566,9 @@ class ValidateMulticameraRig(Tool3D):
                     errors[other, f] += error**2
                     counts[other, f] += 1
         total = int(counts.sum())
-        rms = float(np.sqrt(errors.sum() / total)) if total else None
+        points_per_view = obs.point_visible.sum(axis=2)
+        samples = int((counts * points_per_view).sum())
+        rms = float(np.sqrt((errors * points_per_view).sum() / samples)) if samples else None
         if rms is not None and global_limit and rms > global_limit:
             reasons.add("multicamera_holdout_rms")
         if not (counts.sum(axis=1) > 0).all():

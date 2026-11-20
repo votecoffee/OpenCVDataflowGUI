@@ -50,7 +50,7 @@ they can count as complete.
 | `bgsegm` | Adaptive background models, replay fixtures and restart qualification. | S4-21, S4-33, S4-56, S4-76, S1-170 |
 | `bioinspired` | Retina image and motion processing. Specialized biological modeling stays outside inspection scope. | S4-61, S4-54, S4-98 |
 | `cannops`, `fastcv` | Vendor acceleration backends. Qualify the existing image workflow on the intended backend. | — |
-| `ccalib` | Custom calibration targets and omnidirectional rigs. Check Python exposure on the intended build. | S3-05, S3-14, S3-54–S3-55, S3-70 |
+| `ccalib` | Custom calibration targets and omnidirectional rigs. The coded-target path uses ArUco and partial-observation rig adjustment. | S3-05, S3-14, S3-54–S3-55, S3-70 |
 | `cnn_3dobj` | Specialized research model and training interfaces. Camera object pose and learned image inference have separate graph contracts. | — |
 | `cudaarithm`, `cudabgsegm`, `cudacodec`, `cudafeatures2d`, `cudafilters`, `cudaimgproc`, `cudalegacy`, `cudaobjdetect`, `cudaoptflow`, `cudastereo`, `cudawarping`, `cudev` | Accelerator/device variants of existing image and video families. The supported CPU path owns the capability. GPU parity belongs to backend qualification. | — |
 | `cvv`, `ovis`, `plot`, `viz` | Debugging windows, graphing and native viewer APIs. The editor owns visual review and the reconstruction checklist covers camera-derived preview output. | — |
@@ -594,7 +594,7 @@ and video stabilization classes require a different backend or a tested equivale
 
 | API | Graph disposition | Checklist IDs |
 | --- | --- | --- |
-| `cv::ccalib::CustomPattern`, `cv::randpattern::RandomPatternCornerFinder`, `cv::randpattern::RandomPatternGenerator`, `cv::multicalib::MultiCameraCalibration` | Separate repeatable target preparation and partial-view detection from the rig fit. These source classes lack direct wheel bindings. | S3-70, S3-126 |
+| `cv::ccalib::CustomPattern`, `cv::randpattern::RandomPatternCornerFinder`, `cv::randpattern::RandomPatternGenerator`, `cv::multicalib::MultiCameraCalibration` | These source classes lack direct wheel bindings. S3-70 qualifies surveyed ArUco layouts and partial-view adjustment. Random-pattern detection is tracked in S3-126. | S3-70, S3-126 |
 | `cv2.omnidir.calibrate` | Fit a lens model with held-out edge reprojections. | S3-05 |
 | `cv2.omnidir.initUndistortRectifyMap`, `cv2.omnidir.projectPoints`, `cv2.omnidir.undistortImage`, `cv2.omnidir.undistortPoints` | Share the lens projection contract with camera rays, calibrated remap and coverage. 3d.reproject_depth_region uses these rays to transfer a region across camera grids with metric Z and target visibility diagnostics. | S3-05, S3-09, S3-55 |
 | `cv2.omnidir.stereoCalibrate`, `cv2.omnidir.stereoRectify` | Fit and rectify the wide-angle pair before disparity or depth validation. | S3-14 |

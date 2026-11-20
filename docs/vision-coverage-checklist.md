@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 69 | 16 | 46 | 131 | 52.7% |
+| 3. 3D imagery and point clouds | 70 | 16 | 45 | 131 | 53.4% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 324 | 20 | 126 | 470 | 68.9% |
+| **Overall** | 325 | 20 | 125 | 470 | 69.1% |
 
 <!-- coverage-summary:end -->
 
@@ -493,7 +493,7 @@ fixture or result needed to close the item.
 | S3-67 | Phase unwrapping for measured fringe images | phase_unwrapping.HistogramPhaseUnwrapping and getInverseReliabilityMap | Complete | 3d.unwrap_phase wraps the native histogram and inverse reliability, masks shadows and references each four-connected region independently. The [measured-fringe fixture](<../examples/opencv tools/phase_unwrap/README.md>) recovers 8,127 pixels with 0.0000106 rad RMS error. |
 | S3-68 | Camera pose tracking against an object silhouette | rapid.extractControlPoints, rapid.extractLineBundle, rapid.findCorrespondencies and projectPoints | Complete | 3d.track_silhouette refines a seeded metric mesh pose in calibrated video. The [recorded fixture](<../examples/opencv tools/silhouette_tracking/README.md>) checks ground truth, edge reprojection, loss and explicit reset. |
 | S3-69 | Three-dimensional model pose from image and depth templates | linemod.ColorGradient.create, linemod.DepthNormal.create and linemod.Detector.match | Complete | 3d.train_linemod_pose and 3d.match_linemod_pose select a trained rotation and verify metric translation on a registered RGB-D grid. The [held-out plate example](<../examples/opencv tools/linemod_pose/README.md>) checks pose, match support and reprojection. |
-| S3-70 | Multi-view calibration with coded custom targets | ccalib and observed camera-target correspondences | Planned | Qualify a custom target across cameras with held-out frame closure. Confirm the relevant Python APIs or use a tested solver. |
+| S3-70 | Multi-view calibration with coded custom targets | aruco.ArucoDetector, calibrateCamera, fisheye.calibrate, solvePnP and projectPoints | Complete | input.coded_rig_observations decodes a surveyed marker layout. The existing rig fit and held-out checks accept partial corner sets. The [three-camera image fixture](<../examples/opencv tools/coded_multicamera_rig/README.md>) verifies complementary IDs with 0.59 px held-out RMS. |
 | S3-71 | Depth-fusion trajectory estimation | KinFu or equivalent depth tracking and fusion | Partial | 3d.odometry and 3d.tsdf_fuse support pairwise motion and posed depth. Verify drift, failure recovery and a bounded trajectory on a recorded sequence. |
 | S3-72 | Quasi-dense stereo correspondence | stereo.QuasiDenseStereo | Planned | Grow correspondences from stereo feature matches and compare disparity and support against known image pairs. |
 

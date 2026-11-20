@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Calibrate a rig from partially visible coded markers",
+      "description": "Original synthetic captures and custom printed target by OpenCVDataflowGUI contributors (MIT). Camera B sees complementary IDs in each training pose. Different target poses check the fitted rig, including the A-to-C baseline.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "input.coded_rig_observations",
+      "name": "Detect fit captures",
+      "parameters": {
+        "path": "assets/train.json",
+        "minimum_markers": 2,
+        "corner_refinement": "subpixel",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "target",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "camera_models",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "coded-rig-example"
+      }
+    },
+    {
+      "id": "holdout",
+      "type": "input.coded_rig_observations",
+      "name": "Detect held-out captures",
+      "parameters": {
+        "path": "assets/holdout.json",
+        "minimum_markers": 2,
+        "corner_refinement": "subpixel",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        0,
+        250
+      ],
+      "exposed_inputs": [
+        "target",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "camera_models",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "coded-rig-example"
+      }
+    },
+    {
+      "id": "fit",
+      "type": "3d.calibrate_multicamera",
+      "name": "Calibrate multi-camera rig",
+      "parameters": {
+        "lens": "pinhole",
+        "intrinsics": "fixed",
+        "pinhole_distortion": "standard",
+        "initialization": "register_cameras",
+        "minimum_shared_views": 3,
+        "max_iterations": 90,
+        "epsilon": 1e-09,
+        "max_rms_px": 0.9,
+        "max_view_rms_px": 1.2
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "observations",
+        "camera_models"
+      ],
+      "exposed_outputs": [
+        "rig",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "check",
+      "type": "3d.validate_multicamera",
+      "name": "Validate multi-camera rig",
+      "parameters": {
+        "max_rms_px": 1.25,
+        "max_view_rms_px": 2,
+        "max_anchor_rms_px": 1.2
+      },
+      "position": [
+        710,
+        250
+      ],
+      "exposed_inputs": [
+        "rig",
+        "observations"
+      ],
+      "exposed_outputs": [
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "train",
+      "output": "observations",
+      "target": "fit",
+      "input": "observations"
+    },
+    {
+      "source": "train",
+      "output": "camera_models",
+      "target": "fit",
+      "input": "camera_models"
+    },
+    {
+      "source": "holdout",
+      "output": "observations",
+      "target": "check",
+      "input": "observations"
+    },
+    {
+      "source": "fit",
+      "output": "rig",
+      "target": "check",
+      "input": "rig"
+    }
+  ]
+}
