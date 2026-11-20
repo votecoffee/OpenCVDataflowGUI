@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Separate two touching surfaces",
+      "description": "Original synthetic cloud by OpenCVDataflowGUI contributors (MIT). Two faces share one seam. Compare joining both, splitting by normal direction, and rejecting seam measurements by curvature.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/touching_faces.ply",
+        "units": "mm",
+        "frame": "fold_fixture",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        75
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "join",
+      "type": "3d.cloud_region_grow",
+      "name": "Join both faces",
+      "description": "Segment touching surfaces using local normal angles and curvature.",
+      "parameters": {
+        "radius_m": 0.006,
+        "normal_angle_deg": 90,
+        "maximum_curvature": 0.3333333333333333,
+        "fit_neighbors": 24,
+        "minimum_points": 3,
+        "max_input_points": 250000,
+        "max_neighbor_pairs": 2000000,
+        "max_regions": 256
+      },
+      "position": [
+        440,
+        -160
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "curvature"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "rejected_cloud",
+        "regions",
+        "labels",
+        "curvature",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "split",
+      "type": "3d.cloud_region_grow",
+      "name": "Separate faces",
+      "description": "Segment touching surfaces using local normal angles and curvature.",
+      "parameters": {
+        "radius_m": 0.006,
+        "normal_angle_deg": 20,
+        "maximum_curvature": 0.3333333333333333,
+        "fit_neighbors": 24,
+        "minimum_points": 3,
+        "max_input_points": 250000,
+        "max_neighbor_pairs": 2000000,
+        "max_regions": 256
+      },
+      "position": [
+        440,
+        130
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "curvature"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "rejected_cloud",
+        "regions",
+        "labels",
+        "curvature",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "trim",
+      "type": "3d.cloud_region_grow",
+      "name": "Leave the seam unassigned",
+      "description": "Segment touching surfaces using local normal angles and curvature.",
+      "parameters": {
+        "radius_m": 0.006,
+        "normal_angle_deg": 20,
+        "maximum_curvature": 0.05,
+        "fit_neighbors": 24,
+        "minimum_points": 3,
+        "max_input_points": 250000,
+        "max_neighbor_pairs": 2000000,
+        "max_regions": 256
+      },
+      "position": [
+        440,
+        420
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "curvature"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "rejected_cloud",
+        "regions",
+        "labels",
+        "curvature",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "join",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "split",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "trim",
+      "input": "cloud"
+    }
+  ]
+}

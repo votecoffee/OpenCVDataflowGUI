@@ -1,16 +1,14 @@
 """Euclidean clustering of point clouds with scan-row provenance."""
 
 import numpy as np
-from scipy.sparse import coo_matrix
-from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 
+from .cloud_neighborhoods import count_radius_pairs, labeled_cloud_preview, pair_components
 from .cloud_projection import METERS
 from .core import Port, Result
 from .geometry3d_common import Tool3D
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
-from .pointclouds import PointCloud, render_cloud
 
 
 def _measure_components(points, components, count):
@@ -145,8 +143,7 @@ class ClusterPointCloud(Tool3D):
 
         points = cloud.points.astype(np.float64) * METERS[cloud.units]
         tree = cKDTree(points)
-        # The same tree counts self pairs once and every distinct unordered pair twice.
-        pair_count = (int(tree.count_neighbors(tree, radius)) - n) // 2
+        pair_count = count_radius_pairs(tree, radius)
         report["neighbor_pairs"] = pair_count
         if self._cancelled():
             return failed("cloud_cluster_cancelled", "Cloud clustering cancelled")
@@ -160,8 +157,7 @@ class ClusterPointCloud(Tool3D):
         if self._cancelled():
             return failed("cloud_cluster_cancelled", "Cloud clustering cancelled")
 
-        edges = coo_matrix((np.ones(len(pairs), np.int8), pairs.T), shape=(n, n))
-        count, components = connected_components(edges, directed=False)
+        count, components = pair_components(pairs, n)
         if self._cancelled():
             return failed("cloud_cluster_cancelled", "Cloud clustering cancelled")
         sizes, lower, upper, first_rows = _measure_components(points, components, count)
@@ -211,11 +207,7 @@ class ClusterPointCloud(Tool3D):
         accepted_cloud = cloud.subset(kept)
         graphics = {}
         if count and self.capture_graphics:
-            palette = np.random.default_rng(83).integers(65, 256, size=(count, 3), dtype=np.uint8)
-            display = PointCloud(
-                accepted_cloud.points, cloud.units, cloud.frame, palette[labels[kept] - 1]
-            )
-            graphics["clusters"] = render_cloud(display)
+            graphics["clusters"] = labeled_cloud_preview(accepted_cloud, labels[kept], count)
         payload = self.input_payloads["cloud"]
         report.update(
             classified_points=len(labels) if labels is not None else 0,

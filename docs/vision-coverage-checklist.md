@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 81 | 14 | 36 | 131 | 61.8% |
+| 3. 3D imagery and point clouds | 82 | 14 | 35 | 131 | 62.6% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 336 | 18 | 116 | 470 | 71.5% |
+| **Overall** | 337 | 18 | 115 | 470 | 71.7% |
 
 <!-- coverage-summary:end -->
 
@@ -510,7 +510,7 @@ fixture or result needed to close the item.
 | S3-79 | Representative-point voxel sampling | NumPy equivalent of voxelGridSampling | Complete | `3d.cloud_voxel` adds X/Y/Z spacing and selects the original row nearest each voxel centroid. The [anisotropic voxel example](<../examples/custom tools/voxel_representatives/README.md>) checks negative and boundary coordinates, deterministic ties and preserved row attributes. The pinned Python wheel lacks the native sampling binding. |
 | S3-80 | Radius and statistical cloud outlier rejection | Bounded cKDTree queries and local neighbor statistics | Complete | `3d.cloud_outlier` reports density settings, original kept and removed row IDs, and metric thresholds. The [folded-panel example](<../examples/custom tools/cloud_outlier_rejection/README.md>) removes six labeled outliers and retains all 198 surface and edge points using both methods. |
 | S3-81 | Euclidean cloud clustering | Radius-neighbor connected components in XYZ | Complete | `3d.cloud_cluster` separates three known parts in the [tray PLY](<../examples/custom tools/cloud_clustering/README.md>), rejects one group by point count and one by extent, and preserves scan row IDs and point attributes. Work budgets are checked before publishing labels. |
-| S3-82 | Normal-based cloud region growing | RegionGrowing3D or equivalent neighborhood segmentation | Planned | Separate touching surfaces by normal and curvature with stable labels. Qualify an alternate build or a tested fallback because the pinned wheel lacks the native binding. |
+| S3-82 | Normal-based cloud region growing | Radius adjacency, unsigned normals and local PCA curvature | Complete | `3d.cloud_region_grow` uses a bounded fallback in the pinned wheel. The [touching-faces example](<../examples/custom tools/cloud_region_growing/README.md>) separates two touching faces by normal angle and leaves ten seam rows unassigned when curvature is limited. Stable labels and result regions retain source IDs. |
 | S3-83 | Robust plane and sphere fitting on unorganized clouds | SACSegmentation RANSAC models or equivalent fitting | Planned | Fit known metric planes and spheres amid outliers and report coefficients, inliers, residuals, and failed degeneracy. The pinned wheel lacks the native class. |
 | S3-84 | Local cloud curvature and normal quality | normalEstimate or equivalent neighbor PCA | Partial | 3d.cloud_normals estimates normals. Verify curvature, invalid neighborhoods and normal orientation on planes and spheres. Use a validated fallback on the pinned wheel. |
 | S3-85 | Native OBJ point-cloud interchange | loadPointCloud and savePointCloud | Partial | input.cloud and output.cloud support PLY and PCD. Qualify the native OBJ path with aligned XYZ, normal and color fields and compare PLY behavior with the current path. |

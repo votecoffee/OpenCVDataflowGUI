@@ -515,6 +515,13 @@ available in Debug and Balanced.
   expose original row indices and preserve the corresponding colors, normals
   and pixels. Centroid mode averages positions and colors. [Voxel sampling
   example](<../examples/custom tools/voxel_representatives/README.md>)
+- **Grow point-cloud surface regions** links metric XYZ neighbors that meet
+  the unsigned normal-angle limit. It uses normals stored in the cloud, or
+  estimates normals in bounded local PCA fits. Curvature can come from the
+  same fits or a per-row input. Invalid or high-curvature points remain
+  unassigned and cannot bridge regions. Labels, source row IDs, and both
+  cloud subsets preserve source provenance. The pinned OpenCV 5 Python wheel
+  uses the SciPy and NumPy fallback. [Touching-faces example](<../examples/custom tools/cloud_region_growing/README.md>)
 - **Cluster point cloud by distance** groups scan rows linked by an
   inclusive XYZ radius in meters. It filters groups by point count and
   longest XYZ axis extent. Each accepted cluster includes bounds and original

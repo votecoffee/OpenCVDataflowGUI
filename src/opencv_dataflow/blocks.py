@@ -659,6 +659,7 @@ def builtin_registry():
     from .cloud_octree import QueryCloudOctree
     from .cloud_clustering import ClusterPointCloud
     from .cloud_outliers import RejectCloudOutliers
+    from .cloud_region_growing import GrowCloudRegions
     from .cloud_projection import ProjectCloudVisibility
     from .cloud_sampling import SampleCloud
     from .cloud_tools import CLOUD_BLOCKS
@@ -1369,6 +1370,7 @@ def builtin_registry():
         QueryCloudOctree,
         RejectCloudOutliers,
         ClusterPointCloud,
+        GrowCloudRegions,
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,

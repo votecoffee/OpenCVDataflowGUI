@@ -364,6 +364,27 @@ Input `region` — Select target pixels, intersecting the mask when supplied.
 | `reference_units` | `"m"` | `m`, `mm` Length units for a depth reference without declared units. |
 | `reference_units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 reference count. |
 
+## Grow point-cloud surface regions (`3d.cloud_region_grow`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `curvature` (data, optional).
+
+Input `cloud` — Metric XYZ. Uses stored normals when present or estimates them from neighbors.
+
+Input `curvature` — Optional source-order ratios from 0 to 1/3. Null marks an unusable row.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius_m` | `0.01` | Value must be a finite number between 1e-09 and 1e+12. Maximum XYZ distance in meters for surface fits and region links. |
+| `normal_angle_deg` | `20.0` | Value must be a finite number between 0 and 90. Maximum unsigned angle between linked normals, in degrees. |
+| `maximum_curvature` | `0.05` | Value must be a finite number between 0 and 0.333333. Maximum smallest-to-total variance ratio for a region member. |
+| `fit_neighbors` | `24` | Value must be a whole number between 3 and 128. Maximum nearest rows per local fit, including the center. |
+| `minimum_points` | `3` | Value must be a whole number between 1 and 1e+06. Smallest accepted region by row count. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum cloud size admitted to the spatial index. |
+| `max_neighbor_pairs` | `2000000` | Value must be a whole number between 1 and 6e+06. Maximum unique unordered pairs admitted to the radius graph. |
+| `max_regions` | `256` | Value must be a whole number between 1 and 4096. Maximum accepted regions per result. Exceeding this limit fails the run. |
+
 ## Render point cloud (`3d.cloud_render`)
 
 3D vision / Point clouds
