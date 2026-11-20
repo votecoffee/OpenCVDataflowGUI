@@ -646,6 +646,7 @@ def builtin_registry():
     )
     from .calipers import BeadCalipers
     from .camera_health import CameraHealth
+    from .camera_pair_registration import RegisterCameraPair
     from .camera_projector import CAMERA_PROJECTOR_BLOCKS
     from .cascade_detection import DetectCascade
     from .channel_transform import ChannelTransform, RouteChannels
@@ -1068,6 +1069,7 @@ def builtin_registry():
         DetectMarkedCheckerboard,
         GenerateFiducialTarget,
         LensCalibration,
+        RegisterCameraPair,
         LoadTargetCalibrationObservations,
         RefineCalibrationTarget,
         ValidateLensCalibration,

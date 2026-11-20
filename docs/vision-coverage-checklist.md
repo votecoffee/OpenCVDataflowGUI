@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 112 | 5 | 14 | 131 | 85.5% |
+| 3. 3D imagery and point clouds | 113 | 5 | 13 | 131 | 86.3% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 367 | 9 | 94 | 470 | 78.1% |
+| **Overall** | 368 | 9 | 93 | 470 | 78.3% |
 
 <!-- coverage-summary:end -->
 
@@ -551,7 +551,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S3-113 | Register cameras with non-overlapping views | registerCameras and registerCamerasExtended | Planned | Recover the transform from two fixed cameras seeing different known parts of one calibration target. Verify mixed pinhole/fisheye models, per-view residuals and held-out frame closure. |
+| S3-113 | Register cameras with non-overlapping views | registerCamerasExtended | Complete | Register cameras with fixed pinhole or fisheye intrinsics using separate point subsets from synchronized views. The [two-camera example](<../examples/opencv tools/nonoverlap_camera_registration/README.md>) checks independent reprojection and frame closure and detects a 9 mm held-out shift. |
 | S3-114 | Rectify three collinear cameras | rectify3Collinear or a validated equivalent | Planned | Rectify a measured three-camera rig to common epipolar rows and verify depth across both baselines. The pinned Python wheel lacks this direct binding. |
 | S3-115 | Cylindrical surface and bore measurement from a point cloud | Robust 3D cylinder fit with radial residuals | Planned | Recover axis and diameter on known outer and inner surfaces with partial coverage and outliers. Report usable angular and axial support, units and degenerate fits. Use a qualified solver because OpenCV's native sample-consensus models cover planes and spheres. |
 

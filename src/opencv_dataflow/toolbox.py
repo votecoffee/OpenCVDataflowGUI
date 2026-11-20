@@ -162,7 +162,7 @@ BLOCK_MODULES = {
         "3d.check_epipolar 3d.refine_epipolar "
         "3d.rectify_uncalibrated_stereo 3d.fisheye_calibrate "
         "3d.omnidir_calibrate 3d.wide_stereo_calibrate calibration.refine_target "
-        "calibration.marked_checkerboard"
+        "calibration.marked_checkerboard 3d.register_cameras"
     ),
     "geometry": "inspect.affine inspect.homography collection.clip_lines 3d.estimate_matched_transform",
     "features": (
@@ -312,6 +312,7 @@ _NATIVE_NAMES = {
     "sequence.lk_grid_flow": ("calcOpticalFlowPyrLK",),
     "sequence.track_points": ("calcOpticalFlowPyrLK",),
     "calibration.lens": ("calibrateCamera", "calib3d"),
+    "3d.register_cameras": ("registerCameras", "registerCamerasExtended", "non-overlapping cameras"),
     "calibration.marked_checkerboard": (
         "findChessboardCornersSBWithMeta", "oversized checkerboard", "marker origin"
     ),

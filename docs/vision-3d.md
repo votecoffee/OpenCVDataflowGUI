@@ -193,6 +193,16 @@ reports include a camera-by-capture RMS table. Debug heatmaps show missing
 cells in black. No rig is published when the fit exceeds its error limits.
 [Three-camera chain example](<../examples/opencv tools/multicamera_rig/README.md>)
 
+**Register cameras with disjoint views** estimates a pose between two
+fixed camera profiles, including mixed pinhole and fisheye pairs. Provide
+synchronized captures of the same rigid target with known 3D coordinates.
+Each camera can see a separate subset of the points. The optional pose
+seed and the returned pose map the first camera into the second. The block
+reports fit residuals and can check independent captures with bidirectional
+reprojection and target-pose closure. The fitted pose remains inspectable
+when a gate fails. Use the block judgment to decide whether to apply it.
+[Two-camera disjoint view example](<../examples/opencv tools/nonoverlap_camera_registration/README.md>)
+
 **Load coded rig captures** reads synchronized images and a surveyed ArUco
 layout from a manifest. The layout can place markers of different sizes and
 orientations in the target plane. The loader identifies corners by decoded ID,

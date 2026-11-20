@@ -38,6 +38,9 @@ matched board coordinates from overlapping views and diagnoses a missing marker.
 [Multi-camera rig calibration](multicamera_rig/README.md) fits a three-view
 chain and validates it on disjoint captures.
 
+[Register cameras with disjoint views](nonoverlap_camera_registration/README.md)
+fits fixed pinhole and fisheye pairs from separate panels of one target.
+
 [Custom coded rig calibration](coded_multicamera_rig/README.md) decodes
 partially visible marker IDs and checks a fitted rig on independent images.
 

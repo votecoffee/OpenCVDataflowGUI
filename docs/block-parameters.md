@@ -1678,6 +1678,31 @@ Input `right_image` — Optional right source image for diagnostics.
 | `minimum_inlier_ratio` | `1.0` | Value must be a finite number between 0 and 1. Fraction of all input pairs that must remain accepted to pass. |
 | `max_drawn_pairs` | `64` | Value must be a whole number between 0 and 512. Maximum input pairs per preview. Zero disables correction drawings. |
 
+## Register cameras with disjoint views (`3d.register_cameras`)
+
+3D vision / Calibration
+
+Inputs: `observations` (data), `first_camera` (data), `second_camera` (data), `initial_pose` (data, optional), `holdout` (data, optional).
+
+Input `observations` — Two-camera rig observations with at least three paired target poses.
+
+Input `first_camera` — Fixed pinhole or fisheye model for the first observation frame.
+
+Input `second_camera` — Fixed pinhole or fisheye model for the second observation frame.
+
+Input `initial_pose` — Optional initial first-to-second camera pose in meters or millimeters.
+
+Input `holdout` — Optional independent pairs with distinct IDs and matching target geometry.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_iterations` | `100` | Value must be a whole number between 1 and 500. Maximum OpenCV registration solver iterations. |
+| `epsilon` | `1e-06` | Value must be a finite number between 0 and 1. OpenCV solver convergence epsilon. |
+| `max_fit_rms_px` | `1.0` | Value must be a finite number at least 0. Maximum pooled native fit RMS. Zero disables the limit. |
+| `max_view_rms_px` | `2.0` | Value must be a finite number at least 0. Maximum individual camera RMS in a fit or holdout. Zero disables. |
+| `max_holdout_rms_px` | `1.0` | Value must be a finite number at least 0. Maximum pooled cross-camera holdout RMS. Zero disables. |
+| `max_anchor_rms_px` | `0.8` | Value must be a finite number at least 0. Maximum fit RMS for each holdout anchor pose. Zero disables. |
+
 ## Register clouds by local features (`3d.register_cloud_features`)
 
 3D vision / Surface matching

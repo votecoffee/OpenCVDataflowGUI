@@ -55,13 +55,15 @@ def _names(values, label, minimum, maximum):
     return tuple(values)
 
 
-def _observations(record):
+def _observations(record, *, minimum_cameras=3, maximum_cameras=_MAX_CAMERAS):
     if not isinstance(record, dict) or record.get("model") != OBSERVATIONS:
         raise ValidationError("Connect a multicamera_observations_v1 record")
     units = record.get("units")
     if units not in ("m", "mm"):
         raise ValidationError("Target spacing must declare meters or millimeters")
-    frames = _names(record.get("camera_frames"), "Camera frames", 3, _MAX_CAMERAS)
+    frames = _names(
+        record.get("camera_frames"), "Camera frames", minimum_cameras, maximum_cameras
+    )
     captures = _names(record.get("capture_ids"), "Capture IDs", 1, _MAX_CAPTURES)
     sizes = record.get("image_sizes")
     if not isinstance(sizes, (tuple, list)) or len(sizes) != len(frames):
@@ -153,7 +155,7 @@ class LoadMulticameraObservations(Block):
         if len(raw) > _MAX_FILE_BYTES:
             raise ValidationError("Observations JSON exceeds 8 MiB", "path")
         record = json.loads(raw)
-        parsed = _observations(record)
+        parsed = _observations(record, minimum_cameras=2)
         return Result(
             {"observations": record},
             message=f"{len(parsed.frames)} cameras, {len(parsed.captures)} captures",
@@ -170,7 +172,7 @@ def _optics(records, obs, lens):
             record.get("model") != "camera_model_v1"
             or record.get("frame") != frame
             or record.get("units") != obs.units
-            or record.get("lens") != lens
+            or (lens is not None and record.get("lens") != lens)
             or record_size != size
         ):
             raise ValidationError(

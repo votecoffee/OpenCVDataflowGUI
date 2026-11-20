@@ -4250,7 +4250,7 @@ P3	method	cv2.reg_MapTypeCaster.toAffine	alias	cv2.reg.MapTypeCaster.toAffine
 P3	method	cv2.reg_MapTypeCaster.toProjec	alias	cv2.reg.MapTypeCaster.toProjec
 P3	method	cv2.reg_MapTypeCaster.toShift	alias	cv2.reg.MapTypeCaster.toShift
 P3	function	cv2.registerCameras	no static reference	-
-P3	function	cv2.registerCamerasExtended	no static reference	-
+P3	function	cv2.registerCamerasExtended	literal reference	-
 P3	function	cv2.registerDepth	no static reference	-
 P3	function	cv2.remap	literal reference	-
 P3	function	cv2.repeat	literal reference	-

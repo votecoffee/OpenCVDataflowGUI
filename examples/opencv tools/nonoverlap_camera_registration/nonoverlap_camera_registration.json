@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Register cameras across disjoint target panels",
+      "description": "Synthetic observations by OpenCVDataflowGUI contributors (MIT). Each camera sees its own panel on one rigid target. Compare the fixed pinhole and mixed-lens fits on new poses. The drifted holdout changes one camera by 9 mm and intentionally fails cross-projection.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit_pinhole",
+      "type": "input.multicamera_observations",
+      "name": "Fit pinhole",
+      "parameters": {
+        "path": "assets/fit_pinhole.json"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "held_pinhole",
+      "type": "input.multicamera_observations",
+      "name": "Held pinhole",
+      "parameters": {
+        "path": "assets/held_pinhole.json"
+      },
+      "position": [
+        0,
+        220
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit_mixed",
+      "type": "input.multicamera_observations",
+      "name": "Fit mixed",
+      "parameters": {
+        "path": "assets/fit_mixed.json"
+      },
+      "position": [
+        0,
+        440
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "held_mixed",
+      "type": "input.multicamera_observations",
+      "name": "Held mixed",
+      "parameters": {
+        "path": "assets/held_mixed.json"
+      },
+      "position": [
+        0,
+        660
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "drift_mixed",
+      "type": "input.multicamera_observations",
+      "name": "Drift mixed",
+      "parameters": {
+        "path": "assets/drift_mixed.json"
+      },
+      "position": [
+        0,
+        880
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cam_a",
+      "type": "3d.camera",
+      "name": "station_a pinhole",
+      "parameters": {
+        "fx": 850.0,
+        "fy": 870.0,
+        "cx": 480.0,
+        "cy": 360.0,
+        "width": 960,
+        "height": 720,
+        "distortion": [
+          -0.13,
+          0.04,
+          0.001,
+          -0.0015,
+          0.0
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "station_a"
+      },
+      "position": [
+        370,
+        0
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cam_b",
+      "type": "3d.camera",
+      "name": "station_b pinhole",
+      "parameters": {
+        "fx": 820.0,
+        "fy": 800.0,
+        "cx": 400.0,
+        "cy": 300.0,
+        "width": 800,
+        "height": 600,
+        "distortion": [
+          -0.13,
+          0.04,
+          0.001,
+          -0.0015,
+          0.0
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "station_b"
+      },
+      "position": [
+        370,
+        220
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cam_fish",
+      "type": "3d.camera",
+      "name": "station_b fisheye",
+      "parameters": {
+        "fx": 820.0,
+        "fy": 800.0,
+        "cx": 400.0,
+        "cy": 300.0,
+        "width": 800,
+        "height": 600,
+        "distortion": [
+          0.09,
+          -0.035,
+          0.005,
+          -0.0004
+        ],
+        "lens": "fisheye",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "station_b"
+      },
+      "position": [
+        370,
+        440
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "seed",
+      "type": "3d.pose",
+      "name": "Rough mixed-pair pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          -1.18,
+          0.055,
+          0.018
+        ],
+        "source_frame": "station_a",
+        "target_frame": "station_b",
+        "units": "m"
+      },
+      "position": [
+        370,
+        660
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pinhole",
+      "type": "3d.register_cameras",
+      "name": "Pinhole",
+      "description": "Fit fixed-intrinsic camera extrinsics using independent observations of one target.",
+      "parameters": {
+        "max_iterations": 100,
+        "epsilon": 1e-06,
+        "max_fit_rms_px": 1.0,
+        "max_view_rms_px": 0.5,
+        "max_holdout_rms_px": 0.25,
+        "max_anchor_rms_px": 0.8
+      },
+      "position": [
+        840,
+        0
+      ],
+      "exposed_inputs": [
+        "observations",
+        "first_camera",
+        "second_camera",
+        "initial_pose",
+        "holdout"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "essential",
+        "fundamental",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mixed",
+      "type": "3d.register_cameras",
+      "name": "Mixed",
+      "description": "Fit fixed-intrinsic camera extrinsics using independent observations of one target.",
+      "parameters": {
+        "max_iterations": 100,
+        "epsilon": 1e-06,
+        "max_fit_rms_px": 1.0,
+        "max_view_rms_px": 0.5,
+        "max_holdout_rms_px": 0.25,
+        "max_anchor_rms_px": 0.8
+      },
+      "position": [
+        840,
+        290
+      ],
+      "exposed_inputs": [
+        "observations",
+        "first_camera",
+        "second_camera",
+        "initial_pose",
+        "holdout"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "essential",
+        "fundamental",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "drift",
+      "type": "3d.register_cameras",
+      "name": "Drift",
+      "description": "Fit fixed-intrinsic camera extrinsics using independent observations of one target.",
+      "parameters": {
+        "max_iterations": 100,
+        "epsilon": 1e-06,
+        "max_fit_rms_px": 1.0,
+        "max_view_rms_px": 0.5,
+        "max_holdout_rms_px": 0.25,
+        "max_anchor_rms_px": 0.8
+      },
+      "position": [
+        840,
+        580
+      ],
+      "exposed_inputs": [
+        "observations",
+        "first_camera",
+        "second_camera",
+        "initial_pose",
+        "holdout"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "essential",
+        "fundamental",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit_pinhole",
+      "output": "observations",
+      "target": "pinhole",
+      "input": "observations"
+    },
+    {
+      "source": "held_pinhole",
+      "output": "observations",
+      "target": "pinhole",
+      "input": "holdout"
+    },
+    {
+      "source": "cam_a",
+      "output": "camera",
+      "target": "pinhole",
+      "input": "first_camera"
+    },
+    {
+      "source": "cam_b",
+      "output": "camera",
+      "target": "pinhole",
+      "input": "second_camera"
+    },
+    {
+      "source": "fit_mixed",
+      "output": "observations",
+      "target": "mixed",
+      "input": "observations"
+    },
+    {
+      "source": "held_mixed",
+      "output": "observations",
+      "target": "mixed",
+      "input": "holdout"
+    },
+    {
+      "source": "cam_a",
+      "output": "camera",
+      "target": "mixed",
+      "input": "first_camera"
+    },
+    {
+      "source": "cam_fish",
+      "output": "camera",
+      "target": "mixed",
+      "input": "second_camera"
+    },
+    {
+      "source": "seed",
+      "output": "transform",
+      "target": "mixed",
+      "input": "initial_pose"
+    },
+    {
+      "source": "fit_mixed",
+      "output": "observations",
+      "target": "drift",
+      "input": "observations"
+    },
+    {
+      "source": "drift_mixed",
+      "output": "observations",
+      "target": "drift",
+      "input": "holdout"
+    },
+    {
+      "source": "cam_a",
+      "output": "camera",
+      "target": "drift",
+      "input": "first_camera"
+    },
+    {
+      "source": "cam_fish",
+      "output": "camera",
+      "target": "drift",
+      "input": "second_camera"
+    },
+    {
+      "source": "seed",
+      "output": "transform",
+      "target": "drift",
+      "input": "initial_pose"
+    }
+  ]
+}
