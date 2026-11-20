@@ -343,6 +343,25 @@ Inputs: `depth` (depth), `mask` (image, optional), `region` (data, optional).
 | `distance_metric` | `"manhattan"` | `manhattan`, `chessboard` |
 | `include_border` | `false` | Allow filling gaps that touch an image edge. |
 
+## Remove disparity speckles (`3d.filter_disparity_speckles`)
+
+3D vision / Stereo
+
+Inputs: `disparity` (image), `valid_mask` (image, optional).
+
+Input `disparity` — Float pixel disparity, or signed/unsigned 16-bit fixed-point samples.
+
+Input `valid_mask` — Optional nonzero valid pixels on this disparity grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_speckle_size` | `50` | Value must be a whole number between 0 and 1.67772e+07. Remove connected islands at or below this pixel count. Zero disables. |
+| `max_difference_px` | `1.0` | Value must be a finite number at least 0. Maximum disparity difference between adjacent pixels in one island. |
+| `fixed_point_scale` | `16.0` | Value must be a finite number between 1e-06 and 4096. Integer input samples per disparity pixel. OpenCV stereo uses 16. |
+| `float_samples_per_pixel` | `16.0` | Value must be a finite number between 1 and 4096. Temporary int16 resolution for float disparity inputs. |
+| `invalid_value_enabled` | `false` | Also mask out a specific source sample value. |
+| `invalid_value` | `0.0` | Value must be a finite number. Invalid code in the source's original sample units, before any scaling. |
+
 ## Calibrate fisheye camera (`3d.fisheye_calibrate`)
 
 3D vision / Calibration

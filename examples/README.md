@@ -182,6 +182,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Uncalibrated stereo rectification](<opencv tools/uncalibrated_stereo/README.md>) | Estimate rectification from matches, compare held-out vertical alignment and inspect shared support. |
 | [Stereo calibration quality](<opencv tools/stereo_calibration_quality/README.md>) | Compare per-camera fit residuals and independently rendered holdouts. |
 | [Stereo disparity search](<opencv tools/stereo_disparity_search/README.md>) | Compare manual and depth-based search ranges and check support around masks. |
+| [Disparity speckle removal](<opencv tools/disparity_speckles/README.md>) | Clean equivalent fixed-point and signed float maps and check the exact removed footprint. |
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |
 | [ChArUco calibration validation](<opencv tools/validate_charuco_calibration/README.md>) | Check the fitted profile on a separate cropped board and identify the worst corner. |
 | [Wide-angle stereo](<opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, rectify a held-out view pair and recover metric depth. |

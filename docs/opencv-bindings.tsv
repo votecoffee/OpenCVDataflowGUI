@@ -2742,7 +2742,7 @@ P3	function	cv2.fillPoly	literal reference	-
 P3	function	cv2.filter2D	literal reference	-
 P3	function	cv2.filter2Dp	no static reference	-
 P3	function	cv2.filterHomographyDecompByVisibleRefpoints	no static reference	-
-P3	function	cv2.filterSpeckles	no static reference	-
+P3	function	cv2.filterSpeckles	literal reference	-
 P3	function	cv2.find4QuadCornerSubpix	no static reference	-
 P3	function	cv2.findChessboardCorners	literal reference	-
 P3	function	cv2.findChessboardCornersSB	literal reference	-

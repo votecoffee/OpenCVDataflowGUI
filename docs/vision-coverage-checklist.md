@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 52 | 18 | 61 | 131 | 39.7% |
+| 3. 3D imagery and point clouds | 53 | 18 | 60 | 131 | 40.5% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 307 | 22 | 141 | 470 | 65.3% |
+| **Overall** | 308 | 22 | 140 | 470 | 65.5% |
 
 <!-- coverage-summary:end -->
 
@@ -465,7 +465,7 @@ fixture or result needed to close the item.
 | S3-44 | Uncalibrated stereo rectification | stereoRectifyUncalibrated, warpPerspective | Complete | 3d.rectify_uncalibrated_stereo warps two image grids from a fundamental matrix and filtered matches. The [synthetic stereo pair](<../examples/opencv tools/uncalibrated_stereo/README.md>) verifies held-out vertical residual, correct raster support, geometry and grid provenance. |
 | S3-45 | Stereo calibration residuals by camera and capture | stereoCalibrateExtended, solvePnP, projectPoints | Complete | 3d.stereo_calibrate reports both cameras' fit errors for each capture. 3d.validate_stereo_calibration checks a fixed rig by predicting each camera from the other. [Independent rendered targets](<../examples/opencv tools/stereo_calibration_quality/README.md>) verify holdout error and detection of a shifted baseline. |
 | S3-46 | Optimize stereo search range and valid ROI | getValidDisparityROI, calibrated Q range, per-view mask footprints | Complete | 3d.disparity supports Q-derived signed ranges and complete matching footprint checks for rectangular and masked support. The [known-disparity example](<../examples/opencv tools/stereo_disparity_search/README.md>) retains more support with a 16-candidate search and still recovers 8 px and 3 m. |
-| S3-47 | Disparity speckle removal | filterSpeckles | Planned | Remove isolated inconsistent disparity islands with explicit invalid-value and disparity-scale handling. |
+| S3-47 | Disparity speckle removal | filterSpeckles | Complete | 3d.filter_disparity_speckles removes small 4-connected disparity islands from float or fixed-point maps. It preserves kept pixel disparities and emits separate retained and newly removed masks. The [saved example](<../examples/opencv tools/disparity_speckles/README.md>) checks both sample formats against exact footprints. |
 | S3-48 | Evaluate stereo disparity against a reference | Bad-pixel rates, absolute error and confidence slices | Planned | Compare a disparity result to ground truth on valid pixels and report per-region error and coverage. |
 | S3-49 | Decode, sample and report metric depth | Depth units and integer pixel sampling | Complete | input.depth_file, inspect.depth_sample. Report invalid samples as missing and preserve image locations and units. |
 | S3-50 | Camera-derived cloud transform and measurement | Rigid XYZ transform with frame and unit checks | Complete | 3d.cloud_transform, 3d.cloud_measure. Verify known camera pose, physical extents and output frame. |

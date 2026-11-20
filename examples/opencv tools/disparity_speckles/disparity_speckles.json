@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Disparity speckle removal",
+      "description": "Original synthetic disparity maps by OpenCVDataflowGUI contributors (MIT). Both contain three small islands and one larger feature. The fixed-point map uses a 65535 invalid code. The signed float map uses -100 px.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_fixed_point",
+      "type": "input.file",
+      "name": "Read 16\u00d7 fixed-point disparity",
+      "parameters": {
+        "path": "assets/fixed.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixed_point",
+      "type": "3d.filter_disparity_speckles",
+      "name": "Remove disparity speckles",
+      "parameters": {
+        "max_speckle_size": 16,
+        "max_difference_px": 0.5,
+        "fixed_point_scale": 16.0,
+        "float_samples_per_pixel": 16.0,
+        "invalid_value_enabled": true,
+        "invalid_value": 65535
+      },
+      "position": [
+        405,
+        0
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "valid_mask"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "removed_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_float",
+      "type": "input.file",
+      "name": "Read signed float disparity",
+      "parameters": {
+        "path": "assets/signed.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        255
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "float",
+      "type": "3d.filter_disparity_speckles",
+      "name": "Remove disparity speckles",
+      "parameters": {
+        "max_speckle_size": 16,
+        "max_difference_px": 0.5,
+        "fixed_point_scale": 16.0,
+        "float_samples_per_pixel": 16.0,
+        "invalid_value_enabled": true,
+        "invalid_value": -100
+      },
+      "position": [
+        405,
+        255
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "valid_mask"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "removed_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source_fixed_point",
+      "output": "image",
+      "target": "fixed_point",
+      "input": "disparity"
+    },
+    {
+      "source": "source_float",
+      "output": "image",
+      "target": "float",
+      "input": "disparity"
+    }
+  ]
+}

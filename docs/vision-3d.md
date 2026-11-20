@@ -160,6 +160,22 @@ and the final support fraction after mask holes. Pixels outside support
 have invalid disparity, zero validity and zero confidence.
 [Known-disparity example](<../examples/opencv tools/stereo_disparity_search/README.md>)
 
+**Remove disparity speckles** accepts float pixel disparity, or signed or
+unsigned 16-bit fixed-point disparity with a configurable scale. OpenCV
+stereo's raw values use 16 samples per disparity pixel. The optional input
+mask and invalid sample setting exclude holes before filtering. Set an
+invalid sample in the input's original units. Nonfinite input pixels are
+always invalid.
+
+The native filter groups 4-connected pixels whose neighbor differences
+are within the configured threshold and removes groups at or below the
+pixel-count limit. Set the size to zero to normalize samples and apply
+validity without filtering. Float inputs are temporarily quantized for
+connectivity. Retained float values keep their original precision, and input
+integers convert to float pixels. The output uses NaN for invalid disparity
+and exposes valid and newly removed masks on the same grid.
+[Fixed-point and signed float example](<../examples/opencv tools/disparity_speckles/README.md>)
+
 **Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional
 pair from matched target views. The fisheye fitter can retain or refine
 supplied intrinsics. The omnidirectional fitter initializes both cameras
