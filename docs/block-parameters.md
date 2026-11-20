@@ -1048,6 +1048,36 @@ Input `transform` — Optional mesh-to-camera rigid transform in metric units.
 | `max_triangles` | `100000` | Value must be a whole number between 1 and 250000. Maximum input and clipped output triangle count. |
 | `max_pixel_tests` | `25000000` | Value must be a whole number between 1 and 2.5e+08. Conservative limit on candidate pixels across clipped triangle bounds. |
 
+## Bake camera image to mesh UVs (`3d.mesh_texture`)
+
+3D vision / Mesh geometry
+
+Inputs: `image` (image), `mesh` (mesh), `camera` (data), `transform` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Rectified gray or RGB-family image registered to the camera.
+
+Input `mesh` — Metric triangle mesh with normalized non-overlapping UVs, V up.
+
+Input `camera` — Rectified pinhole intrinsics and named frame for the source image.
+
+Input `transform` — Mesh-to-camera rigid transform when the named frames differ.
+
+Input `mask` — Optional uint8 selection on the source camera image.
+
+Input `region` — Optional region on the source camera image, intersected with the mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `texture_width` | `512` | Value must be a whole number between 1 and 4096. Width of the destination atlas in texels. |
+| `texture_height` | `512` | Value must be a whole number between 1 and 4096. Height of the destination atlas in texels. |
+| `sampling` | `"bilinear"` | `nearest`, `bilinear` In bilinear mode, every contributing pixel must be visible and selected. |
+| `minimum_z_m` | `0.05` | Value must be a finite number between 1e-06 and 100000. Positive near clip distance along camera Z, in meters. |
+| `maximum_z_m` | `10.0` | Value must be a finite number between 1e-06 and 100000. Far clip distance along camera Z, in meters. |
+| `visibility_tolerance_m` | `0.001` | Value must be a finite number between 0 and 1000. Absolute depth agreement tolerance at each source pixel center. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required fraction of rasterized UV texels with valid image support. |
+| `max_triangles` | `100000` | Value must be a whole number between 1 and 250000. Maximum input triangle count and clipped visibility triangle count. |
+| `max_pixel_tests` | `25000000` | Value must be a whole number between 1 and 2.5e+08. Combined conservative camera and atlas triangle pixel-work limit. |
+
 ## Decode and scale metric depth (`3d.normalize_depth`)
 
 3D vision / Depth

@@ -178,7 +178,7 @@ BLOCK_MODULES = {
     "ptcloud": (
         "3d.depth_cloud 3d.backproject_depth_pixels 3d.separate_depth_plane 3d.cloud_project 3d.mesh_project 3d.evaluate_depth "
         "3d.reproject_depth_region 3d.fuse_registered_depth 3d.normalize_depth "
-        "3d.warp_rgbd_pose 3d.tsdf_hash 3d.organized_mesh 3d.organized_planes "
+        "3d.warp_rgbd_pose 3d.tsdf_hash 3d.organized_mesh 3d.organized_planes 3d.mesh_texture "
         "3d.depth_components 3d.depth_silhouette 3d.track_depth_fusion"
     ),
     "rgbd": "3d.register_depth",
@@ -229,6 +229,7 @@ _NATIVE_NAMES = {
     "3d.cloud_model_fit": ("ransac", "fit plane", "fit sphere", "sample consensus"),
     "3d.cloud_surface_quality": ("estimate normals", "curvature", "local PCA"),
     "3d.scan_mesh_compare": ("scan to mesh", "closest triangle", "surface deviation"),
+    "3d.mesh_texture": ("triangleRasterizeDepth", "UV", "texture atlas"),
     "3d.mesh_project": ("triangleRasterize", "triangleRasterizeColor", "triangleRasterizeDepth"),
     "input.mesh": ("obj", "ply", "loadMesh"),
     "output.mesh_ply": ("obj", "ply", "saveMesh"),

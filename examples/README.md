@@ -224,6 +224,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Depth component measurement](<opencv tools/depth_components/README.md>) | Separate touching foreground parts by depth, compare physical widths and rebuild an exact source mask. |
 | [Calibrated depth silhouette](<opencv tools/depth_silhouette/README.md>) | Measure two raised parts against a tilted datum and flag every deliberately missing edge sample. |
 | [Calibrated mesh projection](<opencv tools/mesh_projection/README.md>) | Render overlapping triangles to RGB and metric depth with clipping, winding culling and coverage. |
+| [Registered mesh texture](<opencv tools/mesh_texture/README.md>) | Bake a camera image into two UV islands and compare nearest and bilinear occlusion support. |
 | [Calibrated cloud visibility](<opencv tools/cloud_visibility/README.md>) | Render a color cloud in the camera grid and compare visible and occluded samples to reference depth. |
 | [Local cloud feature registration](<opencv tools/cloud_feature_registration/README.md>) | Align partial noisy scans, inspect one-to-one inliers and verify a known pose. |
 | [ICP registration quality](<opencv tools/icp_registration/README.md>) | Refine a seed pose, check partial overlap, and reject an unconstrained plane match. |

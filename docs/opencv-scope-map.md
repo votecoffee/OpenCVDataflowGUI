@@ -258,7 +258,7 @@ An exposed Python API still needs a fixture before the capability is complete.
 | --- | --- | --- |
 | `cv2.loadPointCloud`, `cv2.savePointCloud` | Exposed. Native OBJ and PLY exchange tests verify aligned XYZ, normals and RGB in both directions. The app codec validates row shape and alignment, preserves float32 XYZ in OBJ, and supports Unicode paths. | S3-21, S3-85, S3-96, S3-99 |
 | `cv2.loadMesh`, `cv2.saveMesh` | Exposed and checked for aligned OBJ and PLY geometry, normals, RGB and texture coordinates. App codecs validate indices and support two- and three-component texture coordinates on import and export. | S3-86, S3-102, S3-107 |
-| `cv2.triangleRasterize`, `cv2.triangleRasterizeColor`, `cv2.triangleRasterizeDepth`, `cv2.TriangleRasterizeSettings` | S3-87 wraps the combined, color-only and depth-only variants in one calibrated block. Clipping, culling, perspective color and metric depth are checked against an independent ray reference. | S3-87, S3-102 |
+| `cv2.triangleRasterize`, `cv2.triangleRasterizeColor`, `cv2.triangleRasterizeDepth`, `cv2.TriangleRasterizeSettings` | S3-87 wraps the combined, color-only and depth-only variants in one calibrated block. Clipping, culling, perspective color and metric depth are checked against an independent ray reference. S3-102 uses the depth-only variant to gate source image samples when baking a calibrated mesh texture. | S3-87, S3-102 |
 | `cv2.Octree` | Exposed. Native construction and KNN point provenance need qualification. Bounded queries use sparse cell indexing and retain scan indices. Native updates and extraction remain separate. | S3-77, S3-80–S3-81, S3-88, S3-103 |
 | `cv2.RgbdNormals` | Exposed. Organized depth normals are shipped. Normal settings and invalid-sample handling belong to that graph tool. | S3-20 |
 | `cv2.depthTo3d`, `cv2.depthTo3dSparse`, `cv2.rescaleDepth` | Dense and sparse backprojection have selectable support and pixel provenance. Typed depth conversion carries scale and invalid codes, and reports rounding and range loss. | S3-59, S3-74–S3-75 |
@@ -818,7 +818,7 @@ reconstruction contracts; no additional generic matrix tools are needed.
 | `Image I/O and reconstruction details` | Cover multipage buffer ports, HDR motion rejection, ternary morphology, and sparse contour extraction as distinct graph workflows. | S1-149–S1-152 |
 | `Camera calibration and image tracking` | Track release-object and metadata-aware board calibration plus sparse RLOF. | S3-109–S3-110, S4-84 |
 | `Point-cloud metrology and large-scan processing` | Cover matched-landmark transforms, stream/tile processing, recorded scan replay, cross-sections, datum measurements and calibrated range images. Qualify cylinder and bore fits with a tested solver. | S3-101, S3-103–S3-106, S3-112, S3-115 |
-| `Mesh quality and processing` | Cover texture projection, topology/measurement checks and bounded simplification. Qualify a tested equivalent where OpenCV supplies no direct mesh-processing primitive. | S3-102, S3-107–S3-108 |
+| `Mesh quality and processing` | Bake registered image textures into existing UVs (S3-102). Add topology and measurement checks and bounded simplification. Qualify a tested equivalent where OpenCV supplies no direct mesh-processing primitive. | S3-102, S3-107–S3-108 |
 
 ### Backlog decisions
 

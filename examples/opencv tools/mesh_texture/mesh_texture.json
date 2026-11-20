@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Registered camera color on a mesh",
+      "description": "Original synthetic panels and image by OpenCVDataflowGUI contributors (MIT). The left UV island is the back panel. Its dark rectangular gap is occluded by the slanted front panel shown on the right island. The white mask marks valid texels, including valid black pixels in other images.",
+      "parameters": {},
+      "position": [
+        0,
+        -265
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "image",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/camera.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "panels",
+      "type": "input.mesh",
+      "name": "Load triangle mesh (OBJ / PLY)",
+      "parameters": {
+        "path": "assets/panels.ply",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        245
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 71.0,
+        "fy": 64.0,
+        "cx": 39.5,
+        "cy": 29.5,
+        "width": 80,
+        "height": 60,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "texture_camera"
+      },
+      "position": [
+        0,
+        490
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bilinear",
+      "type": "3d.mesh_texture",
+      "name": "Bake bilinear texture",
+      "description": "Transfer visible samples from a calibrated image to an existing mesh UV atlas.",
+      "parameters": {
+        "texture_width": 128,
+        "texture_height": 64,
+        "sampling": "bilinear",
+        "minimum_z_m": 0.05,
+        "maximum_z_m": 10.0,
+        "visibility_tolerance_m": 1e-05,
+        "minimum_coverage": 0.0,
+        "max_triangles": 100000,
+        "max_pixel_tests": 25000000
+      },
+      "position": [
+        450,
+        95
+      ],
+      "exposed_inputs": [
+        "image",
+        "mesh",
+        "camera",
+        "transform",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "texture",
+        "texture_mask",
+        "mesh",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "texture"
+    },
+    {
+      "id": "nearest",
+      "type": "3d.mesh_texture",
+      "name": "Bake nearest texture",
+      "description": "Transfer visible samples from a calibrated image to an existing mesh UV atlas.",
+      "parameters": {
+        "texture_width": 128,
+        "texture_height": 64,
+        "sampling": "nearest",
+        "minimum_z_m": 0.05,
+        "maximum_z_m": 10.0,
+        "visibility_tolerance_m": 1e-05,
+        "minimum_coverage": 0.0,
+        "max_triangles": 100000,
+        "max_pixel_tests": 25000000
+      },
+      "position": [
+        450,
+        395
+      ],
+      "exposed_inputs": [
+        "image",
+        "mesh",
+        "camera",
+        "transform",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "texture",
+        "texture_mask",
+        "mesh",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "texture"
+    }
+  ],
+  "connections": [
+    {
+      "source": "image",
+      "output": "image",
+      "target": "bilinear",
+      "input": "image"
+    },
+    {
+      "source": "panels",
+      "output": "mesh",
+      "target": "bilinear",
+      "input": "mesh"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "bilinear",
+      "input": "camera"
+    },
+    {
+      "source": "image",
+      "output": "image",
+      "target": "nearest",
+      "input": "image"
+    },
+    {
+      "source": "panels",
+      "output": "mesh",
+      "target": "nearest",
+      "input": "mesh"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "nearest",
+      "input": "camera"
+    }
+  ]
+}

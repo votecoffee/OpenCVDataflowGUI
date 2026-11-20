@@ -978,6 +978,7 @@ def builtin_registry():
     from .triangulation import DelaunayTriangulation
     from .mesh_comparison import CompareScanToMesh
     from .mesh_projection import ProjectMesh
+    from .mesh_texture import BakeMeshTexture
     from .tsdf_mesh import TSDF_MESH_BLOCKS
     from .uncalibrated_stereo import RectifyUncalibratedStereo
     from .video_buffer import DecodeVideo
@@ -1404,6 +1405,7 @@ def builtin_registry():
         *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         ProjectMesh,
+        BakeMeshTexture,
         MeshOrganizedDepth,
         FindOrganizedPlanes,
         CompareScanToMesh,

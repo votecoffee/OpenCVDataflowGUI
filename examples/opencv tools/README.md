@@ -112,6 +112,9 @@ labels two distinct planes, unmatched foreground, and invalid depth.
 [Calibrated mesh projection](mesh_projection/README.md) rasterizes overlapping
 triangles with a metric depth buffer and winding culling.
 
+[Registered mesh texture](mesh_texture/README.md) bakes a calibrated camera
+image onto a two-panel UV atlas and marks unseen texels.
+
 [Calibrated cloud visibility](cloud_visibility/README.md) renders depth and
 color and checks visible surfaces against observed camera depth.
 

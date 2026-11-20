@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 101 | 7 | 23 | 131 | 77.1% |
+| 3. 3D imagery and point clouds | 102 | 7 | 22 | 131 | 77.9% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 356 | 11 | 103 | 470 | 75.7% |
+| **Overall** | 357 | 11 | 102 | 470 | 76.0% |
 
 <!-- coverage-summary:end -->
 
@@ -535,7 +535,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S3-100 | Find multiple planes on an organized depth grid | Native findPlanes with organized normals and metric verification | Complete | `3d.organized_planes` emits qualified unit-normal equations and source-grid labels with separate invalid and unmatched values. The [calibrated scene](<../examples/opencv tools/organized_plane_detection/README.md>) verifies two planes, missing depth and a curved foreground part. |
 | S3-101 | Estimate a metric transform from matched 3D points | estimateAffine3D and estimateTranslation3D with explicit model choice | Complete | `3d.estimate_matched_transform` fits four models from ordered or explicitly paired metric landmarks, rejects degenerate matches, and reports verified inliers and metric residuals. The [four-model example](<../examples/opencv tools/matched_3d_transforms/README.md>) recovers each known transform with five outliers. |
-| S3-102 | Project registered image texture onto a mesh | Camera projection, visibility and UV mapping | Planned | Transfer colors from a known calibrated view and verify texel positions, occlusion, invalid support and retained mesh geometry. |
+| S3-102 | Project registered image texture onto a mesh | Camera projection, visibility and UV mapping | Complete | `3d.mesh_texture` bakes registered images into existing non-overlapping UVs, checks source donors against native camera depth, and preserves mesh geometry. The [two-panel example](<../examples/opencv tools/mesh_texture/README.md>) checks perspective, exact validity masks and loss of support at occlusions. |
 | S3-103 | Bounded tiled processing for large inspection clouds | Spatial tiling with query halos and streaming reduction | Planned | Process a recorded or synthetic scan beyond the single-cloud limit. Verify cross-tile neighborhood equivalence, output order, preserved IDs, and peak memory. |
 | S3-104 | Replay recorded point-cloud sequences | File-backed frame groups and scan timestamp provenance | Partial | input.cloud loads an individual scan. Replay an ordered manifest with explicit frames, units, timestamps and bounds, and verify malformed or missing scans and stop behavior. |
 | S3-105 | Virtual point-cloud sections and profiles | Plane-aligned slab selection and metric profile sampling | Planned | Extract sections at known locations and report distances, widths and coverage without losing point or frame provenance. |
