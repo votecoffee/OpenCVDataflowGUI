@@ -658,6 +658,7 @@ def builtin_registry():
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_octree import QueryCloudOctree
     from .cloud_projection import ProjectCloudVisibility
+    from .cloud_sampling import SampleCloud
     from .cloud_tools import CLOUD_BLOCKS
     from .cluster_models import CLUSTER_MODEL_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
@@ -1360,6 +1361,7 @@ def builtin_registry():
         EvaluateDisparity,
         CalibrateWideStereo,
         *CLOUD_BLOCKS,
+        SampleCloud,
         RegisterCloudFeatures,
         *CLOUD_IO_BLOCKS,
         QueryCloudOctree,

@@ -509,6 +509,16 @@ available in Debug and Balanced.
   region when pixel correspondence remains available. Regions retain source
   image frame checks. **Voxel-sample** can retain the first point per voxel or
   compute centroids. Centroids drop measured pixel indices and normals.
+- **Sample point cloud** chooses original rows by seeded random sampling
+  without replacement or greedy farthest-point sampling. Set a maximum count
+  or a capped fraction in the inspector. Farthest mode can stop when the next
+  candidate's separation drops below a threshold in the cloud's units. It
+  reports minimum retained spacing and covering radius. A work limit bounds
+  the distance evaluations and produces a failed result with the partial
+  sample if the requested stopping condition cannot be reached. The output
+  indices match the cloud's sampling order and keep source colors, normals
+  and pixels.
+  [Cloud sampling example](<../examples/custom tools/cloud_sampling/README.md>)
 - **Query point-cloud octree** finds exact nearest neighbors or the nearest
   hits inside an inclusive radius. Choose a fit or explicit cube in meters,
   then set its depth or maximum cell side. Cloud XYZ and query XYZ can be

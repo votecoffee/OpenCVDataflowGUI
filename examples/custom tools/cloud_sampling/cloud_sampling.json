@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare equal sampling budgets",
+      "description": "Original synthetic colored cloud by OpenCVDataflowGUI contributors (MIT). A dense raised patch and a coarser surrounding plate share a frame. Compare the two 20-point outputs and their original row IDs.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/dense_patch_on_plate.ply",
+        "units": "mm",
+        "frame": "sampling_fixture",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "random",
+      "type": "3d.cloud_sample",
+      "name": "Random sample",
+      "description": "Select original cloud rows by seeded random or greedy farthest-point sampling.",
+      "parameters": {
+        "method": "random",
+        "budget": "count",
+        "max_points": 20,
+        "sample_fraction": 0.1,
+        "seed": 71,
+        "minimum_spacing": 0.0,
+        "max_distance_evaluations": 50000000
+      },
+      "position": [
+        410,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "indices",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "farthest",
+      "type": "3d.cloud_sample",
+      "name": "Farthest-point sample",
+      "description": "Select original cloud rows by seeded random or greedy farthest-point sampling.",
+      "parameters": {
+        "method": "farthest",
+        "budget": "count",
+        "max_points": 20,
+        "sample_fraction": 0.1,
+        "seed": 71,
+        "minimum_spacing": 0.0,
+        "max_distance_evaluations": 50000000
+      },
+      "position": [
+        410,
+        300
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "indices",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "random",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "farthest",
+      "input": "cloud"
+    }
+  ]
+}

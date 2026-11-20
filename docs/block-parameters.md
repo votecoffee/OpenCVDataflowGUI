@@ -343,6 +343,24 @@ Inputs: `cloud` (cloud).
 | `max_drawn_points` | `20000` |  |
 | `point_size` | `2` |  |
 
+## Sample point cloud (`3d.cloud_sample`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+Input `cloud` — Original XYZ rows, optionally with measured colors, normals and source pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"random"` | `random`, `farthest` Random draws distinct rows. Farthest selects the most distant remaining row. |
+| `budget` | `"count"` | `count`, `fraction` Retain up to Max points, or use a capped fraction of the input. |
+| `max_points` | `1000` | Value must be a whole number between 1 and 100000. Hard limit on output rows in either budget mode. |
+| `sample_fraction` | `0.1` | Value must be a finite number between 1e-06 and 1. Target fraction rounded up to a whole point, capped by Max points. |
+| `seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Independent random seed for sampling or for the first farthest point. |
+| `minimum_spacing` | `0.0` | Value must be a finite number between 0 and 1e+39. Farthest mode stops below this distance in the cloud's units. |
+| `max_distance_evaluations` | `50000000` | Value must be a whole number between 1 and 2.5e+08. Farthest mode reports failure if it hits this work limit. |
+
 ## Transform point cloud (`3d.cloud_transform`)
 
 3D vision / Point clouds
