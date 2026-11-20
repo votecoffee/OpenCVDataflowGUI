@@ -7125,6 +7125,20 @@ Ticket mode and fixed value are common inspector controls.
 | `max_points` | `1000000` | Value must be a whole number between 1 and 2e+06. Limit on declared point rows, including empty pixels in an organized PCD. |
 | `track_source_rows` | `false` | Record original zero-based file rows if source_index is absent. |
 
+## Recorded point-cloud sequence (`input.cloud_recording`)
+
+Input / Point clouds
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Manifest JSON relative to the project. Scan paths are relative to the manifest. |
+| `repeat` | `"stop"` | `stop`, `loop` Stop at the final scan or loop. Run All in the editor rewinds and stops. |
+| `max_points` | `1000000` | Value must be a whole number between 1 and 2e+06. Maximum declared point rows per file, including missing organized pixels. |
+| `track_source_rows` | `true` | Add original file row indices when the scan has no source_index. |
+
 ## Filter a large PLY cloud by tiles (`input.cloud_tiled_radius`)
 
 Input / Point clouds

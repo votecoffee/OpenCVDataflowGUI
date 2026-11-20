@@ -515,6 +515,12 @@ Enable **Flyaround** to rotate continuously, and use **Yaw**, **Pitch**, and
 **Results → 3D point-cloud viewer…**. The previews use sampled points and are
 available in Debug and Balanced.
 
+- **Recorded point-cloud sequence** replays PLY, PCD or OBJ scans from a
+  manifest, one file per graph cycle. Each scan retains its original frame
+  and units, and its `recorded_cloud` payload contains the recorded clock,
+  integer nanosecond timestamp and file path. Batch serial entries collects
+  per-scan ticketed packets for grouped processing. Run All stops at EOF.
+  [Mixed-format replay example](<../examples/custom tools/recorded_cloud_sequence/README.md>)
 - **Filter point cloud** selects XYZ bounds and can also use an image mask or
   region when pixel correspondence remains available. Regions retain source
   image frame checks.

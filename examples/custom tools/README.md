@@ -74,6 +74,9 @@ rules and verifies retained corners and flange points on a colored PLY.
 [Tiled radius filtering](tiled_cloud_radius/README.md) checks exact radius counts
 across tile boundaries and preserves file order during export.
 
+[Recorded point-cloud sequence](recorded_cloud_sequence/README.md) replays a
+mixed-format recording and keeps each scan’s timestamp through batching.
+
 [Voxel representatives](voxel_representatives/README.md) compare measured rows
 and centroids in the same per-axis voxel grid.
 

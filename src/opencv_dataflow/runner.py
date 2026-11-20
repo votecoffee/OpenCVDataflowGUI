@@ -16,6 +16,7 @@ from .parallel_inspection import ParallelInspect
 from .payloads import ImagePyramid, describe_value
 from .plugins import load_plugin
 from .queued_execution import QueuedExecution, background_queue
+from .replay import replay_sources
 from .run_profiles import GRAPHICS_MODES, PROFILES
 from .scheduling import MAX_BRANCH_WORKERS
 from .toolblocks import ToolBlock
@@ -64,7 +65,7 @@ def main(argv=None):
     parser.add_argument(
         "--all-images",
         action="store_true",
-        help="Run a finite image or video file sequence to completion",
+        help="Run a finite file sequence to completion",
     )
     parser.add_argument("--profile", choices=PROFILES, help="Override the saved run profile")
     parser.add_argument(
@@ -108,7 +109,7 @@ def main(argv=None):
                 "auto" if args.branch_workers == "auto" else int(args.branch_workers)
             )
         if args.all_images and not graph.has_finite_sources():
-            raise ValueError("--all-images requires a finite image or video source (repeat=stop)")
+            raise ValueError("--all-images requires a finite file source (repeat=stop)")
         if background_queue(graph) is not None:
             queued = QueuedExecution(graph, registry)
             queued.start()
@@ -143,6 +144,12 @@ def main(argv=None):
                         block.last_result.message if block.last_result else ""
                     )
                     print(f"  {block.name}: {block.state} · {message}")
+            # Errors before a source advances its cursor can never reach EOF.
+            if args.all_images and any(
+                source.finite_source and source.state == "error" and not source.exhausted
+                for source in replay_sources(graph)
+            ):
+                break
         if queued is not None:
             queued.close()
             queued = None

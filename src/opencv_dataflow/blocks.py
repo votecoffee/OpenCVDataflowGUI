@@ -657,6 +657,7 @@ def builtin_registry():
     from .cloud_extents import MeasureOrientedCloud
     from .cloud_features import RegisterCloudFeatures
     from .cloud_io import CLOUD_IO_BLOCKS
+    from .cloud_recording import RecordedCloud
     from .cloud_merge import MergeCloudScans
     from .cloud_octree import QueryCloudOctree
     from .cloud_clustering import ClusterPointCloud
@@ -1382,6 +1383,7 @@ def builtin_registry():
         SampleCloud,
         RegisterCloudFeatures,
         *CLOUD_IO_BLOCKS,
+        RecordedCloud,
         QueryCloudOctree,
         RejectCloudOutliers,
         TiledCloudRadius,

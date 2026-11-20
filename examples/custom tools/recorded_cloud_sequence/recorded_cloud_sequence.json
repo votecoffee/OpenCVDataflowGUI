@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Replay and group recorded scans",
+      "description": "Original synthetic point clouds by OpenCVDataflowGUI contributors (MIT). Run All replays the manifest order across PLY, PCD and OBJ. Batch collects three scan packets. Unbatch restores each item with its own capture timestamp, ticket, units and frame.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "input.cloud_recording",
+      "name": "Recorded point-cloud sequence",
+      "description": "Replay recorded PLY, PCD or OBJ scans in manifest order with capture timestamps.",
+      "parameters": {
+        "path": "assets/recording.json",
+        "repeat": "stop",
+        "max_points": 1000000,
+        "track_source_rows": true
+      },
+      "position": [
+        0,
+        10
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect all three scans",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": false,
+        "max_pending": 4,
+        "max_bytes_mb": 1
+      },
+      "position": [
+        400,
+        10
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "unbatch",
+      "type": "flow.unbatch",
+      "name": "Replay collected scans in order",
+      "parameters": {
+        "order": "stored"
+      },
+      "position": [
+        800,
+        10
+      ],
+      "exposed_inputs": [
+        "group"
+      ],
+      "exposed_outputs": [
+        "value",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "replay",
+      "output": "cloud",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "unbatch",
+      "input": "group"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "format": "opencv_dataflow_cloud_recording_v1",
+  "clock": "scanner_clock",
+  "scans": [
+    {
+      "path": "z_entrance.ply",
+      "timestamp_ns": 1900000000000000003,
+      "frame": "conveyor",
+      "units": "mm"
+    },
+    {
+      "path": "middle.pcd",
+      "timestamp_ns": 1900000000045000007,
+      "frame": "conveyor",
+      "units": "m"
+    },
+    {
+      "path": "a_review.obj",
+      "timestamp_ns": 1900000000105000017,
+      "frame": "tool_camera",
+      "units": "m"
+    }
+  ]
+}

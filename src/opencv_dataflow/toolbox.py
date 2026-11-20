@@ -235,6 +235,7 @@ _NATIVE_NAMES = {
     "output.mesh_ply": ("obj", "ply", "saveMesh"),
     "input.cloud": ("obj", "ply", "pcd", "loadPointCloud"),
     "output.cloud": ("obj", "ply", "pcd", "savePointCloud"),
+    "input.cloud_recording": ("scan replay", "recording", "PLY", "PCD", "OBJ"),
     "input.cloud_tiled_radius": ("large scan", "tiled PLY", "radius neighbors"),
     "3d.cloud_outlier": ("point density", "remove noise", "statistical outlier removal"),
     "3d.cloud_sample": ("randomSampling", "farthestPointSampling", "downsample", "FPS"),
