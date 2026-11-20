@@ -195,6 +195,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Support plane and foreground separation](<opencv tools/depth_plane/README.md>) | Recover a tilted work surface, measure signed distances, and backproject only the raised foreground. |
 | [Depth component measurement](<opencv tools/depth_components/README.md>) | Separate touching foreground parts by depth, compare physical widths and rebuild an exact source mask. |
 | [Calibrated cloud visibility](<opencv tools/cloud_visibility/README.md>) | Render a color cloud in the camera grid and compare visible and occluded samples to reference depth. |
+| [Local cloud feature registration](<opencv tools/cloud_feature_registration/README.md>) | Align partial noisy scans, inspect one-to-one inliers and verify a known pose. |
 | [Calibration revisions](<opencv tools/calibration_revisions/README.md>) | Select rig revisions, verify capture identity and reload a pinned lens map. |
 | [Fisheye camera calibration](<opencv tools/fisheye_calibration/README.md>) | Fit a wide-angle camera from eight board views, validate a held-out image and rectify with the fitted profile. |
 | [Omnidirectional camera calibration](<opencv tools/omnidir_calibration/README.md>) | Fit a Mei-model camera, validate a held-out target near the sensor edge and rectify to a perspective grid. |

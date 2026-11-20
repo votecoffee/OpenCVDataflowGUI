@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 59 | 18 | 54 | 131 | 45.0% |
+| 3. 3D imagery and point clouds | 60 | 18 | 53 | 131 | 45.8% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 314 | 22 | 134 | 470 | 66.8% |
+| **Overall** | 315 | 22 | 133 | 470 | 67.0% |
 
 <!-- coverage-summary:end -->
 
@@ -476,7 +476,7 @@ fixture or result needed to close the item.
 | S3-55 | Reproject a depth-backed region across wide-angle camera views | Camera rays, metric depth and target-camera projection | Complete | 3d.reproject_depth_region transfers a source selection across pinhole, fisheye or omnidirectional camera grids using positive camera Z, a rigid metric pose, z-buffering and optional target-depth agreement. The [wide-angle example](<../examples/opencv tools/depth_region_projection/README.md>) verifies exact analytic support and distinct occluded and unverified pixels. |
 | S3-56 | Range image fusion with depth confidence | Weighted depth accumulation in camera coordinates | Complete | 3d.fuse_registered_depth combines two to four aligned depth views using confidence and nearest-surface agreement. The [saved example](<../examples/opencv tools/registered_depth_fusion/README.md>) checks weighted depth, complementary gaps, rejection of a competing surface and a two-pixel foreground strip. |
 | S3-57 | Depth-derived foreground component measurement | Organized depth thresholding and connected components | Complete | 3d.depth_components labels selected foreground by metric Z and local depth steps, measures visible camera-frame extents, and emits source labels and a reusable collection. The [touching-parts example](<../examples/opencv tools/depth_components/README.md>) verifies independent widths, masks and filtering by metric width. |
-| S3-58 | Local 3D features and correspondence from reconstructed views | Keypoint neighborhoods, geometric correspondence and robust alignment | Planned | Register partly overlapping reconstructed surfaces and report accepted correspondences and alignment error. |
+| S3-58 | Local 3D features and correspondence from reconstructed views | Keypoint neighborhoods, geometric correspondence and robust alignment | Complete | 3d.register_cloud_features uses metric neighborhoods, reciprocal matches, robust rigid fitting and bidirectional overlap checks. The [partial-scan example](<../examples/opencv tools/cloud_feature_registration/README.md>) verifies alignment against a known pose. A focused depth reconstruction check verifies the pixel provenance of the inlier pairs. |
 | S3-59 | Metric depth backprojection | Intrinsics and depth-to-point projection | Complete | 3d.depth_cloud. Verify XYZ, invalid depth and per-pixel color/provenance from an aligned image. |
 | S3-60 | Reconstructed cloud selection and voxel sampling | Spatial bounds, valid indices and voxel pooling | Complete | 3d.cloud_filter, 3d.cloud_voxel. Verify retained camera correspondence and bounded point density. |
 | S3-61 | Binary stereo correspondence | stereo.StereoBinaryBM or StereoBinarySGBM | Planned | Requires a build with the Python binding. Compare a known disparity image to the regular BM/SGBM path. |

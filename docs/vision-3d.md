@@ -377,6 +377,15 @@ available in Debug and Balanced.
   image frame checks. **Voxel-sample** can retain the first point per voxel or
   compute centroids. Centroids drop measured pixel indices and normals.
 - **Measure point cloud** reports bounds, extent, centroid and PCA axes.
+- **Register clouds by local features** estimates the source-to-target pose
+  for partly overlapping metric clouds. It compares neighbor distances and
+  covariance shape in a configured radius, uses reciprocal descriptor
+  matches, and fits a proper rigid transform with RANSAC. The block gates its
+  pose by correspondence count, fit error and measured overlap in both
+  directions. Its inlier records retain original point indices and available
+  image pixels. Clouds must have matching m/mm units and similar local
+  sampling. The pose can initialize ICP.
+  [Partial-scan example](<../examples/opencv tools/cloud_feature_registration/README.md>)
 - **Estimate point-cloud normals** uses contrib plane fitting. **Point-to-plane
   ICP** refines alignment of oriented clouds, optionally initialized with a
   known pose. It emits the transformed source cloud and native residual. Use

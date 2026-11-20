@@ -177,7 +177,7 @@ BLOCK_MODULES = {
         "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode "
         "3d.camera_projector_calibrate 3d.camera_projector_reconstruct"
     ),
-    "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match",
+    "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match 3d.register_cloud_features",
     "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask 3d.smooth_depth",
     "mcc": "calibration.detect_color_chart",
     None: (

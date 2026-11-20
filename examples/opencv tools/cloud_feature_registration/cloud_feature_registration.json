@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Register two partial scans",
+      "description": "Original synthetic surface scans by OpenCVDataflowGUI contributors (MIT). Each crop has independent noise and clutter. Local correspondence estimates one source-to-target pose and tests geometric overlap in both directions.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load source scan",
+      "parameters": {
+        "path": "assets/source.ply",
+        "units": "m",
+        "frame": "source_scan",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "partial-surface-registration"
+      }
+    },
+    {
+      "id": "target",
+      "type": "input.cloud",
+      "name": "Load target scan",
+      "parameters": {
+        "path": "assets/target.ply",
+        "units": "m",
+        "frame": "target_scan",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "partial-surface-registration"
+      }
+    },
+    {
+      "id": "align",
+      "type": "3d.register_cloud_features",
+      "name": "Register clouds by local features",
+      "parameters": {
+        "feature_radius_m": 0.1,
+        "neighbors": 12,
+        "maximum_keypoints": 4096,
+        "descriptor_ratio": 0.92,
+        "inlier_distance_m": 0.004,
+        "max_rms_m": 0.0015,
+        "minimum_inliers": 12,
+        "minimum_inlier_fraction": 0.2,
+        "minimum_overlap_fraction": 0.4,
+        "maximum_overlap_samples": 8192,
+        "ransac_iterations": 1024,
+        "random_seed": 0
+      },
+      "position": [
+        415,
+        115
+      ],
+      "exposed_inputs": [
+        "source",
+        "target"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "cloud",
+        "inlier_correspondences",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Registered views"
+    },
+    {
+      "id": "view",
+      "type": "3d.cloud_render",
+      "name": "Render aligned source",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 2
+      },
+      "position": [
+        830,
+        115
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "align",
+      "input": "source"
+    },
+    {
+      "source": "target",
+      "output": "cloud",
+      "target": "align",
+      "input": "target"
+    },
+    {
+      "source": "align",
+      "output": "cloud",
+      "target": "view",
+      "input": "cloud"
+    }
+  ]
+}

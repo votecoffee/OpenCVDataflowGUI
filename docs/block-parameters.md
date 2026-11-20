@@ -924,6 +924,31 @@ Input `right_image` — Optional right source image for diagnostics.
 | `minimum_inlier_ratio` | `1.0` | Value must be a finite number between 0 and 1. Fraction of all input pairs that must remain accepted to pass. |
 | `max_drawn_pairs` | `64` | Value must be a whole number between 0 and 512. Maximum input pairs per preview. Zero disables correction drawings. |
 
+## Register clouds by local features (`3d.register_cloud_features`)
+
+3D vision / Surface matching
+
+Inputs: `source` (cloud), `target` (cloud).
+
+Input `source` — Moving cloud with explicit meters or millimeters.
+
+Input `target` — Fixed cloud in the same physical units as Source.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `feature_radius_m` | `0.1` | Value must be a finite number between 1e-06 and 1000. Maximum source and target neighborhood radius in meters. |
+| `neighbors` | `12` | Value must be a whole number between 6 and 64. Nearest samples per descriptor. Sparse neighborhoods are skipped. |
+| `maximum_keypoints` | `4096` | Value must be a whole number between 3 and 8192. Maximum sampled centers per input cloud. |
+| `descriptor_ratio` | `0.92` | Value must be a finite number between 1e-06 and 1. Maximum nearest-to-second descriptor-distance ratio. |
+| `inlier_distance_m` | `0.004` | Value must be a finite number between 1e-06 and 1000. 3D distance cutoff for correspondence and overlap checks. |
+| `max_rms_m` | `0.003` | Value must be a finite number between 0 and 1000. Maximum geometric RMS of inlier correspondences. Zero disables. |
+| `minimum_inliers` | `12` | Value must be a whole number between 3 and 8192. Minimum accepted correspondence count. |
+| `minimum_inlier_fraction` | `0.2` | Value must be a finite number between 0 and 1. Minimum fraction of reciprocal descriptor matches that fit. |
+| `minimum_overlap_fraction` | `0.15` | Value must be a finite number between 0 and 1. Minimum geometric overlap fraction in each direction. |
+| `maximum_overlap_samples` | `8192` | Value must be a whole number between 3 and 32768. Maximum samples per cloud used to estimate overlap. |
+| `ransac_iterations` | `1024` | Value must be a whole number between 1 and 8192. Maximum three-correspondence pose trials. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Repeatable keypoint, pose-trial and overlap samples. |
+
 ## Register depth to camera (`3d.register_depth`)
 
 3D vision / RGB-D
