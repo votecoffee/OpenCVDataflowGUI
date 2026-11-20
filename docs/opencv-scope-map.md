@@ -327,7 +327,7 @@ Python and five C++ entries without a direct binding.
 | `cv2.calibrateCameraRO`, `cv2.calibrateCameraROExtended` | Exposed. Qualify refined target geometry and its residuals. | S3-109 |
 | `cv2.calibrateMultiview`, `cv2.calibrateMultiviewExtended` | Exposed. Shared target geometry and visibility belong to rig calibration. | S3-54 |
 | `cv2.registerCameras`, `cv2.registerCamerasExtended` | Exposed. Verify registration with fixed intrinsics on non-overlapping target observations. | S3-113 |
-| `cv2.stereoCalibrate`, `cv2.stereoCalibrateExtended`, `cv2.fisheye.calibrate`, `cv2.fisheye.stereoCalibrate` | Exposed. Track lens models and per-view stereo residuals in their owning workflows. | S3-04, S3-13–S3-14, S3-45 |
+| `cv2.stereoCalibrate`, `cv2.stereoCalibrateExtended`, `cv2.fisheye.calibrate`, `cv2.fisheye.stereoCalibrate` | Pinhole stereo fitting uses the extended API for separate per-camera and per-view residuals. The pinhole validator measures cross-camera errors on held-out views. Wide-angle lens fitting uses its own contract. | S3-04, S3-13–S3-14, S3-45 |
 | `cv::calibrateHandEye`, `cv::calibrateRobotWorldHandEye` | C++ functions without direct bindings. Eye-in-hand has an offline graph solver. Fixed-camera and joint robot-world/hand–eye calibration have an offline solver checked against held-out ChArUco images. | S3-31–S3-32 |
 | `cv2.stereoRectify`, `cv2.stereoRectifyUncalibrated`, `cv2.fisheye.stereoRectify` | The uncalibrated block qualifies pixel-only rectification from matches and a fundamental matrix. Calibrated and wide-angle blocks use their own rig and reprojection contracts. | S3-13–S3-14, S3-44 |
 | `cv::rectify3Collinear` | C++ function without a direct binding. Qualify a three-camera rig across two baselines. | S3-114 |

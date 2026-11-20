@@ -909,6 +909,7 @@ def builtin_registry():
     from .stabilization_fill import FillStabilizationBorders
     from .stack_blur import StackBlur
     from .stereo3d import STEREO3D_BLOCKS
+    from .stereo_validation import ValidateStereoCalibration
     from .stream_stabilization import StabilizeStream
     from .strip_defects import GroupStripDefects, JudgeStripDefects
     from .strip_graphics import MapStripGraphics
@@ -1302,6 +1303,7 @@ def builtin_registry():
         CheckEpipolarCorrespondences,
         RefineEpipolarCorrespondences,
         RectifyUncalibratedStereo,
+        ValidateStereoCalibration,
         *STEREO3D_BLOCKS,
         CalibrateWideStereo,
         *CLOUD_BLOCKS,

@@ -180,6 +180,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Planar pose hypotheses](<opencv tools/planar_pose_hypotheses/README.md>) | Compare candidate poses on near-frontal and oblique views of the same target. |
 | [Epipolar match refinement](<opencv tools/epipolar_refinement/README.md>) | Score noisy stereo points, filter bad matches and validate each accepted correction against known projections. |
 | [Uncalibrated stereo rectification](<opencv tools/uncalibrated_stereo/README.md>) | Estimate rectification from matches, compare held-out vertical alignment and inspect shared support. |
+| [Stereo calibration quality](<opencv tools/stereo_calibration_quality/README.md>) | Compare per-camera fit residuals and independently rendered holdouts. |
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |
 | [ChArUco calibration validation](<opencv tools/validate_charuco_calibration/README.md>) | Check the fitted profile on a separate cropped board and identify the worst corner. |
 | [Wide-angle stereo](<opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, rectify a held-out view pair and recover metric depth. |

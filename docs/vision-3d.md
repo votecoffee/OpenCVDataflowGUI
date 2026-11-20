@@ -142,6 +142,15 @@ its view's source mapping. **Common valid** is their intersection on the
 left rectified grid. Use a calibrated stereo rig for metric reprojection.
 [Held-out alignment and support example](<../examples/opencv tools/uncalibrated_stereo/README.md>)
 
+**Calibrate stereo cameras** reports joint RMS and a capture-by-camera
+breakdown for pinhole rigs. An optional per-view limit catches a single
+bad capture with a low pooled error. **Validate stereo calibration** keeps
+the intrinsics and relative pose fixed. It estimates a target pose from
+one camera's observations and scores the projection in the other camera,
+then swaps the roles. The report compares these cross-camera errors to the
+single-camera pose fits for every held-out capture.
+[Fit and held-out stereo example](<../examples/opencv tools/stereo_calibration_quality/README.md>)
+
 **Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional
 pair from matched target views. The fisheye fitter can retain or refine
 supplied intrinsics. The omnidirectional fitter initializes both cameras

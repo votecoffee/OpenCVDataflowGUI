@@ -26,6 +26,9 @@ pairs in two camera grids and checks corrected positions on a known rig.
 [Uncalibrated stereo rectification](uncalibrated_stereo/README.md) uses
 image matches to align scanlines and emit per-view and shared support masks.
 
+[Stereo calibration quality](stereo_calibration_quality/README.md) checks
+per-camera fit residuals and cross-camera prediction on held-out targets.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera

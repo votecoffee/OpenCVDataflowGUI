@@ -131,7 +131,8 @@ BINDINGS = {
     "3d.separate_depth_plane": "depthTo3d findContours approxPolyDP",
     "3d.omnidir_calibrate": "omnidir.calibrate omnidir.projectPoints convexHull contourArea",
     "3d.fisheye_calibrate": "fisheye.calibrate fisheye.projectPoints convexHull contourArea",
-    "3d.stereo_calibrate": "stereoCalibrate",
+    "3d.stereo_calibrate": "stereoCalibrateExtended",
+    "3d.validate_stereo_calibration": "solvePnP solvePnPRefineLM projectPoints",
     "3d.wide_stereo_calibrate": "fisheye.stereoCalibrate omnidir.stereoCalibrate",
     "3d.stereo_rectify": (
         "stereoRectify fisheye.stereoRectify omnidir.stereoRectify "

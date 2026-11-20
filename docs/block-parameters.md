@@ -842,9 +842,10 @@ Inputs: `object_views` (data), `left_views` (data), `right_views` (data), `left_
 | `fix_k4` | `false` |  |
 | `fix_k5` | `false` |  |
 | `fix_k6` | `false` |  |
-| `iterations` | `100` |  |
-| `epsilon` | `1e-06` |  |
-| `max_rms` | `2.0` |  |
+| `iterations` | `100` | Value must be a whole number between 1 and 10000. |
+| `epsilon` | `1e-06` | Value must be a finite number at least 0. |
+| `max_rms` | `2.0` | Value must be a finite number at least 0. Maximum joint reprojection RMS in pixels. |
+| `max_view_rms` | `0.0` | Value must be a finite number at least 0. Maximum RMS for any camera in any fit view. Zero skips this check. |
 
 ## Rectify stereo images (`3d.stereo_rectify`)
 
@@ -939,6 +940,26 @@ Inputs: `points` (data), `camera` (data).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `output` | `"normalized"` | `normalized`, `pixels` |
+
+## Validate stereo calibration (`3d.validate_stereo_calibration`)
+
+3D vision / Stereo
+
+Inputs: `rig` (data), `object_views` (data), `left_views` (data), `right_views` (data).
+
+Input `rig` — Previously fitted pinhole rig, with a fixed left-to-right pose.
+
+Input `object_views` — Held-out target landmarks, one ordered array per stereo capture.
+
+Input `left_views` — Left observed pixels, in the same capture and landmark order.
+
+Input `right_views` — Right observed pixels, in the same capture and landmark order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_rms` | `1.0` | Value must be a finite number at least 0. Maximum pooled cross-camera reprojection RMS, in pixels. |
+| `max_view_rms` | `1.5` | Value must be a finite number at least 0. Maximum cross-camera RMS for one camera and capture. Zero disables it. |
+| `max_anchor_rms` | `1.0` | Value must be a finite number at least 0. Maximum single-camera pose fit RMS per capture. Zero disables it. |
 
 ## Calibrate wide-angle stereo (`3d.wide_stereo_calibrate`)
 

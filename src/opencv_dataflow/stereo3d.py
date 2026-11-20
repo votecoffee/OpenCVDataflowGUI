@@ -124,12 +124,74 @@ def validate_rig(rig):
     return left, right, rigid(rig["transform"])
 
 
+STEREO_VIEW_INPUTS = tuple(
+    Port(name, "data") for name in ("object_views", "left_views", "right_views")
+)
+
+
+def stereo_observation_lists(inputs, minimum=3):
+    groups = [inputs[port.name] for port in STEREO_VIEW_INPUTS]
+    if (
+        any(not isinstance(group, list) for group in groups)
+        or len(groups[0]) < minimum
+        or len({len(group) for group in groups}) != 1
+    ):
+        raise ValidationError(f"Stereo evaluation needs at least {minimum} matched views")
+    output = ([], [], [])
+    for obj, left, right in zip(*groups, strict=True):
+        xyz, a, b = (points(obj, 3, 4), points(left, 2, 4), points(right, 2, 4))
+        if len(xyz) != len(a) or len(a) != len(b):
+            raise ValidationError("Stereo calibration point counts differ within a view")
+        for target, view in zip(output, (xyz, a, b), strict=True):
+            target.append(view)
+    return output
+
+
+def _pinhole_fit_report(rms, per_view, objects, rotations, offsets):
+    errors = np.asarray(per_view, dtype=np.float64)
+    if (
+        errors.shape != (len(objects), 2)
+        or not np.isfinite(errors).all()
+        or np.any(errors < 0)
+        or not np.isfinite(rms)
+        or len(rotations) != len(objects)
+        or len(offsets) != len(objects)
+    ):
+        raise ValidationError("Native stereo fit returned invalid residuals")
+    counts = np.asarray([len(xyz) for xyz in objects])
+    aggregate = np.sqrt(np.average(errors**2, weights=counts, axis=0))
+    worst_index, worst_side = np.unravel_index(errors.argmax(), errors.shape)
+    views = []
+    for i, (err, rv, tv) in enumerate(zip(errors, rotations, offsets, strict=True)):
+        rv, tv = np.asarray(rv).reshape(3), np.asarray(tv).reshape(3)
+        if not np.isfinite(rv).all() or not np.isfinite(tv).all():
+            raise ValidationError("Native stereo fit returned a nonfinite target pose")
+        views.append(
+            {
+                "index": i,
+                "points": int(counts[i]),
+                "left_rms_pixels": float(err[0]),
+                "right_rms_pixels": float(err[1]),
+                "target_to_left_rvec": rv.tolist(),
+                "target_to_left_translation": tv.tolist(),
+            }
+        )
+    return {
+        "model": "stereo_pinhole_fit_report_v1",
+        "rms_pixels": float(rms),
+        "left_rms_pixels": float(aggregate[0]),
+        "right_rms_pixels": float(aggregate[1]),
+        "worst_view_rms_pixels": float(errors.max()),
+        "worst_view_index": int(worst_index),
+        "worst_view_camera": ("left", "right")[worst_side],
+        "views": views,
+    }
+
+
 class CalibrateStereo(Tool3D):
     type_id, title, subtype = "3d.stereo_calibrate", "Calibrate stereo cameras", "Calibration"
     inputs = (
-        Port("object_views", "data"),
-        Port("left_views", "data"),
-        Port("right_views", "data"),
+        *STEREO_VIEW_INPUTS,
         Port("left_camera", "data"),
         Port("right_camera", "data"),
     )
@@ -138,6 +200,7 @@ class CalibrateStereo(Tool3D):
         Port("rms", "number"),
         Port("fundamental", "data"),
         Port("essential", "data"),
+        Port("fit_report", "data"),
     )
     defaults = {
         "fix_intrinsics": True,
@@ -155,7 +218,19 @@ class CalibrateStereo(Tool3D):
         "iterations": 100,
         "epsilon": 1e-6,
         "max_rms": 2.0,
+        "max_view_rms": 0.0,
     }
+    parameter_ranges = {
+        "iterations": NumericRange(1, 10_000, whole=True),
+        "epsilon": NumericRange(0),
+        "max_rms": NumericRange(0),
+        "max_view_rms": NumericRange(0),
+    }
+    parameter_help = {
+        "max_rms": "Maximum joint reprojection RMS in pixels.",
+        "max_view_rms": "Maximum RMS for any camera in any fit view. Zero skips this check.",
+    }
+    process_inputs_readonly = True
 
     def process(self, inputs):
         left, right = inputs["left_camera"], inputs["right_camera"]
@@ -163,27 +238,13 @@ class CalibrateStereo(Tool3D):
         k2, d2, size2 = require_pinhole(right)
         if size != size2 or left["units"] != right["units"]:
             raise ValueError("Stereo camera sizes/units must match")
-        groups = [inputs[k] for k in ("object_views", "left_views", "right_views")]
-        if (
-            any(not isinstance(g, list) for g in groups)
-            or not len(groups[0]) >= 3
-            or len({len(g) for g in groups}) != 1
-        ):
-            raise ValueError(
-                "Stereo calibration needs at least three matched object/left/right views"
-            )
-        object_views, a, b = [], [], []
-        for obj, xy_left, xy_right in zip(*groups):
-            obj, xy_left, xy_right = (
-                points(obj, 3, 4),
-                points(xy_left, 2, 4),
-                points(xy_right, 2, 4),
-            )
-            if not len(obj) == len(xy_left) == len(xy_right):
-                raise ValueError("Stereo calibration point counts differ within a view")
-            object_views.append(obj.astype(np.float32))
-            a.append(xy_left.astype(np.float32))
-            b.append(xy_right.astype(np.float32))
+        units = self.input_payloads["object_views"].get("object_point_units")
+        if units is not None and units != left["units"]:
+            raise ValidationError("Stereo object point units must match the camera models")
+        object_views, a, b = (
+            [view.astype(np.float32) for view in group]
+            for group in stereo_observation_lists(inputs)
+        )
         p = self.parameters
         flags = cv2.CALIB_FIX_INTRINSIC if p["fix_intrinsics"] else cv2.CALIB_USE_INTRINSIC_GUESS
         for key, flag in {
@@ -196,7 +257,7 @@ class CalibrateStereo(Tool3D):
         }.items():
             if p[key]:
                 flags |= flag
-        values = cv2.stereoCalibrate(
+        values = cv2.stereoCalibrateExtended(
             object_views,
             a,
             b,
@@ -205,6 +266,8 @@ class CalibrateStereo(Tool3D):
             k2,
             d2,
             size,
+            None,
+            None,
             flags=flags,
             criteria=(
                 cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS,
@@ -212,16 +275,38 @@ class CalibrateStereo(Tool3D):
                 finite(p["epsilon"], "Epsilon", 0),
             ),
         )
-        rms, k1, d1, k2, d2, r, t, e, f = values
+        rms, k1, d1, k2, d2, r, t, e, f, rotations, offsets, per_view = values
+        report = _pinhole_fit_report(rms, per_view, object_views, rotations, offsets)
         left = camera_record(k1, d1, size, left["units"], left["frame"])
         right = camera_record(k2, d2, size, right["units"], right["frame"])
         pose = pose_record(pose_matrix(r, t), left["frame"], right["frame"], left["units"])
         rig = stereo_rig_record(left, right, pose)
-        passed = rms <= finite(p["max_rms"], "Maximum RMS", 0)
+        report.update(left_frame=left["frame"], right_frame=right["frame"], units=left["units"])
+        reasons = []
+        if rms > float(p["max_rms"]):
+            reasons.append("stereo_calibration_rms")
+        view_limit = float(p["max_view_rms"])
+        if view_limit and report["worst_view_rms_pixels"] > view_limit:
+            reasons.append(
+                {
+                    "code": "stereo_calibration_view_rms",
+                    "message": (
+                        f"View {report['worst_view_index']} {report['worst_view_camera']} camera "
+                        f"RMS {report['worst_view_rms_pixels']:.4g} px exceeds {view_limit:.4g} px"
+                    ),
+                }
+            )
         return Result(
-            {"rig": rig, "rms": float(rms), "essential": e.tolist(), "fundamental": f.tolist()},
-            passed=passed,
-            fail_reasons=[] if passed else ["stereo_calibration_rms"],
+            {
+                "rig": rig,
+                "rms": float(rms),
+                "essential": e.tolist(),
+                "fundamental": f.tolist(),
+                "fit_report": report,
+            },
+            passed=not reasons,
+            fail_reasons=reasons,
+            message=f"{len(object_views)} stereo views, {rms:.4g} px joint RMS",
         )
 
 
