@@ -1079,6 +1079,22 @@ Input `model` — A trained bank from Train RGB-D pose template.
 | `minimum_anchor_fraction` | `0.65` | Value must be a finite number between 0.25 and 1. Minimum fraction of trained anchors supporting the same shift. |
 | `maximum_reprojection_rms_px` | `2.5` | Value must be a finite number between 0.1 and 20. Maximum return projection error at the inlier anchors. |
 
+## Inspect triangle mesh topology (`3d.mesh_inspect`)
+
+3D vision / Mesh geometry
+
+Inputs: `mesh` (mesh).
+
+Input `mesh` — Indexed triangle mesh with a declared frame and length unit.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_triangle_area` | `0.0` | Value must be a finite number between 0 and 1e+30. Flag triangles at or below this area in squared input units. |
+| `require_closed` | `false` | Fail when any edge has only one incident face. |
+| `require_volume` | `false` | Fail unless a single convex shell qualifies for volume. |
+| `max_faces` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum number of triangles admitted to the topology check. |
+| `max_support_tests` | `10000000` | Value must be a whole number between 1 and 2.5e+08. Limit on face-plane tests against referenced vertices for volume. |
+
 ## Project mesh to color and depth (`3d.mesh_project`)
 
 3D vision / Mesh geometry

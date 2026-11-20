@@ -752,6 +752,19 @@ order. **Save triangle mesh** writes ASCII OBJ or binary little endian PLY
 to a new path. Both formats preserve units and frame through Dataflow comments.
 [Triangle interchange example](<../examples/custom tools/mesh_interchange/README.md>)
 
+**Inspect triangle mesh topology** reports duplicate and low-area triangles,
+free-edge loops, nonmanifold edges, conflicting winding and disconnected
+vertex fans. The mesh port rejects out-of-range and repeated face indices
+with the affected face count and sample indices. Boundaries follow the imported
+indices. Separate OBJ vertices at an attribute seam may create free edges.
+Area is the sum of input triangle areas in squared mesh units. The volume
+output uses cubed mesh units and requires one closed, consistently wound
+convex shell. Its qualification checks vertex support planes and compares
+area and signed volume with the convex hull. The report carries the reason
+whenever volume is unavailable. Enable **Require closed** or **Require volume**
+to use those checks as pass criteria.
+[Mesh validity example](<../examples/custom tools/mesh_validity/README.md>)
+
 **Project mesh to color and depth** renders the nearest triangles on a
 rectified pinhole camera grid with explicit near and far planes and winding
 culling. The mesh and camera frames must match or be connected by a metric

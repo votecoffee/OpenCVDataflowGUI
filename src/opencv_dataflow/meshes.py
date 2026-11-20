@@ -58,12 +58,18 @@ class TriangleMesh:
             or faces.shape[1] != 3
             or faces.dtype.kind not in "iu"
             or not 1 <= len(faces) <= MAX_FACES
-            or np.any((faces < 0) | (faces >= len(vertices)))
-            or np.any(faces[:, 0] == faces[:, 1])
-            or np.any(faces[:, 1] == faces[:, 2])
-            or np.any(faces[:, 2] == faces[:, 0])
         ):
             raise ValueError("Mesh requires bounded triangles with three distinct vertex indices")
+        invalid = ((faces < 0) | (faces >= len(vertices))).any(axis=1)
+        repeated = (faces == faces[:, (1, 2, 0)]).any(axis=1)
+        if invalid.any() or repeated.any():
+            first_invalid = np.flatnonzero(invalid)[:8].tolist()
+            first_repeated = np.flatnonzero(repeated)[:8].tolist()
+            raise ValueError(
+                "Mesh requires bounded triangles with three distinct vertex indices. "
+                f"Out-of-range index faces ({invalid.sum()}): {first_invalid}. "
+                f"Repeated index faces ({repeated.sum()}): {first_repeated}."
+            )
         if (
             self.units not in ("m", "mm", "unitless")
             or not isinstance(self.frame, str)
@@ -113,17 +119,22 @@ class TriangleMesh:
         }
 
 
-def render_wireframe(mesh):
+def render_wireframe(mesh, *, highlight_edges=()):
     image = np.full((400, 560, 3), (31, 27, 22), np.uint8)
     rotation = cv2.Rodrigues(np.array([-0.38, 0.54, 0.06]))[0]
     vertices = mesh.vertices @ rotation.T
     low, high = vertices.min(axis=0), vertices.max(axis=0)
     span = np.maximum(high[:2] - low[:2], 1e-9)
     scale = min(510 / span[0], 350 / span[1])
-    xy = np.rint((vertices[:, :2] - (low[:2] + high[:2]) / 2) * scale + [280, 200])
+    xy = np.rint((vertices[:, :2] - (low[:2] + high[:2]) / 2) * scale + [280, 200]).astype(np.int32)
     choice = np.linspace(0, len(mesh.faces) - 1, min(len(mesh.faces), 2500), dtype=int)
-    polylines = xy.astype(np.int32)[mesh.faces[choice]]
+    polylines = xy[mesh.faces[choice]]
     cv2.polylines(image, list(polylines), True, (65, 198, 245), 1, cv2.LINE_AA)
+    for edges, color in highlight_edges:
+        if len(edges):
+            cv2.polylines(
+                image, list(xy[np.asarray(edges, dtype=np.intp)]), False, color, 2, cv2.LINE_AA
+            )
     return image
 
 

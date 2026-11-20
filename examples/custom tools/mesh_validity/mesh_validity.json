@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Check geometry before reporting volume",
+      "description": "Synthetic fixtures by OpenCVDataflowGUI contributors (MIT). The closed box has 11,200 mm\u00b2 area and 64,000 mm\u00b3 volume. Compare its report with the box missing a lid and the box with a third face attached to one edge. Both damaged controls should fail.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_closed_box",
+      "type": "input.mesh",
+      "name": "Load closed box",
+      "parameters": {
+        "path": "assets/closed_box.ply",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "closed_box",
+      "type": "3d.mesh_inspect",
+      "name": "Inspect closed box",
+      "description": "Measure area, check mesh topology, and qualify convex-shell volume.",
+      "parameters": {
+        "minimum_triangle_area": 0.0,
+        "require_closed": true,
+        "require_volume": false,
+        "max_faces": 250000,
+        "max_support_tests": 10000000
+      },
+      "position": [
+        440,
+        0
+      ],
+      "exposed_inputs": [
+        "mesh"
+      ],
+      "exposed_outputs": [
+        "area",
+        "volume",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_open_box",
+      "type": "input.mesh",
+      "name": "Load open box",
+      "parameters": {
+        "path": "assets/open_box.ply",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "open_box",
+      "type": "3d.mesh_inspect",
+      "name": "Inspect open box",
+      "description": "Measure area, check mesh topology, and qualify convex-shell volume.",
+      "parameters": {
+        "minimum_triangle_area": 0.0,
+        "require_closed": true,
+        "require_volume": false,
+        "max_faces": 250000,
+        "max_support_tests": 10000000
+      },
+      "position": [
+        440,
+        240
+      ],
+      "exposed_inputs": [
+        "mesh"
+      ],
+      "exposed_outputs": [
+        "area",
+        "volume",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_flap_box",
+      "type": "input.mesh",
+      "name": "Load flap box",
+      "parameters": {
+        "path": "assets/flap_box.ply",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        480
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flap_box",
+      "type": "3d.mesh_inspect",
+      "name": "Inspect flap box",
+      "description": "Measure area, check mesh topology, and qualify convex-shell volume.",
+      "parameters": {
+        "minimum_triangle_area": 0.0,
+        "require_closed": true,
+        "require_volume": false,
+        "max_faces": 250000,
+        "max_support_tests": 10000000
+      },
+      "position": [
+        440,
+        480
+      ],
+      "exposed_inputs": [
+        "mesh"
+      ],
+      "exposed_outputs": [
+        "area",
+        "volume",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "load_closed_box",
+      "output": "mesh",
+      "target": "closed_box",
+      "input": "mesh"
+    },
+    {
+      "source": "load_open_box",
+      "output": "mesh",
+      "target": "open_box",
+      "input": "mesh"
+    },
+    {
+      "source": "load_flap_box",
+      "output": "mesh",
+      "target": "flap_box",
+      "input": "mesh"
+    }
+  ]
+}

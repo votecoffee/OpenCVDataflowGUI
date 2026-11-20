@@ -981,6 +981,7 @@ def builtin_registry():
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
     from .mesh_comparison import CompareScanToMesh
+    from .mesh_inspection import InspectTriangleMesh
     from .mesh_projection import ProjectMesh
     from .mesh_texture import BakeMeshTexture
     from .tsdf_mesh import TSDF_MESH_BLOCKS
@@ -1414,6 +1415,7 @@ def builtin_registry():
         *TSDF_MESH_BLOCKS,
         ProjectMesh,
         BakeMeshTexture,
+        InspectTriangleMesh,
         MeshOrganizedDepth,
         FindOrganizedPlanes,
         CompareScanToMesh,

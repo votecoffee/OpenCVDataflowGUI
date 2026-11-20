@@ -231,6 +231,7 @@ _NATIVE_NAMES = {
     "3d.cloud_model_fit": ("ransac", "fit plane", "fit sphere", "sample consensus"),
     "3d.cloud_surface_quality": ("estimate normals", "curvature", "local PCA"),
     "3d.scan_mesh_compare": ("scan to mesh", "closest triangle", "surface deviation"),
+    "3d.mesh_inspect": ("mesh validity", "boundaries", "nonmanifold", "surface area", "volume"),
     "3d.mesh_texture": ("triangleRasterizeDepth", "UV", "texture atlas"),
     "3d.mesh_project": ("triangleRasterize", "triangleRasterizeColor", "triangleRasterizeDepth"),
     "input.mesh": ("obj", "ply", "loadMesh"),

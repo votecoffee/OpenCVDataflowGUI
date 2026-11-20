@@ -191,6 +191,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Cloud dimensional comparison](<custom tools/cloud_dimensional_comparison/README.md>) | Inspect known positive and negative scan deviations and distinguish dimensional defects from missing and extra points. |
 | [Registered scan merge](<custom tools/cloud_scan_merge/README.md>) | Combine mixed-unit scans in a common frame and trace retained rows after overlap suppression. |
 | [OBJ and PLY triangle mesh interchange](<custom tools/mesh_interchange/README.md>) | Compare two attributed meshes with the same triangles, normals, RGB and texture coordinates. |
+| [Triangle mesh validity and measurement](<custom tools/mesh_validity/README.md>) | Measure a closed box and diagnose its open and nonmanifold controls. |
 | [OBJ point-cloud interchange](<custom tools/cloud_obj_interchange/README.md>) | Compare equivalent OBJ and PLY clouds with ordered XYZ, RGB, normals, and frame and unit metadata. |
 | [Organized PCD interchange](<custom tools/organized_pcd/README.md>) | Compare ASCII and binary scans with RGB, normals and holes in a preserved pixel grid. |
 | [Organized depth mesh](<custom tools/organized_depth_mesh/README.md>) | Compare local surface meshes at a depth step and a missing patch. |

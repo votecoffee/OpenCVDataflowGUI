@@ -41,6 +41,9 @@ scans with overlap suppression and source row provenance.
 [Triangle mesh interchange](mesh_interchange/README.md) compares matching
 OBJ and PLY topology and vertex attributes.
 
+[Triangle mesh validity and measurement](mesh_validity/README.md) compares
+area, volume and topology across three box fixtures.
+
 [OBJ point-cloud interchange](cloud_obj_interchange/README.md) compares two
 file formats for the same colored, oriented scan.
 
