@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 61 | 18 | 52 | 131 | 46.6% |
+| 3. 3D imagery and point clouds | 62 | 17 | 52 | 131 | 47.3% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 316 | 22 | 132 | 470 | 67.2% |
+| **Overall** | 317 | 21 | 132 | 470 | 67.4% |
 
 <!-- coverage-summary:end -->
 
@@ -485,7 +485,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S3-62 | Color and depth from a synchronized recorded stream | Timestamp pairing, explicit registration and depth confidence | Partial | image.rgbd pairs typed color and depth. Verify recorded streams with staggered timestamps and independent camera grids. |
+| S3-62 | Color and depth from a synchronized recorded stream | Timestamp pairing, explicit registration and depth confidence | Complete | input.rgbd_recording pairs explicit acquisition timestamps, reports unmatched frames, and emits one ticket per pair. 3d.register_rgbd projects nearest depth and its confidence onto the color grid. The [staggered replay example](<../examples/opencv tools/recorded_rgbd/README.md>) covers independent intrinsics, a 40 mm baseline, confidence rejection, and colored XYZ. |
 | S3-63 | Stereo exposure and color consistency | Pairwise color correction on rectified correspondence support | Planned | Reduce photometric mismatch on a calibrated pair and compare valid disparity coverage. |
 | S3-64 | Recover calibrated object dimensions from a depth silhouette | Depth backprojection and physical contour measurement | Planned | Measure known raised parts and report thickness, width and invalid boundary samples. |
 | S3-65 | Scene-scale recovery from multi-view observations | Multi-view triangulation with known metric anchors | Partial | 3d.essential_pose supplies unit-scale motion. Verify metric recovery and error with held-out 3D targets. |

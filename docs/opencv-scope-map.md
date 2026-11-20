@@ -72,7 +72,7 @@ they can count as complete.
 | `quality` | Full-reference error, similarity, gradient degradation and no-reference scoring. | S1-55, S1-119, S1-143, S4-07–S4-08, S4-32 |
 | `rapid` | Metric object pose tracking against image silhouettes. | S3-68 |
 | `reg` | Image pair registration with configurable mapper and residual checks. | S4-72 |
-| `rgbd` | Typed depth and color, registration, pose tracking and depth fusion. 3d.fuse_registered_depth blends confidence-weighted surfaces on a common registered camera grid with explicit support and disagreement. Camera-frame acceptance is required before claiming a model or backend. | S3-18–S3-20, S3-23–S3-26, S3-49, S3-52–S3-53, S3-56–S3-57, S3-59, S3-62, S3-64, S3-66, S3-71 |
+| `rgbd` | Typed depth and color, registration, pose tracking and depth fusion. 3d.fuse_registered_depth blends confidence-weighted surfaces on a common registered camera grid with explicit support and disagreement. Recorded RGB-D qualifies timestamp association, independent optical grids and confidence-preserving registration. Camera-frame acceptance is required before claiming a model or backend. | S3-18–S3-20, S3-23–S3-26, S3-49, S3-52–S3-53, S3-56–S3-57, S3-59, S3-62, S3-64, S3-66, S3-71 |
 | `saliency` | Static and motion maps and ranked objectness proposals with separate fixtures. | S4-53–S4-54, S4-97 |
 | `sfm` | Image-derived multi-view reconstruction and metric anchors. Qualify the relevant bindings or a tested solver. | S3-33, S3-58, S3-65 |
 | `shape` | Shape context, appearance-assisted ranking, Hausdorff distance and spline registration. | S4-50–S4-52, S4-95 |

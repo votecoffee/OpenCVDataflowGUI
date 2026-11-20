@@ -310,6 +310,8 @@ BINDINGS = {
     "input.tiff_file": "imdecodemulti",
     "input.tiff_page": "imdecodemulti",
     "input.video_file": "VideoCapture.open VideoCapture.read",
+    "input.rgbd_recording": "imdecode",
+    "3d.register_rgbd": "projectPoints",
     "cv.decode_video": "VideoCapture.open VideoCapture.read VideoCapture.release",
     "inspect.affine": "estimateAffine2D estimateAffinePartial2D",
     "inspect.akaze": "xfeatures2d.AKAZE_create",

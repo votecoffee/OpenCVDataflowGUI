@@ -992,6 +992,27 @@ Inputs: `depth` (depth), `depth_camera` (data), `target_camera` (data), `transfo
 | `display_min` | `0.0` |  |
 | `display_max` | `5.0` |  |
 
+## Register RGB-D with confidence (`3d.register_rgbd`)
+
+3D vision / RGB-D
+
+Inputs: `color` (image), `depth` (depth), `depth_camera` (data), `color_camera` (data), `transform` (data), `confidence` (image, optional).
+
+Input `depth_camera` — Undistorted pinhole intrinsics on the source depth grid.
+
+Input `color_camera` — Target pinhole intrinsics, including any color lens distortion.
+
+Input `transform` — Rigid pose mapping the depth optical frame to the color optical frame.
+
+Input `confidence` — Float [0,1] or integer full-scale confidence on the depth grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_units` | `"m"` | `m`, `mm` Units for untagged depth. Tagged depth retains its declared units. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per sample for untagged uint16 depth. |
+| `minimum_confidence` | `0.0` | Value must be a finite number between 0 and 1. Reject the closest sample below this confidence. Zero is invalid. |
+| `display_max_m` | `5.0` | Value must be a finite number between 0.001 and 1000. Upper preview bound in meters. Does not clip physical depth. |
+
 ## Disparity to 3D cloud (`3d.reproject`)
 
 3D vision / Reconstruction
@@ -6514,6 +6535,20 @@ Ticket mode and fixed value are common inspector controls.
 | `layout` | `"NV12"` | `NV12`, `NV21`, `I420`, `YV12`, `YUY2`, `UYVY`, `YVYU` Byte order and chroma subsampling of the input buffer. |
 | `color_format` | `"bgr"` | `gray`, `bgr`, `rgb`, `bgra`, `rgba` Gray extracts the stored luma samples. |
 | `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
+
+## Recorded RGB-D (`input.rgbd_recording`)
+
+Input / Depth and RGB-D
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Manifest JSON relative to the project. Frame paths are relative to the manifest. |
+| `repeat` | `"stop"` | `stop`, `loop` Stop after the last pair or loop from the first. Run All uses stop. |
+| `maximum_skew_ms` | `5.0` | Value must be a finite number between 0 and 1000. Inclusive timestamp tolerance. Zero requires exact timestamp equality. |
+| `display_max_m` | `5.0` | Value must be a finite number between 0.001 and 1000. Upper preview bound. Physical depth values are preserved. |
 
 ## Read ROS 2 point cloud (`input.ros2_cloud`)
 

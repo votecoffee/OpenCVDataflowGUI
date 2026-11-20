@@ -884,6 +884,8 @@ def builtin_registry():
     from .regression import REGRESSION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
+    from .rgbd_recording import RecordedRGBD
+    from .rgbd_registration import RegisterRGBD
     from .ridge_response import RidgeResponse
     from .robot_world import RobotWorldHandEye
     from .ros2_blocks import ROS2_BLOCKS
@@ -1325,6 +1327,8 @@ def builtin_registry():
         CalibrateMulticameraRig,
         ValidateMulticameraRig,
         *STEREO3D_BLOCKS,
+        RecordedRGBD,
+        RegisterRGBD,
         BinaryStereoDisparity,
         FilterDisparitySpeckles,
         EvaluateDisparity,

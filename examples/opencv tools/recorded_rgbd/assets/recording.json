@@ -1,0 +1,47 @@
+{
+  "format": "opencv_dataflow_rgbd_v1",
+  "clock": "synthetic_capture_clock",
+  "color_frame": "color_optical",
+  "depth_frame": "depth_optical",
+  "depth_m_per_sample": 0.001,
+  "color": [
+    {
+      "path": "color_0.png",
+      "timestamp_ns": 1900000000000000000
+    },
+    {
+      "path": "color_1.png",
+      "timestamp_ns": 1900000000033000000
+    },
+    {
+      "path": "color_2.png",
+      "timestamp_ns": 1900000000066000000
+    },
+    {
+      "path": "color_3.png",
+      "timestamp_ns": 1900000000100000000
+    }
+  ],
+  "depth": [
+    {
+      "path": "depth_0.png",
+      "timestamp_ns": 1900000000002000000,
+      "confidence": "confidence_0.png"
+    },
+    {
+      "path": "depth_1.png",
+      "timestamp_ns": 1900000000026000000,
+      "confidence": "confidence_1.png"
+    },
+    {
+      "path": "depth_2.png",
+      "timestamp_ns": 1900000000069000000,
+      "confidence": "confidence_2.png"
+    },
+    {
+      "path": "depth_3.png",
+      "timestamp_ns": 1900000000101000000,
+      "confidence": "confidence_3.png"
+    }
+  ]
+}

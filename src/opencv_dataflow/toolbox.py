@@ -128,7 +128,7 @@ IMPLEMENTATION_MODULES = {
     "ccm": "color_calibration",
     "quality": "image_quality",
     "img_hash": "image_hash",
-    "rgbd": "ptcloud3d",
+    "rgbd": "ptcloud3d rgbd_registration",
     "tracking": "native_trackers",
     "features": "native_lightglue native_index",
     "ximgproc": "local_threshold region_proposals ridge_response superpixels",

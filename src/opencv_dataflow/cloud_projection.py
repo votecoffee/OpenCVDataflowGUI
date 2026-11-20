@@ -56,6 +56,16 @@ def raster_indices(xyz, candidates, k, distortion, size):
     return cells
 
 
+def nearest_samples(points, cells, z):
+    """Return one nearest source point per target cell, breaking ties by source order."""
+    order = np.lexsort((points, z, cells))
+    sorted_cells = cells[order]
+    first = np.empty(len(order), bool)
+    first[:1] = True
+    first[1:] = sorted_cells[1:] != sorted_cells[:-1]
+    return sorted_cells[first], points[order[first]]
+
+
 def as_mask(size, cells):
     mask = np.zeros(size[::-1], np.uint8)
     mask.flat[cells] = 255
@@ -162,13 +172,7 @@ class ProjectCloudVisibility(Tool3D):
             points, cells = points[selected], cells[selected]
 
         z_points = z[points]
-        order = np.lexsort((points, z_points, cells))
-        sorted_cells = cells[order]
-        first = np.empty(len(order), bool)
-        first[:1] = True
-        first[1:] = sorted_cells[1:] != sorted_cells[:-1]
-        unique_cells = sorted_cells[first]
-        owners = points[order[first]]
+        unique_cells, owners = nearest_samples(points, cells, z_points)
         nearest_z = z[owners]
         depth = np.full((height, width), np.nan, np.float32)
         depth.flat[unique_cells] = nearest_z

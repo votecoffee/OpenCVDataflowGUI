@@ -361,6 +361,21 @@ source-to-target pose. It emits target-grid depth in meters. **Organized RGB-D
 normals** uses native FALS, SRI or cross-product normals and retains valid pixel
 correspondence. Sampling/point limits bound cloud outputs on large images.
 
+**Recorded RGB-D** reads a lossless manifest with two ordered acquisition
+streams using a declared shared clock. It emits a color image, metric depth,
+optional depth-grid confidence, and one ticket per pair. Each frame is used
+once. The report includes both nanosecond timestamps, signed skew, and
+unmatched counts. The saved graph supports Run All and loop playback.
+
+**Register RGB-D with confidence** projects depth samples onto the supplied
+color camera grid using two pinhole models and the metric depth-to-color pose.
+Depth must use undistorted intrinsics. A target lens distortion profile can
+be used when projecting into raw color. The nearest positive camera Z wins
+per pixel. Its source confidence travels with it. Low confidence leaves a
+hole, even when a farther sample projects into the same pixel. The color
+image is passed through and the output mask marks finite registered depth.
+[Recorded RGB-D example](<../examples/opencv tools/recorded_rgbd/README.md>)
+
 **Project cloud and check visibility** rasterizes metric cloud samples to the
 target pinhole grid using calibrated intrinsics and an optional rigid transform.
 It exports nearest camera Z, coverage and RGB when the cloud has colors.

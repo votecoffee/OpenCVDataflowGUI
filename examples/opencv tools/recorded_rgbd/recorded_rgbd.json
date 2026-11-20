@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Replay and register RGB-D",
+      "description": "Original synthetic frames by the OpenCVDataflowGUI contributors (MIT). Run All pairs three frames within 5 ms. Compare the time stamps and unmatched counts, then review depth and quality projected into the color camera.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/recording.json",
+        "repeat": "stop",
+        "maximum_skew_ms": 5.0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth_camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 32.0,
+        "fy": 32.0,
+        "cx": 23.5,
+        "cy": 15.5,
+        "width": 48,
+        "height": 32,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "depth_optical"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "color_camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 52.0,
+        "fy": 50.0,
+        "cx": 39.5,
+        "cy": 23.5,
+        "width": 80,
+        "height": 48,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "color_optical"
+      },
+      "position": [
+        0,
+        435
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mount",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "translation": [
+          0.04,
+          0,
+          0
+        ],
+        "source_frame": "depth_optical",
+        "target_frame": "color_optical",
+        "units": "m"
+      },
+      "position": [
+        0,
+        630
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "register",
+      "type": "3d.register_rgbd",
+      "name": "Register RGB-D with confidence",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "minimum_confidence": 0.5,
+        "display_max_m": 5.0
+      },
+      "position": [
+        420,
+        245
+      ],
+      "exposed_inputs": [
+        "color",
+        "depth",
+        "depth_camera",
+        "color_camera",
+        "transform",
+        "confidence"
+      ],
+      "exposed_outputs": [
+        "color",
+        "depth",
+        "confidence",
+        "valid_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "depth"
+    },
+    {
+      "id": "cloud",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        800,
+        350
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "replay",
+      "output": "image",
+      "target": "register",
+      "input": "color"
+    },
+    {
+      "source": "replay",
+      "output": "depth",
+      "target": "register",
+      "input": "depth"
+    },
+    {
+      "source": "replay",
+      "output": "confidence",
+      "target": "register",
+      "input": "confidence"
+    },
+    {
+      "source": "depth_camera",
+      "output": "camera",
+      "target": "register",
+      "input": "depth_camera"
+    },
+    {
+      "source": "color_camera",
+      "output": "camera",
+      "target": "register",
+      "input": "color_camera"
+    },
+    {
+      "source": "mount",
+      "output": "transform",
+      "target": "register",
+      "input": "transform"
+    },
+    {
+      "source": "color_camera",
+      "output": "camera",
+      "target": "cloud",
+      "input": "camera"
+    },
+    {
+      "source": "register",
+      "output": "depth",
+      "target": "cloud",
+      "input": "depth"
+    },
+    {
+      "source": "register",
+      "output": "color",
+      "target": "cloud",
+      "input": "image"
+    }
+  ]
+}
