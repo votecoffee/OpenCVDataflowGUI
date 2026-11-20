@@ -195,6 +195,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Confidence-weighted depth smoothing](<opencv tools/depth_smoothing/README.md>) | Reduce noise on two depth planes separated by a sharp step and project retained samples into a point cloud. |
 | [Camera depth evaluation](<opencv tools/depth_reference/README.md>) | Compare meter and millimeter depth maps, quantify a shifted step, and inspect independent validity holes. |
 | [Registered depth fusion](<opencv tools/registered_depth_fusion/README.md>) | Blend common surfaces by confidence, recover complementary depth and retain a two-pixel-wide foreground feature. |
+| [Multi-baseline stereo depth](<opencv tools/multi_baseline_depth/README.md>) | Register three stereo baselines and compare consensus, occlusion and outliers against held-out depth. |
 | [Support plane and foreground separation](<opencv tools/depth_plane/README.md>) | Recover a tilted work surface, measure signed distances, and backproject only the raised foreground. |
 | [Depth component measurement](<opencv tools/depth_components/README.md>) | Separate touching foreground parts by depth, compare physical widths and rebuild an exact source mask. |
 | [Calibrated depth silhouette](<opencv tools/depth_silhouette/README.md>) | Measure two raised parts against a tilted datum and flag every deliberately missing edge sample. |

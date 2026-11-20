@@ -373,6 +373,7 @@ class RectifyStereo(Tool3D):
             payloads[name] = {
                 **metadata(inputs[name]),
                 "spatial": frame(output_size, f"{self.id}:rectified:{name}"),
+                "optical_frame": f"{rig[name]['frame']}:rectified",
             }
             payloads[name].pop("pyramid", None)
             applied_payload(payloads[name], rig[name].get(REVISION))

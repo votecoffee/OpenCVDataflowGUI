@@ -927,6 +927,7 @@ def builtin_registry():
     from .stack_blur import StackBlur
     from .stereo3d import STEREO3D_BLOCKS
     from .stereo_color import MatchStereoColor
+    from .stereo_rectified_camera import StereoRectifiedCamera
     from .stereo_validation import ValidateStereoCalibration
     from .stream_stabilization import StabilizeStream
     from .strip_defects import GroupStripDefects, JudgeStripDefects
@@ -1333,6 +1334,7 @@ def builtin_registry():
         ValidateMulticameraRig,
         *STEREO3D_BLOCKS,
         MatchStereoColor,
+        StereoRectifiedCamera,
         RecordedRGBD,
         RegisterRGBD,
         BinaryStereoDisparity,

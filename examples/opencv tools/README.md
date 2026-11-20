@@ -70,6 +70,9 @@ sharp step and rejects unreliable depth samples before cloud reconstruction.
 [Registered depth fusion](registered_depth_fusion/README.md) blends aligned
 range images with confidence and retains a narrow foreground.
 
+[Multi-baseline stereo depth](multi_baseline_depth/README.md) registers
+three Q-derived depths and compares consensus and nearest-surface fusion.
+
 [Camera depth evaluation](depth_reference/README.md) checks mixed-unit depth
 error, validity and coverage over a known step.
 

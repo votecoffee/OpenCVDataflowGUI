@@ -307,18 +307,28 @@ m/mm depth keeps its unit interpretation, and the result is in meters.
 
 Each optional confidence image uses float values on [0, 1] or full-scale
 uint8/uint16 values. Omitted confidence gives weight one. After rejecting
-invalid depth and low confidence, the block averages samples within the
-configured distance behind the nearest trusted surface. It uses no
-neighboring pixels. Minimum Support can require agreement from several
-views. A mask or region limits the evaluation, and Minimum Coverage gates
-the fraction of selected pixels that fuse successfully.
+invalid depth and low confidence, the default Nearest policy averages
+samples within tolerance behind the closest trusted depth. Consensus
+chooses the largest group whose depth range fits the same tolerance.
+Distinct groups tied for the largest size are left unresolved. Minimum
+Support gates the winning group size. A mask or region limits the
+evaluation, and Minimum Coverage gates the fraction that fuses.
 
 The output confidence is the mean weight of contributing samples at
-each fused pixel. Support Count records eligible nearest-surface samples
-even where they fall short of Minimum Support. Conflict Mask identifies
-pixels with farther eligible samples. The report separates missing and
-insufficient support.
+each fused pixel. Support Count records the size of the chosen group,
+including groups that fall short of Minimum Support. Conflict Mask
+marks incompatible eligible samples. Ambiguous Mask marks tied groups.
+Rejected Views assigns bit values 1, 2, 4 and 8 to A, B, C and D where a
+winner identifies outlying views. The report separates missing, tied
+and insufficient support.
 [Registered fusion and thin-foreground example](<../examples/opencv tools/registered_depth_fusion/README.md>)
+
+For multiple stereo baselines, each Q-derived depth describes its own
+rectified left camera. **Rectified stereo camera geometry** extracts
+the rectified intrinsics from P1 and the pose back to the original left
+frame using the inverse of R1. Use **Register RGB-D with confidence**
+to map each result onto the same left image grid before fusion.
+[Three-baseline consistency example](<../examples/opencv tools/multi_baseline_depth/README.md>)
 
 **Evaluate camera depth** compares camera Z on aligned pixel grids.
 Tagged depth uses its m/mm units. For untagged rasters, set the units

@@ -1,0 +1,29 @@
+{
+  "width": 176,
+  "height": 96,
+  "baselines_m": [
+    0.04,
+    0.08,
+    0.12
+  ],
+  "foreground_rectangle": [
+    75,
+    25,
+    37,
+    37
+  ],
+  "near_outlier_rectangle": [
+    127,
+    8,
+    9,
+    8
+  ],
+  "tie_rectangle": [
+    41,
+    72,
+    6,
+    6
+  ],
+  "foreground_z_m": 1,
+  "background_z_m": 1.5
+}

@@ -632,8 +632,9 @@ Input `region` — Optional region intersected with Mask. Outputs outside are in
 | `input_units` | `"m"` | `m`, `mm` Physical units for an untagged depth raster. |
 | `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 sample. |
 | `minimum_confidence` | `0.1` | Value must be a finite number between 0 and 1. Discard lower confidence. Zero confidence is always invalid. |
-| `surface_tolerance_m` | `0.02` | Value must be a finite number between 0 and 100. Use samples up to this distance behind the nearest trusted Z. |
-| `minimum_support` | `1` | Value must be a whole number between 1 and 4. Require this many views agreeing on the nearest surface. |
+| `surface_policy` | `"nearest"` | `nearest`, `consensus` Use the nearest surface, or choose the largest agreeing group. |
+| `surface_tolerance_m` | `0.02` | Value must be a finite number between 0 and 100. Maximum depth range of one agreeing surface group. |
+| `minimum_support` | `1` | Value must be a whole number between 1 and 4. Require this many views in the chosen surface group. |
 | `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required fused fraction of selected pixels. |
 
 ## Generate Gray-code patterns (`3d.graycode`)
@@ -1209,6 +1210,18 @@ Input `right_mask` — Limit right sampling and correction to supported pixels.
 | `minimum_signal_std` | `0.004` | Value must be a finite number between 1e-06 and 0.25. Minimum standard deviation in each right channel. |
 | `residual_tolerance` | `0.04` | Value must be a finite number between 1e-06 and 1. Largest allowed channel residual in normalized units for an inlier. |
 | `minimum_inlier_ratio` | `0.65` | Value must be a finite number between 0 and 1. Minimum fraction of usable sampled pairs that must agree. |
+
+## Rectified stereo camera geometry (`3d.stereo_rectified_camera`)
+
+3D vision / Stereo
+
+Inputs: `rectification` (data), `left_camera` (data).
+
+Input `rectification` — Calibration from Rectify stereo images, including P1 and R1.
+
+Input `left_camera` — Original left camera used to make this stereo rectification.
+
+No configurable algorithm parameters.
 
 ## Rectify stereo images (`3d.stereo_rectify`)
 

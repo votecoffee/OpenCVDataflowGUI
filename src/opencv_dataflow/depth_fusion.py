@@ -18,8 +18,36 @@ _VIEW_NAMES = ("a", "b", "c", "d")
 _BAND_ROWS = 128
 
 
+def _consensus(eligible, tolerance):
+    # Each candidate is the subset in a closed interval starting at a measured Z.
+    shape = eligible[0][1].shape
+    best_count = np.zeros(shape, np.uint8)
+    best_views = np.zeros(shape, np.uint8)
+    ambiguous = np.zeros(shape, bool)
+    for _, lower, _, lower_active in eligible:
+        upper = lower.astype(np.float64) + tolerance
+        count = np.zeros(shape, np.uint8)
+        members = np.zeros(shape, np.uint8)
+        for view, z, _, active in eligible:
+            within = lower_active & active & (z >= lower) & (z <= upper)
+            count += within
+            members |= within.astype(np.uint8) * _view_bit(view)
+        more = count > best_count
+        tied = (count == best_count) & (members != best_views)
+        ambiguous = (ambiguous | tied) & ~more
+        best_count[more] = count[more]
+        best_views[more] = members[more]
+    best_views[ambiguous] = 0
+    return best_views, ambiguous
+
+
+def _view_bit(name):
+    return 1 << _VIEW_NAMES.index(name)
+
+
 def _fuse_band(views, selection, index, p, counts):
-    nearest = np.full(selection.shape, np.inf, dtype=np.float32)
+    consensus = p["surface_policy"] == "consensus"
+    nearest = None if consensus else np.full(selection.shape, np.inf, dtype=np.float32)
     minimum = float(p["minimum_confidence"])
     tolerance = float(p["surface_tolerance_m"])
     eligible = []
@@ -30,25 +58,34 @@ def _fuse_band(views, selection, index, p, counts):
         if w is not None:
             active &= (w > 0) & (w >= minimum)
         z[~active] = np.inf
-        np.minimum(nearest, z, out=nearest)
+        if nearest is not None:
+            np.minimum(nearest, z, out=nearest)
         counts[name]["eligible_samples"] += int(np.count_nonzero(active))
         eligible.append((name, z, w, active))
 
-    bound = nearest.astype(np.float64) + tolerance
+    if consensus:
+        members, ambiguous = _consensus(eligible, tolerance)
+    else:
+        ambiguous = np.zeros(selection.shape, bool)
+        bound = nearest.astype(np.float64) + tolerance
+    rejected_views = np.zeros(selection.shape, np.uint8)
     total = np.zeros(selection.shape, np.float64)
     weight = np.zeros_like(total)
     support = np.zeros(selection.shape, np.uint8)
     conflict = np.zeros(selection.shape, bool)
     for name, z, w, active in eligible:
-        close = active & (z <= bound)
+        close = (members & _view_bit(name)) != 0 if consensus else active & (z <= bound)
         samples = z[close].astype(np.float64)
         accepted = 1 if w is None else w[close]
         total[close] += samples * accepted
         weight[close] += accepted
         support[close] += 1
-        conflict |= active & ~close
         counts[name]["surface_samples"] += len(samples)
-    return total, weight, support, conflict
+        rejected = active & ~close
+        conflict |= rejected
+        counts[name]["ambiguous_samples"] += int(np.count_nonzero(active & ambiguous))
+        rejected_views |= (rejected & ~ambiguous).astype(np.uint8) * _view_bit(name)
+    return total, weight, support, conflict, ambiguous, rejected_views
 
 
 def _validate_views(block, inputs):
@@ -104,6 +141,8 @@ class FuseRegisteredDepth(Tool3D):
         Port("confidence"),
         Port("support_count"),
         Port("conflict_mask", visual_type="region"),
+        Port("ambiguous_mask", visual_type="region"),
+        Port("rejected_views"),
         Port("report", "data"),
     )
     defaults = {
@@ -111,11 +150,16 @@ class FuseRegisteredDepth(Tool3D):
         "input_units": "m",
         "units_per_sample": 0.001,
         "minimum_confidence": 0.1,
+        "surface_policy": "nearest",
         "surface_tolerance_m": 0.02,
         "minimum_support": 1,
         "minimum_coverage": 0.0,
     }
-    parameter_choices = {"alignment": ("same_frame", "pixel_grid"), "input_units": ("m", "mm")}
+    parameter_choices = {
+        "alignment": ("same_frame", "pixel_grid"),
+        "input_units": ("m", "mm"),
+        "surface_policy": ("nearest", "consensus"),
+    }
     parameter_ranges = {
         "units_per_sample": NumericRange(1e-9, 1000),
         "minimum_confidence": NumericRange(0, 1),
@@ -128,8 +172,9 @@ class FuseRegisteredDepth(Tool3D):
         "input_units": "Physical units for an untagged depth raster.",
         "units_per_sample": "Physical units per raw uint16 sample.",
         "minimum_confidence": "Discard lower confidence. Zero confidence is always invalid.",
-        "surface_tolerance_m": "Use samples up to this distance behind the nearest trusted Z.",
-        "minimum_support": "Require this many views agreeing on the nearest surface.",
+        "surface_policy": "Use the nearest surface, or choose the largest agreeing group.",
+        "surface_tolerance_m": "Maximum depth range of one agreeing surface group.",
+        "minimum_support": "Require this many views in the chosen surface group.",
         "minimum_coverage": "Required fused fraction of selected pixels.",
     }
     input_help = {
@@ -162,23 +207,35 @@ class FuseRegisteredDepth(Tool3D):
         confidence = np.zeros(primary.shape, np.float32)
         support_count = np.zeros(primary.shape, np.uint8)
         conflicts = np.zeros(primary.shape, bool)
+        ambiguous = np.zeros(primary.shape, bool)
+        rejected_views = np.zeros(primary.shape, np.uint8)
         counts = {
-            name: {"view": name, "eligible_samples": 0, "surface_samples": 0}
+            name: {
+                "view": name,
+                "eligible_samples": 0,
+                "surface_samples": 0,
+                "ambiguous_samples": 0,
+            }
             for name, _, _ in views
         }
         for row in range(0, primary.shape[0], _BAND_ROWS):
             index = slice(row, row + _BAND_ROWS)
-            total, weight, support, conflict = _fuse_band(views, selected[index], index, p, counts)
+            total, weight, support, conflict, ties, rejects = _fuse_band(
+                views, selected[index], index, p, counts
+            )
             usable = support >= minimum_support
             np.divide(total, weight, where=usable, out=fused[index])
             np.divide(weight, support, where=usable, out=confidence[index])
             support_count[index] = support
             conflicts[index] = conflict
+            ambiguous[index] = ties
+            rejected_views[index] = rejects
 
         valid = np.isfinite(fused)
         selected_count = int(np.count_nonzero(selected))
         fused_count = int(np.count_nonzero(valid))
-        positive_support = int(np.count_nonzero(support_count))
+        ambiguous_count = int(np.count_nonzero(ambiguous))
+        positive_support = int(np.count_nonzero(support_count)) + ambiguous_count
         coverage = fused_count / selected_count if selected_count else 0.0
         valid_mask = valid.astype(np.uint8) * 255
         conflict_mask = conflicts.astype(np.uint8) * 255
@@ -190,6 +247,9 @@ class FuseRegisteredDepth(Tool3D):
         report = {
             "model": "registered_depth_fusion_v1",
             "units": "m",
+            "surface_policy": p["surface_policy"],
+            "ambiguous_pixels": ambiguous_count,
+            "rejected_view_bits": {name: _view_bit(name) for name, _, _ in views},
             "selected_pixels": selected_count,
             "fused_pixels": fused_count,
             "coverage": coverage,
@@ -199,7 +259,14 @@ class FuseRegisteredDepth(Tool3D):
             "views": [
                 {
                     **row,
-                    "farther_samples": row["eligible_samples"] - row["surface_samples"],
+                    "rejected_samples": (
+                        row["eligible_samples"] - row["surface_samples"] - row["ambiguous_samples"]
+                    ),
+                    **(
+                        {"farther_samples": row["eligible_samples"] - row["surface_samples"]}
+                        if p["surface_policy"] == "nearest"
+                        else {}
+                    ),
                 }
                 for row in counts.values()
             ],
@@ -208,7 +275,7 @@ class FuseRegisteredDepth(Tool3D):
         if self.generate_graphics:
             # Green shows output support and red marks pixels with incompatible surfaces.
             graphics["Fusion support"] = cv2.merge(
-                (np.zeros_like(valid_mask), valid_mask, conflict_mask)
+                (ambiguous.astype(np.uint8) * 255, valid_mask, conflict_mask)
             )
         return Result(
             {
@@ -217,6 +284,8 @@ class FuseRegisteredDepth(Tool3D):
                 "confidence": ImageArray(confidence, "gray"),
                 "support_count": ImageArray(support_count, "gray"),
                 "conflict_mask": ImageArray(conflict_mask, "gray"),
+                "ambiguous_mask": ImageArray(ambiguous.astype(np.uint8) * 255, "gray"),
+                "rejected_views": ImageArray(rejected_views, "gray"),
                 "report": report,
             },
             graphics=graphics,
