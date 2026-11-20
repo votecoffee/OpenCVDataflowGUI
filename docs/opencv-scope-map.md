@@ -324,7 +324,7 @@ Python and five C++ entries without a direct binding.
 | `cv2.TrackerDaSiamRPN`, `cv2.TrackerNano`, `cv2.TrackerVit` | Exposed. Qualify the model assets and lost-target behavior under learned tracking. | S2-40 |
 | `cv::estimateRigidTransform` | Deprecated C++ function. Maintain the supported affine estimators in the existing alignment contract. | S1-48 |
 | `cv2.calibrateCamera`, `cv2.calibrateCameraExtended`, `cv2.initCameraMatrix2D` | Exposed. Initial camera matrix and diagnostics belong to pinhole calibration. | S3-02 |
-| `cv2.calibrateCameraRO`, `cv2.calibrateCameraROExtended` | Exposed. Qualify refined target geometry and its residuals. | S3-109 |
+| `cv2.calibrateCameraRO`, `cv2.calibrateCameraROExtended` | `calibration.refine_target` uses the extended entry point for released or fixed target geometry. Reports scale constraints, coordinate uncertainty and holdout residuals. | S3-109 |
 | `cv2.calibrateMultiview`, `cv2.calibrateMultiviewExtended` | 3d.calibrate_multicamera calls the extended variant for initialization links and per-view errors, using explicit missing-view masks. 3d.validate_multicamera checks a fixed rig with held-out cross-camera predictions. | S3-54 |
 | `cv2.registerCameras`, `cv2.registerCamerasExtended` | Exposed. Verify registration with fixed intrinsics on non-overlapping target observations. | S3-113 |
 | `cv2.stereoCalibrate`, `cv2.stereoCalibrateExtended`, `cv2.fisheye.calibrate`, `cv2.fisheye.stereoCalibrate` | Pinhole stereo fitting uses the extended API for separate per-camera and per-view residuals. The pinhole validator measures cross-camera errors on held-out views. Wide-angle lens fitting uses its own contract. | S3-04, S3-13–S3-14, S3-45 |
@@ -816,7 +816,7 @@ reconstruction contracts; no additional generic matrix tools are needed.
 | Family | Roadmap disposition | Checklist IDs |
 | --- | --- | --- |
 | `Image I/O and reconstruction details` | Cover multipage buffer ports, HDR motion rejection, ternary morphology, and sparse contour extraction as distinct graph workflows. | S1-149–S1-152 |
-| `Camera calibration and image tracking` | Track release-object and metadata-aware board calibration plus sparse RLOF. | S3-109–S3-110, S4-84 |
+| `Camera calibration and image tracking` | Fit released target coordinates with holdout scoring (S3-109). Qualify metadata-aware board calibration and sparse RLOF. | S3-109–S3-110, S4-84 |
 | `Point-cloud metrology and large-scan processing` | Fit metric matched-landmark transforms, use bounded file-backed radius halos for large PLY scans and replay timestamped PLY, PCD and OBJ recordings. Measure pose-relative cross-sections with observed bin widths and coverage. Measure signed height and datum-parallel spread on fixed datum grids. Add calibrated range images. Qualify cylinder and bore fits with a tested solver. | S3-101, S3-103–S3-106, S3-112, S3-115 |
 | `Mesh quality and processing` | Bake registered image textures into existing UVs (S3-102). Inspect indexed topology, measure area and qualify single convex shell volume (S3-107). Reduce indexed triangle meshes for review with bounded displacement and retained boundaries and vertex attributes (S3-108). | S3-102, S3-107–S3-108 |
 

@@ -107,6 +107,17 @@ capture declaration and pixel grid before rectifying. Derived lens maps and
 stereo reprojection preserve the selected revision.
 [Setup and runnable examples](calibration-revisions.md)
 
+**Refine calibration target geometry** fits a pinhole lens and shared target
+coordinates with OpenCV's object-release calibration. Supply ordered complete
+observations of one rigid target and assign separate fitting and holdout views.
+Choose the fixed point and a measured baseline from point 0 to set the scale.
+OpenCV locks both anchor positions and the final point's Z coordinate.
+The target output gives the refined XYZ and standard deviations conditional on
+those locks. On each held-out view the block solves pose from a configured
+subset, then scores the remaining points. The fixed-target mode provides
+a nominal-geometry control with the same input and reporting.
+[Warped target and nominal control](<../examples/opencv tools/refine_calibration_target/README.md>)
+
 ## Review sparse stereo correspondences
 
 **Check epipolar correspondences** accepts ordered left and right point

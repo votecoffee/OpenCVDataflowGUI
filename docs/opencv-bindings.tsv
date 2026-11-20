@@ -1974,7 +1974,7 @@ P3	function	cv2.calcOpticalFlowPyrLK	literal reference	-
 P3	function	cv2.calibrateCamera	literal reference	-
 P3	function	cv2.calibrateCameraExtended	literal reference	-
 P3	function	cv2.calibrateCameraRO	no static reference	-
-P3	function	cv2.calibrateCameraROExtended	no static reference	-
+P3	function	cv2.calibrateCameraROExtended	literal reference	-
 P3	class	cv2.CalibrateCRF	no static reference	-
 P3	method	cv2.CalibrateCRF.process	method name only	-
 P3	class	cv2.CalibrateDebevec	no static reference	-

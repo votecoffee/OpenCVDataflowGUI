@@ -2686,6 +2686,47 @@ Input `region` — Only sample valid pixels inside this source-grid region.
 | `registration` | `"same_frame"` | `same_frame`, `fixed_grid` Fixed grid uses a saved calibration on the same camera pixel grid. Same frame requires the calibration's frame metadata to match. |
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 
+## Refine calibration target geometry (`calibration.refine_target`)
+
+Calibration / Lens distortion
+
+Inputs: `observations` (data).
+
+Input `observations` — A complete, ordered calibration target observation record.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `use_intrinsic_guess` | `false` |  |
+| `fix_principal_point` | `false` |  |
+| `fix_aspect_ratio` | `false` |  |
+| `zero_tangent` | `false` |  |
+| `rational_model` | `false` |  |
+| `thin_prism_model` | `false` |  |
+| `tilted_model` | `false` |  |
+| `fix_k1` | `false` |  |
+| `fix_k2` | `false` |  |
+| `fix_k3` | `false` |  |
+| `fix_k4` | `false` |  |
+| `fix_k5` | `false` |  |
+| `fix_k6` | `false` |  |
+| `fix_focal_length` | `false` |  |
+| `fix_tangential_distortion` | `false` |  |
+| `fix_thin_prism` | `false` |  |
+| `fix_sensor_tilt` | `false` |  |
+| `fit_mode` | `"Release target"` | `Release target`, `Fixed target` Fit shared target coordinates or retain the nominal geometry as a control. |
+| `fixed_point_index` | `0` | Value must be a whole number between 0 and 126. Zero picks an anchor. Otherwise use a zero-based index. |
+| `measured_anchor_distance` | `0.0` | Value must be a finite number between 0 and 1e+06. Distance from point 0 to the chosen point, in target units. |
+| `pose_point_indices` | `[]` | Holdout pose-support rows. Empty uses alternating rows. |
+| `solver` | `"lu"` | `svd`, `lu`, `qr` |
+| `initial_camera_matrix` | `[]` |  |
+| `initial_distortion` | `[]` |  |
+| `max_iterations` | `80` | Value must be a whole number between 1 and 300. |
+| `epsilon` | `1e-10` | Value must be a finite number between 0 and 1. |
+| `max_fit_rms_pixels` | `0.5` | Value must be a finite number at least 1e-09. Maximum pooled fit-view reprojection RMS in pixels. |
+| `max_holdout_rms_pixels` | `0.5` | Value must be a finite number at least 1e-09. Maximum pooled RMS on separate holdout points in pixels. |
+| `max_holdout_view_rms_pixels` | `0.0` | Value must be a finite number at least 0. Maximum RMS of any holdout view. Zero skips this check. |
+| `max_target_shift` | `0.0` | Value must be a finite number between 0 and 1e+06. Largest allowed point shift in target units. Zero skips the limit. |
+
 ## Calibrate robot-world and hand–eye (`calibration.robot_world_hand_eye`)
 
 Calibration / Robot coordinates
@@ -7725,6 +7766,17 @@ Ticket mode and fixed value are common inspector controls.
 | `focal_length` | `200.0` |  |
 | `baseline_m` | `0.12` |  |
 | `seed` | `3` |  |
+
+## Load calibration target observations (`input.target_calibration_observations`)
+
+Input / Calibration
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Ordered fit and holdout observations in a JSON file. |
 
 ## TIFF page sequence (`input.tiff_file`)
 

@@ -423,6 +423,33 @@ def _lens_fit_report(views, calibration, rotations, translations, intrinsic_sd, 
     }
 
 
+def pinhole_fit_options(p, flag_options=CALIB_FLAGS):
+    matrix = (
+        np.asarray(p["initial_camera_matrix"], np.float64) if p["initial_camera_matrix"] else None
+    )
+    distortion = (
+        np.asarray(p["initial_distortion"], np.float64) if p["initial_distortion"] else None
+    )
+    if matrix is not None and (matrix.shape != (3, 3) or not np.isfinite(matrix).all()):
+        raise ValueError("Initial camera matrix must be finite 3x3")
+    if distortion is not None and (
+        distortion.size not in (4, 5, 8, 12, 14) or not np.isfinite(distortion).all()
+    ):
+        raise ValueError("Initial distortion must contain 4,5,8,12 or 14 finite values")
+    if (
+        p["use_intrinsic_guess"] or p["fix_aspect_ratio"] or p["fix_principal_point"]
+    ) and matrix is None:
+        raise ValueError("Selected intrinsic constraints require an initial camera matrix")
+    flags = sum(value for key, value in flag_options.items() if p[key])
+    flags |= {"svd": 0, "lu": cv2.CALIB_USE_LU, "qr": cv2.CALIB_USE_QR}[p["solver"]]
+    criteria = (
+        cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS,
+        integer(p["max_iterations"], "Maximum iterations", 1, 10000),
+        finite(p["epsilon"], "Epsilon", 0),
+    )
+    return matrix, distortion, flags, criteria
+
+
 class LensCalibration(GridCalibrationBlock):
     type_id, title, category = "calibration.lens", "Calibrate lens", "Calibration"
     block_type, subtype = "Calibration", "Lens distortion"
@@ -479,31 +506,7 @@ class LensCalibration(GridCalibrationBlock):
             )
         else:
             object_views, image_views, image_size, names, units = self._grid_views()
-        matrix = (
-            np.asarray(p["initial_camera_matrix"], np.float64)
-            if p["initial_camera_matrix"]
-            else None
-        )
-        distortion = (
-            np.asarray(p["initial_distortion"], np.float64) if p["initial_distortion"] else None
-        )
-        if matrix is not None and (matrix.shape != (3, 3) or not np.isfinite(matrix).all()):
-            raise ValueError("Initial camera matrix must be finite 3x3")
-        if distortion is not None and (
-            distortion.size not in (4, 5, 8, 12, 14) or not np.isfinite(distortion).all()
-        ):
-            raise ValueError("Initial distortion must contain 4,5,8,12 or 14 finite values")
-        if (
-            p["use_intrinsic_guess"] or p["fix_aspect_ratio"] or p["fix_principal_point"]
-        ) and matrix is None:
-            raise ValueError("Selected intrinsic constraints require an initial camera matrix")
-        flags = sum(value for key, value in CALIB_FLAGS.items() if p[key])
-        flags |= {"svd": 0, "lu": cv2.CALIB_USE_LU, "qr": cv2.CALIB_USE_QR}[p["solver"]]
-        criteria = (
-            cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS,
-            integer(p["max_iterations"], "Maximum iterations", 1, 10000),
-            finite(p["epsilon"], "Epsilon", 0),
-        )
+        matrix, distortion, flags, criteria = pinhole_fit_options(p)
         rms, matrix, distortion, rotations, translations, intrinsic_sd, pose_sd, errors = (
             cv2.calibrateCameraExtended(
                 object_views,

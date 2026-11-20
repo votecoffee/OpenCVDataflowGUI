@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Recover repeatable target imperfections",
+      "description": "Synthetic observations by OpenCVDataflowGUI contributors (MIT). These two branches use the same measured 121.2 mm anchor baseline, fitting views and held-out points. Compare released target geometry with the nominal flat control.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "views",
+      "type": "input.target_calibration_observations",
+      "name": "Load calibration target observations",
+      "parameters": {
+        "path": "assets/observations.json"
+      },
+      "position": [
+        0,
+        80
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "release",
+      "type": "calibration.refine_target",
+      "name": "Release target",
+      "description": "Calibrate a pinhole camera with a shared target and score held-out views.",
+      "parameters": {
+        "use_intrinsic_guess": false,
+        "fix_principal_point": false,
+        "fix_aspect_ratio": false,
+        "zero_tangent": false,
+        "rational_model": false,
+        "thin_prism_model": false,
+        "tilted_model": false,
+        "fix_k1": false,
+        "fix_k2": false,
+        "fix_k3": true,
+        "fix_k4": false,
+        "fix_k5": false,
+        "fix_k6": false,
+        "fix_focal_length": false,
+        "fix_tangential_distortion": false,
+        "fix_thin_prism": false,
+        "fix_sensor_tilt": false,
+        "fit_mode": "Release target",
+        "fixed_point_index": 6,
+        "measured_anchor_distance": 121.2,
+        "pose_point_indices": [],
+        "solver": "lu",
+        "initial_camera_matrix": [],
+        "initial_distortion": [],
+        "max_iterations": 80,
+        "epsilon": 1e-10,
+        "max_fit_rms_pixels": 2.0,
+        "max_holdout_rms_pixels": 0.2,
+        "max_holdout_view_rms_pixels": 0.0,
+        "max_target_shift": 0.0
+      },
+      "position": [
+        440,
+        0
+      ],
+      "exposed_inputs": [
+        "observations"
+      ],
+      "exposed_outputs": [
+        "calibration",
+        "target",
+        "report",
+        "holdout_rms"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "nominal",
+      "type": "calibration.refine_target",
+      "name": "Fixed target",
+      "description": "Calibrate a pinhole camera with a shared target and score held-out views.",
+      "parameters": {
+        "use_intrinsic_guess": false,
+        "fix_principal_point": false,
+        "fix_aspect_ratio": false,
+        "zero_tangent": false,
+        "rational_model": false,
+        "thin_prism_model": false,
+        "tilted_model": false,
+        "fix_k1": false,
+        "fix_k2": false,
+        "fix_k3": true,
+        "fix_k4": false,
+        "fix_k5": false,
+        "fix_k6": false,
+        "fix_focal_length": false,
+        "fix_tangential_distortion": false,
+        "fix_thin_prism": false,
+        "fix_sensor_tilt": false,
+        "fit_mode": "Fixed target",
+        "fixed_point_index": 6,
+        "measured_anchor_distance": 121.2,
+        "pose_point_indices": [],
+        "solver": "lu",
+        "initial_camera_matrix": [],
+        "initial_distortion": [],
+        "max_iterations": 80,
+        "epsilon": 1e-10,
+        "max_fit_rms_pixels": 2.0,
+        "max_holdout_rms_pixels": 0.2,
+        "max_holdout_view_rms_pixels": 0.0,
+        "max_target_shift": 0.0
+      },
+      "position": [
+        440,
+        235
+      ],
+      "exposed_inputs": [
+        "observations"
+      ],
+      "exposed_outputs": [
+        "calibration",
+        "target",
+        "report",
+        "holdout_rms"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "views",
+      "output": "observations",
+      "target": "release",
+      "input": "observations"
+    },
+    {
+      "source": "views",
+      "output": "observations",
+      "target": "nominal",
+      "input": "observations"
+    }
+  ]
+}

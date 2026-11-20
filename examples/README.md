@@ -239,6 +239,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Fisheye camera calibration](<opencv tools/fisheye_calibration/README.md>) | Fit a wide-angle camera from eight board views, validate a held-out image and rectify with the fitted profile. |
 | [Omnidirectional camera calibration](<opencv tools/omnidir_calibration/README.md>) | Fit a Mei-model camera, validate a held-out target near the sensor edge and rectify to a perspective grid. |
 | [ChArUco lens calibration](<opencv tools/charuco_lens_calibration/README.md>) | Batch eight target views and fit a lens profile from their visible corners. |
+| [Refine calibration target geometry](<opencv tools/refine_calibration_target/README.md>) | Compare a released warped target with a fixed nominal target on independent views and points. |
 | [Check image samples](<opencv tools/image_validity/README.md>) | Detect a missing depth patch and use the valid-pixel mask to measure the corresponding intensity pixels. |
 | [Check stabilization on a second plane](<opencv tools/stabilization_validation/README.md>) | Detect accumulated drift in a separate inspection region while the background fit still passes. |
 | [Check stabilization on recorded depth variation](<opencv tools/recorded_stabilization_validation/README.md>) | Verify drift rejection and recovery using depth-separated patches in a recorded camera sequence. |

@@ -968,6 +968,7 @@ def builtin_registry():
     from .superpoint_features import SuperPointONNXFeatures
     from .svm_blocks import SVM_BLOCKS
     from .table_sort import SortNumericTable
+    from .target_calibration import LoadTargetCalibrationObservations, RefineCalibrationTarget
     from .template_instances import FindTemplateInstances
     from .tensor_comparison import CompareImageTensors
     from .text_rules import VerifyText
@@ -1063,6 +1064,8 @@ def builtin_registry():
         DetectCharucoBoard,
         GenerateFiducialTarget,
         LensCalibration,
+        LoadTargetCalibrationObservations,
+        RefineCalibrationTarget,
         ValidateLensCalibration,
         CheckChessboardQuality,
         HandEyeCalibration,

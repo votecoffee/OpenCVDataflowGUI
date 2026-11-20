@@ -29,6 +29,9 @@ image matches to align scanlines and emit per-view and shared support masks.
 [Stereo calibration quality](stereo_calibration_quality/README.md) checks
 per-camera fit residuals and cross-camera prediction on held-out targets.
 
+[Refine calibration target geometry](refine_calibration_target/README.md)
+estimates repeatable target deviations and checks held-out reprojection.
+
 [Multi-camera rig calibration](multicamera_rig/README.md) fits a three-view
 chain and validates it on disjoint captures.
 
