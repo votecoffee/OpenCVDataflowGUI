@@ -522,6 +522,13 @@ available in Debug and Balanced.
   quality threshold, and passes curvature in the same row order as the
   accepted cloud. Source diagnostics retain all row positions.
   [Surface quality example](<../examples/custom tools/cloud_surface_quality/README.md>)
+- **Compare scan to reference mesh** measures the closest position on a
+  triangle in an aligned metric mesh. It reports open boundaries separately
+  from unsupported rows and dimensional defects. Signed inspection uses
+  triangle winding and compatible incident normals at shared edges or
+  vertices. A distance limit controls eligible support. Query budgets limit
+  work, and correspondence records preserve scan order and original face IDs.
+  [Reference-panel example](<../examples/custom tools/scan_mesh_comparison/README.md>)
 - **Compare point-cloud dimensions** checks measured and reference points
   in both directions within a metric correspondence radius. It accepts
   aligned m/mm inputs in the same frame. Use Euclidean tolerances or

@@ -221,6 +221,7 @@ _NATIVE_NAMES = {
     "3d.cloud_region_grow": ("region growing", "surface segmentation", "normal curvature"),
     "3d.cloud_model_fit": ("ransac", "fit plane", "fit sphere", "sample consensus"),
     "3d.cloud_surface_quality": ("estimate normals", "curvature", "local PCA"),
+    "3d.scan_mesh_compare": ("scan to mesh", "closest triangle", "surface deviation"),
     "3d.mesh_project": ("triangleRasterize", "triangleRasterizeColor", "triangleRasterizeDepth"),
     "input.mesh": ("obj", "ply", "loadMesh"),
     "output.mesh_ply": ("obj", "ply", "saveMesh"),

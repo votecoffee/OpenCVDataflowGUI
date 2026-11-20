@@ -1453,6 +1453,31 @@ Input `transform` — Rigid source-optical to target-optical pose, in meters or 
 | `emit_region` | `true` | Encode the exact target mask as a reusable scanline region. |
 | `maximum_region_runs` | `100000` | Value must be a whole number between 1 and 1e+06. Bound the exact region encoding. |
 
+## Compare scan to reference mesh (`3d.scan_mesh_compare`)
+
+3D vision / Mesh geometry
+
+Inputs: `scan` (cloud), `reference` (mesh).
+
+Input `scan` — Measured XYZ in m or mm in the reference frame.
+
+Input `reference` — Triangle surface in the same frame. Winding defines outward direction.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `comparison` | `"distance"` | `distance`, `normal` Judge Euclidean distance or signed distance along reference winding. |
+| `maximum_distance_m` | `0.01` | Value must be a finite number between 1e-09 and 1e+12. Inclusive search distance for surface support. |
+| `distance_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Maximum Euclidean deviation in distance mode. |
+| `negative_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Allowed magnitude opposite the local normal. |
+| `positive_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Allowed magnitude along the local normal. |
+| `minimum_support_fraction` | `0.8` | Value must be a finite number between 0 and 1. Minimum scan fraction matched away from open mesh boundaries. |
+| `minimum_in_tolerance_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum in-tolerance fraction of evaluated scan rows. |
+| `minimum_signed_fraction` | `0.95` | Value must be a finite number between 0 and 1. Minimum signed fraction of supported scan rows in normal mode. |
+| `maximum_shared_normal_angle_deg` | `30.0` | Value must be a finite number between 0 and 180. Largest compatible normal angle at shared features. |
+| `max_points` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum number of measured scan points. |
+| `max_triangles` | `100000` | Value must be a whole number between 1 and 250000. Maximum number of input reference triangles. |
+| `max_work` | `10000000` | Value must be a whole number between 1 and 2e+08. Maximum point-to-box and point-to-triangle tests combined. |
+
 ## Separate support plane and foreground (`3d.separate_depth_plane`)
 
 3D vision / RGB-D

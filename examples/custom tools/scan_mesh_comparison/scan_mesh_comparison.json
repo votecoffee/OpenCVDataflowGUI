@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Inspect a scan against a reference surface",
+      "description": "Original synthetic example by OpenCVDataflowGUI contributors (MIT). Known offsets exercise signed tolerances. A split vertex seam, two open-edge hits and an unsupported point exercise coverage.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.mesh",
+      "name": "Load triangle mesh (OBJ / PLY)",
+      "parameters": {
+        "path": "assets/nominal_panel.obj",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "panel_scan"
+      }
+    },
+    {
+      "id": "scan",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/measured_panel.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        270
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "panel_scan"
+      }
+    },
+    {
+      "id": "pass",
+      "type": "3d.scan_mesh_compare",
+      "name": "Allow 2 mm deviation",
+      "description": "Measure scan deviations from triangles and isolate open boundaries.",
+      "parameters": {
+        "comparison": "normal",
+        "maximum_distance_m": 0.004,
+        "distance_tolerance_m": 0.002,
+        "negative_tolerance_m": 0.002,
+        "positive_tolerance_m": 0.002,
+        "minimum_support_fraction": 0.55,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_shared_normal_angle_deg": 30.0,
+        "max_points": 250000,
+        "max_triangles": 100000,
+        "max_work": 10000000
+      },
+      "position": [
+        430,
+        -285
+      ],
+      "exposed_inputs": [
+        "scan",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "defects",
+        "boundary",
+        "unsupported",
+        "correspondences",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "size",
+      "type": "3d.scan_mesh_compare",
+      "name": "Inspect at 1 mm",
+      "description": "Measure scan deviations from triangles and isolate open boundaries.",
+      "parameters": {
+        "comparison": "normal",
+        "maximum_distance_m": 0.004,
+        "distance_tolerance_m": 0.002,
+        "negative_tolerance_m": 0.001,
+        "positive_tolerance_m": 0.001,
+        "minimum_support_fraction": 0.55,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_shared_normal_angle_deg": 30.0,
+        "max_points": 250000,
+        "max_triangles": 100000,
+        "max_work": 10000000
+      },
+      "position": [
+        430,
+        0
+      ],
+      "exposed_inputs": [
+        "scan",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "defects",
+        "boundary",
+        "unsupported",
+        "correspondences",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coverage",
+      "type": "3d.scan_mesh_compare",
+      "name": "Require 80% usable scan support",
+      "description": "Measure scan deviations from triangles and isolate open boundaries.",
+      "parameters": {
+        "comparison": "normal",
+        "maximum_distance_m": 0.004,
+        "distance_tolerance_m": 0.002,
+        "negative_tolerance_m": 0.002,
+        "positive_tolerance_m": 0.002,
+        "minimum_support_fraction": 0.8,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_shared_normal_angle_deg": 30.0,
+        "max_points": 250000,
+        "max_triangles": 100000,
+        "max_work": 10000000
+      },
+      "position": [
+        430,
+        285
+      ],
+      "exposed_inputs": [
+        "scan",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "defects",
+        "boundary",
+        "unsupported",
+        "correspondences",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "mesh",
+      "target": "pass",
+      "input": "reference"
+    },
+    {
+      "source": "scan",
+      "output": "cloud",
+      "target": "pass",
+      "input": "scan"
+    },
+    {
+      "source": "reference",
+      "output": "mesh",
+      "target": "size",
+      "input": "reference"
+    },
+    {
+      "source": "scan",
+      "output": "cloud",
+      "target": "size",
+      "input": "scan"
+    },
+    {
+      "source": "reference",
+      "output": "mesh",
+      "target": "coverage",
+      "input": "reference"
+    },
+    {
+      "source": "scan",
+      "output": "cloud",
+      "target": "coverage",
+      "input": "scan"
+    }
+  ]
+}

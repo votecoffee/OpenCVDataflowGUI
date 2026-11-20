@@ -969,6 +969,7 @@ def builtin_registry():
     from .tracking_appearance import DescribeBoxAppearance
     from .translation_registration import EstimateTranslation
     from .triangulation import DelaunayTriangulation
+    from .mesh_comparison import CompareScanToMesh
     from .mesh_projection import ProjectMesh
     from .tsdf_mesh import TSDF_MESH_BLOCKS
     from .uncalibrated_stereo import RectifyUncalibratedStereo
@@ -1390,6 +1391,7 @@ def builtin_registry():
         *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         ProjectMesh,
+        CompareScanToMesh,
         StereoDemo,
     ):
         registry.register(block)

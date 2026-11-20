@@ -53,7 +53,7 @@ def _nearest_rows(source, target, radius, tie_tolerance, cancelled):
     return result
 
 
-def _statistics(values):
+def deviation_statistics(values):
     if not len(values):
         return None
     return {
@@ -142,8 +142,8 @@ def _compare_direction(
             "evaluated_points": tested_count,
             "in_tolerance_points": good_count,
             "in_tolerance_fraction": good_count / tested_count if tested_count else None,
-            "euclidean_m": _statistics(nearest.distance[matched]),
-            "signed_m": _statistics(signed[usable_sign]),
+            "euclidean_m": deviation_statistics(nearest.distance[matched]),
+            "signed_m": deviation_statistics(signed[usable_sign]),
         },
     )
 
