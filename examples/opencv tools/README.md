@@ -97,6 +97,9 @@ and independent references for two disconnected regions.
 [Metric silhouette pose tracking](silhouette_tracking/README.md) follows a known
 part in video and compares its recovered pose against synthetic ground truth.
 
+[RGB-D template pose](linemod_pose/README.md) selects a trained view and verifies
+metric translation on an aligned depth grid.
+
 [Phase-shift fringe replay](phase_shift/README.md) recovers absolute subpixel
 projector coordinates and marks low-signal and inconsistent captures.
 

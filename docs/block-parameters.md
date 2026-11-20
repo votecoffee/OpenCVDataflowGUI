@@ -688,6 +688,36 @@ Input `landmark_ids` — Persistent cross-view landmark IDs in point order, such
 | --- | --- | --- |
 | `view_id` | `"view"` | Unique capture ID in the group of calibrated views. |
 
+## Find RGB-D template pose (`3d.match_linemod_pose`)
+
+3D vision / RGB-D pose templates
+
+Inputs: `image` (image), `depth` (depth), `camera` (data), `mask` (image, optional), `region` (region, optional), `model` (data, optional).
+
+Input `image` — Undistorted uint8 image on the camera pixel grid.
+
+Input `depth` — Metric camera-Z depth registered to Image.
+
+Input `camera` — Pinhole intrinsics for the full undistorted RGB-D grid.
+
+Input `mask` — Optional uint8 selection on this grid.
+
+Input `region` — Optional region intersected with the mask.
+
+Input `model` — A trained bank from Train RGB-D pose template.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Require registered frames, or declare separately loaded grids aligned. |
+| `trained_model` | `{}` | Reusable training output. A connected model takes precedence. |
+| `minimum_similarity` | `82.0` | Value must be a finite number between 50 and 99. Minimum native LINEMOD similarity in percent. |
+| `max_candidates` | `32` | Value must be a whole number between 1 and 64. Maximum native proposals to verify with appearance and metric depth. |
+| `refine_radius_px` | `10` | Value must be a whole number between 0 and 24. Local patch search radius around the native grid match. |
+| `minimum_patch_correlation` | `0.65` | Value must be a finite number between 0.1 and 1. Minimum median normalized color-patch correlation. |
+| `maximum_anchor_error_mm` | `5.0` | Value must be a finite number between 0.5 and 100. Maximum 3D distance from the median anchor displacement. |
+| `minimum_anchor_fraction` | `0.65` | Value must be a finite number between 0.25 and 1. Minimum fraction of trained anchors supporting the same shift. |
+| `maximum_reprojection_rms_px` | `2.5` | Value must be a finite number between 0.1 and 20. Maximum return projection error at the inlier anchors. |
+
 ## RGB-D frame odometry (`3d.odometry`)
 
 3D vision / RGB-D motion
@@ -1276,6 +1306,38 @@ Input `reset` — True clears tracking and tries the seed on this frame.
 | `maximum_reprojection_rms_px` | `1.25` | Value must be a finite number between 0.05 and 32. Maximum RMS error along the edge normals. |
 | `pose_updates` | `4` | Value must be a whole number between 1 and 20. Number of silhouette correspondence and pose-fit updates per frame. |
 | `fit_iterations` | `24` | Value must be a whole number between 1 and 80. Maximum least-squares evaluations per pose update. |
+
+## Train RGB-D pose template (`3d.train_linemod_pose`)
+
+3D vision / RGB-D pose templates
+
+Inputs: `image` (image), `depth` (depth), `camera` (data), `mask` (image, optional), `region` (region, optional), `pose` (data), `previous_model` (data, optional).
+
+Input `image` — Undistorted uint8 image on the camera pixel grid.
+
+Input `depth` — Metric camera-Z depth registered to Image.
+
+Input `camera` — Pinhole intrinsics for the full undistorted RGB-D grid.
+
+Input `mask` — This and/or Region must isolate the known object for training.
+
+Input `region` — Optional region intersected with the mask.
+
+Input `pose` — Verified object-to-camera pose in meters or millimeters for this view.
+
+Input `previous_model` — Optional earlier views of this object on the same calibrated grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Require registered frames, or declare separately loaded grids aligned. |
+| `view_name` | `"reference"` | Unique name for this object orientation. Replaces a view with the same name. |
+| `color_weak_threshold` | `10.0` | Value must be a finite number between 1 and 250. Discard weaker gradients when quantizing. |
+| `color_strong_threshold` | `55.0` | Value must be a finite number between 1 and 500. Minimum color gradient magnitude for training features. |
+| `color_features` | `63` | Value must be a whole number between 8 and 63. Fine-level gradient features. The coarse level uses half as many. |
+| `depth_features` | `63` | Value must be a whole number between 8 and 63. Fine-level normal features. The coarse level uses half as many. |
+| `normal_max_range_mm` | `2000` | Value must be a whole number between 100 and 10000. Ignore samples at or beyond this camera-Z distance. |
+| `normal_max_difference_mm` | `50` | Value must be a whole number between 1 and 500. Maximum depth jump used to estimate a local normal. |
+| `normal_extract_threshold` | `2` | Value must be a whole number between 1 and 24. Minimum distance from a change of quantized normal. |
 
 ## Triangulate 3D points (`3d.triangulate`)
 

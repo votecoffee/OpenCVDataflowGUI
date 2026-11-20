@@ -525,6 +525,14 @@ and a current seed to resume. Use the compact report and selectable mesh
 and matched-edge drawings to inspect the fit.
 [Recorded silhouette example](<../examples/opencv tools/silhouette_tracking/README.md>)
 
+**Train RGB-D pose template** teaches a named orientation from an isolated
+object, aligned color and metric depth, and a known pose. Chain training
+blocks to add views. **Find RGB-D template pose** searches the full calibrated
+grid or a selected region, selects a trained rotation and recovers metric
+translation from aligned depth. It checks appearance, anchor support and
+reprojection before outputting the ticketed pose.
+[Two-view LINEMOD example](<../examples/opencv tools/linemod_pose/README.md>)
+
 **Calibrate camera and projector** fits the camera-to-projector transform
 from matched target views on two pinhole grids. It can refine projector
 intrinsics on their own grid while keeping camera intrinsics fixed.

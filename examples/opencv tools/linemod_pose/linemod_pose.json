@@ -1,0 +1,585 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Find a part from calibrated RGB-D views",
+      "description": "Synthetic plate, captures and calibration by OpenCVDataflowGUI contributors (MIT). Two isolated views teach the part. The search frame changes position and brightness.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 535.0,
+        "fy": 529.0,
+        "cx": 210.0,
+        "cy": 166.0,
+        "width": 421,
+        "height": 333,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "registered_optical"
+      },
+      "position": [
+        0,
+        1640
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_straight",
+      "type": "3d.train_linemod_pose",
+      "name": "Train RGB-D pose template",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "view_name": "straight",
+        "color_weak_threshold": 10.0,
+        "color_strong_threshold": 55.0,
+        "color_features": 63,
+        "depth_features": 63,
+        "normal_max_range_mm": 2000,
+        "normal_max_difference_mm": 50,
+        "normal_extract_threshold": 2
+      },
+      "position": [
+        430,
+        260
+      ],
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "mask",
+        "region",
+        "pose",
+        "previous_model"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "straight_image",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/straight_color.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "straight"
+      }
+    },
+    {
+      "id": "straight_depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/straight_depth.png",
+        "path_base": "project",
+        "units_per_sample": 0.001,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 5.0
+      },
+      "position": [
+        0,
+        165
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "straight"
+      }
+    },
+    {
+      "id": "straight_mask",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/straight_mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        330
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "straight"
+      }
+    },
+    {
+      "id": "straight_pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.11000000000000008,
+          -0.1800000000000001,
+          8.738282259468527e-19
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          0.66
+        ],
+        "source_frame": "marker_plate",
+        "target_frame": "registered_optical",
+        "units": "m"
+      },
+      "position": [
+        0,
+        495
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_quarter_turn",
+      "type": "3d.train_linemod_pose",
+      "name": "Train RGB-D pose template",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "view_name": "quarter_turn",
+        "color_weak_threshold": 10.0,
+        "color_strong_threshold": 55.0,
+        "color_features": 63,
+        "depth_features": 63,
+        "normal_max_range_mm": 2000,
+        "normal_max_difference_mm": 50,
+        "normal_extract_threshold": 2
+      },
+      "position": [
+        730,
+        960
+      ],
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "mask",
+        "region",
+        "pose",
+        "previous_model"
+      ],
+      "exposed_outputs": [
+        "model",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "quarter_turn_image",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/quarter_turn_color.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        660
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "quarter_turn"
+      }
+    },
+    {
+      "id": "quarter_turn_depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/quarter_turn_depth.png",
+        "path_base": "project",
+        "units_per_sample": 0.001,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 5.0
+      },
+      "position": [
+        0,
+        825
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "quarter_turn"
+      }
+    },
+    {
+      "id": "quarter_turn_mask",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/quarter_turn_mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        990
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "quarter_turn"
+      }
+    },
+    {
+      "id": "quarter_turn_pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.2276892390968824,
+          -0.05495947150614404,
+          1.5644432042289185
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          0.66
+        ],
+        "source_frame": "marker_plate",
+        "target_frame": "registered_optical",
+        "units": "m"
+      },
+      "position": [
+        0,
+        1155
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "3d.match_linemod_pose",
+      "name": "Find RGB-D template pose",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "trained_model": {},
+        "minimum_similarity": 82.0,
+        "max_candidates": 32,
+        "refine_radius_px": 10,
+        "minimum_patch_correlation": 0.65,
+        "maximum_anchor_error_mm": 5.0,
+        "minimum_anchor_fraction": 0.65,
+        "maximum_reprojection_rms_px": 2.5
+      },
+      "position": [
+        1040,
+        1170
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "depth",
+        "camera",
+        "mask",
+        "region",
+        "model"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "candidates",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "RGB-D candidates and pose"
+    },
+    {
+      "id": "search_image",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/search_color.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        1320
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "search"
+      }
+    },
+    {
+      "id": "search_depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/search_depth.png",
+        "path_base": "project",
+        "units_per_sample": 0.001,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 5.0
+      },
+      "position": [
+        0,
+        1485
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "search"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": "straight_image",
+      "output": "image",
+      "target": "train_straight",
+      "input": "image"
+    },
+    {
+      "source": "straight_depth",
+      "output": "depth",
+      "target": "train_straight",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "train_straight",
+      "input": "camera"
+    },
+    {
+      "source": "straight_mask",
+      "output": "image",
+      "target": "train_straight",
+      "input": "mask"
+    },
+    {
+      "source": "straight_pose",
+      "output": "transform",
+      "target": "train_straight",
+      "input": "pose"
+    },
+    {
+      "source": "quarter_turn_image",
+      "output": "image",
+      "target": "train_quarter_turn",
+      "input": "image"
+    },
+    {
+      "source": "quarter_turn_depth",
+      "output": "depth",
+      "target": "train_quarter_turn",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "train_quarter_turn",
+      "input": "camera"
+    },
+    {
+      "source": "quarter_turn_mask",
+      "output": "image",
+      "target": "train_quarter_turn",
+      "input": "mask"
+    },
+    {
+      "source": "quarter_turn_pose",
+      "output": "transform",
+      "target": "train_quarter_turn",
+      "input": "pose"
+    },
+    {
+      "source": "train_straight",
+      "output": "model",
+      "target": "train_quarter_turn",
+      "input": "previous_model"
+    },
+    {
+      "source": "search_image",
+      "output": "image",
+      "target": "match",
+      "input": "image"
+    },
+    {
+      "source": "search_depth",
+      "output": "depth",
+      "target": "match",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "match",
+      "input": "camera"
+    },
+    {
+      "source": "train_quarter_turn",
+      "output": "model",
+      "target": "match",
+      "input": "model"
+    }
+  ]
+}

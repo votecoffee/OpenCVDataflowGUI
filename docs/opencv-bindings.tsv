@@ -3287,26 +3287,26 @@ P3	method	cv2.line_descriptor_LSDDetector.createLSDDetector	alias	cv2.line_descr
 P3	method	cv2.line_descriptor_LSDDetector.createLSDDetectorWithParams	alias	cv2.line_descriptor.LSDDetector.createLSDDetectorWithParams
 P3	method	cv2.line_descriptor_LSDDetector.detect	alias	cv2.line_descriptor.LSDDetector.detect
 P3	class	cv2.line_descriptor_LSDParam	alias	cv2.line_descriptor.LSDParam
-P3	class	cv2.linemod.ColorGradient	no static reference	-
-P3	method	cv2.linemod.ColorGradient.create	method name only	-
+P3	class	cv2.linemod.ColorGradient	literal reference	-
+P3	method	cv2.linemod.ColorGradient.create	literal reference	-
 P3	function	cv2.linemod.ColorGradient_create	no static reference	-
 P3	function	cv2.linemod.colormap	no static reference	-
-P3	class	cv2.linemod.DepthNormal	no static reference	-
-P3	method	cv2.linemod.DepthNormal.create	method name only	-
+P3	class	cv2.linemod.DepthNormal	literal reference	-
+P3	method	cv2.linemod.DepthNormal.create	literal reference	-
 P3	function	cv2.linemod.DepthNormal_create	no static reference	-
-P3	class	cv2.linemod.Detector	no static reference	-
+P3	class	cv2.linemod.Detector	literal reference	-
 P3	method	cv2.linemod.Detector.addSyntheticTemplate	no static reference	-
-P3	method	cv2.linemod.Detector.addTemplate	no static reference	-
+P3	method	cv2.linemod.Detector.addTemplate	method name only	-
 P3	method	cv2.linemod.Detector.classIds	no static reference	-
 P3	method	cv2.linemod.Detector.getModalities	no static reference	-
 P3	method	cv2.linemod.Detector.getT	no static reference	-
-P3	method	cv2.linemod.Detector.getTemplates	no static reference	-
+P3	method	cv2.linemod.Detector.getTemplates	method name only	-
 P3	method	cv2.linemod.Detector.match	method name only	-
 P3	method	cv2.linemod.Detector.numClasses	no static reference	-
 P3	method	cv2.linemod.Detector.numTemplates	no static reference	-
 P3	method	cv2.linemod.Detector.pyramidLevels	no static reference	-
 P3	method	cv2.linemod.Detector.read	method name only	-
-P3	method	cv2.linemod.Detector.readClasses	no static reference	-
+P3	method	cv2.linemod.Detector.readClasses	method name only	-
 P3	method	cv2.linemod.Detector.writeClasses	no static reference	-
 P3	function	cv2.linemod.drawFeatures	no static reference	-
 P3	class	cv2.linemod.Feature	no static reference	-

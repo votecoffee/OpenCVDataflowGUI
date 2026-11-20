@@ -775,6 +775,7 @@ def builtin_registry():
     from .line_pair import MeasureLinePair
     from .linear_program import SolveLinearProgram
     from .linear_system import SolveLinearSystem
+    from .linemod_pose import MatchLINEMODPose, TrainLINEMODPose
     from .local_anomaly import LOCAL_ANOMALY_BLOCKS
     from .local_binary_patterns import LocalBinaryPatterns
     from .local_features import LOCAL_FEATURE_BLOCKS
@@ -1352,6 +1353,8 @@ def builtin_registry():
         *PHASE_SHIFT_BLOCKS,
         UnwrapFringePhase,
         TrackObjectSilhouette,
+        TrainLINEMODPose,
+        MatchLINEMODPose,
         *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         StereoDemo,

@@ -109,7 +109,7 @@ callability and a representative fixture for each build-dependent commitment.
 | `fisheye`, `omnidir`, `multicalib` | Lens models, camera geometry and rig fitting. | S3-04–S3-05, S3-09, S3-14, S3-54–S3-55, S3-70 |
 | `ft` | Python namespace for fuzzy image transforms. | S4-70 |
 | `legacy` | Compatibility wrappers for older interfaces and trackers. Cover new work under the current graph APIs. | — |
-| `linemod` | Image/depth template matching for metric object pose. | S3-69 |
+| `linemod` | Train RGB-D views and select a rotation with LINEMOD. Verify metric translation and reprojection from registered depth. | S3-69 |
 | `motempl` | Motion history images and motion direction. | S4-55 |
 | `ogl` | Native OpenGL display interop. The application viewer owns display. | — |
 | `ppf_match_3d` | Python namespace for point-pair surface matching. | S3-22, S3-58 |
@@ -573,7 +573,7 @@ binding presence. For example, the wheel exposes DynaFu but rejects construction
 | `cv2.structured_light.GrayCodePattern`, `cv::structured_light::GrayCodePattern::Params`, `cv2.structured_light.SinusoidalPattern`, `cv2.structured_light.SinusoidalPattern.Params`, `cv2.structured_light.StructuredLightPattern` | Group pattern and parameter types with decoding, confidence masks and projector correspondence. | S3-28–S3-30, S3-67 |
 | `cv2.colored_kinfu.ColoredKinFu`, `cv2.colored_kinfu.Params`, `cv2.kinfu.KinFu`, `cv2.kinfu.Params`, `cv2.kinfu.VolumeParams`, `cv2.large_kinfu.LargeKinfu`, `cv2.large_kinfu.Params`, `cv2.large_kinfu.VolumeParams` | Rigid tracking, color and volume size follow their respective fusion workflows. | S3-26–S3-27, S3-71, S3-93–S3-95 |
 | `cv2.dynafu.DynaFu` | The class is present but constructor execution is disabled in the pinned wheel. Use a qualified backend or equivalent before claiming support. | S3-123 |
-| `cv2.linemod.ColorGradient`, `cv2.linemod.DepthNormal`, `cv2.linemod.Detector`, `cv2.linemod.Feature`, `cv2.linemod.Match`, `cv2.linemod.Modality`, `cv2.linemod.QuantizedPyramid`, `cv2.linemod.Template`, `cv2.linemod.colormap`, `cv2.linemod.drawFeatures`, `cv2.linemod.getDefaultLINE`, `cv2.linemod.getDefaultLINEMOD` | Modalities, templates, match records and graphics stay with the trained RGB-D pose contract. | S3-69 |
+| `cv2.linemod.ColorGradient`, `cv2.linemod.DepthNormal`, `cv2.linemod.Detector`, `cv2.linemod.Feature`, `cv2.linemod.Match`, `cv2.linemod.Modality`, `cv2.linemod.QuantizedPyramid`, `cv2.linemod.Template`, `cv2.linemod.colormap`, `cv2.linemod.drawFeatures`, `cv2.linemod.getDefaultLINE`, `cv2.linemod.getDefaultLINEMOD` | 3d.train_linemod_pose and 3d.match_linemod_pose use native color/depth training and matching, persistent view metadata, and registered metric pose checks. | S3-69 |
 
 [Core source header](https://github.com/opencv/opencv/blob/5.0.0/modules/core/include/opencv2/core.hpp),
 [extended image processing](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/ximgproc/include/opencv2),
