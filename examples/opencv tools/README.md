@@ -73,6 +73,9 @@ range images with confidence and retains a narrow foreground.
 [Camera depth evaluation](depth_reference/README.md) checks mixed-unit depth
 error, validity and coverage over a known step.
 
+[Calibrated depth silhouette](depth_silhouette/README.md) measures visible
+length, width and thickness for two raised parts on a tilted datum.
+
 [Depth component measurement](depth_components/README.md) labels touching
 parts at different depths and filters the reconstructed mask by metric width.
 

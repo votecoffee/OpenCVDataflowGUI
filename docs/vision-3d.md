@@ -361,6 +361,16 @@ such as `width_m`, and **Mask from filtered labels** with the corresponding
 Labels output to rebuild the selected source mask.
 [Touching-parts example](<../examples/opencv tools/depth_components/README.md>)
 
+**Measure calibrated depth silhouette** uses a mask of one visible top face,
+pinhole depth, and a metric support plane in the depth camera frame. It
+back-projects usable boundary pixel footprints and measures their minimum-area
+rectangle on the datum. Length is the longer side and width the shorter
+side. Thickness is the median perpendicular height above the datum. The
+block reports the exact invalid boundary selection and distinguishes missing
+depth, rejected height and unusable corner rays. Face coverage, boundary
+coverage and the image border policy determine whether dimensions are emitted.
+[Tilted raised-parts example](<../examples/opencv tools/depth_silhouette/README.md>)
+
 **Depth to point cloud** calls OpenCV's RGB-D projection using undistorted
 pinhole intrinsics. `DepthArray` supplies its declared m/mm units. Untagged
 integer depths use the configured units-per-sample; untagged floats use the

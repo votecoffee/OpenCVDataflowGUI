@@ -680,6 +680,7 @@ def builtin_registry():
     from .depth_fusion import FuseRegisteredDepth
     from .depth_plane import SeparateDepthPlane
     from .depth_region_projection import ReprojectDepthRegion
+    from .depth_silhouette import MeasureDepthSilhouette
     from .depth_smoothing import SmoothDepth
     from .detection_decode import DecodeDetections
     from .detection_evaluation import EvaluateDetections
@@ -1053,6 +1054,7 @@ def builtin_registry():
         ReprojectDepthRegion,
         SeparateDepthPlane,
         MeasureDepthComponents,
+        MeasureDepthSilhouette,
         LoadCalibration,
         SaveCalibration,
         *PROCESSING_BLOCKS,

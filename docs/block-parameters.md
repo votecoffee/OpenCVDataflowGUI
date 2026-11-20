@@ -352,6 +352,32 @@ Inputs: `depth` (depth), `camera` (data), `image` (image, optional), `mask` (ima
 | `sample_step` | `2` |  |
 | `max_points` | `200000` |  |
 
+## Measure calibrated depth silhouette (`3d.depth_silhouette`)
+
+3D vision / Depth
+
+Inputs: `depth` (depth), `camera` (data), `plane` (data), `mask` (image), `region` (data, optional).
+
+Input `depth` — Positive camera Z on an undistorted pinhole grid.
+
+Input `camera` — Intrinsics for this depth grid and a named metric camera frame.
+
+Input `plane` — Metric support datum oriented toward the camera.
+
+Input `mask` — One complete visible top silhouette, including cells with missing depth samples.
+
+Input `region` — Optional intersection with the silhouette mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_height_m` | `0.001` | Value must be a finite number between 0 and 1000. Reject samples at or below this distance in front of the datum. |
+| `minimum_boundary_coverage` | `0.9` | Value must be a finite number between 0 and 1. Required fraction of boundary pixels usable in the box. |
+| `minimum_face_coverage` | `0.7` | Value must be a finite number between 0 and 1. Required fraction of selected face pixels above the datum. |
+| `minimum_face_pixels` | `16` | Value must be a whole number between 3 and 2.1e+06. Minimum retained face pixels used for the median thickness. |
+| `reject_image_border` | `true` | Withhold dimensions when the silhouette touches the image edge. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for untagged depth. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 count. |
+
 ## Stereo BM / SGBM disparity (`3d.disparity`)
 
 3D vision / Stereo

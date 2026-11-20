@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Measure two raised parts on a tilted datum",
+      "description": "Original analytic depth raster by OpenCVDataflowGUI contributors (MIT). Known part A is 70 \u00d7 35 \u00d7 12 mm and part B is 46 \u00d7 24 \u00d7 20 mm. The masks include the edge pixels with missing depth.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/raised_parts.png",
+        "path_base": "project",
+        "units_per_sample": 0.1,
+        "units": "mm",
+        "display_min": 720,
+        "display_max": 950
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 2600.0,
+        "fy": 2480.0,
+        "cx": 639.5,
+        "cy": 471.5,
+        "width": 1280,
+        "height": 944,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "depth_optical"
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "datum",
+      "type": "3d.separate_depth_plane",
+      "name": "Separate support plane and foreground",
+      "parameters": {
+        "inlier_tolerance_m": 0.00025,
+        "foreground_min_m": 0.003,
+        "minimum_inliers": 30,
+        "minimum_inlier_fraction": 0.55,
+        "maximum_fit_samples": 4096,
+        "maximum_trials": 192,
+        "random_seed": 0,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        330,
+        345
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "plane",
+        "signed_distance_m",
+        "plane_mask",
+        "foreground_mask",
+        "foreground_depth",
+        "valid_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "part_a_silhouette",
+      "type": "region.shape",
+      "name": "Full silhouette 1",
+      "parameters": {
+        "shape": "polygon",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            334,
+            291
+          ],
+          [
+            531,
+            388
+          ],
+          [
+            483,
+            477
+          ],
+          [
+            284,
+            381
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "part_a",
+      "type": "3d.depth_silhouette",
+      "name": "Measure part 1",
+      "parameters": {
+        "minimum_height_m": 0.001,
+        "minimum_boundary_coverage": 0.9,
+        "minimum_face_coverage": 0.7,
+        "minimum_face_pixels": 16,
+        "reject_image_border": true,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        730,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "plane",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "length_m",
+        "width_m",
+        "thickness_m",
+        "boundary_mask",
+        "invalid_boundary_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "part_b_silhouette",
+      "type": "region.shape",
+      "name": "Full silhouette 2",
+      "parameters": {
+        "shape": "polygon",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            756,
+            579
+          ],
+          [
+            868,
+            504
+          ],
+          [
+            911,
+            563
+          ],
+          [
+            800,
+            638
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330,
+        590
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "part_b",
+      "type": "3d.depth_silhouette",
+      "name": "Measure part 2",
+      "parameters": {
+        "minimum_height_m": 0.001,
+        "minimum_boundary_coverage": 0.9,
+        "minimum_face_coverage": 0.7,
+        "minimum_face_pixels": 16,
+        "reject_image_border": true,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        730,
+        330
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "plane",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "length_m",
+        "width_m",
+        "thickness_m",
+        "boundary_mask",
+        "invalid_boundary_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "datum",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "datum",
+      "input": "camera"
+    },
+    {
+      "source": "depth",
+      "output": "preview",
+      "target": "part_a_silhouette",
+      "input": "image"
+    },
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "part_a",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "part_a",
+      "input": "camera"
+    },
+    {
+      "source": "datum",
+      "output": "plane",
+      "target": "part_a",
+      "input": "plane"
+    },
+    {
+      "source": "part_a_silhouette",
+      "output": "mask",
+      "target": "part_a",
+      "input": "mask"
+    },
+    {
+      "source": "depth",
+      "output": "preview",
+      "target": "part_b_silhouette",
+      "input": "image"
+    },
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "part_b",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "part_b",
+      "input": "camera"
+    },
+    {
+      "source": "datum",
+      "output": "plane",
+      "target": "part_b",
+      "input": "plane"
+    },
+    {
+      "source": "part_b_silhouette",
+      "output": "mask",
+      "target": "part_b",
+      "input": "mask"
+    }
+  ]
+}
