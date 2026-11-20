@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 37 | 25 | 69 | 131 | 28.2% |
+| 3. 3D imagery and point clouds | 38 | 24 | 69 | 131 | 29.0% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 292 | 29 | 149 | 470 | 62.1% |
+| **Overall** | 293 | 28 | 149 | 470 | 62.3% |
 
 <!-- coverage-summary:end -->
 
@@ -432,7 +432,7 @@ fixture or result needed to close the item.
 | S3-16 | Stereo confidence and filtering | ximgproc.createRightMatcher, createDisparityWLSFilter, left–right consistency | Complete | 3d.disparity. Verify confidence on known correspondences and occlusion. |
 | S3-17 | Disparity-to-depth reprojection | reprojectImageTo3D | Complete | 3d.reproject. Known baseline and depth plane, retained pixel positions and masks. |
 | S3-18 | RGB-D depth and color registration | registerDepth, intrinsic and pose transforms | Complete | image.rgbd, 3d.register_depth. Pair color and depth and transform metric depth to the declared camera grid. |
-| S3-19 | Depth cleanup and edge-aware smoothing | Invalid-depth masks, hole fill, joint bilateral or guided filtering | Partial | 3d.fill_depth_holes fills small gaps. Validate a depth-aware smoother at a foreground edge with invalid samples and confidence. |
+| S3-19 | Depth cleanup and edge-aware smoothing | Invalid-depth masks, hole fill, ximgproc.jointBilateralFilter | Complete | 3d.fill_depth_holes identifies estimated pixels. 3d.smooth_depth excludes invalid and low-confidence samples and keeps the source grid and units. The [depth-step example](<../examples/opencv tools/depth_smoothing/README.md>) verifies noise reduction, edge preservation, and cloud reconstruction without rejected samples. |
 | S3-20 | Organized depth normals | RgbdNormals | Complete | 3d.depth_normals. Verify normal orientation, pixel correspondence and invalid samples on depth planes. |
 | S3-21 | PLY and ASCII PCD cloud interchange and preview | PLY, ASCII PCD, point attributes and orthographic preview | Complete | input.cloud, output.cloud, 3d.cloud_render. Round-trip imported or camera-derived clouds and display a bounded sample. |
 | S3-22 | Camera surface registration | Point-to-plane ICP, point-pair feature detector | Complete | 3d.icp, 3d.ppf_train, 3d.ppf_match. Align two camera-derived surfaces and verify the recovered pose and score. |

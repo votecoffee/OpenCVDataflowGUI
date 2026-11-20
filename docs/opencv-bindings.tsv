@@ -1533,7 +1533,7 @@ P2	class	cv2.ximgproc.GuidedFilter	no static reference	-
 P2	function	cv2.ximgproc.guidedFilter	literal reference	-
 P2	method	cv2.ximgproc.GuidedFilter.filter	method name only	-
 P2	function	cv2.ximgproc.HoughPoint2Line	no static reference	-
-P2	function	cv2.ximgproc.jointBilateralFilter	no static reference	-
+P2	function	cv2.ximgproc.jointBilateralFilter	literal reference	-
 P2	function	cv2.ximgproc.l0Smooth	no static reference	-
 P2	function	cv2.ximgproc.niBlackThreshold	literal reference	-
 P2	function	cv2.ximgproc.PeiLinNormalization	no static reference	-

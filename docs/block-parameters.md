@@ -557,6 +557,28 @@ Inputs: `disparity` (image), `rectification` (data), `image` (image, optional), 
 | `min_depth` | `0.001` |  |
 | `max_depth` | `100.0` |  |
 
+## Smooth depth while preserving edges (`3d.smooth_depth`)
+
+3D vision / Depth
+
+Inputs: `depth` (depth), `confidence` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `confidence` — Aligned monochrome float in [0, 1] or uint8/uint16 full scale. Positive confidence weights neighbors.
+
+Input `mask` — Limit writes to selected pixels. Trusted depth outside the selection can contribute.
+
+Input `region` — Limit writes to a region, intersecting it with the mask if supplied.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius` | `4` | Value must be a whole number between 1 and 32. Neighborhood radius in pixels, giving a diameter of 2 × radius + 1. |
+| `sigma_space_px` | `2.5` | Value must be a finite number between 0.01 and 100. Spatial Gaussian width in pixels. |
+| `sigma_depth_m` | `0.08` | Value must be a finite number between 1e-06 and 1000. Depth-difference Gaussian width in meters regardless of input units. |
+| `minimum_confidence` | `0.25` | Value must be a finite number between 0 and 1. Reject lower confidence. Zero confidence is always invalid. |
+| `border` | `"reflect_101"` | `reflect_101`, `reflect`, `replicate` How to extend neighborhoods at the image edges. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for an input without declared depth units. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per uint16 count. |
+
 ## Calibrate stereo cameras (`3d.stereo_calibrate`)
 
 3D vision / Calibration

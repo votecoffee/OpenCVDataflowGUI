@@ -671,6 +671,7 @@ def builtin_registry():
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
+    from .depth_smoothing import SmoothDepth
     from .detection_decode import DecodeDetections
     from .detection_evaluation import EvaluateDetections
     from .detection_fusion import FuseTileDetections
@@ -1016,6 +1017,7 @@ def builtin_registry():
         RGBD,
         DepthSample,
         FillDepthHoles,
+        SmoothDepth,
         LoadCalibration,
         SaveCalibration,
         *PROCESSING_BLOCKS,

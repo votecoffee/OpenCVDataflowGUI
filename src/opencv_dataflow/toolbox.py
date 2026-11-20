@@ -166,7 +166,7 @@ BLOCK_MODULES = {
     "rgbd": "3d.register_depth",
     "structured_light": "3d.graycode 3d.graycode_decode",
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match",
-    "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask",
+    "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask 3d.smooth_depth",
     "mcc": "calibration.detect_color_chart",
     None: (
         "input.demo output.results input.calibration output.calibration "
@@ -188,6 +188,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "3d.smooth_depth": ("jointBilateralFilter", "confidence-weighted depth denoising"),
     "inspect.differential_exposure": ("boxFilter", "illumination", "reference comparison"),
     "cv.resample_mask": ("integral", "area coverage", "validity mask"),
     "cv.stack_blur": ("stackBlur", "large-radius smoothing"),

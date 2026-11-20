@@ -67,8 +67,9 @@ held-out image checks. HOG detector training (S2-61) advances the targeted
 cycle to **10/20**, spatial vote grouping (S2-62) to **11/20**, and trained
 SuperPoint v6 extraction (S2-15) to **12/20**. Fisheye intrinsics (S3-04)
 advance the cycle to **13/20**, omnidirectional fitting (S3-05) to **14/20**,
-camera/rig revisions (S3-08) to **15/20**, and wide-angle stereo (S3-14) to
-**16/20**. These are offline software checks.
+camera/rig revisions (S3-08) to **15/20**, wide-angle stereo (S3-14) to
+**16/20**, and confidence-weighted depth smoothing (S3-19) to **17/20**.
+These are offline software checks.
 
 The preceding audit used committed source `9c9d6a7`: **8,034 passed, 36 skipped,
 six failed** in 872.37 seconds offscreen (8,076 cases). All **8,844 tracked-file
@@ -397,6 +398,14 @@ for the existing disparity and cloud blocks. The synthetic controls verify
 held-out vertical alignment and Q depth, and reconstruct a separate textured
 plane. Stage 3 is **37/131 (28.2%)** and overall coverage is **292/470
 (62.1%)**. [Examples](<../examples/opencv tools/wide_angle_stereo/README.md>)
+
+**Edge-aware depth smoothing (S3-19)** weights a depth-guided bilateral
+estimate by sensor confidence and exports validity and rejection masks.
+For 9,436 retained samples on the synthetic 1 m/2 m step, RMS error drops
+from 21.0 mm to 3.8 mm and the maximum error next to the step is 15 mm.
+The projected cloud omits the 114 existing holes and 50 rejected samples.
+Stage 3 is **38/131 (29.0%)** and overall coverage is **293/470 (62.3%)**.
+[Example](<../examples/opencv tools/depth_smoothing/README.md>)
 
 **Quantized image inference (S2-57)** qualifies pinned Q/DQ and QOperator exports
 through existing image/multi-input/batch inference contracts. Selected raw int8/
@@ -3910,9 +3919,9 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The current targeted cycle is 16/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The current targeted cycle is 17/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **62/62 complete (100%)** within the tracked checklist. The final item qualifies trained MIT SuperPoint v6 extraction and planar LightGlue matching on controlled CPU examples. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
-| 3 | 3D and calibrated geometry | **37/131 complete (28.2%)**. Wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
+| 3 | 3D and calibrated geometry | **38/131 complete (29.0%)**. Depth cleanup (S3-19), wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
 

@@ -25,6 +25,9 @@ rig versions, archived maps and a rejected capture mismatch.
 [Wide-angle stereo](wide_angle_stereo/README.md) uses both lens families
 with held-out perspective rectification and metric reconstruction.
 
+[Confidence-weighted depth smoothing](depth_smoothing/README.md) preserves a
+sharp step and rejects unreliable depth samples before cloud reconstruction.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

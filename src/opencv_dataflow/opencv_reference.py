@@ -117,6 +117,7 @@ BINDINGS = {
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",
     "3d.reproject": "reprojectImageTo3D",
+    "3d.smooth_depth": "ximgproc.jointBilateralFilter",
     "3d.omnidir_calibrate": "omnidir.calibrate omnidir.projectPoints convexHull contourArea",
     "3d.fisheye_calibrate": "fisheye.calibrate fisheye.projectPoints convexHull contourArea",
     "3d.stereo_calibrate": "stereoCalibrate",

@@ -147,6 +147,15 @@ scale. Omnidirectional rectification exposes the shared output focal length.
 regions and emits a mask identifying the estimates. Its default settings
 preserve border-connected gaps. [Depth hole filling example](<../examples/custom tools/depth_hole_filling/README.md>)
 
+**Smooth depth while preserving edges** uses a confidence-weighted bilateral
+filter guided by the depth itself. The depth sigma is in meters. A matching
+confidence image can reduce the weight of uncertain neighbors and invalidate
+selected samples below the threshold. Existing holes stay invalid. A mask or
+region limits writes, and trusted samples outside it can still support the
+filter. The depth keeps its type, units, ticket and grid. The validity and
+confidence-rejection masks use the same grid.
+[Depth smoothing example](<../examples/opencv tools/depth_smoothing/README.md>)
+
 **Depth to point cloud** calls OpenCV's RGB-D projection using undistorted
 pinhole intrinsics. `DepthArray` supplies its declared m/mm units. Untagged
 integer depths use the configured units-per-sample; untagged floats use the

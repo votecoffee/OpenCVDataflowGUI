@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Packed depth, confidence and truth",
+      "parameters": {
+        "path": "assets/depth_planes.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint16",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "split",
+      "type": "cv.split_channels",
+      "name": "Depth / confidence / truth planes",
+      "parameters": {},
+      "position": [
+        330,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "channel_0",
+        "channel_1",
+        "channel_2"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "smooth",
+      "type": "3d.smooth_depth",
+      "name": "Smooth depth while preserving edges",
+      "parameters": {
+        "radius": 4,
+        "sigma_space_px": 2.5,
+        "sigma_depth_m": 0.08,
+        "minimum_confidence": 0.25,
+        "border": "reflect_101",
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        660,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "confidence",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "valid_mask",
+        "rejected_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 150.0,
+        "fy": 150.0,
+        "cx": 59.5,
+        "cy": 39.5,
+        "width": 120,
+        "height": 80,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        660,
+        310
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cloud",
+      "type": "3d.depth_cloud",
+      "name": "Depth to point cloud",
+      "parameters": {
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        995,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Synthetic noisy depth step",
+      "description": "Original fixture by OpenCVDataflowGUI contributors (MIT). Near Z = 1 m, far Z = 2 m. Channel 0 is noisy depth in mm, channel 1 is scaled confidence, channel 2 is the unchanged ground truth. Zero depth marks holes.",
+      "parameters": {},
+      "position": [
+        0,
+        -310
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "split",
+      "input": "image"
+    },
+    {
+      "source": "split",
+      "output": "channel_0",
+      "target": "smooth",
+      "input": "depth"
+    },
+    {
+      "source": "split",
+      "output": "channel_1",
+      "target": "smooth",
+      "input": "confidence"
+    },
+    {
+      "source": "smooth",
+      "output": "depth",
+      "target": "cloud",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "cloud",
+      "input": "camera"
+    }
+  ]
+}
