@@ -515,6 +515,13 @@ available in Debug and Balanced.
   expose original row indices and preserve the corresponding colors, normals
   and pixels. Centroid mode averages positions and colors. [Voxel sampling
   example](<../examples/custom tools/voxel_representatives/README.md>)
+- **Measure point-cloud normals and curvature** uses bounded metric
+  neighborhoods and local covariance eigenvectors. It orients valid normals
+  toward or away from a viewpoint or uses a deterministic axis sign. It
+  reports sparse and ambiguous neighborhoods, supports an eigenvalue-gap
+  quality threshold, and passes curvature in the same row order as the
+  accepted cloud. Source diagnostics retain all row positions.
+  [Surface quality example](<../examples/custom tools/cloud_surface_quality/README.md>)
 - **Fit point-cloud plane or sphere** uses seeded sample consensus and
   refines the best model using its support. The block classifies the entire
   scan at the selected metric tolerance and returns coefficients, signed

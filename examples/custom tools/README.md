@@ -29,6 +29,9 @@ try [ALIKED and LightGlue](aliked_matching/README.md).
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
 For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).
 
+[Point-cloud surface quality](cloud_surface_quality/README.md) estimates
+oriented normals and curvature and reports sparse or ambiguous neighborhoods.
+
 [Robust plane and sphere fitting](cloud_model_fitting/README.md) recovers
 metric models and row-aligned residuals from two scans with known outliers.
 

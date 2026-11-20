@@ -439,6 +439,24 @@ Input `cloud` — Original XYZ rows, optionally with measured colors, normals an
 | `minimum_spacing` | `0.0` | Value must be a finite number between 0 and 1e+39. Farthest mode stops below this distance in the cloud's units. |
 | `max_distance_evaluations` | `50000000` | Value must be a whole number between 1 and 2.5e+08. Farthest mode reports failure if it hits this work limit. |
 
+## Measure point-cloud normals and curvature (`3d.cloud_surface_quality`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud).
+
+Input `cloud` — Unorganized XYZ in meters or millimeters with a named coordinate frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius_m` | `0.015` | Value must be a finite number between 1e-09 and 1e+12. Inclusive distance in meters for neighboring scan rows. |
+| `fit_neighbors` | `24` | Value must be a whole number between 3 and 128. Maximum nearest rows used for each local fit, including the center. |
+| `minimum_neighbors` | `3` | Value must be a whole number between 3 and 128. Minimum rows needed to attempt a local fit, including the center. |
+| `minimum_normal_quality` | `0.0` | Value must be a finite number between 0 and 1. Minimum normalized eigenvalue gap of an accepted normal. |
+| `orientation` | `"toward_viewpoint"` | `toward_viewpoint`, `away_from_viewpoint`, `canonical` Choose viewpoint-facing, viewpoint-away or canonical normal signs. |
+| `viewpoint_m` | `[0.0, 0.0, 0.0]` | XYZ viewpoint in meters in the input cloud's frame. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum number of rows admitted to the spatial index. |
+
 ## Transform point cloud (`3d.cloud_transform`)
 
 3D vision / Point clouds

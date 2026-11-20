@@ -1,7 +1,5 @@
 """Split neighboring cloud surfaces by normal direction and local curvature."""
 
-from dataclasses import dataclass
-
 import numpy as np
 from scipy.spatial import cKDTree
 
@@ -9,49 +7,9 @@ from .cloud_neighborhoods import count_radius_pairs, labeled_cloud_preview, pair
 from .cloud_projection import METERS
 from .core import Port, Result
 from .geometry3d_common import Tool3D
+from .local_surface_fit import fit_local_surfaces
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
-
-
-@dataclass
-class SurfaceGeometry:
-    normals: np.ndarray
-    curvature: np.ndarray
-
-
-def fit_local_surfaces(points, tree, radius, neighbors, cancelled):
-    """Estimate unsigned normals and variance ratios using bounded neighborhood batches."""
-    normals = np.zeros_like(points)
-    curvature = np.full(len(points), np.nan)
-    k = min(neighbors, len(points))
-    if k < 3:
-        return SurfaceGeometry(normals, curvature)
-    batch = 65_536 // k
-    for start in range(0, len(points), batch):
-        if cancelled():
-            return None
-        centers = points[start : start + batch]
-        distances, indices = tree.query(
-            centers, k=k, distance_upper_bound=np.nextafter(radius, np.inf)
-        )
-        valid = distances <= radius
-        rows = np.flatnonzero(valid.sum(axis=1) >= 3)
-        if not len(rows):
-            continue
-        valid, indices = valid[rows], indices[rows]
-        offsets = points[np.where(valid, indices, rows[:, None] + start)] - centers[rows, None]
-        # Subtract the masked mean before computing covariance. Working in local
-        # offsets keeps the fit stable when a small feature is far from the origin.
-        offsets -= offsets.sum(axis=1, keepdims=True) / valid.sum(axis=1)[:, None, None]
-        offsets[~valid] = 0
-        values, vectors = np.linalg.eigh(offsets.transpose(0, 2, 1) @ offsets)
-        values = np.maximum(values, 0)
-        # Collinear or isotropic neighborhoods do not determine a unique normal.
-        usable = values[:, 1] - values[:, 0] > values[:, 2] * 1e-8
-        output_rows = start + rows[usable]
-        normals[output_rows] = vectors[usable, :, 0]
-        curvature[output_rows] = values[usable, 0] / values[usable].sum(axis=1)
-    return SurfaceGeometry(normals, curvature)
 
 
 def _read_curvatures(value, size):
@@ -237,19 +195,22 @@ class GrowCloudRegions(Tool3D):
             cloud,
             report,
             labels=labels,
-            geometry=SurfaceGeometry(normals, curvature),
+            normals=normals,
+            curvature=curvature,
             sizes=sizes[selected],
             reason="" if len(selected) else "cloud_region_no_matches",
             message=f"Accepted {len(selected)} surface regions",
         )
 
-    def _result(self, cloud, report, *, labels=None, geometry=None, sizes=(), reason, message):
+    def _result(
+        self, cloud, report, *, labels=None, normals=None, curvature=None, sizes=(), reason, message
+    ):
         empty = np.empty(0, np.intp)
         kept = np.flatnonzero(labels) if labels is not None else empty
         unassigned = np.flatnonzero(labels == 0) if labels is not None else empty
         accepted = cloud.subset(kept)
-        if geometry is not None and accepted.normals is None:
-            accepted.normals = np.ascontiguousarray(geometry.normals[kept], np.float32)
+        if normals is not None and accepted.normals is None:
+            accepted.normals = np.ascontiguousarray(normals[kept], np.float32)
         count = len(sizes)
         graphics = {}
         if count and self.capture_graphics:
@@ -263,10 +224,8 @@ class GrowCloudRegions(Tool3D):
                 for label, rows in enumerate(groups, start=1)
             ]
         curvatures = NO_VALUE
-        if geometry is not None and "curvature" in self.exposed_outputs:
-            curvatures = [
-                value if np.isfinite(value) else None for value in geometry.curvature.tolist()
-            ]
+        if curvature is not None and "curvature" in self.exposed_outputs:
+            curvatures = [value if np.isfinite(value) else None for value in curvature.tolist()]
         report.update(
             classified_points=len(labels) if labels is not None else 0,
             accepted_points=len(kept),

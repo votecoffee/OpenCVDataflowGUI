@@ -219,6 +219,7 @@ _NATIVE_NAMES = {
     "3d.cloud_cluster": ("euclidean clustering", "connected components", "part segmentation"),
     "3d.cloud_region_grow": ("region growing", "surface segmentation", "normal curvature"),
     "3d.cloud_model_fit": ("ransac", "fit plane", "fit sphere", "sample consensus"),
+    "3d.cloud_surface_quality": ("estimate normals", "curvature", "local PCA"),
     "3d.cloud_outlier": ("point density", "remove noise", "statistical outlier removal"),
     "3d.cloud_sample": ("randomSampling", "farthestPointSampling", "downsample", "FPS"),
     "3d.cloud_voxel": ("voxelGridSampling", "nearest centroid", "representative point"),

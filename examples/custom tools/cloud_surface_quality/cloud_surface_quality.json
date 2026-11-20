@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Review local surface fits",
+      "description": "Original synthetic cloud by OpenCVDataflowGUI contributors (MIT). Compare plane and sphere curvature, then pass the fitted normals and aligned curvature into region growing. A line and isolated point test rejection.",
+      "parameters": {},
+      "position": [
+        0,
+        -300
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/surface_scan.ply",
+        "units": "mm",
+        "frame": "surface_fixture",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        45
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "quality",
+      "type": "3d.cloud_surface_quality",
+      "name": "Measure point-cloud normals and curvature",
+      "description": "Estimate oriented unit normals and identify unreliable local surface fits.",
+      "parameters": {
+        "radius_m": 0.022,
+        "fit_neighbors": 24,
+        "minimum_neighbors": 5,
+        "minimum_normal_quality": 0.0,
+        "orientation": "away_from_viewpoint",
+        "viewpoint_m": [
+          0.06,
+          -0.01,
+          0.43
+        ],
+        "max_input_points": 250000
+      },
+      "position": [
+        410,
+        45
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "rejected_cloud",
+        "curvature",
+        "valid_indices",
+        "source_diagnostics",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "regions",
+      "type": "3d.cloud_region_grow",
+      "name": "Grow point-cloud surface regions",
+      "description": "Segment touching surfaces using local normal angles and curvature.",
+      "parameters": {
+        "radius_m": 0.022,
+        "normal_angle_deg": 35,
+        "maximum_curvature": 0.05,
+        "fit_neighbors": 24,
+        "minimum_points": 3,
+        "max_input_points": 250000,
+        "max_neighbor_pairs": 2000000,
+        "max_regions": 256
+      },
+      "position": [
+        830,
+        45
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "curvature"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "rejected_cloud",
+        "regions",
+        "labels",
+        "curvature",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "quality",
+      "input": "cloud"
+    },
+    {
+      "source": "quality",
+      "output": "cloud",
+      "target": "regions",
+      "input": "cloud"
+    },
+    {
+      "source": "quality",
+      "output": "curvature",
+      "target": "regions",
+      "input": "curvature"
+    }
+  ]
+}
