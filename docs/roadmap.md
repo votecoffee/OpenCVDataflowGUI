@@ -42,7 +42,8 @@ hypotheses (S3-42) brings it to **6/20** and epipolar match refinement
 (S3-43) to **7/20**. Uncalibrated stereo rectification (S3-44) brings it to **8/20**
 and stereo calibration residuals (S3-45) to **9/20**. Stereo disparity
 search and support (S3-46) brings it to **10/20** and disparity speckle
-removal (S3-47) to **11/20**.
+removal (S3-47) to **11/20**. Stereo disparity evaluation (S3-48) brings it
+to **12/20**.
 
 The preceding broad checkpoint started on committed source `ce1e8542` and passed
 **9,429 tests, with 36 expected skips and 12 existing warnings**, in 1,687.44
@@ -540,9 +541,17 @@ recover 8 px median disparity and the narrowed branch reprojects to 3 m.
 **Disparity speckle removal (S3-47)** handles signed float and raw fixed-point
 disparity with explicit sample units and validity. Both saved branches remove
 the same 34-pixel footprint while retaining a 60-pixel feature and excluding
-383 preexisting invalid pixels from the removal mask. Stage 3 is
-**53/131 (40.5%)**, with **308/470 (65.5%)** overall.
+383 preexisting invalid pixels from the removal mask.
 [Example](<../examples/opencv tools/disparity_speckles/README.md>)
+
+**Stereo disparity evaluation (S3-48)** reports reference coverage,
+absolute errors and confidence slices with separate validity and selection
+controls. The synthetic full-field and regional measurements reach 80%
+and 100% coverage respectively, with mean absolute errors of 1.5 and 0.5
+pixels. A native SGBM/WLS comparison recovers a known 8-pixel plane with
+95% coverage and below 0.02-pixel mean absolute error. Stage 3 is
+**54/131 (41.2%)**, with **309/470 (65.7%)** overall.
+[Example](<../examples/opencv tools/disparity_reference/README.md>)
 
 **Quantized image inference (S2-57)** qualifies pinned Q/DQ and QOperator exports
 through existing image/multi-input/batch inference contracts. Selected raw int8/
@@ -4056,9 +4065,9 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The latest checkpoint closed the targeted cycle through S3-27. The current targeted cycle is 11/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The latest checkpoint closed the targeted cycle through S3-27. The current targeted cycle is 12/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **62/62 complete (100%)** within the tracked checklist. The final item qualifies trained MIT SuperPoint v6 extraction and planar LightGlue matching on controlled CPU examples. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
-| 3 | 3D and calibrated geometry | **53/131 complete (40.5%)**. Disparity speckle removal (S3-47), stereo disparity search and support (S3-46), stereo calibration residuals (S3-45), uncalibrated stereo rectification (S3-44), epipolar match refinement (S3-43), planar pose hypotheses (S3-42), planar fiducial target generation (S3-37), sparse multi-view reconstruction (S3-33), fixed-camera and joint robot-world calibration (S3-32), camera/projector reconstruction (S3-30), phase-shift structured light (S3-29), fused-depth mesh extraction (S3-27), cloud projection and visibility (S3-24 and S3-52), support-plane separation (S3-23), depth cleanup (S3-19), wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
+| 3 | 3D and calibrated geometry | **54/131 complete (41.2%)**. Stereo disparity evaluation (S3-48), disparity speckle removal (S3-47), stereo disparity search and support (S3-46), stereo calibration residuals (S3-45), uncalibrated stereo rectification (S3-44), epipolar match refinement (S3-43), planar pose hypotheses (S3-42), planar fiducial target generation (S3-37), sparse multi-view reconstruction (S3-33), fixed-camera and joint robot-world calibration (S3-32), camera/projector reconstruction (S3-30), phase-shift structured light (S3-29), fused-depth mesh extraction (S3-27), cloud projection and visibility (S3-24 and S3-52), support-plane separation (S3-23), depth cleanup (S3-19), wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
 

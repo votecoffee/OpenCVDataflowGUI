@@ -329,6 +329,41 @@ Inputs: `points_left` (data), `points_right` (data), `camera` (data).
 | `right_frame` | `"right_camera"` |  |
 | `minimum_inliers` | `8` |  |
 
+## Evaluate stereo disparity (`3d.evaluate_disparity`)
+
+3D vision / Stereo
+
+Inputs: `estimate` (image), `reference` (image), `estimate_valid` (image, optional), `reference_valid` (image, optional), `confidence` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `estimate` — Monochrome estimated disparity. Float samples are already in pixels.
+
+Input `reference` — Monochrome ground-truth disparity on the estimate pixel grid.
+
+Input `estimate_valid` — Optional uint8 mask of available estimate samples.
+
+Input `reference_valid` — Optional uint8 mask of valid reference samples.
+
+Input `confidence` — Optional normalized float confidence on the estimate grid.
+
+Input `mask` — Optional uint8 selection intersected with Region for the evaluation domain.
+
+Input `region` — Optional image-space region on the estimate grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Check known frames, or assert independent rasters use the same pixel grid. |
+| `estimate_samples_per_pixel` | `16.0` | Value must be a finite number between 1e-06 and 65536. Integer estimate samples per disparity pixel. |
+| `reference_samples_per_pixel` | `16.0` | Value must be a finite number between 1e-06 and 65536. Integer reference samples per disparity pixel. |
+| `estimate_invalid_mode` | `"nonfinite_only"` | `nonfinite_only`, `also_use_code` Optionally exclude a finite estimate code in raw sample units. |
+| `estimate_invalid_code` | `0.0` | Value must be a finite number. Additional missing-estimate code, before scaling. |
+| `reference_invalid_mode` | `"nonfinite_only"` | `nonfinite_only`, `also_use_code` Optionally exclude a finite reference code in raw sample units. |
+| `reference_invalid_code` | `0.0` | Value must be a finite number. Additional unknown-reference code, before scaling. |
+| `bad_threshold_px` | `1.0` | Value must be a finite number at least 0. An evaluated pixel is bad when its absolute error exceeds this value. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required evaluated fraction of selected reference-valid pixels. |
+| `maximum_bad_fraction` | `1.0` | Value must be a finite number between 0 and 1. Allowed bad fraction among evaluated pixels in the selection. |
+| `confidence_cutoff` | `0.5` | Value must be a finite number between 0 and 1. Split evaluated values below this confidence and at or above it. |
+| `preview_max_px` | `4.0` | Value must be a finite number at least 1e-06. Error magnitude that saturates the color preview, in disparity pixels. |
+
 ## Fill small depth holes (`3d.fill_depth_holes`)
 
 3D vision / Depth

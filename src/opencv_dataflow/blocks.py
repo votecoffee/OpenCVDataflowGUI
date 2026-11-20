@@ -681,6 +681,7 @@ def builtin_registry():
     from .detection_votes import GroupDetectionVotes
     from .differential_exposure import DifferentialExposure
     from .disk_features import DISK_BLOCKS
+    from .disparity_evaluation import EvaluateDisparity
     from .disparity_speckles import FilterDisparitySpeckles
     from .distortion_fixture import DistortImageFixture
     from .dnn_blocks import DNN_BLOCKS
@@ -1307,6 +1308,7 @@ def builtin_registry():
         ValidateStereoCalibration,
         *STEREO3D_BLOCKS,
         FilterDisparitySpeckles,
+        EvaluateDisparity,
         CalibrateWideStereo,
         *CLOUD_BLOCKS,
         *CLOUD_IO_BLOCKS,

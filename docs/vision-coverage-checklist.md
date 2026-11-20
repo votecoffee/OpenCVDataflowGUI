@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 53 | 18 | 60 | 131 | 40.5% |
+| 3. 3D imagery and point clouds | 54 | 18 | 59 | 131 | 41.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 308 | 22 | 140 | 470 | 65.5% |
+| **Overall** | 309 | 22 | 139 | 470 | 65.7% |
 
 <!-- coverage-summary:end -->
 
@@ -466,7 +466,7 @@ fixture or result needed to close the item.
 | S3-45 | Stereo calibration residuals by camera and capture | stereoCalibrateExtended, solvePnP, projectPoints | Complete | 3d.stereo_calibrate reports both cameras' fit errors for each capture. 3d.validate_stereo_calibration checks a fixed rig by predicting each camera from the other. [Independent rendered targets](<../examples/opencv tools/stereo_calibration_quality/README.md>) verify holdout error and detection of a shifted baseline. |
 | S3-46 | Optimize stereo search range and valid ROI | getValidDisparityROI, calibrated Q range, per-view mask footprints | Complete | 3d.disparity supports Q-derived signed ranges and complete matching footprint checks for rectangular and masked support. The [known-disparity example](<../examples/opencv tools/stereo_disparity_search/README.md>) retains more support with a 16-candidate search and still recovers 8 px and 3 m. |
 | S3-47 | Disparity speckle removal | filterSpeckles | Complete | 3d.filter_disparity_speckles removes small 4-connected disparity islands from float or fixed-point maps. It preserves kept pixel disparities and emits separate retained and newly removed masks. The [saved example](<../examples/opencv tools/disparity_speckles/README.md>) checks both sample formats against exact footprints. |
-| S3-48 | Evaluate stereo disparity against a reference | Bad-pixel rates, absolute error and confidence slices | Planned | Compare a disparity result to ground truth on valid pixels and report per-region error and coverage. |
+| S3-48 | Evaluate stereo disparity against a reference | Bad-pixel rates, absolute error and confidence slices | Complete | 3d.evaluate_disparity measures pixel error and coverage against aligned truth, with selected regions, validity masks, separate source scales and confidence strata. The [saved example](<../examples/opencv tools/disparity_reference/README.md>) verifies exact full-field and regional results. SGBM/WLS and native fixed-point metrics have focused cross-checks. |
 | S3-49 | Decode, sample and report metric depth | Depth units and integer pixel sampling | Complete | input.depth_file, inspect.depth_sample. Report invalid samples as missing and preserve image locations and units. |
 | S3-50 | Camera-derived cloud transform and measurement | Rigid XYZ transform with frame and unit checks | Complete | 3d.cloud_transform, 3d.cloud_measure. Verify known camera pose, physical extents and output frame. |
 | S3-51 | Unorganized cloud normals from reconstructed points | Local neighborhood normals | Complete | 3d.cloud_normals. Recover normals of a known camera-derived surface with explicit neighbor support. |

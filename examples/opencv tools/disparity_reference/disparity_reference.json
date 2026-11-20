@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Evaluate stereo disparity",
+      "description": "Original synthetic maps by OpenCVDataflowGUI contributors (MIT). Compare the full field to a rectangular inspection region. The full field includes unknown reference, missing estimate and bad pixels. The selected region includes exact and one-pixel errors.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "estimate",
+      "type": "input.file",
+      "name": "Estimate",
+      "parameters": {
+        "path": "assets/estimate.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "synthetic-stereo-reference"
+      }
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        205
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "synthetic-stereo-reference"
+      }
+    },
+    {
+      "id": "confidence",
+      "type": "input.file",
+      "name": "Confidence",
+      "parameters": {
+        "path": "assets/confidence.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        410
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "synthetic-stereo-reference"
+      }
+    },
+    {
+      "id": "selection",
+      "type": "region.shape",
+      "name": "Center inspection region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          24,
+          0,
+          48,
+          96
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        310,
+        -55
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "whole",
+      "type": "3d.evaluate_disparity",
+      "name": "Whole field evaluation",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_samples_per_pixel": 16.0,
+        "reference_samples_per_pixel": 256,
+        "estimate_invalid_mode": "also_use_code",
+        "estimate_invalid_code": -64,
+        "reference_invalid_mode": "also_use_code",
+        "reference_invalid_code": 0,
+        "bad_threshold_px": 1.0,
+        "minimum_coverage": 0.8,
+        "maximum_bad_fraction": 0.5,
+        "confidence_cutoff": 0.5,
+        "preview_max_px": 4.0
+      },
+      "position": [
+        690,
+        0
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "confidence",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "absolute_error",
+        "evaluated_mask",
+        "bad_mask",
+        "missing_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "3d.evaluate_disparity",
+      "name": "Selected region evaluation",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_samples_per_pixel": 16.0,
+        "reference_samples_per_pixel": 256,
+        "estimate_invalid_mode": "also_use_code",
+        "estimate_invalid_code": -64,
+        "reference_invalid_mode": "also_use_code",
+        "reference_invalid_code": 0,
+        "bad_threshold_px": 1.0,
+        "minimum_coverage": 0.95,
+        "maximum_bad_fraction": 0.1,
+        "confidence_cutoff": 0.5,
+        "preview_max_px": 4.0
+      },
+      "position": [
+        690,
+        360
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "confidence",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "absolute_error",
+        "evaluated_mask",
+        "bad_mask",
+        "missing_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "estimate",
+      "output": "image",
+      "target": "selection",
+      "input": "image"
+    },
+    {
+      "source": "estimate",
+      "output": "image",
+      "target": "whole",
+      "input": "estimate"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "whole",
+      "input": "reference"
+    },
+    {
+      "source": "confidence",
+      "output": "image",
+      "target": "whole",
+      "input": "confidence"
+    },
+    {
+      "source": "estimate",
+      "output": "image",
+      "target": "selected",
+      "input": "estimate"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "selected",
+      "input": "reference"
+    },
+    {
+      "source": "confidence",
+      "output": "image",
+      "target": "selected",
+      "input": "confidence"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

@@ -176,6 +176,29 @@ integers convert to float pixels. The output uses NaN for invalid disparity
 and exposes valid and newly removed masks on the same grid.
 [Fixed-point and signed float example](<../examples/opencv tools/disparity_speckles/README.md>)
 
+**Evaluate stereo disparity** compares an estimate and a reference on the
+same pixel grid, with optional Region and Mask selection. Float disparities
+are already in pixels. Set independent raw-samples-per-pixel scales for
+integer maps and optionally exclude a finite invalid code in each map's
+original units. Supply Estimate Valid and Reference Valid masks when
+available. The default alignment checks known coordinate frames. Use
+Pixel Grid to assert alignment for separately imported rasters with the
+same dimensions.
+
+Coverage is the fraction of reference-valid pixels with an estimate.
+Bias is estimate minus reference. The bad-pixel fraction counts absolute
+errors strictly above the threshold among evaluated pixels. The report
+also includes the fraction of reference-valid pixels that were either
+bad or missing. Coverage and bad-pixel limits gate the result independently.
+Confidence is optional and does not change the overall evaluation. It
+breaks the evaluated pixels into below-cutoff, at-or-above-cutoff and
+unknown strata. Connect separate evaluators to compare regions in one run.
+
+The block outputs the absolute error map and distinct evaluated, bad and
+missing masks. The optional heatmap shows unscored pixels in black and
+missing estimates in magenta. Feed it decoded monochrome reference
+disparity. [Exact whole-field and regional example](<../examples/opencv tools/disparity_reference/README.md>)
+
 **Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional
 pair from matched target views. The fisheye fitter can retain or refine
 supplied intrinsics. The omnidirectional fitter initializes both cameras

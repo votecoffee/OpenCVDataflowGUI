@@ -113,6 +113,7 @@ BINDINGS = {
     "3d.aruco_pose": "aruco.ArucoDetector.detectMarkers solvePnP",
     "3d.disparity": "StereoBM.create StereoSGBM.create getValidDisparityROI",
     "3d.filter_disparity_speckles": "filterSpeckles",
+    "3d.evaluate_disparity": "applyColorMap",
     "3d.essential_pose": "findEssentialMat recoverPose",
     "3d.check_epipolar": "computeCorrespondEpilines",
     "3d.refine_epipolar": "sampsonDistance correctMatches",

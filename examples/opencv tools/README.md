@@ -35,6 +35,9 @@ smaller search from calibrated depth limits and verifies valid support.
 [Disparity speckle removal](disparity_speckles/README.md) shows how to remove
 small islands from fixed-point and signed float disparity.
 
+[Stereo disparity evaluation](disparity_reference/README.md) compares an
+estimate with known truth across the whole field and a selected region.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera
