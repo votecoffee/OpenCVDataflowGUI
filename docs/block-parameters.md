@@ -6994,10 +6994,10 @@ Ticket mode and fixed value are common inspector controls.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `path` | `""` | Choose a point cloud in PLY, ASCII PCD or ASCII OBJ format. |
+| `path` | `""` | Choose an ASCII or binary PLY/PCD point cloud, or an ASCII OBJ. |
 | `units` | `"m"` | `m`, `mm`, `unitless` |
 | `frame` | `"file"` |  |
-| `max_points` | `1000000` |  |
+| `max_points` | `1000000` | Value must be a whole number between 1 and 2e+06. Limit on declared point rows, including empty pixels in an organized PCD. |
 
 ## Load coded rig captures (`input.coded_rig_observations`)
 
@@ -12851,7 +12851,9 @@ Inputs: `cloud` (cloud).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `path` | `"cloud.ply"` | Choose a new .ply, .pcd or .obj file. |
-| `binary_ply` | `true` | Use binary vertices for PLY. PCD and OBJ use ASCII. |
+| `binary_ply` | `true` | Use binary vertices for .ply files. |
+| `pcd_encoding` | `"ascii"` | `ascii`, `binary` Use ASCII rows or uncompressed little-endian binary records for .pcd. |
+| `pcd_organization` | `"unorganized"` | `unorganized`, `source_pixels` Use a flat list or restore the source pixel grid with NaN at missing pixels. |
 
 ## Set filmstrip image (`output.filmstrip_image`)
 

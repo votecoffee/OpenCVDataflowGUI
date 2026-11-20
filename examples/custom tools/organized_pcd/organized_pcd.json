@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare organized PCD encodings",
+      "description": "Original synthetic scan by OpenCVDataflowGUI contributors (MIT). Both files hold the same 64 \u00d7 44 scanning grid with holes. The cloud keeps valid XYZ, RGB, normals and the original pixel of each point.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "binary",
+      "type": "input.cloud",
+      "name": "Load organized binary PCD",
+      "parameters": {
+        "path": "assets/coupon_binary.pcd",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view_binary",
+      "type": "3d.cloud_render",
+      "name": "Render point cloud",
+      "parameters": {
+        "width": 512,
+        "height": 384,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 3
+      },
+      "position": [
+        395,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ascii",
+      "type": "input.cloud",
+      "name": "Load organized ascii PCD",
+      "parameters": {
+        "path": "assets/coupon_ascii.pcd",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        255
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view_ascii",
+      "type": "3d.cloud_render",
+      "name": "Render point cloud",
+      "parameters": {
+        "width": 512,
+        "height": 384,
+        "yaw_degrees": 25.0,
+        "pitch_degrees": -20.0,
+        "max_drawn_points": 20000,
+        "point_size": 3
+      },
+      "position": [
+        395,
+        255
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "binary",
+      "output": "cloud",
+      "target": "view_binary",
+      "input": "cloud"
+    },
+    {
+      "source": "ascii",
+      "output": "cloud",
+      "target": "view_ascii",
+      "input": "cloud"
+    }
+  ]
+}

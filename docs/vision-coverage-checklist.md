@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 95 | 9 | 27 | 131 | 72.5% |
+| 3. 3D imagery and point clouds | 96 | 8 | 27 | 131 | 73.3% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 350 | 13 | 107 | 470 | 74.5% |
+| **Overall** | 351 | 12 | 107 | 470 | 74.7% |
 
 <!-- coverage-summary:end -->
 
@@ -524,7 +524,7 @@ fixture or result needed to close the item.
 | S3-93 | Fuse registered color into a TSDF | Volume ColorTSDF, integrateColor and fetchPointsNormalsColors | Complete | `3d.tsdf_color` fuses posed, registered uint8 color and metric depth. The [painted panel example](<../examples/opencv tools/colored_tsdf_fusion/README.md>) checks geometry and channel alignment across three poses, confidence rejection, and fixed-volume memory admission. |
 | S3-94 | Raycast a fused volume into a new camera view | Volume.raycastEx and raycastExColor | Complete | `3d.tsdf_fuse` and `3d.tsdf_color` accept independent target intrinsics and metric pose. The [target raycast](<../examples/opencv tools/colored_tsdf_fusion/tsdf_target_raycast.json>) verifies depth, target-axis normals, RGB and validity against analytic rays on a painted surface. |
 | S3-95 | Bounded hashed and growing TSDF volumes | Volume HashTSDF, setEnableGrowth and visible-block diagnostics | Complete | `3d.tsdf_hash` reserves a conservative block envelope before integration, supports seeded growth, and rejects frames that exceed block or workspace limits. The [six-view sweep](<../examples/opencv tools/hash_tsdf_growth/README.md>) verifies extent, retained geometry, seed-only growth and atomic cap rejection. |
-| S3-96 | Binary and organized PCD interchange | PCD binary layouts, dimensions and point fields | Partial | input.cloud and output.cloud support ASCII PCD. Verify binary layouts, declared organization, and invalid samples with external round trips. |
+| S3-96 | Binary and organized PCD interchange | Uncompressed PCD layouts, dimensions and point fields | Complete | `input.cloud` and `output.cloud` preserve grid dimensions, valid-pixel positions, RGB, normals and acquisition viewpoint in ASCII and uncompressed binary. PCL round trips verify both directions. The [organized scan example](<../examples/custom tools/organized_pcd/README.md>) compares the encodings. |
 | S3-97 | Generate a surface mesh from an organized depth grid | Adjacent depth samples and discontinuity-aware triangulation | Planned | Build triangles for known depth surfaces while leaving holes at depth jumps, preserving camera provenance and valid normals. |
 | S3-98 | Oriented cloud extents and physical pose | Principal axes or fitted oriented box on XYZ points | Partial | 3d.cloud_measure reports bounds and PCA axes. Verify rotated object dimensions, ambiguous orientations, and a frame-aware pose. |
 | S3-99 | Inspection attributes on imported point clouds | Typed per-point intensity, confidence and source-index payloads | Planned | Preserve declared attributes through import, filtering, sampling, merging and export. Verify missing attributes and original scan indices. |

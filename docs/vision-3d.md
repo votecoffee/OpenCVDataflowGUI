@@ -627,15 +627,24 @@ available in Debug and Balanced.
   Downsample dense models before training.
   [Cluttered partial-surface example](<../examples/opencv tools/ppf_surface_ranking/README.md>)
 
-PLY supports ASCII and binary little endian vertex data. PCD supports ASCII
-XYZ, optional normals and packed RGB. OBJ supports ASCII XYZ, optional
-normalized inline RGB on every vertex, and optional normals aligned by row
-order. OBJ rejects malformed rows and non-point geometry. PLY and PCD drop
-invalid XYZ rows. All three formats round-trip units and frame through
+PLY and PCD support ASCII and uncompressed binary little-endian point rows.
+OBJ supports ASCII XYZ, optional normalized inline RGB on every vertex, and
+optional normals aligned by row order. OBJ rejects malformed rows and
+non-point geometry. All three formats round-trip units and frame through
 Dataflow comments. External files without those comments use inspector
-settings. File and point limits apply. Save to a new path, which may be
-project-relative. Image pixel mappings and arbitrary payload metadata remain
-in memory. [OBJ and PLY example](<../examples/custom tools/cloud_obj_interchange/README.md>)
+settings. Save to a new path, which may be project-relative.
+[OBJ and PLY example](<../examples/custom tools/cloud_obj_interchange/README.md>)
+
+The PCD loader keeps declared dimensions and original pixels for organized
+clouds. Nonfinite XYZ and invalid normals leave holes. **Source pixels**
+export rebuilds the grid, including NaN at missing locations. Its point
+limit counts every grid location. Packed RGB or RGBA and separate RGB
+channels are decoded into RGB, and acquisition viewpoint is stored in
+cloud metadata without changing the points. The PCD writer keeps that
+viewpoint when the cloud's frame and units still match. Additional
+arbitrary fields are outside this codec's XYZ, RGB and normals contract.
+The PCD encoding dropdown offers ASCII and uncompressed binary.
+[Organized PCD example](<../examples/custom tools/organized_pcd/README.md>)
 
 ## Motion, fusion and structured light
 

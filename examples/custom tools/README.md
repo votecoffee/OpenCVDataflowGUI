@@ -44,6 +44,9 @@ OBJ and PLY topology and vertex attributes.
 [OBJ point-cloud interchange](cloud_obj_interchange/README.md) compares two
 file formats for the same colored, oriented scan.
 
+[Organized PCD interchange](organized_pcd/README.md) compares ASCII and binary
+scans with missing pixels, color and normals.
+
 [Point-cloud surface quality](cloud_surface_quality/README.md) estimates
 oriented normals and curvature and reports sparse or ambiguous neighborhoods.
 
