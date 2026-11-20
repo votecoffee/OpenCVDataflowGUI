@@ -37,6 +37,9 @@ color and checks visible surfaces against observed camera depth.
 [Phase-shift fringe replay](phase_shift/README.md) recovers absolute subpixel
 projector coordinates and marks low-signal and inconsistent captures.
 
+[Camera/projector reconstruction](camera_projector/README.md) fits separate
+pixel grids and verifies metric depth on a held-out stepped scene.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

@@ -365,6 +365,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Stitch overlapping inspection views](<opencv tools/stitch_image_pair/README.md>) | Reconstruct a scan from two crops and verify covered pixels against the original. |
 | [Structured-light Gray code](<opencv tools/structured_light/README.md>) | Generate synthetic Gray-code pattern images and decode projector correspondences. |
 | [Phase-shift structured light](<opencv tools/phase_shift/README.md>) | Replay six exposures and recover subpixel projector X or Y through a shadow gap. |
+| [Camera/projector calibration and reconstruction](<opencv tools/camera_projector/README.md>) | Fit a two-device rig and reconstruct a separate depth step from projector correspondences. |
 | [Subpixel patch extraction](<opencv tools/subpixel_crop/README.md>) | Crop around a refined template center and map patch coordinates back to the scene. |
 | [Subpixel template locations](<opencv tools/subpixel_template/README.md>) | Compare integer and refined template matches against two known fractional placements. |
 | [Temporal non-local means](<opencv tools/temporal_nlm/README.md>) | Denoise the middle frame of a short sequence and preserve its ticket. |

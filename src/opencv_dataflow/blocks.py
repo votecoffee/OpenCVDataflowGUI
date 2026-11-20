@@ -645,6 +645,7 @@ def builtin_registry():
     )
     from .calipers import BeadCalipers
     from .camera_health import CameraHealth
+    from .camera_projector import CAMERA_PROJECTOR_BLOCKS
     from .cascade_detection import DetectCascade
     from .channel_transform import ChannelTransform, RouteChannels
     from .charuco import DetectCharucoBoard
@@ -1296,6 +1297,7 @@ def builtin_registry():
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
         *PHASE_SHIFT_BLOCKS,
+        *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         StereoDemo,
     ):

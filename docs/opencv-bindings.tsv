@@ -1971,7 +1971,7 @@ P3	function	cv2.calcCovarMatrix	literal reference	-
 P3	function	cv2.calcHist	literal reference	-
 P3	function	cv2.calcOpticalFlowFarneback	literal reference	-
 P3	function	cv2.calcOpticalFlowPyrLK	literal reference	-
-P3	function	cv2.calibrateCamera	no static reference	-
+P3	function	cv2.calibrateCamera	literal reference	-
 P3	function	cv2.calibrateCameraExtended	literal reference	-
 P3	function	cv2.calibrateCameraRO	no static reference	-
 P3	function	cv2.calibrateCameraROExtended	no static reference	-
@@ -4512,7 +4512,7 @@ P3	method	cv2.StereoBM.setTextureThreshold	method name only	-
 P3	method	cv2.StereoBM.setUniquenessRatio	method name only	-
 P3	function	cv2.StereoBM_create	literal reference	-
 P3	function	cv2.stereoCalibrate	literal reference	-
-P3	function	cv2.stereoCalibrateExtended	no static reference	-
+P3	function	cv2.stereoCalibrateExtended	literal reference	-
 P3	class	cv2.StereoMatcher	no static reference	-
 P3	method	cv2.StereoMatcher.compute	method name only	-
 P3	method	cv2.StereoMatcher.getBlockSize	no static reference	-

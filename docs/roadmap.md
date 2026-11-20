@@ -34,7 +34,8 @@ All four new mesh checks passed in the checkpoint, and the installed example
 passed headlessly. The checkout stayed clean and all 61 installed package
 versions stayed unchanged. This checkpoint completed the twenty-increment
 cycle through S3-27. Phase-shift structured light (S3-29) starts the next
-targeted cycle at **1/20**.
+targeted cycle at **1/20**. Camera/projector calibration and reconstruction
+(S3-30) advances it to **2/20**.
 
 The preceding broad checkpoint started on committed source `ce1e8542` and passed
 **9,429 tests, with 36 expected skips and 12 existing warnings**, in 1,687.44
@@ -452,6 +453,14 @@ low-signal samples and 99 inconsistent cycles, and preserve the shadow
 gap. Native generation and ideal PSP/unwrap behavior are qualified on
 OpenCV 5.0.0. Stage 3 is **43/131 (32.8%)**, with **298/470 (63.4%)**
 overall. [Examples](<../examples/opencv tools/phase_shift/README.md>)
+
+**Camera/projector calibration and reconstruction (S3-30)** fits separate
+pinhole grids and triangulates sparse Gray-code or dense phase
+correspondences. Fourteen training views recover a 138.6 mm baseline at
+0.011 px RMS. A separate simulated step yields 16,789 valid points within
+0.19 mm of ground truth and rejects all 72 bad correspondences. Stage 3
+is **44/131 (33.6%)**, with **299/470 (63.6%)** overall.
+[Example](<../examples/opencv tools/camera_projector/README.md>)
 
 **Quantized image inference (S2-57)** qualifies pinned Q/DQ and QOperator exports
 through existing image/multi-input/batch inference contracts. Selected raw int8/
@@ -3965,9 +3974,9 @@ testable inspection workflows.
 
 | Order | Milestone | Next work | Exit criteria |
 | --- | --- | --- | --- |
-| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The latest checkpoint closed the targeted cycle through S3-27. The current targeted cycle is 1/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
+| 1 | [OpenCV core and baseline 2D](https://github.com/votecoffee/OpenCVDataflowGUI/issues/17) | **173/175 complete (98.9%)**. Native EXR qualification (S1-125) needs a supported codec build; reusable LK pyramid consumption (S1-155) needs a viable native interface and measured benefit. Keep these limitations explicit. Shared runtime, acquisition and measurement follow-ups continue in their own milestones. The completed checkpoint passed 9,429 tests. The latest checkpoint closed the targeted cycle through S3-27. The current targeted cycle is 2/20. | Common inspection workflows run headlessly with examples and validated parameter, pixel-depth, selection and coordinate contracts. Use the binding inventory to evaluate candidate APIs. |
 | 2 | [ML and DNN](https://github.com/votecoffee/OpenCVDataflowGUI/issues/15) | **62/62 complete (100%)** within the tracked checklist. The final item qualifies trained MIT SuperPoint v6 extraction and planar LightGlue matching on controlled CPU examples. | Versioned model and preprocessing fixtures reproduce CPU results. Measure accelerator support on each backend used. |
-| 3 | 3D and calibrated geometry | **43/131 complete (32.8%)**. Phase-shift structured light (S3-29), fused-depth mesh extraction (S3-27), cloud projection and visibility (S3-24 and S3-52), support-plane separation (S3-23), depth cleanup (S3-19), wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
+| 3 | 3D and calibrated geometry | **44/131 complete (33.6%)**. Camera/projector reconstruction (S3-30), phase-shift structured light (S3-29), fused-depth mesh extraction (S3-27), cloud projection and visibility (S3-24 and S3-52), support-plane separation (S3-23), depth cleanup (S3-19), wide-angle stereo (S3-14), the two single-camera fits (S3-04 and S3-05) and profile revisions (S3-08) are qualified on synthetic controls. Continue offline hand-eye work in [milestone 2](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/2). Extend stereo and prioritize cloud interoperability, cleanup, segmentation, comparison, mesh output and bounded reconstruction in [milestone 6](https://github.com/votecoffee/OpenCVDataflowGUI/milestone/6). | Held-out targets meet declared geometric tolerances. Recorded sequences demonstrate frame, unit and memory bounds. Live robot pose exchange follows offline geometry and acquisition timestamp validation. |
 | 4 | Contrib expansion | Select extra-module tools by workflow value, starting with segmentation, texture, restoration and specialized feature or motion methods from the [coverage backlog](opencv-coverage.md). | Each selected tool has a qualified Python path on a supported build and ships with a CPU fixture, example and documented limits. |
 | 5 | Application-specific ToolBlocks | Package reusable tray orientation, conveyor pick selection, depth-assisted bin picking, surface and bead inspection, OCR/code grading, color checks and robot-frame measurements. | Each package has documented ports and calibration assumptions, known-good and known-bad validation sets, and repeatable ticket verdicts and reasons. Hardware-dependent acceptance is tracked separately. |
 

@@ -24,10 +24,12 @@ _VIEWS = ("object_views", "left_views", "right_views")
 _MAX_OBSERVATIONS_BYTES = 2 * 1024 * 1024
 
 
-def read_views(block, inputs, size, lens):
+def read_views(
+    block, inputs, size, lens, *, names=_VIEWS, second_size=None, same_point_count=True
+):
     p = block.parameters
     if p["path"]:
-        if any(name in inputs for name in _VIEWS):
+        if any(name in inputs for name in names):
             raise ValidationError("Use an observations file or the three view connectors")
         path = Path(p["path"])
         if p["path_base"] == "project" and not path.is_absolute():
@@ -39,25 +41,25 @@ def read_views(block, inputs, size, lens):
         if len(raw) > _MAX_OBSERVATIONS_BYTES:
             raise ValidationError("Stereo observations file exceeds 2 MiB")
         data = json.loads(raw)
-        if not isinstance(data, dict) or set(data) != set(_VIEWS):
-            raise ValidationError("Expected object_views, left_views and right_views in the file")
+        if not isinstance(data, dict) or set(data) != set(names):
+            raise ValidationError(f"Expected {', '.join(names)} in the observations file")
     else:
         data = inputs
-    groups = [data.get(name) for name in _VIEWS]
+    groups = [data.get(name) for name in names]
     if (
         any(not isinstance(group, list) for group in groups)
         or not 3 <= len(groups[0]) <= 32
         or len({len(g) for g in groups}) != 1
     ):
         raise ValidationError("Supply 3 to 32 matched object, left and right views")
-    output = tuple([] for _ in _VIEWS)
+    output = tuple([] for _ in names)
     for index, view in enumerate(zip(*groups, strict=True), start=1):
         if any(not isinstance(rows, list) or not 6 <= len(rows) <= 256 for rows in view):
             raise ValidationError(f"View {index} needs 6 to 256 matched points")
         xyz, a, b = (points(rows, count, 6) for rows, count in zip(view, (3, 2, 2), strict=True))
         if len(xyz) != len(a) or len(xyz) != len(b):
             raise ValidationError(f"View {index} has different point counts")
-        if len(xyz) != len(groups[0][0]):
+        if same_point_count and len(xyz) != len(groups[0][0]):
             raise ValidationError("Native stereo fitting requires equal point counts across views")
         if lens == "omnidir" and not np.allclose(xyz[:, 2], 0, rtol=0, atol=1e-9):
             raise ValidationError("Omnidirectional fitting requires XY-plane targets")
@@ -66,7 +68,10 @@ def read_views(block, inputs, size, lens):
             for v in (xyz, a, b)
         ):
             raise ValidationError(f"View {index} needs distinct, noncollinear points")
-        if any(np.any(v < 0) or np.any(v >= size) for v in (a, b)):
+        if any(
+            np.any(v < 0) or np.any(v >= dimensions)
+            for v, dimensions in zip((a, b), (size, second_size or size), strict=True)
+        ):
             raise ValidationError(f"View {index} has observations outside the camera pixel grid")
         for dest, values in zip(output, (xyz, a, b), strict=True):
             dest.append(values[None])

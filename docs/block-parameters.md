@@ -59,6 +59,61 @@ Inputs: `calibration` (data, optional).
 | `units` | `"m"` | `m`, `mm`, `unitless` |
 | `frame` | `"camera"` |  |
 
+## Calibrate camera and projector (`3d.camera_projector_calibrate`)
+
+3D vision / Structured light
+
+Inputs: `camera` (data), `projector` (data), `object_views` (data, optional), `camera_views` (data, optional), `projector_views` (data, optional).
+
+Input `camera` — Calibrated pinhole camera. Camera intrinsics stay fixed.
+
+Input `projector` — Projector pinhole model with fixed intrinsics or an initial guess.
+
+Input `object_views` — Per-view target XYZ arrays in the declared metric units.
+
+Input `camera_views` — Per-view camera XY arrays in target point order.
+
+Input `projector_views` — Per-view decoded projector XY arrays in that same order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Optional JSON object with object_views, camera_views and projector_views. |
+| `path_base` | `"project"` | `project`, `working_directory` Base for a relative observations file. |
+| `projector_intrinsics` | `"fixed"` | `fixed`, `refine` Use fixed intrinsics or fit the projector on its own pixel grid. |
+| `iterations` | `100` | Value must be a whole number between 1 and 1000. |
+| `epsilon` | `1e-08` | Value must be a finite number between 0 and 1. |
+| `max_rms_px` | `1.0` | Value must be a finite number between 1e-06 and 1000. Maximum acceptable RMS across both devices and all views. |
+| `max_view_rms_px` | `2.0` | Value must be a finite number between 0 and 1000. Per-device RMS limit per view. Zero disables it. |
+
+## Reconstruct structured-light depth (`3d.camera_projector_reconstruct`)
+
+3D vision / Structured light
+
+Inputs: `rig` (data), `projector_x` (image, optional), `projector_y` (image, optional), `camera_points` (data, optional), `projector_points` (data, optional), `valid` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `projector_x` — Dense X-coordinate map on the camera grid. Connect with projector_y.
+
+Input `projector_y` — Dense Y-coordinate map on that same camera grid.
+
+Input `camera_points` — Sparse integer camera pixels, such as the Gray-code decoder output.
+
+Input `projector_points` — Sparse projector XY pixels matching camera_points in order.
+
+Input `valid` — Optional sparse Boolean flag list in point order.
+
+Input `mask` — Limit measurements to selected camera pixels.
+
+Input `region` — Limit measurements to a camera region, intersecting the optional mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sample_step` | `1` | Value must be a whole number between 1 and 512. Dense sampling stride in pixels. Sparse point order is retained. |
+| `max_points` | `1000000` | Value must be a whole number between 1 and 1e+06. Limit the number of submitted valid correspondences before triangulation. |
+| `minimum_ray_angle_degrees` | `0.25` | Value must be a finite number between 0.001 and 90. Reject nearly parallel camera/projector ray pairs. |
+| `max_reprojection_error_px` | `0.75` | Value must be a finite number between 1e-05 and 1000. Maximum allowed pixel error on either optical device. |
+| `minimum_z_m` | `0.001` | Value must be a finite number between 1e-06 and 100000. Minimum accepted positive camera depth in meters. |
+| `maximum_z_m` | `5.0` | Value must be a finite number between 1e-06 and 100000. Maximum accepted camera depth in meters. |
+
 ## OpenCV 3D capabilities (`3d.capabilities`)
 
 3D vision / Diagnostics

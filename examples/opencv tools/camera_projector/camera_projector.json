@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 157.0,
+        "fy": 151.0,
+        "cx": 74.2,
+        "cy": 57.4,
+        "width": 152,
+        "height": 116,
+        "distortion": [
+          0.024,
+          -0.031,
+          0.0012,
+          -0.0008,
+          0.014
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "projector",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 224.0,
+        "fy": 231.0,
+        "cx": 127.6,
+        "cy": 93.3,
+        "width": 256,
+        "height": 192,
+        "distortion": [
+          -0.053,
+          0.071,
+          -0.001,
+          0.0011,
+          -0.023
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "projector"
+      },
+      "position": [
+        0,
+        280
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "3d.camera_projector_calibrate",
+      "name": "Calibrate camera and projector",
+      "parameters": {
+        "path": "assets/calibration_views.json",
+        "path_base": "project",
+        "projector_intrinsics": "fixed",
+        "iterations": 100,
+        "epsilon": 1e-08,
+        "max_rms_px": 0.05,
+        "max_view_rms_px": 0.075
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "camera",
+        "projector",
+        "object_views",
+        "camera_views",
+        "projector_views"
+      ],
+      "exposed_outputs": [
+        "rig",
+        "fit_report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "map_x",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/projector_x.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        350,
+        320
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "stepped_surface"
+      }
+    },
+    {
+      "id": "map_y",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/projector_y.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": false,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        350,
+        610
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "stepped_surface"
+      }
+    },
+    {
+      "id": "depth",
+      "type": "3d.camera_projector_reconstruct",
+      "name": "Reconstruct structured-light depth",
+      "parameters": {
+        "sample_step": 1,
+        "max_points": 1000000,
+        "minimum_ray_angle_degrees": 0.25,
+        "max_reprojection_error_px": 0.25,
+        "minimum_z_m": 0.001,
+        "maximum_z_m": 2.0
+      },
+      "position": [
+        745,
+        30
+      ],
+      "exposed_inputs": [
+        "rig",
+        "projector_x",
+        "projector_y",
+        "camera_points",
+        "projector_points",
+        "valid",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "cloud",
+        "valid_mask",
+        "reprojection_error",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Synthetic calibration and held-out step",
+      "description": "Original metric observations and scene by OpenCVDataflowGUI contributors (MIT). Fourteen board poses calibrate the rig. The example then reconstructs a separate two-depth scene from simulated subpixel correspondences, with shadow and bad matches.",
+      "parameters": {},
+      "position": [
+        0,
+        -290
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "fit",
+      "input": "camera"
+    },
+    {
+      "source": "projector",
+      "output": "camera",
+      "target": "fit",
+      "input": "projector"
+    },
+    {
+      "source": "fit",
+      "output": "rig",
+      "target": "depth",
+      "input": "rig"
+    },
+    {
+      "source": "map_x",
+      "output": "image",
+      "target": "depth",
+      "input": "projector_x"
+    },
+    {
+      "source": "map_y",
+      "output": "image",
+      "target": "depth",
+      "input": "projector_y"
+    }
+  ]
+}

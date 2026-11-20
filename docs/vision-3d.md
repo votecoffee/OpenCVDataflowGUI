@@ -25,6 +25,7 @@ Open these projects with **File → Open…**.
 | [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
 | [Phase-shift fringe replay](<../examples/opencv tools/phase_shift/README.md>) | Decode absolute subpixel projector X or Y from a six-exposure group with low-confidence gaps. |
+| [Camera/projector reconstruction](<../examples/opencv tools/camera_projector/README.md>) | Fit a rig at different resolutions and reconstruct a held-out depth step. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 | [TSDF mesh](<../examples/skimage tools/tsdf_mesh/README.md>) | Extract a metric triangle surface and preserve the gap in observed depth. |
 
@@ -265,6 +266,16 @@ cycle per pixel. It emits subpixel coordinates and phase on the camera grid
 with modulation, ambiguity and validity diagnostics. Absolute X and Y use
 separate capture sequences and a stationary, aligned scene.
 [Capture examples](<../examples/opencv tools/phase_shift/README.md>)
+
+**Calibrate camera and projector** fits the camera-to-projector transform
+from matched target views on two pinhole grids. It can refine projector
+intrinsics on their own grid while keeping camera intrinsics fixed.
+**Reconstruct structured-light depth** takes dense X/Y phase maps or sparse
+Gray-code pairs, and emits metric camera-Z, a point cloud, validity and
+reprojection error. Triangulation checks positive depth at both devices,
+ray angle, and error in each device's own pixel coordinates. Use the
+single-file calibration blocks to save and reuse the resulting rig.
+[Calibration and stepped-depth example](<../examples/opencv tools/camera_projector/README.md>)
 
 ## Build and verification boundaries
 

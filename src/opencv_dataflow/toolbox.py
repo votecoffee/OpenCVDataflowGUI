@@ -165,7 +165,8 @@ BLOCK_MODULES = {
     "ptcloud": "3d.depth_cloud 3d.separate_depth_plane 3d.cloud_project",
     "rgbd": "3d.register_depth",
     "structured_light": (
-        "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode"
+        "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode "
+        "3d.camera_projector_calibrate 3d.camera_projector_reconstruct"
     ),
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match",
     "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask 3d.smooth_depth",
