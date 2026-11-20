@@ -310,6 +310,39 @@ Inputs: `cloud` (cloud).
 
 No configurable algorithm parameters.
 
+## Merge registered point-cloud scans (`3d.cloud_merge`)
+
+3D vision / Point clouds
+
+Inputs: `cloud_1` (cloud, optional), `pose_1` (data, optional), `cloud_2` (cloud, optional), `pose_2` (data, optional), `cloud_3` (cloud, optional), `pose_3` (data, optional), `cloud_4` (cloud, optional), `pose_4` (data, optional), `scans` (any, optional).
+
+Input `cloud_1` — Metric cloud to merge. Earlier ports have priority in overlap.
+
+Input `cloud_2` — Metric cloud to merge. Earlier ports have priority in overlap.
+
+Input `cloud_3` — Metric cloud to merge. Earlier ports have priority in overlap.
+
+Input `cloud_4` — Metric cloud to merge. Earlier ports have priority in overlap.
+
+Input `pose_1` — Rigid source-to-target pose for the associated cloud, in m or mm.
+
+Input `pose_2` — Rigid source-to-target pose for the associated cloud, in m or mm.
+
+Input `pose_3` — Rigid source-to-target pose for the associated cloud, in m or mm.
+
+Input `pose_4` — Rigid source-to-target pose for the associated cloud, in m or mm.
+
+Input `scans` — Alternative input with 2–64 grouped metric clouds already in one named frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `target_frame` | `""` | Named output frame. Blank uses the first scan or its pose target. |
+| `output_units` | `"m"` | `m`, `mm` Metric units used in the emitted point cloud. |
+| `merge_mode` | `"append"` | `append`, `prefer_earlier` Append all points or drop later points near earlier retained scans. |
+| `overlap_radius_m` | `0.001` | Value must be a finite number between 1e-12 and 1e+20. Inclusive Euclidean distance in meters for overlap suppression. |
+| `attribute_policy` | `"common"` | `common`, `require_matching` Keep common RGB and normals or require matching input attributes. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Combined point budget before allocation or overlap suppression. |
+
 ## Fit point-cloud plane or sphere (`3d.cloud_model_fit`)
 
 3D vision / Point clouds

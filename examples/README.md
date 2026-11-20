@@ -189,6 +189,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Binary Census stereo](<opencv tools/binary_stereo/README.md>) | Compare integer Census matching and native SGBM on a known shift, an exposure change and a masked patch. |
 | [Scan-to-mesh inspection](<custom tools/scan_mesh_comparison/README.md>) | Inspect exact offsets from a nominal panel, separating dimensional defects, boundary hits and unsupported rows. |
 | [Cloud dimensional comparison](<custom tools/cloud_dimensional_comparison/README.md>) | Inspect known positive and negative scan deviations and distinguish dimensional defects from missing and extra points. |
+| [Registered scan merge](<custom tools/cloud_scan_merge/README.md>) | Combine mixed-unit scans in a common frame and trace retained rows after overlap suppression. |
 | [OBJ and PLY triangle mesh interchange](<custom tools/mesh_interchange/README.md>) | Compare two attributed meshes with the same triangles, normals, RGB and texture coordinates. |
 | [OBJ point-cloud interchange](<custom tools/cloud_obj_interchange/README.md>) | Compare equivalent OBJ and PLY clouds with ordered XYZ, RGB, normals, and frame and unit metadata. |
 | [Point-cloud normals and curvature](<custom tools/cloud_surface_quality/README.md>) | Measure local surfaces on a plane and sphere, reject degenerate rows and pass the accepted fits into region growing. |

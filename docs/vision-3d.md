@@ -529,6 +529,14 @@ available in Debug and Balanced.
   vertices. A distance limit controls eligible support. Query budgets limit
   work, and correspondence records preserve scan order and original face IDs.
   [Reference-panel example](<../examples/custom tools/scan_mesh_comparison/README.md>)
+- **Merge registered point-cloud scans** combines up to four direct metric
+  scans and their optional rigid poses, or a group of up to 64 already
+  registered scans. It converts all points to one named frame and unit,
+  rotates normals and preserves measured RGB when available across the
+  retained scans. The optional provenance output preserves original rows,
+  capture grids and tickets. Append keeps all rows. Prefer earlier
+  suppresses later rows within a metric radius of retained earlier scans.
+  [Registered scan merge example](<../examples/custom tools/cloud_scan_merge/README.md>)
 - **Compare point-cloud dimensions** checks measured and reference points
   in both directions within a metric correspondence radius. It accepts
   aligned m/mm inputs in the same frame. Use Euclidean tolerances or

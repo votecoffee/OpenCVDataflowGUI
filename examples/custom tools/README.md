@@ -35,6 +35,9 @@ against a reference mesh and separates open boundaries from defects.
 [Cloud dimensional comparison](cloud_dimensional_comparison/README.md) reports
 metric offsets, row-level defects and bidirectional overlap.
 
+[Registered scan merge](cloud_scan_merge/README.md) combines mixed-unit
+scans with overlap suppression and source row provenance.
+
 [Triangle mesh interchange](mesh_interchange/README.md) compares matching
 OBJ and PLY topology and vertex attributes.
 

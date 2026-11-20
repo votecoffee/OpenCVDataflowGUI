@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Merge three scans in fixture coordinates",
+      "description": "Original synthetic fixture by OpenCVDataflowGUI contributors (MIT). The side scan uses a millimeter pose and meter point coordinates. Its green points and the gold third scan extend the blue reference.",
+      "parameters": {},
+      "position": [
+        0,
+        -285
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scan_1",
+      "type": "input.cloud",
+      "name": "Load reference",
+      "parameters": {
+        "path": "assets/scan_1.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-scan-fixture"
+      }
+    },
+    {
+      "id": "scan_2",
+      "type": "input.cloud",
+      "name": "Load side view",
+      "parameters": {
+        "path": "assets/scan_2.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        255
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-scan-fixture"
+      }
+    },
+    {
+      "id": "scan_3",
+      "type": "input.cloud",
+      "name": "Load extension",
+      "parameters": {
+        "path": "assets/scan_3.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        510
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "registered-scan-fixture"
+      }
+    },
+    {
+      "id": "side_pose",
+      "type": "3d.pose",
+      "name": "Side camera to fixture",
+      "parameters": {
+        "rvec": [
+          1.5707963267948966,
+          0,
+          0
+        ],
+        "translation": [
+          10,
+          -40,
+          400
+        ],
+        "source_frame": "side_camera",
+        "target_frame": "fixture",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        765
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "append",
+      "type": "3d.cloud_merge",
+      "name": "Append all scan rows",
+      "description": "Combine registered scans in one metric frame with optional overlap suppression.",
+      "parameters": {
+        "target_frame": "fixture",
+        "output_units": "mm",
+        "merge_mode": "append",
+        "overlap_radius_m": 0.0005,
+        "attribute_policy": "require_matching",
+        "max_input_points": 250000
+      },
+      "position": [
+        510,
+        70
+      ],
+      "exposed_inputs": [
+        "cloud_1",
+        "cloud_2",
+        "pose_2",
+        "cloud_3"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "report",
+        "provenance"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "merge",
+      "type": "3d.cloud_merge",
+      "name": "Suppress cross-scan overlap",
+      "description": "Combine registered scans in one metric frame with optional overlap suppression.",
+      "parameters": {
+        "target_frame": "fixture",
+        "output_units": "mm",
+        "merge_mode": "prefer_earlier",
+        "overlap_radius_m": 0.0005,
+        "attribute_policy": "require_matching",
+        "max_input_points": 250000
+      },
+      "position": [
+        510,
+        400
+      ],
+      "exposed_inputs": [
+        "cloud_1",
+        "cloud_2",
+        "pose_2",
+        "cloud_3"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "report",
+        "provenance"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scan_1",
+      "output": "cloud",
+      "target": "append",
+      "input": "cloud_1"
+    },
+    {
+      "source": "scan_2",
+      "output": "cloud",
+      "target": "append",
+      "input": "cloud_2"
+    },
+    {
+      "source": "scan_3",
+      "output": "cloud",
+      "target": "append",
+      "input": "cloud_3"
+    },
+    {
+      "source": "side_pose",
+      "output": "transform",
+      "target": "append",
+      "input": "pose_2"
+    },
+    {
+      "source": "scan_1",
+      "output": "cloud",
+      "target": "merge",
+      "input": "cloud_1"
+    },
+    {
+      "source": "scan_2",
+      "output": "cloud",
+      "target": "merge",
+      "input": "cloud_2"
+    },
+    {
+      "source": "scan_3",
+      "output": "cloud",
+      "target": "merge",
+      "input": "cloud_3"
+    },
+    {
+      "source": "side_pose",
+      "output": "transform",
+      "target": "merge",
+      "input": "pose_2"
+    }
+  ]
+}

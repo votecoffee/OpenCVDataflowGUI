@@ -656,6 +656,7 @@ def builtin_registry():
     from .classification_evaluation import CLASSIFICATION_EVALUATION_BLOCKS
     from .cloud_features import RegisterCloudFeatures
     from .cloud_io import CLOUD_IO_BLOCKS
+    from .cloud_merge import MergeCloudScans
     from .cloud_octree import QueryCloudOctree
     from .cloud_clustering import ClusterPointCloud
     from .cloud_model_fitting import FitCloudModel
@@ -1375,6 +1376,7 @@ def builtin_registry():
         QueryCloudOctree,
         RejectCloudOutliers,
         CompareCloudDimensions,
+        MergeCloudScans,
         ClusterPointCloud,
         GrowCloudRegions,
         FitCloudModel,
