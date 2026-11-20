@@ -4759,13 +4759,13 @@ P3	function	cv2.vconcat	literal reference	-
 P3	class	cv2.Volume	literal reference	-
 P3	method	cv2.Volume.fetchNormals	no static reference	-
 P3	method	cv2.Volume.fetchPointsNormals	method name only	-
-P3	method	cv2.Volume.fetchPointsNormalsColors	no static reference	-
+P3	method	cv2.Volume.fetchPointsNormalsColors	method name only	-
 P3	method	cv2.Volume.getBoundingBox	no static reference	-
 P3	method	cv2.Volume.getEnableGrowth	no static reference	-
 P3	method	cv2.Volume.getTotalVolumeUnits	no static reference	-
 P3	method	cv2.Volume.getVisibleBlocks	no static reference	-
 P3	method	cv2.Volume.integrate	method name only	-
-P3	method	cv2.Volume.integrateColor	no static reference	-
+P3	method	cv2.Volume.integrateColor	method name only	-
 P3	method	cv2.Volume.integrateFrame	no static reference	-
 P3	method	cv2.Volume.raycast	method name only	-
 P3	method	cv2.Volume.raycastColor	no static reference	-

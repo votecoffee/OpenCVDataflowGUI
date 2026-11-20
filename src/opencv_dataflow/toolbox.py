@@ -213,6 +213,7 @@ _MODULE_BY_BLOCK = {
 }
 _NATIVE_NAMES = {
     "3d.tsdf_mesh": ("TSDF", "marching cubes", "surface reconstruction"),
+    "3d.tsdf_color": ("ColorTSDF", "RGB-D fusion", "colored point cloud"),
     "3d.cloud_compare": ("dimensional comparison", "cloud deviation", "point to plane", "overlap"),
     "3d.cloud_merge": ("scan merge", "registered views", "duplicate suppression", "provenance"),
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),

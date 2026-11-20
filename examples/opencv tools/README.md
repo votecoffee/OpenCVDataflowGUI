@@ -56,6 +56,9 @@ from Census correspondences and compares native StereoBM on held-out pixels.
 [Recorded RGB-D](recorded_rgbd/README.md) pairs staggered color and depth
 frames, aligns depth and confidence, and builds a colored point cloud.
 
+[Colored TSDF fusion](colored_tsdf_fusion/README.md) fuses three posed RGB-D
+views of a painted panel and excludes low-confidence observations.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera

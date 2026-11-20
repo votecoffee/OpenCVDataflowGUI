@@ -441,6 +441,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Tilted window statistics](<opencv tools/tilted_statistics/README.md>) | Measure two diagonal patches using batched 45-degree windows. |
 | [Transpose image](<opencv tools/transpose_image/README.md>) | Reflect a crop across its anti-diagonal and map points back to the original image. |
 | [TSDF depth fusion](<opencv tools/tsdf_fusion/README.md>) | Fuse posed synthetic depth frames into a volume and render the extracted point cloud. |
+| [Colored TSDF fusion](<opencv tools/colored_tsdf_fusion/README.md>) | Fuse posed RGB-D with confidence filtering and check surface geometry and color. |
 | [Depth-fusion trajectory](<opencv tools/depth_trajectory/README.md>) | Estimate a metric path from recorded depth, recover after a dropped frame and inspect the fused surface. |
 | [TV-L1 denoising](<opencv tools/tvl1_denoising/README.md>) | Fuse three aligned views to suppress impulse noise. |
 | [Unicode inspection labels](<opencv tools/unicode_annotations/README.md>) | Compose Latin, Greek and Cyrillic labels over an original 16-bit fixture with selectable drawing layers, preserved tickets and a bundled licensed font. |

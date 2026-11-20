@@ -1102,6 +1102,22 @@ Input `observations` — Batch or list of ChArUco observations of one board and 
 | `minimum_views` | `3` | Value must be a whole number between 3 and 64. Smallest accepted number of fitted views, including after exclusions. |
 | `view_policy` | `"require_all"` | `require_all`, `allow_subset` Require every view or accept those that pass initialization. |
 
+## Pack posed RGB-D view (`3d.pack_posed_rgbd`)
+
+3D vision / RGB-D
+
+Inputs: `color` (image), `depth` (depth), `pose` (data), `confidence` (image, optional).
+
+Input `color` — Color aligned to the depth grid.
+
+Input `depth` — Registered metric camera Z.
+
+Input `pose` — Rigid pose mapping the camera to the world frame.
+
+Input `confidence` — Optional confidence plane, float [0,1] or unsigned integer full scale.
+
+No configurable algorithm parameters.
+
 ## Decode absolute phase-shift coordinates (`3d.phase_shift_decode`)
 
 3D vision / Structured light
@@ -1791,6 +1807,32 @@ Inputs: `points_left` (data), `points_right` (data), `projection_left` (data), `
 | `frame` | `"left_camera"` |  |
 | `max_reprojection_error` | `3.0` |  |
 | `positive_depth` | `true` |  |
+
+## Fuse posed RGB-D frames (ColorTSDF) (`3d.tsdf_color`)
+
+3D vision / Volumetric reconstruction
+
+Inputs: `views` (any), `camera` (data).
+
+Input `views` — One packed posed RGB-D view or a group of up to 64 packed views.
+
+Input `camera` — Common undistorted pinhole intrinsics for the registered optical grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `resolution` | `[64, 64, 64]` | Fixed XYZ volume dimensions. Each dimension must be a multiple of eight. |
+| `volume_origin_m` | `[-0.64, -0.64, 0.5]` | Minimum corner of the volume in the world frame, in meters. |
+| `voxel_size_m` | `0.02` | Value must be a finite number between 1e-05 and 100. Metric voxel edge length. |
+| `truncation_m` | `0.06` | Value must be a finite number between 1e-05 and 100. Signed-distance band in meters. |
+| `max_weight` | `64` | Value must be a whole number between 1 and 255. Cap on the native running TSDF observation weight. |
+| `max_depth_m` | `5.0` | Value must be a finite number between 0.001 and 10000. Discard observations past this camera Z in meters. |
+| `input_units` | `"m"` | `m`, `mm` Physical units of untagged depth. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 depth sample. |
+| `sample_step` | `1` | Value must be a whole number between 1 and 256. Keep every nth extracted point in XYZ order. |
+| `max_points` | `200000` | Value must be a whole number between 1 and 2e+06. Maximum colored points after sampling. |
+| `grid_policy` | `"shared_root"` | `shared_root`, `calibrated_grid` Require compatible provenance or explicitly assert calibrated alignment. |
+| `minimum_confidence` | `0.0` | Value must be a finite number between 0 and 1. Discard zero confidence and values below this threshold. |
+| `maximum_workspace_mib` | `192` | Value must be a whole number between 1 and 512. Budget for native volume, extraction and frame workspace. |
 
 ## Fuse posed depth frames (TSDF) (`3d.tsdf_fuse`)
 

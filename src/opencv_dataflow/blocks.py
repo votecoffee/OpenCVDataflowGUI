@@ -675,6 +675,7 @@ def builtin_registry():
     from .collection_tools import COLLECTION_BLOCKS
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
+    from .color_tsdf import FuseColorTSDF, PackPosedRGBD
     from .color_tracking import ColorDistributionTracker
     from .confidence_calibration import CONFIDENCE_BLOCKS
     from .connection_health import CONNECTION_HEALTH_BLOCKS
@@ -1384,6 +1385,8 @@ def builtin_registry():
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
+        PackPosedRGBD,
+        FuseColorTSDF,
         TrackDepthFusion,
         *PHASE_SHIFT_BLOCKS,
         UnwrapFringePhase,

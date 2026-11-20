@@ -29,6 +29,7 @@ Open these projects with **File → Open…**.
 | [Camera/projector reconstruction](<../examples/opencv tools/camera_projector/README.md>) | Fit a rig at different resolutions and reconstruct a held-out depth step. |
 | [Robot-world and hand–eye](<../examples/opencv tools/robot_world/README.md>) | Jointly fit two poses and predict held-out board images with a fixed or robot-mounted camera. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
+| [Colored TSDF fusion](<../examples/opencv tools/colored_tsdf_fusion/README.md>) | Fuse three registered RGB-D views of a colored surface with confidence gating. |
 | [TSDF mesh](<../examples/skimage tools/tsdf_mesh/README.md>) | Extract a metric triangle surface and preserve the gap in observed depth. |
 
 Run once, then use **Results > 3D point-cloud viewer…**. Choose a retained cloud
@@ -675,6 +676,14 @@ origin/resolution, truncation, weight and raycast step are exposed. This is
 posed fusion, with no automatic tracking or persistent unbounded volume.
 The CPU path is selected because local OpenCL volume extraction failed on this
 wheel/driver; other operations' thread OpenCL settings are restored afterward.
+
+**Fuse posed RGB-D frames (ColorTSDF)** uses OpenCV's fixed CPU color volume
+to integrate registered uint8 RGB or BGR and metric depth. Provide one
+camera-to-world pose in each **Pack posed RGB-D view** and use the same
+undistorted pinhole model across views. Optional confidence gates the
+samples before integration. The block emits world-space RGB points, unit
+normals and per-view counts under a configurable workspace estimate.
+[Colored TSDF example](<../examples/opencv tools/colored_tsdf_fusion/README.md>)
 
 **Track depth trajectory with TSDF** processes a batch of ordered, calibrated
 metric depth planes. It estimates motion from the last accepted exposure

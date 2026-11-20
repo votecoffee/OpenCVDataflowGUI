@@ -262,21 +262,27 @@ def tsdf_views(inputs, model):
     return depths, transforms, target, k, (w, h)
 
 
+def fixed_volume_resolution(p):
+    resolution = tuple(integer(v, "Volume dimension", 8, 256) for v in p["resolution"])
+    if len(resolution) != 3 or any(v % 8 for v in resolution) or np.prod(resolution) > 8_000_000:
+        raise ValueError("Volume requires three multiples of eight and at most 8 million voxels")
+    return resolution
+
+
 @contextmanager
-def cpu_tsdf_volume(p, k, size, maximum):
+def cpu_tsdf_volume(p, k, size, maximum, *, color=False):
     """Supply a fixed-size native TSDF on the CPU for one bounded operation."""
     if not hasattr(cv2, "Volume") or not hasattr(cv2, "VolumeSettings"):
         raise RuntimeError("OpenCV 5 ptcloud Volume bindings are unavailable")
     w, h = size
-    resolution = tuple(integer(v, "Volume dimension", 8, 256) for v in p["resolution"])
-    if len(resolution) != 3 or any(v % 8 for v in resolution) or np.prod(resolution) > 8_000_000:
-        raise ValueError("Volume requires three multiples of eight and at most 8 million voxels")
+    resolution = fixed_volume_resolution(p)
     origin = np.asarray(p["volume_origin_m"], np.float32)
     if origin.shape != (3,) or not np.isfinite(origin).all():
         raise ValueError("Volume origin must be finite XYZ meters")
     volume_pose = np.eye(4, dtype=np.float32)
     volume_pose[:3, 3] = origin
-    settings = cv2.VolumeSettings(cv2.VOLUME_TYPE_TSDF)
+    volume_type = cv2.VOLUME_TYPE_COLOR_TSDF if color else cv2.VOLUME_TYPE_TSDF
+    settings = cv2.VolumeSettings(volume_type)
     settings.setVolumeResolution(resolution)
     settings.setVoxelSize(finite(p["voxel_size_m"], "Voxel size", 0.00001))
     settings.setVolumePose(volume_pose)
@@ -295,7 +301,7 @@ def cpu_tsdf_volume(p, k, size, maximum):
     opencl = cv2.ocl.useOpenCL()
     cv2.ocl.setUseOpenCL(False)
     try:
-        yield cv2.Volume(cv2.VOLUME_TYPE_TSDF, settings)
+        yield cv2.Volume(volume_type, settings)
     finally:
         cv2.ocl.setUseOpenCL(opencl)
 

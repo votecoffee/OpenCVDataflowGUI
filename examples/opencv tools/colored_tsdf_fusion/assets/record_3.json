@@ -1,0 +1,20 @@
+{
+  "format": "opencv_dataflow_rgbd_v1",
+  "clock": "synthetic_color_panel",
+  "color_frame": "camera",
+  "depth_frame": "camera",
+  "depth_m_per_sample": 0.0001,
+  "color": [
+    {
+      "timestamp_ns": 40000000,
+      "path": "record_3_color.png"
+    }
+  ],
+  "depth": [
+    {
+      "timestamp_ns": 40000000,
+      "path": "record_3_depth.png",
+      "confidence": "record_3_confidence.png"
+    }
+  ]
+}
