@@ -695,6 +695,17 @@ identifies valid black RGB pixels. Without a target pair, the depth block
 renders the last input view and the color block emits its cloud and report.
 [Target raycast example](<../examples/opencv tools/colored_tsdf_fusion/tsdf_target_raycast.json>)
 
+**Fuse depth into a bounded HashTSDF** uses OpenCV's sparse CPU volume for
+an ordered batch of metric depth frames and camera-to-world poses. Bounded
+mode reserves each frame's conservative block envelope before integration.
+Seed-only mode freezes allocation after the first accepted frame. The
+block and memory limits reject over-budget frames and preserve earlier
+geometry. Frame reports show reserved block overlap, native bounds and
+raw native counters. On the qualified OpenCV 5.0.0 wheel those counters
+return one throughout growth. Surface extraction verifies samples
+against admitted depth before emitting XYZ and normals.
+[HashTSDF sweep](<../examples/opencv tools/hash_tsdf_growth/README.md>)
+
 **Track depth trajectory with TSDF** processes a batch of ordered, calibrated
 metric depth planes. It estimates motion from the last accepted exposure
 and checks the proposed pose on the fused TSDF surface. Rejected exposures

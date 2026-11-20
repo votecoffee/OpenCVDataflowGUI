@@ -59,6 +59,9 @@ frames, aligns depth and confidence, and builds a colored point cloud.
 [Colored TSDF fusion](colored_tsdf_fusion/README.md) fuses three posed RGB-D
 views of a painted panel and excludes low-confidence observations.
 
+[Bounded HashTSDF growth](hash_tsdf_growth/README.md) compares growing and
+seed-only reconstruction across a six-view sweep.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera

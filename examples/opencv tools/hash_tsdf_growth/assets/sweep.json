@@ -1,0 +1,59 @@
+{
+  "format": "opencv_dataflow_rgbd_v1",
+  "clock": "synthetic_plane_sweep",
+  "color_frame": "camera",
+  "depth_frame": "camera",
+  "depth_m_per_sample": 0.001,
+  "color": [
+    {
+      "timestamp_ns": 20000000,
+      "path": "color.png"
+    },
+    {
+      "timestamp_ns": 40000000,
+      "path": "color.png"
+    },
+    {
+      "timestamp_ns": 60000000,
+      "path": "color.png"
+    },
+    {
+      "timestamp_ns": 80000000,
+      "path": "color.png"
+    },
+    {
+      "timestamp_ns": 100000000,
+      "path": "color.png"
+    },
+    {
+      "timestamp_ns": 120000000,
+      "path": "color.png"
+    }
+  ],
+  "depth": [
+    {
+      "timestamp_ns": 20000000,
+      "path": "depth_0.png"
+    },
+    {
+      "timestamp_ns": 40000000,
+      "path": "depth_1.png"
+    },
+    {
+      "timestamp_ns": 60000000,
+      "path": "depth_2.png"
+    },
+    {
+      "timestamp_ns": 80000000,
+      "path": "depth_3.png"
+    },
+    {
+      "timestamp_ns": 100000000,
+      "path": "depth_4.png"
+    },
+    {
+      "timestamp_ns": 120000000,
+      "path": "depth_5.png"
+    }
+  ]
+}

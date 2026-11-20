@@ -741,6 +741,7 @@ def builtin_registry():
     from .gram_matrix import GramMatrix
     from .gray_level_cooccurrence import GrayLevelCooccurrence
     from .hand_eye import HandEyeCalibration
+    from .hash_tsdf import FuseHashedTSDF
     from .hdr import (
         CalibrateCameraResponse,
         CalibrateRobertson,
@@ -1385,6 +1386,7 @@ def builtin_registry():
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
+        FuseHashedTSDF,
         PackPosedRGBD,
         FuseColorTSDF,
         TrackDepthFusion,

@@ -278,8 +278,8 @@ def fixed_volume_resolution(p):
 
 
 @contextmanager
-def cpu_tsdf_volume(p, k, size, maximum, *, color=False):
-    """Supply a fixed-size native TSDF on the CPU for one bounded operation."""
+def cpu_tsdf_volume(p, k, size, maximum, *, color=False, hashed=False):
+    """Supply a native TSDF on the CPU for one bounded operation."""
     if not hasattr(cv2, "Volume") or not hasattr(cv2, "VolumeSettings"):
         raise RuntimeError("OpenCV 5 ptcloud Volume bindings are unavailable")
     w, h = size
@@ -289,7 +289,13 @@ def cpu_tsdf_volume(p, k, size, maximum, *, color=False):
         raise ValueError("Volume origin must be finite XYZ meters")
     volume_pose = np.eye(4, dtype=np.float32)
     volume_pose[:3, 3] = origin
-    volume_type = cv2.VOLUME_TYPE_COLOR_TSDF if color else cv2.VOLUME_TYPE_TSDF
+    volume_type = (
+        cv2.VOLUME_TYPE_HASH_TSDF
+        if hashed
+        else cv2.VOLUME_TYPE_COLOR_TSDF
+        if color
+        else cv2.VOLUME_TYPE_TSDF
+    )
     settings = cv2.VolumeSettings(volume_type)
     settings.setVolumeResolution(resolution)
     settings.setVoxelSize(finite(p["voxel_size_m"], "Voxel size", 0.00001))

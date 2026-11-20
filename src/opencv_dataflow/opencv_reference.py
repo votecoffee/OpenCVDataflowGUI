@@ -144,6 +144,10 @@ BINDINGS = {
         "VolumeSettings Volume.integrateColor Volume.fetchPointsNormalsColors Volume.raycastExColor"
     ),
     "3d.tsdf_fuse": "VolumeSettings Volume.integrate Volume.fetchPointsNormals Volume.raycastEx",
+    "3d.tsdf_hash": (
+        "VolumeSettings Volume.integrate Volume.setEnableGrowth Volume.getVisibleBlocks "
+        "Volume.getTotalVolumeUnits Volume.getBoundingBox Volume.fetchPointsNormals"
+    ),
     "3d.track_silhouette": (
         "rapid.extractControlPoints rapid.extractLineBundle rapid.findCorrespondencies "
         "projectPoints Rodrigues"

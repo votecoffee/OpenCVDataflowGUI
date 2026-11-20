@@ -1863,6 +1863,38 @@ Input `target_pose` — Rigid target-camera-to-world transform in meters or mill
 | `sample_step` | `1` |  |
 | `max_points` | `200000` |  |
 
+## Fuse depth into a bounded HashTSDF (`3d.tsdf_hash`)
+
+3D vision / Volumetric reconstruction
+
+Inputs: `depth` (depth, optional), `frames` (any, optional), `poses` (data, optional), `camera` (data).
+
+Input `depth` — Single depth frame, or connect a group to Frames.
+
+Input `frames` — Ordered group of aligned metric depth frames with one pose per frame.
+
+Input `poses` — One camera-to-world pose per depth frame. Overrides the saved poses.
+
+Input `camera` — Common undistorted pinhole intrinsics.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `camera_poses` | `[]` | Saved pose records in capture order if the Poses connector is unwired. |
+| `growth_mode` | `"bounded"` | `bounded`, `seed_only` Allow bounded growth or freeze allocations after the first accepted frame. |
+| `block_resolution` | `"8"` | `8`, `16` Voxels on each edge of a native hash block. |
+| `block_limit` | `512` | Value must be a whole number between 1 and 8192. Maximum number of conservatively reserved blocks. |
+| `maximum_workspace_mib` | `192` | Value must be a whole number between 1 and 512. Budget for native pool, extraction and depth workspace. |
+| `voxel_size_m` | `0.02` | Value must be a finite number between 1e-05 and 10. Metric voxel edge length. |
+| `volume_origin_m` | `[-0.64, -0.64, 0.5]` | World XYZ of the block-grid origin in meters. |
+| `truncation_m` | `0.06` | Value must be a finite number between 1e-05 and 10. Native integration band in meters. |
+| `max_weight` | `32` | Value must be a whole number between 1 and 255. Native observation weight saturation. |
+| `max_depth_m` | `5.0` | Value must be a finite number between 0.001 and 1000. Exclude camera depths beyond this range before allocation. |
+| `surface_tolerance_m` | `0.025` | Value must be a finite number between 1e-06 and 10. Maximum camera Z difference for a supported surface point. |
+| `input_units` | `"m"` | `m`, `mm` Units for untagged depth. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per untagged uint16 depth count. |
+| `sample_step` | `1` | Value must be a whole number between 1 and 256. Keep every nth supported point in sorted XYZ order. |
+| `max_points` | `200000` | Value must be a whole number between 1 and 2e+06. Maximum cloud size after sampling. |
+
 ## Fuse posed depth into a mesh (`3d.tsdf_mesh`)
 
 3D vision / Volumetric reconstruction

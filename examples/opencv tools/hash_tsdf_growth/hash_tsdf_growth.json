@@ -1,0 +1,725 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Compare sparse TSDF expansion",
+      "description": "Original analytic plane sweep by OpenCVDataflowGUI contributors (MIT). Run All accumulates six poses of one plane. Compare the growing volume with a volume that keeps its first frame's allocation.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/sweep.json",
+        "repeat": "stop",
+        "maximum_skew_ms": 5.0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        10
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 6,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        360,
+        10
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 90,
+        "fy": 90,
+        "cx": 31.5,
+        "cy": 23.5,
+        "width": 64,
+        "height": 48,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        360,
+        265
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "growing",
+      "type": "3d.tsdf_hash",
+      "name": "Grow across all six views",
+      "description": "Grow a sparse depth volume within block and workspace limits.",
+      "parameters": {
+        "camera_poses": [
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                380.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                25.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              380.0,
+              0.0,
+              25.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                760.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                50.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              760.0,
+              0.0,
+              50.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                1140.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                75.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              1140.0,
+              0.0,
+              75.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                1520.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                100.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              1520.0,
+              0.0,
+              100.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                1900.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                125.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              1900.0,
+              0.0,
+              125.0
+            ]
+          }
+        ],
+        "growth_mode": "bounded",
+        "block_resolution": "8",
+        "block_limit": 224,
+        "maximum_workspace_mib": 192,
+        "voxel_size_m": 0.02,
+        "volume_origin_m": [
+          -0.52,
+          -0.4,
+          0.55
+        ],
+        "truncation_m": 0.06,
+        "max_weight": 32,
+        "max_depth_m": 2,
+        "surface_tolerance_m": 0.025,
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        735,
+        0
+      ],
+      "exposed_inputs": [
+        "frames",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "seeded",
+      "type": "3d.tsdf_hash",
+      "name": "Keep first view's allocation",
+      "description": "Grow a sparse depth volume within block and workspace limits.",
+      "parameters": {
+        "camera_poses": [
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                380.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                25.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              380.0,
+              0.0,
+              25.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                760.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                50.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              760.0,
+              0.0,
+              50.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                1140.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                75.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              1140.0,
+              0.0,
+              75.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                1520.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                100.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              1520.0,
+              0.0,
+              100.0
+            ]
+          },
+          {
+            "model": "pose_3d_v1",
+            "source_to_target": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                1900.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                125.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "source_frame": "camera",
+            "target_frame": "plane",
+            "units": "mm",
+            "rvec": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "translation": [
+              1900.0,
+              0.0,
+              125.0
+            ]
+          }
+        ],
+        "growth_mode": "seed_only",
+        "block_resolution": "8",
+        "block_limit": 224,
+        "maximum_workspace_mib": 192,
+        "voxel_size_m": 0.02,
+        "volume_origin_m": [
+          -0.52,
+          -0.4,
+          0.55
+        ],
+        "truncation_m": 0.06,
+        "max_weight": 32,
+        "max_depth_m": 2,
+        "surface_tolerance_m": 0.025,
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "sample_step": 1,
+        "max_points": 200000
+      },
+      "position": [
+        735,
+        255
+      ],
+      "exposed_inputs": [
+        "frames",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "depth",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "growing",
+      "input": "frames"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "growing",
+      "input": "camera"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "seeded",
+      "input": "frames"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "seeded",
+      "input": "camera"
+    }
+  ]
+}
