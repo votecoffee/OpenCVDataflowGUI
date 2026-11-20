@@ -659,6 +659,7 @@ def builtin_registry():
     from .cloud_octree import QueryCloudOctree
     from .cloud_clustering import ClusterPointCloud
     from .cloud_model_fitting import FitCloudModel
+    from .cloud_comparison import CompareCloudDimensions
     from .cloud_outliers import RejectCloudOutliers
     from .cloud_region_growing import GrowCloudRegions
     from .cloud_surface_quality import MeasureCloudSurfaceQuality
@@ -1372,6 +1373,7 @@ def builtin_registry():
         *CLOUD_IO_BLOCKS,
         QueryCloudOctree,
         RejectCloudOutliers,
+        CompareCloudDimensions,
         ClusterPointCloud,
         GrowCloudRegions,
         FitCloudModel,

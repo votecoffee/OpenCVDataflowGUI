@@ -29,6 +29,9 @@ try [ALIKED and LightGlue](aliked_matching/README.md).
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
 For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).
 
+[Cloud dimensional comparison](cloud_dimensional_comparison/README.md) reports
+metric offsets, row-level defects and bidirectional overlap.
+
 [Triangle mesh interchange](mesh_interchange/README.md) compares matching
 OBJ and PLY topology and vertex attributes.
 

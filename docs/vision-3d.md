@@ -522,6 +522,14 @@ available in Debug and Balanced.
   quality threshold, and passes curvature in the same row order as the
   accepted cloud. Source diagnostics retain all row positions.
   [Surface quality example](<../examples/custom tools/cloud_surface_quality/README.md>)
+- **Compare point-cloud dimensions** checks measured and reference points
+  in both directions within a metric correspondence radius. It accepts
+  aligned m/mm inputs in the same frame. Use Euclidean tolerances or
+  signed limits projected onto uniquely matched, oriented reference
+  normals. Distinct fail reasons cover overlap, signed coverage and
+  tolerance. Pair records retain row order, and cloud outputs isolate
+  dimensional defects, extra measured points and missing reference points.
+  [Dimensional comparison example](<../examples/custom tools/cloud_dimensional_comparison/README.md>)
 - **Fit point-cloud plane or sphere** uses seeded sample consensus and
   refines the best model using its support. The block classifies the entire
   scan at the selected metric tolerance and returns coefficients, signed

@@ -263,6 +263,31 @@ Input `cloud` — Metric XYZ in meters or millimeters. Original scan rows retain
 | `max_neighbor_pairs` | `2000000` | Value must be a whole number between 1 and 6e+06. Maximum unique unordered pairs admitted to the radius graph. |
 | `max_clusters` | `256` | Value must be a whole number between 1 and 4096. Maximum accepted clusters per result. Exceeding this limit fails the run. |
 
+## Compare point-cloud dimensions (`3d.cloud_compare`)
+
+3D vision / Point clouds
+
+Inputs: `measured` (cloud), `reference` (cloud).
+
+Input `measured` — Measured XYZ in the same named frame as the reference, in m or mm.
+
+Input `reference` — Nominal XYZ with optional oriented normals, in the measured frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `comparison` | `"distance"` | `distance`, `normal` Judge Euclidean distance or signed projection onto reference normals. |
+| `correspondence_radius_m` | `0.01` | Value must be a finite number between 1e-09 and 1e+12. Inclusive maximum Euclidean distance for overlap. |
+| `distance_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Maximum Euclidean deviation in distance mode. |
+| `negative_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Allowed magnitude opposite the reference normal in normal mode. |
+| `positive_tolerance_m` | `0.002` | Value must be a finite number between 0 and 1e+12. Allowed magnitude along the reference normal in normal mode. |
+| `minimum_measured_overlap` | `0.9` | Value must be a finite number between 0 and 1. Minimum measured rows with a nearby reference, as a fraction. |
+| `minimum_reference_overlap` | `0.9` | Value must be a finite number between 0 and 1. Minimum fraction of reference rows with a measured match. |
+| `minimum_in_tolerance_fraction` | `1.0` | Value must be a finite number between 0 and 1. Minimum in-tolerance fraction in each direction. |
+| `minimum_signed_fraction` | `0.95` | Value must be a finite number between 0 and 1. Minimum signed fraction of matches in normal mode. |
+| `maximum_normal_angle_deg` | `60.0` | Value must be a finite number between 0 and 180. Maximum normal angle if both clouds have normals. |
+| `tie_tolerance_m` | `1e-09` | Value must be a finite number between 0 and 1e+12. Withhold row identity and sign for near-tied distances. |
+| `max_points_per_cloud` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum number of points admitted per cloud. |
+
 ## Filter point cloud (`3d.cloud_filter`)
 
 3D vision / Point clouds

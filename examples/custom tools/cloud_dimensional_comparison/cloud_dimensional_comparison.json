@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Inspect distance and coverage",
+      "description": "Original synthetic comparison by OpenCVDataflowGUI contributors (MIT). Three measured rows violate the strict tolerance. Two nominal rows are missing and one measured row is outside the overlap region.",
+      "parameters": {},
+      "position": [
+        0,
+        -340
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measured",
+      "type": "input.cloud",
+      "name": "Load measured cloud",
+      "parameters": {
+        "path": "assets/measured.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "dimensional-fixture"
+      }
+    },
+    {
+      "id": "reference",
+      "type": "input.cloud",
+      "name": "Load reference cloud",
+      "parameters": {
+        "path": "assets/reference.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "dimensional-fixture"
+      }
+    },
+    {
+      "id": "pass",
+      "type": "3d.cloud_compare",
+      "name": "Allow up to 2.1 mm",
+      "description": "Measure bidirectional overlap and deviations between aligned scans.",
+      "parameters": {
+        "comparison": "normal",
+        "correspondence_radius_m": 0.004,
+        "distance_tolerance_m": 0.002,
+        "negative_tolerance_m": 0.0021,
+        "positive_tolerance_m": 0.0021,
+        "minimum_measured_overlap": 0.9,
+        "minimum_reference_overlap": 0.9,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_normal_angle_deg": 60.0,
+        "tie_tolerance_m": 1e-09,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        435,
+        -280
+      ],
+      "exposed_inputs": [
+        "measured",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "measured_defects",
+        "unmatched_measured",
+        "missing_reference",
+        "measured_pairs",
+        "reference_pairs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "size",
+      "type": "3d.cloud_compare",
+      "name": "Inspect inward and outward tolerance",
+      "description": "Measure bidirectional overlap and deviations between aligned scans.",
+      "parameters": {
+        "comparison": "normal",
+        "correspondence_radius_m": 0.004,
+        "distance_tolerance_m": 0.002,
+        "negative_tolerance_m": 0.0008,
+        "positive_tolerance_m": 0.0009,
+        "minimum_measured_overlap": 0.9,
+        "minimum_reference_overlap": 0.9,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_normal_angle_deg": 60.0,
+        "tie_tolerance_m": 1e-09,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        435,
+        0
+      ],
+      "exposed_inputs": [
+        "measured",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "measured_defects",
+        "unmatched_measured",
+        "missing_reference",
+        "measured_pairs",
+        "reference_pairs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "overlap",
+      "type": "3d.cloud_compare",
+      "name": "Require 98% coverage",
+      "description": "Measure bidirectional overlap and deviations between aligned scans.",
+      "parameters": {
+        "comparison": "normal",
+        "correspondence_radius_m": 0.004,
+        "distance_tolerance_m": 0.002,
+        "negative_tolerance_m": 0.0021,
+        "positive_tolerance_m": 0.0021,
+        "minimum_measured_overlap": 0.98,
+        "minimum_reference_overlap": 0.98,
+        "minimum_in_tolerance_fraction": 1.0,
+        "minimum_signed_fraction": 0.95,
+        "maximum_normal_angle_deg": 60.0,
+        "tie_tolerance_m": 1e-09,
+        "max_points_per_cloud": 250000
+      },
+      "position": [
+        435,
+        280
+      ],
+      "exposed_inputs": [
+        "measured",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "measured_defects",
+        "unmatched_measured",
+        "missing_reference",
+        "measured_pairs",
+        "reference_pairs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "measured",
+      "output": "cloud",
+      "target": "pass",
+      "input": "measured"
+    },
+    {
+      "source": "reference",
+      "output": "cloud",
+      "target": "pass",
+      "input": "reference"
+    },
+    {
+      "source": "measured",
+      "output": "cloud",
+      "target": "size",
+      "input": "measured"
+    },
+    {
+      "source": "reference",
+      "output": "cloud",
+      "target": "size",
+      "input": "reference"
+    },
+    {
+      "source": "measured",
+      "output": "cloud",
+      "target": "overlap",
+      "input": "measured"
+    },
+    {
+      "source": "reference",
+      "output": "cloud",
+      "target": "overlap",
+      "input": "reference"
+    }
+  ]
+}
