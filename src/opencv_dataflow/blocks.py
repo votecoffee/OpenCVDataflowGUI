@@ -663,6 +663,7 @@ def builtin_registry():
     from .cloud_model_fitting import FitCloudModel
     from .cloud_comparison import CompareCloudDimensions
     from .cloud_outliers import RejectCloudOutliers
+    from .cloud_tiles import TiledCloudRadius
     from .cloud_region_growing import GrowCloudRegions
     from .cloud_surface_quality import MeasureCloudSurfaceQuality
     from .cloud_projection import ProjectCloudVisibility
@@ -1383,6 +1384,7 @@ def builtin_registry():
         *CLOUD_IO_BLOCKS,
         QueryCloudOctree,
         RejectCloudOutliers,
+        TiledCloudRadius,
         CompareCloudDimensions,
         MeasureOrientedCloud,
         MergeCloudScans,

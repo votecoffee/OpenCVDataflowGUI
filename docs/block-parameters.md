@@ -7125,6 +7125,28 @@ Ticket mode and fixed value are common inspector controls.
 | `max_points` | `1000000` | Value must be a whole number between 1 and 2e+06. Limit on declared point rows, including empty pixels in an organized PCD. |
 | `track_source_rows` | `false` | Record original zero-based file rows if source_index is absent. |
 
+## Filter a large PLY cloud by tiles (`input.cloud_tiled_radius`)
+
+Input / Point clouds
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Vertex-only binary little-endian PLY, up to 256 MiB. |
+| `output_path` | `""` | Optional new PLY file. Leave blank to report counts only. |
+| `scratch_directory` | `""` | Temporary index folder. Defaults to the system temp folder. |
+| `units` | `"m"` | `m`, `mm` Units for files without Dataflow metadata. |
+| `frame` | `"file"` | Coordinate frame for files without Dataflow metadata. |
+| `radius_m` | `0.01` | Value must be a finite number between 1e-09 and 1e+12. Inclusive Euclidean radius in meters. |
+| `minimum_neighbors` | `3` | Value must be a whole number between 1 and 249999. Required number of other rows. Coincident rows count separately. |
+| `tile_size_m` | `0.08` | Value must be a finite number between 2e-09 and 1e+16. Cubic tile edge in meters. Must be at least twice the radius. |
+| `max_source_rows` | `4000000` | Value must be a whole number between 1 and 1.6e+07. Limit on source rows, including nonfinite XYZ. |
+| `max_window_points` | `100000` | Value must be a whole number between 1 and 250000. Maximum points in the core tile and its radius halo. |
+| `max_tiles` | `250000` | Value must be a whole number between 1 and 1e+06. Maximum occupied core tiles to process. |
+| `max_index_mib` | `512` | Value must be a whole number between 1 and 4096. Maximum size of the temporary SQLite index, in MiB. |
+
 ## Load coded rig captures (`input.coded_rig_observations`)
 
 Input / Calibration

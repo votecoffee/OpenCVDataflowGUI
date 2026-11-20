@@ -201,6 +201,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Normal-based cloud region growing](<custom tools/cloud_region_growing/README.md>) | Separate two touching faces by normal direction and isolate high-curvature seam rows. |
 | [Euclidean point-cloud clustering](<custom tools/cloud_clustering/README.md>) | Separate three measured pads and reject small and oversized groups while preserving scan row IDs. |
 | [Point-cloud outlier rejection](<custom tools/cloud_outlier_rejection/README.md>) | Compare radius and statistical filtering on a folded panel with six known noise points. |
+| [Tiled radius filtering](<custom tools/tiled_cloud_radius/README.md>) | Check cross-tile neighborhoods and export dense rows from a large binary PLY scan. |
 | [Voxel representatives](<custom tools/voxel_representatives/README.md>) | Pick measured representatives from a cloud with independently sized X, Y and Z voxels. |
 | [Point-cloud sampling](<custom tools/cloud_sampling/README.md>) | Compare equal-budget random and farthest-point samples of a colored cloud. |
 | [Point-cloud octree queries](<custom tools/cloud_octree_query/README.md>) | Find nearest and radius neighbors on an imported metric cloud with stable point IDs. |

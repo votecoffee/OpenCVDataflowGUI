@@ -71,6 +71,9 @@ XYZ distance and filters components by point count and physical size.
 [Point-cloud outlier rejection](cloud_outlier_rejection/README.md) compares density
 rules and verifies retained corners and flange points on a colored PLY.
 
+[Tiled radius filtering](tiled_cloud_radius/README.md) checks exact radius counts
+across tile boundaries and preserves file order during export.
+
 [Voxel representatives](voxel_representatives/README.md) compare measured rows
 and centroids in the same per-axis voxel grid.
 

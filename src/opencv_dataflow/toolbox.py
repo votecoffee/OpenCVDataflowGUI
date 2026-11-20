@@ -196,7 +196,7 @@ BLOCK_MODULES = {
         "input.demo output.results input.calibration output.calibration "
         "calibration.pixel_to_physical "
         "calibration.lens_map_displacement collection.filter collection.sort collection.draw "
-        "core.attach_payload core.read_payload flow.detection_cadence "
+        "core.attach_payload core.read_payload flow.detection_cadence input.cloud_tiled_radius "
         "sequence.background sequence.image_memory "
         "cv.distortion_fixture "
         "inspect.region_contrast "
@@ -235,6 +235,7 @@ _NATIVE_NAMES = {
     "output.mesh_ply": ("obj", "ply", "saveMesh"),
     "input.cloud": ("obj", "ply", "pcd", "loadPointCloud"),
     "output.cloud": ("obj", "ply", "pcd", "savePointCloud"),
+    "input.cloud_tiled_radius": ("large scan", "tiled PLY", "radius neighbors"),
     "3d.cloud_outlier": ("point density", "remove noise", "statistical outlier removal"),
     "3d.cloud_sample": ("randomSampling", "farthestPointSampling", "downsample", "FPS"),
     "3d.cloud_voxel": ("voxelGridSampling", "nearest centroid", "representative point"),

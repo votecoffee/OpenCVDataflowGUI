@@ -586,6 +586,13 @@ available in Debug and Balanced.
   colors, normals and source pixels. The index size and per-query memory
   are bounded with an input point budget and batches.
   [Folded-panel example](<../examples/custom tools/cloud_outlier_rejection/README.md>)
+- **Filter a large PLY cloud by tiles** applies the same inclusive radius count
+  to a vertex-only binary little-endian PLY without materializing a full
+  cloud. Each occupied tile queries a radius halo, then updates global
+  counts. Configure the file, tile, local point and index size limits.
+  The optional new PLY retains the source row order and scalar properties.
+  It keeps existing source IDs or writes zero-based file row IDs.
+  [Tiled scan example](<../examples/custom tools/tiled_cloud_radius/README.md>)
 - **Sample point cloud** chooses original rows by seeded random sampling
   without replacement or greedy farthest-point sampling. Set a maximum count
   or a capped fraction in the inspector. Farthest mode can stop when the next

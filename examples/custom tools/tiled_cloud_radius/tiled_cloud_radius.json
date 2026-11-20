@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Filter a scan with tile halos",
+      "description": "Original synthetic scan by OpenCVDataflowGUI contributors (MIT). The radius crosses tile boundaries, includes points exactly 125 mm away, and counts the two coincident rows separately. Two isolated rows are rejected.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter",
+      "type": "input.cloud_tiled_radius",
+      "name": "Filter a large PLY cloud by tiles",
+      "description": "Stream a binary PLY scan, count metric neighbors, and optionally write kept rows.",
+      "parameters": {
+        "path": "assets/scan.ply",
+        "output_path": "",
+        "scratch_directory": "",
+        "units": "m",
+        "frame": "file",
+        "radius_m": 0.125,
+        "minimum_neighbors": 1,
+        "tile_size_m": 0.25,
+        "max_source_rows": 4000000,
+        "max_window_points": 100000,
+        "max_tiles": 250000,
+        "max_index_mib": 512
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "path",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

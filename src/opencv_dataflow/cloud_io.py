@@ -114,55 +114,66 @@ def ascii_vertices(stream, count, fields):
     return values
 
 
+def cloud_headers(stream):
+    headers, metadata = [], {}
+    for _ in range(256):
+        line = stream.readline(8193)
+        if not line:
+            raise ValueError("Truncated cloud header")
+        if len(line) > 8192:
+            raise ValueError("Oversized cloud header line")
+        text = line.decode("ascii").strip()
+        headers.append(text)
+        marker = "dataflow_metadata "
+        if marker in text:
+            metadata = json.loads(text.split(marker, 1)[1])
+            if not isinstance(metadata, dict):
+                raise ValueError("Invalid cloud metadata comment")
+        if text == "end_header" or text.split(maxsplit=1)[:1] == ["DATA"]:
+            break
+    else:
+        raise ValueError("Cloud header exceeds 256 lines")
+    return headers, metadata
+
+
+def ply_vertex_schema(headers, max_points):
+    format_line = next((h for h in headers if h.startswith("format ")), "")
+    count = None
+    properties = []
+    in_vertices = False
+    for h in headers:
+        if h.startswith("element "):
+            _, name, number = h.split()
+            in_vertices = name == "vertex"
+            if in_vertices:
+                count = integer(int(number), "Vertex count", 0, max_points)
+        elif h.startswith("property ") and in_vertices:
+            pieces = h.split()
+            if len(pieces) != 3 or pieces[1] not in PLY_TYPES:
+                raise ValueError("PLY vertex list/unknown properties are unsupported")
+            properties.append((pieces[2], PLY_TYPES[pieces[1]]))
+    if count is None or not properties or len(properties) > 64:
+        raise ValueError("PLY must declare vertices with bounded scalar properties")
+    names = [p[0] for p in properties]
+    if len(set(names)) != len(names):
+        raise ValueError("Duplicate PLY vertex properties")
+    return format_line, count, properties
+
+
 def read_cloud(path, units="m", frame="file", max_points=2000000, *, track_source_rows=False):
     file_size = path.stat().st_size
     if file_size > MAX_CLOUD_BYTES:
         raise ValueError("Point-cloud files are limited to 256 MiB")
-    metadata, headers = {}, []
     with path.open("rb") as stream:
         if path.suffix.lower() == ".obj":
             cloud = read_obj_cloud(stream, units, frame, max_points)
             if track_source_rows:
                 cloud.attributes["source_index"] = np.arange(len(cloud.points), dtype=np.int32)
             return cloud
-        for _ in range(256):
-            line = stream.readline(8193)
-            if not line:
-                raise ValueError("Truncated cloud header")
-            if len(line) > 8192:
-                raise ValueError("Oversized cloud header line")
-            text = line.decode("ascii").strip()
-            headers.append(text)
-            marker = "dataflow_metadata "
-            if marker in text:
-                metadata = json.loads(text.split(marker, 1)[1])
-                if not isinstance(metadata, dict):
-                    raise ValueError("Invalid cloud metadata comment")
-            if text == "end_header" or text.split(maxsplit=1)[:1] == ["DATA"]:
-                break
-        else:
-            raise ValueError("Cloud header exceeds 256 lines")
+        headers, metadata = cloud_headers(stream)
         if headers[0] == "ply":
-            format_line = next((h for h in headers if h.startswith("format ")), "")
-            count = None
-            properties = []
-            in_vertices = False
-            for h in headers:
-                if h.startswith("element "):
-                    _, name, number = h.split()
-                    in_vertices = name == "vertex"
-                    if in_vertices:
-                        count = integer(int(number), "Vertex count", 0, max_points)
-                elif h.startswith("property ") and in_vertices:
-                    pieces = h.split()
-                    if len(pieces) != 3 or pieces[1] not in PLY_TYPES:
-                        raise ValueError("PLY vertex list/unknown properties are unsupported")
-                    properties.append((pieces[2], PLY_TYPES[pieces[1]]))
-            if count is None or not properties or len(properties) > 64:
-                raise ValueError("PLY must declare vertices with bounded scalar properties")
-            names = [p[0] for p in properties]
-            if len(set(names)) != len(names):
-                raise ValueError("Duplicate PLY vertex properties")
+            format_line, count, properties = ply_vertex_schema(headers, max_points)
+            names = [name for name, _ in properties]
             if format_line == "format binary_little_endian 1.0":
                 dtype = np.dtype(properties)
                 expected = count * dtype.itemsize
