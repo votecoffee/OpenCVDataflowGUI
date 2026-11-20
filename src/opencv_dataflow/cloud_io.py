@@ -1,4 +1,4 @@
-"""Bounded PLY/PCD point-cloud interchange, preserving explicit frame and unit metadata."""
+"""Bounded point-cloud interchange with explicit frame and unit metadata."""
 
 import json
 from pathlib import Path
@@ -7,6 +7,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .geometry3d_common import cloud_graphics
+from .obj_cloud import MAX_CLOUD_BYTES, read_obj_cloud, write_obj_cloud
 from .pointclouds import PointCloud
 from .processing import integer
 
@@ -82,10 +83,12 @@ def ascii_vertices(stream, count, fields):
 
 
 def read_cloud(path, units="m", frame="file", max_points=2000000):
-    if path.stat().st_size > 256 * 1024 * 1024:
+    if path.stat().st_size > MAX_CLOUD_BYTES:
         raise ValueError("Point-cloud files are limited to 256 MiB")
     metadata, headers = {}, []
     with path.open("rb") as stream:
+        if path.suffix.lower() == ".obj":
+            return read_obj_cloud(stream, units, frame, max_points)
         for _ in range(256):
             line = stream.readline(8192)
             if not line:
@@ -156,8 +159,11 @@ def read_cloud(path, units="m", frame="file", max_points=2000000):
 
 def write_cloud(path, cloud, binary=False):
     suffix = path.suffix.lower()
-    if suffix not in (".ply", ".pcd") or (suffix == ".pcd" and binary):
-        raise ValueError("Choose .ply (ASCII/binary) or .pcd (ASCII)")
+    if suffix not in (".ply", ".pcd", ".obj") or (binary and suffix != ".ply"):
+        raise ValueError("Choose .ply (ASCII/binary), .pcd (ASCII) or .obj (ASCII)")
+    if suffix == ".obj":
+        write_obj_cloud(path, cloud)
+        return
     names, types, columns = ["x", "y", "z"], ["float"] * 3, [cloud.points[:, i] for i in range(3)]
     if cloud.normals is not None:
         names += ["nx", "ny", "nz"] if suffix == ".ply" else ["normal_x", "normal_y", "normal_z"]
@@ -220,6 +226,7 @@ class LoadCloud(Block):
     outputs = (Port("cloud", "cloud"), Port("count", "number"))
     defaults = {"path": "", "units": "m", "frame": "file", "max_points": 1000000}
     parameter_choices = {"units": ("m", "mm", "unitless")}
+    parameter_help = {"path": "Choose a point cloud in PLY, ASCII PCD or ASCII OBJ format."}
 
     def process(self, inputs):
         p = self.parameters
@@ -242,6 +249,10 @@ class SaveCloud(Block):
     inputs = (Port("cloud", "cloud"),)
     outputs = (Port("path", "data"),)
     defaults = {"path": "cloud.ply", "binary_ply": True}
+    parameter_help = {
+        "path": "Choose a new .ply, .pcd or .obj file.",
+        "binary_ply": "Use binary vertices for PLY. PCD and OBJ use ASCII.",
+    }
 
     def process(self, inputs):
         path = cloud_path(self)

@@ -220,6 +220,8 @@ _NATIVE_NAMES = {
     "3d.cloud_region_grow": ("region growing", "surface segmentation", "normal curvature"),
     "3d.cloud_model_fit": ("ransac", "fit plane", "fit sphere", "sample consensus"),
     "3d.cloud_surface_quality": ("estimate normals", "curvature", "local PCA"),
+    "input.cloud": ("obj", "ply", "pcd", "loadPointCloud"),
+    "output.cloud": ("obj", "ply", "pcd", "savePointCloud"),
     "3d.cloud_outlier": ("point density", "remove noise", "statistical outlier removal"),
     "3d.cloud_sample": ("randomSampling", "farthestPointSampling", "downsample", "FPS"),
     "3d.cloud_voxel": ("voxelGridSampling", "nearest centroid", "representative point"),
@@ -303,6 +305,12 @@ class ToolEntry:
     keywords: tuple[str, ...] = ()
 
 
+_CLOUD_FILE_TITLES = {
+    "input.cloud": "Load point cloud (PLY / PCD / OBJ)",
+    "output.cloud": "Save point cloud (PLY / PCD / OBJ)",
+}
+
+
 def block_entry(block):
     kind, subtype = block.block_type or block.category, block.subtype
     package, _, file = block.__module__.rpartition(".")
@@ -338,7 +346,7 @@ def block_entry(block):
             else ("Custom", kind, subtype)
         )
     aliases = ("skimage",) if path[0] == "scikit-image" else ()
-    title = block_display_title(block)
+    title = _CLOUD_FILE_TITLES.get(type_id) or block_display_title(block)
     former_title = (block.title,) if title != block.title else ()
     return ToolEntry(
         path, title, type_id,

@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare OBJ and PLY point clouds",
+      "description": "Original synthetic cloud by OpenCVDataflowGUI contributors (MIT). Both files contain the same twelve folded-surface points with aligned normals and RGB. The dataflow comment supplies millimeters and the cloud frame.",
+      "parameters": {},
+      "position": [
+        0,
+        -320
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_obj",
+      "type": "input.cloud",
+      "name": "Load OBJ scan",
+      "parameters": {
+        "path": "assets/folded_coupon.obj",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure_obj",
+      "type": "3d.cloud_measure",
+      "name": "Measure point cloud",
+      "parameters": {},
+      "position": [
+        410,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_ply",
+      "type": "input.cloud",
+      "name": "Load PLY scan",
+      "parameters": {
+        "path": "assets/folded_coupon.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure_ply",
+      "type": "3d.cloud_measure",
+      "name": "Measure point cloud",
+      "parameters": {},
+      "position": [
+        410,
+        275
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source_obj",
+      "output": "cloud",
+      "target": "measure_obj",
+      "input": "cloud"
+    },
+    {
+      "source": "source_ply",
+      "output": "cloud",
+      "target": "measure_ply",
+      "input": "cloud"
+    }
+  ]
+}

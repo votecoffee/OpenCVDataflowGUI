@@ -6778,7 +6778,7 @@ Ticket mode and fixed value are common inspector controls.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `path` | `""` |  |
+| `path` | `""` | Choose a point cloud in PLY, ASCII PCD or ASCII OBJ format. |
 | `units` | `"m"` | `m`, `mm`, `unitless` |
 | `frame` | `"file"` |  |
 | `max_points` | `1000000` |  |
@@ -12619,8 +12619,8 @@ Inputs: `cloud` (cloud).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `path` | `"cloud.ply"` |  |
-| `binary_ply` | `true` |  |
+| `path` | `"cloud.ply"` | Choose a new .ply, .pcd or .obj file. |
+| `binary_ply` | `true` | Use binary vertices for PLY. PCD and OBJ use ASCII. |
 
 ## Set filmstrip image (`output.filmstrip_image`)
 

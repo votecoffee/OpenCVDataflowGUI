@@ -230,7 +230,7 @@ Those rows require an explicitly qualified build or tested equivalent.
 
 | Family | Roadmap disposition | Checklist IDs |
 | --- | --- | --- |
-| `Cloud import, export and attributes` | OpenCV exposes native PLY/OBJ cloud I/O. The app already supports PLY and ASCII PCD with its own codec. Extend interoperability for imported inspection scans and preserve explicitly declared attributes. | S3-21, S3-85, S3-96, S3-99 |
+| `Cloud import, export and attributes` | The app codec supports PLY, ASCII PCD and ASCII OBJ point rows. S3-85 qualifies aligned XYZ, normal and RGB exchange with native OpenCV for OBJ and PLY. | S3-21, S3-85, S3-96, S3-99 |
 | `Spatial indexing and query` | S3-77 provides bounded KNN and radius queries with a sparse octree. S3-80 uses cKDTree for count-only radius neighborhoods and batched nearest-neighbor statistics. S3-81 bounds radius pairs before building the graph for cloud clustering. Native constructors and provenance require qualification for update and extracted-cloud workflows. | S3-77, S3-80–S3-81, S3-88 |
 | `Cloud sampling and selection` | Graph bounds, per-axis voxel spacing, representative selection, seeded sampling and neighborhood outlier rejection are available. Measured selections retain source attributes and can expose row IDs. | S3-60, S3-78–S3-80 |
 | `Cloud normals, curvature and segmentation` | Distinguish organized depth normals from unorganized cloud normals. 3d.cloud_surface_quality estimates oriented normals, dimensionless curvature and fit quality from bounded metric neighborhoods. 3d.cloud_model_fit robustly fits one metric plane or sphere with source-row provenance. 3d.cloud_region_grow segments touching surfaces using unsigned normal angles and local PCA curvature. 3d.cloud_cluster groups unorganized XYZ by Euclidean connectivity and exports source row IDs. 3d.depth_components labels organized foreground using depth-aware adjacency and measures its visible footprint. | S3-20, S3-23, S3-51, S3-57, S3-81–S3-84 |
@@ -256,7 +256,7 @@ An exposed Python API still needs a fixture before the capability is complete.
 
 | API | Disposition on the pinned Python wheel | Checklist IDs |
 | --- | --- | --- |
-| `cv2.loadPointCloud`, `cv2.savePointCloud` | Exposed. Qualify native OBJ and compare PLY interoperability with the shipped graph codecs. | S3-21, S3-85, S3-96, S3-99 |
+| `cv2.loadPointCloud`, `cv2.savePointCloud` | Exposed. Native OBJ and PLY exchange tests verify aligned XYZ, normals and RGB in both directions. The app codec validates row shape and alignment, preserves float32 XYZ in OBJ, and supports Unicode paths. | S3-21, S3-85, S3-96, S3-99 |
 | `cv2.loadMesh`, `cv2.saveMesh` | Exposed. Mesh interchange owns index validation, supported topology and retained fields. | S3-86, S3-102, S3-107 |
 | `cv2.triangleRasterize`, `cv2.triangleRasterizeColor`, `cv2.triangleRasterizeDepth`, `cv2.TriangleRasterizeSettings` | Exposed. Depth and color modes, shading, culling and camera conventions are configuration of one graph rasterizer. | S3-87, S3-102 |
 | `cv2.Octree` | Exposed. Native construction and KNN point provenance need qualification. Bounded queries use sparse cell indexing and retain scan indices. Native updates and extraction remain separate. | S3-77, S3-80–S3-81, S3-88, S3-103 |

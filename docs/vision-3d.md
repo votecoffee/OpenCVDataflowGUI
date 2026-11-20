@@ -593,12 +593,15 @@ available in Debug and Balanced.
   and emits ranked voted poses in scene coordinates. Downsample dense models
   before training. Use ICP to refine a selected candidate as needed.
 
-PLY read/write supports ASCII and binary little endian vertex data. PCD supports
-ASCII XYZ, optional normals and packed RGB. Files round-trip units and frame
-through dataflow header comments; files without those comments use inspector
-settings. Invalid XYZ rows are dropped. Point/payload limits apply, existing
-files are preserved, and paths may be project-relative. The interchange does
-not export image pixel mappings, meshes or arbitrary payload metadata.
+PLY supports ASCII and binary little endian vertex data. PCD supports ASCII
+XYZ, optional normals and packed RGB. OBJ supports ASCII XYZ, optional
+normalized inline RGB on every vertex, and optional normals aligned by row
+order. OBJ rejects malformed rows and non-point geometry. PLY and PCD drop
+invalid XYZ rows. All three formats round-trip units and frame through
+Dataflow comments. External files without those comments use inspector
+settings. File and point limits apply. Save to a new path, which may be
+project-relative. Image pixel mappings and arbitrary payload metadata remain
+in memory. [OBJ and PLY example](<../examples/custom tools/cloud_obj_interchange/README.md>)
 
 ## Motion, fusion and structured light
 
