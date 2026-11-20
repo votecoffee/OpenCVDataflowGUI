@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare triangle meshes",
+      "description": "Original synthetic meshes by OpenCVDataflowGUI contributors (MIT). Both formats contain the same six vertices and four triangles. Compare the wireframes, coordinate frame and vertex attribute reports.",
+      "parameters": {},
+      "position": [
+        0,
+        -280
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_obj",
+      "type": "input.mesh",
+      "name": "Load OBJ panel",
+      "parameters": {
+        "path": "assets/folded_panel.obj",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_ply",
+      "type": "input.mesh",
+      "name": "Load PLY panel",
+      "parameters": {
+        "path": "assets/folded_panel.ply",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        420,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": []
+}

@@ -7,7 +7,8 @@ import numpy as np
 from .cloud_io import cloud_path
 from .core import Block, Port, Result
 from .geometry3d_common import Tool3D
-from .meshes import MAX_FACES, TriangleMesh, render_wireframe, write_mesh_ply
+from .mesh_io import LoadMesh, write_mesh
+from .meshes import MAX_FACES, TriangleMesh, render_wireframe
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
 from .processing import integer
@@ -223,16 +224,17 @@ class SaveMeshPLY(Block):
     defaults = {"path": "surface.ply", "max_faces": 250000}
     parameter_ranges = {"max_faces": NumericRange(1, MAX_FACES, whole=True)}
     parameter_help = {
-        "path": "Write a new PLY. Resolve relative paths from the saved project folder."
+        "path": "Write a new OBJ or binary PLY. Resolve relative paths from the project folder."
     }
 
     def process(self, inputs):
         path = cloud_path(self)
         mesh = inputs["mesh"]
-        write_mesh_ply(path, mesh, int(self.parameters["max_faces"]))
+        write_mesh(path, mesh, int(self.parameters["max_faces"]))
         return Result(
-            {"path": str(path), "face_count": len(mesh.faces)}, message="Saved mesh as PLY"
+            {"path": str(path), "face_count": len(mesh.faces)},
+            message=f"Saved mesh as {path.suffix[1:].upper()}",
         )
 
 
-TSDF_MESH_BLOCKS = (FuseDepthMesh, SaveMeshPLY)
+TSDF_MESH_BLOCKS = (FuseDepthMesh, LoadMesh, SaveMeshPLY)

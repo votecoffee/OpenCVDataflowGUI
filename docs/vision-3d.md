@@ -616,9 +616,16 @@ distance field and uses scikit-image marching cubes on supported cells. It
 accepts one depth image or a group of posed images. All eight corners of a
 surface cell must satisfy the configured observation count. `TriangleMesh`
 carries vertices, triangle indices, units and the world frame on a typed
-`mesh` port. **Save triangle mesh as PLY** writes a new bounded binary PLY.
-The mesh path requires the optional `skimage` extra.
-[Mesh example](<../examples/skimage tools/tsdf_mesh/README.md>)
+`mesh` port. TSDF mesh extraction requires the optional `skimage` extra.
+[TSDF mesh example](<../examples/skimage tools/tsdf_mesh/README.md>)
+
+**Load triangle mesh** reads triangulated OBJ and PLY into the same port.
+The mesh can retain vertex normals, RGB and two- or three-component texture
+coordinates. The OBJ reader resolves signed indices and splits vertices at
+normal or texture seams. PLY imports support ASCII and either binary byte
+order. **Save triangle mesh** writes ASCII OBJ or binary little endian PLY
+to a new path. Both formats preserve units and frame through Dataflow comments.
+[Triangle interchange example](<../examples/custom tools/mesh_interchange/README.md>)
 
 **Fuse posed depth frames (TSDF)** uses native OpenCV 5 `Volume`/`VolumeSettings`.
 It builds a bounded dense volume per activation from a depth image or FlowGroup,

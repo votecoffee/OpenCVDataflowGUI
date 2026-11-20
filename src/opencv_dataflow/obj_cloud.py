@@ -2,24 +2,22 @@
 
 import json
 import math
-import os
 from array import array
-from pathlib import Path
-from tempfile import NamedTemporaryFile
 
 import numpy as np
 
+from .geometry_fileio import MAX_GEOMETRY_BYTES, geometry_output
 from .pointclouds import PointCloud
 
-MAX_CLOUD_BYTES = 256 * 1024 * 1024
+MAX_CLOUD_BYTES = MAX_GEOMETRY_BYTES
 _MAX_LINE_BYTES = 8192
 # Midpoint above the largest finite float32, where rounding first overflows.
 _FLOAT32_OVERFLOW = math.ldexp(1.0, 128) - math.ldexp(1.0, 103)
-_METADATA_PREFIX = b"# dataflow_metadata "
+OBJ_METADATA_PREFIX = b"# dataflow_metadata "
 _IGNORED_DIRECTIVES = {b"o", b"g", b"s", b"p", b"vt", b"mtllib", b"usemtl"}
 
 
-def _values(fields):
+def obj_values(fields):
     if any(b"_" in field for field in fields):
         raise ValueError("Invalid OBJ number")
     try:
@@ -31,10 +29,10 @@ def _values(fields):
     return values
 
 
-def _vertex(fields):
+def obj_vertex(fields):
     if len(fields) not in (3, 4, 6):
         raise ValueError("OBJ vertex requires XYZ, optional unit weight, or XYZ and RGB")
-    values = _values(fields)
+    values = obj_values(fields)
     xyz = values[:3]
     if any(abs(value) >= _FLOAT32_OVERFLOW for value in xyz):
         raise ValueError("OBJ coordinates exceed the supported float32 range")
@@ -49,7 +47,7 @@ def _vertex(fields):
 def _normal(fields):
     if len(fields) != 3:
         raise ValueError("OBJ normal requires three components")
-    vector = _values(fields)
+    vector = obj_values(fields)
     scale = max(map(abs, vector))
     if scale == 0:
         raise ValueError("OBJ normals must have nonzero length")
@@ -58,11 +56,7 @@ def _normal(fields):
     return [value / length for value in vector]
 
 
-def read_obj_cloud(stream, units, frame, max_points):
-    """Read vertex order, inline RGB and an optional row-aligned normal stream."""
-    vertices, normals, colors = array("f"), array("f"), bytearray()
-    metadata = None
-    colored = None
+def obj_lines(stream):
     total_bytes = 0
     row_number = 0
     while line := stream.readline(_MAX_LINE_BYTES + 1):
@@ -74,12 +68,20 @@ def read_obj_cloud(stream, units, frame, max_points):
             raise ValueError("Point-cloud files are limited to 256 MiB")
         if row_number == 1:
             line = line.removeprefix(b"\xef\xbb\xbf")
-        line = line.lstrip()
+        yield row_number, line.lstrip()
+
+
+def read_obj_cloud(stream, units, frame, max_points):
+    """Read vertex order, inline RGB and an optional row-aligned normal stream."""
+    vertices, normals, colors = array("f"), array("f"), bytearray()
+    metadata = None
+    colored = None
+    for row_number, line in obj_lines(stream):
         try:
-            if line.startswith(_METADATA_PREFIX):
+            if line.startswith(OBJ_METADATA_PREFIX):
                 if metadata is not None:
                     raise ValueError("Duplicate OBJ dataflow metadata comments")
-                metadata = json.loads(line[len(_METADATA_PREFIX) :])
+                metadata = json.loads(line[len(OBJ_METADATA_PREFIX) :])
                 if not isinstance(metadata, dict):
                     raise ValueError("Invalid OBJ dataflow metadata comment")
                 continue
@@ -90,7 +92,7 @@ def read_obj_cloud(stream, units, frame, max_points):
             if directive == b"v":
                 if len(vertices) // 3 >= max_points:
                     raise ValueError("OBJ vertex count exceeds the point limit")
-                xyz, rgb = _vertex(fields[1:])
+                xyz, rgb = obj_vertex(fields[1:])
                 if colored is not None and colored != bool(rgb):
                     raise ValueError("OBJ vertex RGB must be supplied for every vertex or omitted")
                 colored = bool(rgb)
@@ -117,32 +119,29 @@ def read_obj_cloud(stream, units, frame, max_points):
     )
 
 
-def write_obj_cloud(path, cloud):
-    """Publish a complete ASCII OBJ without replacing an existing destination."""
-    metadata = json.dumps({"units": cloud.units, "frame": cloud.frame}, ensure_ascii=True)
-    header = _METADATA_PREFIX + metadata.encode("ascii") + b"\n"
+def obj_header(units, frame):
+    metadata = json.dumps({"units": units, "frame": frame}, ensure_ascii=True)
+    header = OBJ_METADATA_PREFIX + metadata.encode("ascii") + b"\n"
     if len(header) > _MAX_LINE_BYTES:
         raise ValueError("OBJ metadata comment exceeds the line limit")
-    temporary = None
-    try:
-        with NamedTemporaryFile(prefix=".cloud-obj-", dir=path.parent, delete=False) as stream:
-            temporary = Path(stream.name)
-            stream.write(header)
-            for first in range(0, len(cloud.points), 4096):
-                rows = slice(first, first + 4096)
-                values = cloud.points[rows]
-                if cloud.colors is not None:
-                    values = np.column_stack((values, cloud.colors[rows].astype(np.float64) / 255))
-                fmt = "v " + " ".join(["%.9g"] * values.shape[1])
-                np.savetxt(stream, values, fmt=fmt)
-            if cloud.normals is not None:
-                np.savetxt(stream, cloud.normals, fmt="vn %.9g %.9g %.9g")
-            if stream.tell() > MAX_CLOUD_BYTES:
-                raise ValueError("Point-cloud files are limited to 256 MiB")
-        if os.name == "nt":
-            temporary.rename(path)
-        else:
-            os.link(temporary, path)
-    finally:
-        if temporary is not None:
-            temporary.unlink(missing_ok=True)
+    return header
+
+
+def write_obj_vertices(stream, points, colors, normals):
+    for first in range(0, len(points), 4096):
+        rows = slice(first, first + 4096)
+        values = points[rows]
+        if colors is not None:
+            values = np.column_stack((values, colors[rows].astype(np.float64) / 255))
+        fmt = "v " + " ".join(["%.9g"] * values.shape[1])
+        np.savetxt(stream, values, fmt=fmt)
+    if normals is not None:
+        np.savetxt(stream, normals, fmt="vn %.9g %.9g %.9g")
+
+
+def write_obj_cloud(path, cloud):
+    """Publish a complete ASCII OBJ without replacing an existing destination."""
+    header = obj_header(cloud.units, cloud.frame)
+    with geometry_output(path, ".cloud-obj-") as stream:
+        stream.write(header)
+        write_obj_vertices(stream, cloud.points, cloud.colors, cloud.normals)

@@ -1,13 +1,13 @@
-"""Typed triangle geometry and bounded PLY output."""
+"""Typed triangle geometry, preview and bounded PLY export."""
 
 import json
-import os
 from dataclasses import dataclass
 from pathlib import Path
-from tempfile import NamedTemporaryFile
 
 import cv2
 import numpy as np
+
+from .geometry_fileio import geometry_output
 
 MAX_VERTICES = 1_000_000
 MAX_FACES = 1_000_000
@@ -19,13 +19,28 @@ class TriangleMesh:
     faces: np.ndarray
     units: str = "m"
     frame: str = "world"
+    normals: np.ndarray | None = None
+    colors: np.ndarray | None = None
+    texcoords: np.ndarray | None = None
 
     def __post_init__(self):
         self.vertices = np.asarray(self.vertices)
         self.faces = np.asarray(self.faces)
+        for name in ("normals", "colors", "texcoords"):
+            value = getattr(self, name)
+            if value is not None:
+                setattr(self, name, np.asarray(value))
         self.validate()
         self.vertices = np.ascontiguousarray(self.vertices, np.float32)
         self.faces = np.ascontiguousarray(self.faces, np.int32)
+        for name, dtype in (
+            ("normals", np.float32),
+            ("colors", np.uint8),
+            ("texcoords", np.float32),
+        ):
+            value = getattr(self, name)
+            if value is not None:
+                setattr(self, name, np.ascontiguousarray(value, dtype))
 
     def validate(self):
         vertices, faces = self.vertices, self.faces
@@ -56,15 +71,40 @@ class TriangleMesh:
         ):
             raise ValueError("Mesh requires explicit units and a named coordinate frame")
 
+        for name, widths in (("normals", (3,)), ("colors", (3,)), ("texcoords", (2, 3))):
+            value = getattr(self, name)
+            if value is None:
+                continue
+            if (
+                value.ndim != 2
+                or len(value) != len(vertices)
+                or value.shape[1] not in widths
+                or value.dtype.kind not in "fiu"
+                or not np.isfinite(value).all()
+                or np.any(np.abs(value.astype(np.float64)) > np.finfo(np.float32).max)
+            ):
+                raise ValueError(f"Mesh {name} must contain one finite vector per vertex")
+            if name == "colors" and (
+                np.any((value < 0) | (value > 255)) or np.any(value != np.rint(value))
+            ):
+                raise ValueError("Mesh colors must be RGB bytes")
+
     @property
     def nbytes(self):
-        return self.vertices.nbytes + self.faces.nbytes
+        return sum(
+            value.nbytes
+            for value in (self.vertices, self.faces, self.normals, self.colors, self.texcoords)
+            if value is not None
+        )
 
     def describe(self):
         return {
             "model": "triangle_mesh_v1",
             "vertex_count": len(self.vertices),
             "face_count": len(self.faces),
+            "normals": self.normals is not None,
+            "colors": self.colors is not None,
+            "texture_dimensions": 0 if self.texcoords is None else self.texcoords.shape[1],
             "units": self.units,
             "frame": self.frame,
             "minimum": self.vertices.min(axis=0).tolist(),
@@ -96,26 +136,41 @@ def write_mesh_ply(path, mesh, maximum_faces=MAX_FACES):
     if len(mesh.faces) > maximum_faces:
         raise ValueError("Mesh exceeds the configured export face limit")
     suffix = json.dumps({"units": mesh.units, "frame": mesh.frame}, ensure_ascii=True)
-    header = (
-        "ply\nformat binary_little_endian 1.0\n"
-        f"comment dataflow_metadata {suffix}\n"
-        f"element vertex {len(mesh.vertices)}\n"
-        "property float x\nproperty float y\nproperty float z\n"
-        f"element face {len(mesh.faces)}\n"
-        "property list uchar int vertex_indices\nend_header\n"
-    ).encode("ascii")
-    rows = np.empty(len(mesh.faces), dtype=[("count", "u1"), ("indices", "<i4", (3,))])
-    rows["count"], rows["indices"] = 3, mesh.faces
-    stream = NamedTemporaryFile(prefix=".mesh-", dir=path.parent, delete=False)
-    temporary = Path(stream.name)
-    try:
-        with stream:
-            stream.write(header)
-            stream.write(mesh.vertices.astype("<f4", copy=False))
-            stream.write(rows)
-        if os.name == "nt":
-            temporary.rename(path)
-        else:
-            os.link(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
+    if len(f"comment dataflow_metadata {suffix}\n") > 8192:
+        raise ValueError("PLY metadata comment exceeds the line limit")
+    fields = [("x y z", "float", "<f4", mesh.vertices)]
+    if mesh.normals is not None:
+        fields.append(("nx ny nz", "float", "<f4", mesh.normals))
+    if mesh.colors is not None:
+        fields.append(("red green blue", "uchar", "u1", mesh.colors))
+    if mesh.texcoords is not None:
+        names = (
+            "texture_u texture_v"
+            if mesh.texcoords.shape[1] == 2
+            else "texture_u texture_v texture_w"
+        )
+        fields.append((names, "float", "<f4", mesh.texcoords))
+    columns = [
+        (name, kind, dtype, values[:, i])
+        for names, kind, dtype, values in fields
+        for i, name in enumerate(names.split())
+    ]
+    header = [
+        "ply",
+        "format binary_little_endian 1.0",
+        f"comment dataflow_metadata {suffix}",
+        f"element vertex {len(mesh.vertices)}",
+        *(f"property {kind} {name}" for name, kind, _, _ in columns),
+        f"element face {len(mesh.faces)}",
+        "property list uchar int vertex_indices",
+        "end_header",
+    ]
+    vertices = np.empty(len(mesh.vertices), dtype=[(name, dtype) for name, _, dtype, _ in columns])
+    for name, _, _, values in columns:
+        vertices[name] = values
+    faces = np.empty(len(mesh.faces), dtype=[("count", "u1"), ("indices", "<i4", 3)])
+    faces["count"], faces["indices"] = 3, mesh.faces
+    with geometry_output(path, ".mesh-") as stream:
+        stream.write(("\n".join(header) + "\n").encode("ascii"))
+        stream.write(vertices)
+        stream.write(faces)

@@ -6923,6 +6923,21 @@ Ticket mode and fixed value are common inspector controls.
 | `ticket_tag` | `""` | Optional numeric or text sequence tag to use as the acquisition ticket. |
 | `value_tag` | `""` | Optional tag to expose as an individual value port. |
 
+## Load triangle mesh (OBJ / PLY) (`input.mesh`)
+
+Input / 3D geometry
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Choose a triangulated OBJ or PLY file. Relative paths use the project directory. |
+| `units` | `"m"` | `m`, `mm`, `unitless` Vertex coordinate units when file metadata does not specify them. |
+| `frame` | `"file"` | Vertex coordinate frame when file metadata does not specify it. |
+| `max_vertices` | `250000` | Value must be a whole number between 3 and 1e+06. Limit vertex rows, including any added by OBJ attribute seams. |
+| `max_faces` | `250000` | Value must be a whole number between 1 and 1e+06. Limit imported triangle faces. |
+
 ## Read MQTT message (`input.mqtt`)
 
 Industrial integration / MQTT
@@ -12706,7 +12721,7 @@ Inputs: `mesh` (mesh).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `path` | `"surface.ply"` | Write a new PLY. Resolve relative paths from the saved project folder. |
+| `path` | `"surface.ply"` | Write a new OBJ or binary PLY. Resolve relative paths from the project folder. |
 | `max_faces` | `250000` | Value must be a whole number between 1 and 1e+06. |
 
 ## Save mosaic layout (`output.mosaic_layout`)

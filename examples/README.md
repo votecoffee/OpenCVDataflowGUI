@@ -187,6 +187,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Disparity speckle removal](<opencv tools/disparity_speckles/README.md>) | Clean equivalent fixed-point and signed float maps and check the exact removed footprint. |
 | [Stereo disparity evaluation](<opencv tools/disparity_reference/README.md>) | Compare a synthetic estimate against fixed-point truth and inspect whole-field and regional error, coverage and confidence. |
 | [Binary Census stereo](<opencv tools/binary_stereo/README.md>) | Compare integer Census matching and native SGBM on a known shift, an exposure change and a masked patch. |
+| [OBJ and PLY triangle mesh interchange](<custom tools/mesh_interchange/README.md>) | Compare two attributed meshes with the same triangles, normals, RGB and texture coordinates. |
 | [OBJ point-cloud interchange](<custom tools/cloud_obj_interchange/README.md>) | Compare equivalent OBJ and PLY clouds with ordered XYZ, RGB, normals, and frame and unit metadata. |
 | [Point-cloud normals and curvature](<custom tools/cloud_surface_quality/README.md>) | Measure local surfaces on a plane and sphere, reject degenerate rows and pass the accepted fits into region growing. |
 | [Robust plane and sphere fitting](<custom tools/cloud_model_fitting/README.md>) | Recover two known metric surfaces from PLY scans with labeled clutter and compare inlier and outlier indices. |
