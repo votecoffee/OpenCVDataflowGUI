@@ -900,6 +900,7 @@ def builtin_registry():
     from .slanted_edge import MeasureSlantedEdge
     from .soft_nms import SuppressDetections
     from .spanning_tree import MinimumSpanningTree
+    from .sparse_multiview import MakeLandmarkView, ReconstructSparseViews
     from .spectral import SPECTRAL_BLOCKS
     from .stabilization import StabilizeCameraMotion
     from .stabilization_fill import FillStabilizationBorders
@@ -1287,6 +1288,8 @@ def builtin_registry():
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
+        MakeLandmarkView,
+        ReconstructSparseViews,
         DeclareCalibrationCapture,
         FisheyeCalibration,
         OmnidirectionalCalibration,

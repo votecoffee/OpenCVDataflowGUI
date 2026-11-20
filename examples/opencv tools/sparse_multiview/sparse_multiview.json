@@ -1,0 +1,855 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Sparse reconstruction from four views",
+      "description": "Original synthetic ChArUco views by OpenCVDataflowGUI contributors (MIT). Camera poses C and D contain small injected errors. The joint fit keeps A and B fixed. Corner IDs match tracks despite the missing corners.",
+      "parameters": {},
+      "position": [
+        0,
+        -450
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "intrinsics",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 720.0,
+        "fy": 719.0,
+        "cx": 320.4,
+        "cy": 239.5,
+        "width": 640,
+        "height": 480,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        270,
+        -425
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch_views",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 4,
+        "distinct_sources": true,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        1000,
+        190
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_A",
+      "type": "input.file",
+      "name": "Load view A",
+      "parameters": {
+        "path": "assets/A.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_A",
+      "type": "calibration.charuco",
+      "name": "Detect ChArUco board",
+      "parameters": {
+        "columns": 8,
+        "rows": 6,
+        "square_length": 30.0,
+        "marker_length": 22.0,
+        "units": "mm",
+        "dictionary": "4x4_50",
+        "marker_ids": [],
+        "legacy_pattern": false,
+        "minimum_corners": 12,
+        "min_adjacent_markers": 2,
+        "check_markers": true,
+        "try_refine_markers": false,
+        "refine_max_distance": 10.0,
+        "refine_error_correction": 3.0,
+        "refine_check_all_orders": true,
+        "corner_refinement": "none",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        270,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_A",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.03200080391166859,
+          -0.261932295773491,
+          -0.0042155181606379965
+        ],
+        "translation": [
+          -115.9062659211843,
+          -88.95336879064827,
+          680.7841329680082
+        ],
+        "source_frame": "board",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        270,
+        105
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pack_A",
+      "type": "3d.landmark_view",
+      "name": "Pack calibrated landmark view",
+      "parameters": {
+        "view_id": "A"
+      },
+      "position": [
+        635,
+        0
+      ],
+      "exposed_inputs": [
+        "camera",
+        "world_to_camera",
+        "landmark_ids",
+        "image_points"
+      ],
+      "exposed_outputs": [
+        "view"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_B",
+      "type": "input.file",
+      "name": "Load view B",
+      "parameters": {
+        "path": "assets/B.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        225
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_B",
+      "type": "calibration.charuco",
+      "name": "Detect ChArUco board",
+      "parameters": {
+        "columns": 8,
+        "rows": 6,
+        "square_length": 30.0,
+        "marker_length": 22.0,
+        "units": "mm",
+        "dictionary": "4x4_50",
+        "marker_ids": [],
+        "legacy_pattern": false,
+        "minimum_corners": 12,
+        "min_adjacent_markers": 2,
+        "check_markers": true,
+        "try_refine_markers": false,
+        "refine_max_distance": 10.0,
+        "refine_error_correction": 3.0,
+        "refine_check_all_orders": true,
+        "corner_refinement": "none",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        270,
+        225
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_B",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          -0.028661388426539015,
+          0.22433115658847805,
+          -0.0032285965626690995
+        ],
+        "translation": [
+          -116.9927593176465,
+          -89.19445033863272,
+          793.7417995141949
+        ],
+        "source_frame": "board",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        270,
+        330
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pack_B",
+      "type": "3d.landmark_view",
+      "name": "Pack calibrated landmark view",
+      "parameters": {
+        "view_id": "B"
+      },
+      "position": [
+        635,
+        225
+      ],
+      "exposed_inputs": [
+        "camera",
+        "world_to_camera",
+        "landmark_ids",
+        "image_points"
+      ],
+      "exposed_outputs": [
+        "view"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_C",
+      "type": "input.file",
+      "name": "Load view C",
+      "parameters": {
+        "path": "assets/C.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        450
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_C",
+      "type": "calibration.charuco",
+      "name": "Detect ChArUco board",
+      "parameters": {
+        "columns": 8,
+        "rows": 6,
+        "square_length": 30.0,
+        "marker_length": 22.0,
+        "units": "mm",
+        "dictionary": "4x4_50",
+        "marker_ids": [],
+        "legacy_pattern": false,
+        "minimum_corners": 12,
+        "min_adjacent_markers": 2,
+        "check_markers": true,
+        "try_refine_markers": false,
+        "refine_max_distance": 10.0,
+        "refine_error_correction": 3.0,
+        "refine_check_all_orders": true,
+        "corner_refinement": "none",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        270,
+        450
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_C",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          -0.13807583085560637,
+          -0.08798605080823538,
+          0.00747457022589168
+        ],
+        "translation": [
+          -118.11505222988303,
+          -91.20447078873778,
+          698.3551663208439
+        ],
+        "source_frame": "board",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        270,
+        555
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pack_C",
+      "type": "3d.landmark_view",
+      "name": "Pack calibrated landmark view",
+      "parameters": {
+        "view_id": "C"
+      },
+      "position": [
+        635,
+        450
+      ],
+      "exposed_inputs": [
+        "camera",
+        "world_to_camera",
+        "landmark_ids",
+        "image_points"
+      ],
+      "exposed_outputs": [
+        "view"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load_D",
+      "type": "input.file",
+      "name": "Load view D",
+      "parameters": {
+        "path": "assets/D.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        675
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect_D",
+      "type": "calibration.charuco",
+      "name": "Detect ChArUco board",
+      "parameters": {
+        "columns": 8,
+        "rows": 6,
+        "square_length": 30.0,
+        "marker_length": 22.0,
+        "units": "mm",
+        "dictionary": "4x4_50",
+        "marker_ids": [],
+        "legacy_pattern": false,
+        "minimum_corners": 12,
+        "min_adjacent_markers": 2,
+        "check_markers": true,
+        "try_refine_markers": false,
+        "refine_max_distance": 10.0,
+        "refine_error_correction": 3.0,
+        "refine_check_all_orders": true,
+        "corner_refinement": "none",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0.6
+      },
+      "position": [
+        270,
+        675
+      ],
+      "exposed_inputs": [
+        "image",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "observation",
+        "corner_count",
+        "corner_ids",
+        "image_points",
+        "object_points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_D",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.1844636128714715,
+          0.11709724473698735,
+          0.008493795942558818
+        ],
+        "translation": [
+          -120.78234749969845,
+          -90.11271341664289,
+          722.1429242449422
+        ],
+        "source_frame": "board",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        270,
+        780
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pack_D",
+      "type": "3d.landmark_view",
+      "name": "Pack calibrated landmark view",
+      "parameters": {
+        "view_id": "D"
+      },
+      "position": [
+        635,
+        675
+      ],
+      "exposed_inputs": [
+        "camera",
+        "world_to_camera",
+        "landmark_ids",
+        "image_points"
+      ],
+      "exposed_outputs": [
+        "view"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixed",
+      "type": "3d.reconstruct_sparse_views",
+      "name": "Fit points with supplied camera poses",
+      "parameters": {
+        "path": "",
+        "refinement": "points",
+        "anchor_view_ids": [],
+        "minimum_ray_angle_deg": 0.5,
+        "maximum_error_px": 15.0,
+        "robust_scale_px": 1.0,
+        "maximum_evaluations": 100
+      },
+      "position": [
+        1310,
+        95
+      ],
+      "exposed_inputs": [
+        "views"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "views",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "joint",
+      "type": "3d.reconstruct_sparse_views",
+      "name": "Refine landmarks and camera poses",
+      "parameters": {
+        "path": "",
+        "refinement": "poses_and_points",
+        "anchor_view_ids": [
+          "A",
+          "B"
+        ],
+        "minimum_ray_angle_deg": 0.5,
+        "maximum_error_px": 1.0,
+        "robust_scale_px": 1.0,
+        "maximum_evaluations": 100
+      },
+      "position": [
+        1310,
+        335
+      ],
+      "exposed_inputs": [
+        "views"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "views",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "load_A",
+      "output": "image",
+      "target": "detect_A",
+      "input": "image"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "detect_A",
+      "input": "camera"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "pack_A",
+      "input": "camera"
+    },
+    {
+      "source": "pose_A",
+      "output": "transform",
+      "target": "pack_A",
+      "input": "world_to_camera"
+    },
+    {
+      "source": "detect_A",
+      "output": "corner_ids",
+      "target": "pack_A",
+      "input": "landmark_ids"
+    },
+    {
+      "source": "detect_A",
+      "output": "image_points",
+      "target": "pack_A",
+      "input": "image_points"
+    },
+    {
+      "source": "pack_A",
+      "output": "view",
+      "target": "batch_views",
+      "input": "item_1"
+    },
+    {
+      "source": "load_B",
+      "output": "image",
+      "target": "detect_B",
+      "input": "image"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "detect_B",
+      "input": "camera"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "pack_B",
+      "input": "camera"
+    },
+    {
+      "source": "pose_B",
+      "output": "transform",
+      "target": "pack_B",
+      "input": "world_to_camera"
+    },
+    {
+      "source": "detect_B",
+      "output": "corner_ids",
+      "target": "pack_B",
+      "input": "landmark_ids"
+    },
+    {
+      "source": "detect_B",
+      "output": "image_points",
+      "target": "pack_B",
+      "input": "image_points"
+    },
+    {
+      "source": "pack_B",
+      "output": "view",
+      "target": "batch_views",
+      "input": "item_2"
+    },
+    {
+      "source": "load_C",
+      "output": "image",
+      "target": "detect_C",
+      "input": "image"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "detect_C",
+      "input": "camera"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "pack_C",
+      "input": "camera"
+    },
+    {
+      "source": "pose_C",
+      "output": "transform",
+      "target": "pack_C",
+      "input": "world_to_camera"
+    },
+    {
+      "source": "detect_C",
+      "output": "corner_ids",
+      "target": "pack_C",
+      "input": "landmark_ids"
+    },
+    {
+      "source": "detect_C",
+      "output": "image_points",
+      "target": "pack_C",
+      "input": "image_points"
+    },
+    {
+      "source": "pack_C",
+      "output": "view",
+      "target": "batch_views",
+      "input": "item_3"
+    },
+    {
+      "source": "load_D",
+      "output": "image",
+      "target": "detect_D",
+      "input": "image"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "detect_D",
+      "input": "camera"
+    },
+    {
+      "source": "intrinsics",
+      "output": "camera",
+      "target": "pack_D",
+      "input": "camera"
+    },
+    {
+      "source": "pose_D",
+      "output": "transform",
+      "target": "pack_D",
+      "input": "world_to_camera"
+    },
+    {
+      "source": "detect_D",
+      "output": "corner_ids",
+      "target": "pack_D",
+      "input": "landmark_ids"
+    },
+    {
+      "source": "detect_D",
+      "output": "image_points",
+      "target": "pack_D",
+      "input": "image_points"
+    },
+    {
+      "source": "pack_D",
+      "output": "view",
+      "target": "batch_views",
+      "input": "item_4"
+    },
+    {
+      "source": "batch_views",
+      "output": "group",
+      "target": "fixed",
+      "input": "views"
+    },
+    {
+      "source": "batch_views",
+      "output": "group",
+      "target": "joint",
+      "input": "views"
+    }
+  ]
+}

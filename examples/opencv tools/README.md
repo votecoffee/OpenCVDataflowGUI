@@ -43,6 +43,9 @@ pixel grids and verifies metric depth on a held-out stepped scene.
 [Robot-world and hand–eye calibration](robot_world/README.md) fits both
 rigid transforms for fixed and robot-mounted cameras and checks held-out images.
 
+[Sparse multi-view reconstruction](sparse_multiview/README.md) packs four
+ChArUco views into a sparse cloud and compares fixed and refined camera poses.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

@@ -36,6 +36,7 @@ BINDINGS = {
     "ml.superpoint_onnx_features": (
         "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward dilate resize cvtColor"
     ),
+    "3d.reconstruct_sparse_views": "undistortPoints projectPoints",
     "ml.optical_flow": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.stereo_disparity": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.monocular_depth": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",

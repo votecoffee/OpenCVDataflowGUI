@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 45 | 20 | 66 | 131 | 34.4% |
+| 3. 3D imagery and point clouds | 46 | 19 | 66 | 131 | 35.1% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 300 | 24 | 146 | 470 | 63.8% |
+| **Overall** | 301 | 23 | 146 | 470 | 64.0% |
 
 <!-- coverage-summary:end -->
 
@@ -446,7 +446,7 @@ fixture or result needed to close the item.
 | S3-30 | Camera-projector calibration and reconstruction | Projector as inverse camera, stereo calibration and triangulation | Complete | 3d.camera_projector_calibrate and 3d.camera_projector_reconstruct fit independent pixel grids and emit metric camera-Z and point clouds from dense phase maps or sparse Gray-code pairs. [Held-out stepped scene](<../examples/opencv tools/camera_projector/README.md>) verifies depth, shadow support, reprojection gating and calibration save/reuse. |
 | S3-31 | Eye-in-hand calibration from camera observations | calibrateHandEye, target reprojection and pose composition | Complete | calibration.hand_eye, 3d.pnp, 3d.compose. Offline target-to-camera and gripper-to-base fixture with held-out target consistency. |
 | S3-32 | Fixed-camera and robot-world calibration | Eye-to-hand frame arrangement and joint robot-world/hand–eye solver | Complete | calibration.robot_world_hand_eye jointly fits the mount and station for fixed and robot-mounted cameras with Park initialization and SciPy refinement. [Held-out ChArUco images](<../examples/opencv tools/robot_world/README.md>) verify transform direction and pixel reprojection. |
-| S3-33 | Sparse multi-view reconstruction | Feature tracks, recoverPose, multi-view triangulation, bundle adjustment | Partial | 3d.essential_pose and 3d.triangulate handle a pair. Verify tracks across three or more supplied or estimated camera views with missing observations and stable landmark IDs. Measure reprojection and scale behavior after refinement; qualify a tested triangulator because native sfm bindings are absent from the pinned wheel. |
+| S3-33 | Sparse multi-view reconstruction | Landmark tracks, multi-view triangulation and bundle adjustment | Complete | 3d.landmark_view and 3d.reconstruct_sparse_views use supplied calibrated poses, persistent landmark IDs and sparse refinement with two fixed metric anchors. The [four-view ChArUco example](<../examples/opencv tools/sparse_multiview/README.md>) checks missing observations and predicts an independent fifth image. Native SfM bindings remain unavailable. |
 
 ### Calibration, stereo and depth extensions
 

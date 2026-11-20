@@ -440,6 +440,20 @@ Inputs: `source` (cloud), `target` (cloud), `initial_pose` (data, optional).
 | `pyramid_levels` | `4` |  |
 | `max_residual` | `0.05` |  |
 
+## Pack calibrated landmark view (`3d.landmark_view`)
+
+3D vision / Reconstruction
+
+Inputs: `camera` (data), `world_to_camera` (data), `landmark_ids` (data), `image_points` (data).
+
+Input `image_points` — Original (distorted) XY pixels in the camera model's calibrated grid.
+
+Input `landmark_ids` — Persistent cross-view landmark IDs in point order, such as ChArUco IDs.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `view_id` | `"view"` | Unique capture ID in the group of calibrated views. |
+
 ## RGB-D frame odometry (`3d.odometry`)
 
 3D vision / RGB-D motion
@@ -625,6 +639,24 @@ Inputs: `cloud` (cloud).
 Inputs: `points` (data), `camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
+
+## Reconstruct sparse multi-view landmarks (`3d.reconstruct_sparse_views`)
+
+3D vision / Reconstruction
+
+Inputs: `views` (any, optional).
+
+Input `views` — Three to sixteen packed landmark views as a list or flow group.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Optional project-relative or absolute JSON array of packed views. |
+| `refinement` | `"points"` | `none`, `points`, `poses_and_points` Fit points alone or jointly with camera poses. |
+| `anchor_view_ids` | `[]` | Two fixed view IDs for the joint fit. Empty uses the first two views. |
+| `minimum_ray_angle_deg` | `0.5` | Value must be a finite number between 0.01 and 90. Minimum maximum acute separation between a track's camera rays. |
+| `maximum_error_px` | `3.0` | Value must be a finite number between 0.01 and 100. Reject a landmark if any contributing view exceeds this pixel error. |
+| `robust_scale_px` | `1.0` | Value must be a finite number between 0.01 and 100. Soft-L1 scale in pixels for the optional reprojection fit. |
+| `maximum_evaluations` | `100` | Value must be a whole number between 1 and 250. Maximum least-squares evaluations for the optional refinement. |
 
 ## Rectify pinhole / fisheye / omnidir (`3d.rectify_camera`)
 

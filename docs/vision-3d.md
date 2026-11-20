@@ -23,6 +23,7 @@ Open these projects with **File → Open…**.
 | [fisheye calibration](<../examples/opencv tools/fisheye_calibration/README.md>) | Fit eight image views, validate a separate view and rectify with the fitted intrinsics. |
 | [omnidirectional calibration](<../examples/opencv tools/omnidir_calibration/README.md>) | Fit the Mei lens and mirror parameter, check a held-out edge target, and rectify to a perspective view. |
 | [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
+| [Sparse multi-view reconstruction](<../examples/opencv tools/sparse_multiview/README.md>) | Triangulate labelled features from four partial target views and refine their poses using two fixed anchors. |
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
 | [Phase-shift fringe replay](<../examples/opencv tools/phase_shift/README.md>) | Decode absolute subpixel projector X or Y from a six-exposure group with low-confidence gaps. |
 | [Camera/projector reconstruction](<../examples/opencv tools/camera_projector/README.md>) | Fit a rig at different resolutions and reconstruct a held-out depth step. |
@@ -277,6 +278,28 @@ reprojection error. Triangulation checks positive depth at both devices,
 ray angle, and error in each device's own pixel coordinates. Use the
 single-file calibration blocks to save and reuse the resulting rig.
 [Calibration and stepped-depth example](<../examples/opencv tools/camera_projector/README.md>)
+
+## Sparse multi-view reconstruction
+
+Pack each calibrated pinhole view with its world-to-camera pose and landmark
+IDs paired to distorted image pixels. Use three to 16 views sharing a world
+frame and length unit, with up to 512 unique landmarks. A track contains the
+visible observations for one ID. Undistorted bearings initialize each track
+with multi-view direct linear triangulation. Tracks with weak parallax,
+nonpositive depth, or excessive pixel error are reported and excluded.
+
+Refinement minimizes distortion-aware reprojection residuals with a robust
+loss. Points-only mode preserves every supplied pose. Joint mode holds two
+anchor poses fixed and adjusts the other extrinsics. Use a known baseline and
+shared, non-collinear tracks with enough angular separation. The cloud retains
+the anchors' world frame and units, including unitless coordinates when no
+metric baseline was supplied. Landmark IDs are stored alongside cloud rows in
+metadata. This workflow takes supplied correspondences and initial camera
+poses. The separate scene-scale item (S3-65) tracks scale recovery when camera
+motion starts at unknown scale. [Four-view example and independent holdout](<../examples/opencv tools/sparse_multiview/README.md>)
+
+- [OpenCV multi-view DLT reference](https://docs.opencv.org/5.0/extra_modules/triangulation.html)
+- [SciPy sparse least-squares reference](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)
 
 ## Robot-world calibration
 
