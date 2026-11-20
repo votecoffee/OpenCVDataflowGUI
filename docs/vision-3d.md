@@ -509,6 +509,17 @@ available in Debug and Balanced.
   region when pixel correspondence remains available. Regions retain source
   image frame checks. **Voxel-sample** can retain the first point per voxel or
   compute centroids. Centroids drop measured pixel indices and normals.
+- **Query point-cloud octree** finds exact nearest neighbors or the nearest
+  hits inside an inclusive radius. Choose a fit or explicit cube in meters,
+  then set its depth or maximum cell side. Cloud XYZ and query XYZ can be
+  supplied in meters or millimeters. Per-query results are sorted by
+  Euclidean distance and then original cloud row index. Radius results
+  indicate when more hits exist than the result limit. The output cloud
+  combines the selected rows in source order, preserving their colors,
+  normals and source pixels. The index stores 36 bytes per retained point
+  in its arrays. Build and search also use temporary memory. Query and point
+  budgets bound their inputs, and the index is rebuilt on each invocation.
+  [Octree query example](<../examples/custom tools/cloud_octree_query/README.md>)
 - **Measure point cloud** reports bounds, extent, centroid and PCA axes.
 - **Register clouds by local features** estimates the source-to-target pose
   for partly overlapping metric clouds. It compares neighbor distances and

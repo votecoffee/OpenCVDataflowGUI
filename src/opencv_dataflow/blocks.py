@@ -656,6 +656,7 @@ def builtin_registry():
     from .classification_evaluation import CLASSIFICATION_EVALUATION_BLOCKS
     from .cloud_features import RegisterCloudFeatures
     from .cloud_io import CLOUD_IO_BLOCKS
+    from .cloud_octree import QueryCloudOctree
     from .cloud_projection import ProjectCloudVisibility
     from .cloud_tools import CLOUD_BLOCKS
     from .cluster_models import CLUSTER_MODEL_BLOCKS
@@ -1361,6 +1362,7 @@ def builtin_registry():
         *CLOUD_BLOCKS,
         RegisterCloudFeatures,
         *CLOUD_IO_BLOCKS,
+        QueryCloudOctree,
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,

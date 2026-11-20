@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Query a bounded point cloud",
+      "description": "Original synthetic cloud by the OpenCVDataflowGUI contributors (MIT). Inspect both reports for original PLY row IDs and metric distances. The two coincident points have different colors and distinct row IDs.",
+      "parameters": {},
+      "position": [
+        0,
+        -290
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/bounded_cloud.ply",
+        "units": "mm",
+        "frame": "scan",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "knn",
+      "type": "3d.cloud_octree_query",
+      "name": "Five nearest neighbors",
+      "description": "Find exact nearest points in a metric cube while retaining source row indices.",
+      "parameters": {
+        "query_points": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0.24,
+            0.24,
+            1.45
+          ]
+        ],
+        "query_units": "m",
+        "search": "knn",
+        "max_neighbors": 5,
+        "radius_m": 0.1,
+        "bounds": "explicit",
+        "minimum_corner_m": [
+          -0.25,
+          -0.25,
+          1.0
+        ],
+        "cube_side_m": 0.5,
+        "subdivision": "depth",
+        "max_depth": 10,
+        "resolution_m": 0.01,
+        "max_input_points": 250000
+      },
+      "position": [
+        400,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "queries"
+      ],
+      "exposed_outputs": [
+        "neighbors",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "radius",
+      "type": "3d.cloud_octree_query",
+      "name": "Neighbors within 125 mm",
+      "description": "Find exact nearest points in a metric cube while retaining source row indices.",
+      "parameters": {
+        "query_points": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0.25,
+            0.25,
+            1.375
+          ]
+        ],
+        "query_units": "m",
+        "search": "radius",
+        "max_neighbors": 12,
+        "radius_m": 0.125,
+        "bounds": "explicit",
+        "minimum_corner_m": [
+          -0.25,
+          -0.25,
+          1.0
+        ],
+        "cube_side_m": 0.5,
+        "subdivision": "resolution",
+        "max_depth": 10,
+        "resolution_m": 0.01,
+        "max_input_points": 250000
+      },
+      "position": [
+        400,
+        270
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "queries"
+      ],
+      "exposed_outputs": [
+        "neighbors",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "knn",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "radius",
+      "input": "cloud"
+    }
+  ]
+}

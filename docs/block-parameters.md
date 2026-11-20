@@ -278,6 +278,31 @@ Inputs: `cloud` (cloud).
 | `flip_viewpoint` | `true` |  |
 | `viewpoint` | `[0.0, 0.0, 0.0]` |  |
 
+## Query point-cloud octree (`3d.cloud_octree_query`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `queries` (data, optional).
+
+Input `cloud` — Metric cloud. Neighbors keep their original row indices, including duplicates.
+
+Input `queries` — List of XYZ rows in the cloud frame, or record with points, frame and units.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `query_points` | `[[0, 0, 0]]` | XYZ requests in the cloud coordinate frame when queries is unwired. |
+| `query_units` | `"cloud"` | `cloud`, `m`, `mm` Use the cloud units or explicitly interpret XYZ in meters or millimeters. |
+| `search` | `"knn"` | `knn`, `radius` KNN or nearest matches inside an inclusive physical radius. |
+| `max_neighbors` | `8` | Value must be a whole number between 1 and 256. Maximum per query. Radius results indicate truncation. |
+| `radius_m` | `0.1` | Value must be a finite number between 1e-09 and 1e+12. Inclusive Euclidean distance in meters for radius queries. |
+| `bounds` | `"fit"` | `fit`, `explicit` Fit to the cloud or index only points inside the explicit cube, faces included. |
+| `minimum_corner_m` | `[0, 0, 0]` | Minimum XYZ corner of the explicit cube in meters. |
+| `cube_side_m` | `1.0` | Value must be a finite number between 1e-09 and 2e+12. Length of each side of the explicit metric cube. |
+| `subdivision` | `"depth"` | `depth`, `resolution` Stop subdivision at a configured depth or physical cell size. |
+| `max_depth` | `10` | Value must be a whole number between 1 and 20. Deepest cell level in depth mode. The root cube is level zero. |
+| `resolution_m` | `0.01` | Value must be a finite number between 1e-09 and 2e+12. Maximum cell side at deepest level in resolution mode. |
+| `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Reject larger input clouds before building temporary index arrays. |
+
 ## Project cloud and check visibility (`3d.cloud_project`)
 
 3D vision / Point clouds

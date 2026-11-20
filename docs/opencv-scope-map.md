@@ -231,7 +231,7 @@ Those rows require an explicitly qualified build or tested equivalent.
 | Family | Roadmap disposition | Checklist IDs |
 | --- | --- | --- |
 | `Cloud import, export and attributes` | OpenCV exposes native PLY/OBJ cloud I/O. The app already supports PLY and ASCII PCD with its own codec. Extend interoperability for imported inspection scans and preserve explicitly declared attributes. | S3-21, S3-85, S3-96, S3-99 |
-| `Spatial indexing and query` | The wheel exposes Octree construction, updates and nearest-neighbor searches. Put index construction and bounded query behind one cloud contract. | S3-77, S3-80–S3-81, S3-88 |
+| `Spatial indexing and query` | S3-77 provides exact bounded KNN and radius queries with a sparse octree. Qualify the native constructors and provenance before using them for update or extracted-cloud workflows. | S3-77, S3-80–S3-81, S3-88 |
 | `Cloud sampling and selection` | Keep the shipped graph bounds and voxel modes. Qualify representative, random and farthest-point modes separately. Preserve source indices and attributes. | S3-60, S3-78–S3-80 |
 | `Cloud normals, curvature and segmentation` | Distinguish organized depth normals from unorganized cloud normals, robust geometric fits, clustering and normal-driven regions. 3d.depth_components labels organized foreground using depth-aware adjacency and measures its visible footprint. | S3-20, S3-23, S3-51, S3-57, S3-81–S3-84 |
 | `Cloud transforms, comparison and surface registration` | Separate alignment, overlap, hypothesis ranking, merged scans, dimensional deviation and physical bounds. 3d.register_cloud_features provides metric neighborhood descriptors, explicit inlier pairs and overlap-gated alignment. | S3-22, S3-24, S3-50, S3-58, S3-88–S3-92, S3-98 |
@@ -259,7 +259,7 @@ An exposed Python API still needs a fixture before the capability is complete.
 | `cv2.loadPointCloud`, `cv2.savePointCloud` | Exposed. Qualify native OBJ and compare PLY interoperability with the shipped graph codecs. | S3-21, S3-85, S3-96, S3-99 |
 | `cv2.loadMesh`, `cv2.saveMesh` | Exposed. Mesh interchange owns index validation, supported topology and retained fields. | S3-86, S3-102, S3-107 |
 | `cv2.triangleRasterize`, `cv2.triangleRasterizeColor`, `cv2.triangleRasterizeDepth`, `cv2.TriangleRasterizeSettings` | Exposed. Depth and color modes, shading, culling and camera conventions are configuration of one graph rasterizer. | S3-87, S3-102 |
-| `cv2.Octree` | Exposed. Constructors, updates, extraction, and nearest and radius searches belong to the bounded spatial-index contract. The graph must keep stable scan indices when native queries return positions. | S3-77, S3-80–S3-81, S3-88, S3-103 |
+| `cv2.Octree` | Exposed. Native construction and KNN point provenance need qualification. Bounded queries use sparse cell indexing and retain scan indices. Native updates and extraction remain separate. | S3-77, S3-80–S3-81, S3-88, S3-103 |
 | `cv2.RgbdNormals` | Exposed. Organized depth normals are shipped. Normal settings and invalid-sample handling belong to that graph tool. | S3-20 |
 | `cv2.depthTo3d`, `cv2.depthTo3dSparse`, `cv2.rescaleDepth` | Dense and sparse backprojection have selectable support and pixel provenance. Typed depth conversion carries scale and invalid codes, and reports rounding and range loss. | S3-59, S3-74–S3-75 |
 | `cv2.registerDepth`, `cv2.warpFrame` | Align depth between cameras and warp a registered depth and color pair through a pose with z-buffer coverage and source pixel ownership. | S3-18, S3-76 |

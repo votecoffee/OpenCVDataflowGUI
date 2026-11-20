@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 76 | 15 | 40 | 131 | 58.0% |
+| 3. 3D imagery and point clouds | 77 | 15 | 39 | 131 | 58.8% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 331 | 19 | 120 | 470 | 70.4% |
+| **Overall** | 332 | 19 | 119 | 470 | 70.6% |
 
 <!-- coverage-summary:end -->
 
@@ -505,7 +505,7 @@ fixture or result needed to close the item.
 | S3-74 | Sparse pixel-to-point backprojection | depthTo3dSparse | Complete | `3d.backproject_depth_pixels` lifts ordered calibrated depth samples and emits a sparse cloud with camera frame, physical units, and source pixel indices. The [depth step project](<../examples/opencv tools/sparse_depth_backprojection/README.md>) verifies known XYZ, duplicate requests, missing depth and bounds checks. |
 | S3-75 | Normalize and quantize a metric depth image | rescaleDepth and typed depth conversion | Complete | The [metric depth round trip](<../examples/opencv tools/metric_depth_encoding/README.md>) carries uint16 scale and invalid-code metadata, decodes to metric float32/float64 and reports clipping and separate quantization error. |
 | S3-76 | Warp a registered RGB-D frame by camera pose | warpFrame | Complete | `3d.warp_rgbd_pose` carries the winning source pixel through the native z-buffer and emits destination depth, color, coverage and camera frame. The [calibrated example](<../examples/opencv tools/rgbd_pose_warp/README.md>) checks a translated view against an exact z-buffer reference, including 20 foreground/background collisions. |
-| S3-77 | Point-cloud octree and spatial queries | Octree.createWithDepth, createWithResolution, KNNSearch and radiusNNSearch | Planned | Index an imported or reconstructed cloud with explicit metric bounds. Compare query indices and distances against brute-force fixtures and verify memory bounds. |
+| S3-77 | Point-cloud octree and spatial queries | Bounded sparse octree for exact KNN and radius search | Complete | `3d.cloud_octree_query` supports fitted or explicit metric cubes, depth or resolution, inclusive radius, stable source rows and bounded storage. The [imported cloud example](<../examples/custom tools/cloud_octree_query/README.md>) checks IDs and distances against brute force. Native OpenCV 5.0.0 construction and KNN provenance need separate qualification. |
 | S3-78 | Random and farthest-point cloud sampling | randomSampling, farthestPointSampling or validated fallbacks | Planned | Verify seeded reproducibility, sample spacing, point budget, and retained attributes. The pinned wheel lacks these geometry bindings. |
 | S3-79 | Representative-point voxel sampling | voxelGridSampling or equivalent voxel selection | Partial | 3d.cloud_voxel supports first point and centroid. Verify nearest-original-point representative selection, per-axis spacing, and associated attributes. The native geometry function is unavailable in the pinned Python wheel. |
 | S3-80 | Radius and statistical cloud outlier rejection | Spatial queries and local neighbor statistics | Planned | Recover a known surface from sparse noise and report removed indices, density settings, and retained edge detail. |

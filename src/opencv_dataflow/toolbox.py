@@ -215,6 +215,7 @@ _NATIVE_NAMES = {
     "3d.tsdf_mesh": ("TSDF", "marching cubes", "surface reconstruction"),
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
     "3d.backproject_depth_pixels": ("depthTo3dSparse", "sparse depth", "metric XYZ"),
+    "3d.cloud_octree_query": ("octree", "nearest neighbors", "radius search"),
     "3d.normalize_depth": ("rescaleDepth", "depth units", "decode depth"),
     "3d.warp_rgbd_pose": ("warpFrame", "RGB-D pose", "camera viewpoint"),
     "3d.quantize_depth": ("depth codes", "depth units", "encode depth"),
