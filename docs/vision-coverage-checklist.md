@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 54 | 18 | 59 | 131 | 41.2% |
+| 3. 3D imagery and point clouds | 55 | 18 | 58 | 131 | 42.0% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 309 | 22 | 139 | 470 | 65.7% |
+| **Overall** | 310 | 22 | 138 | 470 | 66.0% |
 
 <!-- coverage-summary:end -->
 
@@ -471,7 +471,7 @@ fixture or result needed to close the item.
 | S3-50 | Camera-derived cloud transform and measurement | Rigid XYZ transform with frame and unit checks | Complete | 3d.cloud_transform, 3d.cloud_measure. Verify known camera pose, physical extents and output frame. |
 | S3-51 | Unorganized cloud normals from reconstructed points | Local neighborhood normals | Complete | 3d.cloud_normals. Recover normals of a known camera-derived surface with explicit neighbor support. |
 | S3-52 | Project camera clouds into a depth or color image | Intrinsic projection and a depth buffer | Complete | 3d.cloud_project emits calibrated pinhole Z, coverage and nearest-sample RGB. Tests verify distortion, pose frames and units, target selections, and same-pixel depth and color tie rules. |
-| S3-53 | Evaluate camera depth against a reference | Unit-normalized depth error, validity overlap | Planned | Compare known depth planes and depth steps and report residual maps and missing regions. |
+| S3-53 | Evaluate camera depth against a reference | Unit-normalized depth error, validity overlap | Complete | 3d.evaluate_depth reports signed millimeter residuals, validity overlap, missing and estimate-only pixels, and independently gated coverage and errors. The [two-plane example](<../examples/opencv tools/depth_reference/README.md>) checks exact mixed-unit comparison and a one-pixel step shift. A focused check evaluates native stereo reprojection against a known 3 m plane. |
 | S3-54 | Calibrate a rig with three or more image streams | calibrateMultiview, calibrateMultiviewExtended | Planned | Recover a known same-lens-model rig from partial views with explicit visibility masks. Verify per-view residuals, independent reprojections and frame closure. |
 | S3-55 | Reproject a depth-backed region across wide-angle camera views | Camera rays, metric depth and target-camera projection | Planned | Map a physical patch between wide-angle cameras and verify it lands on the same scene area with coverage. |
 | S3-56 | Range image fusion with depth confidence | Weighted depth accumulation in camera coordinates | Planned | Fuse registered depth views and verify confidence, occlusion boundaries and preserved thin objects. |

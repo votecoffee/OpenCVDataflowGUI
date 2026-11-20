@@ -236,7 +236,7 @@ Those rows require an explicitly qualified build or tested equivalent.
 | `Cloud normals, curvature and segmentation` | Distinguish organized depth normals from unorganized cloud normals, robust geometric fits, clustering and normal-driven regions. | S3-20, S3-23, S3-51, S3-57, S3-81–S3-84 |
 | `Cloud transforms, comparison and surface registration` | Separate alignment, overlap, hypothesis ranking, merged scans, dimensional deviation and physical bounds. | S3-22, S3-24, S3-50, S3-58, S3-88–S3-92, S3-98 |
 | `Mesh I/O, projection and reconstruction` | Native mesh I/O and triangle rasterization are exposed in the wheel. Use separate mesh outputs for measured geometry and calibrated depth or color raster output. | S3-27, S3-52, S3-86–S3-87, S3-89, S3-97 |
-| `Depth conversion and camera alignment` | Dense and sparse backprojection, unit normalization, ToF cleanup and RGB-D frame warp. | S3-17–S3-19, S3-49, S3-59, S3-62, S3-73–S3-76 |
+| `Depth conversion and camera alignment` | Dense and sparse backprojection, unit normalization, aligned metric reference comparison, ToF cleanup and RGB-D frame warp. | S3-17–S3-19, S3-49, S3-53, S3-59, S3-62, S3-73–S3-76 |
 | `Odometry, fusion and view synthesis` | OdometryFrame preprocessing and settings stay within the RGB-D contracts. Validate fixed, color and hashed volumes, volume growth, and explicitly posed raycasts. | S3-25–S3-27, S3-71, S3-93–S3-95 |
 | `Scanner SDKs and specialized cloud formats` | Defer vendor acquisition, GIS/LAS workflows and native viewer backends. Recorded inspection-cloud imports and mesh outputs have their own fixtures. | — |
 

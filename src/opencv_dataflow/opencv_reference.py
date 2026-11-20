@@ -126,6 +126,7 @@ BINDINGS = {
         "structured_light.SinusoidalPattern.create structured_light.SinusoidalPattern.generate"
     ),
     "3d.cloud_project": "projectPoints",
+    "3d.evaluate_depth": "applyColorMap",
     "3d.camera_projector_calibrate": "calibrateCamera stereoCalibrateExtended",
     "3d.camera_projector_reconstruct": "undistortPoints triangulatePoints projectPoints",
     "3d.reproject": "reprojectImageTo3D",

@@ -167,7 +167,7 @@ BLOCK_MODULES = {
     "bgsegm": "sequence.gsoc_background sequence.lsbp_background",
     "videoio": "input.camera",
     "objdetect": "3d.aruco_pose",
-    "ptcloud": "3d.depth_cloud 3d.separate_depth_plane 3d.cloud_project",
+    "ptcloud": "3d.depth_cloud 3d.separate_depth_plane 3d.cloud_project 3d.evaluate_depth",
     "rgbd": "3d.register_depth",
     "structured_light": (
         "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode "

@@ -238,6 +238,23 @@ filter. The depth keeps its type, units, ticket and grid. The validity and
 confidence-rejection masks use the same grid.
 [Depth smoothing example](<../examples/opencv tools/depth_smoothing/README.md>)
 
+**Evaluate camera depth** compares camera Z on aligned pixel grids.
+Tagged depth uses its m/mm units. For untagged rasters, set the units
+and, for raw uint16, the units per sample for each input. Zero, negative
+and nonfinite depths are invalid. A region or selection mask limits the
+comparison, and per-input validity masks can exclude untrusted samples.
+Use the default Same Frame setting to check known pixel frames. Choose
+Pixel Grid to assert alignment for independent imports.
+
+The residual is estimate minus reference in millimeters, with NaN
+outside valid overlap. Coverage divides overlap by the valid reference
+count. Validity IoU divides overlap by the union of both validity masks.
+The report includes bias, MAE, MSE, RMSE, and the fraction of overlapping
+pixels strictly above the error tolerance. Coverage and error limits
+control pass/fail independently. The optional magnitude heatmap shows
+missed estimates in magenta and estimate-only samples in gray.
+[Mixed-unit depth step example](<../examples/opencv tools/depth_reference/README.md>)
+
 **Separate support plane and foreground** fits one dominant plane using valid
 backprojected pixels. A mask or region can limit the fit to exposed support.
 Classification still covers the whole image. Signed distances are in meters

@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Evaluate a known depth step",
+      "description": "Original synthetic depth planes by OpenCVDataflowGUI contributors (MIT). The estimate moves the step one pixel right and includes two biased patches. Different holes in each map affect overlap. Compare the whole field and the step.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "estimate",
+      "type": "input.depth_file",
+      "name": "Estimate (m)",
+      "parameters": {
+        "path": "assets/estimate_m.tiff",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "m",
+        "display_min": 0.9,
+        "display_max": 1.6
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "known-depth-step"
+      }
+    },
+    {
+      "id": "reference",
+      "type": "input.depth_file",
+      "name": "Reference (mm)",
+      "parameters": {
+        "path": "assets/reference_mm.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 900,
+        "display_max": 1600
+      },
+      "position": [
+        0,
+        245
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "known-depth-step"
+      }
+    },
+    {
+      "id": "step_band",
+      "type": "region.shape",
+      "name": "Narrow band around the depth step",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          62,
+          0,
+          4,
+          80
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        330,
+        40
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "whole",
+      "type": "3d.evaluate_depth",
+      "name": "Whole-field comparison",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_units": "mm",
+        "reference_units": "mm",
+        "estimate_units_per_sample": 1.0,
+        "reference_units_per_sample": 1.0,
+        "error_tolerance_mm": 20,
+        "minimum_coverage": 0.99,
+        "maximum_bad_fraction": 0.02,
+        "preview_max_mm": 40
+      },
+      "position": [
+        680,
+        0
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "residual",
+        "overlap_mask",
+        "bad_mask",
+        "missing_mask",
+        "estimate_only_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "step",
+      "type": "3d.evaluate_depth",
+      "name": "Step-band comparison",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_units": "mm",
+        "reference_units": "mm",
+        "estimate_units_per_sample": 1.0,
+        "reference_units_per_sample": 1.0,
+        "error_tolerance_mm": 20,
+        "minimum_coverage": 0.99,
+        "maximum_bad_fraction": 0.25,
+        "preview_max_mm": 40
+      },
+      "position": [
+        680,
+        330
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "residual",
+        "overlap_mask",
+        "bad_mask",
+        "missing_mask",
+        "estimate_only_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "estimate",
+      "output": "depth",
+      "target": "step_band",
+      "input": "image"
+    },
+    {
+      "source": "estimate",
+      "output": "depth",
+      "target": "whole",
+      "input": "estimate"
+    },
+    {
+      "source": "reference",
+      "output": "depth",
+      "target": "whole",
+      "input": "reference"
+    },
+    {
+      "source": "estimate",
+      "output": "depth",
+      "target": "step",
+      "input": "estimate"
+    },
+    {
+      "source": "reference",
+      "output": "depth",
+      "target": "step",
+      "input": "reference"
+    },
+    {
+      "source": "step_band",
+      "output": "region",
+      "target": "step",
+      "input": "region"
+    }
+  ]
+}

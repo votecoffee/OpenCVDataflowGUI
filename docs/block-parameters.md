@@ -329,6 +329,36 @@ Inputs: `points_left` (data), `points_right` (data), `camera` (data).
 | `right_frame` | `"right_camera"` |  |
 | `minimum_inliers` | `8` |  |
 
+## Evaluate camera depth (`3d.evaluate_depth`)
+
+3D vision / Depth and RGB-D
+
+Inputs: `estimate` (depth), `reference` (depth), `estimate_valid` (image, optional), `reference_valid` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `estimate` — Estimated camera depth on the comparison grid.
+
+Input `reference` — Metric reference depth aligned to the same camera grid.
+
+Input `estimate_valid` — Optional uint8 mask of trustworthy estimate samples.
+
+Input `reference_valid` — Optional uint8 mask of trustworthy reference samples.
+
+Input `mask` — Optional uint8 selection intersected with Region.
+
+Input `region` — Optional image-space region on the estimate grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Check known frames, or assert independent rasters use the same pixel grid. |
+| `estimate_units` | `"mm"` | `m`, `mm` Physical units for an estimate without a depth-unit tag. |
+| `reference_units` | `"mm"` | `m`, `mm` Physical units for a reference without a depth-unit tag. |
+| `estimate_units_per_sample` | `1.0` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 estimate sample. |
+| `reference_units_per_sample` | `1.0` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 reference sample. |
+| `error_tolerance_mm` | `2.0` | Value must be a finite number at least 0. Absolute difference above which an overlapping pixel is bad. |
+| `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required overlap fraction of selected reference-valid pixels. |
+| `maximum_bad_fraction` | `1.0` | Value must be a finite number between 0 and 1. Allowed bad fraction among overlapping pixels. |
+| `preview_max_mm` | `10.0` | Value must be a finite number at least 1e-06. Error magnitude that saturates the color preview, in millimeters. |
+
 ## Evaluate stereo disparity (`3d.evaluate_disparity`)
 
 3D vision / Stereo

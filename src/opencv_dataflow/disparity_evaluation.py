@@ -1,16 +1,19 @@
 """Measure aligned stereo disparity against reference values in pixel units."""
 
-import cv2
 import numpy as np
 
 from .core import Port, Result
 from .geometry3d_common import Tool3D
 from .images import DepthArray, ImageArray
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import require_same_frame
-from .selection import selection_mask
+from .raster_evaluation import (
+    MAX_EVALUATION_PIXELS,
+    apply_valid_mask,
+    comparison_selection,
+    error_heatmap,
+    error_statistics,
+)
 
-_MAX_PIXELS = 16_777_216
 _DISPARITY_DTYPES = (np.uint8, np.int16, np.uint16, np.float32, np.float64)
 
 
@@ -20,7 +23,7 @@ def _disparity_image(image):
         isinstance(image, DepthArray)
         or values.ndim != 2
         or values.dtype not in _DISPARITY_DTYPES
-        or not 0 < values.size <= _MAX_PIXELS
+        or not 0 < values.size <= MAX_EVALUATION_PIXELS
     ):
         raise ValidationError(
             "Disparity needs a monochrome uint8, int16, uint16 or float grid "
@@ -47,32 +50,13 @@ def _valid_samples(values, invalid_code, field):
 
 def _metrics(residual, absolute, bad):
     count = residual.size
-    if not count:
-        return dict(
-            evaluated_pixels=0,
-            bad_pixels=0,
-            bad_fraction=None,
-            bias_px=None,
-            mae_px=None,
-            mse_px2=None,
-            rmse_px=None,
-            max_error_px=None,
-        )
-    with np.errstate(over="ignore", invalid="ignore"):
-        mse = float(np.dot(residual, residual) / count)
-    if not np.isfinite(mse):
-        raise ValidationError("Disparity error exceeds the numeric range")
     bad_count = int(np.count_nonzero(bad))
-    return dict(
-        evaluated_pixels=count,
-        bad_pixels=bad_count,
-        bad_fraction=bad_count / count,
-        bias_px=float(residual.mean()),
-        mae_px=float(absolute.mean()),
-        mse_px2=mse,
-        rmse_px=mse**0.5,
-        max_error_px=float(absolute.max()),
-    )
+    return {
+        "evaluated_pixels": count,
+        "bad_pixels": bad_count,
+        "bad_fraction": bad_count / count if count else None,
+        **error_statistics(residual, absolute, "px", "Disparity"),
+    }
 
 
 def _confidence_slices(image, scored, residual, absolute, bad, cutoff):
@@ -177,19 +161,10 @@ class EvaluateDisparity(Tool3D):
 
     def process(self, inputs):
         p = self.parameters
-        source = inputs["estimate"]
         estimate, reference = (_disparity_image(inputs[name]) for name in ("estimate", "reference"))
         if estimate.shape != reference.shape:
             raise ValidationError("Estimate and reference must have the same pixel dimensions")
-        if p["alignment"] == "same_frame":
-            try:
-                require_same_frame(
-                    [value for name, value in inputs.items() if name != "region"],
-                    message="Disparity rasters must share the same pixel frame",
-                )
-            except ValueError as exc:
-                raise ValidationError(str(exc)) from exc
-        selection = selection_mask(inputs, source, match_mask_frame=False)
+        selection = comparison_selection(inputs, p["alignment"], "Disparity")
         validity = {}
         for name, values in (("estimate", estimate), ("reference", reference)):
             invalid = (
@@ -198,12 +173,7 @@ class EvaluateDisparity(Tool3D):
                 else None
             )
             valid = _valid_samples(values, invalid, f"{name}_invalid_code")
-            mask = inputs.get(f"{name}_valid")
-            if mask is not None:
-                if mask.shape != values.shape or mask.dtype != np.uint8:
-                    raise ValidationError(f"{name.title()} valid mask needs matching uint8 pixels")
-                valid &= mask != 0
-            validity[name] = valid
+            validity[name] = apply_valid_mask(valid, inputs.get(f"{name}_valid"), name)
         truth = validity["reference"]
         if selection is not None:
             truth &= selection != 0
@@ -256,13 +226,9 @@ class EvaluateDisparity(Tool3D):
         bad_image[scored] = bad.astype(np.uint8) * 255
         graphics = {}
         if self.generate_graphics:
-            gray = np.zeros(estimate.shape, dtype=np.uint8)
-            ceiling = float(p["preview_max_px"])
-            gray[scored] = np.rint(np.minimum(absolute, ceiling) / ceiling * 255).astype(np.uint8)
-            heatmap = cv2.applyColorMap(gray, cv2.COLORMAP_TURBO)
-            heatmap[~scored] = (0, 0, 0)
-            heatmap[missing] = (255, 0, 255)
-            graphics["disparity_error"] = ImageArray(heatmap, "bgr")
+            graphics["disparity_error"] = error_heatmap(
+                scored, absolute, missing, float(p["preview_max_px"])
+            )
         return Result(
             {
                 "absolute_error": ImageArray(error, "gray"),

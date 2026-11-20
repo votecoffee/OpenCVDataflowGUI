@@ -52,6 +52,9 @@ with held-out perspective rectification and metric reconstruction.
 [Confidence-weighted depth smoothing](depth_smoothing/README.md) preserves a
 sharp step and rejects unreliable depth samples before cloud reconstruction.
 
+[Camera depth evaluation](depth_reference/README.md) checks mixed-unit depth
+error, validity and coverage over a known step.
+
 [Support plane and foreground separation](depth_plane/README.md) extracts
 raised parts above a tilted surface into a foreground-only point cloud.
 
