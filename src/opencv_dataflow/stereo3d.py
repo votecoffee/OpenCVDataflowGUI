@@ -638,8 +638,11 @@ class ReprojectDisparity(Tool3D):
         ):
             raise ValueError("Disparity must match rectification image size")
         disparity_payload = self.input_payloads["disparity"]
-        if REVISION in rec or STEREO_GRID in disparity_payload:
+        if REVISION in rec:
             check_ref(rec.get(REVISION))
+        if REVISION in rec or STEREO_GRID in disparity_payload:
+            if rec.get("model") != "stereo_rectification_v1":
+                raise ValidationError("Sealed stereo Q must come from calibrated rectification")
             stamp = {
                 "sha256": digest(rec), "side": "left", "spatial": disparity_payload.get("spatial")
             }

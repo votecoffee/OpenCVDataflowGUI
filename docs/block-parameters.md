@@ -1625,6 +1625,30 @@ Inputs: `image` (image), `camera` (data).
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
 | `border_value` | `0.0` |  |
 
+## Rectify three collinear cameras (`3d.rectify_collinear`)
+
+3D vision / Stereo
+
+Inputs: `reference` (image), `second` (image), `third` (image), `rig` (data, optional), `reference_camera` (data, optional), `second_camera` (data, optional), `third_camera` (data, optional), `reference_to_second` (data, optional), `reference_to_third` (data, optional), `check` (data, optional).
+
+Input `rig` — Three pinhole cameras from Calibrate multi-camera rig, in image-port order.
+
+Input `reference_to_second` — Reference-to-second camera pose in the declared camera units.
+
+Input `reference_to_third` — Reference-to-third camera pose in the declared camera units.
+
+Input `check` — Independent observations of matched target points on both baselines.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alpha` | `0.0` | Value must be a finite number between -1 and 1. Crop for the reference/second pair. The third camera may need its validity mask. |
+| `width` | `0` | Value must be a whole number between 0 and 4096. Rectified width in pixels. Zero uses the reference width. |
+| `height` | `0` | Value must be a whole number between 0 and 4096. Rectified height in pixels. Zero uses the reference height. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Sampling kernel for the three remaps. |
+| `border_value` | `0.0` | Constant used outside the source rasters. |
+| `max_center_offset_mm` | `0.25` | Value must be a finite number at least 0. Maximum third center distance from the first-to-second baseline. |
+| `max_row_rms_px` | `0.5` | Value must be a finite number at least 0. Maximum row mismatch RMS per baseline when check points are connected. |
+
 ## Rectify uncalibrated stereo images (`3d.rectify_uncalibrated_stereo`)
 
 3D vision / Stereo

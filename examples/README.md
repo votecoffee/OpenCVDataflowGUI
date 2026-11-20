@@ -182,6 +182,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Uncalibrated stereo rectification](<opencv tools/uncalibrated_stereo/README.md>) | Estimate rectification from matches, compare held-out vertical alignment and inspect shared support. |
 | [Stereo calibration quality](<opencv tools/stereo_calibration_quality/README.md>) | Compare per-camera fit residuals and independently rendered holdouts. |
 | [Multi-camera rig calibration](<opencv tools/multicamera_rig/README.md>) | Fit a three-camera visibility chain and measure cross-camera reprojection on disjoint captures. |
+| [Three-camera collinear rectification](<opencv tools/collinear_stereo/README.md>) | Align three images and compare two baselines with independent metric depth. |
 | [Register cameras with disjoint views](<opencv tools/nonoverlap_camera_registration/README.md>) | Fit fixed pinhole and fisheye pairs from separate target panels and verify held-out reprojection. |
 | [Custom coded rig calibration](<opencv tools/coded_multicamera_rig/README.md>) | Decode synchronized captures of an irregular ArUco target and check a rig fitted with partial views. |
 | [Stereo disparity search](<opencv tools/stereo_disparity_search/README.md>) | Compare manual and depth-based search ranges and check support around masks. |

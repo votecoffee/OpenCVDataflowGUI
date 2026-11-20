@@ -680,6 +680,7 @@ def builtin_registry():
     from .codec_probe import ProbeImageFile
     from .coded_rig_observations import LoadCodedRigObservations
     from .collection_tools import COLLECTION_BLOCKS
+    from .collinear_rectification import RectifyCollinearCameras
     from .color_calibration import COLOR_CALIBRATION_BLOCKS
     from .color_measurement import COLOR_MEASUREMENT_BLOCKS
     from .color_tsdf import FuseColorTSDF, PackPosedRGBD
@@ -1384,6 +1385,7 @@ def builtin_registry():
         BackprojectDepthPixels,
         MatchStereoColor,
         StereoRectifiedCamera,
+        RectifyCollinearCameras,
         RecordedRGBD,
         RegisterRGBD,
         WarpRGBDByPose,

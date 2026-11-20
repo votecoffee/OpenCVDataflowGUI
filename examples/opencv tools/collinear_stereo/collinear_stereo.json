@@ -1,0 +1,815 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Three-camera rectification and depth",
+      "description": "Synthetic images and independent geometry by OpenCVDataflowGUI contributors (MIT). Three cameras observe a textured plane at 1.15 m. Both baselines match on one reference grid. Separate sparse target observations check row alignment.",
+      "parameters": {},
+      "position": [
+        0,
+        -310
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "3d.rectify_collinear",
+      "name": "Common-row rectification",
+      "description": "Rectify three calibrated pinhole cameras to a shared horizontal stereo grid.",
+      "parameters": {
+        "alpha": 0.0,
+        "width": 0,
+        "height": 0,
+        "interpolation": "linear",
+        "border_value": 0.0,
+        "max_center_offset_mm": 0.25,
+        "max_row_rms_px": 0.5
+      },
+      "position": [
+        785,
+        250
+      ],
+      "exposed_inputs": [
+        "reference",
+        "second",
+        "third",
+        "rig",
+        "reference_camera",
+        "second_camera",
+        "third_camera",
+        "reference_to_second",
+        "reference_to_third",
+        "check"
+      ],
+      "exposed_outputs": [
+        "reference_12",
+        "second",
+        "reference_13",
+        "third",
+        "reference_valid",
+        "second_valid",
+        "third_valid",
+        "rectification_12",
+        "rectification_13",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference image",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "three-camera-plane"
+      }
+    },
+    {
+      "id": "camera_reference",
+      "type": "3d.camera",
+      "name": "Reference calibration",
+      "parameters": {
+        "fx": 212,
+        "fy": 208,
+        "cx": 126,
+        "cy": 78,
+        "width": 256,
+        "height": 160,
+        "distortion": [
+          -0.076,
+          0.018,
+          0.001,
+          -0.0008,
+          0.0
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "reference"
+      },
+      "position": [
+        310,
+        0
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "second",
+      "type": "input.file",
+      "name": "Second image",
+      "parameters": {
+        "path": "assets/second.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        220
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "three-camera-plane"
+      }
+    },
+    {
+      "id": "camera_second",
+      "type": "3d.camera",
+      "name": "Second calibration",
+      "parameters": {
+        "fx": 211,
+        "fy": 213,
+        "cx": 130,
+        "cy": 81,
+        "width": 256,
+        "height": 160,
+        "distortion": [
+          -0.076,
+          0.018,
+          0.001,
+          -0.0008,
+          0.0
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "second"
+      },
+      "position": [
+        310,
+        220
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_second",
+      "type": "3d.pose",
+      "name": "Reference to second",
+      "parameters": {
+        "rvec": [
+          0,
+          0.05,
+          0
+        ],
+        "translation": [
+          -0.05398312587888794,
+          0.0,
+          0.0013498593793944658
+        ],
+        "source_frame": "reference",
+        "target_frame": "second",
+        "units": "m"
+      },
+      "position": [
+        310,
+        670
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "third",
+      "type": "input.file",
+      "name": "Third image",
+      "parameters": {
+        "path": "assets/third.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        440
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "three-camera-plane"
+      }
+    },
+    {
+      "id": "camera_third",
+      "type": "3d.camera",
+      "name": "Third calibration",
+      "parameters": {
+        "fx": 207,
+        "fy": 212,
+        "cx": 128,
+        "cy": 79,
+        "width": 256,
+        "height": 160,
+        "distortion": [
+          -0.076,
+          0.018,
+          0.001,
+          -0.0008,
+          0.0
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "third"
+      },
+      "position": [
+        310,
+        440
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_third",
+      "type": "3d.pose",
+      "name": "Reference to third",
+      "parameters": {
+        "rvec": [
+          0,
+          -0.03,
+          0
+        ],
+        "translation": [
+          -0.11682308210479903,
+          0.0,
+          -0.006431756178166925
+        ],
+        "source_frame": "reference",
+        "target_frame": "third",
+        "units": "m"
+      },
+      "position": [
+        310,
+        900
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "check",
+      "type": "input.multicamera_observations",
+      "name": "Independent target captures",
+      "parameters": {
+        "path": "assets/check.json"
+      },
+      "position": [
+        310,
+        1100
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "observations",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "three-camera-plane"
+      }
+    },
+    {
+      "id": "truth",
+      "type": "input.depth_file",
+      "name": "Independent 1150 mm reference",
+      "parameters": {
+        "path": "assets/held_out_depth_mm.png",
+        "path_base": "project",
+        "units_per_sample": 1.0,
+        "units": "mm",
+        "display_min": 1100,
+        "display_max": 1200
+      },
+      "position": [
+        1260,
+        805
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "three-camera-plane"
+      }
+    },
+    {
+      "id": "match_12",
+      "type": "3d.disparity",
+      "name": "Short baseline disparity",
+      "parameters": {
+        "algorithm": "sgbm",
+        "search_mode": "depth",
+        "minimum_depth": 0.85,
+        "maximum_depth": 1.4,
+        "min_disparity": 0,
+        "num_disparities": 64,
+        "block_size": 7,
+        "p1": 0,
+        "p2": 0,
+        "mode": "sgbm_3way",
+        "uniqueness_ratio": 8,
+        "speckle_window": 0,
+        "speckle_range": 2,
+        "disp12_max_diff": 1,
+        "prefilter_cap": 31,
+        "prefilter_size": 9,
+        "prefilter_type": "xsobel",
+        "texture_threshold": 10,
+        "wls": false,
+        "wls_lambda": 8000.0,
+        "wls_sigma": 1.5,
+        "wls_lr_threshold": 24,
+        "wls_depth_radius": -1,
+        "minimum_wls_confidence": 0.0
+      },
+      "position": [
+        1230,
+        20
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rectification",
+        "left_mask",
+        "right_mask"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "preview",
+        "confidence",
+        "support_mask",
+        "search_report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth_12",
+      "type": "3d.reproject",
+      "name": "Short baseline metric depth",
+      "parameters": {
+        "input_scale": 1.0,
+        "sample_step": 4,
+        "max_points": 200000,
+        "min_depth": 0.85,
+        "max_depth": 1.4
+      },
+      "position": [
+        1590,
+        20
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "rectification",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "depth",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "check_12",
+      "type": "3d.evaluate_depth",
+      "name": "Short baseline vs known plane",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_units": "mm",
+        "reference_units": "mm",
+        "estimate_units_per_sample": 1.0,
+        "reference_units_per_sample": 1.0,
+        "error_tolerance_mm": 35.0,
+        "minimum_coverage": 0.72,
+        "maximum_bad_fraction": 0.06,
+        "preview_max_mm": 10.0
+      },
+      "position": [
+        1970,
+        20
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "residual",
+        "overlap_mask",
+        "bad_mask",
+        "missing_mask",
+        "estimate_only_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match_13",
+      "type": "3d.disparity",
+      "name": "Long baseline disparity",
+      "parameters": {
+        "algorithm": "sgbm",
+        "search_mode": "depth",
+        "minimum_depth": 0.85,
+        "maximum_depth": 1.4,
+        "min_disparity": 0,
+        "num_disparities": 64,
+        "block_size": 7,
+        "p1": 0,
+        "p2": 0,
+        "mode": "sgbm_3way",
+        "uniqueness_ratio": 8,
+        "speckle_window": 0,
+        "speckle_range": 2,
+        "disp12_max_diff": 1,
+        "prefilter_cap": 31,
+        "prefilter_size": 9,
+        "prefilter_type": "xsobel",
+        "texture_threshold": 10,
+        "wls": false,
+        "wls_lambda": 8000.0,
+        "wls_sigma": 1.5,
+        "wls_lr_threshold": 24,
+        "wls_depth_radius": -1,
+        "minimum_wls_confidence": 0.0
+      },
+      "position": [
+        1230,
+        405
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rectification",
+        "left_mask",
+        "right_mask"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "preview",
+        "confidence",
+        "support_mask",
+        "search_report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth_13",
+      "type": "3d.reproject",
+      "name": "Long baseline metric depth",
+      "parameters": {
+        "input_scale": 1.0,
+        "sample_step": 4,
+        "max_points": 200000,
+        "min_depth": 0.85,
+        "max_depth": 1.4
+      },
+      "position": [
+        1590,
+        405
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "rectification",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "depth",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "check_13",
+      "type": "3d.evaluate_depth",
+      "name": "Long baseline vs known plane",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_units": "mm",
+        "reference_units": "mm",
+        "estimate_units_per_sample": 1.0,
+        "reference_units_per_sample": 1.0,
+        "error_tolerance_mm": 35.0,
+        "minimum_coverage": 0.72,
+        "maximum_bad_fraction": 0.06,
+        "preview_max_mm": 10.0
+      },
+      "position": [
+        1970,
+        405
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "residual",
+        "overlap_mask",
+        "bad_mask",
+        "missing_mask",
+        "estimate_only_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "rectify",
+      "input": "reference"
+    },
+    {
+      "source": "camera_reference",
+      "output": "camera",
+      "target": "rectify",
+      "input": "reference_camera"
+    },
+    {
+      "source": "second",
+      "output": "image",
+      "target": "rectify",
+      "input": "second"
+    },
+    {
+      "source": "camera_second",
+      "output": "camera",
+      "target": "rectify",
+      "input": "second_camera"
+    },
+    {
+      "source": "pose_second",
+      "output": "transform",
+      "target": "rectify",
+      "input": "reference_to_second"
+    },
+    {
+      "source": "third",
+      "output": "image",
+      "target": "rectify",
+      "input": "third"
+    },
+    {
+      "source": "camera_third",
+      "output": "camera",
+      "target": "rectify",
+      "input": "third_camera"
+    },
+    {
+      "source": "pose_third",
+      "output": "transform",
+      "target": "rectify",
+      "input": "reference_to_third"
+    },
+    {
+      "source": "check",
+      "output": "observations",
+      "target": "rectify",
+      "input": "check"
+    },
+    {
+      "source": "rectify",
+      "output": "reference_12",
+      "target": "match_12",
+      "input": "left"
+    },
+    {
+      "source": "rectify",
+      "output": "second",
+      "target": "match_12",
+      "input": "right"
+    },
+    {
+      "source": "rectify",
+      "output": "reference_valid",
+      "target": "match_12",
+      "input": "left_mask"
+    },
+    {
+      "source": "rectify",
+      "output": "second_valid",
+      "target": "match_12",
+      "input": "right_mask"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification_12",
+      "target": "match_12",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification_12",
+      "target": "depth_12",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "reference_12",
+      "target": "depth_12",
+      "input": "image"
+    },
+    {
+      "source": "match_12",
+      "output": "disparity",
+      "target": "depth_12",
+      "input": "disparity"
+    },
+    {
+      "source": "depth_12",
+      "output": "depth",
+      "target": "check_12",
+      "input": "estimate"
+    },
+    {
+      "source": "truth",
+      "output": "depth",
+      "target": "check_12",
+      "input": "reference"
+    },
+    {
+      "source": "rectify",
+      "output": "reference_13",
+      "target": "match_13",
+      "input": "left"
+    },
+    {
+      "source": "rectify",
+      "output": "third",
+      "target": "match_13",
+      "input": "right"
+    },
+    {
+      "source": "rectify",
+      "output": "reference_valid",
+      "target": "match_13",
+      "input": "left_mask"
+    },
+    {
+      "source": "rectify",
+      "output": "third_valid",
+      "target": "match_13",
+      "input": "right_mask"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification_13",
+      "target": "match_13",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification_13",
+      "target": "depth_13",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "reference_13",
+      "target": "depth_13",
+      "input": "image"
+    },
+    {
+      "source": "match_13",
+      "output": "disparity",
+      "target": "depth_13",
+      "input": "disparity"
+    },
+    {
+      "source": "depth_13",
+      "output": "depth",
+      "target": "check_13",
+      "input": "estimate"
+    },
+    {
+      "source": "truth",
+      "output": "depth",
+      "target": "check_13",
+      "input": "reference"
+    }
+  ]
+}

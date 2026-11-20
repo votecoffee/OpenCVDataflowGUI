@@ -129,7 +129,7 @@ IMPLEMENTATION_MODULES = {
     "rotating_panorama panorama_points",
     "stereo": (
         "stereo3d binary_stereo stereo_color disparity_speckles "
-        "disparity_evaluation quasi_dense_stereo"
+        "disparity_evaluation quasi_dense_stereo collinear_rectification"
     ),
     "ccm": "color_calibration",
     "quality": "image_quality",
@@ -312,6 +312,7 @@ _NATIVE_NAMES = {
     "sequence.lk_grid_flow": ("calcOpticalFlowPyrLK",),
     "sequence.track_points": ("calcOpticalFlowPyrLK",),
     "calibration.lens": ("calibrateCamera", "calib3d"),
+    "3d.rectify_collinear": ("rectify3Collinear", "trinocular", "shared stereo grid"),
     "3d.register_cameras": ("registerCameras", "registerCamerasExtended", "non-overlapping cameras"),
     "calibration.marked_checkerboard": (
         "findChessboardCornersSBWithMeta", "oversized checkerboard", "marker origin"

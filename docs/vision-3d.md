@@ -210,6 +210,17 @@ reports duplicate and missing views, and preserves missing point slots. The
 partial-view fit and held-out checks use each camera's observed corners.
 [Custom coded target example](<../examples/opencv tools/coded_multicamera_rig/README.md>)
 
+**Rectify three collinear cameras** takes three same-size pinhole
+images and either a three-camera rig or three camera models with two
+reference-to-camera poses. It uses a common pinhole grid for both
+baselines, including cameras originally arranged vertically. Each
+baseline has its own signed Q and paired reference image port.
+Wire the validity masks to the disparity matcher. Alpha controls the
+crop of the reference/second pair. The block rejects excess third-center
+offset and can check matched target rows from independent captures. The
+geometry projects accepted small center offsets onto the baseline.
+[Three-camera depth example](<../examples/opencv tools/collinear_stereo/README.md>)
+
 **Stereo BM / SGBM disparity** can derive a signed pixel search from near
 and far depth limits using the calibrated rectification Q. The native
 search count rounds up to a multiple of 16. Connecting rectification or
