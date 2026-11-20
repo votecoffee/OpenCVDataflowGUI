@@ -115,6 +115,7 @@ BINDINGS = {
     "3d.binary_disparity": "boxFilter erode",
     "3d.filter_disparity_speckles": "filterSpeckles",
     "3d.evaluate_disparity": "applyColorMap",
+    "3d.stereo_color_match": "applyColorMap",
     "3d.essential_pose": "findEssentialMat recoverPose",
     "3d.check_epipolar": "computeCorrespondEpilines",
     "3d.refine_epipolar": "sampsonDistance correctMatches",

@@ -1133,6 +1133,36 @@ Inputs: `object_views` (data), `left_views` (data), `right_views` (data), `left_
 | `max_rms` | `2.0` | Value must be a finite number at least 0. Maximum joint reprojection RMS in pixels. |
 | `max_view_rms` | `0.0` | Value must be a finite number at least 0. Maximum RMS for any camera in any fit view. Zero skips this check. |
 
+## Match stereo exposure and color (`3d.stereo_color_match`)
+
+3D vision / Stereo
+
+Inputs: `left` (image), `right` (image), `disparity` (image), `rectification` (data, optional), `left_mask` (image, optional), `left_region` (data, optional), `right_mask` (image, optional).
+
+Input `left` — Rectified reference image. The tool learns the right-to-left correction.
+
+Input `right` — Rectified image to correct without moving its pixels.
+
+Input `disparity` — Float pixels on the left grid. Right X = left X − disparity. NaN is invalid.
+
+Input `rectification` — Calibrated horizontal rectification with per-view ROIs.
+
+Input `left_mask` — Intersect with Left Region and finite disparities.
+
+Input `left_region` — Optional left-grid fitting region. Limits fitting only.
+
+Input `right_mask` — Limit right sampling and correction to supported pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `"gain_bias"` | `gain_bias`, `gain_only` Fit one gain per channel, with optional additive bias. |
+| `minimum_samples` | `128` | Value must be a whole number between 8 and 131072. Minimum count of photometric inliers needed to emit a corrected image. |
+| `maximum_samples` | `32768` | Value must be a whole number between 8 and 131072. Uniformly subsample eligible correspondences before fitting. |
+| `saturation_margin` | `0.004` | Value must be a finite number between 0 and 0.25. Exclude normalized samples this close to either endpoint. |
+| `minimum_signal_std` | `0.004` | Value must be a finite number between 1e-06 and 0.25. Minimum standard deviation in each right channel. |
+| `residual_tolerance` | `0.04` | Value must be a finite number between 1e-06 and 1. Largest allowed channel residual in normalized units for an inlier. |
+| `minimum_inlier_ratio` | `0.65` | Value must be a finite number between 0 and 1. Minimum fraction of usable sampled pairs that must agree. |
+
 ## Rectify stereo images (`3d.stereo_rectify`)
 
 3D vision / Stereo

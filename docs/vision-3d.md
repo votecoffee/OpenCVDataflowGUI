@@ -191,6 +191,18 @@ reverse check also tests the winning correspondence. Use Valid Mask
 to identify disparities retained after both checks.
 [Known-shift comparison with SGBM](<../examples/opencv tools/binary_stereo/README.md>)
 
+**Match stereo exposure and color** estimates a right-to-left gain or
+gain plus bias per gray or RGB channel. Wire a reliable left-grid
+floating-point disparity guide in pixel units. Finite disparities map
+left X to right X as X minus disparity. For fractional X, both sampling
+taps must have right-view support. The robust fit excludes near-saturated
+pairs, rejects low signal variation and requires enough photometric
+inliers to emit a corrected image. Apply it to the right rectified view
+before running the final matcher. A supplied right mask and calibrated
+right ROI restrict both reference sampling and correction. The output
+preserves the right image's coordinate frame, encoding, depth and alpha.
+[Calibrated color correction example](<../examples/opencv tools/stereo_color/README.md>)
+
 **Remove disparity speckles** accepts float pixel disparity, or signed or
 unsigned 16-bit fixed-point disparity with a configurable scale. OpenCV
 stereo's raw values use 16 samples per disparity pixel. The optional input

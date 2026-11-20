@@ -59,6 +59,21 @@ def _read_roi(raw, size):
     return tuple(raw)
 
 
+def rectification_rois(rectification, size):
+    if rectification is None:
+        return ((0, 0, *size), (0, 0, *size))
+    if (
+        not isinstance(rectification, dict)
+        or rectification.get("model") != _MODEL
+        or image_size(rectification.get("image_size")) != size
+    ):
+        raise ValidationError("Calibrated rectification must match the stereo image grid")
+    p2 = matrix(rectification.get("P2"), (3, 4), "Right projection")
+    if abs(p2[1, 3]) > 1e-9 * abs(p2[0, 3]) or p2[0, 3] == 0:
+        raise ValidationError("Stereo disparity requires a horizontal rectified baseline")
+    return tuple(_read_roi(rectification.get(f"roi_{side}"), size) for side in ("left", "right"))
+
+
 def _intersect(a, b):
     x, y = max(a[0], b[0]), max(a[1], b[1])
     right, bottom = min(a[0] + a[2], b[0] + b[2]), min(a[1] + a[3], b[1] + b[3])
@@ -108,16 +123,7 @@ def plan_disparity_search(inputs, parameters, shape, block_size, *, native_match
     h, w = shape
     size = (w, h)
     rec = inputs.get("rectification")
-    if rec is not None:
-        if (
-            not isinstance(rec, dict)
-            or rec.get("model") != _MODEL
-            or image_size(rec.get("image_size")) != size
-        ):
-            raise ValidationError("Calibrated rectification must match the stereo image grid")
-        p2 = matrix(rec.get("P2"), (3, 4), "Right projection")
-        if abs(p2[1, 3]) > 1e-9 * abs(p2[0, 3]) or p2[0, 3] == 0:
-            raise ValidationError("Stereo disparity requires a horizontal rectified baseline")
+    calibrated_rois = rectification_rois(rec, size)
 
     depth_mode = parameters["search_mode"] == "depth"
     if depth_mode:
@@ -157,8 +163,7 @@ def plan_disparity_search(inputs, parameters, shape, block_size, *, native_match
         return DisparitySearch(minimum, count, None, None, report)
 
     masks, rois = [], []
-    for side in ("left", "right"):
-        roi = _read_roi(rec.get(f"roi_{side}") if rec is not None else None, size)
+    for side, roi in zip(("left", "right"), calibrated_rois, strict=True):
         mask = selection_mask({"mask": inputs.get(f"{side}_mask")}, inputs[side])
         if mask is not None:
             roi = _intersect(roi, cv2.boundingRect(mask))

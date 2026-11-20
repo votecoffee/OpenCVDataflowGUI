@@ -44,6 +44,9 @@ estimate with known truth across the whole field and a selected region.
 [Binary Census stereo](binary_stereo/README.md) compares Census/Hamming
 matching and native SGBM on an exposure-shifted pair.
 
+[Stereo exposure and color](stereo_color/README.md) matches a calibrated pair
+from Census correspondences and compares native StereoBM on held-out pixels.
+
 [Recorded RGB-D](recorded_rgbd/README.md) pairs staggered color and depth
 frames, aligns depth and confidence, and builds a colored point cloud.
 
