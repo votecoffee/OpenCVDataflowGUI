@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "From image landmarks to metric points",
+      "description": "Original synthetic depth step by OpenCVDataflowGUI contributors (MIT). Recover camera XYZ from seven requests. The report preserves the duplicated point, the missing depth and the request outside the frame.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/depth_step_mm.png",
+        "path_base": "project",
+        "units_per_sample": 0.001,
+        "units": "m",
+        "display_min": 0.0,
+        "display_max": 2.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 100.0,
+        "fy": 80.0,
+        "cx": 40.0,
+        "cy": 28.0,
+        "width": 80,
+        "height": 56,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "step_camera"
+      },
+      "position": [
+        0,
+        235
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sparse",
+      "type": "3d.backproject_depth_pixels",
+      "name": "Backproject depth pixels",
+      "description": "Recover metric XYZ for selected pixels in an undistorted depth image.",
+      "parameters": {
+        "pixel_points": [
+          [
+            25,
+            14
+          ],
+          [
+            55,
+            14
+          ],
+          [
+            24.6,
+            41.2
+          ],
+          [
+            57,
+            40
+          ],
+          [
+            0,
+            55
+          ],
+          [
+            80,
+            14
+          ],
+          [
+            25,
+            14
+          ]
+        ],
+        "pixel_sampling": "nearest",
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m",
+        "minimum_valid_fraction": 0.5,
+        "max_points": 10000
+      },
+      "position": [
+        390,
+        80
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "points",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "sparse",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "sparse",
+      "input": "camera"
+    }
+  ]
+}

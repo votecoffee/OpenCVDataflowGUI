@@ -302,6 +302,20 @@ decrease when the target view has lower magnification.
    Depth limits are in rig units. Use `input_scale=0.0625` for raw OpenCV int16
    disparity and `1` for this app's already-scaled disparity.
 
+**Backproject depth pixels** takes a list of image XY requests and an
+undistorted pinhole camera calibrated for the input depth grid. Nearest
+sampling snaps to an integer pixel center, with ties rounded upward. Integer
+sampling rejects fractional coordinates. An optional mask and region restrict
+the sampled pixels. Each report row identifies the request index, the source
+pixel and its row-major index when sampled, and the cloud row and XYZ when
+valid. Depth is camera Z. XYZ uses the named optical frame, with X increasing
+right and Y increasing down. Set the uint16 scale for your sensor. A zero,
+nonfinite or nonpositive sample is invalid, and unsigned value 65535 is the
+OpenCV invalid sentinel. The block gathers only the requested positions and
+emits a sparse cloud. Tagged floating-point images retain their declared depth
+units on input. Choose meters or millimeters for the cloud.
+[Depth-step example](<../examples/opencv tools/sparse_depth_backprojection/README.md>)
+
 **Fill small depth holes** copies nearby valid samples into small invalid
 regions and emits a mask identifying the estimates. Its default settings
 preserve border-connected gaps. [Depth hole filling example](<../examples/custom tools/depth_hole_filling/README.md>)

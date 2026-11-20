@@ -931,6 +931,7 @@ def builtin_registry():
     from .stabilization import StabilizeCameraMotion
     from .stabilization_fill import FillStabilizationBorders
     from .stack_blur import StackBlur
+    from .sparse_depth import BackprojectDepthPixels
     from .stereo3d import STEREO3D_BLOCKS
     from .stereo_color import MatchStereoColor
     from .stereo_rectified_camera import StereoRectifiedCamera
@@ -1342,6 +1343,7 @@ def builtin_registry():
         CalibrateMulticameraRig,
         ValidateMulticameraRig,
         *STEREO3D_BLOCKS,
+        BackprojectDepthPixels,
         MatchStereoColor,
         StereoRectifiedCamera,
         RecordedRGBD,

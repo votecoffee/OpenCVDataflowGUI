@@ -39,6 +39,32 @@ Inputs: `image` (image), `camera` (data).
 | `axis_length` | `0.02` |  |
 | `max_reprojection_error` | `3.0` |  |
 
+## Backproject depth pixels (`3d.backproject_depth_pixels`)
+
+3D vision / RGB-D
+
+Inputs: `depth` (depth), `camera` (data), `points` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `depth` — Positive axial camera Z. Zero, nonfinite, and uint16 65535 are invalid.
+
+Input `camera` — Matching undistorted pinhole intrinsics and named optical frame.
+
+Input `points` — List of [x, y] pairs on this depth grid. Duplicates preserve request order.
+
+Input `mask` — Optional raster selection applied at the sampled pixel center.
+
+Input `region` — Optional region intersected with the raster selection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `pixel_points` | `[[0, 0]]` | Ordered fallback [x, y] requests when the points port is unwired. |
+| `pixel_sampling` | `"nearest"` | `nearest`, `integer` Nearest snaps to the pixel center, with halves rounded upward. |
+| `input_units` | `"m"` | `m`, `mm` Units of untagged float depth or scaled uint16 depth. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Length in input units per uint16 count. Floats already have units. |
+| `output_units` | `"m"` | `m`, `mm` Length units of the resulting camera-space XYZ values. |
+| `minimum_valid_fraction` | `0.0` | Value must be a finite number between 0 and 1. Minimum fraction of all requests that must produce valid XYZ. |
+| `max_points` | `10000` | Value must be a whole number between 1 and 50000. Maximum requests per run, including duplicates and rejected points. |
+
 ## Binary Census stereo disparity (`3d.binary_disparity`)
 
 3D vision / Stereo

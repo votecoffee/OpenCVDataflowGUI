@@ -2156,7 +2156,7 @@ P3	class	cv2.DenseOpticalFlow	no static reference	-
 P3	method	cv2.DenseOpticalFlow.calc	method name only	-
 P3	method	cv2.DenseOpticalFlow.collectGarbage	method name only	-
 P3	function	cv2.depthTo3d	no static reference	-
-P3	function	cv2.depthTo3dSparse	no static reference	-
+P3	function	cv2.depthTo3dSparse	literal reference	-
 P3	class	cv2.DescriptorMatcher	no static reference	-
 P3	method	cv2.DescriptorMatcher.add	method name only	-
 P3	method	cv2.DescriptorMatcher.clear	method name only	-

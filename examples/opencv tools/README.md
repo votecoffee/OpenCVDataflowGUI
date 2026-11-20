@@ -67,6 +67,9 @@ rig versions, archived maps and a rejected capture mismatch.
 [Wide-angle stereo](wide_angle_stereo/README.md) uses both lens families
 with held-out perspective rectification and metric reconstruction.
 
+[Sparse depth backprojection](sparse_depth_backprojection/README.md) lifts ordered
+pixels into calibrated XYZ and reports which requests have valid depth.
+
 [Depth-backed region reprojection](depth_region_projection/README.md) transfers
 a physical patch across different lens models and checks the projected support.
 

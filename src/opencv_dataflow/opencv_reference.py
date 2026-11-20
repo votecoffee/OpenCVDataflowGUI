@@ -148,6 +148,7 @@ BINDINGS = {
         "structured_light.SinusoidalPattern.create structured_light.SinusoidalPattern.generate"
     ),
     "3d.cloud_project": "projectPoints",
+    "3d.backproject_depth_pixels": "depthTo3dSparse",
     "3d.evaluate_depth": "applyColorMap",
     "3d.fuse_registered_depth": "merge",
     "3d.reproject_depth_region": (
