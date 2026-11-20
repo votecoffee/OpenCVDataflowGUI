@@ -2,9 +2,24 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 from .scene import bridge_config, default_scene, digest, load, world_xml
+
+
+_SHARED_SIM_ROOT = re.compile(r"\b[a-z]:[/\\]+dev[/\\]+ros2-sim2?(?=[/\\'\"\s]|$)", re.IGNORECASE)
+
+
+def _rebase_launch(raw, runtime, output):
+    root = str(runtime)
+    variants = sorted({runtime.as_posix(), root, root.replace("\\", "\\\\")}, key=len, reverse=True)
+    pattern = "(?:" + "|".join(re.escape(value) for value in variants) + r")(?=[/\\'\"\s]|$)"
+    flags = re.IGNORECASE if runtime.drive else 0
+    text = re.sub(pattern, lambda _: output.as_posix(), raw.decode("utf-8"), flags=flags)
+    if _SHARED_SIM_ROOT.search(text):
+        raise ValueError("Launch copy still references a shared simulator root")
+    return text
 
 
 def prepare(runtime_root, output, scene=None, asset_root=None):
@@ -40,6 +55,10 @@ def prepare(runtime_root, output, scene=None, asset_root=None):
     if b"initial_attach" not in native.read_bytes():
         raise ValueError("Installed DetachableJoint lacks the explicit initially-unattached setting")
     original_hashes = {name: hashlib.sha256(data).hexdigest() for name, data in copies.items()}
+    rebased = {}
+    for name, data in copies.items():
+        if name.startswith("launch/"):
+            rebased[name] = _rebase_launch(data, runtime_root, output)
     output.mkdir(parents=True)
     (output / "generated").mkdir()
     (output / "logs").mkdir()
@@ -54,16 +73,13 @@ def prepare(runtime_root, output, scene=None, asset_root=None):
     for name, data in copies.items():
         path = output / name; path.parent.mkdir(parents=True, exist_ok=True)
         if name.startswith("launch/"):
-            text = data.decode("utf-8")
-            text = text.replace(runtime_root.as_posix(), output.as_posix()).replace(str(runtime_root), output.as_posix())
+            text = rebased[name]
             if name.endswith("gripper_description.py"):
                 text += "\n# Additive fixture hook; this copy is private to one simulation run.\n"
                 text += "from opencv_bin_picking_fixture.scene import add_assistance as _fixture_add, load as _fixture_load\n"
                 text += "_fixture_original_gripper = add_gripper_urdf\n"
                 text += "def add_gripper_urdf(description):\n"
                 text += f"    return _fixture_add(_fixture_original_gripper(description), _fixture_load({str(output / 'scene.json')!r}))\n"
-            if "C:/dev/ros2-sim/generated" in text or "C:/dev/ros2-sim2/generated" in text:
-                raise ValueError("Native generated output path was not isolated")
             compile(text, name, "exec")
             path.write_text(text, encoding="utf-8", newline="\n")
         else:

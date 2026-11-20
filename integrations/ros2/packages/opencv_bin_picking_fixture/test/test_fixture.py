@@ -1,6 +1,6 @@
 import hashlib
 import math
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import tempfile
 import threading
 import unittest
@@ -8,7 +8,7 @@ from xml.etree import ElementTree as ET
 
 from opencv_bin_picking_fixture.scene import default_scene, world_xml, add_assistance, bridge_config, camera_transform, validate
 from opencv_bin_picking_fixture.state import FixtureState, Observation, axis_z
-from opencv_bin_picking_fixture.prepare import prepare
+from opencv_bin_picking_fixture.prepare import _rebase_launch, prepare
 from opencv_bin_picking_fixture.run import environment, watch_stop
 
 
@@ -105,6 +105,14 @@ class GateTests(unittest.TestCase):
 
 
 class PreparationTests(unittest.TestCase):
+    def test_selected_runtime_rebase_checks_directory_boundaries(self):
+        runtime = PureWindowsPath("G:/dev/ros2-sim")
+        output = PureWindowsPath("G:/scratch/private")
+        actual = _rebase_launch(b"root = 'g:/dev/ROS2-SIM/generated'\n", runtime, output)
+        self.assertEqual(actual, "root = 'G:/scratch/private/generated'\n")
+        with self.assertRaisesRegex(ValueError, "shared simulator root"):
+            _rebase_launch(b"root = 'G:/dev/ros2-sim2/generated'\n", runtime, output)
+
     def test_stop_request_is_bound_to_the_exact_launcher_generation(self):
         import json
         with tempfile.TemporaryDirectory() as temporary:
@@ -123,7 +131,10 @@ class PreparationTests(unittest.TestCase):
             root = Path(temporary); runtime = root / "native"; (runtime / "launch").mkdir(parents=True)
             (runtime / "config").mkdir()
             for name in ("ur_sim_control_windows.launch.py", "ur_moveit_windows.launch.py", "gripper_description.py"):
-                (runtime / "launch" / name).write_text(f"project = {runtime.as_posix()!r}\n", encoding="utf-8")
+                (runtime / "launch" / name).write_text(
+                    f"project = {runtime.as_posix()!r}\nwindows_project = {str(runtime)!r}\n",
+                    encoding="utf-8",
+                )
             (runtime / "config/test.yaml").write_bytes(b"untouched: true\r\n")
             dll = runtime / ".pixi/envs/default/Library/bin/gz-sim-detachable-joint-system.dll"
             dll.parent.mkdir(parents=True); dll.write_bytes(b"synthetic plugin marker: initial_attach")
@@ -135,7 +146,18 @@ class PreparationTests(unittest.TestCase):
             for name, data in before.items(): self.assertEqual((runtime/name).read_bytes(), data)
             for name, digest in receipt["copied_original_sha256"].items():
                 self.assertEqual(hashlib.sha256(before[name]).hexdigest(), digest)
-            self.assertIn(output.as_posix(), (output / "launch/ur_moveit_windows.launch.py").read_text(encoding="utf-8"))
+            launch_source = (output / "launch/ur_moveit_windows.launch.py").read_text(encoding="utf-8")
+            self.assertIn(f"project = {output.as_posix()!r}", launch_source)
+            self.assertIn(f"windows_project = {output.as_posix()!r}", launch_source)
+            for drive in ("C", "G"):
+                legacy = Path(f"{drive}:/dev/ros2-sim2")
+                (runtime / "launch/ur_moveit_windows.launch.py").write_text(
+                    f"project = {str(legacy)!r}\n", encoding="utf-8"
+                )
+                leaked = root / f"leaked-{drive}"
+                with self.assertRaisesRegex(ValueError, "shared simulator root"):
+                    prepare(runtime, leaked)
+                self.assertFalse(leaked.exists())
             with self.assertRaises(ValueError): prepare(runtime, output)
             with self.assertRaises(ValueError): prepare(runtime, runtime / "nested_output")
             inherited = {"ROS_DOMAIN_ID": "42", "GZ_PARTITION": "ros2-sim2", "AMENT_PREFIX_PATH": "preserved-native-prefix"}

@@ -4,6 +4,7 @@ import json
 import os
 import queue
 import subprocess
+import sys
 import threading
 import time
 from pathlib import Path
@@ -23,13 +24,22 @@ class ROSPublishUnknown(RuntimeError):
     """A publication might have reached DDS; never retry it automatically."""
 
 
+def _default_profile(module_file, prefix):
+    local = module_file.parents[2] / ".local" / "ros2-runtime.json"
+    if not local.is_file() and module_file.is_relative_to(prefix):
+        checkout = prefix.parent
+        if (checkout / "src/opencv_dataflow/ros2_client.py").is_file():
+            return checkout / ".local" / "ros2-runtime.json"
+    return local
+
+
 def runtime_environment():
     """Local operator configuration, deliberately absent from saved projects."""
     configured = os.environ.get("OPENCV_DATAFLOW_ROS2_PROFILE")
     path = (
         Path(configured).expanduser()
         if configured
-        else Path(__file__).resolve().parents[2] / ".local" / "ros2-runtime.json"
+        else _default_profile(Path(__file__).resolve(), Path(sys.prefix).resolve())
     )
     profile = {}
     if configured and not path.is_file():

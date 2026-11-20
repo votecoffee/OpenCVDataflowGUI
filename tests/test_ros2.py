@@ -384,6 +384,23 @@ def test_runtime_profile_is_local_and_never_names_worker_script(tmp_path, monkey
         transport.runtime_environment()
 
 
+def test_installed_checkout_can_share_the_source_runtime_profile(tmp_path):
+    checkout = tmp_path / "checkout"
+    source = checkout / "src/opencv_dataflow/ros2_client.py"
+    source.parent.mkdir(parents=True)
+    source.touch()
+    venv = checkout / ".venv"
+    installed = venv / "Lib/site-packages/opencv_dataflow/ros2_client.py"
+    expected = checkout / ".local/ros2-runtime.json"
+    assert transport._default_profile(source, venv) == expected
+    assert transport._default_profile(installed, venv) == expected
+    standalone = tmp_path / "operator-runtime"
+    bundled = standalone / "Lib/site-packages/opencv_dataflow/ros2_client.py"
+    assert transport._default_profile(bundled, standalone) == (
+        standalone / "Lib/.local/ros2-runtime.json"
+    )
+
+
 def test_optional_registry_import_does_not_import_rclpy():
     code = (
         "from opencv_dataflow.blocks import builtin_registry;import sys;"

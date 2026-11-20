@@ -3,9 +3,24 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 from .scene import bridges, world_xml
+
+
+_SHARED_SIM_ROOT = re.compile(r"\b[a-z]:[/\\]+dev[/\\]+ros2-sim2?(?=[/\\'\"\s]|$)", re.IGNORECASE)
+
+
+def _rebase_launch(raw, runtime, output):
+    root = str(runtime)
+    variants = sorted({runtime.as_posix(), root, root.replace("\\", "\\\\")}, key=len, reverse=True)
+    pattern = "(?:" + "|".join(re.escape(value) for value in variants) + r")(?=[/\\'\"\s]|$)"
+    flags = re.IGNORECASE if runtime.drive else 0
+    text = re.sub(pattern, lambda _: output.as_posix(), raw.decode("utf-8"), flags=flags)
+    if _SHARED_SIM_ROOT.search(text):
+        raise ValueError("Launch copy still references a shared simulator root")
+    return text
 
 
 def digest(raw):
@@ -33,6 +48,10 @@ def prepare(runtime, config, output):
     for item in (runtime / "config").iterdir():
         if item.is_file() and item.suffix in {".yaml", ".rviz", ".config"}:
             copies[f"config/{item.name}"] = item.read_bytes()
+    rebased = {}
+    for name, raw in copies.items():
+        if name.startswith("launch/"):
+            rebased[name] = _rebase_launch(raw, runtime, output)
     output.mkdir(parents=True)
     for name in ("generated", "logs", "state"):
         (output / name).mkdir()
@@ -43,11 +62,7 @@ def prepare(runtime, config, output):
         destination = output / name
         destination.parent.mkdir(parents=True, exist_ok=True)
         if name.startswith("launch/"):
-            text = (
-                raw.decode("utf-8")
-                .replace(runtime.as_posix(), output.as_posix())
-                .replace(str(runtime), output.as_posix())
-            )
+            text = rebased[name]
             if name.endswith("gripper_description.py"):
                 text += "\nfrom opencv_hand_eye_demo.scene import add_camera as _add_camera\n"
                 text += "import json as _json\n"
@@ -57,8 +72,6 @@ def prepare(runtime, config, output):
                 text += (
                     "        return _add_camera(_original_gripper(description), _json.load(f))\n"
                 )
-            if runtime.as_posix() + "/generated" in text:
-                raise ValueError("Generated output was not isolated")
             compile(text, name, "exec")
             destination.write_text(text, encoding="utf-8", newline="\n")
         else:

@@ -47,16 +47,19 @@ on this computer. Its extensions must match that interpreter. The locally verifi
 Lyrical runtime uses Python 3.12.3, rclpy 10.0.10 and `rmw_fastrtps_cpp`; the GUI
 does not import those extension modules. No `cv_bridge` is needed.
 
-For a Windows Lyrical prefix with its Python environment beneath `.pixi`, run
-from the repository root, substituting your actual installation paths:
+For the Windows Lyrical workspace under `G:\dev`, run from the repository
+root. Set the prefix to your Lyrical installation directory.
 
 ```powershell
-python scripts/configure_ros2_runtime.py --prefix C:/path/to/lyrical --python C:/path/to/lyrical/.pixi/envs/default/python.exe
+$lyrical = Join-Path 'G:\dev' 'lyrical'
+python scripts/configure_ros2_runtime.py --prefix $lyrical --python (Join-Path $lyrical '.pixi/envs/default/python.exe')
 ```
 
-The script creates the ignored `.local/ros2-runtime.json`. It preserves an existing
-different profile. Use `--output` to create another profile and set
-`OPENCV_DATAFLOW_ROS2_PROFILE` to its absolute path before launching the app.
+The script creates the ignored `.local/ros2-runtime.json`. The source checkout
+and a virtual environment directly inside it can use this local profile.
+When moving a runtime, use `--output` to create a profile for the new prefix.
+Set `OPENCV_DATAFLOW_ROS2_PROFILE` to its absolute path before launching the
+app, or back up the active profile and use the newly generated one in its place.
 Profiles are trusted local configuration; saved projects cannot select a worker
 script or executable. They hold `python`, `ros_distro`, and explicit
 `path_prepend`, `python_paths`, `ament_prefixes` directories. For other layouts,

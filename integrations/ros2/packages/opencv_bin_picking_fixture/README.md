@@ -26,7 +26,7 @@ this assistance does not establish friction or force closure.
 
 The configurable initial example contains six original 40 mm, 50 g boxes in three two-high stacks, a bin and a table with a 0.20 m work surface. The tabletop is 0.50 by 0.94 m, centred at x=0.51/y=0.15 m; its x=0.26 m near edge clears the measured base/shoulder sweep. The application still collision-checks every planned trajectory. A fixed overhead RGB-D camera uses the simulator's original RGB, depth and CameraInfo. Smaller/lower part surfaces may still be visible because of perspective; actual first-return occlusion must be checked in rendered depth. No object pose is substituted for source-camera data.
 
-`fixture_prepare` makes a **new private overlay outside the installed runtime**. It copies/checksums only the needed native launch/config files, redirects their generated output and appends an isolated grasp hook to the copied gripper description. It never modifies `C:/dev/ros2-sim`, `ros2-sim2`, their manifests, package caches, original launchers or other demos. Its preparation receipt records source and plugin SHA256 values. Logs, generated descriptions and the MoveIt warehouse database stay in the overlay.
+`fixture_prepare` makes a **new private overlay outside the installed runtime**. It copies/checksums only the needed native launch/config files, redirects their generated output and appends an isolated grasp hook to the copied gripper description. The selected RoboStack runtime, its manifests and its package cache are read-only during preparation. Its preparation receipt records source and plugin SHA256 values. Logs, generated descriptions and the MoveIt warehouse database stay in the overlay.
 
 The package path is reserved for IO-Link Workbench's environment work. OpenCVSimpleTools owns the app/planning adapters. Runtime root/ROS-domain/Gazebo-partition allocation belongs to the ROS installer owner. Do not launch until that allocation is confirmed.
 
@@ -35,7 +35,10 @@ The package path is reserved for IO-Link Workbench's environment work. OpenCVSim
 Use the allocated native RoboStack environment. From this package directory, offline preparation needs only Python:
 
 ```powershell
-python -m opencv_bin_picking_fixture.prepare --runtime-root C:/dev/ALLOCATED_RUNTIME --output C:/dev/NEW_PRIVATE_OVERLAY
+$devRoot = 'G:\dev'
+$runtimeRoot = Join-Path $devRoot 'ALLOCATED_RUNTIME'
+$overlayRoot = Join-Path $devRoot 'NEW_PRIVATE_OVERLAY'
+python -m opencv_bin_picking_fixture.prepare --runtime-root $runtimeRoot --output $overlayRoot
 python -m unittest test.test_fixture -v
 ```
 
@@ -44,7 +47,7 @@ An optional `--scene scene.json` supplies the same metre-based scene schema as `
 Set the agreed isolation before a headless source launch. Domain 130 is reserved for this fixture; use a unique partition per session and localhost discovery:
 
 ```powershell
-pixi run --locked --manifest-path C:/dev/ALLOCATED_RUNTIME/pixi.toml python -m opencv_bin_picking_fixture.run --overlay C:/dev/NEW_PRIVATE_OVERLAY --partition opencv_bin_pick_UNIQUE_SESSION
+pixi run --locked --manifest-path (Join-Path $runtimeRoot 'pixi.toml') python -m opencv_bin_picking_fixture.run --overlay $overlayRoot --partition opencv_bin_pick_UNIQUE_SESSION
 ```
 
 Run from this package directory or expose its path to the activated child. The wrapper applies domain 130, localhost discovery, the unique partition and overlay-local ROS state/logs **after Pixi activation**, which otherwise overrides outer shell settings with the native manifest's saved defaults. Add `--plan-only` to inspect without starting ROS. One launch record is created exclusively per overlay. Use a new overlay after stopping/restarting a session.

@@ -8,7 +8,7 @@ Calibration and review run in the
 
 ## Prerequisites and ownership
 
-The currently allocated native Windows runtime is `C:/dev/ros2-sim2`, locked
+The allocated Windows runtime is `ros2-sim2` under `G:\dev`, with locked
 RoboStack Lyrical / Gazebo Jetty / MoveIt. The ROS environment owner reserved
 domain **44** and `opencv_hand_eye_` partitions for this example. Confirm the
 allocation before reuse on another machine or concurrent session. Domain and
@@ -26,17 +26,25 @@ unique partition for each session; no in-place world reset is supplied.
 From this package directory, with the host application's Python for preparation:
 
 ```powershell
-python -m opencv_hand_eye_demo.prepare --runtime C:/dev/ros2-sim2 --config "C:/path/to/OpenCVDataflowGUI/examples/industrial integration/ros2_hand_eye_calibration/assets_diverse/scene.json" --output C:/path/to/NEW_HAND_EYE_OVERLAY
-python -m opencv_hand_eye_demo.run --overlay C:/path/to/NEW_HAND_EYE_OVERLAY --partition opencv_hand_eye_UNIQUE --plan-only
-pixi run --locked --manifest-path C:/dev/ros2-sim2/pixi.toml python -m opencv_hand_eye_demo.run --overlay C:/path/to/NEW_HAND_EYE_OVERLAY --partition opencv_hand_eye_UNIQUE
+$devRoot = 'G:\dev'
+$runtime = Join-Path $devRoot 'ros2-sim2'
+$overlayPath = Join-Path $devRoot 'NEW_HAND_EYE_OVERLAY'
+$scene = '../../../../examples/industrial integration/ros2_hand_eye_calibration/assets_diverse/scene.json'
+python -m opencv_hand_eye_demo.prepare --runtime $runtime --config $scene --output $overlayPath
+python -m opencv_hand_eye_demo.run --overlay $overlayPath --partition opencv_hand_eye_UNIQUE --plan-only
+pixi run --locked --manifest-path (Join-Path $runtime 'pixi.toml') python -m opencv_hand_eye_demo.run --overlay $overlayPath --partition opencv_hand_eye_UNIQUE
 ```
 
 The last command uses the activated native interpreter and remains running.
 Default launch is headless. Add `--gui` for a requested Gazebo/RViz session.
-In a second terminal, from the same package directory:
+In a second terminal, from the same package directory, set the same paths.
 
 ```powershell
-pixi run --locked --manifest-path C:/dev/ros2-sim2/pixi.toml python -m opencv_hand_eye_demo.capture --overlay C:/path/to/NEW_HAND_EYE_OVERLAY --partition opencv_hand_eye_UNIQUE --output C:/path/to/NEW_CAPTURES
+$devRoot = 'G:\dev'
+$runtime = Join-Path $devRoot 'ros2-sim2'
+$overlayPath = Join-Path $devRoot 'NEW_HAND_EYE_OVERLAY'
+$captures = Join-Path $devRoot 'NEW_CAPTURES'
+pixi run --locked --manifest-path (Join-Path $runtime 'pixi.toml') python -m opencv_hand_eye_demo.capture --overlay $overlayPath --partition opencv_hand_eye_UNIQUE --output $captures
 ```
 
 This sends **simulation robot motion**. It applies the target collision plate,
@@ -52,7 +60,7 @@ capture is deliberately unsuitable for a complete calibration export.
 Stop after acquisition with a generation-bound file request:
 
 ```powershell
-$overlayPath = 'C:/path/to/NEW_HAND_EYE_OVERLAY'
+$overlayPath = Join-Path 'G:\dev' 'NEW_HAND_EYE_OVERLAY'
 $launchRecord = Get-Content -Raw -LiteralPath (Join-Path $overlayPath 'session-launch.json') | ConvertFrom-Json
 @{action='stop';launch_id=$launchRecord.launch_id} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $overlayPath 'stop-request.json')
 ```
