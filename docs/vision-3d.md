@@ -655,6 +655,16 @@ records grid dimensions, camera calibration or cloud viewpoint, and cell
 coverage. The source grid and face count are each limited to one million.
 [Organized depth mesh example](<../examples/custom tools/organized_depth_mesh/README.md>)
 
+**Measure oriented point-cloud extents** returns explicit XYZ dimensions
+and a rigid pose from the fitted box frame into the cloud frame. Choose
+OpenCV PCA for measured axes or supply a reference rotation for known
+fixture axes. In PCA mode an optional reference only chooses axis signs.
+The fit qualifies adjacent variance gaps and spatial rank before emitting
+the pose. A symmetric or nearly symmetric fit returns a diagnostic report
+and may still be measured with a known reference rotation. Extents
+enclose the observed points along the chosen axes.
+[Oriented cloud example](<../examples/custom tools/oriented_cloud_extents/README.md>)
+
 ## Motion, fusion and structured light
 
 **RGB-D frame odometry** wraps OpenCV 5 `ptcloud` two-frame motion with depth,

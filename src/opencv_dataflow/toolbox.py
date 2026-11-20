@@ -218,6 +218,7 @@ _NATIVE_NAMES = {
     "3d.tsdf_hash": ("HashTSDF", "sparse volume", "bounded growth"),
     "3d.cloud_compare": ("dimensional comparison", "cloud deviation", "point to plane", "overlap"),
     "3d.cloud_merge": ("scan merge", "registered views", "duplicate suppression", "provenance"),
+    "3d.cloud_oriented_extents": ("oriented bounding box", "PCA", "dimensions", "pose"),
     "3d.cloud_project": ("projectPoints", "z-buffer", "occlusion"),
     "3d.backproject_depth_pixels": ("depthTo3dSparse", "sparse depth", "metric XYZ"),
     "3d.cloud_octree_query": ("octree", "nearest neighbors", "radius search"),

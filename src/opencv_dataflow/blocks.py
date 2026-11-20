@@ -654,6 +654,7 @@ def builtin_registry():
     from .chromatic_aberration import ChromaticModel, CorrectChromaticAberration, LoadChromaticModel
     from .circle_fitting import FitCircleArc
     from .classification_evaluation import CLASSIFICATION_EVALUATION_BLOCKS
+    from .cloud_extents import MeasureOrientedCloud
     from .cloud_features import RegisterCloudFeatures
     from .cloud_io import CLOUD_IO_BLOCKS
     from .cloud_merge import MergeCloudScans
@@ -1379,6 +1380,7 @@ def builtin_registry():
         QueryCloudOctree,
         RejectCloudOutliers,
         CompareCloudDimensions,
+        MeasureOrientedCloud,
         MergeCloudScans,
         ClusterPointCloud,
         GrowCloudRegions,

@@ -401,6 +401,22 @@ Input `queries` — List of XYZ rows in the cloud frame, or record with points, 
 | `resolution_m` | `0.01` | Value must be a finite number between 1e-09 and 2e+12. Maximum cell side at deepest level in resolution mode. |
 | `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Reject larger input clouds before building temporary index arrays. |
 
+## Measure oriented point-cloud extents (`3d.cloud_oriented_extents`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `reference_pose` (data, optional).
+
+Input `cloud` — Observed XYZ in meters or millimeters, in a named frame.
+
+Input `reference_pose` — Axes in the cloud frame. In PCA mode this resolves axis signs only.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `orientation` | `"pca"` | `pca`, `reference` Fit PCA axes or measure along the connected reference pose's rotation. |
+| `minimum_eigen_gap_ratio` | `0.05` | Value must be a finite number between 1e-06 and 1. Minimum relative gap between adjacent PCA variances. |
+| `box_frame` | `"oriented_box"` | Name of the fitted box frame, distinct from the point-cloud frame. |
+
 ## Reject point-cloud outliers (`3d.cloud_outlier`)
 
 3D vision / Point clouds

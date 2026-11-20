@@ -50,6 +50,9 @@ scans with missing pixels, color and normals.
 [Organized depth mesh](organized_depth_mesh/README.md) shows how an axial
 depth-jump limit changes which neighboring pixels are joined into triangles.
 
+[Oriented cloud extents](oriented_cloud_extents/README.md) measures a
+rotated cuboid and compares PCA with known fixture axes.
+
 [Point-cloud surface quality](cloud_surface_quality/README.md) estimates
 oriented normals and curvature and reports sparse or ambiguous neighborhoods.
 

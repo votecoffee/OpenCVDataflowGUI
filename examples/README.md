@@ -194,6 +194,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [OBJ point-cloud interchange](<custom tools/cloud_obj_interchange/README.md>) | Compare equivalent OBJ and PLY clouds with ordered XYZ, RGB, normals, and frame and unit metadata. |
 | [Organized PCD interchange](<custom tools/organized_pcd/README.md>) | Compare ASCII and binary scans with RGB, normals and holes in a preserved pixel grid. |
 | [Organized depth mesh](<custom tools/organized_depth_mesh/README.md>) | Compare local surface meshes at a depth step and a missing patch. |
+| [Oriented cloud extents](<custom tools/oriented_cloud_extents/README.md>) | Measure a rotated cuboid and compare PCA with known fixture axes. |
 | [Point-cloud normals and curvature](<custom tools/cloud_surface_quality/README.md>) | Measure local surfaces on a plane and sphere, reject degenerate rows and pass the accepted fits into region growing. |
 | [Robust plane and sphere fitting](<custom tools/cloud_model_fitting/README.md>) | Recover two known metric surfaces from PLY scans with labeled clutter and compare inlier and outlier indices. |
 | [Normal-based cloud region growing](<custom tools/cloud_region_growing/README.md>) | Separate two touching faces by normal direction and isolate high-curvature seam rows. |

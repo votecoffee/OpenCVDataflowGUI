@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 97 | 8 | 26 | 131 | 74.0% |
+| 3. 3D imagery and point clouds | 98 | 7 | 26 | 131 | 74.8% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 352 | 12 | 106 | 470 | 74.9% |
+| **Overall** | 353 | 11 | 106 | 470 | 75.1% |
 
 <!-- coverage-summary:end -->
 
@@ -526,7 +526,7 @@ fixture or result needed to close the item.
 | S3-95 | Bounded hashed and growing TSDF volumes | Volume HashTSDF, setEnableGrowth and visible-block diagnostics | Complete | `3d.tsdf_hash` reserves a conservative block envelope before integration, supports seeded growth, and rejects frames that exceed block or workspace limits. The [six-view sweep](<../examples/opencv tools/hash_tsdf_growth/README.md>) verifies extent, retained geometry, seed-only growth and atomic cap rejection. |
 | S3-96 | Binary and organized PCD interchange | Uncompressed PCD layouts, dimensions and point fields | Complete | `input.cloud` and `output.cloud` preserve grid dimensions, valid-pixel positions, RGB, normals and acquisition viewpoint in ASCII and uncompressed binary. PCL round trips verify both directions. The [organized scan example](<../examples/custom tools/organized_pcd/README.md>) compares the encodings. |
 | S3-97 | Generate a surface mesh from an organized depth grid | OpenCV backprojection and discontinuity-aware triangulation | Complete | `3d.organized_mesh` gates each triangle by axial depth and optional XYZ edge length. It accepts calibrated depth or a pixel-indexed cloud, preserves holes and source-grid UVs, and generates camera-facing normals. The [step and oval example](<../examples/custom tools/organized_depth_mesh/README.md>) isolates depth-jump and missing-sample behavior. |
-| S3-98 | Oriented cloud extents and physical pose | Principal axes or fitted oriented box on XYZ points | Partial | 3d.cloud_measure reports bounds and PCA axes. Verify rotated object dimensions, ambiguous orientations, and a frame-aware pose. |
+| S3-98 | Oriented cloud extents and physical pose | OpenCV PCA or reference axes and dimensioned bounds | Complete | `3d.cloud_oriented_extents` measures the observed XYZ envelope along PCA or reference axes and emits a frame-aware box pose. Rank, eigengap and sign checks withhold unreliable PCA results. The [rotated cuboid and cube controls](<../examples/custom tools/oriented_cloud_extents/README.md>) verify dimensions and orientation ambiguity. |
 | S3-99 | Inspection attributes on imported point clouds | Typed per-point intensity, confidence and source-index payloads | Planned | Preserve declared attributes through import, filtering, sampling, merging and export. Verify missing attributes and original scan indices. |
 
 ### Scan replay, cloud metrology and mesh inspection

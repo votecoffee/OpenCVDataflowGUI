@@ -118,7 +118,7 @@ def cloud_outputs(block):
 
 def render_cloud(
     cloud, width=640, height=480, yaw=25.0, pitch=-20.0, limit=20000, point_size=2,
-    *, stable_scale=False,
+    *, stable_scale=False, segments=None, segment_color=(65, 198, 245),
 ):
     """Orthographic preview with far-to-near drawing; no GPU/native viz dependency."""
     image = np.full((height, width, 3), (32, 25, 18), np.uint8)
@@ -126,7 +126,8 @@ def render_cloud(
         return image
     selected = np.linspace(0, len(cloud.points) - 1, min(len(cloud.points), limit), dtype=int)
     points = cloud.points[selected].astype(float)
-    points -= (points.min(axis=0) + points.max(axis=0)) / 2
+    origin = (points.min(axis=0) + points.max(axis=0)) / 2
+    points -= origin
     radius = np.linalg.norm(points, axis=1).max() if stable_scale else None
     a, b = np.deg2rad([yaw, pitch])
     rotation = np.array([[np.cos(a), 0, np.sin(a)], [0, 1, 0], [-np.sin(a), 0, np.cos(a)]])
@@ -134,7 +135,16 @@ def render_cloud(
         np.array([[1, 0, 0], [0, np.cos(b), -np.sin(b)], [0, np.sin(b), np.cos(b)]]) @ rotation
     )
     points = points @ rotation.T
-    span = (2 * radius, 2 * radius) if stable_scale else np.ptp(points[:, :2], axis=0)
+    lines = None
+    if segments is not None:
+        lines = ((segments - origin) @ rotation.T)[..., :2]
+        combined = np.concatenate((points[:, :2], lines.reshape(-1, 2)))
+        center = (combined.max(axis=0) + combined.min(axis=0)) / 2
+        points[:, :2] -= center
+        lines -= center
+        span = np.ptp(combined, axis=0)
+    else:
+        span = (2 * radius, 2 * radius) if stable_scale else np.ptp(points[:, :2], axis=0)
     scale = min((width - 30) / max(span[0], 1e-6), (height - 30) / max(span[1], 1e-6))
     pixels = np.rint(points[:, :2] * [scale, -scale] + [width / 2, height / 2]).astype(int)
     colors = (
@@ -144,4 +154,8 @@ def render_cloud(
     )
     for i in np.argsort(-points[:, 2]):
         cv2.circle(image, tuple(pixels[i]), point_size, tuple(map(int, colors[i])), -1)
+    if lines is not None:
+        lines = np.rint(lines * [scale, -scale] + [width / 2, height / 2]).astype(np.int32)
+        for start, end in lines:
+            cv2.line(image, tuple(start), tuple(end), segment_color, 2, cv2.LINE_AA)
     return image

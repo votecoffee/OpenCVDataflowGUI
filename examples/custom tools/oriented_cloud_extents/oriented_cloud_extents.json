@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure a rotated cuboid",
+      "description": "Original analytic cloud by OpenCVDataflowGUI contributors (MIT). Both branches measure the same 82 \u00d7 34 \u00d7 13 mm cuboid. Swap the source to the supplied cube to see PCA orientation ambiguity while the reference axes still give a valid measurement.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/rotated_cuboid.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixture_axes",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.21,
+          -0.39,
+          0.61
+        ],
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "source_frame": "fixture_axes",
+        "target_frame": "measurement_station",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        245
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pca",
+      "type": "3d.cloud_oriented_extents",
+      "name": "Fit principal axes",
+      "description": "Measure a box enclosing observed XYZ, with checks for pose ambiguity.",
+      "parameters": {
+        "orientation": "pca",
+        "minimum_eigen_gap_ratio": 0.05,
+        "box_frame": "pca_box"
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "dimensions",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "3d.cloud_oriented_extents",
+      "name": "Measure on known fixture axes",
+      "description": "Measure a box enclosing observed XYZ, with checks for pose ambiguity.",
+      "parameters": {
+        "orientation": "reference",
+        "minimum_eigen_gap_ratio": 0.05,
+        "box_frame": "fixture_box"
+      },
+      "position": [
+        420,
+        245
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "reference_pose"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "dimensions",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "pca",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "reference",
+      "input": "cloud"
+    },
+    {
+      "source": "fixture_axes",
+      "output": "transform",
+      "target": "reference",
+      "input": "reference_pose"
+    }
+  ]
+}
