@@ -151,6 +151,15 @@ then swaps the roles. The report compares these cross-camera errors to the
 single-camera pose fits for every held-out capture.
 [Fit and held-out stereo example](<../examples/opencv tools/stereo_calibration_quality/README.md>)
 
+**Stereo BM / SGBM disparity** can derive a signed pixel search from near
+and far depth limits using the calibrated rectification Q. The native
+search count rounds up to a multiple of 16. Connecting rectification or
+per-view support masks enables checks for complete search footprints.
+The block reports the native ROI, the signed-disparity-safe rectangle,
+and the final support fraction after mask holes. Pixels outside support
+have invalid disparity, zero validity and zero confidence.
+[Known-disparity example](<../examples/opencv tools/stereo_disparity_search/README.md>)
+
 **Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional
 pair from matched target views. The fisheye fitter can retain or refine
 supplied intrinsics. The omnidirectional fitter initializes both cameras

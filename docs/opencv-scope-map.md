@@ -332,7 +332,7 @@ Python and five C++ entries without a direct binding.
 | `cv2.stereoRectify`, `cv2.stereoRectifyUncalibrated`, `cv2.fisheye.stereoRectify` | The uncalibrated block qualifies pixel-only rectification from matches and a fundamental matrix. Calibrated and wide-angle blocks use their own rig and reprojection contracts. | S3-13–S3-14, S3-44 |
 | `cv::rectify3Collinear` | C++ function without a direct binding. Qualify a three-camera rig across two baselines. | S3-114 |
 | `cv2.StereoMatcher`, `cv2.StereoBM`, `cv2.StereoSGBM`, `cv2.validateDisparity` | Exposed. Matchers and consistency checks belong to disparity and confidence. | S3-15–S3-16 |
-| `cv2.getValidDisparityROI`, `cv2.filterSpeckles`, `cv2.reprojectImageTo3D` | Exposed. Shared support, speckle removal and metric reprojection each have acceptance checks. | S3-17, S3-46–S3-47 |
+| `cv2.getValidDisparityROI`, `cv2.filterSpeckles`, `cv2.reprojectImageTo3D` | 3d.disparity uses the valid ROI with signed disparity and per-view mask checks. Speckle removal and metric reprojection have their own acceptance checks. | S3-17, S3-46–S3-47 |
 
 Pinned OpenCV 5.0.0 sources include
 [imgcodecs.hpp](https://raw.githubusercontent.com/opencv/opencv/5.0.0/modules/imgcodecs/include/opencv2/imgcodecs.hpp),

@@ -66,6 +66,9 @@
       "name": "Stereo BM / SGBM disparity",
       "parameters": {
         "algorithm": "sgbm",
+        "search_mode": "manual",
+        "minimum_depth": 0.1,
+        "maximum_depth": 5.0,
         "min_disparity": 0,
         "num_disparities": 32,
         "block_size": 5,
@@ -93,13 +96,18 @@
       ],
       "exposed_inputs": [
         "left",
-        "right"
+        "right",
+        "rectification",
+        "left_mask",
+        "right_mask"
       ],
       "exposed_outputs": [
         "disparity",
         "valid_mask",
         "preview",
-        "confidence"
+        "confidence",
+        "support_mask",
+        "search_report"
       ],
       "thumbnail": true,
       "preview_output": "preview"

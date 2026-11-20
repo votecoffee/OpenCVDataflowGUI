@@ -278,11 +278,20 @@ Inputs: `depth` (depth), `camera` (data), `image` (image, optional), `mask` (ima
 
 3D vision / Stereo
 
-Inputs: `left` (image), `right` (image).
+Inputs: `left` (image), `right` (image), `rectification` (data, optional), `left_mask` (image, optional), `right_mask` (image, optional).
+
+Input `rectification` — Optional calibrated ROI data. Required for depth-based search.
+
+Input `left_mask` — Optional valid support mask in left-image coordinates.
+
+Input `right_mask` — Optional valid support mask in right-image coordinates.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `algorithm` | `"sgbm"` | `bm`, `sgbm` |
+| `search_mode` | `"manual"` | `manual`, `depth` Choose a manual pixel search or derive one from calibrated depth limits. |
+| `minimum_depth` | `0.1` | Value must be a finite number at least 0. Near depth bound in the units of Stereo rectification. |
+| `maximum_depth` | `5.0` | Value must be a finite number at least 0. Far depth bound in the units of Stereo rectification. |
 | `min_disparity` | `0` |  |
 | `num_disparities` | `64` |  |
 | `block_size` | `5` |  |

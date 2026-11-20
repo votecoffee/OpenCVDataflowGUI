@@ -29,6 +29,9 @@ image matches to align scanlines and emit per-view and shared support masks.
 [Stereo calibration quality](stereo_calibration_quality/README.md) checks
 per-camera fit residuals and cross-camera prediction on held-out targets.
 
+[Stereo disparity search](stereo_disparity_search/README.md) derives a
+smaller search from calibrated depth limits and verifies valid support.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera

@@ -2877,7 +2877,7 @@ P3	function	cv2.getTextSize	literal reference	-
 P3	function	cv2.getThreadNum	no static reference	-
 P3	function	cv2.getTickFrequency	literal reference	-
 P3	function	cv2.getTrackbarPos	no static reference	-
-P3	function	cv2.getValidDisparityROI	no static reference	-
+P3	function	cv2.getValidDisparityROI	literal reference	-
 P3	function	cv2.getVersionMajor	no static reference	-
 P3	function	cv2.getVersionMinor	no static reference	-
 P3	function	cv2.getVersionRevision	no static reference	-
@@ -4505,8 +4505,8 @@ P3	method	cv2.StereoBM.getUniquenessRatio	no static reference	-
 P3	method	cv2.StereoBM.setPreFilterCap	method name only	-
 P3	method	cv2.StereoBM.setPreFilterSize	method name only	-
 P3	method	cv2.StereoBM.setPreFilterType	method name only	-
-P3	method	cv2.StereoBM.setROI1	no static reference	-
-P3	method	cv2.StereoBM.setROI2	no static reference	-
+P3	method	cv2.StereoBM.setROI1	method name only	-
+P3	method	cv2.StereoBM.setROI2	method name only	-
 P3	method	cv2.StereoBM.setSmallerBlockSize	no static reference	-
 P3	method	cv2.StereoBM.setTextureThreshold	method name only	-
 P3	method	cv2.StereoBM.setUniquenessRatio	method name only	-

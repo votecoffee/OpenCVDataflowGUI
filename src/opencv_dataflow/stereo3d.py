@@ -14,6 +14,7 @@ from .calibration_revisions import (
     rig_revision,
 )
 from .core import Port, Result
+from .disparity_search import plan_disparity_search
 from .geometry3d_common import (
     Tool3D,
     camera_for_image,
@@ -404,15 +405,26 @@ class RectifyStereo(Tool3D):
 
 class StereoDisparity(Tool3D):
     type_id, title, subtype = "3d.disparity", "Stereo BM / SGBM disparity", "Stereo"
-    inputs = (Port("left"), Port("right"))
+    inputs = (
+        Port("left"),
+        Port("right"),
+        Port("rectification", "data", required=False, required_when_connected=True),
+        Port("left_mask", required=False, required_when_connected=True),
+        Port("right_mask", required=False, required_when_connected=True),
+    )
     outputs = (
         Port("disparity"),
         Port("valid_mask"),
         Port("preview"),
         Port("confidence", required=False),
+        Port("support_mask", required=False),
+        Port("search_report", "data"),
     )
     defaults = {
         "algorithm": "sgbm",
+        "search_mode": "manual",
+        "minimum_depth": 0.1,
+        "maximum_depth": 5.0,
         "min_disparity": 0,
         "num_disparities": 64,
         "block_size": 5,
@@ -435,26 +447,40 @@ class StereoDisparity(Tool3D):
         "minimum_wls_confidence": 0.0,
     }
     parameter_ranges = {
+        "minimum_depth": NumericRange(0),
+        "maximum_depth": NumericRange(0),
         "wls_lr_threshold": NumericRange(0, 4096, whole=True),
         "wls_depth_radius": NumericRange(-1, 255, whole=True),
         "minimum_wls_confidence": NumericRange(0, 1),
     }
     parameter_help = {
+        "search_mode": "Choose a manual pixel search or derive one from calibrated depth limits.",
+        "minimum_depth": "Near depth bound in the units of Stereo rectification.",
+        "maximum_depth": "Far depth bound in the units of Stereo rectification.",
         "wls_lr_threshold": "WLS left-right consistency tolerance in sixteenths of a pixel.",
         "wls_depth_radius": "Radius near depth jumps. -1 uses the native default.",
         "minimum_wls_confidence": "Reject WLS estimates below this value. Zero disables gating.",
     }
     parameter_choices = {
         "algorithm": ("bm", "sgbm"),
+        "search_mode": ("manual", "depth"),
         "mode": ("sgbm", "sgbm_3way", "hh", "hh4"),
         "prefilter_type": ("xsobel", "normalized"),
     }
+
+    input_help = {
+        "rectification": "Optional calibrated ROI data. Required for depth-based search.",
+        "left_mask": "Optional valid support mask in left-image coordinates.",
+        "right_mask": "Optional valid support mask in right-image coordinates.",
+    }
+    payload_reference = "left"
 
     def process(self, inputs):
         a, b = (gray_image(inputs[n], (np.uint8,)) for n in ("left", "right"))
         if a.shape != b.shape:
             raise ValueError("Rectified stereo image dimensions must match")
         left, right = (self.input_payloads[name] for name in ("left", "right"))
+        rectification = inputs.get("rectification")
         if STEREO_GRID in left or STEREO_GRID in right:
             left_stamp, right_stamp = left.get(STEREO_GRID), right.get(STEREO_GRID)
             if (
@@ -468,18 +494,38 @@ class StereoDisparity(Tool3D):
                 or not all(is_full_grid(p, a.shape[::-1]) for p in (left, right))
             ):
                 raise ValidationError("Stereo images must share the same sealed rectification grid")
+            if rectification is not None and digest(rectification) != left_stamp.get("sha256"):
+                raise ValidationError("Search rectification differs from the sealed stereo images")
+        elif isinstance(rectification, dict) and REVISION in rectification:
+            raise ValidationError("A versioned search requires its sealed rectified stereo images")
         p = self.parameters
-        disparities = integer(p["num_disparities"], "Number disparities", 16, 4096)
-        if disparities % 16 or disparities >= a.shape[1]:
-            raise ValueError("num_disparities must be a multiple of 16 smaller than image width")
         block_size = integer(
             p["block_size"], "Block size", 5 if p["algorithm"] == "bm" else 1, 255, odd=True
         )
         if block_size >= min(a.shape):
             raise ValueError("Stereo block must fit inside the image")
-        minimum = integer(p["min_disparity"], "Minimum disparity", -4096, 4096)
+        search = plan_disparity_search(inputs, p, a.shape, block_size)
+        minimum, disparities = search.minimum, search.count
+        if search.support is not None and not search.support.any():
+            return Result(
+                {
+                    "disparity": np.full(a.shape, np.nan, np.float32),
+                    "valid_mask": search.support,
+                    "preview": np.zeros((*a.shape, 3), np.uint8),
+                    "confidence": NO_VALUE,
+                    "support_mask": search.support,
+                    "search_report": search.report,
+                },
+                passed=False,
+                score=0.0,
+                fail_reasons=["stereo_search_no_support"],
+                message="No full matching footprints in the selected range and image support",
+            )
         if p["algorithm"] == "bm":
             matcher = cv2.StereoBM_create(disparities, block_size)
+            if search.rois is not None:
+                matcher.setROI1(search.rois[0])
+                matcher.setROI2(search.rois[1])
             matcher.setTextureThreshold(
                 integer(p["texture_threshold"], "Texture threshold", 0, 10000)
             )
@@ -531,6 +577,8 @@ class StereoDisparity(Tool3D):
             confidence[~np.isfinite(confidence)] = 0
             np.clip(confidence, 0, 1, out=confidence)
         valid = raw > (minimum - 1) * 16
+        if search.support is not None:
+            valid &= search.support != 0
         if confidence is not NO_VALUE:
             confidence[~valid] = 0
             valid &= confidence >= float(p["minimum_wls_confidence"])
@@ -549,6 +597,8 @@ class StereoDisparity(Tool3D):
                 "valid_mask": valid.astype(np.uint8) * 255,
                 "preview": preview,
                 "confidence": confidence,
+                "support_mask": NO_VALUE if search.support is None else search.support,
+                "search_report": search.report,
             },
             passed=bool(valid.any()),
             score=float(valid.mean()),
