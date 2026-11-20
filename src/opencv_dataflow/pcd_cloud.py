@@ -5,11 +5,26 @@ import json
 import numpy as np
 
 from .geometry_fileio import MAX_GEOMETRY_BYTES, geometry_output
+from .point_attributes import POINT_ATTRIBUTE_DTYPES, missing_value
 from .processing import integer
 
 _XYZ = ("x", "y", "z")
 _NORMALS = ("normal_x", "normal_y", "normal_z")
-_KNOWN = {*_XYZ, *_NORMALS, "nx", "ny", "nz", "rgb", "rgba", "red", "green", "blue", "r", "g", "b"}
+_KNOWN = {
+    *_XYZ,
+    *_NORMALS,
+    "nx",
+    "ny",
+    "nz",
+    "rgb",
+    "rgba",
+    "red",
+    "green",
+    "blue",
+    "r",
+    "g",
+    "b",
+}
 _TYPES = {
     ("F", 4): "<f4",
     ("F", 8): "<f8",
@@ -55,7 +70,7 @@ def _layout(config, encoding):
         if name != "_" and name in used:
             raise ValueError(f"Duplicate PCD field {name}")
         used.add(name)
-        if name in _KNOWN:
+        if name in _KNOWN or (name in POINT_ATTRIBUTE_DTYPES and count == 1):
             if count != 1 or (name in ("rgb", "rgba") and size != 4):
                 raise ValueError(f"PCD field {name} requires a scalar of the supported size")
             known[name] = (dtype, offset, scalar)
@@ -143,7 +158,8 @@ def read_pcd_vertices(stream, headers, max_points):
     return columns, (width, height) if height > 1 else None, viewpoint
 
 
-def write_pcd_cloud(path, cloud, binary, organization):
+def write_pcd_cloud(path, cloud, binary, organization, attributes=None):
+    attributes = cloud.attributes if attributes is None else attributes
     width, height = len(cloud.points), 1
     indices = slice(None)
     if organization == "source_pixels":
@@ -163,6 +179,7 @@ def write_pcd_cloud(path, cloud, binary, organization):
     dtype = [(name, "<f4") for name, _ in vectors]
     if cloud.colors is not None:
         dtype.append(("rgb", "<f4" if binary else "<u4"))
+    dtype.extend((name, POINT_ATTRIBUTE_DTYPES[name].str) for name in attributes)
     count = width * height
     records = np.zeros(count, dtype=dtype)
     for name, values in vectors:
@@ -172,6 +189,9 @@ def write_pcd_cloud(path, cloud, binary, organization):
         r, g, b = cloud.colors.astype(np.uint32).T
         packed = ((r << 16) | (g << 8) | b).astype("<u4", copy=False)
         records["rgb"][indices] = packed.view("<f4") if binary else packed
+    for name, values in attributes.items():
+        records[name].fill(missing_value(name))
+        records[name][indices] = values
     viewpoint = cloud.metadata.get("pcd_viewpoint")
     if (
         isinstance(viewpoint, dict)
@@ -191,7 +211,7 @@ def write_pcd_cloud(path, cloud, binary, organization):
         metadata_line,
         "VERSION 0.7",
         "FIELDS " + " ".join(names),
-        "SIZE " + " ".join(["4"] * len(names)),
+        "SIZE " + " ".join(t[2:] for _, t in dtype),
         "TYPE " + " ".join(t[1].upper() for _, t in dtype),
         "COUNT " + " ".join(["1"] * len(names)),
         f"WIDTH {width}",
@@ -205,5 +225,6 @@ def write_pcd_cloud(path, cloud, binary, organization):
         if binary:
             stream.write(memoryview(records).cast("B"))
         else:
-            formats = ["%u" if t == "<u4" else "%.9g" for _, t in dtype]
+            scalar_formats = {"<f4": "%.9g", "<f8": "%.17g", "<u4": "%u", "<i4": "%d"}
+            formats = [scalar_formats[t] for _, t in dtype]
             np.savetxt(stream, records, fmt=formats)

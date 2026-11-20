@@ -1,10 +1,12 @@
-"""Typed point clouds: finite XYZ, explicit units/frames, optional color/normals/pixels."""
+"""Typed point clouds with finite XYZ, explicit frames and optional aligned columns."""
 
 import copy
 from dataclasses import dataclass, field
 
 import cv2
 import numpy as np
+
+from .point_attributes import known_rows, validate_point_attributes
 
 
 @dataclass
@@ -17,6 +19,7 @@ class PointCloud:
     pixels: np.ndarray | None = None
     source_size: tuple | None = None
     metadata: dict = field(default_factory=dict)
+    attributes: dict = field(default_factory=dict)
 
     def __post_init__(self):
         self.points = np.ascontiguousarray(self.points, np.float32)
@@ -69,12 +72,12 @@ class PointCloud:
         from .payloads import validate_payload
 
         validate_payload(self.metadata)
+        self.attributes = validate_point_attributes(self.attributes, n)
 
     @property
     def nbytes(self):
-        return sum(
-            v.nbytes for v in (self.points, self.colors, self.normals, self.pixels) if v is not None
-        )
+        arrays = (self.points, self.colors, self.normals, self.pixels, *self.attributes.values())
+        return sum(v.nbytes for v in arrays if v is not None)
 
     def subset(self, selected):
         return PointCloud(
@@ -89,10 +92,11 @@ class PointCloud:
             },
             source_size=self.source_size,
             metadata=copy.deepcopy(self.metadata),
+            attributes={name: values[selected].copy() for name, values in self.attributes.items()},
         )
 
     def describe(self):
-        return {
+        description = {
             "model": "point_cloud_v1",
             "count": len(self.points),
             "units": self.units,
@@ -105,6 +109,12 @@ class PointCloud:
             "minimum": self.points.min(axis=0).tolist() if len(self.points) else None,
             "maximum": self.points.max(axis=0).tolist() if len(self.points) else None,
         }
+        if self.attributes:
+            description["attributes"] = {
+                name: {"dtype": values.dtype.name, "known": int(known_rows(name, values).sum())}
+                for name, values in self.attributes.items()
+            }
+        return description
 
 
 def cloud_outputs(block):

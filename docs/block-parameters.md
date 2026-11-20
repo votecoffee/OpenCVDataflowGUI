@@ -301,6 +301,10 @@ Inputs: `cloud` (cloud), `mask` (image, optional), `region` (data, optional).
 | `invert` | `false` |  |
 | `sample_step` | `1` |  |
 | `minimum_points` | `1` |  |
+| `attribute` | `"none"` | `none`, `intensity`, `confidence`, `source_index`, `source_scan` Intersect the spatial selection with an optional scalar attribute range. |
+| `attribute_minimum` | `-1.7976931348623157e+308` | Value must be a finite number. Inclusive lower bound in the stored attribute's units. |
+| `attribute_maximum` | `1.7976931348623157e+308` | Value must be a finite number. Inclusive upper bound in the stored attribute's units. |
+| `missing_attribute` | `"exclude"` | `exclude`, `keep` Keep or exclude rows without the selected scalar before inversion. |
 
 ## Measure point cloud (`3d.cloud_measure`)
 
@@ -340,7 +344,7 @@ Input `scans` — Alternative input with 2–64 grouped metric clouds already in
 | `output_units` | `"m"` | `m`, `mm` Metric units used in the emitted point cloud. |
 | `merge_mode` | `"append"` | `append`, `prefer_earlier` Append all points or drop later points near earlier retained scans. |
 | `overlap_radius_m` | `0.001` | Value must be a finite number between 1e-12 and 1e+20. Inclusive Euclidean distance in meters for overlap suppression. |
-| `attribute_policy` | `"common"` | `common`, `require_matching` Keep common RGB and normals or require matching input attributes. |
+| `attribute_policy` | `"common"` | `common`, `require_matching` Keep common RGB and normals plus available scalar columns, or require matching inputs. |
 | `max_input_points` | `250000` | Value must be a whole number between 1 and 1e+06. Combined point budget before allocation or overlap suppression. |
 
 ## Fit point-cloud plane or sphere (`3d.cloud_model_fit`)
@@ -7039,6 +7043,7 @@ Ticket mode and fixed value are common inspector controls.
 | `units` | `"m"` | `m`, `mm`, `unitless` |
 | `frame` | `"file"` |  |
 | `max_points` | `1000000` | Value must be a whole number between 1 and 2e+06. Limit on declared point rows, including empty pixels in an organized PCD. |
+| `track_source_rows` | `false` | Record original zero-based file rows if source_index is absent. |
 
 ## Load coded rig captures (`input.coded_rig_observations`)
 
@@ -12895,6 +12900,7 @@ Inputs: `cloud` (cloud).
 | `binary_ply` | `true` | Use binary vertices for .ply files. |
 | `pcd_encoding` | `"ascii"` | `ascii`, `binary` Use ASCII rows or uncompressed little-endian binary records for .pcd. |
 | `pcd_organization` | `"unorganized"` | `unorganized`, `source_pixels` Use a flat list or restore the source pixel grid with NaN at missing pixels. |
+| `write_inspection_attributes` | `true` | Write scalar inspection columns with PLY or PCD. |
 
 ## Set filmstrip image (`output.filmstrip_image`)
 

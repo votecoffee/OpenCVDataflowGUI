@@ -1,0 +1,18 @@
+# .PCD v0.7
+# dataflow_metadata {"units":"mm","frame":"fixture"}
+VERSION 0.7
+FIELDS x y z intensity confidence
+SIZE 4 4 4 2 8
+TYPE F F F U F
+COUNT 1 1 1 1 1
+WIDTH 6
+HEIGHT 1
+VIEWPOINT 0 0 0 1 0 0 0
+POINTS 6
+DATA ascii
+0 0 400 8 0.2
+nan 0 400 999 0.1
+11 0 400 41 0.95
+20 0 400 38 nan
+30 0 400 5 0.11
+40 0 400 55 0.75

@@ -7,9 +7,11 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .geometry3d_common import cloud_graphics
+from .geometry_fileio import geometry_output
 from .obj_cloud import MAX_CLOUD_BYTES, read_obj_cloud, write_obj_cloud
 from .parameter_validation import NumericRange
 from .pcd_cloud import read_pcd_vertices, write_pcd_cloud
+from .point_attributes import POINT_ATTRIBUTE_DTYPES
 from .pointclouds import PointCloud
 from .processing import integer
 
@@ -41,7 +43,9 @@ def cloud_path(block):
     return path if path.is_absolute() or block.project_dir is None else block.project_dir / path
 
 
-def make_cloud(columns, metadata, units, frame, *, source_size=None, viewpoint=None):
+def make_cloud(
+    columns, metadata, units, frame, *, source_size=None, viewpoint=None, track_source_rows=False
+):
     if not all(k in columns for k in ("x", "y", "z")):
         raise ValueError("Cloud file must contain XYZ fields")
     with np.errstate(over="ignore"):
@@ -81,7 +85,20 @@ def make_cloud(columns, metadata, units, frame, *, source_size=None, viewpoint=N
         if viewpoint is not None
         else {}
     )
-    return PointCloud(xyz[keep], units, frame, colors, normals, pixels, source_size, cloud_metadata)
+    attributes = {name: columns[name][keep] for name in POINT_ATTRIBUTE_DTYPES if name in columns}
+    if track_source_rows and "source_index" not in attributes:
+        attributes["source_index"] = np.flatnonzero(keep)
+    return PointCloud(
+        xyz[keep],
+        units,
+        frame,
+        colors,
+        normals,
+        pixels,
+        source_size,
+        cloud_metadata,
+        attributes=attributes,
+    )
 
 
 def ascii_vertices(stream, count, fields):
@@ -97,13 +114,17 @@ def ascii_vertices(stream, count, fields):
     return values
 
 
-def read_cloud(path, units="m", frame="file", max_points=2000000):
-    if path.stat().st_size > MAX_CLOUD_BYTES:
+def read_cloud(path, units="m", frame="file", max_points=2000000, *, track_source_rows=False):
+    file_size = path.stat().st_size
+    if file_size > MAX_CLOUD_BYTES:
         raise ValueError("Point-cloud files are limited to 256 MiB")
     metadata, headers = {}, []
     with path.open("rb") as stream:
         if path.suffix.lower() == ".obj":
-            return read_obj_cloud(stream, units, frame, max_points)
+            cloud = read_obj_cloud(stream, units, frame, max_points)
+            if track_source_rows:
+                cloud.attributes["source_index"] = np.arange(len(cloud.points), dtype=np.int32)
+            return cloud
         for _ in range(256):
             line = stream.readline(8193)
             if not line:
@@ -144,8 +165,11 @@ def read_cloud(path, units="m", frame="file", max_points=2000000):
                 raise ValueError("Duplicate PLY vertex properties")
             if format_line == "format binary_little_endian 1.0":
                 dtype = np.dtype(properties)
-                data = stream.read(count * dtype.itemsize)
-                if len(data) != count * dtype.itemsize:
+                expected = count * dtype.itemsize
+                if expected > file_size - stream.tell():
+                    raise ValueError("Truncated binary PLY vertices")
+                data = stream.read(expected)
+                if len(data) != expected:
                     raise ValueError("Truncated binary PLY vertices")
                 values = np.frombuffer(data, dtype=dtype)
                 columns = {name: values[name] for name in names}
@@ -156,19 +180,34 @@ def read_cloud(path, units="m", frame="file", max_points=2000000):
                 raise ValueError("PLY must be ASCII or binary little endian 1.0")
         else:
             columns, size, view = read_pcd_vertices(stream, headers, max_points)
-            return make_cloud(columns, metadata, units, frame, source_size=size, viewpoint=view)
-    return make_cloud(columns, metadata, units, frame)
+            return make_cloud(
+                columns,
+                metadata,
+                units,
+                frame,
+                source_size=size,
+                viewpoint=view,
+                track_source_rows=track_source_rows,
+            )
+    return make_cloud(columns, metadata, units, frame, track_source_rows=track_source_rows)
 
 
-def write_cloud(path, cloud, binary=False, *, pcd_organization="unorganized"):
+def write_cloud(
+    path, cloud, binary=False, *, pcd_organization="unorganized", write_inspection_attributes=True
+):
     suffix = path.suffix.lower()
     if suffix not in (".ply", ".pcd", ".obj") or (binary and suffix == ".obj"):
         raise ValueError("Choose .ply or .pcd (ASCII/binary), or .obj (ASCII)")
+    attributes = cloud.attributes if write_inspection_attributes else {}
     if suffix == ".obj":
+        if attributes:
+            raise ValueError(
+                "Use PLY or PCD to export inspection attributes, or turn off their export"
+            )
         write_obj_cloud(path, cloud)
         return
     if suffix == ".pcd":
-        write_pcd_cloud(path, cloud, binary, pcd_organization)
+        write_pcd_cloud(path, cloud, binary, pcd_organization, attributes)
         return
     names, types, columns = ["x", "y", "z"], ["float"] * 3, [cloud.points[:, i] for i in range(3)]
     if cloud.normals is not None:
@@ -179,17 +218,24 @@ def write_cloud(path, cloud, binary=False, *, pcd_organization="unorganized"):
         names += ["red", "green", "blue"]
         types += ["uchar"] * 3
         columns += [cloud.colors[:, i] for i in range(3)]
+    for name, values in attributes.items():
+        names.append(name)
+        types.append("double" if values.dtype.kind == "f" else "int")
+        columns.append(values)
     metadata = json.dumps({"units": cloud.units, "frame": cloud.frame}, ensure_ascii=True)
+    metadata_line = f"comment dataflow_metadata {metadata}"
+    if len(metadata_line) >= 8192:
+        raise ValueError("PLY frame metadata exceeds the header line limit")
     n = len(cloud.points)
     header = [
         "ply",
         f"format {'binary_little_endian' if binary else 'ascii'} 1.0",
-        f"comment dataflow_metadata {metadata}",
+        metadata_line,
         f"element vertex {n}",
     ]
     header += [f"property {t} {name}" for t, name in zip(types, names)]
     header += ["end_header"]
-    with path.open("xb") as stream:
+    with geometry_output(path, ".ply-") as stream:
         stream.write(("\n".join(header) + "\n").encode("ascii"))
         if binary:
             values = np.empty(n, dtype=[(name, PLY_TYPES[t]) for name, t in zip(names, types)])
@@ -199,7 +245,9 @@ def write_cloud(path, cloud, binary=False, *, pcd_organization="unorganized"):
         else:
             values = np.column_stack(columns)
             np.savetxt(
-                stream, values, fmt=["%d" if t in ("uint", "uchar") else "%.9g" for t in types]
+                stream,
+                values,
+                fmt=[{"double": "%.17g", "float": "%.9g"}.get(t, "%d") for t in types],
             )
 
 
@@ -208,12 +256,19 @@ class LoadCloud(Block):
     type_id, title, category = "input.cloud", "Load PLY / PCD point cloud", "Input"
     block_type, subtype = "Input", "Point clouds"
     outputs = (Port("cloud", "cloud"), Port("count", "number"))
-    defaults = {"path": "", "units": "m", "frame": "file", "max_points": 1000000}
+    defaults = {
+        "path": "",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": False,
+    }
     parameter_choices = {"units": ("m", "mm", "unitless")}
     parameter_ranges = {"max_points": NumericRange(1, 2_000_000, whole=True)}
     parameter_help = {
         "path": "Choose an ASCII or binary PLY/PCD point cloud, or an ASCII OBJ.",
         "max_points": "Limit on declared point rows, including empty pixels in an organized PCD.",
+        "track_source_rows": "Record original zero-based file rows if source_index is absent.",
     }
 
     def process(self, inputs):
@@ -223,6 +278,7 @@ class LoadCloud(Block):
             p["units"],
             p["frame"],
             integer(p["max_points"], "Max points", 1, 2000000),
+            track_source_rows=p["track_source_rows"],
         )
         return Result(
             {"cloud": cloud, "count": len(cloud.points)},
@@ -241,6 +297,7 @@ class SaveCloud(Block):
         "binary_ply": True,
         "pcd_encoding": "ascii",
         "pcd_organization": "unorganized",
+        "write_inspection_attributes": True,
     }
     parameter_choices = {
         "pcd_encoding": ("ascii", "binary"),
@@ -253,6 +310,7 @@ class SaveCloud(Block):
         "pcd_organization": (
             "Use a flat list or restore the source pixel grid with NaN at missing pixels."
         ),
+        "write_inspection_attributes": "Write scalar inspection columns with PLY or PCD.",
     }
 
     def process(self, inputs):
@@ -262,10 +320,18 @@ class SaveCloud(Block):
         binary = (suffix == ".ply" and p["binary_ply"]) or (
             suffix == ".pcd" and p["pcd_encoding"] == "binary"
         )
-        write_cloud(path, inputs["cloud"], binary, pcd_organization=p["pcd_organization"])
-        return Result(
-            {"path": str(path)}, message="Saved point-cloud XYZ/color/normals/units/frame"
+        write_cloud(
+            path,
+            inputs["cloud"],
+            binary,
+            pcd_organization=p["pcd_organization"],
+            write_inspection_attributes=p["write_inspection_attributes"],
         )
+        attributes = inputs["cloud"].attributes if p["write_inspection_attributes"] else {}
+        message = "Saved point cloud"
+        if attributes:
+            message += f" with {', '.join(attributes)}"
+        return Result({"path": str(path)}, message=message)
 
 
 CLOUD_IO_BLOCKS = (LoadCloud, SaveCloud)

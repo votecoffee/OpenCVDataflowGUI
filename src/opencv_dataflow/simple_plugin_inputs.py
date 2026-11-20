@@ -81,6 +81,7 @@ class RecordedJawExample(Block):
                     source.frame,
                     colors=source.colors,
                     normals=source.normals,
+                    attributes=source.attributes,
                     metadata={
                         **source.metadata,
                         "capture_id": identity,

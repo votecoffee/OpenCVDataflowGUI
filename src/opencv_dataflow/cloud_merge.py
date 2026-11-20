@@ -11,6 +11,7 @@ from .core import Port, Result
 from .geometry3d_common import Tool3D, cloud_graphics, rigid
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, FlowGroup
+from .point_attributes import merge_point_attributes
 from .pointclouds import PointCloud
 from .tickets import ticket_key
 
@@ -121,7 +122,9 @@ class MergeCloudScans(Tool3D):
         "output_units": "Metric units used in the emitted point cloud.",
         "merge_mode": "Append all points or drop later points near earlier retained scans.",
         "overlap_radius_m": "Inclusive Euclidean distance in meters for overlap suppression.",
-        "attribute_policy": "Keep common RGB and normals or require matching input attributes.",
+        "attribute_policy": (
+            "Keep common RGB and normals plus available scalar columns, or require matching inputs."
+        ),
         "max_input_points": "Combined point budget before allocation or overlap suppression.",
     }
     input_help = {
@@ -136,7 +139,7 @@ class MergeCloudScans(Tool3D):
         "scans": "Alternative input with 2–64 grouped metric clouds already in one named frame.",
     }
     output_help = {
-        "cloud": "Merged metric cloud with RGB and normals when present across retained scans.",
+        "cloud": "Merged metric cloud with shared RGB/normals and available inspection scalars.",
         "report": "Per-scan input, retained and suppressed counts and the applied metric poses.",
         "provenance": "Output row spans, original rows and original pixels for each input scan.",
     }
@@ -169,11 +172,17 @@ class MergeCloudScans(Tool3D):
         payloads = dict.fromkeys(outputs, context)
         transforms = [scan.in_frame(target) for scan in scans]
         active = [scan.cloud for scan in scans if len(scan.cloud.points)]
-        if p["attribute_policy"] == "require_matching" and any(
-            len({getattr(cloud, name) is not None for cloud in active}) > 1 for name in _ATTRIBUTES
-        ):
+        different_availability = (
+            any(
+                len({getattr(cloud, name) is not None for cloud in active}) > 1
+                for name in _ATTRIBUTES
+            )
+            or len({frozenset(cloud.attributes) for cloud in active}) > 1
+        )
+        if p["attribute_policy"] == "require_matching" and different_availability:
             raise ValidationError(
-                "Nonempty scans must agree on RGB and normal availability", "attribute_policy"
+                "Nonempty scans must agree on RGB and normal availability and inspection fields",
+                "attribute_policy",
             )
 
         def cancelled():
@@ -250,7 +259,17 @@ class MergeCloudScans(Tool3D):
                 [cloud.normals[ix] @ rotation.T for cloud, rotation, ix in retained]
             )
         xyz = points[:stop] / METERS[units]
-        result = PointCloud(xyz, units, target, colors=colors, normals=normals)
+        attributes, namespaces = merge_point_attributes(
+            [(cloud.attributes, ix) for cloud, _, ix in retained]
+        )
+        if namespaces:
+            for detail, span in zip(
+                (d for d in reports if d["retained_points"]), namespaces, strict=True
+            ):
+                detail["source_scan_range"] = span
+        result = PointCloud(
+            xyz, units, target, colors=colors, normals=normals, attributes=attributes
+        )
         report.update(
             retained_points=stop,
             suppressed_points=count - stop,
@@ -258,6 +277,8 @@ class MergeCloudScans(Tool3D):
             normals=normals is not None,
             scans=reports,
         )
+        if attributes:
+            report["inspection_attributes"] = list(attributes)
         if self._cancelled():
             return cancelled()
         outputs["cloud"] = result

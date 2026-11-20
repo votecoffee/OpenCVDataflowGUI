@@ -12,6 +12,7 @@ from .geometry3d_common import Tool3D, cloud_graphics, pose_record, rigid, trans
 from .icp_diagnostics import evaluate_icp
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, image_with_payload
+from .point_attributes import POINT_ATTRIBUTE_DTYPES, known_rows, mean_point_attributes
 from .pointclouds import PointCloud, render_cloud
 from .ppf_refinement import rank_surface_candidates, render_matches
 from .processing import finite, integer
@@ -51,7 +52,35 @@ class FilterCloud(Tool3D):
         "invert": False,
         "sample_step": 1,
         "minimum_points": 1,
+        "attribute": "none",
+        "attribute_minimum": -float(np.finfo(np.float64).max),
+        "attribute_maximum": float(np.finfo(np.float64).max),
+        "missing_attribute": "exclude",
     }
+    parameter_choices = {
+        "attribute": ("none", *POINT_ATTRIBUTE_DTYPES),
+        "missing_attribute": ("exclude", "keep"),
+    }
+    parameter_ranges = {"attribute_minimum": NumericRange(), "attribute_maximum": NumericRange()}
+    parameter_help = {
+        "attribute": "Intersect the spatial selection with an optional scalar attribute range.",
+        "attribute_minimum": "Inclusive lower bound in the stored attribute's units.",
+        "attribute_maximum": "Inclusive upper bound in the stored attribute's units.",
+        "missing_attribute": "Keep or exclude rows without the selected scalar before inversion.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if (
+            p["attribute"] != "none"
+            and float(p["attribute_minimum"]) > float(p["attribute_maximum"])
+        ):
+            raise ValidationError(
+                "Attribute minimum must not exceed maximum",
+                "attribute_minimum",
+                "attribute_maximum",
+            )
 
     def process(self, inputs):
         from .selection import selection_mask
@@ -74,6 +103,18 @@ class FilterCloud(Tool3D):
             grid = np.zeros((cloud.source_size[1], cloud.source_size[0]), np.uint8)
             mask = selection_mask(inputs, image_with_payload(grid, cloud.metadata))
             keep &= mask[cloud.pixels[:, 1], cloud.pixels[:, 0]] != 0
+        if p["attribute"] != "none":
+            name = p["attribute"]
+            available = cloud.attributes.get(name)
+            keep_missing = p["missing_attribute"] == "keep"
+            if available is None:
+                keep &= keep_missing
+            else:
+                known = known_rows(name, available)
+                in_range = (available >= float(p["attribute_minimum"])) & (
+                    available <= float(p["attribute_maximum"])
+                )
+                keep &= np.where(known, in_range, keep_missing)
         if p["invert"]:
             keep = ~keep
         selected = np.flatnonzero(keep)[:: integer(p["sample_step"], "Sample step", 1, 100000)]
@@ -161,6 +202,8 @@ class VoxelCloud(Tool3D):
                 np.minimum.at(indices, inverse[winners], winners)
 
         result = cloud.subset(indices)
+        if mode == "centroid":
+            result.attributes = mean_point_attributes(cloud.attributes, inverse, len(indices))
         if mode == "centroid" and len(indices):
             result.points = (sums / counts[:, None]).astype(np.float32)
             if cloud.colors is not None:

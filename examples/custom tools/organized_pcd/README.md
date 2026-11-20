@@ -13,10 +13,10 @@ records or **ascii** for text rows. Set **PCD organization** to
 NaN. This requires unique pixels and a multi-row source grid. The
 **unorganized** setting writes one row per surviving point.
 
-The loader accepts scalar XYZ, optional normals and separate or packed
-RGB. It ignores alpha and other fields such as descriptor vectors, while
-using the header's field widths to decode the records. Nonfinite XYZ and
-invalid normals leave grid holes. An acquisition **VIEWPOINT** is
+The loader accepts scalar XYZ, optional normals, separate or packed RGB,
+and the [supported scalar inspection fields](../cloud_inspection_attributes/README.md).
+It uses the header's field widths to skip unsupported descriptor vectors.
+Nonfinite XYZ and invalid normals leave grid holes. An acquisition **VIEWPOINT** is
 preserved as metadata and does not move the coordinates. External files
 without a Dataflow comment use the input block's **Units** and **Frame**
 settings. Convert compressed PCD to uncompressed binary or ASCII with

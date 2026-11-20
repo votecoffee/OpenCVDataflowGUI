@@ -53,6 +53,9 @@ depth-jump limit changes which neighboring pixels are joined into triangles.
 [Oriented cloud extents](oriented_cloud_extents/README.md) measures a
 rotated cuboid and compares PCA with known fixture axes.
 
+[Cloud inspection attributes](cloud_inspection_attributes/README.md)
+traces intensity, confidence and source indices through measured-row operations.
+
 [Point-cloud surface quality](cloud_surface_quality/README.md) estimates
 oriented normals and curvature and reports sparse or ambiguous neighborhoods.
 

@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Trace inspection fields through two scans",
+      "description": "Original analytic scans by OpenCVDataflowGUI contributors (MIT). Merge keeps measured intensity, confidence, and original row IDs. Confidence filtering and voxel sampling retain aligned fields.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "upper",
+      "type": "input.cloud",
+      "name": "Upper scan with intensity",
+      "parameters": {
+        "path": "assets/upper_scan.pcd",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": true
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "inspection-attributes"
+      }
+    },
+    {
+      "id": "side",
+      "type": "input.cloud",
+      "name": "Side scan with confidence",
+      "parameters": {
+        "path": "assets/side_scan.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        0,
+        260
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "inspection-attributes"
+      }
+    },
+    {
+      "id": "merge",
+      "type": "3d.cloud_merge",
+      "name": "Merge registered point-cloud scans",
+      "description": "Combine registered scans in one metric frame with optional overlap suppression.",
+      "parameters": {
+        "target_frame": "",
+        "output_units": "mm",
+        "merge_mode": "prefer_earlier",
+        "overlap_radius_m": 0.0005,
+        "attribute_policy": "common",
+        "max_input_points": 250000
+      },
+      "position": [
+        335,
+        90
+      ],
+      "exposed_inputs": [
+        "cloud_1",
+        "cloud_2"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "report",
+        "provenance"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "confidence",
+      "type": "3d.cloud_filter",
+      "name": "Keep confidence 0.7\u20131.0",
+      "parameters": {
+        "minimum": [
+          -1000000.0,
+          -1000000.0,
+          -1000000.0
+        ],
+        "maximum": [
+          1000000.0,
+          1000000.0,
+          1000000.0
+        ],
+        "invert": false,
+        "sample_step": 1,
+        "minimum_points": 1,
+        "attribute": "confidence",
+        "attribute_minimum": 0.7,
+        "attribute_maximum": 1.0,
+        "missing_attribute": "exclude"
+      },
+      "position": [
+        670,
+        90
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "3d.cloud_voxel",
+      "name": "Voxel-sample point cloud",
+      "description": "Group points in a voxel grid and retain a measured row or its centroid.",
+      "parameters": {
+        "voxel_size": 18.0,
+        "mode": "first",
+        "spacing": "uniform",
+        "voxel_size_x": 0.01,
+        "voxel_size_y": 0.01,
+        "voxel_size_z": 0.01
+      },
+      "position": [
+        990,
+        90
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "indices"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "3d.cloud_measure",
+      "name": "Measure point cloud",
+      "parameters": {},
+      "position": [
+        1310,
+        90
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "upper",
+      "output": "cloud",
+      "target": "merge",
+      "input": "cloud_1"
+    },
+    {
+      "source": "side",
+      "output": "cloud",
+      "target": "merge",
+      "input": "cloud_2"
+    },
+    {
+      "source": "merge",
+      "output": "cloud",
+      "target": "confidence",
+      "input": "cloud"
+    },
+    {
+      "source": "confidence",
+      "output": "cloud",
+      "target": "sample",
+      "input": "cloud"
+    },
+    {
+      "source": "sample",
+      "output": "cloud",
+      "target": "inspect",
+      "input": "cloud"
+    }
+  ]
+}

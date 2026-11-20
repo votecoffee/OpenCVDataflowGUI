@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 98 | 7 | 26 | 131 | 74.8% |
+| 3. 3D imagery and point clouds | 99 | 7 | 25 | 131 | 75.6% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 353 | 11 | 106 | 470 | 75.1% |
+| **Overall** | 354 | 11 | 105 | 470 | 75.3% |
 
 <!-- coverage-summary:end -->
 
@@ -527,7 +527,7 @@ fixture or result needed to close the item.
 | S3-96 | Binary and organized PCD interchange | Uncompressed PCD layouts, dimensions and point fields | Complete | `input.cloud` and `output.cloud` preserve grid dimensions, valid-pixel positions, RGB, normals and acquisition viewpoint in ASCII and uncompressed binary. PCL round trips verify both directions. The [organized scan example](<../examples/custom tools/organized_pcd/README.md>) compares the encodings. |
 | S3-97 | Generate a surface mesh from an organized depth grid | OpenCV backprojection and discontinuity-aware triangulation | Complete | `3d.organized_mesh` gates each triangle by axial depth and optional XYZ edge length. It accepts calibrated depth or a pixel-indexed cloud, preserves holes and source-grid UVs, and generates camera-facing normals. The [step and oval example](<../examples/custom tools/organized_depth_mesh/README.md>) isolates depth-jump and missing-sample behavior. |
 | S3-98 | Oriented cloud extents and physical pose | OpenCV PCA or reference axes and dimensioned bounds | Complete | `3d.cloud_oriented_extents` measures the observed XYZ envelope along PCA or reference axes and emits a frame-aware box pose. Rank, eigengap and sign checks withhold unreliable PCA results. The [rotated cuboid and cube controls](<../examples/custom tools/oriented_cloud_extents/README.md>) verify dimensions and orientation ambiguity. |
-| S3-99 | Inspection attributes on imported point clouds | Typed per-point intensity, confidence and source-index payloads | Planned | Preserve declared attributes through import, filtering, sampling, merging and export. Verify missing attributes and original scan indices. |
+| S3-99 | Inspection attributes on imported point clouds | Typed per-point intensity, confidence and source IDs | Complete | PLY and PCD carry scalar intensity, confidence, and source indices through filtering, sampling, registered merges, and export. Merges distinguish source scans and preserve missing values. The [inspection attributes example](<../examples/custom tools/cloud_inspection_attributes/README.md>) traces the retained indices. |
 
 ### Scan replay, cloud metrology and mesh inspection
 

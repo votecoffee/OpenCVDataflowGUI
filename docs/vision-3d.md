@@ -641,10 +641,22 @@ export rebuilds the grid, including NaN at missing locations. Its point
 limit counts every grid location. Packed RGB or RGBA and separate RGB
 channels are decoded into RGB, and acquisition viewpoint is stored in
 cloud metadata without changing the points. The PCD writer keeps that
-viewpoint when the cloud's frame and units still match. Additional
-arbitrary fields are outside this codec's XYZ, RGB and normals contract.
-The PCD encoding dropdown offers ASCII and uncompressed binary.
+viewpoint when the cloud's frame and units still match. The PCD encoding
+dropdown offers ASCII and uncompressed binary.
 [Organized PCD example](<../examples/custom tools/organized_pcd/README.md>)
+
+PLY and PCD also carry scalar **intensity**, **confidence**,
+**source_index**, and **source_scan** columns. The app stores measurements
+as float64 in the supplied sensor scale and IDs as int32. NaN and −1
+mark missing measurement and ID values respectively. **Track source
+rows** supplies original file indices when `source_index` is absent.
+Selection, measured-row sampling, and transforms carry the same columns.
+Voxel centroids average known measurements and clear IDs. Scan merge
+keeps available columns, preserves original source indices, and assigns
+fresh scan namespaces. `source_scan_range` in the merge report identifies
+each contributing input's half-open range of namespaces. For geometry-only
+OBJ export, turn off **Write inspection attributes**.
+[Inspection attributes example](<../examples/custom tools/cloud_inspection_attributes/README.md>)
 
 **Mesh an organized depth grid** backprojects calibrated depth with OpenCV
 or uses the original pixels of an organized metric cloud. Triangles join

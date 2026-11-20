@@ -229,4 +229,5 @@ def transformed_cloud(cloud, transform, target_frame):
         copy.deepcopy(cloud.pixels),
         cloud.source_size,
         copy.deepcopy(cloud.metadata),
+        attributes=copy.deepcopy(cloud.attributes),
     )

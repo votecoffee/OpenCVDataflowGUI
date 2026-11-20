@@ -342,6 +342,7 @@ class RecoverSceneScale(Tool3D):
                 cloud.pixels.copy() if cloud.pixels is not None else None,
                 cloud.source_size,
                 {**cloud.metadata, "scene_similarity": similarity},
+                attributes={name: values.copy() for name, values in cloud.attributes.items()},
             )
             outputs.update(
                 cloud=metric,
