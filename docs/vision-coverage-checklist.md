@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 90 | 11 | 30 | 131 | 68.7% |
+| 3. 3D imagery and point clouds | 91 | 10 | 30 | 131 | 69.5% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 345 | 15 | 110 | 470 | 73.4% |
+| **Overall** | 346 | 14 | 110 | 470 | 73.6% |
 
 <!-- coverage-summary:end -->
 
@@ -519,7 +519,7 @@ fixture or result needed to close the item.
 | S3-88 | Cloud-to-cloud dimensional comparison | Bidirectional nearest-neighbor distances and overlap checks | Complete | `3d.cloud_compare` reports matched row IDs, Euclidean deviations and reliable signed offsets. The [dimensional comparison example](<../examples/custom tools/cloud_dimensional_comparison/README.md>) verifies separate overlap and tolerance failures, dimension signs, and unmatched rows. |
 | S3-89 | Compare an inspection scan to a reference mesh | Bounded exact triangle distances and topology-aware signs | Complete | `3d.scan_mesh_compare` measures metric deviations, retains original triangle IDs and flags open boundaries, unsupported rows and unreliable signs. The [reference-panel example](<../examples/custom tools/scan_mesh_comparison/README.md>) verifies two signed defects and separate coverage failures. |
 | S3-90 | ICP overlap and local registration diagnostics | Point-to-plane ICP and paired inlier residuals | Complete | `3d.icp` optionally gates native refinement by directional overlap, reciprocal inliers, Euclidean RMSE and local pose observability. The [ICP example](<../examples/opencv tools/icp_registration/README.md>) verifies a known partial-overlap pose and rejects stricter coverage and a geometrically ambiguous plane. |
-| S3-91 | Refine and rank multiple surface-match hypotheses | PPF3DDetector candidates and ICP refinement | Partial | 3d.ppf_match returns candidates ranked by votes. Verify residual- and coverage-based ranking and suppress duplicate poses in cluttered and partially occluded scenes. |
+| S3-91 | Refine and rank multiple surface-match hypotheses | PPF3DDetector candidates and ICP refinement | Complete | `3d.ppf_match` optionally reranks bounded candidates by model coverage and reciprocal RMSE after local ICP, and suppresses duplicate poses. The [PPF example](<../examples/opencv tools/ppf_surface_ranking/README.md>) recovers and reranks two occluded instances among clutter. A focused duplicate test keeps the better-supported fit. |
 | S3-92 | Merge registered point-cloud scans | Rigid transforms, frame reconciliation and overlap-aware sampling | Planned | Merge multiple views in a named frame and verify unit conversion, per-scan provenance, attribute consistency and duplicate suppression. |
 | S3-93 | Fuse registered color into a TSDF | Volume ColorTSDF, integrateColor and fetchPointsNormalsColors | Planned | Recover a known colored surface from posed RGB-D frames and verify color/depth alignment, confidence, and memory limits. |
 | S3-94 | Raycast a fused volume into a new camera view | Volume.raycastEx and raycastExColor | Partial | 3d.tsdf_fuse raycasts the last input view. Verify an independent target pose and intrinsics with explicit depth, normal, color and validity outputs. |

@@ -21,6 +21,12 @@ def _constraint_spectrum(points, normals):
     return np.pad(values, (0, 6 - len(values))) / values[0] if values[0] else np.zeros(6)
 
 
+def reciprocal_cloud_rows(forward, reverse):
+    unique_rows = np.flatnonzero(forward.index >= 0)
+    source_rows = unique_rows[reverse.index[forward.index[unique_rows]] == unique_rows]
+    return source_rows, forward.index[source_rows]
+
+
 def evaluate_icp(source_xyz, target, radius, cancelled):
     target_xyz = target.points.astype(np.float64)
     forward = nearest_cloud_rows(source_xyz, target_xyz, radius, 0, cancelled)
@@ -30,9 +36,7 @@ def evaluate_icp(source_xyz, target, radius, cancelled):
     if reverse is None or cancelled():
         return None
 
-    unique_rows = np.flatnonzero(forward.index >= 0)
-    source_rows = unique_rows[reverse.index[forward.index[unique_rows]] == unique_rows]
-    target_rows = forward.index[source_rows]
+    source_rows, target_rows = reciprocal_cloud_rows(forward, reverse)
     normals = target.normals[target_rows].astype(np.float64)
     normals /= np.linalg.norm(normals, axis=1, keepdims=True)
     positions = source_xyz[source_rows]

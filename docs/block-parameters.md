@@ -1171,10 +1171,24 @@ Inputs: `model` (data), `scene` (cloud).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `scene_sample_step` | `0.2` |  |
-| `scene_distance` | `0.05` |  |
-| `max_matches` | `5` |  |
-| `minimum_votes` | `1` |  |
+| `scene_sample_step` | `0.2` | Value must be a finite number between 0.001 and 1. Native PPF scene sampling ratio. |
+| `scene_distance` | `0.05` | Value must be a finite number between 0.001 and 1. Native PPF relative scene distance step. |
+| `max_matches` | `5` | Value must be a whole number between 1 and 100. Maximum poses emitted after ranking. |
+| `minimum_votes` | `1` | Value must be a whole number between 1 and 1e+09. Ignore native candidates with fewer votes. |
+| `ranking` | `"votes"` | `votes`, `refined_geometry` Sort by native votes or refine and check support in the scene. |
+| `candidate_limit` | `8` | Value must be a whole number between 1 and 32. Highest-vote candidates admitted to geometric ranking. |
+| `refinement_passes` | `2` | Value must be a whole number between 1 and 4. Maximum number of local ICP refinements with refreshed pairs. |
+| `refinement_distance` | `0.015` | Value must be a finite number between 1e-12 and 1e+20. Radius in cloud units for reciprocal pairs supplied to ICP. |
+| `correspondence_radius` | `0.005` | Value must be a finite number between 1e-12 and 1e+20. Distance in cloud units for independent model coverage. |
+| `minimum_model_overlap` | `0.3` | Value must be a finite number between 0 and 1. Minimum fraction of model points supported by the scene. |
+| `minimum_inliers` | `6` | Value must be a whole number between 6 and 5000. Minimum reciprocal nearest pairs. |
+| `maximum_inlier_rmse` | `0.003` | Value must be a finite number between 1e-12 and 1e+20. Maximum geometric inlier RMSE in cloud units. |
+| `duplicate_translation` | `0.005` | Value must be a finite number between 0 and 1e+20. Maximum model-center separation in cloud units for duplicates. |
+| `duplicate_rotation_deg` | `5.0` | Value must be a finite number between 0 and 180. Maximum relative angle in degrees for duplicate poses. |
+| `icp_iterations` | `50` | Value must be a whole number between 1 and 1000. Maximum native ICP iterations for each candidate. |
+| `icp_tolerance` | `0.005` | Value must be a finite number at least 1e-12. Native ICP convergence tolerance. |
+| `icp_rejection_scale` | `2.5` | Value must be a finite number at least 1e-12. Native ICP outlier rejection scale. |
+| `icp_pyramid_levels` | `1` | Value must be a whole number between 1 and 4. Number of native ICP pyramid levels. |
 
 ## Train 3D PPF surface model (`3d.ppf_train`)
 

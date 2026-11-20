@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Rank two partly occluded surface matches",
+      "description": "Original synthetic fixture by OpenCVDataflowGUI contributors (MIT). Two differently cropped copies of a curved panel appear among 200 clutter points.",
+      "parameters": {},
+      "position": [
+        0,
+        -285
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "model",
+      "type": "input.cloud",
+      "name": "Load oriented model",
+      "parameters": {
+        "path": "assets/model.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "ppf-ranking-fixture"
+      }
+    },
+    {
+      "id": "scene",
+      "type": "input.cloud",
+      "name": "Load oriented scene",
+      "parameters": {
+        "path": "assets/scene.ply",
+        "units": "m",
+        "frame": "file",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        285
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "ppf-ranking-fixture"
+      }
+    },
+    {
+      "id": "train",
+      "type": "3d.ppf_train",
+      "name": "Train 3D PPF surface model",
+      "parameters": {
+        "relative_sampling_step": 0.08,
+        "relative_distance_step": 0.04,
+        "angle_bins": 30
+      },
+      "position": [
+        365,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "model"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "votes",
+      "type": "3d.ppf_match",
+      "name": "Review native vote order",
+      "description": "Find oriented surface poses and optionally refine and rank them by geometry.",
+      "parameters": {
+        "scene_sample_step": 0.25,
+        "scene_distance": 0.05,
+        "max_matches": 5,
+        "minimum_votes": 1,
+        "ranking": "votes",
+        "candidate_limit": 8,
+        "refinement_passes": 2,
+        "refinement_distance": 0.012,
+        "correspondence_radius": 0.004,
+        "minimum_model_overlap": 0.4,
+        "minimum_inliers": 6,
+        "maximum_inlier_rmse": 0.002,
+        "duplicate_translation": 0.005,
+        "duplicate_rotation_deg": 5.0,
+        "icp_iterations": 50,
+        "icp_tolerance": 0.005,
+        "icp_rejection_scale": 2.5,
+        "icp_pyramid_levels": 1
+      },
+      "position": [
+        715,
+        0
+      ],
+      "exposed_inputs": [
+        "model",
+        "scene"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "pose",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "verify",
+      "type": "3d.ppf_match",
+      "name": "Refine and rank on scene support",
+      "description": "Find oriented surface poses and optionally refine and rank them by geometry.",
+      "parameters": {
+        "scene_sample_step": 0.25,
+        "scene_distance": 0.05,
+        "max_matches": 5,
+        "minimum_votes": 1,
+        "ranking": "refined_geometry",
+        "candidate_limit": 8,
+        "refinement_passes": 2,
+        "refinement_distance": 0.012,
+        "correspondence_radius": 0.004,
+        "minimum_model_overlap": 0.4,
+        "minimum_inliers": 6,
+        "maximum_inlier_rmse": 0.002,
+        "duplicate_translation": 0.005,
+        "duplicate_rotation_deg": 5.0,
+        "icp_iterations": 50,
+        "icp_tolerance": 0.005,
+        "icp_rejection_scale": 2.5,
+        "icp_pyramid_levels": 1
+      },
+      "position": [
+        715,
+        285
+      ],
+      "exposed_inputs": [
+        "model",
+        "scene"
+      ],
+      "exposed_outputs": [
+        "poses",
+        "pose",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "model",
+      "output": "cloud",
+      "target": "train",
+      "input": "cloud"
+    },
+    {
+      "source": "train",
+      "output": "model",
+      "target": "votes",
+      "input": "model"
+    },
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "votes",
+      "input": "scene"
+    },
+    {
+      "source": "train",
+      "output": "model",
+      "target": "verify",
+      "input": "model"
+    },
+    {
+      "source": "scene",
+      "output": "cloud",
+      "target": "verify",
+      "input": "scene"
+    }
+  ]
+}

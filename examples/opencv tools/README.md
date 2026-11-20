@@ -112,6 +112,9 @@ registers noisy partial scans and measures correspondence error and overlap.
 [ICP registration quality](icp_registration/README.md) refines an initial
 pose and checks partial overlap, paired distances and local pose constraints.
 
+[PPF surface ranking](ppf_surface_ranking/README.md) refines and reranks two
+partly occluded surface matches among clutter.
+
 [Depth-fusion trajectory](depth_trajectory/README.md) estimates a camera path
 from a recording with a dropped depth exposure and verifies the fused surface.
 

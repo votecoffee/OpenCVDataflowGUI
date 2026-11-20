@@ -13,6 +13,7 @@ from .icp_diagnostics import evaluate_icp
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, image_with_payload
 from .pointclouds import PointCloud, render_cloud
+from .ppf_refinement import rank_surface_candidates, render_matches
 from .processing import finite, integer
 
 
@@ -558,7 +559,7 @@ def trained_ppf(model):
         or not np.isfinite(values).all()
     ):
         raise ValueError("PPF model requires 6..5000 finite XYZ/normal rows")
-    PointCloud(values[:, :3], model["units"], model["frame"], normals=values[:, 3:])
+    cloud = PointCloud(values[:, :3], model["units"], model["frame"], normals=values[:, 3:])
     p = model["settings"]
     step = finite(p["relative_sampling_step"], "Relative sampling step", 0.001)
     distance = finite(p["relative_distance_step"], "Relative distance step", 0.001)
@@ -568,59 +569,201 @@ def trained_ppf(model):
         step, distance, integer(p["angle_bins"], "Angle bins", 4, 180)
     )
     detector.trainModel(values)
-    return detector
+    return detector, cloud
 
 
 class MatchPPF(Tool3D):
     type_id, title, subtype = "3d.ppf_match", "Match 3D PPF surface model", "Surface matching"
+    description = "Find oriented surface poses and optionally refine and rank them by geometry."
+    payload_reference = "scene"
     inputs = (Port("model", "data"), Port("scene", "cloud"))
-    outputs = (Port("poses", "data"), Port("pose", "data"), Port("count", "number"))
+    outputs = (
+        Port("poses", "data"),
+        Port("pose", "data"),
+        Port("count", "number"),
+        Port("report", "data"),
+    )
     defaults = {
         "scene_sample_step": 0.2,
         "scene_distance": 0.05,
         "max_matches": 5,
         "minimum_votes": 1,
+        "ranking": "votes",
+        "candidate_limit": 8,
+        "refinement_passes": 2,
+        "refinement_distance": 0.015,
+        "correspondence_radius": 0.005,
+        "minimum_model_overlap": 0.3,
+        "minimum_inliers": 6,
+        "maximum_inlier_rmse": 0.003,
+        "duplicate_translation": 0.005,
+        "duplicate_rotation_deg": 5.0,
+        "icp_iterations": 50,
+        "icp_tolerance": 0.005,
+        "icp_rejection_scale": 2.5,
+        "icp_pyramid_levels": 1,
+    }
+    parameter_choices = {"ranking": ("votes", "refined_geometry")}
+    parameter_ranges = {
+        "scene_sample_step": NumericRange(0.001, 1),
+        "scene_distance": NumericRange(0.001, 1),
+        "max_matches": NumericRange(1, 100, whole=True),
+        "minimum_votes": NumericRange(1, 1_000_000_000, whole=True),
+        "candidate_limit": NumericRange(1, 32, whole=True),
+        "refinement_passes": NumericRange(1, 4, whole=True),
+        "refinement_distance": NumericRange(1e-12, 1e20),
+        "correspondence_radius": NumericRange(1e-12, 1e20),
+        "minimum_model_overlap": NumericRange(0, 1),
+        "minimum_inliers": NumericRange(6, 5000, whole=True),
+        "maximum_inlier_rmse": NumericRange(1e-12, 1e20),
+        "duplicate_translation": NumericRange(0, 1e20),
+        "duplicate_rotation_deg": NumericRange(0, 180),
+        "icp_iterations": NumericRange(1, 1000, whole=True),
+        "icp_tolerance": NumericRange(1e-12),
+        "icp_rejection_scale": NumericRange(1e-12),
+        "icp_pyramid_levels": NumericRange(1, 4, whole=True),
+    }
+    parameter_help = {
+        "scene_sample_step": "Native PPF scene sampling ratio.",
+        "scene_distance": "Native PPF relative scene distance step.",
+        "max_matches": "Maximum poses emitted after ranking.",
+        "minimum_votes": "Ignore native candidates with fewer votes.",
+        "ranking": "Sort by native votes or refine and check support in the scene.",
+        "candidate_limit": "Highest-vote candidates admitted to geometric ranking.",
+        "refinement_passes": "Maximum number of local ICP refinements with refreshed pairs.",
+        "refinement_distance": "Radius in cloud units for reciprocal pairs supplied to ICP.",
+        "correspondence_radius": "Distance in cloud units for independent model coverage.",
+        "minimum_model_overlap": "Minimum fraction of model points supported by the scene.",
+        "minimum_inliers": "Minimum reciprocal nearest pairs.",
+        "maximum_inlier_rmse": "Maximum geometric inlier RMSE in cloud units.",
+        "duplicate_translation": "Maximum model-center separation in cloud units for duplicates.",
+        "duplicate_rotation_deg": "Maximum relative angle in degrees for duplicate poses.",
+        "icp_iterations": "Maximum native ICP iterations for each candidate.",
+        "icp_tolerance": "Native ICP convergence tolerance.",
+        "icp_rejection_scale": "Native ICP outlier rejection scale.",
+        "icp_pyramid_levels": "Number of native ICP pyramid levels.",
+    }
+    output_help = {
+        "poses": "Accepted source-to-scene poses in ranked order.",
+        "pose": "Highest-ranked accepted pose.",
+        "count": "Number of distinct emitted poses.",
+        "report": "Native vote counts and, in geometric mode, candidate and refinement details.",
     }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self._detector, self._key = None, None
+        self.reset_runtime()
 
     def reset_runtime(self):
-        self._detector, self._key = None, None
+        self._detector, self._model_cloud, self._key = None, None, None
 
     close = reset_runtime
 
+    def validate_parameters(self, parameters=None):
+        p = self.parameters if parameters is None else parameters
+        super().validate_parameters(p)
+        if p["ranking"] == "refined_geometry":
+            radius = float(p["correspondence_radius"])
+            if radius > float(p["refinement_distance"]):
+                raise ValidationError(
+                    "Correspondence radius must fit inside the refinement distance",
+                    "correspondence_radius",
+                    "refinement_distance",
+                )
+            if float(p["maximum_inlier_rmse"]) > radius:
+                raise ValidationError(
+                    "Maximum inlier RMSE must be at most the correspondence radius",
+                    "maximum_inlier_rmse",
+                    "correspondence_radius",
+                )
+
     def process(self, inputs):
         model, cloud, p = inputs["model"], inputs["scene"], self.parameters
-        if cloud.units != model["units"]:
-            raise ValueError("PPF scene/model units differ")
+        if not isinstance(model, dict) or model.get("model") != "ppf_surface_v1":
+            raise ValidationError("Connect a trained 3D PPF surface model", "model")
+        if cloud.units != model.get("units"):
+            raise ValidationError("PPF scene/model units differ", "model", "scene")
+        if len(cloud.points) > 20000:
+            raise ValidationError("PPF scenes are limited to 20000 oriented points", "scene")
+        report = {
+            "ranking": p["ranking"],
+            "units": cloud.units,
+            "scene_points": len(cloud.points),
+            "native_candidates": None,
+            "eligible_candidates": None,
+            "evaluated_candidates": [],
+        }
+        outputs = dict(poses=[], pose=NO_VALUE, count=0, report=report)
+
+        def cancelled():
+            return Result(
+                outputs,
+                passed=False,
+                message="PPF matching cancelled",
+                fail_reasons=["ppf_cancelled"],
+            )
+
+        if self._cancelled():
+            return cancelled()
         key = hashlib.sha256(json.dumps(model, sort_keys=True).encode()).hexdigest()
         if key != self._key:
-            self._detector, self._key = trained_ppf(model), key
-        step, distance = (
-            finite(p["scene_sample_step"], "Scene sample step", 0.001),
-            finite(p["scene_distance"], "Scene distance", 0.001),
+            self._detector, self._model_cloud = trained_ppf(model)
+            self._key = key
+        if self._cancelled():
+            return cancelled()
+        found = self._detector.match(
+            cloud_with_normals(cloud), float(p["scene_sample_step"]), float(p["scene_distance"])
         )
-        if max(step, distance) > 1 or len(cloud.points) > 20000:
-            raise ValueError("PPF ratios must be <=1 and scene limited to 20000 oriented points")
-        found = self._detector.match(cloud_with_normals(cloud), step, distance)
-        minimum = integer(p["minimum_votes"], "Minimum votes", 1, 1000000000)
-        poses = []
-        for pose in sorted(found, key=lambda obj: -obj.numVotes):
-            if pose.numVotes < minimum:
-                continue
-            poses.append(
+        selected = sorted(
+            (pose for pose in found if pose.numVotes >= p["minimum_votes"]),
+            key=lambda obj: -obj.numVotes,
+        )
+        report.update(native_candidates=len(found), eligible_candidates=len(selected))
+        if self._cancelled():
+            return cancelled()
+        graphics, reasons = {}, []
+        if p["ranking"] == "refined_geometry" and selected:
+            icp = surface_module().ICP(
+                int(p["icp_iterations"]),
+                float(p["icp_tolerance"]),
+                float(p["icp_rejection_scale"]),
+                int(p["icp_pyramid_levels"]),
+            )
+            limit = int(p["candidate_limit"])
+            candidates = [
+                {"matrix": pose.pose, "votes": int(pose.numVotes), "candidate": i}
+                for i, pose in enumerate(selected[:limit], start=1)
+            ]
+            ranked = rank_surface_candidates(
+                candidates,
+                self._model_cloud,
+                cloud,
+                p,
+                icp,
+                self._cancelled,
+            )
+            if ranked is None or self._cancelled():
+                return cancelled()
+            poses, report["evaluated_candidates"] = ranked
+            if not poses:
+                reasons = ["ppf_geometry_rejected"]
+            elif self.capture_graphics:
+                graphics["Ranked surface matches"] = render_matches(cloud, self._model_cloud, poses)
+        else:
+            poses = [
                 pose_record(
                     pose.pose, model["frame"], cloud.frame, cloud.units, votes=int(pose.numVotes)
                 )
-            )
-            if len(poses) >= integer(p["max_matches"], "Max matches", 1, 100):
-                break
+                for pose in selected[: int(p["max_matches"])]
+            ]
+        if self._cancelled():
+            return cancelled()
+        outputs.update(poses=poses, pose=poses[0] if poses else NO_VALUE, count=len(poses))
         return Result(
-            {"poses": poses, "pose": poses[0] if poses else NO_VALUE, "count": len(poses)},
+            outputs,
             passed=bool(poses),
-            fail_reasons=[] if poses else ["ppf_surface_match"],
+            graphics=graphics,
+            fail_reasons=[] if poses else reasons or ["ppf_surface_match"],
         )
 
 

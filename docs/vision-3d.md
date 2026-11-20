@@ -609,9 +609,13 @@ available in Debug and Balanced.
   an initial pose for separated clouds. ICP refines local alignment.
   [ICP quality example](<../examples/opencv tools/icp_registration/README.md>)
 - **Train 3D PPF surface model** prepares a portable oriented-point model.
-  **Match 3D PPF surface model** trains/caches the native detector for that model
-  and emits ranked voted poses in scene coordinates. Downsample dense models
-  before training. Use ICP to refine a selected candidate as needed.
+  **Match 3D PPF surface model** caches the native detector and emits poses in
+  scene coordinates. Its optional **Refined geometry** mode reevaluates a
+  bounded set of candidates using local ICP, model coverage, reciprocal pair
+  counts and geometric RMSE. It keeps the strongest fit for each candidate
+  and suppresses near-duplicates by model-center distance and rotation.
+  Downsample dense models before training.
+  [Cluttered partial-surface example](<../examples/opencv tools/ppf_surface_ranking/README.md>)
 
 PLY supports ASCII and binary little endian vertex data. PCD supports ASCII
 XYZ, optional normals and packed RGB. OBJ supports ASCII XYZ, optional
