@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 60 | 18 | 53 | 131 | 45.8% |
+| 3. 3D imagery and point clouds | 61 | 18 | 52 | 131 | 46.6% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 315 | 22 | 133 | 470 | 67.0% |
+| **Overall** | 316 | 22 | 132 | 470 | 67.2% |
 
 <!-- coverage-summary:end -->
 
@@ -479,7 +479,7 @@ fixture or result needed to close the item.
 | S3-58 | Local 3D features and correspondence from reconstructed views | Keypoint neighborhoods, geometric correspondence and robust alignment | Complete | 3d.register_cloud_features uses metric neighborhoods, reciprocal matches, robust rigid fitting and bidirectional overlap checks. The [partial-scan example](<../examples/opencv tools/cloud_feature_registration/README.md>) verifies alignment against a known pose. A focused depth reconstruction check verifies the pixel provenance of the inlier pairs. |
 | S3-59 | Metric depth backprojection | Intrinsics and depth-to-point projection | Complete | 3d.depth_cloud. Verify XYZ, invalid depth and per-pixel color/provenance from an aligned image. |
 | S3-60 | Reconstructed cloud selection and voxel sampling | Spatial bounds, valid indices and voxel pooling | Complete | 3d.cloud_filter, 3d.cloud_voxel. Verify retained camera correspondence and bounded point density. |
-| S3-61 | Binary stereo correspondence | stereo.StereoBinaryBM or StereoBinarySGBM | Planned | Requires a build with the Python binding. Compare a known disparity image to the regular BM/SGBM path. |
+| S3-61 | Binary stereo correspondence | Census/Hamming block matching | Complete | 3d.binary_disparity is a qualified integer-disparity alternative for the pinned wheel, which exposes binary stereo constants only. The [known-shift example](<../examples/opencv tools/binary_stereo/README.md>) compares with native SGBM. Tests cover exact cost calculation, signed search, ambiguous texture and full-window support. |
 
 ### Depth sequences and additional camera models
 

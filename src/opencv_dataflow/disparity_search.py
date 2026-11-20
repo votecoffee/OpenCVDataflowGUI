@@ -22,7 +22,7 @@ class DisparitySearch:
     report: dict
 
 
-def _depth_range(rectification, p):
+def _depth_range(rectification, p, step):
     if rectification is None:
         raise ValidationError("Depth search requires calibrated stereo rectification")
     if rectification.get("units") not in ("m", "mm"):
@@ -40,7 +40,7 @@ def _depth_range(rectification, p):
     if not np.isfinite(bounds).all() or bounds[0] < -2047 or bounds[1] > 2047:
         raise ValidationError("Depth limits exceed the signed fixed-point disparity range")
     lower, upper = int(np.floor(bounds[0])), int(np.ceil(bounds[1]))
-    count = ((upper - lower + 16) // 16) * 16
+    count = ((upper - lower + step) // step) * step
     minimum = min(lower, 2048 - count)
     return minimum, count, bounds.tolist()
 
@@ -102,7 +102,9 @@ def _footprint_mask(shape, native, minimum, maximum, block_size, rois, masks):
     return support, roi
 
 
-def plan_disparity_search(inputs, parameters, shape, block_size):
+def plan_disparity_search(inputs, parameters, shape, block_size, *, native_matcher=True):
+    step = 16 if native_matcher else 1
+    lower_count, upper_count = (16, 4096) if native_matcher else (2, 128)
     h, w = shape
     size = (w, h)
     rec = inputs.get("rectification")
@@ -119,14 +121,18 @@ def plan_disparity_search(inputs, parameters, shape, block_size):
 
     depth_mode = parameters["search_mode"] == "depth"
     if depth_mode:
-        minimum, count, expected = _depth_range(rec, parameters)
+        minimum, count, expected = _depth_range(rec, parameters, step)
     else:
         minimum = integer(parameters["min_disparity"], "Minimum disparity", -4096, 4096)
-        count = integer(parameters["num_disparities"], "Number disparities", 16, 4096)
+        count = integer(
+            parameters["num_disparities"], "Number disparities", lower_count, upper_count
+        )
         expected = None
     maximum = minimum + count - 1
-    if count % 16 or count >= w:
+    if native_matcher and (count % step or count >= w):
         raise ValidationError("num_disparities must be a multiple of 16 smaller than image width")
+    if not native_matcher and (not lower_count <= count <= upper_count or count >= w):
+        raise ValidationError("Binary stereo requires 2..128 disparities and a wider image")
     if minimum < -2047 or maximum > 2047:
         raise ValidationError("Disparity search exceeds the signed fixed-point range")
 
@@ -146,7 +152,8 @@ def plan_disparity_search(inputs, parameters, shape, block_size):
         "valid_roi": None,
         "opencv_roi": None,
     }
-    if rec is None and not any(f"{side}_mask" in inputs for side in ("left", "right")):
+    has_mask = any(f"{side}_mask" in inputs for side in ("left", "right"))
+    if native_matcher and rec is None and not has_mask:
         return DisparitySearch(minimum, count, None, None, report)
 
     masks, rois = [], []
@@ -158,7 +165,11 @@ def plan_disparity_search(inputs, parameters, shape, block_size):
         masks.append(mask)
         rois.append(roi)
     if all(roi[2] and roi[3] for roi in rois):
-        native = cv2.getValidDisparityROI(*rois, minimum, count, block_size)
+        native = (
+            cv2.getValidDisparityROI(*rois, minimum, count, block_size)
+            if native_matcher
+            else (0, 0, w, h)
+        )
         support, valid_roi = _footprint_mask(
             shape, native, minimum, maximum, block_size, rois, masks
         )
@@ -166,7 +177,7 @@ def plan_disparity_search(inputs, parameters, shape, block_size):
         native = valid_roi = (0, 0, 0, 0)
         support = np.zeros(shape, np.uint8)
     report.update(
-        opencv_roi=list(native),
+        opencv_roi=list(native) if native_matcher else None,
         valid_roi=list(valid_roi),
         support_fraction=float(np.count_nonzero(support) / support.size),
     )

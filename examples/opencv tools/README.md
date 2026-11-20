@@ -41,6 +41,9 @@ small islands from fixed-point and signed float disparity.
 [Stereo disparity evaluation](disparity_reference/README.md) compares an
 estimate with known truth across the whole field and a selected region.
 
+[Binary Census stereo](binary_stereo/README.md) compares Census/Hamming
+matching and native SGBM on an exposure-shifted pair.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera

@@ -124,7 +124,7 @@ IMPLEMENTATION_MODULES = {
     "ml": "svm_blocks image_mixtures visual_words",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
     "rotating_panorama panorama_points",
-    "stereo": "stereo3d disparity_speckles disparity_evaluation",
+    "stereo": "stereo3d binary_stereo disparity_speckles disparity_evaluation",
     "ccm": "color_calibration",
     "quality": "image_quality",
     "img_hash": "image_hash",

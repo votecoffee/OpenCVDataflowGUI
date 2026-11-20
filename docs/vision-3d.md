@@ -176,6 +176,21 @@ and the final support fraction after mask holes. Pixels outside support
 have invalid disparity, zero validity and zero confidence.
 [Known-disparity example](<../examples/opencv tools/stereo_disparity_search/README.md>)
 
+**Binary Census stereo disparity** compares local brightness order in
+rectified images. It builds Census signatures with NumPy and sums the
+Hamming distances with OpenCV box filtering. The pinned wheel exposes
+constants for the contrib binary matcher, so this block uses an app-owned
+integer-disparity implementation.
+
+Use a signed manual interval of 2–128 candidates or derive it from
+calibrated depth. A match must have full Census and aggregation support
+across the search in both views. Best Cost, Second Best Cost and
+Confidence describe forward matching on supported pixels. Confidence is
+`(second - best) / second`, with tied costs assigned zero. The optional
+reverse check also tests the winning correspondence. Use Valid Mask
+to identify disparities retained after both checks.
+[Known-shift comparison with SGBM](<../examples/opencv tools/binary_stereo/README.md>)
+
 **Remove disparity speckles** accepts float pixel disparity, or signed or
 unsigned 16-bit fixed-point disparity with a configurable scale. OpenCV
 stereo's raw values use 16 samples per disparity pixel. The optional input

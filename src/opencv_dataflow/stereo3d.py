@@ -403,6 +403,28 @@ class RectifyStereo(Tool3D):
         return Result(result, payloads=payloads)
 
 
+def check_stereo_grids(inputs, payloads, size):
+    left, right = (payloads[name] for name in ("left", "right"))
+    rectification = inputs.get("rectification")
+    if STEREO_GRID in left or STEREO_GRID in right:
+        left_stamp, right_stamp = left.get(STEREO_GRID), right.get(STEREO_GRID)
+        if (
+            not isinstance(left_stamp, dict)
+            or not isinstance(right_stamp, dict)
+            or left_stamp.get("side") != "left"
+            or right_stamp.get("side") != "right"
+            or left_stamp.get("sha256") != right_stamp.get("sha256")
+            or left_stamp.get("spatial") != left.get("spatial")
+            or right_stamp.get("spatial") != right.get("spatial")
+            or not all(is_full_grid(p, size) for p in (left, right))
+        ):
+            raise ValidationError("Stereo images must share the same sealed rectification grid")
+        if rectification is not None and digest(rectification) != left_stamp.get("sha256"):
+            raise ValidationError("Search rectification differs from the sealed stereo images")
+    elif isinstance(rectification, dict) and REVISION in rectification:
+        raise ValidationError("A versioned search requires its sealed rectified stereo images")
+
+
 class StereoDisparity(Tool3D):
     type_id, title, subtype = "3d.disparity", "Stereo BM / SGBM disparity", "Stereo"
     inputs = (
@@ -479,25 +501,7 @@ class StereoDisparity(Tool3D):
         a, b = (gray_image(inputs[n], (np.uint8,)) for n in ("left", "right"))
         if a.shape != b.shape:
             raise ValueError("Rectified stereo image dimensions must match")
-        left, right = (self.input_payloads[name] for name in ("left", "right"))
-        rectification = inputs.get("rectification")
-        if STEREO_GRID in left or STEREO_GRID in right:
-            left_stamp, right_stamp = left.get(STEREO_GRID), right.get(STEREO_GRID)
-            if (
-                not isinstance(left_stamp, dict)
-                or not isinstance(right_stamp, dict)
-                or left_stamp.get("side") != "left"
-                or right_stamp.get("side") != "right"
-                or left_stamp.get("sha256") != right_stamp.get("sha256")
-                or left_stamp.get("spatial") != left.get("spatial")
-                or right_stamp.get("spatial") != right.get("spatial")
-                or not all(is_full_grid(p, a.shape[::-1]) for p in (left, right))
-            ):
-                raise ValidationError("Stereo images must share the same sealed rectification grid")
-            if rectification is not None and digest(rectification) != left_stamp.get("sha256"):
-                raise ValidationError("Search rectification differs from the sealed stereo images")
-        elif isinstance(rectification, dict) and REVISION in rectification:
-            raise ValidationError("A versioned search requires its sealed rectified stereo images")
+        check_stereo_grids(inputs, self.input_payloads, a.shape[::-1])
         p = self.parameters
         block_size = integer(
             p["block_size"], "Block size", 5 if p["algorithm"] == "bm" else 1, 255, odd=True

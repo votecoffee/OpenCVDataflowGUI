@@ -39,6 +39,35 @@ Inputs: `image` (image), `camera` (data).
 | `axis_length` | `0.02` |  |
 | `max_reprojection_error` | `3.0` |  |
 
+## Binary Census stereo disparity (`3d.binary_disparity`)
+
+3D vision / Stereo
+
+Inputs: `left` (image), `right` (image), `rectification` (data, optional), `left_mask` (image, optional), `right_mask` (image, optional).
+
+Input `left` — Rectified left uint8 image, used as the output grid.
+
+Input `right` — Rectified right uint8 image.
+
+Input `rectification` — Optional calibrated ROI data. Required in Depth search mode.
+
+Input `left_mask` — Full source support before the Census and aggregation windows.
+
+Input `right_mask` — Full right-view support throughout the signed search.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `search_mode` | `"manual"` | `manual`, `depth` Use a signed pixel interval or derive one from calibrated depth limits. |
+| `min_disparity` | `0` | Value must be a whole number between -2047 and 2047. Lowest integer disparity to compare. Left X minus right X. |
+| `num_disparities` | `32` | Value must be a whole number between 2 and 128. Number of consecutive integer disparity candidates. |
+| `minimum_depth` | `0.1` | Value must be a finite number at least 0. Near limit in the calibrated rectification's physical units. |
+| `maximum_depth` | `5.0` | Value must be a finite number at least 0. Far limit in the calibrated rectification's physical units. |
+| `census_size` | `"5"` | `3`, `5`, `7` Odd Census neighborhood. Encodes comparisons with its center pixel. |
+| `aggregation_size` | `5` | Value must be a positive odd integer between 1 and 31. Odd square window used to sum Hamming distances. |
+| `minimum_confidence` | `0.05` | Value must be a finite number between 0 and 1. Minimum relative gap between the two lowest costs. Rejects ties. |
+| `left_right_check` | `true` | Reject disagreements with a separate right-to-left match. |
+| `left_right_tolerance_px` | `1` | Value must be a whole number between 0 and 2047. Allowed disparity sum magnitude across the two directions. |
+
 ## Calibrate multi-camera rig (`3d.calibrate_multicamera`)
 
 3D vision / Calibration
