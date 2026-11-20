@@ -151,6 +151,9 @@ ChArUco views into a sparse cloud and compares fixed and refined camera poses.
 [Metric scene-scale recovery](scene_scale/README.md) aligns a unitless cloud
 and camera poses to a metric survey frame and checks eight holdout points.
 
+[Metric matched 3D transforms](matched_3d_transforms/README.md) compares
+translation, rigid, similarity and affine fits from metric landmarks with outliers.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

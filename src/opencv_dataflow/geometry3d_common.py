@@ -34,6 +34,34 @@ def fit_plane_normal(points):
     return directions[-1], center
 
 
+def _centered_scaled(points):
+    center = points.mean(axis=0)
+    centered = points - center
+    span = np.max(np.abs(centered))
+    return (centered / span, center, span) if span else None
+
+
+def fit_similarity_3d(source, target):
+    """Fit positive uniform scale, proper rotation and translation to matched XYZ."""
+    a, b = _centered_scaled(source), _centered_scaled(target)
+    if a is None or b is None:
+        return None
+    src, src_center, src_span = a
+    dst, dst_center, dst_span = b
+    singular = np.linalg.svd(dst.T @ src, compute_uv=False)
+    if singular[1] <= 1e-7 * singular[0]:
+        return None
+    affine, local_scale = cv2.estimateAffine3D(src, dst, force_rotation=True)
+    if affine is None or not np.isfinite(affine).all() or not local_scale > 0:
+        return None
+    rotation = affine[:, :3]
+    scale = float(local_scale * dst_span / src_span)
+    translation = dst_center + affine[:, 3] * dst_span - scale * (rotation @ src_center)
+    if not np.isfinite(scale) or not scale > 0 or not np.isfinite(translation).all():
+        return None
+    return scale, rotation, translation
+
+
 def matrix(value, shape, name="Matrix"):
     value = np.asarray(value, np.float64)
     if value.shape != shape or not np.isfinite(value).all():
@@ -177,11 +205,7 @@ def undistort_camera_pixels(xy, model, k, d, projection=None):
 def stereo_cameras(left, right):
     a, b = camera(left), camera(right)
     lens = left.get("lens", "pinhole")
-    if (
-        a[2] != b[2]
-        or left["units"] != right["units"]
-        or right.get("lens", "pinhole") != lens
-    ):
+    if a[2] != b[2] or left["units"] != right["units"] or right.get("lens", "pinhole") != lens:
         raise ValueError("Stereo cameras must share lens family, image size and length units")
     if lens == "omnidir" and min(left["xi"], right["xi"]) < 0:
         raise ValueError("Omnidirectional stereo requires nonnegative xi")

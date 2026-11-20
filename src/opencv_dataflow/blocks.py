@@ -801,6 +801,7 @@ def builtin_registry():
     from .mask_clearance import MaskClearance
     from .mask_resampling import ResampleMask
     from .match_review import ReviewFeatureMatches
+    from .matched_transform import EstimateMatchedTransform
     from .matrix_eigen import MatrixEigen
     from .matrix_inverse import InvertMatrix
     from .matrix_multiply import MultiplyMatrices
@@ -1351,6 +1352,7 @@ def builtin_registry():
         MakeLandmarkView,
         ReconstructSparseViews,
         RecoverSceneScale,
+        EstimateMatchedTransform,
         DeclareCalibrationCapture,
         FisheyeCalibration,
         OmnidirectionalCalibration,

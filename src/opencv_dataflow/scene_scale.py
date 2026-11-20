@@ -1,11 +1,10 @@
 """Recover metric scale and world registration from reconstructed landmark IDs."""
 
-import cv2
 import numpy as np
 
 from .calibration_revisions import REVISION
 from .core import Port, Result
-from .geometry3d_common import Tool3D, cloud_graphics, pose_record
+from .geometry3d_common import Tool3D, cloud_graphics, fit_similarity_3d, pose_record
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
 from .pointclouds import PointCloud
@@ -57,37 +56,6 @@ def _controls(value):
     return value["frame"], anchors, holdouts
 
 
-def _centered(points):
-    center = points.mean(axis=0)
-    centered = points - center
-    span = np.max(np.abs(centered))
-    if not span:
-        return None
-    return centered / span, center, span
-
-
-def _estimate(source, target):
-    a, b = _centered(source), _centered(target)
-    if a is None or b is None:
-        return None
-    src, src_center, src_span = a
-    dst, dst_center, dst_span = b
-    # Noncollinear individual sets can still have a degenerate cross-covariance.
-    singular = np.linalg.svd(dst.T @ src, compute_uv=False)
-    if singular[1] <= 1e-7 * singular[0]:
-        return None
-    # Select the native uniformly scaled, proper-rotation overload.
-    affine, local_scale = cv2.estimateAffine3D(src, dst, force_rotation=True)
-    if affine is None or not np.isfinite(affine).all() or not local_scale > 0:
-        return None
-    rotation = affine[:, :3]
-    scale = float(local_scale * dst_span / src_span)
-    translation = dst_center + affine[:, 3] * dst_span - scale * (rotation @ src_center)
-    if not np.isfinite(scale) or not scale > 0 or not np.isfinite(translation).all():
-        return None
-    return scale, rotation, translation
-
-
 def _transform(points, fit):
     scale, rotation, translation = fit
     return scale * (points @ rotation.T) + translation
@@ -104,7 +72,7 @@ def _fit_anchors(source, target, tolerance, trials, seed):
     best, best_score, model = np.zeros(len(source), bool), (0, -np.inf), None
     for trial in range(trials + 1):
         subset = slice(None) if not trial else rng.choice(len(source), size=3, replace=False)
-        fit = _estimate(source[subset], target[subset])
+        fit = fit_similarity_3d(source[subset], target[subset])
         if fit is None:
             continue
         error = _residual(source, target, fit)
@@ -118,7 +86,7 @@ def _fit_anchors(source, target, tolerance, trials, seed):
     if model is None:
         return None, best
     for _ in range(4):
-        fit = _estimate(source[best], target[best])
+        fit = fit_similarity_3d(source[best], target[best])
         if fit is None:
             return None, np.zeros(len(source), bool)
         error = _residual(source, target, fit)

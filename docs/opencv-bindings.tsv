@@ -2500,7 +2500,7 @@ P3	function	cv2.estimateAffine3D	literal reference	-
 P3	function	cv2.estimateAffinePartial2D	literal reference	-
 P3	function	cv2.estimateChessboardSharpness	literal reference	-
 P3	function	cv2.estimateTranslation2D	literal reference	-
-P3	function	cv2.estimateTranslation3D	no static reference	-
+P3	function	cv2.estimateTranslation3D	literal reference	-
 P3	function	cv2.exp	literal reference	-
 P3	function	cv2.extractChannel	literal reference	-
 P3	class	cv2.face.BasicFaceRecognizer	no static reference	-

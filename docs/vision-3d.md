@@ -874,6 +874,19 @@ frame, preserving the input intrinsics and reprojections.
 - [OpenCV multi-view DLT reference](https://docs.opencv.org/5.0/extra_modules/triangulation.html)
 - [SciPy sparse least-squares reference](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.least_squares.html)
 
+**Estimate matched 3D transform** fits a source-to-target map between metric
+landmark clouds. Connect clouds in corresponding row order or supply one-to-one
+row pairs through **Pairs**. Select translation, rigid, similarity, or affine
+according to the physical relationship. The minimum match counts are 4, 3, 3,
+and 4, respectively. Rigid and similarity fits need non-collinear matches.
+Affine fits need non-coplanar matches.
+
+Set **Output units** to the common units for both sides of the transform.
+The distance threshold and residuals use meters for all input and output unit
+combinations. Translation and rigid models give a standard pose. Similarity
+and affine use separate records to represent scale and general linear maps.
+[Four-model example with outliers](<../examples/opencv tools/matched_3d_transforms/README.md>)
+
 ## Robot-world calibration
 
 **Calibrate robot-world and hand–eye** fits a transform from the moving object

@@ -38,6 +38,7 @@ BINDINGS = {
     ),
     "3d.reconstruct_sparse_views": "undistortPoints projectPoints",
     "3d.recover_scene_scale": "estimateAffine3D",
+    "3d.estimate_matched_transform": "estimateAffine3D estimateTranslation3D",
     "ml.optical_flow": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.stereo_disparity": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",
     "ml.monocular_depth": "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward remap",

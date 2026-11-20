@@ -705,6 +705,28 @@ Inputs: `points_left` (data), `points_right` (data), `camera` (data).
 | `right_frame` | `"right_camera"` |  |
 | `minimum_inliers` | `8` |  |
 
+## Estimate transform from matched 3D points (`3d.estimate_matched_transform`)
+
+3D vision / 3D registration
+
+Inputs: `source` (cloud), `target` (cloud), `pairs` (data, optional).
+
+Input `source` — Metric landmarks in the source frame.
+
+Input `target` — Metric landmarks in the target frame. Units may differ.
+
+Input `pairs` — Optional one-to-one [source row, target row] pairs. Default pairs by row order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model` | `"rigid"` | `translation`, `rigid`, `similarity`, `affine` Choose translation, rigid motion, uniform similarity, or full affine. |
+| `output_units` | `"m"` | `m`, `mm` Linear units for both sides of the resulting transform record. |
+| `inlier_threshold_m` | `0.001` | Value must be a finite number between 1e-07 and 1000. Inclusive Euclidean residual limit in meters. |
+| `minimum_inlier_fraction` | `0.6` | Value must be a finite number between 0 and 1. Fraction of all matched rows required for acceptance. |
+| `ransac_confidence` | `0.99` | Value must be a finite number between 0.5 and 0.9999. OpenCV confidence for translation and affine consensus. |
+| `maximum_trials` | `256` | Value must be a whole number between 1 and 2048. Maximum sampled triples for rigid and similarity consensus. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Reproducible local sampler seed for rigid and similarity modes. |
+
 ## Evaluate camera depth (`3d.evaluate_depth`)
 
 3D vision / Depth and RGB-D
