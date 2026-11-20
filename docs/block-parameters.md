@@ -1812,11 +1812,15 @@ Inputs: `points_left` (data), `points_right` (data), `projection_left` (data), `
 
 3D vision / Volumetric reconstruction
 
-Inputs: `views` (any), `camera` (data).
+Inputs: `views` (any), `camera` (data), `target_camera` (data, optional), `target_pose` (data, optional).
 
 Input `views` — One packed posed RGB-D view or a group of up to 64 packed views.
 
 Input `camera` — Common undistorted pinhole intrinsics for the registered optical grid.
+
+Input `target_camera` — Undistorted pinhole intrinsics and raster size for the requested view.
+
+Input `target_pose` — Rigid target-camera-to-world transform in meters or millimeters.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -1830,6 +1834,7 @@ Input `camera` — Common undistorted pinhole intrinsics for the registered opti
 | `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 depth sample. |
 | `sample_step` | `1` | Value must be a whole number between 1 and 256. Keep every nth extracted point in XYZ order. |
 | `max_points` | `200000` | Value must be a whole number between 1 and 2e+06. Maximum colored points after sampling. |
+| `raycast_step_factor` | `0.25` | Value must be a finite number between 0.001 and 1. Native ray-march step as a fraction of the truncation distance. |
 | `grid_policy` | `"shared_root"` | `shared_root`, `calibrated_grid` Require compatible provenance or explicitly assert calibrated alignment. |
 | `minimum_confidence` | `0.0` | Value must be a finite number between 0 and 1. Discard zero confidence and values below this threshold. |
 | `maximum_workspace_mib` | `192` | Value must be a whole number between 1 and 512. Budget for native volume, extraction and frame workspace. |
@@ -1838,7 +1843,11 @@ Input `camera` — Common undistorted pinhole intrinsics for the registered opti
 
 3D vision / Volumetric reconstruction
 
-Inputs: `depth` (depth, optional), `frames` (any, optional), `poses` (data), `camera` (data).
+Inputs: `depth` (depth, optional), `frames` (any, optional), `poses` (data), `camera` (data), `target_camera` (data, optional), `target_pose` (data, optional).
+
+Input `target_camera` — Undistorted pinhole intrinsics and raster size for the requested view.
+
+Input `target_pose` — Rigid target-camera-to-world transform in meters or millimeters.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |

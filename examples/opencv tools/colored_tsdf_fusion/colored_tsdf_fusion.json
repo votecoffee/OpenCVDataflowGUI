@@ -335,6 +335,7 @@
         "units_per_sample": 0.001,
         "sample_step": 1,
         "max_points": 200000,
+        "raycast_step_factor": 0.25,
         "grid_policy": "calibrated_grid",
         "minimum_confidence": 0.5,
         "maximum_workspace_mib": 64

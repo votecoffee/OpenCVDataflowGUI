@@ -27,3 +27,20 @@ limit. [OpenCV Volume reference](https://docs.opencv.org/5.0/main_modules/classc
 
 The recordings and the [builder](build_example.py) are original
 OpenCVDataflowGUI contributions under the repository's MIT license.
+
+## Render the volume from a new camera
+
+Open [tsdf_target_raycast.json](tsdf_target_raycast.json). It uses the same
+three captures and renders from a separate 112×68 camera with different
+intrinsics, rotation and translation. The tested wheel produced 5,803
+valid rays. The 99th-percentile absolute depth error was about 13.1 mm
+against analytic ray-plane intersections. The solid paint patches
+retain their RGB values.
+
+Connect both **Target camera** and **Target pose** for a new view. The
+pose maps the target optical frame to the volume's world frame. The
+depth output is camera Z in meters and the normals output holds float
+XYZ unit vectors in target camera axes. Missing depth and normals are
+NaN. Use **Valid mask** to distinguish valid black pixels from missing
+RGB. The cloud remains in world coordinates. A view that misses the
+surface reports zero coverage and a failed raycast.

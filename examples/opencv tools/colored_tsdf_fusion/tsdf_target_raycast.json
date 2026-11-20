@@ -1,0 +1,541 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Raycast the fused panel from a new camera",
+      "description": "Original synthetic fixture by OpenCVDataflowGUI contributors (MIT). Known camera poses observe red, blue and black on one sloped plane. Confidence excludes magenta samples with deliberately wrong depth. Render the volume at an independently specified pose and calibration.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 120,
+        "fy": 120,
+        "cx": 47.5,
+        "cy": 35.5,
+        "width": 96,
+        "height": 72,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "camera"
+      },
+      "position": [
+        780,
+        -165
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 3,
+        "distinct_sources": true,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        760,
+        550
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "record_1",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/record_1.json",
+        "repeat": "loop",
+        "maximum_skew_ms": 5.0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_1",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0,
+          0.0,
+          0
+        ],
+        "translation": [
+          -70,
+          0,
+          0
+        ],
+        "source_frame": "camera",
+        "target_frame": "panel",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        215
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view_1",
+      "type": "3d.pack_posed_rgbd",
+      "name": "Pack posed RGB-D view",
+      "description": "Keep registered color, depth, a camera pose and optional confidence together.",
+      "parameters": {},
+      "position": [
+        390,
+        50
+      ],
+      "exposed_inputs": [
+        "color",
+        "depth",
+        "pose",
+        "confidence"
+      ],
+      "exposed_outputs": [
+        "view"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "record_2",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/record_2.json",
+        "repeat": "loop",
+        "maximum_skew_ms": 5.0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        425
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_2",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0,
+          0.05,
+          0
+        ],
+        "translation": [
+          60,
+          0,
+          60
+        ],
+        "source_frame": "camera",
+        "target_frame": "panel",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        640
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view_2",
+      "type": "3d.pack_posed_rgbd",
+      "name": "Pack posed RGB-D view",
+      "description": "Keep registered color, depth, a camera pose and optional confidence together.",
+      "parameters": {},
+      "position": [
+        390,
+        475
+      ],
+      "exposed_inputs": [
+        "color",
+        "depth",
+        "pose",
+        "confidence"
+      ],
+      "exposed_outputs": [
+        "view"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "record_3",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/record_3.json",
+        "repeat": "loop",
+        "maximum_skew_ms": 5.0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        850
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose_3",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0,
+          -0.04,
+          0
+        ],
+        "translation": [
+          10,
+          0,
+          10
+        ],
+        "source_frame": "camera",
+        "target_frame": "panel",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        1065
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view_3",
+      "type": "3d.pack_posed_rgbd",
+      "name": "Pack posed RGB-D view",
+      "description": "Keep registered color, depth, a camera pose and optional confidence together.",
+      "parameters": {},
+      "position": [
+        390,
+        900
+      ],
+      "exposed_inputs": [
+        "color",
+        "depth",
+        "pose",
+        "confidence"
+      ],
+      "exposed_outputs": [
+        "view"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "surface",
+      "type": "3d.tsdf_color",
+      "name": "Render fused panel in target camera",
+      "description": "Reconstruct a fixed-volume colored surface from registered, posed depth and RGB.",
+      "parameters": {
+        "resolution": [
+          56,
+          48,
+          32
+        ],
+        "volume_origin_m": [
+          -0.35,
+          -0.3,
+          0.78
+        ],
+        "voxel_size_m": 0.0125,
+        "truncation_m": 0.04,
+        "max_weight": 64,
+        "max_depth_m": 2,
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "sample_step": 1,
+        "max_points": 200000,
+        "raycast_step_factor": 0.25,
+        "grid_policy": "calibrated_grid",
+        "minimum_confidence": 0.5,
+        "maximum_workspace_mib": 64
+      },
+      "position": [
+        1130,
+        440
+      ],
+      "exposed_inputs": [
+        "views",
+        "camera",
+        "target_camera",
+        "target_pose"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "report",
+        "depth",
+        "normals",
+        "valid_mask",
+        "color"
+      ],
+      "thumbnail": true,
+      "preview_output": "color"
+    },
+    {
+      "id": "target_camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 128.0,
+        "fy": 125.0,
+        "cx": 51.7,
+        "cy": 29.4,
+        "width": 112,
+        "height": 68,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "inspection_camera"
+      },
+      "position": [
+        760,
+        835
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target_pose",
+      "type": "3d.pose",
+      "name": "Define rigid 3D pose",
+      "parameters": {
+        "rvec": [
+          0.06,
+          0.025,
+          0.025
+        ],
+        "translation": [
+          45,
+          35,
+          130
+        ],
+        "source_frame": "inspection_camera",
+        "target_frame": "panel",
+        "units": "mm"
+      },
+      "position": [
+        760,
+        1080
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "record_1",
+      "output": "image",
+      "target": "view_1",
+      "input": "color"
+    },
+    {
+      "source": "record_1",
+      "output": "depth",
+      "target": "view_1",
+      "input": "depth"
+    },
+    {
+      "source": "record_1",
+      "output": "confidence",
+      "target": "view_1",
+      "input": "confidence"
+    },
+    {
+      "source": "pose_1",
+      "output": "transform",
+      "target": "view_1",
+      "input": "pose"
+    },
+    {
+      "source": "view_1",
+      "output": "view",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "record_2",
+      "output": "image",
+      "target": "view_2",
+      "input": "color"
+    },
+    {
+      "source": "record_2",
+      "output": "depth",
+      "target": "view_2",
+      "input": "depth"
+    },
+    {
+      "source": "record_2",
+      "output": "confidence",
+      "target": "view_2",
+      "input": "confidence"
+    },
+    {
+      "source": "pose_2",
+      "output": "transform",
+      "target": "view_2",
+      "input": "pose"
+    },
+    {
+      "source": "view_2",
+      "output": "view",
+      "target": "batch",
+      "input": "item_2"
+    },
+    {
+      "source": "record_3",
+      "output": "image",
+      "target": "view_3",
+      "input": "color"
+    },
+    {
+      "source": "record_3",
+      "output": "depth",
+      "target": "view_3",
+      "input": "depth"
+    },
+    {
+      "source": "record_3",
+      "output": "confidence",
+      "target": "view_3",
+      "input": "confidence"
+    },
+    {
+      "source": "pose_3",
+      "output": "transform",
+      "target": "view_3",
+      "input": "pose"
+    },
+    {
+      "source": "view_3",
+      "output": "view",
+      "target": "batch",
+      "input": "item_3"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "surface",
+      "input": "views"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "surface",
+      "input": "camera"
+    },
+    {
+      "source": "target_camera",
+      "output": "camera",
+      "target": "surface",
+      "input": "target_camera"
+    },
+    {
+      "source": "target_pose",
+      "output": "transform",
+      "target": "surface",
+      "input": "target_pose"
+    }
+  ]
+}

@@ -140,7 +140,10 @@ BINDINGS = {
     ),
     "3d.match_linemod_pose": "linemod.Detector.match linemod.Detector.readClasses matchTemplate",
     "3d.track_depth_fusion": "Odometry.compute Volume.integrate Volume.raycast Rodrigues",
-    "3d.tsdf_color": "VolumeSettings Volume.integrateColor Volume.fetchPointsNormalsColors",
+    "3d.tsdf_color": (
+        "VolumeSettings Volume.integrateColor Volume.fetchPointsNormalsColors Volume.raycastExColor"
+    ),
+    "3d.tsdf_fuse": "VolumeSettings Volume.integrate Volume.fetchPointsNormals Volume.raycastEx",
     "3d.track_silhouette": (
         "rapid.extractControlPoints rapid.extractLineBundle rapid.findCorrespondencies "
         "projectPoints Rodrigues"

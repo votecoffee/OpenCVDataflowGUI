@@ -13,6 +13,14 @@ from .pointclouds import PointCloud
 from .processing import finite, image_value, integer
 from .selection import selection_mask
 from .stereo3d import cloud_from_grid, metric_depth, rgbd_function
+from .volume_raycast import (
+    RAYCAST_INPUT_HELP,
+    RAYCAST_INPUTS,
+    RAYCAST_OUTPUT_HELP,
+    RAYCAST_PLANES,
+    render_raycast,
+    target_raycast,
+)
 
 NORMAL_METHODS = {
     "fals": "FALS",
@@ -317,8 +325,17 @@ class FuseTSDF(Tool3D):
         Port("frames", "any", required=False),
         Port("poses", "data", visual_type="pose"),
         Port("camera", "data"),
+        *RAYCAST_INPUTS,
     )
-    outputs = (Port("cloud", "cloud"), Port("depth", "depth"), Port("count", "number"))
+    outputs = (
+        Port("cloud", "cloud"),
+        Port("depth", "depth"),
+        Port("count", "number"),
+        *RAYCAST_PLANES,
+        Port("raycast_report", "data", required=False),
+    )
+    input_help = RAYCAST_INPUT_HELP
+    output_help = RAYCAST_OUTPUT_HELP
     defaults = {
         "resolution": [64, 64, 64],
         "voxel_size_m": 0.02,
@@ -338,12 +355,21 @@ class FuseTSDF(Tool3D):
         p, model = self.parameters, inputs["camera"]
         depths, transforms, target, k, (w, h) = tsdf_views(inputs, model)
         maximum = finite(p["max_depth_m"], "Maximum depth", 0.001)
+        view = target_raycast(inputs, target)
         with cpu_tsdf_volume(p, k, (w, h), maximum) as volume:
             for depth, pose in zip(depths, transforms):
                 values = metric_depth(depth, p["units_per_sample"], p["input_units"])
                 volume.integrate(np.nan_to_num(values, nan=0.0), pose)
             xyz, normals = volume.fetchPointsNormals()
-            rendered, _ = volume.raycast(transforms[-1])
+            if view is None:
+                rendered, _ = volume.raycast(transforms[-1])
+                values = rendered[..., 2].copy()
+                values[~np.isfinite(values) | (values <= 0)] = np.nan
+                rasters = {"depth": DepthArray(values, "m", 0.0, maximum)}
+                payloads = {"depth": {"spatial": frame((w, h), f"{self.id}:raycast")}}
+                report = NO_VALUE
+            else:
+                rasters, payloads, report = render_raycast(volume, view, self.id, maximum)
         xyz = (
             xyz.reshape(-1, xyz.shape[-1])[:, :3]
             if xyz is not None
@@ -360,14 +386,27 @@ class FuseTSDF(Tool3D):
         if len(idx) > integer(p["max_points"], "Max points", 1, 2000000):
             raise ValueError("Volume cloud exceeds max_points; increase sample_step")
         cloud = PointCloud(xyz[idx], "m", target, normals=normals[idx] / lengths[idx, None])
-        values = rendered[..., 2].copy()
-        values[~np.isfinite(values) | (values <= 0)] = np.nan
+        reasons = []
+        if view is not None and not report["valid_pixels"]:
+            reasons.append("tsdf_raycast_empty")
         return Result(
-            {"cloud": cloud, "depth": DepthArray(values, "m", 0.0, maximum), "count": len(idx)},
-            payloads={"depth": {"spatial": frame((w, h), f"{self.id}:raycast")}},
-            passed=bool(len(idx)),
+            {
+                "cloud": cloud,
+                "count": len(idx),
+                "normals": NO_VALUE,
+                "valid_mask": NO_VALUE,
+                "raycast_report": report,
+                **rasters,
+            },
+            payloads=payloads,
+            passed=bool(len(idx)) and not reasons,
+            fail_reasons=reasons,
             graphics=cloud_graphics(self, cloud),
-            message=f"Fused {len(depths)} posed frames · {len(idx)} surface points",
+            message=(
+                "The target view sees no valid surface"
+                if reasons
+                else f"Fused {len(depths)} posed frames · {len(idx)} surface points"
+            ),
         )
 
 

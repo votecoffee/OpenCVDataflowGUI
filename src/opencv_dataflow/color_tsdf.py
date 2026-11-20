@@ -16,6 +16,14 @@ from .pointclouds import PointCloud
 from .ptcloud3d import FuseTSDF, cpu_tsdf_volume, fixed_volume_resolution
 from .stereo3d import metric_depth
 from .tickets import ticket_key
+from .volume_raycast import (
+    RAYCAST_INPUT_HELP,
+    RAYCAST_INPUTS,
+    RAYCAST_OUTPUT_HELP,
+    RAYCAST_PLANES,
+    render_raycast,
+    target_raycast,
+)
 
 _REQUIRED = ("color", "depth", "pose")
 _MIB = 1 << 20
@@ -179,8 +187,14 @@ class FuseColorTSDF(Tool3D):
     description = "Reconstruct a fixed-volume colored surface from registered, posed depth and RGB."
     payload_reference = ""
     process_inputs_readonly = True
-    inputs = (Port("views", "any"), Port("camera", "data"))
-    outputs = (Port("cloud", "cloud", required=False), Port("report", "data"))
+    inputs = (Port("views", "any"), Port("camera", "data"), *RAYCAST_INPUTS)
+    outputs = (
+        Port("cloud", "cloud", required=False),
+        Port("report", "data"),
+        Port("depth", "depth", required=False),
+        *RAYCAST_PLANES,
+        Port("color", required=False),
+    )
     defaults = {
         **{
             name: FuseTSDF.defaults[name]
@@ -195,6 +209,7 @@ class FuseColorTSDF(Tool3D):
                 "units_per_sample",
                 "sample_step",
                 "max_points",
+                "raycast_step_factor",
             )
         },
         "grid_policy": "shared_root",
@@ -213,6 +228,7 @@ class FuseColorTSDF(Tool3D):
         "units_per_sample": NumericRange(1e-9, 1000),
         "sample_step": NumericRange(1, 256, whole=True),
         "max_points": NumericRange(1, 2_000_000, whole=True),
+        "raycast_step_factor": NumericRange(0.001, 1),
         "minimum_confidence": NumericRange(0, 1),
         "maximum_workspace_mib": NumericRange(1, 512, whole=True),
     }
@@ -227,6 +243,7 @@ class FuseColorTSDF(Tool3D):
         "units_per_sample": "Physical units per raw uint16 depth sample.",
         "sample_step": "Keep every nth extracted point in XYZ order.",
         "max_points": "Maximum colored points after sampling.",
+        "raycast_step_factor": "Native ray-march step as a fraction of the truncation distance.",
         "grid_policy": "Require compatible provenance or explicitly assert calibrated alignment.",
         "minimum_confidence": "Discard zero confidence and values below this threshold.",
         "maximum_workspace_mib": "Budget for native volume, extraction and frame workspace.",
@@ -234,10 +251,13 @@ class FuseColorTSDF(Tool3D):
     input_help = {
         "views": "One packed posed RGB-D view or a group of up to 64 packed views.",
         "camera": "Common undistorted pinhole intrinsics for the registered optical grid.",
+        **RAYCAST_INPUT_HELP,
     }
     output_help = {
         "cloud": "World-space points in meters with unit normals and fused RGB.",
-        "report": "Native workspace estimate and per-view valid and confidence-rejected counts.",
+        "report": "Workspace, input confidence counts and target view coverage when requested.",
+        "color": "RGB on the target grid. Use the validity mask to distinguish missing pixels.",
+        **RAYCAST_OUTPUT_HELP,
     }
 
     def validate_parameters(self, parameters=None):
@@ -270,16 +290,19 @@ class FuseColorTSDF(Tool3D):
         pixels = math.prod(size)
         if pixels * len(views) > _MAX_BATCH_PIXELS:
             raise ValidationError("RGB-D batch exceeds 16,777,216 calibrated pixels", "views")
-        voxels = math.prod(fixed_volume_resolution(p))
-        # Includes three crossings per voxel, native XYZ/normal/RGB vectors,
-        # their temporary capacity and returned arrays, plus one prepared raster.
-        workspace = 512 * voxels + 64 * pixels
-        if workspace > p["maximum_workspace_mib"] * _MIB:
-            raise ValidationError("ColorTSDF exceeds the workspace budget", "maximum_workspace_mib")
         transforms = [_view_transform(fields, model, size, p["grid_policy"]) for _, fields in views]
         target = transforms[0][1]
         if any(world != target for _, world in transforms):
             raise ValidationError("All RGB-D poses must share one world frame", "views")
+        view = target_raycast(inputs, target)
+        voxels = math.prod(fixed_volume_resolution(p))
+        # Includes three crossings per voxel, native XYZ/normal/RGB vectors,
+        # their temporary capacity and returned arrays, plus one prepared raster.
+        workspace = 512 * voxels + 64 * pixels
+        if view is not None:
+            workspace += 96 * view.pixels
+        if workspace > p["maximum_workspace_mib"] * _MIB:
+            raise ValidationError("ColorTSDF exceeds the workspace budget", "maximum_workspace_mib")
         ticket = self.input_payloads["views"].get("ticket")
         payloads = {"cloud": {"ticket": ticket}, "report": {"ticket": ticket}} if ticket else {}
         report = dict(
@@ -291,10 +314,12 @@ class FuseColorTSDF(Tool3D):
             surface_points=0,
             views=[],
         )
+        outputs = {port.name: NO_VALUE for port in self.outputs}
+        outputs["report"] = report
 
         def failure(reason, message):
             return Result(
-                {"cloud": NO_VALUE, "report": report},
+                outputs,
                 payloads=payloads,
                 passed=False,
                 fail_reasons=[reason],
@@ -303,11 +328,10 @@ class FuseColorTSDF(Tool3D):
 
         if self._cancelled():
             return failure("color_tsdf_cancelled", "ColorTSDF cancelled")
-        volume_settings = {**p, "raycast_step_factor": 0.25}
+        maximum = float(p["max_depth_m"])
         cloud = None
-        with cpu_tsdf_volume(
-            volume_settings, k, size, float(p["max_depth_m"]), color=True
-        ) as volume:
+        raycast = None
+        with cpu_tsdf_volume(p, k, size, maximum, color=True) as volume:
             for (label, fields), (transform, _) in zip(views, transforms, strict=True):
                 if self._cancelled():
                     return failure("color_tsdf_cancelled", "ColorTSDF cancelled")
@@ -318,13 +342,23 @@ class FuseColorTSDF(Tool3D):
                     report["integrated_frames"] += 1
             if report["integrated_frames"] and not self._cancelled():
                 cloud = _extract(volume.fetchPointsNormalsColors(), target, p)
+            if view is not None and not self._cancelled():
+                raycast = render_raycast(volume, view, self.id, maximum, color=True, ticket=ticket)
         if self._cancelled():
             return failure("color_tsdf_cancelled", "ColorTSDF cancelled")
+        if raycast is not None:
+            rasters, contexts, raycast_report = raycast
+            outputs.update(rasters)
+            payloads.update(contexts)
+            report["raycast"] = raycast_report
         if cloud is None or not len(cloud.points):
             return failure("color_tsdf_empty", "No colored surface was recovered in the volume")
         report["surface_points"] = len(cloud.points)
+        outputs["cloud"] = cloud
+        if raycast is not None and not report["raycast"]["valid_pixels"]:
+            return failure("tsdf_raycast_empty", "The target view sees no valid surface")
         return Result(
-            {"cloud": cloud, "report": report},
+            outputs,
             payloads=payloads,
             graphics=cloud_graphics(self, cloud),
             message=f"Fused {report['integrated_frames']} views · {len(cloud.points)} points",

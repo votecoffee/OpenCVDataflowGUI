@@ -64,8 +64,9 @@ def save_view(assets, key, index, pose):
 
 def build(output):
     project = output / "colored_tsdf_fusion.json"
+    target_project = output / "tsdf_target_raycast.json"
     assets = output / "assets"
-    if assets.exists() or project.exists():
+    if assets.exists() or project.exists() or target_project.exists():
         raise FileExistsError("Choose an empty output directory to preserve the example")
     assets.mkdir(parents=True)
     graph, registry = Graph(), builtin_registry()
@@ -116,7 +117,7 @@ def build(output):
                 graph.connect(source, "image" if field == "color" else field, packed, field)
             graph.connect(transform, "transform", packed, "pose")
             graph.connect(packed, "view", "batch", f"item_{index}")
-        add(
+        surface = add(
             "3d.tsdf_color",
             "surface",
             [1130, 440],
@@ -129,12 +130,49 @@ def build(output):
             maximum_workspace_mib=64,
             max_depth_m=2,
         )
+        surface.exposed_inputs = ["views", "camera"]
+        surface.exposed_outputs = ["cloud", "report"]
         graph.connect("batch", "group", "surface", "views")
         graph.connect("camera", "camera", "surface", "camera")
         validation = validate_graph(graph)
         if not validation["valid"]:
             raise ValueError(validation["issues"])
         graph.save(project)
+
+        note.name = "Raycast the fused panel from a new camera"
+        note.description += " Render the volume at an independently specified pose and calibration."
+        add(
+            "3d.camera",
+            "target_camera",
+            [760, 835],
+            width=112,
+            height=68,
+            fx=128.0,
+            fy=125.0,
+            cx=51.7,
+            cy=29.4,
+            frame="inspection_camera",
+        )
+        add(
+            "3d.pose",
+            "target_pose",
+            [760, 1080],
+            source_frame="inspection_camera",
+            target_frame="panel",
+            units="mm",
+            translation=[45, 35, 130],
+            rvec=[0.06, 0.025, 0.025],
+        )
+        surface.name = "Render fused panel in target camera"
+        surface.preview_output = "color"
+        surface.exposed_inputs += ["target_camera", "target_pose"]
+        surface.exposed_outputs += ["depth", "normals", "valid_mask", "color"]
+        graph.connect("target_camera", "camera", "surface", "target_camera")
+        graph.connect("target_pose", "transform", "surface", "target_pose")
+        validation = validate_graph(graph)
+        if not validation["valid"]:
+            raise ValueError(validation["issues"])
+        graph.save(target_project)
     finally:
         graph.close()
 

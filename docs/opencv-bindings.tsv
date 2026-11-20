@@ -4769,8 +4769,8 @@ P3	method	cv2.Volume.integrateColor	method name only	-
 P3	method	cv2.Volume.integrateFrame	no static reference	-
 P3	method	cv2.Volume.raycast	method name only	-
 P3	method	cv2.Volume.raycastColor	no static reference	-
-P3	method	cv2.Volume.raycastEx	no static reference	-
-P3	method	cv2.Volume.raycastExColor	no static reference	-
+P3	method	cv2.Volume.raycastEx	method name only	-
+P3	method	cv2.Volume.raycastExColor	method name only	-
 P3	method	cv2.Volume.reset	method name only	-
 P3	method	cv2.Volume.setEnableGrowth	no static reference	-
 P3	class	cv2.VolumeSettings	literal reference	-

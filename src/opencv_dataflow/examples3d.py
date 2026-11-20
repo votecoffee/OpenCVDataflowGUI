@@ -204,7 +204,7 @@ def structured_light_graph(registry):
 
 
 def tsdf_graph(registry):
-    return make_graph(
+    graph = make_graph(
         registry,
         [
             ("pair", "input.stereo_demo", [0, 0], {}),
@@ -219,3 +219,7 @@ def tsdf_graph(registry):
             ("volume", "cloud", "view", "cloud"),
         ],
     )
+    volume = graph.blocks["volume"]
+    volume.exposed_inputs = ["depth", "frames", "poses", "camera"]
+    volume.exposed_outputs = ["cloud", "depth", "count"]
+    return graph

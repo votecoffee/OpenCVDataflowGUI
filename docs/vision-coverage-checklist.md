@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 93 | 10 | 28 | 131 | 71.0% |
+| 3. 3D imagery and point clouds | 94 | 9 | 28 | 131 | 71.8% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 348 | 14 | 108 | 470 | 74.0% |
+| **Overall** | 349 | 13 | 108 | 470 | 74.3% |
 
 <!-- coverage-summary:end -->
 
@@ -522,7 +522,7 @@ fixture or result needed to close the item.
 | S3-91 | Refine and rank multiple surface-match hypotheses | PPF3DDetector candidates and ICP refinement | Complete | `3d.ppf_match` optionally reranks bounded candidates by model coverage and reciprocal RMSE after local ICP, and suppresses duplicate poses. The [PPF example](<../examples/opencv tools/ppf_surface_ranking/README.md>) recovers and reranks two occluded instances among clutter. A focused duplicate test keeps the better-supported fit. |
 | S3-92 | Merge registered point-cloud scans | Rigid transforms, frame reconciliation and overlap-aware sampling | Complete | `3d.cloud_merge` combines direct or grouped metric scans with optional overlap suppression, rotates normals and emits per-scan provenance. The [registered scans example](<../examples/custom tools/cloud_scan_merge/README.md>) verifies unit conversion, 11 input rows, three cross-scan duplicates and eight retained rows. |
 | S3-93 | Fuse registered color into a TSDF | Volume ColorTSDF, integrateColor and fetchPointsNormalsColors | Complete | `3d.tsdf_color` fuses posed, registered uint8 color and metric depth. The [painted panel example](<../examples/opencv tools/colored_tsdf_fusion/README.md>) checks geometry and channel alignment across three poses, confidence rejection, and fixed-volume memory admission. |
-| S3-94 | Raycast a fused volume into a new camera view | Volume.raycastEx and raycastExColor | Partial | 3d.tsdf_fuse raycasts the last input view. Verify an independent target pose and intrinsics with explicit depth, normal, color and validity outputs. |
+| S3-94 | Raycast a fused volume into a new camera view | Volume.raycastEx and raycastExColor | Complete | `3d.tsdf_fuse` and `3d.tsdf_color` accept independent target intrinsics and metric pose. The [target raycast](<../examples/opencv tools/colored_tsdf_fusion/tsdf_target_raycast.json>) verifies depth, target-axis normals, RGB and validity against analytic rays on a painted surface. |
 | S3-95 | Bounded hashed and growing TSDF volumes | Volume HashTSDF, setEnableGrowth and visible-block diagnostics | Planned | Reconstruct a longer sequence that exceeds a fixed volume, cap growth, and verify geometry and eviction or rejection behavior. |
 | S3-96 | Binary and organized PCD interchange | PCD binary layouts, dimensions and point fields | Partial | input.cloud and output.cloud support ASCII PCD. Verify binary layouts, declared organization, and invalid samples with external round trips. |
 | S3-97 | Generate a surface mesh from an organized depth grid | Adjacent depth samples and discontinuity-aware triangulation | Planned | Build triangles for known depth surfaces while leaving holes at depth jumps, preserving camera provenance and valid normals. |

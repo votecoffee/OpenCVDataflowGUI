@@ -30,6 +30,7 @@ Open these projects with **File → Open…**.
 | [Robot-world and hand–eye](<../examples/opencv tools/robot_world/README.md>) | Jointly fit two poses and predict held-out board images with a fixed or robot-mounted camera. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 | [Colored TSDF fusion](<../examples/opencv tools/colored_tsdf_fusion/README.md>) | Fuse three registered RGB-D views of a colored surface with confidence gating. |
+| [Independent TSDF target view](<../examples/opencv tools/colored_tsdf_fusion/tsdf_target_raycast.json>) | Raycast the painted surface onto a new calibrated camera grid. |
 | [TSDF mesh](<../examples/skimage tools/tsdf_mesh/README.md>) | Extract a metric triangle surface and preserve the gap in observed depth. |
 
 Run once, then use **Results > 3D point-cloud viewer…**. Choose a retained cloud
@@ -684,6 +685,15 @@ undistorted pinhole model across views. Optional confidence gates the
 samples before integration. The block emits world-space RGB points, unit
 normals and per-view counts under a configurable workspace estimate.
 [Colored TSDF example](<../examples/opencv tools/colored_tsdf_fusion/README.md>)
+
+Both native fusion blocks accept **Target camera** and **Target pose** as
+a pair. Use an undistorted pinhole model and a metric pose from its optical
+frame to the common volume frame. An independent raycast emits axial depth,
+float XYZ normals and a validity mask on the target grid. ColorTSDF also
+emits RGB and includes the target raster in its workspace check. The mask
+identifies valid black RGB pixels. Without a target pair, the depth block
+renders the last input view and the color block emits its cloud and report.
+[Target raycast example](<../examples/opencv tools/colored_tsdf_fusion/tsdf_target_raycast.json>)
 
 **Track depth trajectory with TSDF** processes a batch of ordered, calibrated
 metric depth planes. It estimates motion from the last accepted exposure
