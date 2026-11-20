@@ -1,7 +1,9 @@
 """Shared ArUco dictionary choices and marker detector settings."""
 
 import cv2
+import numpy as np
 
+from .parameter_validation import ValidationError
 from .processing import finite, integer
 
 DICTIONARIES = {
@@ -31,6 +33,25 @@ MARKER_CHOICES = {
     "dictionary": tuple(DICTIONARIES),
     "corner_refinement": tuple(_CORNER_REFINEMENT),
 }
+
+
+def board_marker_ids(ids, count, dictionary):
+    capacity = len(dictionary.bytesList)
+    if count > capacity:
+        raise ValidationError("The dictionary has fewer IDs than board markers", "dictionary")
+    if not isinstance(ids, list) or (
+        ids
+        and (
+            len(ids) != count
+            or any(type(i) is not int or not 0 <= i < capacity for i in ids)
+            or len(set(ids)) != count
+        )
+    ):
+        raise ValidationError(
+            f"Provide {count} unique marker IDs in 0..{capacity - 1}, or an empty list",
+            "marker_ids",
+        )
+    return np.asarray(ids or range(count), dtype=np.int32)
 
 
 def detector_parameters(p):

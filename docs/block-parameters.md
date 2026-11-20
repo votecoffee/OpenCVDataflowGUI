@@ -1108,6 +1108,26 @@ Input `region` — Optional anchor-grid region intersected with the calibration 
 | `maximum_noise` | `0.02` | Value must be a finite number at least 0. Maximum channel noise: full-scale fraction or float sample units. |
 | `retain_noise` | `false` | Emit noise maps; Check noise computes them even when not retained. |
 
+## Generate planar fiducial target (`calibration.generate_fiducial_target`)
+
+Calibration / Grid and coordinates
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `layout` | `"charuco"` | `aruco_marker`, `aruco_grid`, `charuco` Single encoded marker, regular marker grid or a ChArUco chessboard. |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` Predefined ArUco or AprilTag family. Match it in the detector. |
+| `marker_ids` | `[]` | IDs in board order. Leave empty to start at zero. |
+| `columns` | `7` | Value must be a whole number between 1 and 64. Markers across an ArUco grid or squares across a ChArUco board. |
+| `rows` | `5` | Value must be a whole number between 1 and 64. Markers down an ArUco grid or squares down a ChArUco board. |
+| `marker_length` | `22.0` | Value must be a finite number between 1e-06 and 10000. Outer black edge length in the selected units. |
+| `marker_separation` | `8.0` | Value must be a finite number between 1e-06 and 10000. White edge-to-edge spacing in an ArUco grid. |
+| `square_length` | `30.0` | Value must be a finite number between 1e-06 and 10000. ChArUco square pitch. Preserved at the reported print size. |
+| `legacy_pattern` | `false` | Use the OpenCV pre-4.6 ChArUco parity for even row counts. |
+| `border_bits` | `1` | Value must be a whole number between 1 and 10. Width of the black frame in code modules. Match it in the detector. |
+| `margin` | `8.0` | Value must be a finite number between 0 and 10000. White page margin on every side, in the selected length units. |
+| `units` | `"mm"` | `mm`, `m` Length units for the target configuration, geometry and print size. |
+| `dpi` | `300` | Value must be a whole number between 36 and 2400. Desired render density. The reported effective density accounts for rounding. |
+
 ## Calibration grid (`calibration.grid`)
 
 Calibration / Grid and coordinates

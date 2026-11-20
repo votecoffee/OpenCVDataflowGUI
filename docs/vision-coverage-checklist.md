@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 46 | 19 | 66 | 131 | 35.1% |
+| 3. 3D imagery and point clouds | 47 | 19 | 65 | 131 | 35.9% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 301 | 23 | 146 | 470 | 64.0% |
+| **Overall** | 302 | 23 | 145 | 470 | 64.3% |
 
 <!-- coverage-summary:end -->
 
@@ -455,7 +455,7 @@ fixture or result needed to close the item.
 | S3-34 | Detect checkerboards and assess capture quality | findChessboardCorners/SB, cornerSubPix | Complete | calibration.grid, calibration.chessboard_quality. Check corner spacing, blur and exposure before forwarding views. |
 | S3-35 | Detect symmetric and staggered circle grids | findCirclesGrid, SimpleBlobDetector | Complete | calibration.grid. Verify ordered circle-grid observations with independent synthetic targets. |
 | S3-36 | Detect partial ChArUco targets | aruco.CharucoDetector | Complete | calibration.charuco. Recover board and pixel correspondence by ID from partially visible views. |
-| S3-37 | Generate planar fiducial targets | aruco.generateImageMarker, Board.generateImage | Planned | Render configurable marker and board layouts and verify a detection round trip with declared physical geometry. |
+| S3-37 | Generate planar fiducial targets | aruco.generateImageMarker, GridBoard.generateImage, CharucoBoard.generateImage | Complete | calibration.generate_fiducial_target renders single markers, ArUco grids and ChArUco targets with physical geometry and print size. [Round trips](<../examples/opencv tools/fiducial_targets/README.md>) verify custom IDs, legacy parity, digital corners, physical scale and PNG export. |
 | S3-38 | ChArUco pinhole calibration with independent verification | calibrateCameraExtended from per-view ID subsets | Complete | calibration.lens, calibration.validate_lens, calibration.charuco. Fit from differing visible corner sets and verify errors by ID. |
 | S3-39 | Inspect lens-map displacement | Source/remap point displacement magnitude and mask | Complete | calibration.lens_map_displacement. Verify distortion vectors and map validity against known displacement. |
 | S3-40 | Camera matrix optimization for useful output support | getOptimalNewCameraMatrix, initUndistortRectifyMap | Complete | calibration.lens_maps. Compare cropped and extended fields of view and report output intrinsics. |

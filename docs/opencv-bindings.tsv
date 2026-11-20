@@ -165,10 +165,10 @@ P2	method	cv2.aruco.ArucoDetector.setDictionary	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.setRefineParameters	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.write	method name only	-
 P2	class	cv2.aruco.Board	no static reference	-
-P2	method	cv2.aruco.Board.generateImage	no static reference	-
+P2	method	cv2.aruco.Board.generateImage	method name only	-
 P2	method	cv2.aruco.Board.getDictionary	no static reference	-
 P2	method	cv2.aruco.Board.getIds	method name only	-
-P2	method	cv2.aruco.Board.getObjPoints	no static reference	-
+P2	method	cv2.aruco.Board.getObjPoints	method name only	-
 P2	method	cv2.aruco.Board.getRightBottomCorner	no static reference	-
 P2	method	cv2.aruco.Board.matchImagePoints	method name only	-
 P2	class	cv2.aruco.CharucoBoard	literal reference	-
@@ -195,7 +195,7 @@ P2	class	cv2.aruco.DetectorParameters	literal reference	-
 P2	method	cv2.aruco.DetectorParameters.readDetectorParameters	no static reference	-
 P2	method	cv2.aruco.DetectorParameters.writeDetectorParameters	no static reference	-
 P2	class	cv2.aruco.Dictionary	no static reference	-
-P2	method	cv2.aruco.Dictionary.generateImageMarker	no static reference	-
+P2	method	cv2.aruco.Dictionary.generateImageMarker	method name only	-
 P2	method	cv2.aruco.Dictionary.getBitsFromByteList	no static reference	-
 P2	method	cv2.aruco.Dictionary.getByteListFromBits	no static reference	-
 P2	method	cv2.aruco.Dictionary.getDistanceToId	no static reference	-
@@ -209,9 +209,9 @@ P2	function	cv2.aruco.drawDetectedCornersCharuco	no static reference	-
 P2	function	cv2.aruco.drawDetectedDiamonds	no static reference	-
 P2	function	cv2.aruco.drawDetectedMarkers	literal reference	-
 P2	function	cv2.aruco.extendDictionary	no static reference	-
-P2	function	cv2.aruco.generateImageMarker	no static reference	-
+P2	function	cv2.aruco.generateImageMarker	literal reference	-
 P2	function	cv2.aruco.getPredefinedDictionary	literal reference	-
-P2	class	cv2.aruco.GridBoard	no static reference	-
+P2	class	cv2.aruco.GridBoard	literal reference	-
 P2	method	cv2.aruco.GridBoard.getGridSize	no static reference	-
 P2	method	cv2.aruco.GridBoard.getMarkerLength	no static reference	-
 P2	method	cv2.aruco.GridBoard.getMarkerSeparation	no static reference	-

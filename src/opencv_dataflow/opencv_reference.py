@@ -137,6 +137,9 @@ BINDINGS = {
     ),
     "3d.triangulate": "triangulatePoints",
     "3d.undistort_points": "undistortPoints fisheye.undistortPoints omnidir.undistortPoints",
+    "calibration.generate_fiducial_target": (
+        "aruco.generateImageMarker aruco.Board.generateImage"
+    ),
     "calibration.charuco": "aruco.CharucoDetector.detectBoard",
     "calibration.chessboard_quality": "findChessboardCornersSB estimateChessboardSharpness",
     "calibration.grid": "findChessboardCorners findChessboardCornersSB findHomography",

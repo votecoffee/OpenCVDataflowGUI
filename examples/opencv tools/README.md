@@ -14,6 +14,9 @@ For a first introduction to running and editing graphs, use the
 [Demos guided tour](../demos/README.md). [Custom tools](<../custom tools/README.md>)
 contains project-defined inspection algorithms and other-library integrations.
 
+[Planar fiducial targets](fiducial_targets/README.md) generates printable
+ArUco markers, ArUco grids and ChArUco boards and checks digital detection.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera
