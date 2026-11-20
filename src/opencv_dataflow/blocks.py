@@ -687,6 +687,7 @@ def builtin_registry():
     from .ecc_registration import AlignECC
     from .edge_agreement import CompareEdgeMaps
     from .epipolar import CheckEpipolarCorrespondences
+    from .epipolar_refinement import RefineEpipolarCorrespondences
     from .example_plugins import invert as invert_example
     from .example_plugins import mean_inspection as mean_example
     from .examples3d import StereoDemo
@@ -1298,6 +1299,7 @@ def builtin_registry():
         FisheyeCalibration,
         OmnidirectionalCalibration,
         CheckEpipolarCorrespondences,
+        RefineEpipolarCorrespondences,
         *STEREO3D_BLOCKS,
         CalibrateWideStereo,
         *CLOUD_BLOCKS,

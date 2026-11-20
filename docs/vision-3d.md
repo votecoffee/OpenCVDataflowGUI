@@ -120,6 +120,16 @@ overlay and graphics layer uses its own view's coordinate frame. A matrix
 from **Fundamental matrix** carries the source point frames, so the review
 can reject a mismatch such as using a raw-view matrix on rectified points.
 
+**Score and refine epipolar correspondences** computes square-root Sampson
+error in pixels for ordered stereo matches. Evaluate mode forwards the raw
+pairs that meet the limit. Correct mode passes those pairs to OpenCV optimal
+correction and checks the remaining residual, per-view displacement and
+known image bounds. Undefined epipolar directions, including exact epipoles,
+are rejected before correction. The report and **Inliers** mask follow input
+order. **Indices** identifies the rows retained in the compact left and right
+point outputs. Each output and preview keeps its own view's frame.
+[Noisy stereo match example](<../examples/opencv tools/epipolar_refinement/README.md>)
+
 ## Stereo and depth
 
 **Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional

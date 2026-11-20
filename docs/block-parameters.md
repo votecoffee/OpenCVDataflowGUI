@@ -693,6 +693,31 @@ Inputs: `image` (image), `camera` (data).
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
 | `border_value` | `0.0` |  |
 
+## Score and refine epipolar correspondences (`3d.refine_epipolar`)
+
+3D vision / Reconstruction
+
+Inputs: `points_left` (data), `points_right` (data), `matrix` (data), `left_image` (image, optional), `right_image` (image, optional).
+
+Input `points_left` — First list of paired points in left-image pixels.
+
+Input `points_right` — Corresponding points in right-image pixels, in the same pair order.
+
+Input `matrix` — Fundamental matrix F for left-to-right mapping, where p_rightᵀ F p_left = 0.
+
+Input `left_image` — Optional left source image for diagnostics.
+
+Input `right_image` — Optional right source image for diagnostics.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"correct"` | `evaluate`, `correct` Evaluate accepts original points. Correct applies OpenCV optimal correction. |
+| `maximum_sampson_px` | `2.0` | Value must be a finite number between 0 and 100000. Reject raw pairs above this square-root Sampson error in pixels. |
+| `maximum_shift_px` | `3.0` | Value must be a finite number between 0 and 100000. Maximum correction displacement in either image, in pixels. |
+| `corrected_tolerance_px` | `0.0001` | Value must be a finite number between 1e-09 and 100. Maximum residual square-root Sampson error after correction. |
+| `minimum_inlier_ratio` | `1.0` | Value must be a finite number between 0 and 1. Fraction of all input pairs that must remain accepted to pass. |
+| `max_drawn_pairs` | `64` | Value must be a whole number between 0 and 512. Maximum input pairs per preview. Zero disables correction drawings. |
+
 ## Register depth to camera (`3d.register_depth`)
 
 3D vision / RGB-D

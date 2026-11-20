@@ -2103,7 +2103,7 @@ P3	function	cv2.cornerHarris	literal reference	-
 P3	function	cv2.cornerMinEigenVal	literal reference	-
 P3	function	cv2.cornerSubPix	literal reference	-
 P3	function	cv2.correctChromaticAberration	literal reference	-
-P3	function	cv2.correctMatches	no static reference	-
+P3	function	cv2.correctMatches	literal reference	-
 P3	function	cv2.countNonZero	literal reference	-
 P3	function	cv2.createAffineTransformer	no static reference	-
 P3	function	cv2.createAlignMTB	literal reference	-

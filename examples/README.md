@@ -178,6 +178,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Channels and image pyramids](<opencv tools/channels_pyramids/README.md>) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
 | [Planar fiducial targets](<opencv tools/fiducial_targets/README.md>) | Generate and verify a single marker, an ID-ordered ArUco grid and a legacy ChArUco board with physical print dimensions. |
 | [Planar pose hypotheses](<opencv tools/planar_pose_hypotheses/README.md>) | Compare candidate poses on near-frontal and oblique views of the same target. |
+| [Epipolar match refinement](<opencv tools/epipolar_refinement/README.md>) | Score noisy stereo points, filter bad matches and validate each accepted correction against known projections. |
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |
 | [ChArUco calibration validation](<opencv tools/validate_charuco_calibration/README.md>) | Check the fitted profile on a separate cropped board and identify the worst corner. |
 | [Wide-angle stereo](<opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, rectify a held-out view pair and recover metric depth. |

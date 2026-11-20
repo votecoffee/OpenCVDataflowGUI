@@ -150,7 +150,8 @@ BLOCK_MODULES = {
     "imgcodecs": "input.file input.depth_file input.raw_yuv input.raw_sensor output.image",
     "calib": (
         "3d.camera 3d.project 3d.undistort_points 3d.stereo_rig 3d.stereo_calibrate "
-        "3d.stereo_rectify 3d.rectify_camera 3d.check_epipolar 3d.fisheye_calibrate "
+        "3d.stereo_rectify 3d.rectify_camera 3d.check_epipolar 3d.refine_epipolar "
+        "3d.fisheye_calibrate "
         "3d.omnidir_calibrate 3d.wide_stereo_calibrate"
     ),
     "geometry": "inspect.affine inspect.homography collection.clip_lines",

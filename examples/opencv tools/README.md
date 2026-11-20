@@ -20,6 +20,9 @@ ArUco markers, ArUco grids and ChArUco boards and checks digital detection.
 [Planar pose hypotheses](planar_pose_hypotheses/README.md) shows how close
 reprojection scores can leave a plane orientation ambiguous.
 
+[Epipolar match refinement](epipolar_refinement/README.md) scores noisy
+pairs in two camera grids and checks corrected positions on a known rig.
+
 [Fisheye camera calibration](fisheye_calibration/README.md) shows a fit from
 multiple grid images followed by held-out reprojection and rectification.
 [Omnidirectional calibration](omnidir_calibration/README.md) fits the Mei camera
