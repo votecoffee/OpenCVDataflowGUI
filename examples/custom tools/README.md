@@ -29,6 +29,9 @@ try [ALIKED and LightGlue](aliked_matching/README.md).
 For image measurements on a shared pixel or physical grid, try [profile resampling](profile_resampling/README.md).
 For conditional motion-kernel estimation, separate validation and gated restoration, try [motion blur estimation](motion_blur_estimation/README.md).
 
+[Voxel representatives](voxel_representatives/README.md) compare measured rows
+and centroids in the same per-axis voxel grid.
+
 [Point-cloud sampling](cloud_sampling/README.md) compares coverage at an
 equal point budget and preserves the source cloud's row IDs.
 

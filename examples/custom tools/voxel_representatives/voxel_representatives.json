@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Retain measured voxel representatives",
+      "description": "Original synthetic colored scan by the OpenCVDataflowGUI contributors (MIT). Use 10 \u00d7 20 \u00d7 30 mm voxels and compare the measured representative with the geometric centroid for the same groups.",
+      "parameters": {},
+      "position": [
+        0,
+        -280
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load PLY / PCD point cloud",
+      "parameters": {
+        "path": "assets/voxel_groups.ply",
+        "units": "mm",
+        "frame": "voxel_fixture",
+        "max_points": 1000000
+      },
+      "position": [
+        0,
+        70
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "representative",
+      "type": "3d.cloud_voxel",
+      "name": "Nearest measured row",
+      "description": "Group points in a voxel grid and retain a measured row or its centroid.",
+      "parameters": {
+        "voxel_size": 0.01,
+        "mode": "representative",
+        "spacing": "per_axis",
+        "voxel_size_x": 10,
+        "voxel_size_y": 20,
+        "voxel_size_z": 30
+      },
+      "position": [
+        405,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "indices"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "centroid",
+      "type": "3d.cloud_voxel",
+      "name": "Voxel centroids",
+      "description": "Group points in a voxel grid and retain a measured row or its centroid.",
+      "parameters": {
+        "voxel_size": 0.01,
+        "mode": "centroid",
+        "spacing": "per_axis",
+        "voxel_size_x": 10,
+        "voxel_size_y": 20,
+        "voxel_size_z": 30
+      },
+      "position": [
+        405,
+        300
+      ],
+      "exposed_inputs": [
+        "cloud"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "indices"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "representative",
+      "input": "cloud"
+    },
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "centroid",
+      "input": "cloud"
+    }
+  ]
+}

@@ -507,8 +507,14 @@ available in Debug and Balanced.
 
 - **Filter point cloud** selects XYZ bounds and can also use an image mask or
   region when pixel correspondence remains available. Regions retain source
-  image frame checks. **Voxel-sample** can retain the first point per voxel or
-  compute centroids. Centroids drop measured pixel indices and normals.
+  image frame checks.
+- **Voxel-sample point cloud** uses a zero-anchored grid with uniform or per-axis
+  spacing in the cloud's units. Each occupied voxel can retain its first
+  source row, compute a centroid, or retain the measured row nearest its
+  centroid. Equal distances select the earliest input row. Measured modes can
+  expose original row indices and preserve the corresponding colors, normals
+  and pixels. Centroid mode averages positions and colors. [Voxel sampling
+  example](<../examples/custom tools/voxel_representatives/README.md>)
 - **Sample point cloud** chooses original rows by seeded random sampling
   without replacement or greedy farthest-point sampling. Set a maximum count
   or a capped fraction in the inspector. Farthest mode can stop when the next

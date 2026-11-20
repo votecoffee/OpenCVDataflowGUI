@@ -377,8 +377,12 @@ Inputs: `cloud` (cloud).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `voxel_size` | `0.01` |  |
-| `mode` | `"first"` | `first`, `centroid` |
+| `voxel_size` | `0.01` | Value must be a finite number at least 1e-12. Size on all axes for Uniform spacing, in the cloud's units. |
+| `mode` | `"first"` | `first`, `centroid`, `representative` Keep the first row, compute a centroid, or keep the nearest row to the centroid. |
+| `spacing` | `"uniform"` | `uniform`, `per_axis` Use the same voxel size on every axis or separate X, Y and Z sizes. |
+| `voxel_size_x` | `0.01` | Value must be a finite number at least 1e-12. Size along X for Per axis spacing, in the cloud's units. |
+| `voxel_size_y` | `0.01` | Value must be a finite number at least 1e-12. Size along Y for Per axis spacing, in the cloud's units. |
+| `voxel_size_z` | `0.01` | Value must be a finite number at least 1e-12. Size along Z for Per axis spacing, in the cloud's units. |
 
 ## Compose / invert 3D poses (`3d.compose`)
 

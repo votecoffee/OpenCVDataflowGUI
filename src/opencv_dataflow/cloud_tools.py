@@ -9,6 +9,7 @@ import numpy as np
 
 from .core import Port, Result
 from .geometry3d_common import Tool3D, cloud_graphics, pose_record, rigid, transformed_cloud
+from .parameter_validation import NumericRange
 from .payloads import NO_VALUE, image_with_payload
 from .pointclouds import PointCloud, render_cloud
 from .processing import finite, integer
@@ -86,41 +87,95 @@ class FilterCloud(Tool3D):
 
 class VoxelCloud(Tool3D):
     type_id, title, subtype = "3d.cloud_voxel", "Voxel-sample point cloud", "Point clouds"
+    description = "Group points in a voxel grid and retain a measured row or its centroid."
+    payload_reference = "cloud"
+    preview_safe = parallel_safe = process_inputs_readonly = True
     inputs = (Port("cloud", "cloud"),)
-    outputs = (Port("cloud", "cloud"), Port("count", "number"))
-    defaults = {"voxel_size": 0.01, "mode": "first"}
-    parameter_choices = {"mode": ("first", "centroid")}
+    outputs = (
+        Port("cloud", "cloud"),
+        Port("count", "number"),
+        Port("indices", "data", required=False),
+    )
+    defaults = {
+        "voxel_size": 0.01,
+        "mode": "first",
+        "spacing": "uniform",
+        "voxel_size_x": 0.01,
+        "voxel_size_y": 0.01,
+        "voxel_size_z": 0.01,
+    }
+    parameter_choices = {
+        "mode": ("first", "centroid", "representative"),
+        "spacing": ("uniform", "per_axis"),
+    }
+    parameter_ranges = {
+        name: NumericRange(1e-12)
+        for name in ("voxel_size", "voxel_size_x", "voxel_size_y", "voxel_size_z")
+    }
+    parameter_help = {
+        "mode": "Keep the first row, compute a centroid, or keep the nearest row to the centroid.",
+        "spacing": "Use the same voxel size on every axis or separate X, Y and Z sizes.",
+        "voxel_size": "Size on all axes for Uniform spacing, in the cloud's units.",
+        "voxel_size_x": "Size along X for Per axis spacing, in the cloud's units.",
+        "voxel_size_y": "Size along Y for Per axis spacing, in the cloud's units.",
+        "voxel_size_z": "Size along Z for Per axis spacing, in the cloud's units.",
+    }
 
     def process(self, inputs):
-        cloud = inputs["cloud"]
-        size = finite(self.parameters["voxel_size"], "Voxel size", 1e-12)
-        cells = np.floor(cloud.points.astype(float) / size)
+        cloud, p = inputs["cloud"], self.parameters
+        spacing = (
+            float(p["voxel_size"])
+            if p["spacing"] == "uniform"
+            else [float(p[f"voxel_size_{axis}"]) for axis in "xyz"]
+        )
+        cells = np.divide(cloud.points, spacing, dtype=np.float64)
+        np.floor(cells, out=cells)
         if np.any(np.abs(cells) > 1e15):
             raise ValueError("Voxel coordinates exceed the supported range")
-        _, indices, inverse = np.unique(
+        indices, inverse = np.unique(
             cells.astype(np.int64), axis=0, return_index=True, return_inverse=True
-        )
-        result = cloud.subset(indices)
-        if self.parameters["mode"] == "centroid" and len(indices):
+        )[1:]
+        del cells
+        mode = p["mode"]
+        needs_representative = mode == "representative" and len(indices) < len(inverse)
+        if (mode == "centroid" and len(indices)) or needs_representative:
             counts = np.bincount(inverse)
-            result.points = np.stack(
-                [np.bincount(inverse, weights=cloud.points[:, i]) / counts for i in range(3)],
-                axis=1,
-            ).astype(np.float32)
+            sums = np.column_stack(
+                [np.bincount(inverse, weights=column) for column in cloud.points.T]
+            )
+            if needs_representative:
+                # Within a voxel all squared distances share the same count-squared
+                # denominator. Comparing numerators avoids rounding the centroid first.
+                sizes = counts[inverse]
+                squared = np.zeros(len(inverse), np.float64)
+                for axis in range(3):
+                    residual = cloud.points[:, axis].astype(np.float64) * sizes
+                    residual -= sums[inverse, axis]
+                    squared += np.square(residual, out=residual)
+                nearest = np.full(len(indices), np.inf)
+                np.minimum.at(nearest, inverse, squared)
+                winners = np.flatnonzero(squared == nearest[inverse])
+                indices.fill(len(inverse))
+                np.minimum.at(indices, inverse[winners], winners)
+
+        result = cloud.subset(indices)
+        if mode == "centroid" and len(indices):
+            result.points = (sums / counts[:, None]).astype(np.float32)
             if cloud.colors is not None:
                 result.colors = np.rint(
-                    np.stack(
-                        [
-                            np.bincount(inverse, weights=cloud.colors[:, i]) / counts
-                            for i in range(3)
-                        ],
-                        axis=1,
+                    np.column_stack(
+                        [np.bincount(inverse, weights=column) / counts for column in cloud.colors.T]
                     )
                 ).astype(np.uint8)
-            # A centroid no longer corresponds to a particular image pixel or measured normal.
+            # Centroid rows do not carry individual measured pixels or normals.
             result.pixels, result.source_size, result.normals = None, None, None
+        source_indices = NO_VALUE
+        if mode != "centroid" and "indices" in self.exposed_outputs:
+            source_indices = indices.tolist()
         return Result(
-            {"cloud": result, "count": len(result.points)}, graphics=cloud_graphics(self, result)
+            {"cloud": result, "count": len(indices), "indices": source_indices},
+            graphics=cloud_graphics(self, result),
+            payloads={"cloud": self.input_payloads["cloud"]},
         )
 
 
