@@ -281,6 +281,33 @@ Inputs: `depth` (depth), `camera` (data), `image` (image, optional), `mask` (ima
 | `sample_step` | `2` |  |
 | `max_points` | `200000` |  |
 
+## Measure depth components (`3d.depth_components`)
+
+3D vision / Depth
+
+Inputs: `depth` (depth), `camera` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `depth` — Positive camera Z. Use foreground depth or Mask for a tilted scene.
+
+Input `camera` — Undistorted pinhole intrinsics for this depth grid.
+
+Input `mask` — Optional uint8 selection, such as classified foreground from a support plane.
+
+Input `region` — Optional source-grid selection intersected with Mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_depth_m` | `0.001` | Value must be a finite number between 0 and 100000. Inclusive near cutoff for positive camera Z. |
+| `maximum_depth_m` | `2.0` | Value must be a finite number between 1e-06 and 100000. Inclusive far cutoff for positive camera Z. |
+| `maximum_depth_step_m` | `0.02` | Value must be a finite number between 0 and 100000. Join neighbors within this Z difference. Zero uses spatial only. |
+| `connectivity` | `"8"` | `4`, `8` Four orthogonal neighbors or eight neighbors including diagonals. |
+| `minimum_pixels` | `8` | Value must be a whole number between 1 and 2.1e+06. Minimum retained pixels per component. |
+| `maximum_pixels` | `0` | Value must be a whole number between 0 and 2.1e+06. Maximum retained pixels per component. Zero disables this limit. |
+| `maximum_components` | `256` | Value must be a whole number between 1 and 10000. Stop measurement if more components pass the pixel-count limits. |
+| `preview_count` | `25` | Value must be a whole number between 0 and 250. Maximum component boxes and labels to draw. Zero disables drawing. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for untagged depth. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Physical units per raw uint16 sample. |
+
 ## Organized RGB-D normals (`3d.depth_normals`)
 
 3D vision / RGB-D
@@ -8156,9 +8183,9 @@ Inspection / Segmentation
 
 Inputs: `labels` (image), `collection` (data), `mask` (image, optional), `region` (data, optional).
 
-Input `labels` — The same label plane supplied to Measure label regions.
+Input `labels` — The exact label plane associated with the measured collection.
 
-Input `collection` — Measured labels, optionally passed through collection filters or sorting.
+Input `collection` — Collection tied to these labels, optionally filtered or sorted.
 
 Input `mask` — Use the same measurement mask here when one was supplied.
 

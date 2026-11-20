@@ -64,6 +64,9 @@ range images with confidence and retains a narrow foreground.
 [Camera depth evaluation](depth_reference/README.md) checks mixed-unit depth
 error, validity and coverage over a known step.
 
+[Depth component measurement](depth_components/README.md) labels touching
+parts at different depths and filters the reconstructed mask by metric width.
+
 [Support plane and foreground separation](depth_plane/README.md) extracts
 raised parts above a tilted surface into a foreground-only point cloud.
 

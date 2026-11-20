@@ -318,6 +318,22 @@ depth preserves the input type, units and grid. The block requires minimum
 plane support before it emits classifications or foreground depth.
 [Support-plane example](<../examples/opencv tools/depth_plane/README.md>)
 
+**Measure depth components** takes axial Z and undistorted pinhole
+intrinsics on the same grid. Apply near and far cutoffs and optionally
+a Mask or Region. A foreground mask from **Separate support plane and
+foreground** can restrict the input for a tilted work surface. Four- or
+eight-neighbor connections can also require a maximum local Z step.
+Zero step limit uses ordinary spatial connectivity.
+
+Each retained component has an exact source label and a standard
+collection record. Width and height measure the observed pixel
+footprint along camera X and Y. Depth Span covers the observed range
+of Z. Projected Area sums fronto-parallel pixel footprints at their
+measured depths. Use **Filter object collection** with a custom metric,
+such as `width_m`, and **Mask from filtered labels** with the corresponding
+Labels output to rebuild the selected source mask.
+[Touching-parts example](<../examples/opencv tools/depth_components/README.md>)
+
 **Depth to point cloud** calls OpenCV's RGB-D projection using undistorted
 pinhole intrinsics. `DepthArray` supplies its declared m/mm units. Untagged
 integer depths use the configured units-per-sample; untagged floats use the

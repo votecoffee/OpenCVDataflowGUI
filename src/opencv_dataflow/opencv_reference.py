@@ -139,6 +139,7 @@ BINDINGS = {
     "3d.reproject": "reprojectImageTo3D",
     "3d.smooth_depth": "ximgproc.jointBilateralFilter",
     "3d.separate_depth_plane": "depthTo3d findContours approxPolyDP",
+    "3d.depth_components": "connectedComponentsWithAlgorithm",
     "3d.omnidir_calibrate": "omnidir.calibrate omnidir.projectPoints convexHull contourArea",
     "3d.fisheye_calibrate": "fisheye.calibrate fisheye.projectPoints convexHull contourArea",
     "3d.stereo_calibrate": "stereoCalibrateExtended",

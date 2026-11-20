@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Measure separate parts on a depth grid",
+      "description": "Original synthetic depth raster by OpenCVDataflowGUI contributors (MIT). Two parts touch in the image but have distinct Z. A third is isolated. The graph filters by visible width and reconstructs the selected source mask.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/depth_mm.png",
+        "path_base": "project",
+        "units_per_sample": 1,
+        "units": "mm",
+        "display_min": 750,
+        "display_max": 1800
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 200,
+        "fy": 250,
+        "cx": 79.5,
+        "cy": 47.5,
+        "width": 160,
+        "height": 96,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "depth_optical"
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "3d.depth_components",
+      "name": "Measure depth components",
+      "parameters": {
+        "minimum_depth_m": 0.001,
+        "maximum_depth_m": 1.4,
+        "maximum_depth_step_m": 0.035,
+        "connectivity": "8",
+        "minimum_pixels": 12,
+        "maximum_pixels": 0,
+        "maximum_components": 256,
+        "preview_count": 25,
+        "input_units": "m",
+        "units_per_sample": 0.001
+      },
+      "position": [
+        350,
+        50
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "labels",
+        "mask",
+        "candidate_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "Depth components"
+    },
+    {
+      "id": "wide",
+      "type": "collection.filter",
+      "name": "Retain width of at least 190 mm",
+      "parameters": {
+        "metric": "custom",
+        "custom_metric": "width_m",
+        "use_minimum": true,
+        "minimum": 0.19,
+        "include_minimum": true,
+        "use_maximum": false,
+        "maximum": 0.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        710,
+        55
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected_mask",
+      "type": "inspect.mask_from_labels",
+      "name": "Rebuild the selected source mask",
+      "parameters": {},
+      "position": [
+        1040,
+        110
+      ],
+      "exposed_inputs": [
+        "labels",
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "pixel_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "measure",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "measure",
+      "input": "camera"
+    },
+    {
+      "source": "measure",
+      "output": "collection",
+      "target": "wide",
+      "input": "collection"
+    },
+    {
+      "source": "measure",
+      "output": "labels",
+      "target": "selected_mask",
+      "input": "labels"
+    },
+    {
+      "source": "wide",
+      "output": "collection",
+      "target": "selected_mask",
+      "input": "collection"
+    }
+  ]
+}

@@ -16,7 +16,7 @@ from .result_graphics import ACCEPTED
 from .selection import selection_mask
 from .tickets import ticket_key
 
-_MAX_PIXELS = 2_100_000
+MAX_LABEL_PIXELS = 2_100_000
 _MAX_LABELS = 10_000
 _LABEL_DTYPES = (np.uint8, np.uint16, np.int16, np.int32)
 _SOURCE_MODEL = "measured_label_source_v1"
@@ -30,7 +30,7 @@ _SELECTION_INPUTS = (
 def check_label_plane(labels):
     if labels.ndim != 2 or labels.dtype not in _LABEL_DTYPES:
         raise ValidationError("Use a single-channel uint8, uint16, int16 or int32 label plane")
-    if not 0 < labels.size <= _MAX_PIXELS or max(labels.shape) > 16384:
+    if not 0 < labels.size <= MAX_LABEL_PIXELS or max(labels.shape) > 16384:
         raise ValidationError("Label plane must fit the 2.1 million pixel and 16,384 axis limits")
 
 
@@ -43,6 +43,14 @@ def raster_digest(image):
 
 def scope_digest(mask):
     return None if mask is None or mask.all() else raster_digest(mask)
+
+
+def attach_label_source(data, labels, scope=None):
+    data["label_source"] = {
+        "model": _SOURCE_MODEL,
+        "labels_sha256": raster_digest(labels),
+        "scope_sha256": scope_digest(scope),
+    }
 
 
 def measure_regions(labels, selected, intensity):
@@ -144,11 +152,7 @@ class MeasureLabelRegions(Block):
         items = measure_regions(np.asarray(labels), selected, intensity)
         payload = self.input_payloads["labels"]
         data = collection("boxes", items, labels, payload)
-        data["label_source"] = {
-            "model": _SOURCE_MODEL,
-            "labels_sha256": raster_digest(labels),
-            "scope_sha256": scope_digest(mask),
-        }
+        attach_label_source(data, labels, mask)
         result = collection_result(data, payload)
         result.message = f"{len(items)} measured label IDs"
         if self.generate_graphics:
@@ -172,8 +176,8 @@ class MaskFromLabelCollection(Block):
     inputs = (_LABEL_INPUT, Port("collection", "data"), *_SELECTION_INPUTS)
     outputs = (Port("mask", visual_type="region"), Port("pixel_count", "integer"))
     input_help = {
-        "labels": "The same label plane supplied to Measure label regions.",
-        "collection": "Measured labels, optionally passed through collection filters or sorting.",
+        "labels": "The exact label plane associated with the measured collection.",
+        "collection": "Collection tied to these labels, optionally filtered or sorted.",
         "mask": "Use the same measurement mask here when one was supplied.",
         "region": "Use the same measurement region here when one was supplied.",
     }
@@ -187,7 +191,7 @@ class MaskFromLabelCollection(Block):
         data, context = read_collection(self, inputs)
         source = data.get("label_source")
         if not isinstance(source, dict) or source.get("model") != _SOURCE_MODEL:
-            raise ValidationError("Connect a collection produced by Measure label regions")
+            raise ValidationError("Connect a measured label collection")
         if data["image_size"] != [labels.shape[1], labels.shape[0]]:
             raise ValidationError("Collection and label plane dimensions differ")
         require_same_frame(

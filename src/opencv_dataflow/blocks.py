@@ -673,6 +673,7 @@ def builtin_registry():
     from .conveyor_tracking import ConveyorDemo, TrackConveyorParts
     from .coordination import CoordinateInputs, CounterInput
     from .depth import RGBD, DepthFile, DepthSample, FillDepthHoles
+    from .depth_components import MeasureDepthComponents
     from .depth_evaluation import EvaluateDepth
     from .depth_fusion import FuseRegisteredDepth
     from .depth_plane import SeparateDepthPlane
@@ -1046,6 +1047,7 @@ def builtin_registry():
         FuseRegisteredDepth,
         ReprojectDepthRegion,
         SeparateDepthPlane,
+        MeasureDepthComponents,
         LoadCalibration,
         SaveCalibration,
         *PROCESSING_BLOCKS,
