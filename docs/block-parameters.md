@@ -464,6 +464,38 @@ Input `observations` — Batch or list of ChArUco observations of one board and 
 | `minimum_views` | `3` | Value must be a whole number between 3 and 64. Smallest accepted number of fitted views, including after exclusions. |
 | `view_policy` | `"require_all"` | `require_all`, `allow_subset` Require every view or accept those that pass initialization. |
 
+## Decode absolute phase-shift coordinates (`3d.phase_shift_decode`)
+
+3D vision / Structured light
+
+Inputs: `patterns` (any), `specification` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `patterns` — Aligned monochrome captures in coarse then fine 0/120/240 degree order.
+
+Input `specification` — Projector axis and temporal sequence from Generate phase-shift patterns.
+
+Input `mask` — Limit phase decoding to the selected camera pixels.
+
+Input `region` — Select camera pixels, intersecting the mask when supplied.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_modulation` | `0.03` | Value must be a finite number between 0 and 1. Minimum normalized sine amplitude in each triplet. |
+| `minimum_mean` | `0.04` | Value must be a finite number between 0 and 1. Minimum normalized mean exposure in each triplet. |
+| `maximum_cycle_error_fraction` | `0.25` | Value must be a finite number between 0.001 and 0.49. Maximum coarse-to-fine error, in fine periods. |
+| `reject_saturation` | `false` | Reject a pixel if any capture reaches either intensity rail. |
+
+## Generate phase-shift patterns (`3d.phase_shift_patterns`)
+
+3D vision / Structured light
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `640` | Value must be a whole number between 8 and 4096. |
+| `height` | `480` | Value must be a whole number between 8 and 4096. |
+| `axis` | `"x"` | `x`, `y` Projector coordinate the fringes encode. X uses vertical stripes. |
+| `fine_periods` | `8` | Value must be a whole number between 2 and 64. Requested fine cycles. OpenCV uses a whole-pixel fringe period. |
+
 ## 3D object pose (PnP) (`3d.pnp`)
 
 3D vision / Geometry

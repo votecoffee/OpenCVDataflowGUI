@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "captures",
+      "type": "input.tiff_file",
+      "name": "TIFF page sequence",
+      "parameters": {
+        "path": "assets/capture_x.tiff",
+        "path_base": "project",
+        "start_page": 0,
+        "end_page": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "page_ticket": true,
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect six exposures",
+      "parameters": {
+        "size": 6,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        320,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "patterns",
+      "type": "3d.phase_shift_patterns",
+      "name": "Generate phase-shift patterns",
+      "parameters": {
+        "width": 161,
+        "height": 121,
+        "axis": "x",
+        "fine_periods": 8
+      },
+      "position": [
+        320,
+        280
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "patterns",
+        "specification",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "3d.phase_shift_decode",
+      "name": "Decode absolute phase-shift coordinates",
+      "parameters": {
+        "minimum_modulation": 0.03,
+        "minimum_mean": 0.04,
+        "maximum_cycle_error_fraction": 0.25,
+        "reject_saturation": false
+      },
+      "position": [
+        685,
+        0
+      ],
+      "exposed_inputs": [
+        "patterns",
+        "specification",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "projector_coordinate",
+        "wrapped_phase",
+        "absolute_phase",
+        "modulation",
+        "cycle_error",
+        "valid_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Synthetic absolute projector X",
+      "description": "Original fixtures by OpenCVDataflowGUI contributors (MIT). Run All reads six simulated exposures of a known subpixel correspondence map, including a shadow, a low-modulation patch and an intentionally inconsistent fine phase.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "captures",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "decode",
+      "input": "patterns"
+    },
+    {
+      "source": "patterns",
+      "output": "specification",
+      "target": "decode",
+      "input": "specification"
+    }
+  ]
+}

@@ -4550,12 +4550,12 @@ P3	method	cv2.structured_light.GrayCodePattern.getProjPixel	method name only	-
 P3	method	cv2.structured_light.GrayCodePattern.setBlackThreshold	method name only	-
 P3	method	cv2.structured_light.GrayCodePattern.setWhiteThreshold	method name only	-
 P3	function	cv2.structured_light.GrayCodePattern_create	no static reference	-
-P3	class	cv2.structured_light.SinusoidalPattern	no static reference	-
+P3	class	cv2.structured_light.SinusoidalPattern	literal reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.computeDataModulationTerm	no static reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.computePhaseMap	no static reference	-
-P3	method	cv2.structured_light.SinusoidalPattern.create	method name only	-
+P3	method	cv2.structured_light.SinusoidalPattern.create	literal reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.findProCamMatches	no static reference	-
-P3	method	cv2.structured_light.SinusoidalPattern.Params	method name only	-
+P3	method	cv2.structured_light.SinusoidalPattern.Params	literal reference	-
 P3	method	cv2.structured_light.SinusoidalPattern.unwrapPhaseMap	no static reference	-
 P3	function	cv2.structured_light.SinusoidalPattern_create	no static reference	-
 P3	class	cv2.structured_light.StructuredLightPattern	no static reference	-

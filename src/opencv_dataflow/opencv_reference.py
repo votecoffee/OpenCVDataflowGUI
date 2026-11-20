@@ -116,6 +116,9 @@ BINDINGS = {
     "3d.fundamental": "findFundamentalMat",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",
+    "3d.phase_shift_patterns": (
+        "structured_light.SinusoidalPattern.create structured_light.SinusoidalPattern.generate"
+    ),
     "3d.cloud_project": "projectPoints",
     "3d.reproject": "reprojectImageTo3D",
     "3d.smooth_depth": "ximgproc.jointBilateralFilter",

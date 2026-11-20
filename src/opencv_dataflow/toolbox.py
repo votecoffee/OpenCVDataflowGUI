@@ -164,7 +164,9 @@ BLOCK_MODULES = {
     "objdetect": "3d.aruco_pose",
     "ptcloud": "3d.depth_cloud 3d.separate_depth_plane 3d.cloud_project",
     "rgbd": "3d.register_depth",
-    "structured_light": "3d.graycode 3d.graycode_decode",
+    "structured_light": (
+        "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode"
+    ),
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match",
     "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask 3d.smooth_depth",
     "mcc": "calibration.detect_color_chart",

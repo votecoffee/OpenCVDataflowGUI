@@ -814,6 +814,7 @@ def builtin_registry():
     from .path_continuity import InspectPathContinuity
     from .path_strip import UnwrapPathStrip
     from .patterns import MatchShapePattern, PatternDemoImages, TrainShapePattern
+    from .phase_shift import PHASE_SHIFT_BLOCKS
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
     from .pixel_moments import PixelMoments
@@ -1294,6 +1295,7 @@ def builtin_registry():
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
+        *PHASE_SHIFT_BLOCKS,
         *TSDF_MESH_BLOCKS,
         StereoDemo,
     ):

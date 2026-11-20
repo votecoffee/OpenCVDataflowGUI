@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 42 | 22 | 67 | 131 | 32.1% |
+| 3. 3D imagery and point clouds | 43 | 22 | 66 | 131 | 32.8% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 297 | 26 | 147 | 470 | 63.2% |
+| **Overall** | 298 | 26 | 146 | 470 | 63.4% |
 
 <!-- coverage-summary:end -->
 
@@ -442,7 +442,7 @@ fixture or result needed to close the item.
 | S3-26 | Posed depth fusion | OpenCV TSDF integration | Complete | 3d.tsdf_fuse. Integrate posed depth frames with explicit bounds and recover a surface cloud. |
 | S3-27 | Mesh extraction from fused depth | Projective TSDF and masked marching cubes | Complete | 3d.tsdf_mesh yields typed metric triangles from cells with observed support. 3d.tsdf_mesh and output.mesh_ply verify world poses, surface orientation, missing-observation gaps, face bounds and PLY export. [Runnable example](<../examples/skimage tools/tsdf_mesh/README.md>). |
 | S3-28 | Gray-code structured light | structured_light.GrayCodePattern.generate and getProjPixel | Complete | 3d.graycode, 3d.graycode_decode. Known projector pixel mapping and shadow mask. |
-| S3-29 | Phase-shift structured light | structured_light.SinusoidalPattern generate and phase decoding | Planned | Decode phase and unwrap a known camera/projector target, including low-confidence regions. Verify binding behavior on the supported build. |
+| S3-29 | Phase-shift structured light | SinusoidalPattern.generate, three-step demodulation and temporal unwrapping | Complete | 3d.phase_shift_patterns and 3d.phase_shift_decode generate coarse/fine fringes and recover absolute projector X or Y with modulation and validity. [Independent captures](<../examples/opencv tools/phase_shift/README.md>) confirm subpixel coordinates and preserve a shadow gap. Native ideal PSP and the small-period generation limit are verified. |
 | S3-30 | Camera-projector calibration and reconstruction | Projector as inverse camera, stereo calibration and triangulation | Partial | 3d.graycode_decode supplies correspondences. Validate calibrated depth against a known stepped target from an offline capture or simulation. |
 | S3-31 | Eye-in-hand calibration from camera observations | calibrateHandEye, target reprojection and pose composition | Complete | calibration.hand_eye, 3d.pnp, 3d.compose. Offline target-to-camera and gripper-to-base fixture with held-out target consistency. |
 | S3-32 | Fixed-camera and robot-world calibration | Eye-to-hand frame arrangement and joint robot-world/hand–eye solver | Partial | calibration.hand_eye supports eye-in-hand. Verify fixed-camera and joint solutions against held-out image-derived target observations. Confirm Python solver availability or validate a tested offline solver. |

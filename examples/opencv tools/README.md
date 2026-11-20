@@ -34,6 +34,9 @@ raised parts above a tilted surface into a foreground-only point cloud.
 [Calibrated cloud visibility](cloud_visibility/README.md) renders depth and
 color and checks visible surfaces against observed camera depth.
 
+[Phase-shift fringe replay](phase_shift/README.md) recovers absolute subpixel
+projector coordinates and marks low-signal and inconsistent captures.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

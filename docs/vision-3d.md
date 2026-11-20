@@ -24,6 +24,7 @@ Open these projects with **File → Open…**.
 | [omnidirectional calibration](<../examples/opencv tools/omnidir_calibration/README.md>) | Fit the Mei lens and mirror parameter, check a held-out edge target, and rectify to a perspective view. |
 | [3D pose](<../examples/opencv tools/pose_3d/pose_3d.json>) | Project known XYZ, recover a camera-relative pose, and triangulate the points. |
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
+| [Phase-shift fringe replay](<../examples/opencv tools/phase_shift/README.md>) | Decode absolute subpixel projector X or Y from a six-exposure group with low-confidence gaps. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 | [TSDF mesh](<../examples/skimage tools/tsdf_mesh/README.md>) | Extract a metric triangle surface and preserve the gap in observed depth. |
 
@@ -256,6 +257,14 @@ shadow captures and selected camera pixels. It reports camera/projector pixel
 pairs and validity, without guessing metric 3D. Use calibrated camera/projector
 projection matrices and valid pairs for triangulation. Pattern projection,
 trigger timing and physical capture are external to this synthetic example.
+
+**Generate phase-shift patterns** emits a single-cycle coarse triplet and
+a fine triplet in 120° steps for one projector axis. **Decode absolute
+phase-shift coordinates** uses the coarse estimate to select the fine fringe
+cycle per pixel. It emits subpixel coordinates and phase on the camera grid
+with modulation, ambiguity and validity diagnostics. Absolute X and Y use
+separate capture sequences and a stationary, aligned scene.
+[Capture examples](<../examples/opencv tools/phase_shift/README.md>)
 
 ## Build and verification boundaries
 
