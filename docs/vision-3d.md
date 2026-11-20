@@ -765,6 +765,19 @@ whenever volume is unavailable. Enable **Require closed** or **Require volume**
 to use those checks as pass criteria.
 [Mesh validity example](<../examples/custom tools/mesh_validity/README.md>)
 
+**Simplify triangle mesh for review** reduces an oriented manifold mesh toward
+a face budget by contracting interior edges into original vertices. It holds
+every indexed boundary segment in place, including holes and attribute seams.
+Retained vertices carry their original coordinates, RGB, normals and UVs.
+Choose a displacement limit in mesh units or as a fraction of the referenced
+bounding-box diagonal. The vertex correspondence gives a conservative
+two-way surface displacement bound. The block also limits changes to the face
+normals and checks topology before emitting a mesh. If constraints or the
+edge-check limit prevent reaching the face budget, it emits the qualified
+partial result with failed status. Use the original mesh for metrology,
+volume or global self-intersection analysis.
+[Bounded mesh simplification example](<../examples/custom tools/mesh_simplification/README.md>)
+
 **Project mesh to color and depth** renders the nearest triangles on a
 rectified pinhole camera grid with explicit near and far planes and winding
 culling. The mesh and camera frames must match or be connected by a metric

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Simplify while retaining the panel perimeter and cutout",
+      "description": "Synthetic panel by OpenCVDataflowGUI contributors (MIT). The upper branch reduces this 544-face panel to 220 triangles. The lower branch requests 220 triangles with a zero displacement limit and should report that it cannot meet the budget.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "panel",
+      "type": "input.mesh",
+      "name": "Load the crowned panel",
+      "parameters": {
+        "path": "assets/crowned_panel.ply",
+        "units": "m",
+        "frame": "file",
+        "max_vertices": 250000,
+        "max_faces": 250000
+      },
+      "position": [
+        0,
+        80
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "3d.mesh_simplify",
+      "name": "Simplify within 35 mm",
+      "description": "Reduce face count within a geometry budget while keeping indexed boundaries.",
+      "parameters": {
+        "target_faces": 220,
+        "deviation_mode": "Mesh units",
+        "max_deviation": 35.0,
+        "max_normal_change_deg": 45.0,
+        "max_input_faces": 50000,
+        "max_edge_checks": 200000
+      },
+      "position": [
+        420,
+        0
+      ],
+      "exposed_inputs": [
+        "mesh"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "strict",
+      "type": "3d.mesh_simplify",
+      "name": "Zero displacement control",
+      "description": "Reduce face count within a geometry budget while keeping indexed boundaries.",
+      "parameters": {
+        "target_faces": 220,
+        "deviation_mode": "Mesh units",
+        "max_deviation": 0.0,
+        "max_normal_change_deg": 45.0,
+        "max_input_faces": 50000,
+        "max_edge_checks": 200000
+      },
+      "position": [
+        420,
+        235
+      ],
+      "exposed_inputs": [
+        "mesh"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "panel",
+      "output": "mesh",
+      "target": "review",
+      "input": "mesh"
+    },
+    {
+      "source": "panel",
+      "output": "mesh",
+      "target": "strict",
+      "input": "mesh"
+    }
+  ]
+}

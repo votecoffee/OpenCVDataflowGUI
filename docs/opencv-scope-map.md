@@ -818,7 +818,7 @@ reconstruction contracts; no additional generic matrix tools are needed.
 | `Image I/O and reconstruction details` | Cover multipage buffer ports, HDR motion rejection, ternary morphology, and sparse contour extraction as distinct graph workflows. | S1-149–S1-152 |
 | `Camera calibration and image tracking` | Track release-object and metadata-aware board calibration plus sparse RLOF. | S3-109–S3-110, S4-84 |
 | `Point-cloud metrology and large-scan processing` | Fit metric matched-landmark transforms, use bounded file-backed radius halos for large PLY scans and replay timestamped PLY, PCD and OBJ recordings. Measure pose-relative cross-sections with observed bin widths and coverage. Measure signed height and datum-parallel spread on fixed datum grids. Add calibrated range images. Qualify cylinder and bore fits with a tested solver. | S3-101, S3-103–S3-106, S3-112, S3-115 |
-| `Mesh quality and processing` | Bake registered image textures into existing UVs (S3-102). Inspect indexed topology, measure area and qualify single convex shell volume (S3-107). Add bounded simplification with a tested equivalent where OpenCV supplies no direct mesh-processing primitive. | S3-102, S3-107–S3-108 |
+| `Mesh quality and processing` | Bake registered image textures into existing UVs (S3-102). Inspect indexed topology, measure area and qualify single convex shell volume (S3-107). Reduce indexed triangle meshes for review with bounded displacement and retained boundaries and vertex attributes (S3-108). | S3-102, S3-107–S3-108 |
 
 ### Backlog decisions
 

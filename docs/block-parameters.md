@@ -1117,6 +1117,23 @@ Input `transform` — Optional mesh-to-camera rigid transform in metric units.
 | `max_triangles` | `100000` | Value must be a whole number between 1 and 250000. Maximum input and clipped output triangle count. |
 | `max_pixel_tests` | `25000000` | Value must be a whole number between 1 and 2.5e+08. Conservative limit on candidate pixels across clipped triangle bounds. |
 
+## Simplify triangle mesh for review (`3d.mesh_simplify`)
+
+3D vision / Mesh geometry
+
+Inputs: `mesh` (mesh).
+
+Input `mesh` — A consistently wound manifold triangle mesh with optional boundaries.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `target_faces` | `2000` | Value must be a whole number between 1 and 100000. Maximum requested output face count. |
+| `deviation_mode` | `"Bounds fraction"` | `Bounds fraction`, `Mesh units` Use a fraction of the referenced bounds diagonal or mesh length units. |
+| `max_deviation` | `0.05` | Value must be a finite number between 0 and 1e+30. Largest allowed two-way surface displacement bound. |
+| `max_normal_change_deg` | `45.0` | Value must be a finite number between 0 and 89. Maximum change from a retained face's input normal. |
+| `max_input_faces` | `50000` | Value must be a whole number between 1 and 100000. Reject meshes exceeding this input face count before simplifying. |
+| `max_edge_checks` | `200000` | Value must be a whole number between 1 and 1e+06. Stop after this many candidate edge checks. |
+
 ## Bake camera image to mesh UVs (`3d.mesh_texture`)
 
 3D vision / Mesh geometry

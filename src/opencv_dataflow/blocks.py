@@ -983,6 +983,7 @@ def builtin_registry():
     from .mesh_comparison import CompareScanToMesh
     from .mesh_inspection import InspectTriangleMesh
     from .mesh_projection import ProjectMesh
+    from .mesh_simplification import SimplifyTriangleMesh
     from .mesh_texture import BakeMeshTexture
     from .tsdf_mesh import TSDF_MESH_BLOCKS
     from .uncalibrated_stereo import RectifyUncalibratedStereo
@@ -1416,6 +1417,7 @@ def builtin_registry():
         ProjectMesh,
         BakeMeshTexture,
         InspectTriangleMesh,
+        SimplifyTriangleMesh,
         MeshOrganizedDepth,
         FindOrganizedPlanes,
         CompareScanToMesh,

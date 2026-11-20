@@ -44,6 +44,9 @@ OBJ and PLY topology and vertex attributes.
 [Triangle mesh validity and measurement](mesh_validity/README.md) compares
 area, volume and topology across three box fixtures.
 
+[Mesh simplification for bounded review](mesh_simplification/README.md)
+reduces a crowned panel and preserves its perimeter, cutout and retained attributes.
+
 [OBJ point-cloud interchange](cloud_obj_interchange/README.md) compares two
 file formats for the same colored, oriented scan.
 

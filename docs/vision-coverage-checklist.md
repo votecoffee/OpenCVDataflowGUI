@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 107 | 6 | 18 | 131 | 81.7% |
+| 3. 3D imagery and point clouds | 108 | 6 | 17 | 131 | 82.4% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 362 | 10 | 98 | 470 | 77.0% |
+| **Overall** | 363 | 10 | 97 | 470 | 77.2% |
 
 <!-- coverage-summary:end -->
 
@@ -541,7 +541,7 @@ fixture or result needed to close the item.
 | S3-105 | Virtual point-cloud sections and profiles | Plane-aligned slab selection and metric profile sampling | Complete | `3d.cloud_section` measures observed bin widths, plane distances and coverage in a cloud or fixture frame. The [two-section example](<../examples/custom tools/cloud_sections/README.md>) verifies missing support and preserved source rows on a rotated scan. |
 | S3-106 | Surface flatness and height against a datum | Plane residuals and signed metric deviation statistics | Complete | `3d.cloud_datum` checks signed height, datum-parallel peak-to-valley and fixed-grid coverage. The [three-scan example](<../examples/custom tools/cloud_datum/README.md>) distinguishes uniform lift, warp and missing support and retains original defect rows. |
 | S3-107 | Triangle mesh validity and measurement | Topology checks and geometric reductions | Complete | The mesh port reports and rejects bad indices. `3d.mesh_inspect` reports free-edge loops, nonmanifold edges, split vertex fans, winding conflicts and area. A bounded convex-shell check qualifies volume. The [box fixtures](<../examples/custom tools/mesh_validity/README.md>) verify area and volume along with intentionally open and nonmanifold meshes. |
-| S3-108 | Mesh simplification for bounded review | Qualified decimation with error and attribute checks | Planned | Reduce a dense scan mesh to a requested face budget and verify geometric deviation, preserved boundaries and attribute integrity. |
+| S3-108 | Mesh simplification for bounded review | Qualified decimation with error and attribute checks | Complete | `3d.mesh_simplify` contracts indexed interior edges subject to a face-normal limit and a two-way surface displacement bound. The [panel example](<../examples/custom tools/mesh_simplification/README.md>) verifies a face budget, exact perimeter and cutout edges, retained RGB/normals/UVs and an unmet-budget control. |
 | S3-109 | Refine imperfect calibration-target geometry | calibrateCameraROExtended | Planned | Fit known small target-coordinate deviations and verify held-out reprojection, scale anchors and reported target uncertainty. |
 | S3-110 | Marker-aware and oversized checkerboard detection | findChessboardCornersSBWithMeta | Partial | calibration.grid detects checkerboards. Verify native metadata for a partially visible oversized board and recover stable target ordering and origin. |
 | S3-111 | Reproducible perturbed cloud fixtures | ppf_match_3d.addNoisePC and getRandomPose or a seeded equivalent | Planned | Generate clouds with known pose and noise and report ground truth. Verify seed isolation and use the fixtures for sampling, registration and tolerance tests. |
