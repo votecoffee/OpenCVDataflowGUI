@@ -135,6 +135,7 @@ BINDINGS = {
         "linemod.Detector.addTemplate linemod.Detector.getTemplates"
     ),
     "3d.match_linemod_pose": "linemod.Detector.match linemod.Detector.readClasses matchTemplate",
+    "3d.track_depth_fusion": "Odometry.compute Volume.integrate Volume.raycast Rodrigues",
     "3d.track_silhouette": (
         "rapid.extractControlPoints rapid.extractLineBundle rapid.findCorrespondencies "
         "projectPoints Rodrigues"

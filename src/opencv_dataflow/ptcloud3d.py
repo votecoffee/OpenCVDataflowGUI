@@ -1,5 +1,7 @@
 """OpenCV 5 ptcloud kernels: organized normals, two-frame odometry and TSDF fusion."""
 
+from contextlib import contextmanager
+
 import cv2
 import numpy as np
 
@@ -90,6 +92,58 @@ class DepthNormals(Tool3D):
         )
 
 
+def make_odometry(p, k, size):
+    if not hasattr(cv2, "OdometrySettings") or not hasattr(cv2, "Odometry"):
+        raise RuntimeError("OpenCV 5 ptcloud Odometry bindings are unavailable")
+    counts = p["iteration_counts"]
+    gradients = p["min_gradient_magnitudes"]
+    if (
+        not isinstance(counts, list)
+        or not 1 <= len(counts) <= 6
+        or not isinstance(gradients, list)
+        or len(counts) != len(gradients)
+        or min(size) // 2 ** (len(counts) - 1) < 4
+    ):
+        raise ValueError(
+            "Odometry pyramid lists must match and each level must be at least 4 pixels"
+        )
+    settings = cv2.OdometrySettings()
+    settings.setCameraMatrix(k.astype(np.float32))
+    # OpenCV 5 interprets the width as level count and reads one scalar per row.
+    # A square matrix supplies both dimensions without reading past the rows.
+    counts = np.asarray([integer(v, "Iterations", 1, 1000) for v in counts], np.int32)
+    gradients = np.asarray([finite(v, "Minimum gradient", 0) for v in gradients], np.float32)
+    settings.setIterCounts(np.repeat(counts[:, None], len(counts), axis=1))
+    settings.setMinGradientMagnitudes(np.repeat(gradients[:, None], len(gradients), axis=1))
+    if not np.array_equal(settings.getIterCounts().ravel(), counts) or not np.array_equal(
+        settings.getMinGradientMagnitudes().ravel(), gradients
+    ):
+        raise RuntimeError("OpenCV rejected the requested odometry pyramid settings")
+    low, high = (
+        finite(p["min_depth"], "Minimum depth", 0),
+        finite(p["max_depth"], "Maximum depth", 0),
+    )
+    fraction = finite(p["max_points_fraction"], "Max points fraction", 0.0001)
+    if high <= low or fraction > 1:
+        raise ValueError("Depth limits must be ordered and max_points_fraction <= 1")
+    settings.setMinDepth(low)
+    settings.setMaxDepth(high)
+    settings.setMaxDepthDiff(finite(p["max_depth_difference"], "Maximum depth difference", 0.0001))
+    settings.setMaxPointsPart(fraction)
+    settings.setMaxTranslation(finite(p["max_translation_m"], "Maximum translation", 0.0001))
+    settings.setMaxRotation(finite(p["max_rotation_degrees"], "Maximum rotation", 0.0001))
+    settings.setNormalWinSize(int(p["normal_window"]))
+    algorithm = (
+        cv2.ODOMETRY_ALGO_TYPE_COMMON if p["algorithm"] == "common" else cv2.ODOMETRY_ALGO_TYPE_FAST
+    )
+    mode = {
+        "depth": cv2.ODOMETRY_TYPE_DEPTH,
+        "rgb": cv2.ODOMETRY_TYPE_RGB,
+        "rgbd": cv2.ODOMETRY_TYPE_RGB_DEPTH,
+    }[p["mode"]]
+    return cv2.Odometry(mode, settings, algorithm)
+
+
 class RGBDOdometry(Tool3D):
     type_id, title, subtype = "3d.odometry", "RGB-D frame odometry", "RGB-D motion"
     inputs = (
@@ -129,64 +183,12 @@ class RGBDOdometry(Tool3D):
     }
 
     def process(self, inputs):
-        if not hasattr(cv2, "OdometrySettings") or not hasattr(cv2, "Odometry"):
-            raise RuntimeError("OpenCV 5 ptcloud Odometry bindings are unavailable")
         p, model = self.parameters, inputs["camera"]
         a, b = inputs["source_depth"], inputs["target_depth"]
         k, size = depth_intrinsics(model, a)
         depth_intrinsics(model, b)
         a, b = (metric_depth(v, p["units_per_sample"], p["input_units"]) for v in (a, b))
-        counts = p["iteration_counts"]
-        gradients = p["min_gradient_magnitudes"]
-        if (
-            not isinstance(counts, list)
-            or not 1 <= len(counts) <= 6
-            or not isinstance(gradients, list)
-            or len(counts) != len(gradients)
-            or min(size) // 2 ** (len(counts) - 1) < 4
-        ):
-            raise ValueError(
-                "Odometry pyramid lists must match and each level must be at least 4 pixels"
-            )
-        settings = cv2.OdometrySettings()
-        settings.setCameraMatrix(k.astype(np.float32))
-        # OpenCV 5 interprets the width as level count and reads one scalar per row.
-        # A square matrix supplies both dimensions without reading past the rows.
-        counts = np.asarray([integer(v, "Iterations", 1, 1000) for v in counts], np.int32)
-        gradients = np.asarray([finite(v, "Minimum gradient", 0) for v in gradients], np.float32)
-        settings.setIterCounts(np.repeat(counts[:, None], len(counts), axis=1))
-        settings.setMinGradientMagnitudes(np.repeat(gradients[:, None], len(gradients), axis=1))
-        if not np.array_equal(settings.getIterCounts().ravel(), counts) or not np.array_equal(
-            settings.getMinGradientMagnitudes().ravel(), gradients
-        ):
-            raise RuntimeError("OpenCV rejected the requested odometry pyramid settings")
-        low, high = (
-            finite(p["min_depth"], "Minimum depth", 0),
-            finite(p["max_depth"], "Maximum depth", 0),
-        )
-        fraction = finite(p["max_points_fraction"], "Max points fraction", 0.0001)
-        if high <= low or fraction > 1:
-            raise ValueError("Depth limits must be ordered and max_points_fraction <= 1")
-        settings.setMinDepth(low)
-        settings.setMaxDepth(high)
-        settings.setMaxDepthDiff(
-            finite(p["max_depth_difference"], "Maximum depth difference", 0.0001)
-        )
-        settings.setMaxPointsPart(fraction)
-        settings.setMaxTranslation(finite(p["max_translation_m"], "Maximum translation", 0.0001))
-        settings.setMaxRotation(finite(p["max_rotation_degrees"], "Maximum rotation", 0.0001))
-        settings.setNormalWinSize(int(p["normal_window"]))
-        algorithm = (
-            cv2.ODOMETRY_ALGO_TYPE_COMMON
-            if p["algorithm"] == "common"
-            else cv2.ODOMETRY_ALGO_TYPE_FAST
-        )
-        mode = {
-            "depth": cv2.ODOMETRY_TYPE_DEPTH,
-            "rgb": cv2.ODOMETRY_TYPE_RGB,
-            "rgbd": cv2.ODOMETRY_TYPE_RGB_DEPTH,
-        }[p["mode"]]
-        odometry = cv2.Odometry(mode, settings, algorithm)
+        odometry = make_odometry(p, k, size)
         if p["mode"] == "depth":
             ok, transform = odometry.compute(a, b)
         else:
@@ -260,6 +262,44 @@ def tsdf_views(inputs, model):
     return depths, transforms, target, k, (w, h)
 
 
+@contextmanager
+def cpu_tsdf_volume(p, k, size, maximum):
+    """Supply a fixed-size native TSDF on the CPU for one bounded operation."""
+    if not hasattr(cv2, "Volume") or not hasattr(cv2, "VolumeSettings"):
+        raise RuntimeError("OpenCV 5 ptcloud Volume bindings are unavailable")
+    w, h = size
+    resolution = tuple(integer(v, "Volume dimension", 8, 256) for v in p["resolution"])
+    if len(resolution) != 3 or any(v % 8 for v in resolution) or np.prod(resolution) > 8_000_000:
+        raise ValueError("Volume requires three multiples of eight and at most 8 million voxels")
+    origin = np.asarray(p["volume_origin_m"], np.float32)
+    if origin.shape != (3,) or not np.isfinite(origin).all():
+        raise ValueError("Volume origin must be finite XYZ meters")
+    volume_pose = np.eye(4, dtype=np.float32)
+    volume_pose[:3, 3] = origin
+    settings = cv2.VolumeSettings(cv2.VOLUME_TYPE_TSDF)
+    settings.setVolumeResolution(resolution)
+    settings.setVoxelSize(finite(p["voxel_size_m"], "Voxel size", 0.00001))
+    settings.setVolumePose(volume_pose)
+    settings.setTsdfTruncateDistance(finite(p["truncation_m"], "Truncation", 0.00001))
+    settings.setMaxWeight(integer(p["max_weight"], "Max weight", 1, 255))
+    settings.setMaxDepth(maximum)
+    settings.setRaycastStepFactor(finite(p["raycast_step_factor"], "Raycast step factor", 0.001))
+    settings.setDepthFactor(1.0)
+    settings.setIntegrateWidth(w)
+    settings.setIntegrateHeight(h)
+    settings.setRaycastWidth(w)
+    settings.setRaycastHeight(h)
+    settings.setCameraIntegrateIntrinsics(k.astype(np.float32))
+    settings.setCameraRaycastIntrinsics(k.astype(np.float32))
+    # This wheel's OpenCL volume extraction is unreliable on the tested driver.
+    opencl = cv2.ocl.useOpenCL()
+    cv2.ocl.setUseOpenCL(False)
+    try:
+        yield cv2.Volume(cv2.VOLUME_TYPE_TSDF, settings)
+    finally:
+        cv2.ocl.setUseOpenCL(opencl)
+
+
 class FuseTSDF(Tool3D):
     type_id, title, subtype = (
         "3d.tsdf_fuse",
@@ -289,55 +329,15 @@ class FuseTSDF(Tool3D):
     parameter_choices = {"input_units": ("m", "mm")}
 
     def process(self, inputs):
-        if not hasattr(cv2, "Volume") or not hasattr(cv2, "VolumeSettings"):
-            raise RuntimeError("OpenCV 5 ptcloud Volume bindings are unavailable")
         p, model = self.parameters, inputs["camera"]
         depths, transforms, target, k, (w, h) = tsdf_views(inputs, model)
-        resolution = tuple(integer(v, "Volume dimension", 8, 256) for v in p["resolution"])
-        if (
-            len(resolution) != 3
-            or any(v % 8 for v in resolution)
-            or np.prod(resolution) > 8_000_000
-        ):
-            raise ValueError(
-                "Volume requires three multiples of eight and at most 8 million voxels"
-            )
-        origin = np.asarray(p["volume_origin_m"], np.float32)
-        if origin.shape != (3,) or not np.isfinite(origin).all():
-            raise ValueError("Volume origin must be finite XYZ meters")
-        volume_pose = np.eye(4, dtype=np.float32)
-        volume_pose[:3, 3] = origin
-        settings = cv2.VolumeSettings(cv2.VOLUME_TYPE_TSDF)
-        settings.setVolumeResolution(resolution)
-        settings.setVoxelSize(finite(p["voxel_size_m"], "Voxel size", 0.00001))
-        settings.setVolumePose(volume_pose)
-        settings.setTsdfTruncateDistance(finite(p["truncation_m"], "Truncation", 0.00001))
-        settings.setMaxWeight(integer(p["max_weight"], "Max weight", 1, 255))
         maximum = finite(p["max_depth_m"], "Maximum depth", 0.001)
-        settings.setMaxDepth(maximum)
-        settings.setRaycastStepFactor(
-            finite(p["raycast_step_factor"], "Raycast step factor", 0.001)
-        )
-        settings.setDepthFactor(1.0)
-        settings.setIntegrateWidth(w)
-        settings.setIntegrateHeight(h)
-        settings.setRaycastWidth(w)
-        settings.setRaycastHeight(h)
-        settings.setCameraIntegrateIntrinsics(k.astype(np.float32))
-        settings.setCameraRaycastIntrinsics(k.astype(np.float32))
-        # Local OpenCV 5 OpenCL volume extraction is unreliable on this wheel/driver.
-        # Use the CPU path and restore the current thread's OpenCL setting.
-        opencl = cv2.ocl.useOpenCL()
-        cv2.ocl.setUseOpenCL(False)
-        try:
-            volume = cv2.Volume(cv2.VOLUME_TYPE_TSDF, settings)
+        with cpu_tsdf_volume(p, k, (w, h), maximum) as volume:
             for depth, pose in zip(depths, transforms):
                 values = metric_depth(depth, p["units_per_sample"], p["input_units"])
                 volume.integrate(np.nan_to_num(values, nan=0.0), pose)
             xyz, normals = volume.fetchPointsNormals()
             rendered, _ = volume.raycast(transforms[-1])
-        finally:
-            cv2.ocl.setUseOpenCL(opencl)
         xyz = (
             xyz.reshape(-1, xyz.shape[-1])[:, :3]
             if xyz is not None

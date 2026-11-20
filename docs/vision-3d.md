@@ -499,6 +499,14 @@ posed fusion, with no automatic tracking or persistent unbounded volume.
 The CPU path is selected because local OpenCL volume extraction failed on this
 wheel/driver; other operations' thread OpenCL settings are restored afterward.
 
+**Track depth trajectory with TSDF** processes a batch of ordered, calibrated
+metric depth planes. It estimates motion from the last accepted exposure
+and checks the proposed pose on the fused TSDF surface. Rejected exposures
+leave the pose and volume untouched. A bounded loss limit and final tracking
+check control publication. Accepted depth packets and poses share a new
+metric world frame for each completed segment.
+[Recorded trajectory example](<../examples/opencv tools/depth_trajectory/README.md>)
+
 **Generate Gray-code patterns** emits an ordered group and white/black frames.
 **Decode Gray-code correspondences** accepts matching captured images, optional
 shadow captures and selected camera pixels. It reports camera/projector pixel

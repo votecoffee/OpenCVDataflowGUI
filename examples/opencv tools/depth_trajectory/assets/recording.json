@@ -1,0 +1,91 @@
+{
+  "format": "opencv_dataflow_rgbd_v1",
+  "clock": "depth_trajectory_fixture",
+  "color_frame": "synthetic_preview",
+  "depth_frame": "depth_optical",
+  "depth_m_per_sample": 0.001,
+  "color": [
+    {
+      "path": "preview_00.png",
+      "timestamp_ns": 1900000000000000000
+    },
+    {
+      "path": "preview_01.png",
+      "timestamp_ns": 1900000000033000000
+    },
+    {
+      "path": "preview_02.png",
+      "timestamp_ns": 1900000000066000000
+    },
+    {
+      "path": "preview_03.png",
+      "timestamp_ns": 1900000000099000000
+    },
+    {
+      "path": "preview_04.png",
+      "timestamp_ns": 1900000000132000000
+    },
+    {
+      "path": "preview_05.png",
+      "timestamp_ns": 1900000000165000000
+    },
+    {
+      "path": "preview_06.png",
+      "timestamp_ns": 1900000000198000000
+    },
+    {
+      "path": "preview_07.png",
+      "timestamp_ns": 1900000000231000000
+    },
+    {
+      "path": "preview_08.png",
+      "timestamp_ns": 1900000000264000000
+    },
+    {
+      "path": "preview_09.png",
+      "timestamp_ns": 1900000000297000000
+    }
+  ],
+  "depth": [
+    {
+      "path": "depth_00.png",
+      "timestamp_ns": 1900000000000000000
+    },
+    {
+      "path": "depth_01.png",
+      "timestamp_ns": 1900000000033000000
+    },
+    {
+      "path": "depth_02.png",
+      "timestamp_ns": 1900000000066000000
+    },
+    {
+      "path": "depth_03.png",
+      "timestamp_ns": 1900000000099000000
+    },
+    {
+      "path": "depth_04.png",
+      "timestamp_ns": 1900000000132000000
+    },
+    {
+      "path": "depth_05.png",
+      "timestamp_ns": 1900000000165000000
+    },
+    {
+      "path": "depth_06.png",
+      "timestamp_ns": 1900000000198000000
+    },
+    {
+      "path": "depth_07.png",
+      "timestamp_ns": 1900000000231000000
+    },
+    {
+      "path": "depth_08.png",
+      "timestamp_ns": 1900000000264000000
+    },
+    {
+      "path": "depth_09.png",
+      "timestamp_ns": 1900000000297000000
+    }
+  ]
+}

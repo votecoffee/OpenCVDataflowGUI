@@ -683,6 +683,7 @@ def builtin_registry():
     from .depth_region_projection import ReprojectDepthRegion
     from .depth_silhouette import MeasureDepthSilhouette
     from .depth_smoothing import SmoothDepth
+    from .depth_trajectory import TrackDepthFusion
     from .detection_decode import DecodeDetections
     from .detection_evaluation import EvaluateDetections
     from .detection_fusion import FuseTileDetections
@@ -1352,6 +1353,7 @@ def builtin_registry():
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,
         *PTCLOUD3D_BLOCKS,
+        TrackDepthFusion,
         *PHASE_SHIFT_BLOCKS,
         UnwrapFringePhase,
         TrackObjectSilhouette,

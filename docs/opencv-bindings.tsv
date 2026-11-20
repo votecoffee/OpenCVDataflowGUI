@@ -2055,7 +2055,7 @@ P3	method	cv2.colored_kinfu.ColoredKinFu.getCloud	no static reference	-
 P3	method	cv2.colored_kinfu.ColoredKinFu.getNormals	no static reference	-
 P3	method	cv2.colored_kinfu.ColoredKinFu.getPoints	no static reference	-
 P3	method	cv2.colored_kinfu.ColoredKinFu.render	method name only	-
-P3	method	cv2.colored_kinfu.ColoredKinFu.reset	no static reference	-
+P3	method	cv2.colored_kinfu.ColoredKinFu.reset	method name only	-
 P3	method	cv2.colored_kinfu.ColoredKinFu.update	method name only	-
 P3	function	cv2.colored_kinfu.ColoredKinFu_create	no static reference	-
 P3	class	cv2.colored_kinfu.Params	no static reference	-
@@ -2467,7 +2467,7 @@ P3	method	cv2.dynafu.DynaFu.getCloud	no static reference	-
 P3	method	cv2.dynafu.DynaFu.getNormals	no static reference	-
 P3	method	cv2.dynafu.DynaFu.getPoints	no static reference	-
 P3	method	cv2.dynafu.DynaFu.render	method name only	-
-P3	method	cv2.dynafu.DynaFu.reset	no static reference	-
+P3	method	cv2.dynafu.DynaFu.reset	method name only	-
 P3	method	cv2.dynafu.DynaFu.update	method name only	-
 P3	function	cv2.dynafu.DynaFu_create	no static reference	-
 P3	class	cv2.dynafu_DynaFu	alias	cv2.dynafu.DynaFu
@@ -3100,7 +3100,7 @@ P3	method	cv2.kinfu.KinFu.getCloud	no static reference	-
 P3	method	cv2.kinfu.KinFu.getNormals	no static reference	-
 P3	method	cv2.kinfu.KinFu.getPoints	no static reference	-
 P3	method	cv2.kinfu.KinFu.render	method name only	-
-P3	method	cv2.kinfu.KinFu.reset	no static reference	-
+P3	method	cv2.kinfu.KinFu.reset	method name only	-
 P3	method	cv2.kinfu.KinFu.update	method name only	-
 P3	function	cv2.kinfu.KinFu_create	no static reference	-
 P3	class	cv2.kinfu.Params	no static reference	-
@@ -3137,7 +3137,7 @@ P3	method	cv2.large_kinfu.LargeKinfu.getCloud	no static reference	-
 P3	method	cv2.large_kinfu.LargeKinfu.getNormals	no static reference	-
 P3	method	cv2.large_kinfu.LargeKinfu.getPoints	no static reference	-
 P3	method	cv2.large_kinfu.LargeKinfu.render	method name only	-
-P3	method	cv2.large_kinfu.LargeKinfu.reset	no static reference	-
+P3	method	cv2.large_kinfu.LargeKinfu.reset	method name only	-
 P3	method	cv2.large_kinfu.LargeKinfu.update	method name only	-
 P3	function	cv2.large_kinfu.LargeKinfu_create	no static reference	-
 P3	class	cv2.large_kinfu.Params	no static reference	-
@@ -4643,7 +4643,7 @@ P3	method	cv2.TickMeter.getTimeMicro	no static reference	-
 P3	method	cv2.TickMeter.getTimeMilli	no static reference	-
 P3	method	cv2.TickMeter.getTimeSec	no static reference	-
 P3	method	cv2.TickMeter.getTimeTicks	no static reference	-
-P3	method	cv2.TickMeter.reset	no static reference	-
+P3	method	cv2.TickMeter.reset	method name only	-
 P3	method	cv2.TickMeter.start	method name only	-
 P3	method	cv2.TickMeter.stop	method name only	-
 P3	class	cv2.Tonemap	no static reference	-
@@ -4771,7 +4771,7 @@ P3	method	cv2.Volume.raycast	method name only	-
 P3	method	cv2.Volume.raycastColor	no static reference	-
 P3	method	cv2.Volume.raycastEx	no static reference	-
 P3	method	cv2.Volume.raycastExColor	no static reference	-
-P3	method	cv2.Volume.reset	no static reference	-
+P3	method	cv2.Volume.reset	method name only	-
 P3	method	cv2.Volume.setEnableGrowth	no static reference	-
 P3	class	cv2.VolumeSettings	literal reference	-
 P3	method	cv2.VolumeSettings.getCameraIntegrateIntrinsics	no static reference	-

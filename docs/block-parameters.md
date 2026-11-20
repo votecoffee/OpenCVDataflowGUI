@@ -1279,6 +1279,45 @@ Inputs: `left_camera` (data), `right_camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
 
+## Track depth trajectory with TSDF (`3d.track_depth_fusion`)
+
+3D vision / Volumetric reconstruction
+
+Inputs: `frames` (any), `camera` (data).
+
+Input `frames` — An ordered FlowGroup of depth planes, for example from Batch serial entries.
+
+Input `camera` — Fixed undistorted pinhole intrinsics on the recording depth grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `algorithm` | `"common"` | `common`, `fast` |
+| `input_units` | `"m"` | `m`, `mm` Units for untagged depth planes. Tagged depth retains its units. |
+| `units_per_sample` | `0.001` | Value must be a finite number at least 1e-09. Scale of integer inputs in their declared depth units per sample. |
+| `iteration_counts` | `[8, 8, 10]` | Iteration limits per odometry pyramid level. |
+| `min_gradient_magnitudes` | `[10.0, 10.0, 10.0]` | One gradient setting per pyramid level, as required by OpenCV. |
+| `min_depth` | `0.1` | Value must be a finite number at least 0.001. Minimum usable camera-Z in meters. |
+| `max_depth` | `4.0` | Value must be a finite number between 0.001 and 1000. Maximum usable and integrated camera-Z in meters. |
+| `max_depth_difference` | `0.07` | Value must be a finite number between 0.0001 and 10. Native odometry depth correspondence distance in meters. |
+| `max_points_fraction` | `0.4` | Value must be a finite number between 0.0001 and 1. Fraction of samples used by OpenCV depth odometry. |
+| `max_translation_m` | `0.15` | Value must be a finite number at least 0.0001. Largest accepted translation from the last tracked frame in meters. |
+| `max_rotation_degrees` | `15.0` | Value must be a finite number between 0.0001 and 180. Largest accepted rotation from the last tracked frame in degrees. |
+| `normal_window` | `"5"` | `1`, `3`, `5`, `7` |
+| `resolution` | `[64, 64, 64]` | The fixed XYZ grid uses multiples of eight and up to 8 million voxels. |
+| `voxel_size_m` | `0.02` | Value must be a finite number at least 1e-05. Fixed TSDF voxel side length in meters. |
+| `volume_origin_m` | `[-0.64, -0.64, 0.5]` | XYZ origin of the fixed grid in the segment reference frame. |
+| `truncation_m` | `0.06` | Value must be a finite number at least 1e-05. Signed distance truncation in meters. |
+| `max_weight` | `64` | Value must be a whole number between 1 and 255. Cap on the accumulated weight of each native voxel. |
+| `raycast_step_factor` | `0.25` | Value must be a finite number at least 0.001. Ray marching step as a fraction of the truncation distance. |
+| `world_frame` | `"depth_trajectory"` | Name prefix for a new world frame anchored at the first accepted exposure. |
+| `maximum_frames` | `32` | Value must be a whole number between 2 and 64. Maximum replay frames per segment, including rejected frames. |
+| `minimum_tracked_frames` | `2` | Value must be a whole number between 2 and 64. Include the anchor in this minimum accepted frame count. |
+| `maximum_consecutive_losses` | `2` | Value must be a whole number between 1 and 64. Stop after this many consecutive rejected frames. |
+| `minimum_valid_fraction` | `0.2` | Value must be a finite number between 0.01 and 1. Minimum fraction of pixels inside the tracking depth range. |
+| `minimum_model_overlap` | `0.5` | Value must be a finite number between 0.01 and 1. Minimum fraction of valid depths supported by the fused surface. |
+| `model_depth_tolerance_m` | `0.075` | Value must be a finite number between 0.001 and 1. Depth residual tolerance for a pixel to count as supported. |
+| `maximum_model_rms_m` | `0.045` | Value must be a finite number between 0.001 and 1. Maximum RMS metric depth residual over supported pixels. |
+
 ## Track metric object silhouette (`3d.track_silhouette`)
 
 3D vision / Pose tracking

@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 70 | 16 | 45 | 131 | 53.4% |
+| 3. 3D imagery and point clouds | 71 | 15 | 45 | 131 | 54.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 325 | 20 | 125 | 470 | 69.1% |
+| **Overall** | 326 | 19 | 125 | 470 | 69.4% |
 
 <!-- coverage-summary:end -->
 
@@ -494,7 +494,7 @@ fixture or result needed to close the item.
 | S3-68 | Camera pose tracking against an object silhouette | rapid.extractControlPoints, rapid.extractLineBundle, rapid.findCorrespondencies and projectPoints | Complete | 3d.track_silhouette refines a seeded metric mesh pose in calibrated video. The [recorded fixture](<../examples/opencv tools/silhouette_tracking/README.md>) checks ground truth, edge reprojection, loss and explicit reset. |
 | S3-69 | Three-dimensional model pose from image and depth templates | linemod.ColorGradient.create, linemod.DepthNormal.create and linemod.Detector.match | Complete | 3d.train_linemod_pose and 3d.match_linemod_pose select a trained rotation and verify metric translation on a registered RGB-D grid. The [held-out plate example](<../examples/opencv tools/linemod_pose/README.md>) checks pose, match support and reprojection. |
 | S3-70 | Multi-view calibration with coded custom targets | aruco.ArucoDetector, calibrateCamera, fisheye.calibrate, solvePnP and projectPoints | Complete | input.coded_rig_observations decodes a surveyed marker layout. The existing rig fit and held-out checks accept partial corner sets. The [three-camera image fixture](<../examples/opencv tools/coded_multicamera_rig/README.md>) verifies complementary IDs with 0.59 px held-out RMS. |
-| S3-71 | Depth-fusion trajectory estimation | KinFu or equivalent depth tracking and fusion | Partial | 3d.odometry and 3d.tsdf_fuse support pairwise motion and posed depth. Verify drift, failure recovery and a bounded trajectory on a recorded sequence. |
+| S3-71 | Depth-fusion trajectory estimation | Odometry.compute, Volume.integrate and Volume.raycast | Complete | 3d.track_depth_fusion composes metric depth odometry and verifies each proposed pose on a fixed TSDF surface. The [recorded control](<../examples/opencv tools/depth_trajectory/README.md>) tracks 9 of 10 frames with 1.11 mm maximum translation error and resumes after a missing frame. |
 | S3-72 | Quasi-dense stereo correspondence | stereo.QuasiDenseStereo | Planned | Grow correspondences from stereo feature matches and compare disparity and support against known image pairs. |
 
 ### Depth cleanup, point-cloud processing and mesh workflows

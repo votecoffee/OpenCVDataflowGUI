@@ -102,7 +102,7 @@ callability and a representative fixture for each build-dependent commitment.
 | `aruco` | Marker and board generation/detection, camera pose and target validation. | S3-01, S3-10, S3-36–S3-38 |
 | `barcode` | Native linear barcode reading. | S1-122 |
 | `ccm`, `mcc` | Color chart detection, fitting, correction and independent profile verification. | S4-11, S4-34–S4-35, S4-101–S4-102 |
-| `colored_kinfu`, `dynafu`, `kinfu`, `large_kinfu` | Depth tracking and fusion. Defer separate volume/backend variants until the bounded trajectory workflow has a fixture. | S3-25–S3-27, S3-71 |
+| `colored_kinfu`, `dynafu`, `kinfu`, `large_kinfu` | The supported wheel qualifies a fixed CPU TSDF trajectory using depth odometry and raycast checks. Native KinFu and other volume variants remain separate. | S3-25–S3-27, S3-71 |
 | `cuda`, `ipp`, `ocl`, `parallel`, `videoio_registry` | Backend setup and capability reporting. Individual image workflows retain backend qualification criteria. | — |
 | `detail` | Stitching internals and reusable Laplacian image pyramids. | S1-01, S1-49, S1-104, S1-117, S1-124 |
 | `Error`, `data`, `instr`, `load_config_py3`, `mat_wrapper`, `misc`, `samples`, `typing`, `utils`, `version` | Python helpers, bindings, sample lookup, diagnostics and configuration. | — |
@@ -264,7 +264,7 @@ An exposed Python API still needs a fixture before the capability is complete.
 | `cv2.depthTo3d`, `cv2.depthTo3dSparse`, `cv2.rescaleDepth` | Exposed. Dense and sparse backprojection and typed depth conversion have independent contracts. | S3-59, S3-74–S3-75 |
 | `cv2.registerDepth`, `cv2.warpFrame` | Exposed. Align depth between cameras or warp a registered depth and color pair through a pose. | S3-18, S3-76 |
 | `cv2.findPlanes` | Exposed. Qualify multiple organized plane labels and coefficients separately from dominant-plane foreground separation. | S3-23, S3-100 |
-| `cv2.Odometry`, `cv2.OdometryFrame`, `cv2.OdometrySettings` | Exposed. Frame preparation, pyramids, settings and normals remain part of odometry. Qualify trajectory recovery on sequences separately from the shipped pairwise fit. | S3-25, S3-71 |
+| `cv2.Odometry`, `cv2.OdometryFrame`, `cv2.OdometrySettings` | Exposed. Frame preparation, pyramids, settings and normals remain part of odometry. 3d.track_depth_fusion composes measured frame odometry and checks it against the fused TSDF surface on an ordered depth recording. | S3-25, S3-71 |
 | `cv2.Volume`, `cv2.VolumeSettings` | Exposed. Frame integration, color and depth, extraction, raycast and growth are grouped by graph workflow. Native volume state remains internal. | S3-26–S3-27, S3-93–S3-95 |
 | `cv::randomSampling`, `cv::farthestPointSampling`, `cv::voxelGridSampling` | C++ functions with no direct binding in the pinned wheel. Qualify a supported build or an equivalent sampler with point provenance. | S3-60, S3-78–S3-79 |
 | `cv::normalEstimate`, `cv::SACSegmentation`, `cv::RegionGrowing3D` | C++ APIs with no direct binding in the pinned wheel. Qualify fallback curvature, robust geometric fits and normal-based segmentation on explicit fixtures. | S3-82–S3-84 |

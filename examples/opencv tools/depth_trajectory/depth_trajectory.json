@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "notes",
+      "type": "layout.comment",
+      "name": "Track a depth recording through a dropped frame",
+      "description": "Original synthetic room and camera motion by OpenCVDataflowGUI contributors (MIT). Run All accumulates ten ordered depth frames. Frame 4 has no depth. Review trajectory data to see tracking resume on frame 5.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "input.rgbd_recording",
+      "name": "Recorded RGB-D",
+      "parameters": {
+        "path": "assets/recording.json",
+        "repeat": "stop",
+        "maximum_skew_ms": 0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "segment",
+      "type": "flow.batch",
+      "name": "Batch serial entries",
+      "parameters": {
+        "size": 10,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        335,
+        0
+      ],
+      "exposed_inputs": [
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 148.0,
+        "fy": 145.0,
+        "cx": 79.5,
+        "cy": 59.5,
+        "width": 160,
+        "height": 120,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "depth_optical"
+      },
+      "position": [
+        335,
+        250
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "3d.track_depth_fusion",
+      "name": "Track depth trajectory with TSDF",
+      "parameters": {
+        "algorithm": "common",
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "iteration_counts": [
+          8,
+          8,
+          10
+        ],
+        "min_gradient_magnitudes": [
+          10.0,
+          10.0,
+          10.0
+        ],
+        "min_depth": 0.1,
+        "max_depth": 2.0,
+        "max_depth_difference": 0.1,
+        "max_points_fraction": 0.4,
+        "max_translation_m": 0.15,
+        "max_rotation_degrees": 15.0,
+        "normal_window": "5",
+        "resolution": [
+          112,
+          96,
+          112
+        ],
+        "voxel_size_m": 0.016,
+        "volume_origin_m": [
+          -0.85,
+          -0.7,
+          0.27
+        ],
+        "truncation_m": 0.045,
+        "max_weight": 32,
+        "raycast_step_factor": 0.25,
+        "world_frame": "depth_trajectory",
+        "maximum_frames": 32,
+        "minimum_tracked_frames": 2,
+        "maximum_consecutive_losses": 2,
+        "minimum_valid_fraction": 0.2,
+        "minimum_model_overlap": 0.8,
+        "model_depth_tolerance_m": 0.05,
+        "maximum_model_rms_m": 0.024
+      },
+      "position": [
+        725,
+        90
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "frames",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "frames",
+        "poses",
+        "trajectory",
+        "surface_depth"
+      ],
+      "thumbnail": true,
+      "preview_output": "surface_depth"
+    }
+  ],
+  "connections": [
+    {
+      "source": "replay",
+      "output": "depth",
+      "target": "segment",
+      "input": "item_1"
+    },
+    {
+      "source": "segment",
+      "output": "group",
+      "target": "track",
+      "input": "frames"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "track",
+      "input": "camera"
+    }
+  ]
+}
