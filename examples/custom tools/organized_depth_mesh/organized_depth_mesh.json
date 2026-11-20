@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Keep gaps at depth discontinuities",
+      "description": "Original analytic depth scan by OpenCVDataflowGUI contributors (MIT). Both branches reconstruct the same 240 mm step and missing oval. A tight depth-jump limit keeps the two surfaces apart.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "depth",
+      "type": "input.depth_file",
+      "name": "Depth image file",
+      "parameters": {
+        "path": "assets/step_depth.png",
+        "path_base": "project",
+        "units_per_sample": 0.001,
+        "units": "m",
+        "display_min": 0.75,
+        "display_max": 1.1
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "preview",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 62,
+        "fy": 64,
+        "cx": 20.5,
+        "cy": 13.5,
+        "width": 42,
+        "height": 28,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "step_camera"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "strict",
+      "type": "3d.organized_mesh",
+      "name": "Split at the step",
+      "description": "Build a local surface from adjacent samples while excluding depth discontinuities.",
+      "parameters": {
+        "max_depth_jump_m": 0.02,
+        "max_edge_length_m": 0.0,
+        "max_faces": 1000000,
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m"
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "loose",
+      "type": "3d.organized_mesh",
+      "name": "Allow the artificial bridge",
+      "description": "Build a local surface from adjacent samples while excluding depth discontinuities.",
+      "parameters": {
+        "max_depth_jump_m": 0.3,
+        "max_edge_length_m": 0.0,
+        "max_faces": 1000000,
+        "input_units": "m",
+        "units_per_sample": 0.001,
+        "output_units": "m"
+      },
+      "position": [
+        380,
+        240
+      ],
+      "exposed_inputs": [
+        "depth",
+        "camera"
+      ],
+      "exposed_outputs": [
+        "mesh",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "strict",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "strict",
+      "input": "camera"
+    },
+    {
+      "source": "depth",
+      "output": "depth",
+      "target": "loose",
+      "input": "depth"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "loose",
+      "input": "camera"
+    }
+  ]
+}

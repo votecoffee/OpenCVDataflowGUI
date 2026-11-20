@@ -838,6 +838,7 @@ def builtin_registry():
     from .offline_stabilization import StabilizeRecordedSequence
     from .omnidir_calibration import OmnidirectionalCalibration
     from .one_class_svm import ONE_CLASS_SVM_BLOCKS
+    from .organized_mesh import MeshOrganizedDepth
     from .oriented_edges import FindOrientedEdges
     from .overlay_graphics import OverlayResultGraphics, SetFilmstripImage
     from .paced_video import PacedVideoFile
@@ -1398,6 +1399,7 @@ def builtin_registry():
         *CAMERA_PROJECTOR_BLOCKS,
         *TSDF_MESH_BLOCKS,
         ProjectMesh,
+        MeshOrganizedDepth,
         CompareScanToMesh,
         StereoDemo,
     ):

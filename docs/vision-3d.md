@@ -646,6 +646,15 @@ arbitrary fields are outside this codec's XYZ, RGB and normals contract.
 The PCD encoding dropdown offers ASCII and uncompressed binary.
 [Organized PCD example](<../examples/custom tools/organized_pcd/README.md>)
 
+**Mesh an organized depth grid** backprojects calibrated depth with OpenCV
+or uses the original pixels of an organized metric cloud. Triangles join
+only adjacent samples and must satisfy the axial depth-jump limit and
+optional XYZ edge limit. Missing or excluded samples stay open. The mesh
+provides camera-facing unit normals and texel-center UVs. Its report
+records grid dimensions, camera calibration or cloud viewpoint, and cell
+coverage. The source grid and face count are each limited to one million.
+[Organized depth mesh example](<../examples/custom tools/organized_depth_mesh/README.md>)
+
 ## Motion, fusion and structured light
 
 **RGB-D frame odometry** wraps OpenCV 5 `ptcloud` two-frame motion with depth,

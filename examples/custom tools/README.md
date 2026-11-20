@@ -47,6 +47,9 @@ file formats for the same colored, oriented scan.
 [Organized PCD interchange](organized_pcd/README.md) compares ASCII and binary
 scans with missing pixels, color and normals.
 
+[Organized depth mesh](organized_depth_mesh/README.md) shows how an axial
+depth-jump limit changes which neighboring pixels are joined into triangles.
+
 [Point-cloud surface quality](cloud_surface_quality/README.md) estimates
 oriented normals and curvature and reports sparse or ambiguous neighborhoods.
 

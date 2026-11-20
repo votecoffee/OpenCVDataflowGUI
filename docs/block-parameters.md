@@ -1102,6 +1102,31 @@ Input `observations` — Batch or list of ChArUco observations of one board and 
 | `minimum_views` | `3` | Value must be a whole number between 3 and 64. Smallest accepted number of fitted views, including after exclusions. |
 | `view_policy` | `"require_all"` | `require_all`, `allow_subset` Require every view or accept those that pass initialization. |
 
+## Mesh an organized depth grid (`3d.organized_mesh`)
+
+3D vision / Mesh geometry
+
+Inputs: `depth` (depth, optional), `camera` (data, optional), `cloud` (cloud, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `depth` — Positive axial camera Z. Wire depth and camera, or wire an organized cloud.
+
+Input `camera` — Matching undistorted pinhole intrinsics for depth input.
+
+Input `cloud` — Metric organized XYZ with unique source pixels. PCD viewpoint is honored.
+
+Input `mask` — Optional raster selection on the source grid.
+
+Input `region` — Optional source-grid region intersected with the raster selection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_depth_jump_m` | `0.02` | Value must be a finite number between 0 and 1000. Largest axial depth spread within one triangle, in meters. |
+| `max_edge_length_m` | `0.0` | Value must be a finite number between 0 and 1000. Longest XYZ edge allowed, in meters. Zero disables this test. |
+| `max_faces` | `1000000` | Value must be a whole number between 1 and 1e+06. Withhold the mesh if more than this many triangles pass the gates. |
+| `input_units` | `"m"` | `m`, `mm` Physical units for an untagged depth plane. |
+| `units_per_sample` | `0.001` | Value must be a finite number between 1e-09 and 1000. Length in input units per untagged uint16 sample. |
+| `output_units` | `"m"` | `m`, `mm` Length units stored in the output mesh. |
+
 ## Pack posed RGB-D view (`3d.pack_posed_rgbd`)
 
 3D vision / RGB-D
