@@ -17,6 +17,7 @@ Open these projects with **File → Open…**.
 
 | Project | What it demonstrates |
 | --- | --- |
+| [wide-angle stereo](<../examples/opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, then validate held-out rectification and depth scale. |
 | [stereo cloud](<../examples/opencv tools/stereo_cloud/stereo_cloud.json>) | Rectified 8 px disparity from a known baseline reconstructs a 3 m plane. |
 | [RGB-D cloud](<../examples/demos/rgbd_cloud/rgbd_cloud.json>) | Metric depth, RGB color, pixel correspondence, XYZ filtering, voxel sampling and normals. |
 | [fisheye calibration](<../examples/opencv tools/fisheye_calibration/README.md>) | Fit eight image views, validate a separate view and rectify with the fitted intrinsics. |
@@ -115,6 +116,15 @@ from **Fundamental matrix** carries the source point frames, so the review
 can reject a mismatch such as using a raw-view matrix on rectified points.
 
 ## Stereo and depth
+
+**Calibrate wide-angle stereo** fits a same-size fisheye or omnidirectional
+pair from matched target views. The fisheye fitter can retain or refine
+supplied intrinsics. The omnidirectional fitter initializes both cameras
+and reports which view pairs OpenCV retained. **Rectify stereo images**
+accepts either resulting rig, produces a perspective pair and emits metric Q
+for the existing disparity and cloud blocks. Fisheye exposes balance and FOV
+scale. Omnidirectional rectification exposes the shared output focal length.
+[Input format and examples](<../examples/opencv tools/wide_angle_stereo/README.md>)
 
 1. Define a rig with left/right intrinsic models and a left-to-right rigid pose,
    or fit it using **Calibrate stereo cameras** and corresponding calibration

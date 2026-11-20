@@ -26,6 +26,7 @@ from .geometry3d_common import (
     pose_record,
     require_pinhole,
     rigid,
+    stereo_cameras,
 )
 from .images import DepthArray, ImageArray, image_format, preview_rgb
 from .parameter_validation import NumericRange, ValidationError
@@ -33,6 +34,8 @@ from .payloads import NO_VALUE, frame, metadata
 from .pointclouds import PointCloud
 from .processing import finite, gray_image, integer
 from .selection import selection_mask
+from .wide_stereo import geometry as rectification_geometry
+from .wide_stereo import remap_for_camera
 
 STEREO_GRID = "stereo_calibration_grid"
 
@@ -84,49 +87,41 @@ def cloud_from_grid(
     )
 
 
+def stereo_rig_record(left, right, pose):
+    (_, _, size), _, _ = stereo_cameras(left, right)
+    if (
+        pose["source_frame"] != left["frame"]
+        or pose["target_frame"] != right["frame"]
+        or pose["units"] != left["units"]
+    ):
+        raise ValueError("Stereo transform must map left camera to right camera in matching units")
+    if np.linalg.norm(rigid(pose)[:3, 3]) <= 1e-10:
+        raise ValueError("Stereo baseline must be nonzero")
+    return {
+        "model": "stereo_rig_v1",
+        "left": left, "right": right, "transform": pose,
+        "image_size": list(size), "units": left["units"],
+    }
+
+
 class StereoRig(Tool3D):
     type_id, title, subtype = "3d.stereo_rig", "Define stereo rig", "Stereo"
     inputs = (Port("left_camera", "data"), Port("right_camera", "data"), Port("transform", "data"))
     outputs = (Port("rig", "data"),)
 
     def process(self, inputs):
-        left, right, pose = (inputs[k] for k in ("left_camera", "right_camera", "transform"))
-        _, _, size = require_pinhole(left)
-        if require_pinhole(right)[2] != size or left["units"] != right["units"]:
-            raise ValueError("Stereo cameras must have matching image size and length units")
-        if (
-            pose["source_frame"] != left["frame"]
-            or pose["target_frame"] != right["frame"]
-            or pose["units"] != left["units"]
-        ):
-            raise ValueError(
-                "Stereo transform must map left camera to right camera in matching units"
-            )
-        if np.linalg.norm(rigid(pose)[:3, 3]) <= 1e-10:
-            raise ValueError("Stereo baseline must be nonzero")
-        return Result(
-            {
-                "rig": {
-                    "model": "stereo_rig_v1",
-                    "left": left,
-                    "right": right,
-                    "transform": pose,
-                    "image_size": list(size),
-                    "units": left["units"],
-                }
-            }
-        )
+        return Result({"rig": stereo_rig_record(
+            inputs["left_camera"], inputs["right_camera"], inputs["transform"]
+        )})
 
 
 def validate_rig(rig):
     if not isinstance(rig, dict) or rig.get("model") != "stereo_rig_v1":
         raise ValueError("Connect a calibrated/defined stereo rig")
-    tool = StereoRig()
-    tool.process(
-        {"left_camera": rig["left"], "right_camera": rig["right"], "transform": rig["transform"]}
-    )
+    stereo_rig_record(rig["left"], rig["right"], rig["transform"])
     rig_revision(rig)
-    return require_pinhole(rig["left"]), require_pinhole(rig["right"]), rigid(rig["transform"])
+    left, right, _ = stereo_cameras(rig["left"], rig["right"])
+    return left, right, rigid(rig["transform"])
 
 
 class CalibrateStereo(Tool3D):
@@ -221,11 +216,7 @@ class CalibrateStereo(Tool3D):
         left = camera_record(k1, d1, size, left["units"], left["frame"])
         right = camera_record(k2, d2, size, right["units"], right["frame"])
         pose = pose_record(pose_matrix(r, t), left["frame"], right["frame"], left["units"])
-        rig = (
-            StereoRig()
-            .process({"left_camera": left, "right_camera": right, "transform": pose})
-            .outputs["rig"]
-        )
+        rig = stereo_rig_record(left, right, pose)
         passed = rms <= finite(p["max_rms"], "Maximum RMS", 0)
         return Result(
             {"rig": rig, "rms": float(rms), "essential": e.tolist(), "fundamental": f.tolist()},
@@ -241,40 +232,44 @@ class RectifyStereo(Tool3D):
     defaults = {
         "alpha": 0.0,
         "zero_disparity": True,
+        "fisheye_balance": 0.0,
+        "fisheye_fov_scale": 1.0,
+        "omnidir_focal_length": 0.0,
         "width": 0,
         "height": 0,
         "interpolation": "linear",
         "border_value": 0.0,
     }
     parameter_choices = {"interpolation": ("nearest", "linear", "cubic", "lanczos4")}
+    parameter_ranges = {
+        "fisheye_balance": NumericRange(0, 1),
+        "fisheye_fov_scale": NumericRange(0.01, 100),
+        "omnidir_focal_length": NumericRange(0, 32768),
+    }
+    parameter_help = {
+        "alpha": "Pinhole crop. Wide-angle models use their own FOV settings.",
+        "zero_disparity": "Align the output principal points. Omnidir uses a shared center.",
+        "fisheye_balance": "Native fisheye crop/coverage balance from zero to one.",
+        "fisheye_fov_scale": "Native fisheye focal-length divisor.",
+        "omnidir_focal_length": "Output focal length in pixels. Zero uses automatic scale.",
+    }
 
     def process(self, inputs):
         rig, p = inputs["rig"], self.parameters
         (k1, d1, size), (k2, d2, _), pose = validate_rig(rig)
         for side in ("left", "right"):
             camera_for_image(rig[side], inputs[side])
-        alpha = finite(p["alpha"], "Alpha")
-        if not -1 <= alpha <= 1:
-            raise ValueError("Rectification alpha must be in [-1,1]")
+        lens = rig["left"].get("lens", "pinhole")
         output_size = (
             integer(p["width"], "Width", 0, 4096) or size[0],
             integer(p["height"], "Height", 0, 4096) or size[1],
         )
-        r1, r2, p1, p2, q, roi1, roi2 = cv2.stereoRectify(
-            k1,
-            d1,
-            k2,
-            d2,
-            size,
-            pose[:3, :3].copy(),
-            pose[:3, 3].copy().reshape(3, 1),
-            flags=cv2.CALIB_ZERO_DISPARITY if p["zero_disparity"] else 0,
-            alpha=alpha,
-            newImageSize=output_size,
+        r1, r2, p1, p2, q, roi1, roi2 = rectification_geometry(
+            rig, ((k1, d1, size), (k2, d2, size)), pose, output_size, p
         )
         result, payloads = {}, {}
         for name, k, d, r, projection in (("left", k1, d1, r1, p1), ("right", k2, d2, r2, p2)):
-            mx, my = cv2.initUndistortRectifyMap(k, d, r, projection, output_size, cv2.CV_32FC1)
+            mx, my = remap_for_camera(rig[name], k, d, r, projection, output_size)
             result[name] = cv2.remap(
                 np.asarray(inputs[name]),
                 mx,
@@ -302,12 +297,14 @@ class RectifyStereo(Tool3D):
             "P2": p2.tolist(),
             "R1": r1.tolist(),
             "R2": r2.tolist(),
-            "roi_left": list(roi1),
-            "roi_right": list(roi2),
+            "roi_left": None if roi1 is None else list(roi1),
+            "roi_right": None if roi2 is None else list(roi2),
             "image_size": list(output_size),
             "units": rig["units"],
             "frame": f"{rig['left']['frame']}:rectified",
         }
+        if lens != "pinhole":
+            result["rectification"]["source_lens"] = lens
         if REVISION in rig:
             result["rectification"][REVISION] = rig[REVISION]
             grid = digest(result["rectification"])

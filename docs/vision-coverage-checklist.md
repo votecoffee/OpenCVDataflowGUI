@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 36 | 25 | 70 | 131 | 27.5% |
+| 3. 3D imagery and point clouds | 37 | 25 | 69 | 131 | 28.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 291 | 29 | 150 | 470 | 61.9% |
+| **Overall** | 292 | 29 | 149 | 470 | 62.1% |
 
 <!-- coverage-summary:end -->
 
@@ -427,7 +427,7 @@ fixture or result needed to close the item.
 | S3-11 | Shared-pinhole relative pose and epipolar geometry | findFundamentalMat, findEssentialMat, recoverPose, computeCorrespondEpilines | Complete | 3d.fundamental, 3d.essential_pose, 3d.check_epipolar. Relative pose uses one shared pinhole camera model; fundamental fitting and epipolar checks operate on image correspondences. Reject outliers and report residuals. Separate camera models remain S3-131. |
 | S3-12 | Two-view sparse triangulation | triangulatePoints | Complete | 3d.triangulate. Recover 3D positions from two supplied projection matrices and paired image points with cheirality and reprojection bounds. More than two views remain S3-33. |
 | S3-13 | Stereo rig calibration and rectification | stereoCalibrate, stereoRectify, initUndistortRectifyMap | Complete | 3d.stereo_calibrate, 3d.stereo_rectify. Matched pinhole target observations and a rectified pair with projection and Q matrices. |
-| S3-14 | Wide-angle stereo fitting and rectification | fisheye.stereoCalibrate/stereoRectify, omnidir.stereoCalibrate and rectification maps | Planned | Fit and rectify a wide-angle rig and check held-out vertical disparity and depth scale. |
+| S3-14 | Wide-angle stereo fitting and rectification | fisheye.stereoCalibrate/stereoRectify, omnidir.stereoCalibrate/stereoRectify and perspective maps | Complete | Calibrate paired same-size target views, report view selection and residuals, and rectify both lens families to horizontal disparity. Held-out synthetic correspondences verify vertical alignment and Q depth independently, and both rendered stereo pairs reconstruct a known plane. See [examples](<../examples/opencv tools/wide_angle_stereo/README.md>). |
 | S3-15 | Stereo disparity | StereoBM, StereoSGBM | Complete | 3d.disparity. Known pixel shift, invalid mask and fixed-point scaling. |
 | S3-16 | Stereo confidence and filtering | ximgproc.createRightMatcher, createDisparityWLSFilter, left–right consistency | Complete | 3d.disparity. Verify confidence on known correspondences and occlusion. |
 | S3-17 | Disparity-to-depth reprojection | reprojectImageTo3D | Complete | 3d.reproject. Known baseline and depth plane, retained pixel positions and masks. |

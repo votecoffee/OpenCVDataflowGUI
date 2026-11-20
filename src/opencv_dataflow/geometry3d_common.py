@@ -128,6 +128,20 @@ def pose_matrix(rotation, translation):
     return rigid(result)
 
 
+def stereo_cameras(left, right):
+    a, b = camera(left), camera(right)
+    lens = left.get("lens", "pinhole")
+    if (
+        a[2] != b[2]
+        or left["units"] != right["units"]
+        or right.get("lens", "pinhole") != lens
+    ):
+        raise ValueError("Stereo cameras must share lens family, image size and length units")
+    if lens == "omnidir" and min(left["xi"], right["xi"]) < 0:
+        raise ValueError("Omnidirectional stereo requires nonnegative xi")
+    return a, b, lens
+
+
 def require_pinhole(model):
     k, d, size = camera(model)
     if model.get("lens", "pinhole") != "pinhole":

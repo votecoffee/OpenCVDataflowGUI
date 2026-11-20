@@ -626,8 +626,8 @@ P2	function	cv2.fisheye.initUndistortRectifyMap	literal reference	-
 P2	function	cv2.fisheye.projectPoints	literal reference	-
 P2	function	cv2.fisheye.solvePnP	literal reference	-
 P2	function	cv2.fisheye.solvePnPRansac	no static reference	-
-P2	function	cv2.fisheye.stereoCalibrate	no static reference	-
-P2	function	cv2.fisheye.stereoRectify	no static reference	-
+P2	function	cv2.fisheye.stereoCalibrate	literal reference	-
+P2	function	cv2.fisheye.stereoRectify	literal reference	-
 P2	function	cv2.fisheye.undistortImage	no static reference	-
 P2	function	cv2.fisheye.undistortPoints	literal reference	-
 P2	class	cv2.img_hash.AverageHash	no static reference	-
@@ -940,9 +940,9 @@ P2	function	cv2.MSER_create	literal reference	-
 P2	function	cv2.omnidir.calibrate	literal reference	-
 P2	function	cv2.omnidir.initUndistortRectifyMap	literal reference	-
 P2	function	cv2.omnidir.projectPoints	literal reference	-
-P2	function	cv2.omnidir.stereoCalibrate	no static reference	-
+P2	function	cv2.omnidir.stereoCalibrate	literal reference	-
 P2	function	cv2.omnidir.stereoReconstruct	no static reference	-
-P2	function	cv2.omnidir.stereoRectify	no static reference	-
+P2	function	cv2.omnidir.stereoRectify	literal reference	-
 P2	function	cv2.omnidir.undistortImage	no static reference	-
 P2	function	cv2.omnidir.undistortPoints	literal reference	-
 P2	function	cv2.optflow.calcOpticalFlowDenseRLOF	no static reference	-

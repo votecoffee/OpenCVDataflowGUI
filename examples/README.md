@@ -178,6 +178,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Channels and image pyramids](<opencv tools/channels_pyramids/README.md>) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
 | [ChArUco board](<opencv tools/charuco_board/README.md>) | Identify corners on a cropped target and recover the board pose. |
 | [ChArUco calibration validation](<opencv tools/validate_charuco_calibration/README.md>) | Check the fitted profile on a separate cropped board and identify the worst corner. |
+| [Wide-angle stereo](<opencv tools/wide_angle_stereo/README.md>) | Fit fisheye and omnidirectional rigs, rectify a held-out view pair and recover metric depth. |
 | [Calibration revisions](<opencv tools/calibration_revisions/README.md>) | Select rig revisions, verify capture identity and reload a pinned lens map. |
 | [Fisheye camera calibration](<opencv tools/fisheye_calibration/README.md>) | Fit a wide-angle camera from eight board views, validate a held-out image and rectify with the fitted profile. |
 | [Omnidirectional camera calibration](<opencv tools/omnidir_calibration/README.md>) | Fit a Mei-model camera, validate a held-out target near the sensor edge and rectify to a perspective grid. |

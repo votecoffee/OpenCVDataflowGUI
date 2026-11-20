@@ -931,6 +931,7 @@ def builtin_registry():
     from .voronoi import VoronoiCells
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
     from .weighted_moments import IntensityMoments
+    from .wide_stereo import CalibrateWideStereo
     from .workplane import RectifyWorkplane
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
@@ -1281,6 +1282,7 @@ def builtin_registry():
         OmnidirectionalCalibration,
         CheckEpipolarCorrespondences,
         *STEREO3D_BLOCKS,
+        CalibrateWideStereo,
         *CLOUD_BLOCKS,
         *CLOUD_IO_BLOCKS,
         *VISION3D_MODULE_BLOCKS,

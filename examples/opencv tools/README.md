@@ -22,6 +22,9 @@ model and checks a separate target near the sensor edge.
 [Calibration revisions](calibration_revisions/README.md) demonstrates named
 rig versions, archived maps and a rejected capture mismatch.
 
+[Wide-angle stereo](wide_angle_stereo/README.md) uses both lens families
+with held-out perspective rectification and metric reconstruction.
+
 [All examples](../README.md)
 
 For ordered in-memory image groups, try [multipage TIFF buffers](multipage_memory/README.md).

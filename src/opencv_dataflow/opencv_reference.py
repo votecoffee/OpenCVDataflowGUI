@@ -120,7 +120,12 @@ BINDINGS = {
     "3d.omnidir_calibrate": "omnidir.calibrate omnidir.projectPoints convexHull contourArea",
     "3d.fisheye_calibrate": "fisheye.calibrate fisheye.projectPoints convexHull contourArea",
     "3d.stereo_calibrate": "stereoCalibrate",
-    "3d.stereo_rectify": "stereoRectify",
+    "3d.wide_stereo_calibrate": "fisheye.stereoCalibrate omnidir.stereoCalibrate",
+    "3d.stereo_rectify": (
+        "stereoRectify fisheye.stereoRectify omnidir.stereoRectify "
+        "initUndistortRectifyMap fisheye.initUndistortRectifyMap "
+        "omnidir.initUndistortRectifyMap remap"
+    ),
     "3d.triangulate": "triangulatePoints",
     "3d.undistort_points": "undistortPoints fisheye.undistortPoints omnidir.undistortPoints",
     "calibration.charuco": "aruco.CharucoDetector.detectBoard",

@@ -589,8 +589,11 @@ Inputs: `left` (image), `right` (image), `rig` (data).
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `alpha` | `0.0` |  |
-| `zero_disparity` | `true` |  |
+| `alpha` | `0.0` | Pinhole crop. Wide-angle models use their own FOV settings. |
+| `zero_disparity` | `true` | Align the output principal points. Omnidir uses a shared center. |
+| `fisheye_balance` | `0.0` | Value must be a finite number between 0 and 1. Native fisheye crop/coverage balance from zero to one. |
+| `fisheye_fov_scale` | `1.0` | Value must be a finite number between 0.01 and 100. Native fisheye focal-length divisor. |
+| `omnidir_focal_length` | `0.0` | Value must be a finite number between 0 and 32768. Output focal length in pixels. Zero uses automatic scale. |
 | `width` | `0` |  |
 | `height` | `0` |  |
 | `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
@@ -646,6 +649,47 @@ Inputs: `points` (data), `camera` (data).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `output` | `"normalized"` | `normalized`, `pixels` |
+
+## Calibrate wide-angle stereo (`3d.wide_stereo_calibrate`)
+
+3D vision / Calibration
+
+Inputs: `left_camera` (data), `right_camera` (data), `object_views` (data, optional), `left_views` (data, optional), `right_views` (data, optional).
+
+Input `left_camera` — Fisheye seed or omnidirectional frame, image grid and units.
+
+Input `right_camera` — Same lens family, dimensions and units as Left camera.
+
+Input `object_views` — Corresponding target XYZ arrays, in the camera model's units.
+
+Input `left_views` — Left distorted pixel arrays in target point order.
+
+Input `right_views` — Right distorted pixel arrays in the same target point order.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | JSON object with object_views, left_views and right_views. |
+| `path_base` | `"project"` | `project`, `working_directory` Base for a relative observations file. |
+| `fisheye_intrinsics` | `"fixed"` | `fixed`, `refine` Keep the supplied intrinsics or refine the starting values. |
+| `fisheye_check_condition` | `false` | Have OpenCV check the fisheye fit conditioning. |
+| `fisheye_recompute_extrinsics` | `true` | Refit poses while initializing fisheye refinement. |
+| `fisheye_fix_k1` | `false` | Fix fisheye k1 at zero during refinement. |
+| `fisheye_fix_k2` | `false` | Fix fisheye k2 at zero during refinement. |
+| `fisheye_fix_k3` | `false` | Fix fisheye k3 at zero during refinement. |
+| `fisheye_fix_k4` | `false` | Fix fisheye k4 at zero during refinement. |
+| `omni_fix_focal_length` | `false` | Lock focal_length at OpenCV's omnidir initialization. |
+| `omni_fix_principal_point` | `false` | Lock principal_point at OpenCV's omnidir initialization. |
+| `omni_fix_xi` | `false` | Lock xi at OpenCV's omnidir initialization. |
+| `omni_fix_k1` | `false` | Lock k1 at OpenCV's omnidir initialization. |
+| `omni_fix_k2` | `false` | Lock k2 at OpenCV's omnidir initialization. |
+| `omni_fix_p1` | `false` | Lock p1 at OpenCV's omnidir initialization. |
+| `omni_fix_p2` | `false` | Lock p2 at OpenCV's omnidir initialization. |
+| `view_policy` | `"require_all"` | `require_all`, `allow_subset` Require every pair or allow the subset OpenCV kept during initialization. |
+| `minimum_views` | `3` | Value must be a whole number between 3 and 32. Minimum number of fitted stereo pairs. |
+| `iterations` | `200` | Value must be a whole number between 1 and 1000. |
+| `epsilon` | `1e-09` | Value must be a finite number between 0 and 1. |
+| `max_rms` | `1.0` | Value must be a finite number at least 1e-09. Overall OpenCV reprojection RMS limit, in pixels. |
+| `max_view_rms` | `0.0` | Value must be a finite number at least 0. Worst single-camera view RMS limit, in pixels. Zero disables this check. |
 
 ## Apply color correction model (`calibration.apply_ccm`)
 

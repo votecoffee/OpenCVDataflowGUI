@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "left_model",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 305.0,
+        "fy": 302.0,
+        "cx": 319.0,
+        "cy": 238.0,
+        "width": 640,
+        "height": 480,
+        "distortion": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lens": "fisheye",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "fisheye_left"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/fisheye-left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        330,
+        325
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right_model",
+      "type": "3d.camera",
+      "name": "Camera intrinsic model",
+      "parameters": {
+        "fx": 310.0,
+        "fy": 306.0,
+        "cx": 321.0,
+        "cy": 240.0,
+        "width": 640,
+        "height": 480,
+        "distortion": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "lens": "fisheye",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "fisheye_right"
+      },
+      "position": [
+        0,
+        330
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Image file",
+      "parameters": {
+        "path": "assets/fisheye-right.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        330,
+        655
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "3d.wide_stereo_calibrate",
+      "name": "Calibrate wide-angle stereo",
+      "parameters": {
+        "path": "assets/fisheye-views.json",
+        "path_base": "project",
+        "fisheye_intrinsics": "fixed",
+        "fisheye_check_condition": false,
+        "fisheye_recompute_extrinsics": true,
+        "fisheye_fix_k1": false,
+        "fisheye_fix_k2": false,
+        "fisheye_fix_k3": false,
+        "fisheye_fix_k4": false,
+        "omni_fix_focal_length": false,
+        "omni_fix_principal_point": false,
+        "omni_fix_xi": false,
+        "omni_fix_k1": false,
+        "omni_fix_k2": false,
+        "omni_fix_p1": false,
+        "omni_fix_p2": false,
+        "view_policy": "allow_subset",
+        "minimum_views": 8,
+        "iterations": 200,
+        "epsilon": 1e-09,
+        "max_rms": 0.05,
+        "max_view_rms": 0.1
+      },
+      "position": [
+        350,
+        0
+      ],
+      "exposed_inputs": [
+        "left_camera",
+        "right_camera",
+        "object_views",
+        "left_views",
+        "right_views"
+      ],
+      "exposed_outputs": [
+        "rig",
+        "rms",
+        "fit_report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rectify",
+      "type": "3d.stereo_rectify",
+      "name": "Rectify stereo images",
+      "parameters": {
+        "alpha": 0.0,
+        "zero_disparity": true,
+        "fisheye_balance": 0.0,
+        "fisheye_fov_scale": 1.0,
+        "omnidir_focal_length": 235.0,
+        "width": 0,
+        "height": 0,
+        "interpolation": "linear",
+        "border_value": 0.0
+      },
+      "position": [
+        700,
+        0
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rig"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "rectification"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "disparity",
+      "type": "3d.disparity",
+      "name": "Stereo BM / SGBM disparity",
+      "parameters": {
+        "algorithm": "sgbm",
+        "min_disparity": 0,
+        "num_disparities": 48,
+        "block_size": 5,
+        "p1": 0,
+        "p2": 0,
+        "mode": "sgbm_3way",
+        "uniqueness_ratio": 10,
+        "speckle_window": 0,
+        "speckle_range": 2,
+        "disp12_max_diff": 1,
+        "prefilter_cap": 31,
+        "prefilter_size": 9,
+        "prefilter_type": "xsobel",
+        "texture_threshold": 10,
+        "wls": false,
+        "wls_lambda": 8000.0,
+        "wls_sigma": 1.5,
+        "wls_lr_threshold": 24,
+        "wls_depth_radius": -1,
+        "minimum_wls_confidence": 0.0
+      },
+      "position": [
+        1050,
+        0
+      ],
+      "exposed_inputs": [
+        "left",
+        "right"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "preview",
+        "confidence"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cloud",
+      "type": "3d.reproject",
+      "name": "Disparity to 3D cloud",
+      "parameters": {
+        "input_scale": 1.0,
+        "sample_step": 2,
+        "max_points": 200000,
+        "min_depth": 1.0,
+        "max_depth": 6.0
+      },
+      "position": [
+        1400,
+        0
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "rectification",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "depth",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "credit",
+      "type": "layout.comment",
+      "name": "Original synthetic stereo fixture",
+      "description": "Original target observations and images by OpenCVDataflowGUI contributors (MIT). Fourteen projected board poses train the rig. The rendered plane at Z = 3 m is held out.",
+      "parameters": {},
+      "position": [
+        0,
+        -325
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left_model",
+      "output": "camera",
+      "target": "fit",
+      "input": "left_camera"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "rectify",
+      "input": "left"
+    },
+    {
+      "source": "rectify",
+      "output": "left",
+      "target": "disparity",
+      "input": "left"
+    },
+    {
+      "source": "right_model",
+      "output": "camera",
+      "target": "fit",
+      "input": "right_camera"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "rectify",
+      "input": "right"
+    },
+    {
+      "source": "rectify",
+      "output": "right",
+      "target": "disparity",
+      "input": "right"
+    },
+    {
+      "source": "fit",
+      "output": "rig",
+      "target": "rectify",
+      "input": "rig"
+    },
+    {
+      "source": "rectify",
+      "output": "rectification",
+      "target": "cloud",
+      "input": "rectification"
+    },
+    {
+      "source": "rectify",
+      "output": "left",
+      "target": "cloud",
+      "input": "image"
+    },
+    {
+      "source": "disparity",
+      "output": "disparity",
+      "target": "cloud",
+      "input": "disparity"
+    }
+  ]
+}
