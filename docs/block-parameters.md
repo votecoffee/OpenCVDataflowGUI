@@ -4895,6 +4895,22 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `algorithm_hint` | `"default"` | `default`, `accurate`, `approximate` |
 
+## Gray-world white balance (`cv.gray_world_white_balance`)
+
+Calibration / Color balance
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Unsigned 8- or 16-bit BGR/RGB or BGRA/RGBA. Alpha is preserved.
+
+Input `mask` — Only selected pixels can contribute to the gain estimate.
+
+Input `region` — Restrict estimation to a shape on the input image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `saturation_threshold` | `0.9` | Value must be a finite number between 0 and 1. Maximum (brightest − darkest channel) / brightest channel. |
+
 ## Guided filter (`cv.guided_filter`)
 
 Image processing / Filters

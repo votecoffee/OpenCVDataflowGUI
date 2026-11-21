@@ -262,6 +262,11 @@ enough for the job's tolerance.
 
 ## White and color balance
 
+Use **Gray-world white balance** to estimate gains from unsaturated
+8-bit or 16-bit color samples. A wired region or mask can restrict the
+estimate to neutral surfaces. The corrected image retains the original
+grid and alpha. [Gray-world examples](<../examples/opencv tools/gray_world_white_balance/README.md>)
+
 White / color balance supports gray-world gains from the whole image or a JSON
 `roi` of `[x,y,width,height]`. Choose a neutral reference region for white balancing;
 gray-world over a colored scene does not necessarily estimate the illuminant.

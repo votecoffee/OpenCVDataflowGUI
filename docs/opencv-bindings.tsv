@@ -5265,16 +5265,16 @@ P3	method	cv2.ximgproc_SuperpixelSLIC.getLabelContourMask	alias	cv2.ximgproc.Sup
 P3	method	cv2.ximgproc_SuperpixelSLIC.getLabels	alias	cv2.ximgproc.SuperpixelSLIC.getLabels
 P3	method	cv2.ximgproc_SuperpixelSLIC.getNumberOfSuperpixels	alias	cv2.ximgproc.SuperpixelSLIC.getNumberOfSuperpixels
 P3	method	cv2.ximgproc_SuperpixelSLIC.iterate	alias	cv2.ximgproc.SuperpixelSLIC.iterate
-P3	function	cv2.xphoto.applyChannelGains	no static reference	-
+P3	function	cv2.xphoto.applyChannelGains	literal reference	-
 P3	function	cv2.xphoto.bm3dDenoising	no static reference	-
-P3	function	cv2.xphoto.createGrayworldWB	no static reference	-
+P3	function	cv2.xphoto.createGrayworldWB	literal reference	-
 P3	function	cv2.xphoto.createLearningBasedWB	no static reference	-
 P3	function	cv2.xphoto.createSimpleWB	no static reference	-
 P3	function	cv2.xphoto.createTonemapDurand	no static reference	-
 P3	function	cv2.xphoto.dctDenoising	no static reference	-
 P3	class	cv2.xphoto.GrayworldWB	no static reference	-
 P3	method	cv2.xphoto.GrayworldWB.getSaturationThreshold	no static reference	-
-P3	method	cv2.xphoto.GrayworldWB.setSaturationThreshold	no static reference	-
+P3	method	cv2.xphoto.GrayworldWB.setSaturationThreshold	method name only	-
 P3	function	cv2.xphoto.inpaint	no static reference	-
 P3	class	cv2.xphoto.LearningBasedWB	no static reference	-
 P3	method	cv2.xphoto.LearningBasedWB.extractSimpleFeatures	no static reference	-
@@ -5283,7 +5283,7 @@ P3	method	cv2.xphoto.LearningBasedWB.getRangeMaxVal	no static reference	-
 P3	method	cv2.xphoto.LearningBasedWB.getSaturationThreshold	no static reference	-
 P3	method	cv2.xphoto.LearningBasedWB.setHistBinNum	no static reference	-
 P3	method	cv2.xphoto.LearningBasedWB.setRangeMaxVal	no static reference	-
-P3	method	cv2.xphoto.LearningBasedWB.setSaturationThreshold	no static reference	-
+P3	method	cv2.xphoto.LearningBasedWB.setSaturationThreshold	method name only	-
 P3	function	cv2.xphoto.oilPainting	no static reference	-
 P3	class	cv2.xphoto.SimpleWB	no static reference	-
 P3	method	cv2.xphoto.SimpleWB.getInputMax	no static reference	-
@@ -5306,7 +5306,7 @@ P3	method	cv2.xphoto.TonemapDurand.setSaturation	no static reference	-
 P3	method	cv2.xphoto.TonemapDurand.setSigmaColor	method name only	-
 P3	method	cv2.xphoto.TonemapDurand.setSigmaSpace	no static reference	-
 P3	class	cv2.xphoto.WhiteBalancer	no static reference	-
-P3	method	cv2.xphoto.WhiteBalancer.balanceWhite	no static reference	-
+P3	method	cv2.xphoto.WhiteBalancer.balanceWhite	method name only	-
 P3	class	cv2.xphoto_GrayworldWB	alias	cv2.xphoto.GrayworldWB
 P3	method	cv2.xphoto_GrayworldWB.getSaturationThreshold	alias	cv2.xphoto.GrayworldWB.getSaturationThreshold
 P3	method	cv2.xphoto_GrayworldWB.setSaturationThreshold	alias	cv2.xphoto.GrayworldWB.setSaturationThreshold

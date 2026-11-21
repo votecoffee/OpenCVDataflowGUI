@@ -401,6 +401,10 @@ BINDINGS = {
     "inspect.aruco_markers": "aruco.ArucoDetector.detectMarkers",
     "calibration.create_aruco_dictionary": "aruco.extendDictionary aruco.Dictionary.getMarkerBits",
     "inspect.gmsd_quality": "quality.QualityGMSD_compute",
+    "cv.gray_world_white_balance": (
+        "xphoto.createGrayworldWB xphoto.GrayworldWB.setSaturationThreshold "
+        "xphoto.WhiteBalancer.balanceWhite xphoto.applyChannelGains"
+    ),
     "inspect.brisque_quality": "quality.QualityBRISQUE_create quality.QualityBRISQUE.compute",
     "inspect.blobs": "connectedComponentsWithStatsWithAlgorithm",
     "inspect.bounding_convex_polygon": "convexHull",

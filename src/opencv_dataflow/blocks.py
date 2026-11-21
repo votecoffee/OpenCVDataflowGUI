@@ -1021,6 +1021,7 @@ def builtin_registry():
     from .relative_pose import IndependentRelativePose
     from .wide_pose import SolveWideAnglePose
     from .wide_stereo import CalibrateWideStereo
+    from .white_balance import GrayWorldWhiteBalance
     from .workplane import RectifyWorkplane
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
@@ -1109,6 +1110,7 @@ def builtin_registry():
         SaveLensMaps,
         Undistort,
         ColorBalance,
+        GrayWorldWhiteBalance,
         *COLOR_CALIBRATION_BLOCKS,
         PixelToPhysical,
         InspectPlanarDistance,

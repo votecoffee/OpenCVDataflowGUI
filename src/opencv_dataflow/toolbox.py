@@ -48,6 +48,7 @@ OPENCV_MODULES = {
     "dnn": "Deep Neural Networks",
     "flann": "Clustering and Search",
     "photo": "Computational Photography",
+    "xphoto": "Extended Computational Photography",
     "stitching": "Image Stitching",
     "stereo": "Stereo Correspondence",
     "ptcloud": "Point Cloud Processing",
@@ -124,6 +125,7 @@ IMPLEMENTATION_MODULES = {
     "semantic_segmentation prompt_segmentation prompt_mask_decode regression local_anomaly "
     "input_shifts",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
+    "xphoto": "white_balance",
     "ml": "svm_blocks image_mixtures visual_words",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
     "rotating_panorama panorama_points",

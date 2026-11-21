@@ -166,6 +166,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Absolute image error](<opencv tools/absolute_image_error/README.md>) | Compare mean, RMS, and maximum absolute error on two known deviations. |
 | [Gradient-based image quality](<opencv tools/gradient_quality/README.md>) | Compare clean, blurred and noisy copies of a synthetic chart using GMSD scores and local similarity maps. |
 | [Color and radial perceptual hashes](<opencv tools/perceptual_descriptors/README.md>) | Compare an original part to rotated, resampled and changed samples using native color distance and radial similarity. |
+| [Gray-world white balance](<opencv tools/gray_world_white_balance/README.md>) | Recover neutral tones on 8-bit and 16-bit charts with a saturation cutoff or a reference region. |
 | [Affine-invariant features](<opencv tools/affine_features/README.md>) | Match an original tilted inspection fixture using SIFT/ORB affine views, retain source-space support geometry, and verify against a known transform. |
 | [AKAZE registration](<opencv tools/akaze_registration/README.md>) | Match binary AKAZE descriptors and recover a known image translation. |
 | [Aligned image comparison](<opencv tools/aligned_image_comparison/README.md>) | Compare an intact part and a missing-bore fixture with a reference, per-channel correlation and normalized residuals. |

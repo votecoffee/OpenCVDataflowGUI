@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Gray-world white balance",
+      "description": "The left patches should be neutral. The right patches are intentionally saturated. Compare gains estimated from all pixels, a saturation limit and an explicit rectangle. This original synthetic chart is covered by the repository's MIT license.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "input",
+      "type": "input.file",
+      "name": "Color cast chart (uint16)",
+      "parameters": {
+        "path": "assets/chart_uint16.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        125
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "roi",
+      "type": "region.shape",
+      "name": "First neutral patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          8,
+          8,
+          56,
+          26
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        245,
+        340
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "all_pixels",
+      "type": "cv.gray_world_white_balance",
+      "name": "All pixels",
+      "description": "Estimate a gray-world balance while excluding overly saturated pixels.",
+      "parameters": {
+        "saturation_threshold": 1.0
+      },
+      "position": [
+        525,
+        -20
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "gains",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "saturation_filtered",
+      "type": "cv.gray_world_white_balance",
+      "name": "Saturation limit 0.60",
+      "description": "Estimate a gray-world balance while excluding overly saturated pixels.",
+      "parameters": {
+        "saturation_threshold": 0.6
+      },
+      "position": [
+        525,
+        160
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "gains",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region_filtered",
+      "type": "cv.gray_world_white_balance",
+      "name": "Neutral region only",
+      "description": "Estimate a gray-world balance while excluding overly saturated pixels.",
+      "parameters": {
+        "saturation_threshold": 1.0
+      },
+      "position": [
+        525,
+        340
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "gains",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "input",
+      "output": "image",
+      "target": "roi",
+      "input": "image"
+    },
+    {
+      "source": "input",
+      "output": "image",
+      "target": "all_pixels",
+      "input": "image"
+    },
+    {
+      "source": "input",
+      "output": "image",
+      "target": "saturation_filtered",
+      "input": "image"
+    },
+    {
+      "source": "input",
+      "output": "image",
+      "target": "region_filtered",
+      "input": "image"
+    },
+    {
+      "source": "roi",
+      "output": "region",
+      "target": "region_filtered",
+      "input": "region"
+    }
+  ]
+}
