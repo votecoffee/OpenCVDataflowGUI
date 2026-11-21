@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 128 | 3 | 0 | 131 | 97.7% |
+| 3. 3D imagery and point clouds | 129 | 2 | 0 | 131 | 98.5% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 383 | 7 | 80 | 470 | 81.5% |
+| **Overall** | 384 | 6 | 80 | 470 | 81.7% |
 
 <!-- coverage-summary:end -->
 
@@ -587,7 +587,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S3-127 | Assess calibration capture coverage and parameter stability | calibrateCameraExtended, Rodrigues and projectPoints | Complete | calibration.audit_capture qualifies image and edge coverage, tilt and depth diversity, repeated pinhole fits and held-out validation. The [capture audit examples](<../examples/opencv tools/calibration_capture_audit/README.md>) contrast independent varied captures with a low-residual weak set. |
 | S3-128 | Estimate uncertainty on calibrated image measurements | projectPoints Jacobian and joint covariance propagation | Complete | calibration.measure_uncertainty estimates planar endpoints and distance with correlated pixel, pose and pinhole lens terms. The [measurement example](<../examples/opencv tools/measurement_uncertainty/README.md>) verifies first-order intervals against repeated synthetic perturbations and compares held-out recorded chessboard observations. |
-| S3-129 | Fit a spatial line or axis to measured 3D points | fitLine on XYZ with a robust distance choice | Partial | Optional Simple3DMeasure 0.1.0.dev2 supplies bounded deterministic consensus/TLS lines, radial residuals, frame/unit-aware angle, separation, probe and observed-span measurements, plus generated controls and recorded section examples with unchanged failure guards. Qualify a native XYZ fitLine adapter with selectable robust distances, retained point IDs, sign ambiguity and coincident/underconstrained rejection. Recorded sections use supplied fixtures and do not establish dimensional accuracy. |
+| S3-129 | Fit a spatial line or axis to measured 3D points | fitLine on XYZ with six loss choices | Complete | 3d.cloud_fit_line classifies radial support, preserves point IDs, qualifies axis and sign ambiguity and reports the observed span. The [native line fitting examples](<../examples/opencv tools/cloud_line_fit/README.md>) recover a known axis through clutter and reject its least-squares control. Optional Simple3DMeasure supplies additional section and multi-feature measurements. |
 
 ### Lens-aware object and relative pose
 

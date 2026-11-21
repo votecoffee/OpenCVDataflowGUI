@@ -102,7 +102,7 @@ IMPLEMENTATION_MODULES = {
         "measurement_uncertainty random_pattern remap_maps "
         "robot_world workplane"
     ),
-    "geometry": "circle_fitting contour_analysis convex_overlap geometry3d line_pair shape_fitting "
+    "geometry": "circle_fitting cloud_line contour_analysis convex_overlap geometry3d line_pair shape_fitting "
     "planar_pose scene_scale sparse_multiview bundler_reconstruction translation_registration triangulation voronoi",
     "video": (
         "background_reference color_tracking ecc_registration flow_files flow_refinement "

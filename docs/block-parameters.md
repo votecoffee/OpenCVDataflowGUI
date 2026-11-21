@@ -393,6 +393,32 @@ Inputs: `cloud` (cloud), `mask` (image, optional), `region` (data, optional).
 | `attribute_maximum` | `1.7976931348623157e+308` | Value must be a finite number. Inclusive upper bound in the stored attribute's units. |
 | `missing_attribute` | `"exclude"` | `exclude`, `keep` Keep or exclude rows without the selected scalar before inversion. |
 
+## Fit 3D line to point cloud (`3d.cloud_fit_line`)
+
+3D vision / Point clouds
+
+Inputs: `cloud` (cloud), `reference_pose` (data, optional).
+
+Input `cloud` — Measured XYZ, with its native frame, length units and optional point attributes.
+
+Input `reference_pose` — Use this pose's +Z in the cloud frame to resolve the line direction.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `distance` | `"welsch"` | `l2`, `l1`, `l12`, `fair`, `welsch`, `huber` OpenCV loss for point-to-line residuals, from least squares to robust loss. |
+| `robust_scale` | `0.0` | Value must be a finite number between 0 and 1e+12. Fair, Welsch or Huber scale in cloud units. Zero uses the native default. |
+| `radius_epsilon` | `0.0` | Value must be a finite number between 0 and 1e+12. Convergence distance in cloud units. Zero uses the native default. |
+| `angle_epsilon_rad` | `0.01` | Value must be a finite number between 0 and 1.5708. Angular convergence in radians. Zero uses the native default. |
+| `inlier_tolerance` | `0.002` | Value must be a finite number between 1e-12 and 1e+12. Inclusive radial threshold and fit scale, both in cloud units. |
+| `minimum_inliers` | `3` | Value must be a whole number between 2 and 1e+06. Minimum number of supported input rows. |
+| `minimum_inlier_fraction` | `0.5` | Value must be a finite number between 0 and 1. Minimum supported fraction of all input rows. |
+| `minimum_linearity` | `0.8` | Value must be a finite number between 1e-06 and 1. Minimum 1 − second/first principal variance of the supporting rows. |
+| `minimum_span` | `0.0` | Value must be a finite number between 0 and 1e+12. Smallest accepted support span along the line, in cloud units. |
+| `minimum_reference_alignment` | `0.05` | Value must be a finite number between 1e-06 and 1. Minimum absolute cosine with the reference pose's +Z. |
+| `maximum_fit_samples` | `4096` | Value must be a whole number between 2 and 16384. Maximum rows sent to the fitter. Classification uses every row. |
+| `max_input_points` | `250000` | Value must be a whole number between 2 and 1e+06. Maximum cloud row count to classify. |
+| `random_seed` | `0` | Value must be a whole number between 0 and 4.29497e+09. Seed for choosing fit rows when the cloud exceeds the sample budget. |
+
 ## Measure point cloud (`3d.cloud_measure`)
 
 3D vision / Point clouds

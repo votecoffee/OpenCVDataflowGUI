@@ -667,6 +667,7 @@ def builtin_registry():
     from .cloud_features import RegisterCloudFeatures
     from .cloud_fixture import PerturbCloudFixture
     from .cloud_io import CLOUD_IO_BLOCKS
+    from .cloud_line import FitCloudLine
     from .cloud_recording import RecordedCloud
     from .cloud_merge import MergeCloudScans
     from .cloud_octree import QueryCloudOctree
@@ -1442,6 +1443,7 @@ def builtin_registry():
         GrowCloudRegions,
         FitCloudModel,
         MeasureCloudCylinder,
+        FitCloudLine,
         MeasureCloudSurfaceQuality,
         ProjectCloudVisibility,
         *VISION3D_MODULE_BLOCKS,

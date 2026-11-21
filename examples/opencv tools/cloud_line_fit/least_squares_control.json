@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Fit a measured line through clutter",
+      "description": "Original synthetic scan by OpenCVDataflowGUI contributors (MIT). Least squares is pulled toward the clutter and fails the support gate.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.cloud",
+      "name": "Load 142 identified XYZ rows",
+      "parameters": {
+        "path": "assets/line_with_clutter.ply",
+        "units": "mm",
+        "frame": "fixture",
+        "max_points": 1000000,
+        "track_source_rows": false
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "count",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "3d.cloud_fit_line",
+      "name": "Fit least-squares line",
+      "description": "Fit a 3D axis using OpenCV and measure the support from the retained scan rows.",
+      "parameters": {
+        "distance": "l2",
+        "robust_scale": 0.0,
+        "radius_epsilon": 0.0,
+        "angle_epsilon_rad": 0.01,
+        "inlier_tolerance": 0.6,
+        "minimum_inliers": 60,
+        "minimum_inlier_fraction": 0.75,
+        "minimum_linearity": 0.8,
+        "minimum_span": 160.0,
+        "minimum_reference_alignment": 0.05,
+        "maximum_fit_samples": 4096,
+        "max_input_points": 250000,
+        "random_seed": 0
+      },
+      "position": [
+        480,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "reference_pose"
+      ],
+      "exposed_outputs": [
+        "line",
+        "endpoints",
+        "span",
+        "inliers",
+        "outliers",
+        "inlier_indices",
+        "outlier_indices",
+        "radial_distances",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "cloud",
+      "target": "fit",
+      "input": "cloud"
+    }
+  ]
+}
