@@ -99,7 +99,7 @@ IMPLEMENTATION_MODULES = {
     ),
     "calib": (
         "calibration calibration_capture calibration_validation chessboard_quality hand_eye multicamera_calibration "
-        "measurement_uncertainty random_pattern remap_maps wide_pose "
+        "measurement_uncertainty random_pattern relative_pose remap_maps wide_pose "
         "robot_world workplane"
     ),
     "geometry": "circle_fitting cloud_line contour_analysis convex_overlap geometry3d line_pair shape_fitting "

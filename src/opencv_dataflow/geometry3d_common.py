@@ -202,6 +202,32 @@ def undistort_camera_pixels(xy, model, k, d, projection=None):
     return result.reshape(-1, 2)
 
 
+def forward_camera_domain(xyz, minimum_cosine):
+    norm = np.linalg.norm(xyz, axis=1)
+    return np.isfinite(norm) & (norm > 0) & (xyz[:, 2] >= minimum_cosine * norm)
+
+
+def checked_camera_rays(xy, model, k, d, criteria, minimum_cosine, inversion_limit):
+    """Unproject source pixels and confirm their inverse in the forward chart."""
+    if model.get("lens") == "fisheye":
+        undeformed = cv2.fisheye.undistortPoints(xy[:, None], k, d, criteria=criteria).reshape(
+            -1, 2
+        )
+    elif model.get("lens", "pinhole") == "pinhole":
+        undeformed = cv2.undistortPoints(xy[:, None], k, d, criteria=criteria).reshape(-1, 2)
+    else:
+        undeformed = undistort_camera_pixels(xy, model, k, d)
+    xyz = np.column_stack((undeformed, np.ones(len(xy))))
+    valid = forward_camera_domain(xyz, minimum_cosine)
+    if np.any(valid):
+        # Mei's inverse returns x/z and y/z without the hemisphere sign. Forward
+        # reprojection rejects rays whose inverse belongs to the opposite chart.
+        zero = np.zeros(3)
+        rebuilt = project_camera_pixels(xyz[valid], model, k, d, zero, zero)
+        valid[valid] = np.linalg.norm(rebuilt - xy[valid], axis=1) <= inversion_limit
+    return undeformed, valid
+
+
 def stereo_cameras(left, right):
     a, b = camera(left), camera(right)
     lens = left.get("lens", "pinhole")

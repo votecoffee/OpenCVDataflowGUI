@@ -9,12 +9,13 @@ from .geometry3d import PNP
 from .geometry3d_common import (
     Tool3D,
     camera,
+    checked_camera_rays,
+    forward_camera_domain,
     points,
     pose_matrix,
     pose_record,
     project_camera_pixels,
     rigid,
-    undistort_camera_pixels,
 )
 from .graphics_layers import GraphicDrawing, graphic_object
 from .parameter_validation import NumericRange, ValidationError
@@ -22,7 +23,6 @@ from .payloads import NO_VALUE, ValuePacket, require_same_frame
 from .result_graphics import ACCEPTED, REJECTED
 
 _MAX_POINTS = 4096
-_ZERO = np.zeros(3)
 
 
 def _scale_and_rank(rows):
@@ -33,28 +33,6 @@ def _scale_and_rank(rows):
     local = centered / scale
     singular = np.linalg.svd(local, compute_uv=False)
     return scale, int(np.count_nonzero(singular > singular[0] * 1e-7))
-
-
-def _forward(xyz, minimum_cosine):
-    norm = np.linalg.norm(xyz, axis=1)
-    return np.isfinite(norm) & (norm > 0) & (xyz[:, 2] >= minimum_cosine * norm)
-
-
-def _rays(xy, model, k, d, criteria, minimum_cosine, inversion_limit):
-    if model["lens"] == "fisheye":
-        undeformed = cv2.fisheye.undistortPoints(xy[:, None], k, d, criteria=criteria).reshape(
-            -1, 2
-        )
-    else:
-        undeformed = undistort_camera_pixels(xy, model, k, d)
-    xyz = np.column_stack((undeformed, np.ones(len(xy))))
-    valid = _forward(xyz, minimum_cosine)
-    if np.any(valid):
-        # Mei's inverse returns x/z and y/z without the hemisphere sign. Forward
-        # reprojection rejects rays whose inverse belongs to the opposite chart.
-        rebuilt = project_camera_pixels(xyz[valid], model, k, d, _ZERO, _ZERO)
-        valid[valid] = np.linalg.norm(rebuilt - xy[valid], axis=1) <= inversion_limit
-    return undeformed, valid
 
 
 def _guess(record, model, source, center, scale):
@@ -115,7 +93,7 @@ def _score(xyz, measured, valid, model, k, d, pose, p):
     r, t = pose[:3], pose[3:]
     rotation = cv2.Rodrigues(r)[0]
     projected = np.full(measured.shape, np.nan)
-    domain = valid & _forward(xyz @ rotation.T + t, float(p["minimum_ray_cosine"]))
+    domain = valid & forward_camera_domain(xyz @ rotation.T + t, float(p["minimum_ray_cosine"]))
     if np.any(domain):
         projected[domain] = project_camera_pixels(xyz[domain], model, k, d, r, t)
     errors = np.linalg.norm(projected - measured, axis=1)
@@ -321,7 +299,7 @@ class SolveWideAnglePose(Tool3D):
             int(p["undistort_iterations"]),
             float(p["undistort_epsilon"]),
         )
-        rays, valid = _rays(
+        rays, valid = checked_camera_rays(
             xy,
             model,
             k,

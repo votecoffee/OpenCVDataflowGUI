@@ -135,6 +135,11 @@ BINDINGS = {
     "3d.evaluate_disparity": "applyColorMap",
     "3d.stereo_color_match": "applyColorMap",
     "3d.essential_pose": "findEssentialMat recoverPose",
+    "3d.independent_relative_pose": (
+        "undistortPoints fisheye.undistortPoints omnidir.undistortPoints findEssentialMat "
+        "recoverPose findFundamentalMat triangulatePoints projectPoints "
+        "fisheye.projectPoints omnidir.projectPoints"
+    ),
     "3d.check_epipolar": "computeCorrespondEpilines",
     "3d.refine_epipolar": "sampsonDistance correctMatches",
     "3d.rectify_uncalibrated_stereo": "stereoRectifyUncalibrated warpPerspective",

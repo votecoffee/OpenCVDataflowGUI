@@ -131,6 +131,13 @@ reprojection and rejected point IDs. The omnidirectional solver uses
 forward-facing rays within a checked inverse-projection domain.
 [Wide-angle pose example](<../examples/opencv tools/wide_angle_pose/README.md>)
 
+Use **Relative pose from two calibrated cameras** with ordered matching pixels
+and a separate camera model for each view. It accepts independent pinhole,
+fisheye and forward Mei models, validates both raw image reprojections, and
+reports the transform and triangulated points. A measured baseline sets the
+translation and cloud scale.
+[Independent relative pose example](<../examples/opencv tools/independent_relative_pose/README.md>)
+
 Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
 and reload the lens profile to avoid solving the dataset on every runtime cycle.

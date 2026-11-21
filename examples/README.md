@@ -382,6 +382,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Calibrated measurement uncertainty](<opencv tools/measurement_uncertainty/README.md>) | Measure a planar distance and propagate correlated pixel, pose and lens uncertainty. |
 | [Native XYZ line fitting](<opencv tools/cloud_line_fit/README.md>) | Recover a measured axis with Welsch loss and retain source row IDs through clutter. |
 | [Wide-angle object pose](<opencv tools/wide_angle_pose/README.md>) | Fit fisheye and omnidirectional poses and verify held-out source-pixel reprojections. |
+| [Independently calibrated relative pose](<opencv tools/independent_relative_pose/README.md>) | Recover camera-to-camera geometry from unequal grids and mixed lenses. Inspect accepted matches and triangulate a cloud with optional metric scale. |
 | [Lens map displacement](<opencv tools/lens_map_displacement/README.md>) | Measure correction strength and source coverage, and overlay directions on a heatmap. |
 | [Linear channel transform](<opencv tools/channel_transform/README.md>) | Mix BGR channels and derive a grayscale difference image inside a region. |
 | [Local structure tensor and orientation](<opencv tools/structure_tensor/README.md>) | Measure eigenvalues, confidence and unsigned normal/tangent directions on a 16-bit fixture; verify known axes and ambiguous corner/flat/weak probes. |

@@ -1198,6 +1198,41 @@ Input `initial_pose` — Optional rigid transform from source frame to target fr
 | `minimum_constraint_ratio` | `0.001` | Value must be a finite number between 1e-06 and 1. Minimum smallest-to-largest singular value ratio of the normalized pose Jacobian. |
 | `max_points_per_cloud` | `250000` | Value must be a whole number between 6 and 1e+06. Maximum points per input when quality checks are enabled. |
 
+## Relative pose from two calibrated cameras (`3d.independent_relative_pose`)
+
+3D vision / Reconstruction
+
+Inputs: `points_left` (data), `points_right` (data), `camera_left` (data), `camera_right` (data), `left_image` (image, optional), `right_image` (image, optional).
+
+Input `points_left` — Left raw-image XY rows, ordered to match the right rows.
+
+Input `points_right` — Right raw-image XY rows, ordered to match the left rows.
+
+Input `camera_left` — Calibrated lens and pixel grid for the left observations.
+
+Input `camera_right` — Independently calibrated lens and pixel grid for the right observations.
+
+Input `left_image` — Optional original left image for accepted/rejected pair graphics.
+
+Input `right_image` — Optional original right image for accepted/rejected pair graphics.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ransac"` | `ransac`, `lmeds` Robust estimator for the normalized essential matrix. |
+| `confidence` | `0.999` | Value must be a finite number between 0.5001 and 0.9999. Confidence of the native estimator. |
+| `iterations` | `3000` | Value must be a whole number between 1 and 20000. Proposal limit for the native estimator. |
+| `normalized_threshold` | `0.0015` | Value must be a finite number between 1e-07 and 1. Inlier tolerance in normalized rays, at unit focal length. |
+| `maximum_reprojection_px` | `1.5` | Value must be a finite number between 1e-05 and 1000. Largest final error allowed in either original pixel grid. |
+| `minimum_inliers` | `12` | Value must be a whole number between 8 and 4096. Required correspondences passing cheirality and both lens checks. |
+| `minimum_inlier_fraction` | `0.55` | Value must be a finite number between 0 and 1. Required fraction of all supplied pairs. |
+| `minimum_parallax_deg` | `0.5` | Value must be a finite number between 0.01 and 90. Minimum angle between matched rays in a common frame. |
+| `maximum_depth_baselines` | `100.0` | Value must be a finite number between 1 and 100000. Maximum triangulated Z in each view, in baseline lengths. |
+| `minimum_ray_cosine` | `0.05` | Value must be a finite number between 0.001 and 0.999. Minimum positive Z of a unit ray in each camera. |
+| `maximum_inversion_error_px` | `0.1` | Value must be a finite number between 1e-06 and 10. Maximum ray inversion round-trip error in source pixels. |
+| `refit` | `true` | Try an eight-point refit on the source-pixel consensus. |
+| `baseline_length` | `0.0` | Value must be zero or a finite number between 1e-09 and 1e+09. Measured camera center separation. Zero keeps the pose unitless. |
+| `baseline_units` | `"m"` | `m`, `mm` Units of a supplied measured baseline. |
+
 ## Inspect camera projection matrix (`3d.inspect_projection_matrix`)
 
 3D vision / Camera models
