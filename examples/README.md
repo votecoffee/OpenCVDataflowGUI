@@ -306,6 +306,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |
 | [Bundler reconstruction import](<opencv tools/bundler_reconstruction/README.md>) | Import cameras and colored points, apply a measured baseline and project a held-out image. |
+| [Random-pattern calibration](<opencv tools/random_pattern_calibration/README.md>) | Generate a printable target and estimate its calibrated pose from two partly covered views. |
 | [Sparse multi-view reconstruction](<opencv tools/sparse_multiview/README.md>) | Rebuild 35 partially observed ChArUco landmarks and refine two poses with a fixed metric baseline. |
 | [Metric scene-scale recovery](<opencv tools/scene_scale/README.md>) | Scale a unitless four-view reconstruction with surveyed landmarks and verify eight held-out targets. |
 | [Metric matched 3D transforms](<opencv tools/matched_3d_transforms/README.md>) | Fit four source-to-target models with mixed units and five mismatched landmarks in each branch. |

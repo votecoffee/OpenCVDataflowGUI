@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Localize a partially visible calibration target",
+      "description": "Original synthetic images by OpenCVDataflowGUI contributors (MIT). Run both photographs. The patterned target is cropped and covered in each view. The detector matches visible landmarks and the pose uses the camera intrinsics.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pattern",
+      "type": "calibration.generate_random_pattern",
+      "name": "Known printed target",
+      "parameters": {
+        "width": 240.0,
+        "height": 160.0,
+        "units": "mm",
+        "raster_width": 900,
+        "seed": 13
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "image",
+        "target"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "views",
+      "type": "input.file",
+      "name": "Two cropped, covered photographs",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/covered-1.png",
+          "assets/covered-2.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Known pinhole intrinsics",
+      "parameters": {
+        "fx": 670.0,
+        "fy": 680.0,
+        "cx": 319.5,
+        "cy": 239.5,
+        "width": 640,
+        "height": 480,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "calibration_camera"
+      },
+      "position": [
+        390,
+        366
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "calibration.detect_random_pattern",
+      "name": "Observe visible landmarks",
+      "parameters": {
+        "max_view_features": 1800,
+        "ratio": 0.78,
+        "ransac_threshold_px": 2.5,
+        "max_iterations": 3000,
+        "confidence": 0.995,
+        "minimum_inliers": 16,
+        "minimum_inlier_fraction": 0.6,
+        "minimum_target_coverage": 0.02
+      },
+      "position": [
+        380,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reference",
+        "target"
+      ],
+      "exposed_outputs": [
+        "image",
+        "observation",
+        "feature_ids",
+        "image_points",
+        "object_points",
+        "reference_to_image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "3d.planar_pose_hypotheses",
+      "name": "Estimate target-to-camera pose",
+      "parameters": {
+        "method": "ippe",
+        "source_frame": "reference_target",
+        "max_rms_px": 1.5,
+        "ambiguity_gap_px": 0.2,
+        "normal_length": 40.0
+      },
+      "position": [
+        800,
+        0
+      ],
+      "exposed_inputs": [
+        "object_points",
+        "image_points",
+        "camera",
+        "image"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "hypotheses",
+        "ambiguous",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pattern",
+      "output": "image",
+      "target": "match",
+      "input": "reference"
+    },
+    {
+      "source": "pattern",
+      "output": "target",
+      "target": "match",
+      "input": "target"
+    },
+    {
+      "source": "views",
+      "output": "image",
+      "target": "match",
+      "input": "image"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "pose",
+      "input": "camera"
+    },
+    {
+      "source": "match",
+      "output": "image",
+      "target": "pose",
+      "input": "image"
+    },
+    {
+      "source": "match",
+      "output": "image_points",
+      "target": "pose",
+      "input": "image_points"
+    },
+    {
+      "source": "match",
+      "output": "object_points",
+      "target": "pose",
+      "input": "object_points"
+    }
+  ]
+}

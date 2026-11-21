@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 125 | 4 | 2 | 131 | 95.4% |
+| 3. 3D imagery and point clouds | 126 | 4 | 1 | 131 | 96.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 380 | 8 | 82 | 470 | 80.9% |
+| **Overall** | 381 | 8 | 81 | 470 | 81.1% |
 
 <!-- coverage-summary:end -->
 
@@ -579,7 +579,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S3-124 | Reconstruct metric surfaces from wide-angle stereo | omnidir.stereoReconstruct | Complete | 3d.omnidir_stereo_reconstruct uses native rectified views and float pixel disparity, checks both matching footprints and lifts perspective or angular rays into metric XYZ. The [two-plane example](<../examples/opencv tools/omnidir_stereo_reconstruction/README.md>) verifies geometry, color, low disparities and image provenance. |
 | S3-125 | Import an external sparse reconstruction | sfm.importReconstruction or a validated Bundler reader | Complete | input.bundler_reconstruction reads v0.3 cameras, tracks and colored structure with stable indices. The [held-out projection example](<../examples/opencv tools/bundler_reconstruction/README.md>) verifies camera-to-world orientation, unitless and measured-baseline scale, and independent camera projection. |
-| S3-126 | Generate and detect random-pattern calibration targets | randpattern.RandomPatternGenerator and RandomPatternCornerFinder or a tested equivalent | Planned | Render a repeatable target with known physical size, recover labeled correspondences from a cropped or tilted view, and verify their target coordinates and held-out reprojection. |
+| S3-126 | Generate and detect random-pattern calibration targets | SIFT_create, BFMatcher and findHomography | Complete | calibration.generate_random_pattern prints to declared physical dimensions and calibration.detect_random_pattern identifies metric points with stable reference IDs. The [partial-view example](<../examples/opencv tools/random_pattern_calibration/README.md>) verifies cropped and occluded observations and hidden-point reprojection. |
 
 ### Calibration evidence and spatial measurements
 

@@ -38,6 +38,11 @@ BINDINGS = {
     ),
     "3d.reconstruct_sparse_views": "undistortPoints projectPoints",
     "input.bundler_reconstruction": "projectPoints",
+    "calibration.generate_random_pattern": "resize circle fillConvexPoly",
+    "calibration.detect_random_pattern": (
+        "SIFT_create Feature2D.detectAndCompute BFMatcher DescriptorMatcher.knnMatch "
+        "DescriptorMatcher.match findHomography convexHull contourArea"
+    ),
     "3d.recover_scene_scale": "estimateAffine3D",
     "3d.mesh_texture": "triangleRasterizeDepth",
     "3d.estimate_matched_transform": "estimateAffine3D estimateTranslation3D",

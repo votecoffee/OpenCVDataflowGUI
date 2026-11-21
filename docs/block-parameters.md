@@ -2791,6 +2791,33 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `minimum_image_size` | `1000` | Small inputs are enlarged to this minimum size for detection. |
 | `draw_overlay` | `true` |  |
 
+## Detect random-pattern target (`calibration.detect_random_pattern`)
+
+Calibration / Grid and coordinates
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reference` (image), `target` (data).
+
+Input `image` — Photograph of the target. Rectify strong lens distortion first.
+
+Input `reference` — Lossless grayscale target raster, with no scaling or padding.
+
+Input `target` — Target record containing print geometry and the reference raster digest.
+
+Input `mask` — Optional mask restricting SIFT keypoint centers in the observed image.
+
+Input `region` — Optional region restricting SIFT keypoint centers in the observed image.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `max_view_features` | `1800` | Value must be a whole number between 32 and 4096. Requested SIFT feature budget in the observed view. |
+| `ratio` | `0.78` | Value must be a finite number between 0.1 and 0.99. Maximum best-to-second descriptor distance ratio. |
+| `ransac_threshold_px` | `2.5` | Value must be a finite number between 0.1 and 20. Largest allowed match residual in view pixels. |
+| `max_iterations` | `3000` | Value must be a whole number between 1 and 20000. Maximum robust homography trials. |
+| `confidence` | `0.995` | Value must be a finite number between 0.5 and 0.9999. RANSAC confidence used to estimate the number of trials. |
+| `minimum_inliers` | `16` | Value must be a whole number between 4 and 1800. Minimum distinct supported point pairs to emit calibration outputs. |
+| `minimum_inlier_fraction` | `0.6` | Value must be a finite number between 0 and 1. Minimum fraction of matches that support the homography. |
+| `minimum_target_coverage` | `0.02` | Value must be a finite number between 0.001 and 1. Minimum inlier hull area as a fraction of the target area. |
+
 ## Fit color correction model (`calibration.fit_ccm`)
 
 Calibration / Color
@@ -2890,6 +2917,18 @@ Input `dictionary` — Qualified dictionary record. Select Custom in the setting
 | `margin` | `8.0` | Value must be a finite number between 0 and 10000. White page margin on every side, in the selected length units. |
 | `units` | `"mm"` | `mm`, `m` Length units for the target configuration, geometry and print size. |
 | `dpi` | `300` | Value must be a whole number between 36 and 2400. Desired render density. The reported effective density accounts for rounding. |
+
+## Generate random-pattern target (`calibration.generate_random_pattern`)
+
+Calibration / Grid and coordinates
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `width` | `240.0` | Value must be a finite number between 1e-06 and 10000. Physical width of the textured rectangle, measured edge to edge. |
+| `height` | `160.0` | Value must be a finite number between 1e-06 and 10000. Physical height of the textured rectangle, measured edge to edge. |
+| `units` | `"mm"` | `mm`, `m` Units of the physical dimensions and detected XYZ coordinates. |
+| `raster_width` | `900` | Value must be a whole number between 256 and 4096. Width in pixels. Raster height follows the physical aspect ratio. |
+| `seed` | `13` | Value must be a whole number between 0 and 4.29497e+09. Keep the seed, size and a lossless copy of the reference for repeat use. |
 
 ## Calibration grid (`calibration.grid`)
 

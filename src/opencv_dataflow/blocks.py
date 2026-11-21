@@ -914,6 +914,7 @@ def builtin_registry():
     from .quasi_dense_stereo import QuasiDenseDisparity
     from .raster_hough_lines import HoughPolarLines
     from .raw_sensor import RAW_SENSOR_BLOCKS
+    from .random_pattern import DetectRandomPatternTarget, GenerateRandomPatternTarget
     from .recipe_blocks import RecipeField, RecipeSelect
     from .refresh_tracking import REFRESH_TRACKING_BLOCKS
     from .region_contrast import MeasureRegionContrast
@@ -1083,6 +1084,8 @@ def builtin_registry():
         DetectCharucoBoard,
         DetectMarkedCheckerboard,
         GenerateFiducialTarget,
+        GenerateRandomPatternTarget,
+        DetectRandomPatternTarget,
         LensCalibration,
         RegisterCameraPair,
         LoadTargetCalibrationObservations,

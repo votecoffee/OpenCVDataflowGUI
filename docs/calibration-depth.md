@@ -39,6 +39,13 @@ plot markers and scalar threshold outputs.
 
 ## Grid origin and physical coordinates
 
+[Random-pattern targets](<../examples/opencv tools/random_pattern_calibration/README.md>)
+support cropped or occluded views of a printed planar texture. Wire the
+generator's reference raster and target geometry to the detector. Connect the
+detector's labeled image points and physical XYZ points to a calibrated pose
+tool. The detector suppresses the point connectors when geometric support or
+coverage falls below the configured limits.
+
 Use [Check chessboard quality](<../examples/opencv tools/chessboard_quality/README.md>) to
 measure blur and exposure and forward only accepted checkerboard images.
 
