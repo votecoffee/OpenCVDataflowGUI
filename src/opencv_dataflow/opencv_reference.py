@@ -312,6 +312,9 @@ BINDINGS = {
     "cv.gradient": "Sobel Scharr Laplacian",
     "cv.gray": "cvtColor",
     "cv.guided_filter": "ximgproc.guidedFilter",
+    "cv.fast_global_smoother": (
+        "ximgproc.createFastGlobalSmootherFilter ximgproc.FastGlobalSmootherFilter.filter"
+    ),
     "cv.idct": "idct",
     "cv.idft": "idft",
     "cv.image_hash": (

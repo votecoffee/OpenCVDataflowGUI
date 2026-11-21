@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Image smoothing with a registered guide",
+      "description": "Compare self-guided smoothing, a clean registered color guide, and a region that limits where the smoothed result is written. The original synthetic images are covered by this repository's MIT license.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Noisy sample",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        120
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guide",
+      "type": "input.file",
+      "name": "Registered guide",
+      "parameters": {
+        "path": "assets/guide.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        330
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Upper search region",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          16,
+          8,
+          160,
+          64
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        260,
+        330
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "self_guided",
+      "type": "cv.fast_global_smoother",
+      "name": "Smooth without a separate guide",
+      "description": "Smooth intensity variation while retaining edges in an aligned guide.",
+      "parameters": {
+        "lambda_weight": 500.0,
+        "sigma_color": 14.0,
+        "lambda_attenuation": 0.25,
+        "iterations": 3,
+        "guide_alignment": "same_frame"
+      },
+      "position": [
+        565,
+        -50
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guided",
+      "type": "cv.fast_global_smoother",
+      "name": "Preserve edges from the color guide",
+      "description": "Smooth intensity variation while retaining edges in an aligned guide.",
+      "parameters": {
+        "lambda_weight": 500.0,
+        "sigma_color": 14.0,
+        "lambda_attenuation": 0.25,
+        "iterations": 3,
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        565,
+        135
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.fast_global_smoother",
+      "name": "Write the result only inside the region",
+      "description": "Smooth intensity variation while retaining edges in an aligned guide.",
+      "parameters": {
+        "lambda_weight": 500.0,
+        "sigma_color": 14.0,
+        "lambda_attenuation": 0.25,
+        "iterations": 3,
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        565,
+        330
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "self_guided",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "guided",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "guided",
+      "input": "guide"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "selected",
+      "input": "guide"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

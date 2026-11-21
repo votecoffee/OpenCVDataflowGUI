@@ -195,7 +195,10 @@ BLOCK_MODULES = {
     "rapid": "3d.track_silhouette",
     "linemod": "3d.train_linemod_pose 3d.match_linemod_pose",
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match 3d.register_cloud_features",
-    "ximgproc": "cv.guided_filter cv.domain_transform_filter inspect.thin_mask 3d.smooth_depth",
+    "ximgproc": (
+        "cv.guided_filter cv.domain_transform_filter cv.fast_global_smoother "
+        "inspect.thin_mask 3d.smooth_depth"
+    ),
     "mcc": "calibration.detect_color_chart",
     None: (
         "input.demo output.results input.calibration output.calibration "

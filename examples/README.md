@@ -306,6 +306,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Generalized Hough matching](<opencv tools/generalized_hough/README.md>) | Locate two copies of a template shape, then restrict the search results to a region. |
 | [Gram matrix](<opencv tools/gram_matrix/README.md>) | Compute feature covariance and reuse the learned offset for a new batch. |
 | [Guided edge-preserving filter](<opencv tools/guided_filter/README.md>) | Smooth a noisy image while preserving its main intensity edge. |
+| [Fast global smoother](<opencv tools/fast_global_smoother/README.md>) | Compare self-guided and registered-guide smoothing on a noisy edge target, including region-limited output. |
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |
 | [Bundler reconstruction import](<opencv tools/bundler_reconstruction/README.md>) | Import cameras and colored points, apply a measured baseline and project a held-out image. |

@@ -4577,6 +4577,28 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `channel` | `"0"` | `0`, `1`, `2`, `3` |
 
+## Fast global smoother (`cv.fast_global_smoother`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `guide` (image, optional).
+
+Input `image` — Mono or RGB/BGR(A), uint8, int16, uint16 or float32. Keeps depth and alpha.
+
+Input `guide` — Optional registered image. Converted to 8-bit for edge weights.
+
+Input `mask` — Only selected output pixels are replaced. Filtering uses the whole image.
+
+Input `region` — Optional output selection. Intersects the mask when both are connected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `lambda_weight` | `500.0` | Value must be a finite number between 0 and 100000. Regularization strength. Zero copies the source. |
+| `sigma_color` | `5.0` | Value must be a finite number between 1e-06 and 10000. Edge sensitivity in 8-bit guide levels. Lower values preserve more edges. |
+| `lambda_attenuation` | `0.25` | Value must be a finite number between 0 and 1. Factor applied to the strength after each iteration. |
+| `iterations` | `3` | Value must be a whole number between 1 and 16. Number of horizontal and vertical smoothing passes. |
+| `guide_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid accepts separately loaded guides registered by index. |
+
 ## Fit feature covariance (`cv.feature_covariance`)
 
 Image processing / Statistics

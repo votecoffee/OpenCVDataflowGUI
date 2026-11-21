@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 23 | 3 | 76 | 102 | 22.5% |
-| **Overall** | 389 | 4 | 77 | 470 | 82.8% |
+| 4. Selected contrib | 24 | 3 | 75 | 102 | 23.5% |
+| **Overall** | 390 | 4 | 76 | 470 | 83.0% |
 
 <!-- coverage-summary:end -->
 
@@ -615,7 +615,7 @@ fixture or result needed to close the item.
 | S4-10 | Color and radial perceptual hashes | img_hash.ColorMomentHash, RadialVarianceHash | Complete | cv.image_hash and inspect.compare_perceptual_descriptors retain native float64 and uint8 coefficients. Qualify opposing threshold directions, radial settings and degenerate comparisons. Two saved projects test identical, rotated, resampled and changed parts. |
 | S4-11 | Fit a color correction model | ccm.ColorCorrectionModel fit | Complete | calibration.fit_ccm. Fit a correction on declared chart samples and report residuals. |
 | S4-12 | Gray-world white balance | xphoto.createGrayworldWB, xphoto.applyChannelGains | Complete | cv.gray_world_white_balance preserves 8/16-bit color depth and alpha. Qualifies native threshold quantization, neutral patch recovery, estimation masks and regions, insufficient channel support, and normalized gain application. |
-| S4-13 | Fast global edge-preserving smoothing | ximgproc.createFastGlobalSmootherFilter | Planned | Remove small intensity variations while preserving measured edges on a selected image. |
+| S4-13 | Fast global edge-preserving smoothing | ximgproc.createFastGlobalSmootherFilter | Complete | cv.fast_global_smoother supports self-guided or registered-guide smoothing, native solver controls and selected output writes. Checks native parity, source depth/encoding/alpha, and noise and edge recovery against a synthetic clean target. |
 | S4-14 | Joint bilateral filtering | ximgproc.jointBilateralFilter | Planned | Verify image detail transfer using an aligned guide and typed image output. |
 | S4-15 | Rolling guidance filtering | ximgproc.rollingGuidanceFilter | Planned | Compare removal of small texture against preservation of larger part boundaries. |
 | S4-16 | Extended inpainting for defect cleanup | xphoto.inpaint | Planned | Fill a masked defect using the supported algorithm and verify known background recovery. |

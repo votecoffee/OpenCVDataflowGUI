@@ -366,6 +366,18 @@ class Inpaint(ImageTool):
         return encoded_result(output, source)
 
 
+def _check_aligned_guide(source, guide, *, check_frame=True):
+    if guide.shape[:2] != source.shape[:2]:
+        raise ValidationError("Guide must have the same dimensions as the source")
+    if check_frame:
+        try:
+            require_same_frame((source, guide))
+        except ValueError as exc:
+            raise ValidationError("Guide must share the source pixel frame") from exc
+    if image_format(source) in ("hsv", "lab") or image_format(guide) in ("hsv", "lab"):
+        raise ValidationError("Use grayscale or RGB/BGR intensity data for filtering")
+
+
 class AlignedGuideFilter(ImageTool, ABC):
     subtype = "Filters"
     inputs = (*SELECTION_INPUTS, Port("guide", required=False))
@@ -377,14 +389,7 @@ class AlignedGuideFilter(ImageTool, ABC):
         guide = inputs.get("guide", source)
         image_value(source, (np.uint8, np.uint16, np.float32))
         image_value(guide, (np.uint8, np.uint16, np.float32))
-        if guide.shape[:2] != source.shape[:2]:
-            raise ValidationError("Guide must have the same dimensions as the source")
-        try:
-            require_same_frame((source, guide))
-        except ValueError as exc:
-            raise ValidationError("Guide must share the source pixel frame") from exc
-        if image_format(source) in ("hsv", "lab") or image_format(guide) in ("hsv", "lab"):
-            raise ValidationError("Use grayscale or RGB/BGR intensity data for filtering")
+        _check_aligned_guide(source, guide)
 
         work = convert_depth(source, "float32")
         reference = work if guide is source else convert_depth(guide, "float32")
@@ -470,6 +475,86 @@ class DomainTransformFilter(AlignedGuideFilter):
             mode=self.modes[p["mode"]],
             numIters=int(p["iterations"]),
         )
+
+
+class FastGlobalSmoother(ImageTool):
+    type_id, title, subtype = "cv.fast_global_smoother", "Fast global smoother", "Filters"
+    description = "Smooth intensity variation while retaining edges in an aligned guide."
+    inputs = (*SELECTION_INPUTS, Port("guide", required=False, required_when_connected=True))
+    defaults = {
+        "lambda_weight": 500.0,
+        "sigma_color": 5.0,
+        "lambda_attenuation": 0.25,
+        "iterations": 3,
+        "guide_alignment": "same_frame",
+    }
+    parameter_choices = {"guide_alignment": ("same_frame", "pixel_grid")}
+    parameter_ranges = {
+        "lambda_weight": NumericRange(0, 100_000),
+        "sigma_color": NumericRange(1e-6, 1e4),
+        "lambda_attenuation": NumericRange(0, 1),
+        "iterations": NumericRange(1, 16, whole=True),
+    }
+    parameter_help = {
+        "lambda_weight": "Regularization strength. Zero copies the source.",
+        "sigma_color": "Edge sensitivity in 8-bit guide levels. Lower values preserve more edges.",
+        "lambda_attenuation": "Factor applied to the strength after each iteration.",
+        "iterations": "Number of horizontal and vertical smoothing passes.",
+        "guide_alignment": "Pixel grid accepts separately loaded guides registered by index.",
+    }
+    input_help = {
+        "image": "Mono or RGB/BGR(A), uint8, int16, uint16 or float32. Keeps depth and alpha.",
+        "guide": "Optional registered image. Converted to 8-bit for edge weights.",
+        "mask": "Only selected output pixels are replaced. Filtering uses the whole image.",
+        "region": "Optional output selection. Intersects the mask when both are connected.",
+    }
+    preview_safe = parallel_safe = process_inputs_readonly = True
+    payload_reference = "image"
+    _depths = (np.uint8, np.int16, np.uint16, np.float32)
+
+    def process(self, inputs):
+        source = inputs["image"]
+        guide = inputs.get("guide", source)
+        p = self.parameters
+        image = image_value(source, self._depths)
+        reference = image if guide is source else image_value(guide, self._depths)
+        _check_aligned_guide(source, guide, check_frame=p["guide_alignment"] == "same_frame")
+        mask = selection_mask(inputs, source)
+        strength = float(p["lambda_weight"])
+        if not strength or (mask is not None and not np.any(mask)):
+            return encoded_result(image.copy(), source)
+        if reference.ndim == 3:
+            reference = reference[..., :3]
+        if reference.dtype == np.int16:
+            # Map the complete signed code range to the unsigned guide range.
+            reference = np.rint((reference.astype(np.int32) + 32768) / 257).astype(np.uint8)
+        elif reference.dtype != np.uint8:
+            reference = convert_depth(reference, "uint8")
+        has_alpha = image.ndim == 3 and image.shape[2] == 4
+        signal = image[..., :3] if has_alpha else image
+        if signal.dtype == np.uint16:
+            signal = signal.astype(np.float32)
+
+        smoother = cv2.ximgproc.createFastGlobalSmootherFilter(
+            reference,
+            strength,
+            float(p["sigma_color"]),
+            float(p["lambda_attenuation"]),
+            int(p["iterations"]),
+        )
+        result = smoother.filter(signal)
+        if not np.isfinite(result).all():
+            raise ValidationError(
+                "Fast global smoother produced nonfinite samples. Check input range"
+            )
+        if image.dtype == np.uint16:
+            result = np.rint(np.clip(result, 0, 65535)).astype(np.uint16)
+        if has_alpha:
+            result = np.concatenate((result, image[..., 3:]), axis=2)
+        if mask is not None:
+            outside = mask == 0
+            result[outside] = image[outside]
+        return encoded_result(result, source)
 
 
 class SeamlessClone(ImageTool):
@@ -560,5 +645,6 @@ RESTORATION_BLOCKS = (
     Inpaint,
     GuidedFilter,
     DomainTransformFilter,
+    FastGlobalSmoother,
     SeamlessClone,
 )
