@@ -629,6 +629,7 @@ def builtin_registry():
     from .batch_inference import BATCH_INFERENCE_BLOCKS
     from .binary_stereo import BinaryStereoDisparity
     from .binary_stereo_costs import InspectBinaryStereoCosts
+    from .bundler_reconstruction import ImportBundlerReconstruction
     from .blob_detection import SimpleBlobDetection
     from .blur_estimation import EstimateMotionBlur
     from .calibration import (
@@ -1385,6 +1386,7 @@ def builtin_registry():
         RecoverPlanarCameraMotion,
         MakeLandmarkView,
         ReconstructSparseViews,
+        ImportBundlerReconstruction,
         RecoverSceneScale,
         EstimateMatchedTransform,
         DeclareCalibrationCapture,

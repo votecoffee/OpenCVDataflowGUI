@@ -187,6 +187,9 @@ pixel grids and verifies metric depth on a held-out stepped scene.
 [Robot-world and hand–eye calibration](robot_world/README.md) fits both
 rigid transforms for fixed and robot-mounted cameras and checks held-out images.
 
+[Bundler reconstruction import](bundler_reconstruction/README.md) loads
+colored structure and cameras for metric projection of a held-out view.
+
 [Sparse multi-view reconstruction](sparse_multiview/README.md) packs four
 ChArUco views into a sparse cloud and compares fixed and refined camera poses.
 

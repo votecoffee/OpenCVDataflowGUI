@@ -7565,6 +7565,28 @@ Ticket mode and fixed value are common inspector controls.
 | `path` | `""` | Portable ArUco dictionary JSON file. |
 | `path_base` | `"project"` | `project`, `working_directory` Base for relative file paths. |
 
+## Import Bundler reconstruction (`input.bundler_reconstruction`)
+
+Input / Reconstruction
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+Inputs: `image_sizes` (data, optional).
+
+Input `image_sizes` — Optional runtime override for the Image Sizes setting.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Bundler v0.3 bundle file, using a project-relative or absolute path. |
+| `world_frame` | `"bundler_world"` | Name for the original reconstruction's coordinate axes. |
+| `image_sizes` | `[]` | Common [width, height], or one size or null per original camera slot. |
+| `camera_index` | `0` | Value must be a whole number between 0 and 2047. Zero-based slot for direct camera, pose and observation outputs. |
+| `scale_mode` | `"unitless"` | `unitless`, `known_baseline` Preserve unitless scale or recover meters from a measured camera baseline. |
+| `baseline_camera_indices` | `[0, 1]` | Two registered camera indices for the known scale baseline. |
+| `baseline_length_m` | `1.0` | Value must be a finite number between 1e-09 and 100000. Measured optical-center separation in meters. |
+| `maximum_reprojection_error_px` | `0.0` | Value must be a finite number between 0 and 10000. Imported reprojection limit. Zero reports errors only. |
+
 ## Load calibration profile (`input.calibration`)
 
 Input / Calibration profiles

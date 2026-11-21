@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Import a sparse scene and project its held-out view",
+      "description": "Original synthetic reconstruction by OpenCVDataflowGUI contributors (MIT). The import uses a measured 0.4 m baseline. Camera 4 is held out of the observation tracks. The projection block shows where the colored points land in that view.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bundle",
+      "type": "input.bundler_reconstruction",
+      "name": "Import cameras and colored points",
+      "parameters": {
+        "path": "assets/bundle.out",
+        "world_frame": "fixture_world",
+        "image_sizes": [
+          [
+            640,
+            480
+          ],
+          [
+            656,
+            488
+          ],
+          [
+            632,
+            476
+          ],
+          null,
+          [
+            641,
+            481
+          ]
+        ],
+        "camera_index": 4,
+        "scale_mode": "known_baseline",
+        "baseline_camera_indices": [
+          0,
+          1
+        ],
+        "baseline_length_m": 0.4,
+        "maximum_reprojection_error_px": 0.01
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "image_sizes",
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "cameras",
+        "camera",
+        "world_to_camera",
+        "camera_to_world",
+        "observations",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "held_out",
+      "type": "3d.cloud_project",
+      "name": "Project into held-out camera 4",
+      "parameters": {
+        "minimum_z_m": 0.001,
+        "maximum_z_m": 10.0,
+        "surface_tolerance_m": 0.0,
+        "reference_tolerance_m": 0.01,
+        "reference_units": "m",
+        "reference_units_per_sample": 0.001
+      },
+      "position": [
+        450,
+        0
+      ],
+      "exposed_inputs": [
+        "cloud",
+        "camera",
+        "transform",
+        "reference_depth",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "depth",
+        "coverage_mask",
+        "color",
+        "visible_mask",
+        "occluded_mask",
+        "unverified_mask",
+        "visible_cloud",
+        "occluded_cloud",
+        "unverified_cloud",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "bundle",
+      "output": "cloud",
+      "target": "held_out",
+      "input": "cloud"
+    },
+    {
+      "source": "bundle",
+      "output": "camera",
+      "target": "held_out",
+      "input": "camera"
+    },
+    {
+      "source": "bundle",
+      "output": "world_to_camera",
+      "target": "held_out",
+      "input": "transform"
+    }
+  ]
+}

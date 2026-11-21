@@ -1138,6 +1138,21 @@ metric baseline was supplied. Landmark IDs are stored alongside cloud rows in
 metadata. This workflow takes supplied correspondences and initial camera
 poses. [Four-view example and independent holdout](<../examples/opencv tools/sparse_multiview/README.md>)
 
+**Import Bundler reconstruction** reads Bundler v0.3 cameras, colored sparse
+points and tracked feature observations. It preserves the original world
+axes and camera indices, including unregistered slots. Exported poses use
+OpenCV's right, down and forward camera coordinates. Provide the original
+image sizes in camera slot order to obtain pixel camera models and
+top-left image observations. The report includes reprojection errors and
+identifies points that project behind their recorded cameras.
+
+The default unitless scale preserves the original point coordinates.
+Known Baseline scales the points and extrinsic translations together from
+a measured camera-center distance in meters. Connect the selected camera
+and world-to-camera pose to **Project cloud and check visibility** to
+render a calibrated view of the imported points.
+[Bundler import and held-out camera example](<../examples/opencv tools/bundler_reconstruction/README.md>)
+
 **Recover metric scene scale** fits a positive scale, proper rotation and
 translation from a unitless reconstruction to measured landmark coordinates.
 Use at least three non-collinear anchors and one consistent camera gauge.

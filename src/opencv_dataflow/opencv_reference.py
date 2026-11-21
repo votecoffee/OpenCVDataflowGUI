@@ -37,6 +37,7 @@ BINDINGS = {
         "dnn.readNetFromONNX dnn.Net.setInput dnn.Net.forward dilate resize cvtColor"
     ),
     "3d.reconstruct_sparse_views": "undistortPoints projectPoints",
+    "input.bundler_reconstruction": "projectPoints",
     "3d.recover_scene_scale": "estimateAffine3D",
     "3d.mesh_texture": "triangleRasterizeDepth",
     "3d.estimate_matched_transform": "estimateAffine3D estimateTranslation3D",
