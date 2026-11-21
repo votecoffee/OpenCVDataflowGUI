@@ -125,6 +125,12 @@ probability and an optional interval half-width limit. The first-order
 interval assumes small errors around the supplied calibration and plane.
 [Calibrated uncertainty example](<../examples/opencv tools/measurement_uncertainty/README.md>)
 
+Use **Wide-angle object pose (PnP)** to recover a calibrated object-to-camera
+pose from measured fisheye or omnidirectional pixels. Review source-lens
+reprojection and rejected point IDs. The omnidirectional solver uses
+forward-facing rays within a checked inverse-projection domain.
+[Wide-angle pose example](<../examples/opencv tools/wide_angle_pose/README.md>)
+
 Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
 and reload the lens profile to avoid solving the dataset on every runtime cycle.

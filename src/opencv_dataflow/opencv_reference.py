@@ -145,6 +145,10 @@ BINDINGS = {
     "3d.planar_pose_hypotheses": "solvePnPGeneric projectPoints",
     "3d.planar_camera_motion": "findHomography decomposeHomographyMat filterHomographyDecompByVisibleRefpoints",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
+    "3d.wide_pnp": (
+        "fisheye.solvePnP fisheye.solvePnPRansac fisheye.undistortPoints fisheye.projectPoints "
+        "omnidir.undistortPoints omnidir.projectPoints solvePnP solvePnPRansac"
+    ),
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",
     "3d.unwrap_phase": (
         "phase_unwrapping.HistogramPhaseUnwrapping.create "

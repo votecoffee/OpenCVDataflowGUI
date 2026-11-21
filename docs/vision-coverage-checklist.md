@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 129 | 2 | 0 | 131 | 98.5% |
+| 3. 3D imagery and point clouds | 130 | 1 | 0 | 131 | 99.2% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 384 | 6 | 80 | 470 | 81.7% |
+| **Overall** | 385 | 5 | 80 | 470 | 81.9% |
 
 <!-- coverage-summary:end -->
 
@@ -423,7 +423,7 @@ fixture or result needed to close the item.
 | S3-07 | Physical dimensions from calibrated 2D images | Planar point mapping and scaled shape fitting | Complete | calibration.inspect_planar_distance, inspect.workplane_rectangle, inspect.workplane_ellipse, inspect.strip_width. Ticketed dimensions and tolerance reasons with source-aligned graphics. |
 | S3-08 | Versioned camera and rig profiles | Named immutable intrinsics/extrinsic snapshots and versioned map metadata | Complete | Select exact revisions by profile ID and revision. Camera and stereo consumers check capture identity and the full pixel grid; archived maps and stereo Q retain their original bindings. Saved projects exercise matched and stale selection, map reuse and depth recovery. See [workflow](calibration-revisions.md). |
 | S3-09 | Project camera points and rays | projectPoints, undistortPoints and lens-family variants | Complete | 3d.project, 3d.undistort_points, 3d.rectify_camera. Pixel projection and ray/rectification fixtures for declared lens families. |
-| S3-10 | Pinhole object and fiducial pose | solvePnP, solvePnPRansac, solvePnPRefineLM/VVS, Rodrigues | Complete | 3d.pnp, 3d.aruco_pose. Known pinhole poses, inlier and reprojection checks, and camera-relative frames. Wide-angle object pose remains S3-130. |
+| S3-10 | Pinhole object and fiducial pose | solvePnP, solvePnPRansac, solvePnPRefineLM/VVS, Rodrigues | Complete | 3d.pnp, 3d.aruco_pose. Known pinhole poses, inlier and reprojection checks, and camera-relative frames. Wide-angle object pose is covered by S3-130. |
 | S3-11 | Shared-pinhole relative pose and epipolar geometry | findFundamentalMat, findEssentialMat, recoverPose, computeCorrespondEpilines | Complete | 3d.fundamental, 3d.essential_pose, 3d.check_epipolar. Relative pose uses one shared pinhole camera model; fundamental fitting and epipolar checks operate on image correspondences. Reject outliers and report residuals. Separate camera models remain S3-131. |
 | S3-12 | Two-view sparse triangulation | triangulatePoints | Complete | 3d.triangulate. Recover 3D positions from two supplied projection matrices and paired image points with cheirality and reprojection bounds. More than two views remain S3-33. |
 | S3-13 | Stereo rig calibration and rectification | stereoCalibrate, stereoRectify, initUndistortRectifyMap | Complete | 3d.stereo_calibrate, 3d.stereo_rectify. Matched pinhole target observations and a rectified pair with projection and Q matrices. |
@@ -593,7 +593,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S3-130 | Estimate object pose with wide-angle lens models | fisheye.solvePnP, fisheye.solvePnPRansac and qualified normalized-ray fallback | Partial | 3d.pnp accepts pinhole cameras while 3d.project and 3d.undistort_points understand fisheye and omnidirectional models. Qualify lens-aware pose and outlier rejection against known targets at image centers and edges. Reproject with the source lens model and verify pixel residuals, solver criteria, units and frames. Declare the supported ray domain for an omnidirectional fallback. |
+| S3-130 | Estimate object pose with wide-angle lens models | fisheye.solvePnP, fisheye.solvePnPRansac and Mei forward rays with solvePnP/RANSAC | Complete | 3d.wide_pnp fits wide-angle correspondences, reclassifies and refines in the source lens, and enforces a forward ray domain. The [wide-angle examples](<../examples/opencv tools/wide_angle_pose/README.md>) verify raw-pixel residuals and independent withheld reprojection with labeled outliers and unsupported rays. |
 | S3-131 | Recover relative pose from separately calibrated views | findEssentialMat/recoverPose with per-camera intrinsics and distortion, or lens-normalized correspondences | Partial | 3d.essential_pose uses a shared pinhole camera. Accept independent camera models and image grids, and verify unequal focal lengths, distortion, a mixed-lens pair, outliers, cheirality and baseline direction. Keep translation scale unknown without a metric anchor. |
 
 ## Stage 4 — Selected contrib functions for images and video

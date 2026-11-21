@@ -625,7 +625,7 @@ P2	function	cv2.fisheye.estimateNewCameraMatrixForUndistortRectify	no static ref
 P2	function	cv2.fisheye.initUndistortRectifyMap	literal reference	-
 P2	function	cv2.fisheye.projectPoints	literal reference	-
 P2	function	cv2.fisheye.solvePnP	literal reference	-
-P2	function	cv2.fisheye.solvePnPRansac	no static reference	-
+P2	function	cv2.fisheye.solvePnPRansac	literal reference	-
 P2	function	cv2.fisheye.stereoCalibrate	literal reference	-
 P2	function	cv2.fisheye.stereoRectify	literal reference	-
 P2	function	cv2.fisheye.undistortImage	no static reference	-

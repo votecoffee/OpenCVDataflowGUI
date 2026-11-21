@@ -1018,6 +1018,7 @@ def builtin_registry():
     from .voronoi import VoronoiCells
     from .watershed_seeds import WatershedMaskSeeds, WatershedPointSeeds
     from .weighted_moments import IntensityMoments
+    from .wide_pose import SolveWideAnglePose
     from .wide_stereo import CalibrateWideStereo
     from .workplane import RectifyWorkplane
     from .yuv_formats import DecodePackedYuv, RawYuvFile
@@ -1388,6 +1389,7 @@ def builtin_registry():
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
+        SolveWideAnglePose,
         InspectProjectionMatrix,
         PlanarPoseHypotheses,
         RecoverArucoBoard,

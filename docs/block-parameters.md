@@ -2633,6 +2633,40 @@ Input `region` — Optional source region intersected with the mask.
 | `minimum_coverage` | `0.0` | Value must be a finite number between 0 and 1. Required fraction of the destination grid with a visible sample. |
 | `display_max_m` | `5.0` | Value must be a finite number between 0.001 and 1000. Preview upper bound in meters. Does not clip geometric depth. |
 
+## Wide-angle object pose (PnP) (`3d.wide_pnp`)
+
+3D vision / Camera models
+
+Inputs: `object_points` (data), `image_points` (data), `camera` (data), `initial_pose` (data, optional), `image` (image, optional).
+
+Input `object_points` — Ordered XYZ in the named object frame and camera length units.
+
+Input `image_points` — Matching XY coordinates in the original, distorted image.
+
+Input `camera` — Calibrated fisheye or Mei omnidirectional camera model.
+
+Input `initial_pose` — Optional object-to-camera initial guess for the Iterative method.
+
+Input `image` — Optional original image for source-pixel measurement graphics.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"iterative"` | `iterative`, `epnp`, `sqpnp`, `ippe` Native pose algorithm. IPPE needs coplanar points. |
+| `ransac` | `true` | Propose a robust fit in the rectified grid, then classify in source pixels. |
+| `iterations` | `500` | Value must be a whole number between 1 and 10000. Maximum native RANSAC iterations. |
+| `confidence` | `0.995` | Value must be a finite number between 0.5001 and 0.9999. Native RANSAC confidence, strictly below 1. |
+| `ransac_rectified_px` | `8.0` | Value must be a finite number between 0.0001 and 10000. Proposal threshold in rectified pixels with the same intrinsics. |
+| `inlier_threshold_px` | `2.0` | Value must be a finite number between 0.0001 and 1000. Final inlier tolerance in raw pixels for RANSAC. |
+| `minimum_inliers` | `4` | Value must be a whole number between 4 and 4096. Minimum number of retained source correspondences. |
+| `minimum_inlier_fraction` | `0.5` | Value must be a finite number between 0 and 1. Minimum retained fraction of all supplied pairs. |
+| `max_rms_px` | `1.0` | Value must be a finite number between 1e-06 and 1000. Maximum source-pixel RMS over the retained pairs. |
+| `minimum_ray_cosine` | `0.05` | Value must be a finite number between 0.001 and 0.999. Minimum positive Z of a unit ray, excluding the horizon. |
+| `max_inversion_error_px` | `0.1` | Value must be a finite number between 1e-06 and 10. Maximum unproject/project round trip error in source pixels. |
+| `undistort_iterations` | `50` | Value must be a whole number between 1 and 200. Fisheye inverse solver iteration limit. |
+| `undistort_epsilon` | `1e-10` | Value must be a finite number between 1e-15 and 0.1. Fisheye inverse solver convergence tolerance. |
+| `refine_evaluations` | `30` | Value must be a whole number between 0 and 200. Source-lens least-squares evaluation limit. Zero skips refinement. |
+| `source_frame` | `"object"` | Coordinate frame of the object points. |
+
 ## Calibrate wide-angle stereo (`3d.wide_stereo_calibrate`)
 
 3D vision / Calibration
