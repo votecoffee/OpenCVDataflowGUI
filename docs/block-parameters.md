@@ -2213,6 +2213,48 @@ Inputs: `left_camera` (data), `right_camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
 
+## Track deforming depth surface (`3d.track_deforming_surface`)
+
+3D vision / Depth and RGB-D
+
+Inputs: `image` (depth), `camera` (data), `guide` (image, optional), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Full camera-Z depth frame on the calibrated pinhole grid.
+
+Input `camera` — Fixed, undistorted pinhole intrinsics on the input depth grid.
+
+Input `guide` — Same exposure's 8-bit image already registered to depth.
+
+Input `mask` — Valid area in the live depth image. Also limits the reference on capture.
+
+Input `region` — Optional selected area in the live depth image.
+
+Input `reset` — True clears this stream's reference before processing the incoming depth.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Reset after this ingress gap; zero keeps state across pauses. |
+| `tracking_window` | `21` | Value must be a positive odd integer between 3 and 255. Odd side length of each Lucas–Kanade window in pixels. |
+| `max_pyramid_level` | `3` | Value must be a whole number between 0 and 8. Highest optical-flow pyramid level. |
+| `forward_backward_pixels` | `1.0` | Value must be a finite number between 1e-06 and 100. Maximum error when a tracked point is mapped back. |
+| `max_patch_error` | `30.0` | Value must be a finite number between 0 and 255. Maximum mean patch error on the 8-bit tracking image. |
+| `correspondence` | `"tracked_guide"` | `tracked_guide`, `fixed_pixel` Track a registered guide, or compare camera rays at fixed pixels. |
+| `input_units` | `"mm"` | `m`, `mm` Units for an untagged input. A depth tag supplies its own units. |
+| `units_per_sample` | `1.0` | Value must be a finite number between 1e-09 and 1000. Depth units per integer sample. Float depth uses those units. |
+| `sample_step` | `4` | Value must be a whole number between 1 and 128. Reference-grid spacing in pixels. Increase it for large depth images. |
+| `minimum_points` | `20` | Value must be a whole number between 1 and 65536. Minimum valid points needed to capture or track the surface. |
+| `minimum_fraction` | `0.55` | Value must be a finite number between 0.001 and 1. Minimum fraction of reference samples needed to emit a surface. |
+| `minimum_depth_m` | `0.05` | Value must be a finite number between 1e-06 and 1000. Nearest usable depth in meters. |
+| `maximum_depth_m` | `5.0` | Value must be a finite number between 1e-06 and 1000. Farthest usable depth in meters. |
+| `max_depth_span_m` | `0.03` | Value must be a finite number between 0 and 100. Reject interpolation across larger depth jumps between active taps. |
+| `max_motion_px` | `36.0` | Value must be a finite number between 0 and 2048. Maximum image displacement from the reference pixel in tracked mode. |
+| `max_displacement_m` | `0.25` | Value must be a finite number between 1e-06 and 1000. Maximum 3D displacement from a reference sample. |
+
 ## Track depth trajectory with TSDF (`3d.track_depth_fusion`)
 
 3D vision / Volumetric reconstruction

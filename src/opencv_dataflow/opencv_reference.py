@@ -151,6 +151,7 @@ BINDINGS = {
     ),
     "3d.match_linemod_pose": "linemod.Detector.match linemod.Detector.readClasses matchTemplate",
     "3d.track_depth_fusion": "Odometry.compute Volume.integrate Volume.raycast Rodrigues",
+    "3d.track_deforming_surface": "calcOpticalFlowPyrLK",
     "3d.tsdf_color": (
         "VolumeSettings Volume.integrateColor Volume.fetchPointsNormalsColors Volume.raycastExColor"
     ),

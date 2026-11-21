@@ -157,6 +157,9 @@ pose and checks partial overlap, paired distances and local pose constraints.
 [PPF surface ranking](ppf_surface_ranking/README.md) refines and reranks two
 partly occluded surface matches among clutter.
 
+[Deforming depth surface](deforming_depth_surface/README.md) tracks a
+bending sheet and reconstructs visible 3D samples after an exposure drops.
+
 [Depth-fusion trajectory](depth_trajectory/README.md) estimates a camera path
 from a recording with a dropped depth exposure and verifies the fused surface.
 

@@ -1,0 +1,51 @@
+{
+  "format": "opencv_dataflow_rgbd_v1",
+  "clock": "deforming_sheet_fixture",
+  "color_frame": "sheet_depth_optical",
+  "depth_frame": "sheet_depth_optical",
+  "depth_m_per_sample": 0.001,
+  "color": [
+    {
+      "path": "guide_0.png",
+      "timestamp_ns": 1900000000000000000
+    },
+    {
+      "path": "guide_1.png",
+      "timestamp_ns": 1900000000040000000
+    },
+    {
+      "path": "guide_2.png",
+      "timestamp_ns": 1900000000080000000
+    },
+    {
+      "path": "guide_3.png",
+      "timestamp_ns": 1900000000120000000
+    },
+    {
+      "path": "guide_4.png",
+      "timestamp_ns": 1900000000160000000
+    }
+  ],
+  "depth": [
+    {
+      "path": "depth_0.png",
+      "timestamp_ns": 1900000000000000000
+    },
+    {
+      "path": "depth_1.png",
+      "timestamp_ns": 1900000000040000000
+    },
+    {
+      "path": "depth_2.png",
+      "timestamp_ns": 1900000000080000000
+    },
+    {
+      "path": "depth_3.png",
+      "timestamp_ns": 1900000000120000000
+    },
+    {
+      "path": "depth_4.png",
+      "timestamp_ns": 1900000000160000000
+    }
+  ]
+}

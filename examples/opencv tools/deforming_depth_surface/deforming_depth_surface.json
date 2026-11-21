@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Track a bending sheet through a missing exposure",
+      "description": "Original synthetic sheet recording by OpenCVDataflowGUI contributors (MIT). Run All starts a reference on pair 0. Pair 2 has a depth hole. Pair 3 has no depth, and pair 4 recovers from the original reference.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "replay",
+      "type": "input.rgbd_recording",
+      "name": "Registered guide and depth",
+      "parameters": {
+        "path": "assets/recording.json",
+        "repeat": "stop",
+        "maximum_skew_ms": 0,
+        "display_max_m": 5.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "depth",
+        "confidence",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Fixed pinhole camera",
+      "parameters": {
+        "fx": 171.0,
+        "fy": 169.0,
+        "cx": 71.5,
+        "cy": 51.5,
+        "width": 144,
+        "height": 104,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "sheet_depth_optical"
+      },
+      "position": [
+        0,
+        260
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "3d.track_deforming_surface",
+      "name": "Reconstruct the visible sheet",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "tracking_window": 13,
+        "max_pyramid_level": 2,
+        "forward_backward_pixels": 1.0,
+        "max_patch_error": 30.0,
+        "correspondence": "tracked_guide",
+        "input_units": "mm",
+        "units_per_sample": 1.0,
+        "sample_step": 4,
+        "minimum_points": 20,
+        "minimum_fraction": 0.7,
+        "minimum_depth_m": 0.05,
+        "maximum_depth_m": 5.0,
+        "max_depth_span_m": 0.03,
+        "max_motion_px": 36.0,
+        "max_displacement_m": 0.09
+      },
+      "position": [
+        420,
+        105
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "camera",
+        "guide",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "cloud",
+        "surface_depth",
+        "displacement",
+        "ready",
+        "activations",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "Reference-grid displacement"
+    }
+  ],
+  "connections": [
+    {
+      "source": "replay",
+      "output": "depth",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "replay",
+      "output": "image",
+      "target": "track",
+      "input": "guide"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "track",
+      "input": "camera"
+    }
+  ]
+}

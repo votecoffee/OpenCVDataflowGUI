@@ -109,9 +109,13 @@ class SequenceBlock(Block):
     def step(self, inputs, state, mask):
         raise NotImplementedError
 
+    def validate_sequence_image(self, image):
+        """Validate the raster that defines stream context and selection coordinates."""
+        image_value(image)
+
     def process(self, inputs):
         image = inputs["image"]
-        image_value(image)
+        self.validate_sequence_image(image)
         mask = selection_mask(inputs, image)
         p = self.parameters
         required = integer(p["warmup"], "Warmup", 1, 10000)

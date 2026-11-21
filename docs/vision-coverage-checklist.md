@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 122 | 4 | 5 | 131 | 93.1% |
+| 3. 3D imagery and point clouds | 123 | 4 | 4 | 131 | 93.9% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 377 | 8 | 85 | 470 | 80.2% |
+| **Overall** | 378 | 8 | 84 | 470 | 80.4% |
 
 <!-- coverage-summary:end -->
 
@@ -571,7 +571,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S3-121 | Filter independently supplied stereo disparity | ximgproc.createDisparityWLSFilterGeneric with optional paired disparity | Complete | 3d.filter_disparity_wls accepts independent fixed-point or float maps with invalid codes, validity masks and optional right disparity. The [edge and occlusion example](<../examples/opencv tools/external_disparity_wls/README.md>) verifies edge preservation, projected support and confidence against known geometry. |
 | S3-122 | Diagnose binary stereo correspondence costs | Census variants and Hamming cost or a tested equivalent | Complete | 3d.binary_stereo_costs reports signed candidate costs, ties and per-window support for center, mean, symmetric and star Census variants. The [saved example](<../examples/opencv tools/binary_stereo_costs/README.md>) checks a textured match, a flat tie and a masked occlusion. Center costs match the dense graph matcher and all variants match a scalar reference. |
-| S3-123 | Reconstruct nonrigid surfaces from depth sequences | dynafu.DynaFu or a qualified equivalent | Planned | Recover a known deforming surface from recorded depth, report reconstruction error and tracking loss, and verify reset and cloud provenance. The pinned wheel exposes the class but its constructor rejects this build configuration. |
+| S3-123 | Reconstruct nonrigid surfaces from depth sequences | dynafu.DynaFu or a qualified equivalent | Complete | 3d.track_deforming_surface qualifies fixed-view reconstruction from registered RGB-D with reference-grid tracking and metric depth sampling. The [bending-sheet example](<../examples/opencv tools/deforming_depth_surface/README.md>) verifies geometry error, tracking loss and recovery. Focused tests verify reset and cloud provenance. |
 
 ### Wide-angle and external reconstructions
 

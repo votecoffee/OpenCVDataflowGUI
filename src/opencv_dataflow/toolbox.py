@@ -181,7 +181,7 @@ BLOCK_MODULES = {
         "3d.depth_cloud 3d.backproject_depth_pixels 3d.separate_depth_plane 3d.cloud_project 3d.mesh_project 3d.evaluate_depth "
         "3d.reproject_depth_region 3d.fuse_registered_depth 3d.normalize_depth "
         "3d.warp_rgbd_pose 3d.tsdf_hash 3d.organized_mesh 3d.organized_planes 3d.mesh_texture "
-        "3d.depth_components 3d.depth_silhouette 3d.track_depth_fusion"
+        "3d.depth_components 3d.depth_silhouette 3d.track_depth_fusion 3d.track_deforming_surface"
     ),
     "rgbd": "3d.register_depth",
     "structured_light": (

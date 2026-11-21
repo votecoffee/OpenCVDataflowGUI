@@ -958,6 +958,21 @@ check control publication. Accepted depth packets and poses share a new
 metric world frame for each completed segment.
 [Recorded trajectory example](<../examples/opencv tools/depth_trajectory/README.md>)
 
+**Track deforming depth surface** holds a reference from a fixed,
+undistorted camera. In Tracked Guide mode it uses forward and backward
+Lucas–Kanade flow on the registered 8-bit guide, then samples positive
+metric depth at each supported match. Fixed Pixel mode compares the same
+camera rays for depth-only checks. Masks and regions constrain the samples.
+Depth holes and jumps between interpolation taps withhold affected points.
+
+The cloud carries live XYZ in meters, rounded live pixel coordinates and a
+Source Index for the reference row and column. Surface Depth and Displacement
+use a separate reference material grid. Compare Surface Depth against known
+camera-Z on that grid with **Evaluate camera depth**. The status records
+reference and current tickets, recovery after a lost exposure, and accepted
+support. Send Reset to capture a new reference and restart readiness.
+[Recorded deforming-surface example](<../examples/opencv tools/deforming_depth_surface/README.md>)
+
 **Generate Gray-code patterns** emits an ordered group and white/black frames.
 **Decode Gray-code correspondences** accepts matching captured images, optional
 shadow captures and selected camera pixels. It reports camera/projector pixel
