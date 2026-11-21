@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "test_images",
+      "type": "input.file",
+      "name": "CORe50 unseen specimen",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frames/s03_o04_175.png",
+          "assets/frames/s03_o04_025.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "classifier",
+      "type": "inspect.simple_classify_image",
+      "name": "SimpleClassify \u00b7 Surface texture",
+      "parameters": {
+        "model": "assets/image_classification/core50-grouped-surface/manifest.json",
+        "render_overlay": true
+      },
+      "position": [
+        355.0,
+        0.0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "label",
+        "score",
+        "confusion",
+        "probabilities",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": "overlay"
+    },
+    {
+      "id": "capture_workflow",
+      "type": "layout.comment",
+      "name": "Review held-out captures",
+      "description": "Open Train image classifier\u2026 and choose Capture groups. Select s7 or a specimen to see its held-out views across class filmstrips. Run once twice to compare two images of an unseen plug adapter.",
+      "parameters": {},
+      "position": [
+        0.0,
+        -230.0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "test_images",
+      "output": "image",
+      "target": "classifier",
+      "input": "image"
+    }
+  ]
+}

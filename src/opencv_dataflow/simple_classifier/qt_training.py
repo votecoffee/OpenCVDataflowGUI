@@ -4,17 +4,21 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from threading import Event
 
 import cv2
 from PySide6.QtCore import QSize, Qt, QTimer
 from PySide6.QtGui import QIcon, QImageReader, QKeySequence, QPixmap, QShortcut
 from PySide6.QtWidgets import (
+    QCheckBox,
     QComboBox,
     QDialog,
+    QDialogButtonBox,
     QFileDialog,
     QHBoxLayout,
     QInputDialog,
     QLabel,
+    QLineEdit,
     QListView,
     QListWidget,
     QListWidgetItem,
@@ -23,11 +27,14 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
     QTabWidget,
     QVBoxLayout,
+    QWidget,
 )
 
 from ..images import opencv_image
 from ..plugin_image_picker import PluginImagePicker
+from .dataset_audit import audit_assignments
 from .graphics import draw_assessment
+from .group_review import summarize_groups
 from .model import (
     PROFILES,
     Example,
@@ -40,6 +47,7 @@ from .model import (
     train_classifier,
 )
 from .qt_review import SampleReview
+from .training_split import GROUP_FIELDS
 
 _TRAINERS = ThreadPoolExecutor(max_workers=1, thread_name_prefix="image-classifier")
 _THUMBNAIL = QSize(112, 84)
@@ -64,8 +72,16 @@ class ClassifierTrainer(QDialog):
         self.candidate = None
         self.future = None
         self.predictions = {}
+        self._capture_groups = []
+        self._focused_group = None
         self._review_model = None
         self._review_window = None
+        self._audit = None
+        self._dataset_blocked = False
+        self._revision = 0
+        self._job = None
+        self._closing = False
+        self._cancelled = Event()
         self.capture_directory = None
         self.capture_paths = {}
         self.timer = QTimer(self, interval=60)
@@ -101,6 +117,8 @@ class ClassifierTrainer(QDialog):
         )
         self.profile.currentIndexChanged.connect(self._invalidate)
         review.addWidget(self.profile)
+        self.capture_ids_button = self._button(review, "Capture IDs…", self._edit_capture_ids)
+        self.capture_ids_button.setToolTip("Edit specimen and recording IDs for selected images.")
         layout.addLayout(review)
         self.tabs = QTabWidget()
         self.tabs.setDocumentMode(True)
@@ -120,6 +138,7 @@ class ClassifierTrainer(QDialog):
         self.split_button.setToolTip(
             "Mark selected images as held out. Mark at least one image per class and "
             "leave at least one per class for training. "
+            "Images with the same capture ID belong together. "
             "With no marked images, splitting is automatic."
         )
         self.move_button = self._button(edits, "Move to class…", self._move_selected)
@@ -138,11 +157,33 @@ class ClassifierTrainer(QDialog):
         self.report = QTableWidget()
         self.report.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.report.horizontalHeader().setStretchLastSection(True)
-        layout.addWidget(self.report, 1)
+        self.feedback = QTabWidget()
+        self.feedback.addTab(self.report, "Training health")
+        check_page = QWidget()
+        check_layout = QVBoxLayout(check_page)
+        self.audit_summary = QLabel(
+            "Check dataset for unreadable images, exact duplicates and capture group overlap."
+        )
+        self.audit_summary.setWordWrap(True)
+        self.audit_summary.setTextFormat(Qt.TextFormat.PlainText)
+        check_layout.addWidget(self.audit_summary)
+        self.audit_table = QTableWidget(0, 4)
+        self.audit_table.setHorizontalHeaderLabels(("Problem", "Class", "Image", "Details"))
+        self.audit_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.audit_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.audit_table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
+        self.audit_table.horizontalHeader().setStretchLastSection(True)
+        self.audit_table.currentCellChanged.connect(self._focus_issue)
+        self.audit_table.cellClicked.connect(self._focus_issue)
+        check_layout.addWidget(self.audit_table)
+        self.feedback.addTab(check_page, "Dataset checks")
+        self.feedback.addTab(self._group_review_page(), "Capture groups")
+        layout.addWidget(self.feedback, 1)
 
         actions = QHBoxLayout()
         layout.addLayout(actions)
         actions.addStretch()
+        self.audit_button = self._button(actions, "Check dataset", self.start_audit)
         self.train_button = self._button(actions, "Train", self.start_training)
         self.stage_button = self._button(actions, "Stage trained model", self._stage)
         self._button(actions, "Close", self.reject)
@@ -169,6 +210,34 @@ class ClassifierTrainer(QDialog):
         layout.addWidget(button)
         return button
 
+    def _group_review_page(self):
+        page = QWidget()
+        layout = QVBoxLayout(page)
+        actions = QHBoxLayout()
+        actions.addWidget(QLabel("Group held-out images by"))
+        self.group_field = QComboBox()
+        for field, label in reversed(GROUP_FIELDS):
+            self.group_field.addItem(label, field)
+        self.group_field.currentIndexChanged.connect(self._refresh_group_review)
+        actions.addWidget(self.group_field)
+        actions.addStretch()
+        self.focus_group_button = self._button(actions, "Show group images", self._focus_group)
+        self.clear_group_button = self._button(actions, "Clear group filter", self._clear_group)
+        layout.addLayout(actions)
+        self.group_summary = QLabel("Train to review held-out images by capture group.")
+        self.group_summary.setWordWrap(True)
+        self.group_summary.setTextFormat(Qt.TextFormat.PlainText)
+        layout.addWidget(self.group_summary)
+        self.group_table = QTableWidget()
+        self.group_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.group_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.group_table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
+        self.group_table.horizontalHeader().setStretchLastSection(True)
+        self.group_table.currentCellChanged.connect(self._refresh_controls)
+        self.group_table.cellDoubleClicked.connect(self._focus_group)
+        layout.addWidget(self.group_table)
+        return page
+
     def _refresh_controls(self):
         if not hasattr(self, "stage_button"):
             return
@@ -183,16 +252,30 @@ class ClassifierTrainer(QDialog):
             self.image_picker,
         ):
             widget.setEnabled(idle and strip is not None)
-        for button in (self.split_button, self.remove_button):
+        for button in (self.split_button, self.remove_button, self.capture_ids_button):
             button.setEnabled(idle and selected)
         self.move_button.setEnabled(idle and selected and self.tabs.count() > 1)
         self.review_button.setEnabled(idle and selected)
         self.train_button.setEnabled(idle and self.tabs.count() >= 2)
+        self.audit_button.setEnabled(idle and self.tabs.count() > 0)
+        self.audit_table.setEnabled(idle and self._audit is not None)
+        self.group_field.setEnabled(idle and bool(self.predictions))
+        self.group_table.setEnabled(idle and bool(self._capture_groups))
+        current_group = self.group_table.currentRow()
+        self.focus_group_button.setEnabled(idle and 0 <= current_group < len(self._capture_groups))
+        self.clear_group_button.setEnabled(idle and self._focused_group is not None)
         self.stage_button.setEnabled(
             idle and self.candidate is not None and self.project_dir is not None
+            and not self._dataset_blocked
         )
 
     def _invalidate(self):
+        self._revision += 1
+        self._audit = None
+        self._dataset_blocked = False
+        self.audit_summary.setText(
+            "Assignments/profile changed. Check dataset again to refresh diagnostics."
+        )
         self.candidate = None
         self._review_model = None
         if self._review_window is not None:
@@ -202,14 +285,15 @@ class ClassifierTrainer(QDialog):
             self.predictions.clear()
             self.review_filter.setCurrentIndex(_ALL_IMAGES)
             self._annotate_filmstrips()
-            self._filter_images()
         self.report.clear()
         self.report.setRowCount(0)
         self.report.setColumnCount(0)
+        self._refresh_group_review()
         message = "Train to update health. Keep at least two distinct images per class."
         if self.project_dir is None:
             message += " Save the project before staging a model."
         self.status.setText(message)
+        self._update_review_counts()
         self._refresh_controls()
 
     def _class_name(self, label, *, current=-1):
@@ -273,12 +357,19 @@ class ClassifierTrainer(QDialog):
         self._invalidate()
 
     @staticmethod
+    def _capture_summary(example):
+        return "\n".join(
+            f"{label} ID · {getattr(example, field) or 'Unspecified'}"
+            for field, label in GROUP_FIELDS
+        )
+
+    @staticmethod
     def _set_example(item, example):
         item.setData(_EXAMPLE, example)
         split = "Validation" if example.validation else "Labeled image"
         marker = " · Validation" if example.validation else ""
         item.setText(f"{example.name}{marker}")
-        item.setToolTip(f"{split}\n{example.name}\n{example.path}")
+        item.setToolTip(f"{split}\n{example.name}\n{ClassifierTrainer._capture_summary(example)}\n{example.path}")
 
     def _append_item(self, strip, example):
         item = QListWidgetItem(_thumbnail(example.path), "")
@@ -352,6 +443,61 @@ class ClassifierTrainer(QDialog):
             self._set_example(item, replace(example, validation=not example.validation))
         self._invalidate()
 
+    def _edit_capture_ids(self):
+        strip = self.tabs.currentWidget()
+        if self.future is not None or strip is None:
+            return
+        selected = strip.selectedItems()
+        if not selected:
+            return
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Capture IDs")
+        layout = QVBoxLayout(dialog)
+        intro = QLabel(
+            f"Edit IDs for {len(selected)} selected image(s). Match IDs across related views "
+            "and classes. Check a field to replace its value. Clear a checked field when "
+            "the ID is unknown."
+        )
+        intro.setWordWrap(True)
+        layout.addWidget(intro)
+        fields = []
+        for field_name, label in GROUP_FIELDS:
+            values = {getattr(item.data(_EXAMPLE), field_name) for item in selected}
+            row = QHBoxLayout()
+            enabled = QCheckBox(f"{label} ID")
+            enabled.setChecked(len(values) == 1)
+            entry = QLineEdit(next(iter(values)) if len(values) == 1 else "")
+            entry.setAccessibleName(f"{label} ID")
+            entry.setPlaceholderText("Mixed values" if len(values) != 1 else "Unspecified")
+            entry.setEnabled(enabled.isChecked())
+            enabled.toggled.connect(entry.setEnabled)
+            row.addWidget(enabled)
+            row.addWidget(entry, 1)
+            layout.addLayout(row)
+            fields.append((field_name, enabled, entry))
+        buttons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+        )
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        layout.addWidget(buttons)
+        dialog.resize(440, dialog.sizeHint().height())
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+        updates = {key: entry.text() for key, enabled, entry in fields if enabled.isChecked()}
+        try:
+            replacements = [
+                replace(item.data(_EXAMPLE), **updates) for item in selected
+            ]
+        except ValueError as exc:
+            self.status.setText(str(exc))
+            return
+        if any(item.data(_EXAMPLE) != example
+               for item, example in zip(selected, replacements, strict=True)):
+            for item, example in zip(selected, replacements, strict=True):
+                self._set_example(item, example)
+            self._invalidate()
+
     def _move_selected(self):
         current = self.tabs.currentIndex()
         choices = [self.tabs.tabText(i) for i in range(self.tabs.count()) if i != current]
@@ -389,31 +535,49 @@ class ClassifierTrainer(QDialog):
     def start_training(self):
         if self.future is not None:
             return
+        if self._audit is not None and not self._audit.ready:
+            self.status.setText("Fix the listed dataset problems, then train again.")
+            self.feedback.setCurrentIndex(1)
+            return
         self._invalidate()
         self.status.setText("Training and evaluating held-out images…")
         self.training_assignments = self.assignments()
         self.future = _TRAINERS.submit(
             train_classifier, self.training_assignments, profile=self.profile.currentData()
         )
+        self._job = ("Training", self._revision)
         self.timer.start()
         self._refresh_controls()
 
     def _training_finished(self):
-        if not self.future.done():
+        if self._closing or self.future is None or not self.future.done():
             return
         self.timer.stop()
         future, self.future = self.future, None
+        job, revision = self._job
+        self._job = None
         try:
-            model, health = future.result()
+            result = future.result()
+            if revision != self._revision:
+                self.status.setText(f"{job} result discarded because assignments changed.")
+                self._refresh_controls()
+                return
         except Exception as exc:
-            self.status.setText(f"Training failed. {exc}")
+            self.status.setText(f"{job} failed. {exc}")
         else:
-            self.candidate = self.training_assignments, model, health
-            self._review_model = model
-            self._show_health(health)
+            if job == "Dataset check":
+                self._show_audit(result)
+            else:
+                model, health = result
+                self.candidate = self.training_assignments, model, health
+                self._review_model = model
+                self._show_health(health)
+                self.feedback.setCurrentIndex(0)
         self._refresh_controls()
 
     def _close_training(self):
+        self._closing = True
+        self._cancelled.set()
         if self._review_window is not None:
             self._review_window.close()
         self.timer.stop()
@@ -424,6 +588,75 @@ class ClassifierTrainer(QDialog):
                 self.future.add_done_callback(lambda _: directory.cleanup())
         elif directory is not None:
             directory.cleanup()
+
+    def start_audit(self):
+        if self.future is not None:
+            return
+        self._cancelled.clear()
+        self._audit = None
+        self._dataset_blocked = True
+        self._job = ("Dataset check", self._revision)
+        self.future = _TRAINERS.submit(
+            audit_assignments, self.assignments(), cancelled=self._cancelled.is_set,
+        )
+        self.audit_summary.setText(
+            "Reading current images and checking normalized pixels and capture groups…"
+        )
+        self.feedback.setCurrentIndex(1)
+        self.timer.start()
+        self._refresh_controls()
+
+    def _show_audit(self, audit):
+        self._audit = audit
+        self._dataset_blocked = not audit.ready
+        message = ("Dataset checks passed." if audit.ready else
+                   f"{len(audit.issues)} problems. Select a row to locate its assignment; "
+                   "correct it and recheck.")
+        self.audit_summary.setText(
+            message + f" Split: {audit.split}. Counts use readable images; "
+            "they are provisional until all problems are fixed. Checks do not train or predict."
+        )
+        titles = dict(unreadable="Unreadable image", duplicate="Duplicate pixels",
+                      label_conflict="Label conflict", split_leakage="Split leakage",
+                      split="Missing split member", classes="Class setup",
+                      group_overlap="Capture group overlap", group_split="Capture group split")
+        self.audit_table.setRowCount(len(audit.issues))
+        samples = {(sample.class_index, sample.image_index): sample for sample in audit.samples}
+        image_names = {
+            (class_index, image_index): example.name
+            for class_index, examples in enumerate(self.assignments().values())
+            for image_index, example in enumerate(examples)
+        }
+        for row, issue in enumerate(audit.issues):
+            sample = samples.get((issue.class_index, issue.image_index))
+            label = ("All classes" if issue.class_index is None else
+                     audit.classes[issue.class_index].label)
+            name = "" if sample is None else image_names[(sample.class_index, sample.image_index)]
+            values = (" · ".join(titles[code] for code in issue.codes), label, name, issue.message)
+            for column, text in enumerate(values):
+                item = QTableWidgetItem(text)
+                if sample is not None:
+                    item.setToolTip(sample.error or str(sample.path))
+                self.audit_table.setItem(row, column, item)
+        self.audit_table.resizeColumnsToContents()
+        self.status.setText(message)
+        self._update_review_counts()
+
+    def _focus_issue(self, row, *_args):
+        if self._audit is None or self.future is not None or not 0 <= row < len(self._audit.issues):
+            return
+        issue = self._audit.issues[row]
+        if issue.class_index is None:
+            return
+        self.review_filter.setCurrentIndex(_ALL_IMAGES)
+        self.tabs.setCurrentIndex(issue.class_index)
+        strip = self.tabs.currentWidget()
+        strip.clearSelection()
+        if issue.image_index is not None:
+            item = strip.item(issue.image_index)
+            item.setSelected(True)
+            strip.scrollToItem(item)
+        self.status.setText(issue.message)
 
     def _review_selected(self):
         strip = self.tabs.currentWidget()
@@ -482,6 +715,71 @@ class ClassifierTrainer(QDialog):
             (row.class_index, row.image_index): row for row in health.predictions
         }
         self._annotate_filmstrips()
+        self._refresh_group_review()
+
+    def _refresh_group_review(self):
+        self._focused_group = None
+        field = self.group_field.currentData()
+        label = self.group_field.currentText()
+        assigned = tuple(self.assignments().values()) if self.predictions else ()
+        self._capture_groups = summarize_groups(assigned, self.predictions, field)
+        self.group_table.setCurrentCell(-1, -1)
+        self.group_table.setColumnCount(6)
+        self.group_table.setHorizontalHeaderLabels(
+            (f"{label} ID", "Held out", "Correct", "Errors", "Correct %", "Most common error")
+        )
+        self.group_table.setRowCount(len(self._capture_groups))
+        for row, group in enumerate(self._capture_groups):
+            error = ""
+            if group.common_error is not None:
+                expected, predicted, count = group.common_error
+                error = f"{self.tabs.tabText(expected)} → {self.tabs.tabText(predicted)} ({count})"
+            cells = (
+                group.identifier or "Unspecified ID", len(group.members), group.correct,
+                group.errors, f"{100 * group.correct / len(group.members):.1f}%", error,
+            )
+            for column, value in enumerate(cells):
+                self.group_table.setItem(row, column, QTableWidgetItem(str(value)))
+        self.group_table.resizeColumnsToContents()
+        if self._capture_groups:
+            unknown = sum(
+                len(group.members) for group in self._capture_groups if not group.identifier
+            )
+            self.group_summary.setText(
+                f"{len(self.predictions)} held-out images · "
+                f"{unknown} without a {label.lower()} ID. "
+                "Choose a row to show its images across the class tabs."
+            )
+        elif self.report.rowCount():
+            self.group_summary.setText(
+                "Per-image predictions are unavailable in this saved report. Train to refresh."
+            )
+        else:
+            self.group_summary.setText("Train to review held-out images by capture group.")
+        self._filter_images()
+
+    def _focus_group(self, *_args):
+        row = self.group_table.currentRow()
+        if self.future is not None or not 0 <= row < len(self._capture_groups):
+            return
+        self._focused_group = self._capture_groups[row]
+        mode = self.review_filter.currentIndex()
+        if mode == _ALL_IMAGES or (mode == _MISCLASSIFIED and not self._focused_group.errors):
+            self.review_filter.setCurrentIndex(_HELD_OUT)
+        else:
+            self._filter_images()
+        for class_index, image_index in self._focused_group.members:
+            strip = self.tabs.widget(class_index)
+            item = strip.item(image_index)
+            if not item.isHidden():
+                self.tabs.setCurrentIndex(class_index)
+                strip.clearSelection()
+                item.setSelected(True)
+                strip.scrollToItem(item)
+                break
+
+    def _clear_group(self):
+        self._focused_group = None
         self._filter_images()
 
     def _annotate_filmstrips(self):
@@ -502,11 +800,17 @@ class ClassifierTrainer(QDialog):
                     f"Held out · {status}\n"
                     f"Expected {expected}\n"
                     f"Predicted {predicted} ({prediction.score:.1f}%)\n"
-                    f"Confusion {prediction.confusion:.1f}%\n{example.path}"
+                    f"Confusion {prediction.confusion:.1f}%\n"
+                    f"{example.name}\n{self._capture_summary(example)}\n{example.path}"
                 )
 
     def _filter_images(self):
         mode = self.review_filter.currentIndex()
+        if mode == _ALL_IMAGES:
+            self._focused_group = None
+        members = (
+            None if self._focused_group is None else set(self._focused_group.members)
+        )
         for class_index in range(self.tabs.count()):
             strip = self.tabs.widget(class_index)
             for index in range(strip.count()):
@@ -516,6 +820,7 @@ class ClassifierTrainer(QDialog):
                         mode == _HELD_OUT or prediction.predicted_index != class_index
                     )
                 )
+                visible = visible and (members is None or (class_index, index) in members)
                 item = strip.item(index)
                 if not visible:
                     item.setSelected(False)
@@ -524,13 +829,31 @@ class ClassifierTrainer(QDialog):
 
     def _update_review_counts(self):
         current = self.tabs.currentIndex()
+        strip = self.tabs.currentWidget()
+        assigned = 0 if strip is None else strip.count()
         rows = [row for row in self.predictions.values() if row.class_index == current]
         errors = sum(row.class_index != row.predicted_index for row in rows)
-        self.review_counts.setText(f"{len(rows)} held out · {errors} misclassified" if rows else "")
+        if self._audit is not None and 0 <= current < len(self._audit.classes):
+            counts = self._audit.classes[current]
+            text = (f"{assigned} assigned · {counts.training} training · "
+                    f"{counts.validation} held out ({self._audit.split} check)")
+        else:
+            marked = 0 if strip is None else sum(
+                strip.item(i).data(_EXAMPLE).validation for i in range(strip.count())
+            )
+            text = f"{assigned} assigned · {marked} marked validation"
+        if rows:
+            text += f" · {len(rows)} held out · {errors} misclassified"
+        if self._focused_group is not None:
+            name = self._focused_group.identifier or "Unspecified ID"
+            visible = sum(not strip.item(i).isHidden() for i in range(assigned))
+            text += f" · {self.group_field.currentText()} {name} · {visible} shown"
+        self.review_counts.setText(text)
         self._refresh_controls()
 
     def _stage(self):
-        if self.candidate is None or self.project_dir is None:
+        if (self._closing or self.future is not None or self._dataset_blocked
+                or self.candidate is None or self.project_dir is None):
             return
         try:
             self.parameters["model"] = stage_classifier(self.project_dir, *self.candidate)

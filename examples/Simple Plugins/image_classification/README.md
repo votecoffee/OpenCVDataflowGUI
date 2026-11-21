@@ -6,6 +6,7 @@ project JSON files directly; testing and development material is in `dev`.
 
 | Example folder | Start here |
 | --- | --- |
+| [core50_capture_groups](<core50_capture_groups/README.md>) | [project.json](<core50_capture_groups/project.json>) |
 | [vegqual](<vegqual/README.md>) | [project.json](<vegqual/project.json>) |
 
 Use the block's Configuration popup to inspect or edit retained training. In
