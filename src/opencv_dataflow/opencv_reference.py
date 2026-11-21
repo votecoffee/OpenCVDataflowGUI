@@ -129,6 +129,7 @@ BINDINGS = {
     "3d.rectify_uncalibrated_stereo": "stereoRectifyUncalibrated warpPerspective",
     "3d.fundamental": "findFundamentalMat",
     "3d.planar_pose_hypotheses": "solvePnPGeneric projectPoints",
+    "3d.planar_camera_motion": "findHomography decomposeHomographyMat filterHomographyDecompByVisibleRefpoints",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",
     "3d.project": "projectPoints fisheye.projectPoints omnidir.projectPoints",
     "3d.unwrap_phase": (

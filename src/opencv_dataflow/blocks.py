@@ -864,6 +864,7 @@ def builtin_registry():
     from .photo_filters import PHOTO_FILTER_BLOCKS
     from .pick_selection import SelectPickCandidate
     from .pixel_moments import PixelMoments
+    from .planar_motion import RecoverPlanarCameraMotion
     from .planar_pose import PlanarPoseHypotheses
     from .plugins import (
         BIN_PICKING_TYPES,
@@ -1371,6 +1372,7 @@ def builtin_registry():
         *GEOMETRY3D_BLOCKS,
         InspectProjectionMatrix,
         PlanarPoseHypotheses,
+        RecoverPlanarCameraMotion,
         MakeLandmarkView,
         ReconstructSparseViews,
         RecoverSceneScale,

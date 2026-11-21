@@ -17,6 +17,9 @@ contains project-defined inspection algorithms and other-library integrations.
 [Planar fiducial targets](fiducial_targets/README.md) generates printable
 ArUco markers, ArUco grids and ChArUco boards and checks digital detection.
 
+[Recover planar camera motion](planar_camera_motion/README.md) compares
+image-only alternatives with motion resolved by a measured plane.
+
 [Planar pose hypotheses](planar_pose_hypotheses/README.md) shows how close
 reprojection scores can leave a plane orientation ambiguous.
 

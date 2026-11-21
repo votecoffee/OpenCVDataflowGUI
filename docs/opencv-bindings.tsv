@@ -2148,7 +2148,7 @@ P3	function	cv2.cvtColor	literal reference	-
 P3	function	cv2.cvtColorTwoPlane	no static reference	-
 P3	function	cv2.decolor	literal reference	-
 P3	function	cv2.decomposeEssentialMat	no static reference	-
-P3	function	cv2.decomposeHomographyMat	no static reference	-
+P3	function	cv2.decomposeHomographyMat	literal reference	-
 P3	function	cv2.decomposeProjectionMatrix	literal reference	-
 P3	function	cv2.demosaicing	literal reference	-
 P3	function	cv2.denoise_TVL1	literal reference	-
@@ -2741,7 +2741,7 @@ P3	function	cv2.fillConvexPoly	literal reference	-
 P3	function	cv2.fillPoly	literal reference	-
 P3	function	cv2.filter2D	literal reference	-
 P3	function	cv2.filter2Dp	no static reference	-
-P3	function	cv2.filterHomographyDecompByVisibleRefpoints	no static reference	-
+P3	function	cv2.filterHomographyDecompByVisibleRefpoints	literal reference	-
 P3	function	cv2.filterSpeckles	literal reference	-
 P3	function	cv2.find4QuadCornerSubpix	no static reference	-
 P3	function	cv2.findChessboardCorners	literal reference	-

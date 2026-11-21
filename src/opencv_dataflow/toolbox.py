@@ -156,7 +156,7 @@ BLOCK_MODULES = {
     ),
     "imgcodecs": "input.file input.depth_file input.raw_yuv input.raw_sensor output.image",
     "calib": (
-        "3d.camera 3d.project 3d.inspect_projection_matrix 3d.undistort_points "
+        "3d.camera 3d.project 3d.inspect_projection_matrix 3d.undistort_points 3d.planar_camera_motion "
         "3d.stereo_rig 3d.stereo_calibrate "
         "3d.validate_stereo_calibration 3d.calibrate_multicamera 3d.validate_multicamera "
         "3d.stereo_rectify 3d.stereo_rectified_camera 3d.rectify_camera "

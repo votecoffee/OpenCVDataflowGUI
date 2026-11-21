@@ -1458,6 +1458,42 @@ Input `region` — Select camera pixels, intersecting the mask when supplied.
 | `axis` | `"x"` | `x`, `y` Projector coordinate the fringes encode. X uses vertical stripes. |
 | `fine_periods` | `8` | Value must be a whole number between 2 and 64. Requested fine cycles. OpenCV uses a whole-pixel fringe period. |
 
+## Recover planar camera motion (`3d.planar_camera_motion`)
+
+3D vision / Camera models
+
+Inputs: `source_camera` (data), `target_camera` (data), `matches` (data, optional), `source_points` (data, optional), `target_points` (data, optional), `source_plane` (data, optional), `source_image` (image, optional), `target_image` (image, optional).
+
+Input `source_camera` — Source pinhole intrinsics, distortion and optical frame.
+
+Input `target_camera` — Target pinhole intrinsics, distortion and optical frame.
+
+Input `matches` — Matched query/source and train/target pixels from a feature matcher.
+
+Input `source_points` — Alternative ordered source image pixels, with target points.
+
+Input `target_points` — Corresponding target image pixels in the same row order.
+
+Input `source_plane` — Optional metric depth-plane or cloud-plane record in the source camera.
+
+Input `source_image` — Optional source image for markers and calibration revision checks.
+
+Input `target_image` — Optional target image for markers and calibration revision checks.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"ransac"` | `direct`, `ransac`, `lmeds`, `usac_magsac` Homography estimator on undistorted ideal pixels. |
+| `ransac_pixels` | `2.0` | Value must be a finite number between 1e-06 and 1024. Homography inlier tolerance in ideal target pixels. |
+| `max_iterations` | `2000` | Value must be a whole number between 1 and 20000. Maximum iterations for a robust homography fit. |
+| `confidence` | `0.995` | Value must be a finite number between 1e-06 and 0.999999. Target confidence for robust homography estimation. |
+| `minimum_inliers` | `8` | Value must be a whole number between 4 and 16384. Required number of matched points supporting the homography. |
+| `minimum_inlier_fraction` | `0.55` | Value must be a finite number between 0 and 1. Required fraction of matched points supporting the homography. |
+| `maximum_rms_px` | `2.0` | Value must be a finite number between 0 and 1024. Maximum candidate reprojection RMS in ideal target pixels. |
+| `plane_distance_m` | `0.0` | Value must be a finite number between 0 and 1e+06. Perpendicular source camera-to-plane distance. Zero is unknown. |
+| `source_normal` | `[]` | Normal in source camera axes directed towards the plane. |
+| `maximum_normal_angle_deg` | `8.0` | Value must be a finite number between 0 and 180. Maximum angular discrepancy from the supplied plane normal. |
+| `maximum_drawn_matches` | `96` | Value must be a whole number between 0 and 512. Limit inlier and outlier markers on the attached images. |
+
 ## Planar pose hypotheses (`3d.planar_pose_hypotheses`)
 
 3D vision / Geometry

@@ -1,0 +1,418 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Recover camera motion from a plane",
+      "description": "Original synthetic texture and geometry by OpenCVDataflowGUI contributors (MIT). SIFT matches two calibrated views. Compare the two unscaled alternatives with the single motion selected using a measured plane normal and distance.",
+      "parameters": {},
+      "position": [
+        0,
+        -270
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Source image",
+      "parameters": {
+        "path": "assets/source.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "planar-camera-pair"
+      }
+    },
+    {
+      "id": "source_camera",
+      "type": "3d.camera",
+      "name": "Source intrinsics",
+      "parameters": {
+        "fx": 640.0,
+        "fy": 652.0,
+        "cx": 321.0,
+        "cy": 237.0,
+        "width": 640,
+        "height": 480,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "source"
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_features",
+      "type": "inspect.sift",
+      "name": "Detect source SIFT features",
+      "parameters": {
+        "max_features": 550,
+        "octave_layers": 3,
+        "contrast_threshold": 0.028,
+        "edge_threshold": 10.0,
+        "sigma": 1.6,
+        "descriptor_depth": "float32",
+        "precise_upscale": false
+      },
+      "position": [
+        345,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target",
+      "type": "input.file",
+      "name": "Target image",
+      "parameters": {
+        "path": "assets/target.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        400
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "planar-camera-pair"
+      }
+    },
+    {
+      "id": "target_camera",
+      "type": "3d.camera",
+      "name": "Target intrinsics",
+      "parameters": {
+        "fx": 655.0,
+        "fy": 646.0,
+        "cx": 326.0,
+        "cy": 235.0,
+        "width": 640,
+        "height": 480,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "target"
+      },
+      "position": [
+        0,
+        600
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target_features",
+      "type": "inspect.sift",
+      "name": "Detect target SIFT features",
+      "parameters": {
+        "max_features": 550,
+        "octave_layers": 3,
+        "contrast_threshold": 0.028,
+        "edge_threshold": 10.0,
+        "sigma": 1.6,
+        "descriptor_depth": "float32",
+        "precise_upscale": false
+      },
+      "position": [
+        345,
+        400
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "matches",
+      "type": "inspect.match_sift",
+      "name": "Match source to target",
+      "parameters": {
+        "ratio": 0.72,
+        "max_distance": 300,
+        "mode": "ratio",
+        "norm": "l2"
+      },
+      "position": [
+        670,
+        170
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ambiguous",
+      "type": "3d.planar_camera_motion",
+      "name": "Image-only alternatives",
+      "description": "Recover visible camera motion and plane alternatives from paired image pixels.",
+      "parameters": {
+        "method": "ransac",
+        "ransac_pixels": 1.5,
+        "max_iterations": 2000,
+        "confidence": 0.995,
+        "minimum_inliers": 8,
+        "minimum_inlier_fraction": 0.55,
+        "maximum_rms_px": 1.0,
+        "plane_distance_m": 0.0,
+        "source_normal": [],
+        "maximum_normal_angle_deg": 8.0,
+        "maximum_drawn_matches": 96
+      },
+      "position": [
+        1070,
+        0
+      ],
+      "exposed_inputs": [
+        "source_camera",
+        "target_camera",
+        "matches",
+        "source_points",
+        "target_points",
+        "source_plane",
+        "source_image",
+        "target_image"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "hypotheses",
+        "ambiguous",
+        "inliers",
+        "source_image",
+        "target_image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "metric",
+      "type": "3d.planar_camera_motion",
+      "name": "Resolve motion with known plane",
+      "description": "Recover visible camera motion and plane alternatives from paired image pixels.",
+      "parameters": {
+        "method": "ransac",
+        "ransac_pixels": 1.5,
+        "max_iterations": 2000,
+        "confidence": 0.995,
+        "minimum_inliers": 8,
+        "minimum_inlier_fraction": 0.55,
+        "maximum_rms_px": 1.0,
+        "plane_distance_m": 1.45,
+        "source_normal": [
+          0.17572059642838955,
+          -0.1269093196427258,
+          0.9762255357132753
+        ],
+        "maximum_normal_angle_deg": 8.0,
+        "maximum_drawn_matches": 96
+      },
+      "position": [
+        1070,
+        395
+      ],
+      "exposed_inputs": [
+        "source_camera",
+        "target_camera",
+        "matches",
+        "source_points",
+        "target_points",
+        "source_plane",
+        "source_image",
+        "target_image"
+      ],
+      "exposed_outputs": [
+        "pose",
+        "hypotheses",
+        "ambiguous",
+        "inliers",
+        "source_image",
+        "target_image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "source_features",
+      "input": "image"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "target_features",
+      "input": "image"
+    },
+    {
+      "source": "source_features",
+      "output": "features",
+      "target": "matches",
+      "input": "query"
+    },
+    {
+      "source": "target_features",
+      "output": "features",
+      "target": "matches",
+      "input": "train"
+    },
+    {
+      "source": "matches",
+      "output": "matches",
+      "target": "ambiguous",
+      "input": "matches"
+    },
+    {
+      "source": "source_camera",
+      "output": "camera",
+      "target": "ambiguous",
+      "input": "source_camera"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "ambiguous",
+      "input": "source_image"
+    },
+    {
+      "source": "target_camera",
+      "output": "camera",
+      "target": "ambiguous",
+      "input": "target_camera"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "ambiguous",
+      "input": "target_image"
+    },
+    {
+      "source": "matches",
+      "output": "matches",
+      "target": "metric",
+      "input": "matches"
+    },
+    {
+      "source": "source_camera",
+      "output": "camera",
+      "target": "metric",
+      "input": "source_camera"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "metric",
+      "input": "source_image"
+    },
+    {
+      "source": "target_camera",
+      "output": "camera",
+      "target": "metric",
+      "input": "target_camera"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "metric",
+      "input": "target_image"
+    }
+  ]
+}

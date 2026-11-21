@@ -1021,6 +1021,22 @@ within the configured RMS gap. **Pose** emits only when the ambiguity gate
 allows a single transform. Connecting the source image adds drawable normals
 to the preview. [Near-frontal and oblique example](<../examples/opencv tools/planar_pose_hypotheses/README.md>)
 
+## Planar camera motion from two views
+
+**Recover planar camera motion** takes two calibrated pinhole views and
+ordered correspondences from a shared plane. It fits on undistorted
+pixels and retains the motion alternatives that put the inlier points
+in front of both cameras. The report includes native visibility,
+reprojection RMS and plane-normal checks.
+
+The hypotheses store translation divided by the perpendicular source
+camera-to-plane distance. A measured plane or configured distance
+supplies scale, and the plane normal gates the motion alternatives.
+The single pose output requires exactly one metric hypothesis. A
+rotation-only fit returns a rotation hypothesis. Optional source and
+target images display the inlier and outlier markers.
+[Two-view planar motion example](<../examples/opencv tools/planar_camera_motion/README.md>)
+
 ## Sparse multi-view reconstruction
 
 Pack each calibrated pinhole view with its world-to-camera pose and landmark

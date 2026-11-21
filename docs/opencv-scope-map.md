@@ -426,7 +426,7 @@ is evidence of exposure. Completion requires the checklist's graph fixture.
 | `cv2.estimateAffine2D`, `cv2.estimateAffinePartial2D`, `cv2.estimateTranslation2D`, `cv2.findHomography` | Use typed inliers and geometry for reference alignment and planar mapping. | S1-48, S3-06 |
 | `cv2.estimateAffine3D`, `cv2.estimateTranslation3D`, `cv2.composeRT` | `3d.estimate_matched_transform` recovers verified translation, rigid, similarity and affine transforms from paired metric landmarks. The uniform-scale estimateAffine3D overload also recovers the metric reconstruction gauge. Existing pose blocks compose relative transforms. | S3-31, S3-50, S3-65, S3-101 |
 | `cv2.calibrationMatrixValues`, `cv2.decomposeProjectionMatrix`, `cv2.RQDecomp3x3` | Recover intrinsics, a named camera pose and FOV with scaled-matrix and reprojection checks. OpenCV uses RQ factorization internally. | S3-117 |
-| `cv2.decomposeHomographyMat`, `cv2.filterHomographyDecompByVisibleRefpoints` | Recover image-to-image motion hypotheses and reject candidates with invalid visibility. | S3-118 |
+| `cv2.decomposeHomographyMat`, `cv2.filterHomographyDecompByVisibleRefpoints` | Recover calibrated two-view planar motion, test visibility and preserve scale ambiguity. A known source plane can select and scale a metric pose. | S3-118 |
 | `cv::LevMarq`, `cv2.matMulDeriv` | Solver and matrix-derivative internals stay behind calibrated image workflows. | — |
 
 Pinned sources include the headers for

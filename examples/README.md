@@ -177,6 +177,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Camera motion stabilization](<opencv tools/camera_stabilization/README.md>) | Replay known camera jitter and compare raw and corrected error against an anchor frame. |
 | [Channels and image pyramids](<opencv tools/channels_pyramids/README.md>) | Split and reassemble BGR channels, then carry payloads and coordinate transforms through a four-level image pyramid. |
 | [Planar fiducial targets](<opencv tools/fiducial_targets/README.md>) | Generate and verify a single marker, an ID-ordered ArUco grid and a legacy ChArUco board with physical print dimensions. |
+| [Recover planar camera motion](<opencv tools/planar_camera_motion/README.md>) | Compare unscaled motions and recover one metric pose with a plane prior. |
 | [Planar pose hypotheses](<opencv tools/planar_pose_hypotheses/README.md>) | Compare candidate poses on near-frontal and oblique views of the same target. |
 | [Epipolar match refinement](<opencv tools/epipolar_refinement/README.md>) | Score noisy stereo points, filter bad matches and validate each accepted correction against known projections. |
 | [Uncalibrated stereo rectification](<opencv tools/uncalibrated_stereo/README.md>) | Estimate rectification from matches, compare held-out vertical alignment and inspect shared support. |
