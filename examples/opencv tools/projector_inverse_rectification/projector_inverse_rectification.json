@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Prewarp a pattern for a calibrated projector",
+      "description": "Original synthetic target and optics by OpenCVDataflowGUI contributors (MIT). Run once and compare the ideal pattern, prewarped projector raster and restored view. A synthetic plane supplies independent known target positions.",
+      "parameters": {},
+      "position": [
+        0,
+        -280
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pattern",
+      "type": "input.file",
+      "name": "Ideal six-fiducial pattern",
+      "parameters": {
+        "path": "assets/pattern.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "six-fiducials"
+      }
+    },
+    {
+      "id": "optics",
+      "type": "input.calibration",
+      "name": "Raw projector intrinsics",
+      "parameters": {
+        "path": "assets/projector_calibration.json",
+        "path_base": "project",
+        "profile_id": "",
+        "revision": ""
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "six-fiducials"
+      }
+    },
+    {
+      "id": "ideal",
+      "type": "3d.camera",
+      "name": "Ideal pattern intrinsics",
+      "parameters": {
+        "fx": 333.0,
+        "fy": 330.0,
+        "cx": 196.6,
+        "cy": 145.5,
+        "width": 430,
+        "height": 316,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "ideal"
+      },
+      "position": [
+        0,
+        460
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "prewarp",
+      "type": "3d.projector_inverse_rectify",
+      "name": "Prewarp for projection",
+      "description": "Map an ideal pattern into a calibrated pinhole projector's native pixel grid.",
+      "parameters": {
+        "rotation_vector": [
+          -0.062,
+          0.08,
+          0.019
+        ],
+        "interpolation": "linear",
+        "border_value": 0.0,
+        "minimum_valid_fraction": 0.8,
+        "maximum_roundtrip_error_px": 0.5,
+        "maximum_pixels": 8388608
+      },
+      "position": [
+        390,
+        140
+      ],
+      "exposed_inputs": [
+        "pattern",
+        "projector",
+        "pattern_camera"
+      ],
+      "exposed_outputs": [
+        "image",
+        "valid_mask",
+        "map_x",
+        "map_y",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "forward",
+      "type": "calibration.lens_maps",
+      "name": "Build forward lens map",
+      "parameters": {
+        "width": 430,
+        "height": 316,
+        "camera_matrix_mode": "custom",
+        "new_camera_matrix": [
+          [
+            333.0,
+            0.0,
+            196.6
+          ],
+          [
+            0.0,
+            330.0,
+            145.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "alpha": 0.0,
+        "center_principal_point": false,
+        "rotation_vector": [
+          -0.062,
+          0.08,
+          0.019
+        ],
+        "max_rms_pixels": 1.0
+      },
+      "position": [
+        390,
+        490
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "map_x",
+        "map_y",
+        "rectified_calibration",
+        "valid_roi"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "recover",
+      "type": "cv.remap",
+      "name": "Restore ideal view",
+      "parameters": {
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        800,
+        245
+      ],
+      "exposed_inputs": [
+        "image",
+        "map_x",
+        "map_y"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "inspect.image_correlation",
+      "name": "Check restored fiducials",
+      "parameters": {
+        "method": "ecc",
+        "channels": "per_channel",
+        "aggregation": "minimum",
+        "include_alpha": false,
+        "reference_alignment": "pixel_grid",
+        "constant_policy": "fail",
+        "minimum_stddev": 1e-12,
+        "constant_tolerance": 0.0,
+        "check_threshold": true,
+        "minimum_similarity": 0.997,
+        "emit_residual": true,
+        "residual_preview_max": 3.0
+      },
+      "position": [
+        1200,
+        245
+      ],
+      "exposed_inputs": [
+        "image",
+        "reference",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "similarity",
+        "measurements",
+        "residual"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "pattern",
+      "output": "image",
+      "target": "prewarp",
+      "input": "pattern"
+    },
+    {
+      "source": "optics",
+      "output": "profile",
+      "target": "prewarp",
+      "input": "projector"
+    },
+    {
+      "source": "ideal",
+      "output": "camera",
+      "target": "prewarp",
+      "input": "pattern_camera"
+    },
+    {
+      "source": "optics",
+      "output": "profile",
+      "target": "forward",
+      "input": "calibration"
+    },
+    {
+      "source": "prewarp",
+      "output": "image",
+      "target": "recover",
+      "input": "image"
+    },
+    {
+      "source": "forward",
+      "output": "map_x",
+      "target": "recover",
+      "input": "map_x"
+    },
+    {
+      "source": "forward",
+      "output": "map_y",
+      "target": "recover",
+      "input": "map_y"
+    },
+    {
+      "source": "recover",
+      "output": "image",
+      "target": "compare",
+      "input": "image"
+    },
+    {
+      "source": "pattern",
+      "output": "image",
+      "target": "compare",
+      "input": "reference"
+    }
+  ]
+}

@@ -432,6 +432,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Measured fringe phase unwrapping](<opencv tools/phase_unwrap/README.md>) | Compare relative and referenced phase on two regions separated by shadows. |
 | [Metric silhouette pose tracking](<opencv tools/silhouette_tracking/README.md>) | Track a known part in video with edge overlays and verify its pose against ground truth. |
 | [RGB-D template pose](<opencv tools/linemod_pose/README.md>) | Train two calibrated views and estimate a part pose in a different RGB-D capture. |
+| [Prewarp a projector pattern](<opencv tools/projector_inverse_rectification/README.md>) | Map calibrated projector pixels into an ideal pattern and check recovery of six fiducials. |
 | [Camera/projector calibration and reconstruction](<opencv tools/camera_projector/README.md>) | Fit a two-device rig and reconstruct a separate depth step from projector correspondences. |
 | [Subpixel patch extraction](<opencv tools/subpixel_crop/README.md>) | Crop around a refined template center and map patch coordinates back to the scene. |
 | [Subpixel template locations](<opencv tools/subpixel_template/README.md>) | Compare integer and refined template matches against two known fractional placements. |

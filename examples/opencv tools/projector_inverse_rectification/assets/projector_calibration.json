@@ -1,0 +1,35 @@
+{
+  "model": "camera_model_v1",
+  "lens": "pinhole",
+  "frame": "projector",
+  "camera_matrix": [
+    [
+      306.0,
+      0.0,
+      158.2
+    ],
+    [
+      0.0,
+      318.0,
+      116.3
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "image_size": [
+    320,
+    240
+  ],
+  "distortion": [
+    -0.137,
+    0.031,
+    0.0014,
+    -0.0022,
+    0.0
+  ],
+  "units": "m",
+  "rms_pixels": 0.0
+}

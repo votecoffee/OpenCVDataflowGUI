@@ -3066,7 +3066,7 @@ P3	function	cv2.imwriteanimation	literal reference	-
 P3	function	cv2.imwritemulti	no static reference	-
 P3	function	cv2.imwriteWithMetadata	literal reference	-
 P3	function	cv2.initCameraMatrix2D	no static reference	-
-P3	function	cv2.initInverseRectificationMap	no static reference	-
+P3	function	cv2.initInverseRectificationMap	literal reference	-
 P3	function	cv2.initUndistortRectifyMap	literal reference	-
 P3	function	cv2.inRange	literal reference	-
 P3	function	cv2.insertChannel	literal reference	-

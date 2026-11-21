@@ -884,6 +884,7 @@ def builtin_registry():
     )
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
+    from .projector_rectification import InverseRectifyProjectorPattern
     from .polynomial_roots import SolvePolynomialRoots
     from .pose_crop import CropPose
     from .poses import POSE_BLOCKS
@@ -1079,6 +1080,7 @@ def builtin_registry():
         HandEyeCalibration,
         RobotWorldHandEye,
         BuildLensMaps,
+        InverseRectifyProjectorPattern,
         LensMapDisplacement,
         UndistortLensPoints,
         LoadLensMaps,

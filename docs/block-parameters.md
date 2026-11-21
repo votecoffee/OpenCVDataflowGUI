@@ -1539,6 +1539,27 @@ Inputs: `points` (data), `camera` (data), `transform` (data).
 
 No configurable algorithm parameters.
 
+## Prewarp projector pattern (`3d.projector_inverse_rectify`)
+
+3D vision / Structured light
+
+Inputs: `pattern` (image), `projector` (data), `pattern_camera` (data, optional).
+
+Input `pattern` — Ideal pattern image with its original encoding.
+
+Input `projector` — A named pinhole model or the output of Calibrate camera and projector.
+
+Input `pattern_camera` — Optional distortion-free pinhole intrinsics on the pattern grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `rotation_vector` | `[0.0, 0.0, 0.0]` | Raw projector rays to ideal pattern axes. Rodrigues vector in radians. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Sampling kernel. Validity requires its supported ideal source footprint. |
+| `border_value` | `0.0` | Constant fill for unsupported projector pixels, in the pattern encoding. |
+| `minimum_valid_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required fraction of the projector raster with valid samples. |
+| `maximum_roundtrip_error_px` | `0.5` | Value must be a finite number between 0 and 1000. Sampled reprojection error limit. Zero disables it. |
+| `maximum_pixels` | `8388608` | Value must be a whole number between 1 and 1.67772e+07. Independent pixel limit for the pattern and projector canvases. |
+
 ## Quantize metric depth to uint16 (`3d.quantize_depth`)
 
 3D vision / Depth

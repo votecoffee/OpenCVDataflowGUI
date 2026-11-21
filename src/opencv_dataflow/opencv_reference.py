@@ -177,6 +177,7 @@ BINDINGS = {
     "3d.validate_multicamera": "solvePnP solvePnPRefineLM projectPoints fisheye.projectPoints",
     "3d.camera_projector_calibrate": "calibrateCamera stereoCalibrateExtended",
     "3d.camera_projector_reconstruct": "undistortPoints triangulatePoints projectPoints",
+    "3d.projector_inverse_rectify": "initInverseRectificationMap remap projectPoints",
     "3d.reproject": "reprojectImageTo3D",
     "3d.smooth_depth": "ximgproc.jointBilateralFilter",
     "3d.separate_depth_plane": "depthTo3d findContours approxPolyDP",

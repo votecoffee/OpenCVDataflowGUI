@@ -154,6 +154,9 @@ metric translation on an aligned depth grid.
 [Phase-shift fringe replay](phase_shift/README.md) recovers absolute subpixel
 projector coordinates and marks low-signal and inconsistent captures.
 
+[Projector pattern prewarp](projector_inverse_rectification/README.md) prepares a
+calibrated raster and checks its forward/inverse mapping on a synthetic target.
+
 [Camera/projector reconstruction](camera_projector/README.md) fits separate
 pixel grids and verifies metric depth on a held-out stepped scene.
 

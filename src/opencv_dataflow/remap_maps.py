@@ -10,7 +10,14 @@ import cv2
 import numpy as np
 
 from .calibration import camera_parameters
-from .calibration_revisions import REVISION, applied_payload, check_binding, check_capture
+from .calibration_revisions import (
+    APPLIED,
+    CAPTURE,
+    REVISION,
+    applied_payload,
+    check_binding,
+    check_capture,
+)
 from .core import Block, Port, Result
 from .geometry3d_common import matrix as finite_matrix
 from .geometry3d_common import points as finite_points
@@ -212,6 +219,18 @@ def lens_remap_payload(block, source_size, output_size, info):
         payload["spatial"] = copy.deepcopy(coordinate["output_spatial"])
         payload.pop("pyramid", None)
         payload.pop(COORDINATE_MAP_TAG, None)
+        if "output_optics" in coordinate:
+            expected = {
+                "interpolation": block.parameters["interpolation"],
+                "border": block.parameters["border"],
+            }
+            if coordinate.get("sampling") != expected:
+                raise ValidationError(
+                    "Use the optical map's interpolation and constant border",
+                    "interpolation",
+                    "border",
+                )
+            payload = optical_remap_payload(payload, coordinate["output_optics"])
         return {"image": payload}
     if info["source_size"] != source_size:
         raise ValidationError("Source image dimensions do not match the lens map calibration")
@@ -224,6 +243,33 @@ def lens_remap_payload(block, source_size, output_size, info):
     payload.pop("pyramid", None)
     payload.pop(_TAG, None)
     return {"image": applied_payload(payload, binding)}
+
+
+def optical_remap_payload(payload, optics):
+    """Switch optical axes on maps that explicitly declare a new physical grid."""
+    if (
+        not isinstance(optics, dict)
+        or not isinstance(optics.get("frame"), str)
+        or not optics["frame"].strip()
+    ):
+        raise ValidationError("Coordinate map output optics require a named frame")
+    binding = check_binding(optics[REVISION]) if REVISION in optics else None
+    if binding is not None and binding["camera_frame"] != optics["frame"]:
+        raise ValidationError("Coordinate map revision must match its output optical frame")
+    for key in (
+        APPLIED,
+        CAPTURE,
+        _TAG,
+        _CORRECTION_ID,
+        "stereo_calibration_grid",
+        "ros2",
+        "ros2_static_binding",
+        "ros2_rgbd",
+        "ros2_rectification",
+    ):
+        payload.pop(key, None)
+    payload["optical_frame"] = optics["frame"]
+    return applied_payload(payload, binding)
 
 
 class PackRemapMap(Block):

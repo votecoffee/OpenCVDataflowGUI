@@ -27,6 +27,7 @@ Open these projects with **File → Open…**.
 | [structured light](<../examples/opencv tools/structured_light/structured_light.json>) | Generate Gray-code patterns and decode an identity camera/projector mapping. |
 | [Phase-shift fringe replay](<../examples/opencv tools/phase_shift/README.md>) | Decode absolute subpixel projector X or Y from a six-exposure group with low-confidence gaps. |
 | [Camera/projector reconstruction](<../examples/opencv tools/camera_projector/README.md>) | Fit a rig at different resolutions and reconstruct a held-out depth step. |
+| [Projector pattern prewarp](<../examples/opencv tools/projector_inverse_rectification/README.md>) | Prewarp six fiducials onto a projector raster and check their simulated target placement. |
 | [Robot-world and hand–eye](<../examples/opencv tools/robot_world/README.md>) | Jointly fit two poses and predict held-out board images with a fixed or robot-mounted camera. |
 | [TSDF fusion](<../examples/opencv tools/tsdf_fusion/tsdf_fusion.json>) | Integrate a posed synthetic depth plane and inspect the reconstructed surface. |
 | [Colored TSDF fusion](<../examples/opencv tools/colored_tsdf_fusion/README.md>) | Fuse three registered RGB-D views of a colored surface with confidence gating. |
@@ -971,6 +972,16 @@ reprojection error. Triangulation checks positive depth at both devices,
 ray angle, and error in each device's own pixel coordinates. Use the
 single-file calibration blocks to save and reuse the resulting rig.
 [Calibration and stepped-depth example](<../examples/opencv tools/camera_projector/README.md>)
+
+**Prewarp projector pattern** converts an ideal image to a calibrated
+pinhole projector's physical raster with OpenCV's inverse rectification
+map. The raw projector pixel indexes the donor coordinate in the ideal
+pattern. The optional pattern camera supplies distortion-free intrinsics.
+The Rodrigues rotation maps raw projector axes into the ideal axes.
+The block emits supported pixels, reusable coordinate maps and a sampled
+forward/inverse error report. Replay the maps on the same input grid with
+the configured interpolation and constant border.
+[Projector pattern example](<../examples/opencv tools/projector_inverse_rectification/README.md>)
 
 ## Planar fiducial targets
 

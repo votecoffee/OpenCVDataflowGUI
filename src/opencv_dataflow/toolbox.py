@@ -185,7 +185,7 @@ BLOCK_MODULES = {
     "rgbd": "3d.register_depth",
     "structured_light": (
         "3d.graycode 3d.graycode_decode 3d.phase_shift_patterns 3d.phase_shift_decode "
-        "3d.camera_projector_calibrate 3d.camera_projector_reconstruct"
+        "3d.camera_projector_calibrate 3d.camera_projector_reconstruct 3d.projector_inverse_rectify"
     ),
     "phase_unwrapping": "3d.unwrap_phase",
     "rapid": "3d.track_silhouette",
