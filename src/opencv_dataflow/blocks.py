@@ -784,7 +784,7 @@ def builtin_registry():
     from .image_mixtures import IMAGE_EM_BLOCKS
     from .image_noise import AddImageNoise, RandomImage
     from .image_norm import MeasureImageNorm
-    from .image_quality import CompareImageQuality, MeasureBRISQUE
+    from .image_quality import CompareGradientQuality, CompareImageQuality, MeasureBRISQUE
     from .image_queue import ImageQueue
     from .image_statistics import ImageSummaryStatistics
     from .image_stitching import StitchImagePair
@@ -1252,6 +1252,7 @@ def builtin_registry():
         CompensateReferenceShadows,
         BuildFlatFieldReference,
         AdaptiveBackgroundCorrection,
+        CompareGradientQuality,
         CompareImageQuality,
         CompareMaskBoundary,
         CompareAlignedImages,

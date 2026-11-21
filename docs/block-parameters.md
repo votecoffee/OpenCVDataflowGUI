@@ -9384,6 +9384,28 @@ Input `reference_region` — Optional reference-space region; both selections mu
 | `maximum_phase_degrees` | `180.0` | Value must be a finite number between 0 and 180. Inclusive phase limit when enabled; shifts affect phase. |
 | `maximum_workspace_mib` | `256` | Value must be a whole number between 1 and 256. Work-buffer estimate; snapshots/previews use additional memory. |
 
+## Compare gradient quality (GMSD) (`inspect.gmsd_quality`)
+
+Inspection / Measurements
+
+Inputs: `reference` (image), `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `reference` — Aligned 8-bit reference image.
+
+Input `image` — Aligned 8-bit inspection image. Its grid and ticket own the outputs.
+
+Input `mask` — Measurement cells require all four pixels of their source tile to be selected.
+
+Input `region` — Rectangle, circle or polygon on the inspection image grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `channel_mode` | `"grayscale"` | `grayscale`, `per_channel` Compare luma or compare each OpenCV color channel, including alpha. |
+| `channel_reduction` | `"maximum"` | `maximum`, `mean` Use the highest deviation or the mean of the channel deviations. |
+| `image_alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Match pixel indices or require agreement between known spatial frames. |
+| `check_threshold` | `false` |  |
+| `maximum_deviation` | `0.1` | Value must be a finite number between 0 and 0.5. Pass at or below this GMSD value when threshold checking is enabled. |
+
 ## GrabCut foreground (`inspect.grabcut`)
 
 Inspection / Segmentation

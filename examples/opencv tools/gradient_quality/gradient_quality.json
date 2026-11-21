@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "comment",
+      "type": "layout.comment",
+      "name": "Gradient quality",
+      "description": "Compare a reference to itself, a mild Gaussian blur, and seeded Gaussian noise. Inspect GMSD and the fixed-scale gradient similarity loss. The original synthetic chart is covered by this repository's MIT license.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Synthetic color chart",
+      "parameters": {
+        "path": "reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        150
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Blur the reference",
+      "parameters": {
+        "kernel": 5,
+        "sigma": 1.1,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        260,
+        150
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noise",
+      "type": "cv.add_image_noise",
+      "name": "Add seeded noise",
+      "parameters": {
+        "distribution": "gaussian",
+        "seed": 6771,
+        "mean": 0.0,
+        "standard_deviation": 46,
+        "minimum": -8.0,
+        "maximum": 8.0,
+        "preserve_alpha": true
+      },
+      "position": [
+        260,
+        360
+      ],
+      "exposed_inputs": [
+        "image",
+        "seed",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "seed"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "identity_quality",
+      "type": "inspect.gmsd_quality",
+      "name": "Identical pair",
+      "description": "Compare aligned images for uneven changes in gradient magnitude.",
+      "parameters": {
+        "channel_mode": "per_channel",
+        "channel_reduction": "maximum",
+        "image_alignment": "same_frame",
+        "check_threshold": false,
+        "maximum_deviation": 0.1
+      },
+      "position": [
+        550,
+        -40
+      ],
+      "exposed_inputs": [
+        "reference",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blur_quality",
+      "type": "inspect.gmsd_quality",
+      "name": "Blurred pair",
+      "description": "Compare aligned images for uneven changes in gradient magnitude.",
+      "parameters": {
+        "channel_mode": "per_channel",
+        "channel_reduction": "maximum",
+        "image_alignment": "same_frame",
+        "check_threshold": false,
+        "maximum_deviation": 0.1
+      },
+      "position": [
+        550,
+        150
+      ],
+      "exposed_inputs": [
+        "reference",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noise_quality",
+      "type": "inspect.gmsd_quality",
+      "name": "Noisy pair",
+      "description": "Compare aligned images for uneven changes in gradient magnitude.",
+      "parameters": {
+        "channel_mode": "per_channel",
+        "channel_reduction": "maximum",
+        "image_alignment": "same_frame",
+        "check_threshold": false,
+        "maximum_deviation": 0.1
+      },
+      "position": [
+        550,
+        360
+      ],
+      "exposed_inputs": [
+        "reference",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "blur",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "noise",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "identity_quality",
+      "input": "reference"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "identity_quality",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "blur_quality",
+      "input": "reference"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "blur_quality",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "noise_quality",
+      "input": "reference"
+    },
+    {
+      "source": "noise",
+      "output": "image",
+      "target": "noise_quality",
+      "input": "image"
+    }
+  ]
+}

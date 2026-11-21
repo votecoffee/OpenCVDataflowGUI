@@ -62,7 +62,7 @@ P1	method	cv2.quality.QualityGMSD.clear	method name only	-
 P1	method	cv2.quality.QualityGMSD.compute	method name only	-
 P1	method	cv2.quality.QualityGMSD.create	method name only	-
 P1	method	cv2.quality.QualityGMSD.empty	method name only	-
-P1	function	cv2.quality.QualityGMSD_compute	no static reference	-
+P1	function	cv2.quality.QualityGMSD_compute	literal reference	-
 P1	function	cv2.quality.QualityGMSD_create	no static reference	-
 P1	class	cv2.quality.QualityMSE	no static reference	-
 P1	method	cv2.quality.QualityMSE.clear	method name only	-

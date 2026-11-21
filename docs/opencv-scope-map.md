@@ -560,7 +560,7 @@ binding presence. For example, the wheel exposes DynaFu but rejects construction
 | `cv2.optflow.GPCDetails`, `cv2.optflow.GPCPatchDescriptor`, `cv2.optflow.GPCPatchSample`, `cv2.optflow.GPCTrainingSamples`, `cv2.optflow.GPCTree`, `cv::read`, `cv::write` | Defer GPC training and persistence helpers until a usable end-to-end matcher and pinned fixture are available. | — |
 | `cv2.xphoto.bm3dDenoising`, `cv2.xphoto.dctDenoising`, `cv2.xphoto.inpaint` | Separate restoration methods with damage, noise and mask fixtures. | S4-16–S4-17, S4-62 |
 | `cv2.xphoto.oilPainting`, `cv2.xphoto.TonemapDurand`, `cv2.xphoto.createTonemapDurand`, `cv2.xphoto.GrayworldWB`, `cv2.xphoto.LearningBasedWB`, `cv2.xphoto.SimpleWB`, `cv2.xphoto.WhiteBalancer`, `cv2.xphoto.applyChannelGains`, `cv2.xphoto.createGrayworldWB`, `cv2.xphoto.createLearningBasedWB`, `cv2.xphoto.createSimpleWB` | Group classes, factories and channel gains with the relevant photo workflow. | S4-12, S4-63–S4-66 |
-| `cv2.quality.QualityBase`, `cv2.quality.QualityMSE`, `cv2.quality.QualityPSNR`, `cv2.quality.QualitySSIM`, `cv2.quality.QualityGMSD`, `cv2.quality.QualityBRISQUE` | Share a quality contract with declared support, maps where available, and model assets for no-reference scoring. | S1-55, S4-07–S4-08, S4-32 |
+| `cv2.quality.QualityBase`, `cv2.quality.QualityMSE`, `cv2.quality.QualityPSNR`, `cv2.quality.QualitySSIM`, `cv2.quality.QualityGMSD`, `cv2.quality.QualityBRISQUE` | Compare reference images with SSIM/MSE/PSNR or per-channel GMSD and retain native maps where available. BRISQUE uses model assets for no-reference scoring. | S1-55, S4-07–S4-08, S4-32 |
 
 #### Contrib depth and surface reconstruction
 
