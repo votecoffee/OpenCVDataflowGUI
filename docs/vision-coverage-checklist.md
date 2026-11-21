@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 116 | 5 | 10 | 131 | 88.5% |
+| 3. 3D imagery and point clouds | 117 | 5 | 9 | 131 | 89.3% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 371 | 9 | 90 | 470 | 78.9% |
+| **Overall** | 372 | 9 | 89 | 470 | 79.1% |
 
 <!-- coverage-summary:end -->
 
@@ -560,7 +560,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S3-116 | Inverse rectification for projector patterns | initInverseRectificationMap, remap and projectPoints | Complete | Prewarp an ideal pattern onto the calibrated raw projector raster. The [six-fiducial example](<../examples/opencv tools/projector_inverse_rectification/README.md>) verifies native forward/inverse maps and independently checks placement on an oblique plane. The block reports valid sampling support and gates high sampled reprojection error. |
-| S3-117 | Inspect a camera projection matrix | decomposeProjectionMatrix and calibrationMatrixValues | Planned | Recover intrinsics, camera center and orientation from a known camera projection matrix. Report field of view, principal point and focal length with explicit pixel or sensor units, and verify reprojection and degenerate input rejection. |
+| S3-117 | Inspect a camera projection matrix | decomposeProjectionMatrix and calibrationMatrixValues | Complete | Recover intrinsics, camera center, both pose directions and FOV from an arbitrarily scaled 3×4 pinhole projection. Report optional active-sensor measurements and check supplied correspondences. The [known-camera example](<../examples/opencv tools/projection_matrix/README.md>) verifies reprojection and the tests reject singular matrices. |
 | S3-118 | Recover planar camera motion from image pairs | decomposeHomographyMat and filterHomographyDecompByVisibleRefpoints | Planned | Use a calibrated image pair and planar matches to return valid motion and plane hypotheses. Reject negative-depth candidates and preserve translation scale ambiguity unless a metric anchor is provided. |
 | S3-119 | Create and qualify custom ArUco dictionaries | aruco.extendDictionary and Dictionary | Planned | Persist a seeded dictionary with declared bit size, ID ordering and Hamming separation. Verify save/load and render/detect round trips and the configured bit error tolerance. |
 | S3-120 | Recover partially visible ArUco boards | aruco.ArucoDetector.refineDetectedMarkers and Board.matchImagePoints | Planned | Recover valid rejected candidates on an occluded GridBoard, preserve per-ID correspondences and compare board pose against known geometry without accepting markers from another board. |

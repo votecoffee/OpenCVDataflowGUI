@@ -57,6 +57,15 @@ matching intrinsics. These wrappers use positive focal lengths and zero skew.
 Pinhole distortion takes 0/4/5/8/12/14 coefficients; fisheye and omnidirectional
 models take four, with `xi` for omnidirectional projection.
 
+**Inspect camera projection matrix** decomposes a 3×4 ideal perspective
+matrix after normalizing its arbitrary overall scale. It reports the world
+camera center, both pose directions, pixel focal lengths and principal
+point, and field of view. Active sensor dimensions enable millimeter
+measurements. Nonzero skew is preserved in the report. A reusable pinhole
+camera record is available for zero-skew geometry. Optional paired world
+and ideal image points check reprojection and positive depth.
+[Known camera example](<../examples/opencv tools/projection_matrix/README.md>)
+
 **Calibrate fisheye camera** fits intrinsics on the source grid with OpenCV 5.
 Use checkerboard or circle-grid image paths, or connect a batch of identified
 ChArUco observations. Each accepted camera is a `camera_model_v1` record with

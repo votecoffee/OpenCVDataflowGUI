@@ -1104,6 +1104,34 @@ Input `initial_pose` — Optional rigid transform from source frame to target fr
 | `minimum_constraint_ratio` | `0.001` | Value must be a finite number between 1e-06 and 1. Minimum smallest-to-largest singular value ratio of the normalized pose Jacobian. |
 | `max_points_per_cloud` | `250000` | Value must be a whole number between 6 and 1e+06. Maximum points per input when quality checks are enabled. |
 
+## Inspect camera projection matrix (`3d.inspect_projection_matrix`)
+
+3D vision / Camera models
+
+Inputs: `projection` (data, optional), `object_points` (data, optional), `image_points` (data, optional), `image` (image, optional).
+
+Input `projection` — A finite 3×4 world-to-image pinhole projection, up to nonzero scale.
+
+Input `object_points` — Optional ordered world XYZ check points in the declared units.
+
+Input `image_points` — Corresponding ideal image pixels on the declared grid.
+
+Input `image` — Optional ideal image on which to draw the principal point and reprojections.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `projection` | `[]` | Inline 3×4 matrix. A connected projection takes precedence. |
+| `width` | `640` | Value must be a whole number between 1 and 16384. Width of the ideal image grid in pixels. |
+| `height` | `480` | Value must be a whole number between 1 and 16384. Height of the ideal image grid in pixels. |
+| `world_frame` | `"world"` | Named coordinate frame of the matrix's 3D inputs. |
+| `camera_frame` | `"camera"` | Name for the recovered optical coordinate frame. |
+| `units` | `"unitless"` | `unitless`, `m`, `mm` Length units of the input world coordinates. A matrix alone cannot assign them. |
+| `sensor_width_mm` | `0.0` | Value must be a finite number between 0 and 1e+06. Active sensor width in mm. Specify both sensor dimensions or zero. |
+| `sensor_height_mm` | `0.0` | Value must be a finite number between 0 and 1e+06. Active sensor height in mm. Specify both sensor dimensions or zero. |
+| `minimum_reciprocal_condition` | `1e-09` | Value must be a finite number between 1e-14 and 1. Minimum singular value ratio for the left block. |
+| `maximum_reprojection_rms_px` | `1.0` | Value must be a finite number between 0 and 1e+06. RMS limit on independent correspondences, in pixels. |
+| `maximum_drawn_points` | `128` | Value must be a whole number between 0 and 512. Limit matched-point drawings when a reference image is connected. |
+
 ## Pack calibrated landmark view (`3d.landmark_view`)
 
 3D vision / Reconstruction

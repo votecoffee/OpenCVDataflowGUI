@@ -884,6 +884,7 @@ def builtin_registry():
     )
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
+    from .projection_matrix import InspectProjectionMatrix
     from .projector_rectification import InverseRectifyProjectorPattern
     from .polynomial_roots import SolvePolynomialRoots
     from .pose_crop import CropPose
@@ -1368,6 +1369,7 @@ def builtin_registry():
         *DISK_BLOCKS,
         *ALIKED_BLOCKS,
         *GEOMETRY3D_BLOCKS,
+        InspectProjectionMatrix,
         PlanarPoseHypotheses,
         MakeLandmarkView,
         ReconstructSparseViews,

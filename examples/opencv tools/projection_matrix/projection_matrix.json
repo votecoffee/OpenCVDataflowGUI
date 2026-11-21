@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Recover a known projection",
+      "description": "Original synthetic target by OpenCVDataflowGUI contributors (MIT). Recover camera geometry from a projection stored at a negative scale. Known intrinsics and pose generate eight reference image points. Recovered intrinsics and pose drive the second projection.",
+      "parameters": {},
+      "position": [
+        0,
+        -275
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "points",
+      "type": "3d.points",
+      "name": "Known world points",
+      "parameters": {
+        "points": [
+          [
+            2.594045521308474,
+            -1.6831747121267473,
+            3.6009977089349525
+          ],
+          [
+            3.246525905498058,
+            -1.892186913421417,
+            3.117382936664947
+          ],
+          [
+            3.805149848868988,
+            -1.5270052849138416,
+            3.7601750244299317
+          ],
+          [
+            2.830842311799996,
+            -1.1324769048075407,
+            3.694052558495479
+          ],
+          [
+            3.4713136209068307,
+            -1.1412963566102237,
+            3.092206465643762
+          ],
+          [
+            3.3195897565506156,
+            -0.92461720972327,
+            4.057260876694848
+          ],
+          [
+            3.0375103030193538,
+            -1.5158365901783937,
+            2.831948334496016
+          ],
+          [
+            4.1343889035694446,
+            -0.9530204608826787,
+            4.137856195051218
+          ]
+        ],
+        "units": "m",
+        "frame": "fixture"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "points",
+        "cloud"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Known intrinsics",
+      "parameters": {
+        "fx": 1120.0,
+        "fy": 1040.0,
+        "cx": 371.2,
+        "cy": 270.1,
+        "width": 800,
+        "height": 600,
+        "distortion": [],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "m",
+        "frame": "inspection_camera"
+      },
+      "position": [
+        0,
+        200
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pose",
+      "type": "3d.pose",
+      "name": "Known world-to-camera pose",
+      "parameters": {
+        "rvec": [
+          0.10282770326780631,
+          -0.27415609032192384,
+          0.13614641180314505
+        ],
+        "translation": [
+          -2.3071062990554236,
+          1.3885751533046742,
+          -1.325903302840628
+        ],
+        "source_frame": "fixture",
+        "target_frame": "inspection_camera",
+        "units": "m"
+      },
+      "position": [
+        0,
+        402
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "3d.project",
+      "name": "Reference point projection",
+      "parameters": {},
+      "position": [
+        365,
+        195
+      ],
+      "exposed_inputs": [
+        "points",
+        "camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "points",
+        "visible",
+        "projection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target",
+      "type": "input.file",
+      "name": "Synthetic observed target",
+      "parameters": {
+        "path": "assets/target.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        365,
+        475
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "inspect",
+      "type": "3d.inspect_projection_matrix",
+      "name": "Recover and verify",
+      "description": "Recover intrinsics, camera pose and scale-aware diagnostics from a 3\u00d74 matrix.",
+      "parameters": {
+        "projection": [
+          [
+            -4.3310979606556056e-57,
+            4.9896657566920786e-58,
+            -2.27368083005928e-58,
+            1.138169713553911e-56
+          ],
+          [
+            -7.3724632842274e-58,
+            -3.874975433191278e-57,
+            -4.968678298011085e-58,
+            -4.018169206156548e-57
+          ],
+          [
+            -1.022515899687221e-60,
+            -3.0543102071407576e-61,
+            -3.5427634872331504e-60,
+            4.905842220510324e-60
+          ]
+        ],
+        "width": 800,
+        "height": 600,
+        "world_frame": "fixture",
+        "camera_frame": "inspection_camera",
+        "units": "m",
+        "sensor_width_mm": 12.8,
+        "sensor_height_mm": 9.6,
+        "minimum_reciprocal_condition": 1e-09,
+        "maximum_reprojection_rms_px": 0.01,
+        "maximum_drawn_points": 128
+      },
+      "position": [
+        755,
+        200
+      ],
+      "exposed_inputs": [
+        "projection",
+        "object_points",
+        "image_points",
+        "image"
+      ],
+      "exposed_outputs": [
+        "camera",
+        "world_to_camera",
+        "camera_to_world",
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reproject",
+      "type": "3d.project",
+      "name": "Project with recovered geometry",
+      "parameters": {},
+      "position": [
+        1150,
+        200
+      ],
+      "exposed_inputs": [
+        "points",
+        "camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "points",
+        "visible",
+        "projection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "points",
+      "output": "points",
+      "target": "reference",
+      "input": "points"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "reference",
+      "input": "camera"
+    },
+    {
+      "source": "pose",
+      "output": "transform",
+      "target": "reference",
+      "input": "transform"
+    },
+    {
+      "source": "points",
+      "output": "points",
+      "target": "inspect",
+      "input": "object_points"
+    },
+    {
+      "source": "reference",
+      "output": "points",
+      "target": "inspect",
+      "input": "image_points"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "inspect",
+      "input": "image"
+    },
+    {
+      "source": "points",
+      "output": "points",
+      "target": "reproject",
+      "input": "points"
+    },
+    {
+      "source": "inspect",
+      "output": "camera",
+      "target": "reproject",
+      "input": "camera"
+    },
+    {
+      "source": "inspect",
+      "output": "world_to_camera",
+      "target": "reproject",
+      "input": "transform"
+    }
+  ]
+}

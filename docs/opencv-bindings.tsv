@@ -1992,7 +1992,7 @@ P3	method	cv2.CalibrateRobertson.getRadiance	no static reference	-
 P3	method	cv2.CalibrateRobertson.getThreshold	no static reference	-
 P3	method	cv2.CalibrateRobertson.setMaxIter	no static reference	-
 P3	method	cv2.CalibrateRobertson.setThreshold	no static reference	-
-P3	function	cv2.calibrationMatrixValues	no static reference	-
+P3	function	cv2.calibrationMatrixValues	literal reference	-
 P3	function	cv2.CamShift	literal reference	-
 P3	function	cv2.Canny	literal reference	-
 P3	function	cv2.cartToPolar	literal reference	-
@@ -2149,7 +2149,7 @@ P3	function	cv2.cvtColorTwoPlane	no static reference	-
 P3	function	cv2.decolor	literal reference	-
 P3	function	cv2.decomposeEssentialMat	no static reference	-
 P3	function	cv2.decomposeHomographyMat	no static reference	-
-P3	function	cv2.decomposeProjectionMatrix	no static reference	-
+P3	function	cv2.decomposeProjectionMatrix	literal reference	-
 P3	function	cv2.demosaicing	literal reference	-
 P3	function	cv2.denoise_TVL1	literal reference	-
 P3	class	cv2.DenseOpticalFlow	no static reference	-

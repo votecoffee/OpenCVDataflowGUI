@@ -178,6 +178,7 @@ BINDINGS = {
     "3d.camera_projector_calibrate": "calibrateCamera stereoCalibrateExtended",
     "3d.camera_projector_reconstruct": "undistortPoints triangulatePoints projectPoints",
     "3d.projector_inverse_rectify": "initInverseRectificationMap remap projectPoints",
+    "3d.inspect_projection_matrix": "decomposeProjectionMatrix calibrationMatrixValues RQDecomp3x3",
     "3d.reproject": "reprojectImageTo3D",
     "3d.smooth_depth": "ximgproc.jointBilateralFilter",
     "3d.separate_depth_plane": "depthTo3d findContours approxPolyDP",
