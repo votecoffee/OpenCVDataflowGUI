@@ -622,6 +622,7 @@ def builtin_registry():
     from .annotation import AnnotationLayer
     from .annoy_blocks import ANNOY_BLOCKS
     from .aruco_dictionary import CreateArucoDictionary, LoadArucoDictionary, SaveArucoDictionary
+    from .aruco_board_recovery import RecoverArucoBoard
     from .aruco_markers import DetectArucoMarkers
     from .background_reference import CaptureBackgroundReference, SaveBackgroundReference
     from .basic_processing import BASIC_PROCESSING_BLOCKS
@@ -1376,6 +1377,7 @@ def builtin_registry():
         *GEOMETRY3D_BLOCKS,
         InspectProjectionMatrix,
         PlanarPoseHypotheses,
+        RecoverArucoBoard,
         RecoverPlanarCameraMotion,
         MakeLandmarkView,
         ReconstructSparseViews,

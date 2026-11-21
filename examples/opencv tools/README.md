@@ -14,6 +14,9 @@ For a first introduction to running and editing graphs, use the
 [Demos guided tour](../demos/README.md). [Custom tools](<../custom tools/README.md>)
 contains project-defined inspection algorithms and other-library integrations.
 
+[Partial ArUco board recovery](aruco_board_recovery/README.md) recovers a
+rejected marker and compares the recovered board pose with known geometry.
+
 [Custom ArUco dictionaries](custom_aruco_dictionary/README.md) generates
 and reloads a seeded dictionary and verifies correction of a damaged marker.
 

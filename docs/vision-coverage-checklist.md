@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 119 | 5 | 7 | 131 | 90.8% |
+| 3. 3D imagery and point clouds | 120 | 5 | 6 | 131 | 91.6% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 374 | 9 | 87 | 470 | 79.6% |
+| **Overall** | 375 | 9 | 86 | 470 | 79.8% |
 
 <!-- coverage-summary:end -->
 
@@ -563,7 +563,7 @@ fixture or result needed to close the item.
 | S3-117 | Inspect a camera projection matrix | decomposeProjectionMatrix and calibrationMatrixValues | Complete | Recover intrinsics, camera center, both pose directions and FOV from an arbitrarily scaled 3×4 pinhole projection. Report optional active-sensor measurements and check supplied correspondences. The [known-camera example](<../examples/opencv tools/projection_matrix/README.md>) verifies reprojection and the tests reject singular matrices. |
 | S3-118 | Recover planar camera motion from image pairs | findHomography, decomposeHomographyMat and filterHomographyDecompByVisibleRefpoints | Complete | Fit a calibrated homography and reject nonpositive depth in both views. Preserve multiple motions and their translation-to-plane-distance ratios. The [two-view example](<../examples/opencv tools/planar_camera_motion/README.md>) resolves scale and ambiguity with a measured plane. |
 | S3-119 | Create and qualify custom ArUco dictionaries | aruco.extendDictionary and Dictionary | Complete | Generate or extend a seed-based dictionary, qualify Hamming separation across IDs and rotations, and persist the exact codewords and correction budget. The [round-trip example](<../examples/opencv tools/custom_aruco_dictionary/README.md>) verifies ordered rendering, detection and the bit-error boundary. |
-| S3-120 | Recover partially visible ArUco boards | aruco.ArucoDetector.refineDetectedMarkers and Board.matchImagePoints | Planned | Recover valid rejected candidates on an occluded GridBoard, preserve per-ID correspondences and compare board pose against known geometry without accepting markers from another board. |
+| S3-120 | Recover partially visible ArUco boards | aruco.ArucoDetector.refineDetectedMarkers and Board.matchImagePoints | Complete | 3d.recover_aruco_board fits decoded board IDs, checks rejected candidates against the seed pose and returns ordered per-ID correspondences. The [partially visible board example](<../examples/opencv tools/aruco_board_recovery/README.md>) recovers a damaged marker and excludes a foreign ID covering a missing one. |
 
 ### External disparity and deforming surfaces
 

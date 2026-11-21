@@ -13,6 +13,7 @@ from .fiducial_detection import (
     MARKER_OPTIONS,
     MARKER_RANGES,
     detector_parameters,
+    projective_center,
 )
 from .graphics_layers import GraphicDrawing, draw_object, graphic_object
 from .parameter_validation import NumericRange, ValidationError
@@ -22,14 +23,6 @@ from .result_graphics import ACCEPTED, REJECTED
 from .selection import SELECTION_INPUTS, contains, selection_mask
 
 _POINT_CORNERS = {"corner_0": 0, "corner_1": 1, "corner_2": 2, "corner_3": 3}
-
-
-def _projective_center(corners):
-    a, b, c, d = np.column_stack((corners, np.ones(4)))
-    center = np.cross(np.cross(a, c), np.cross(b, d))
-    if abs(center[2]) < 1e-9:
-        raise ValidationError("Detected marker corners do not define a finite center")
-    return center[:2] / center[2]
 
 
 class DetectArucoMarkers(Block):
@@ -116,7 +109,7 @@ class DetectArucoMarkers(Block):
         if ids is not None:
             for number, corner in zip(ids.ravel(), corners, strict=True):
                 xy = corner.reshape(4, 2).astype(np.float64)
-                center = _projective_center(xy)
+                center = projective_center(xy)
                 if contains(mask, center):
                     markers.append(
                         {"id": int(number), "corners": xy.tolist(), "center": center.tolist()}

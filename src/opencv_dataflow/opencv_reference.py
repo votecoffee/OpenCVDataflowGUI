@@ -128,6 +128,9 @@ BINDINGS = {
     "3d.refine_epipolar": "sampsonDistance correctMatches",
     "3d.rectify_uncalibrated_stereo": "stereoRectifyUncalibrated warpPerspective",
     "3d.fundamental": "findFundamentalMat",
+    "3d.recover_aruco_board": (
+        "aruco.ArucoDetector.refineDetectedMarkers aruco.Board.matchImagePoints solvePnP"
+    ),
     "3d.planar_pose_hypotheses": "solvePnPGeneric projectPoints",
     "3d.planar_camera_motion": "findHomography decomposeHomographyMat filterHomographyDecompByVisibleRefpoints",
     "3d.pnp": "solvePnP solvePnPRansac solvePnPRefineLM solvePnPRefineVVS",

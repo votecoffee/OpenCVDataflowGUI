@@ -116,7 +116,7 @@ IMPLEMENTATION_MODULES = {
         "capture_settings network_video paced_video video_buffer video_files "
         "video_time video_timing"
     ),
-    "objdetect": "aruco_dictionary aruco_markers charuco code_readers fiducial_targets qr_encoding qr_append",
+    "objdetect": "aruco_board_recovery aruco_dictionary aruco_markers charuco code_readers fiducial_targets qr_encoding qr_append",
     "xobjdetect": "hog hog_detection cascade_detection",
     "dnn": "batch_inference detection_decode detection_fusion dnn_blocks dnn_profiling soft_nms "
     "tensor_comparison multiscale_super_resolution "
@@ -322,6 +322,7 @@ _NATIVE_NAMES = {
     "calibration.refine_target": ("calibrateCameraRO", "calibrateCameraROExtended", "release object"),
     "inspect.homography": ("findHomography", "calib3d"),
     "3d.pnp": ("solvePnP", "calib3d"),
+    "3d.recover_aruco_board": ("ArUco board", "GridBoard", "refineDetectedMarkers", "matchImagePoints"),
     "3d.planar_pose_hypotheses": ("solvePnPGeneric", "IPPE", "IPPE square"),
     "ml.dnn": ("dnn.readNetFromONNX", "readNetFromONNX"),
 }

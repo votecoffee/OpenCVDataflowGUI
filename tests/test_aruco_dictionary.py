@@ -12,8 +12,8 @@ from opencv_dataflow.aruco_dictionary import compile_dictionary, read_dictionary
 from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.calibration_revisions import digest
 from opencv_dataflow.charuco import observation_board
-from opencv_dataflow.coded_rig_observations import _layout
 from opencv_dataflow.core import Graph
+from opencv_dataflow.fiducial_detection import planar_board_geometry
 from opencv_dataflow.geometry3d_common import camera_record
 from opencv_dataflow.parameter_validation import ValidationError
 from opencv_dataflow.payloads import NO_VALUE
@@ -143,7 +143,7 @@ def test_saved_graph_renders_loads_corrects_and_preserves_id_order(fixture, prof
         spec = target.outputs["target"]
         assert spec["marker_ids"] == fixture["ORDER"]
         assert spec["dictionary_record"] == loaded.outputs["dictionary"]
-        dictionary, units, ids, _ = _layout(spec)
+        dictionary, units, ids, _ = planar_board_geometry(spec)
         assert dictionary.markerSize == 6 and units == "mm" and ids == fixture["ORDER"]
         by_id = {row["id"]: row["center"] for row in grid.outputs["markers"]}
         assert grid.outputs["points"] == [by_id[row] for row in fixture["ORDER"]]

@@ -1701,6 +1701,41 @@ Input `views` — Three to sixteen packed landmark views as a list or flow group
 | `robust_scale_px` | `1.0` | Value must be a finite number between 0.01 and 100. Soft-L1 scale in pixels for the optional reprojection fit. |
 | `maximum_evaluations` | `100` | Value must be a whole number between 1 and 250. Maximum least-squares evaluations for the optional refinement. |
 
+## Recover partially visible ArUco board (`3d.recover_aruco_board`)
+
+3D vision / Fiducials
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `target` (data), `camera` (data).
+
+Input `target` — Planar fiducial_target_v1 geometry and dictionary.
+
+Input `camera` — Matching calibrated pinhole image grid. Use the board's metric units.
+
+Input `mask` — Limit eligible detected and rejected quadrilaterals by their center.
+
+Input `region` — Limit eligible detected and rejected quadrilaterals by their center.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `corner_refinement` | `"subpixel"` | `none`, `subpixel`, `contour`, `apriltag` |
+| `adaptive_min` | `3` | Value must be a whole number between 3 and 255. |
+| `adaptive_max` | `23` | Value must be a whole number between 3 and 1000. |
+| `adaptive_step` | `10` | Value must be a whole number between 1 and 100. |
+| `adaptive_constant` | `7.0` | Value must be a finite number. |
+| `min_perimeter_rate` | `0.03` | Value must be a finite number at least 0.0001. |
+| `max_perimeter_rate` | `4.0` | Value must be a finite number at least 0.0001. |
+| `min_border_distance` | `3` | Value must be a whole number between 0 and 1000. |
+| `error_correction_rate` | `0.6` | Value must be a finite number between 0 and 1. |
+| `source_frame` | `"board"` | Name for the coordinate frame of the board layout. |
+| `minimum_seed_markers` | `2` | Value must be a whole number between 2 and 1024. Number of unique board IDs that must decode directly. |
+| `minimum_markers` | `2` | Value must be a whole number between 2 and 1024. Total number of matched board IDs needed to output a pose. |
+| `recover_rejected` | `true` | Use the seed pose to look for visible markers that failed decoding. |
+| `recovery_search_px` | `10.0` | Value must be a finite number between 0.01 and 1000. OpenCV search radius for associating rejected corners. |
+| `recovery_error_correction_rate` | `1.0` | Value must be a finite number between 0 and 1. Fraction of the dictionary bit correction budget. |
+| `check_all_orders` | `true` | Check all four rotations of each rejected quadrilateral. |
+| `max_recovered_corner_error_px` | `4.0` | Value must be a finite number between 0 and 1000. Max corner error against the seed pose in pixels. |
+| `max_pose_rms_px` | `2.0` | Value must be a finite number between 0 and 1000. Maximum distorted pixel RMS for the seed and final fits. |
+
 ## Recover metric scene scale (`3d.recover_scene_scale`)
 
 3D vision / Reconstruction

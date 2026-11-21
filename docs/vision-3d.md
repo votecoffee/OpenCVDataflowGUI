@@ -1018,6 +1018,24 @@ same record. Custom target and ChArUco observation records retain the
 dictionary for downstream geometry.
 [Custom dictionary example](<../examples/opencv tools/custom_aruco_dictionary/README.md>)
 
+## Partial ArUco board recovery
+
+**Recover partially visible ArUco board** consumes the calibrated capture and
+the planar fiducial target record. The record carries the board IDs, the four
+corners per ID in the marker's canonical order, the print border width and
+the predefined or custom dictionary. Use the same metric units for the
+board and the pinhole camera. An optional mask or region selects marker
+candidates by their centers.
+
+The block fits a seed pose from unique, directly decoded board IDs. It uses
+the seed geometry and the native ArUco bit check to recover suitable rejected
+quadrilaterals. It reports matched corners in target ID order, per-corner
+reprojection errors, rejected-candidate indices and the IDs that are missing,
+foreign or duplicated. It withholds the pose if the support or fit fails the
+configured limits. Separate result graphic layers show decoded, recovered
+and foreign markers on the source image.
+[Partial board recovery example](<../examples/opencv tools/aruco_board_recovery/README.md>)
+
 ## Planar pose hypotheses
 
 **Planar pose hypotheses** uses a calibrated pinhole camera and matched points

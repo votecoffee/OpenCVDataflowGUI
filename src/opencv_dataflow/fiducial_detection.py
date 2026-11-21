@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from .aruco_dictionary import DICTIONARIES as DICTIONARIES
-from .aruco_dictionary import DICTIONARY_CHOICES, MAX_MARKERS
+from .aruco_dictionary import DICTIONARY_CHOICES, MAX_MARKERS, select_dictionary
 from .parameter_validation import NumericRange, ValidationError
 from .processing import finite, integer
 
@@ -60,6 +60,50 @@ def board_marker_ids(ids, count, dictionary):
             "marker_ids",
         )
     return np.asarray(ids or range(count), dtype=np.int32)
+
+
+def planar_board_geometry(target, maximum_markers=MAX_MARKERS):
+    """Read canonical marker IDs and four physical corners per planar marker."""
+    if not isinstance(target, dict) or target.get("model") != "fiducial_target_v1":
+        raise ValidationError("Supply a fiducial_target_v1 layout")
+    name, units = target.get("dictionary"), target.get("units")
+    if name not in DICTIONARY_CHOICES or units not in ("m", "mm"):
+        raise ValidationError("Custom target needs an OpenCV dictionary and metric units")
+    dictionary = select_dictionary(name, target.get("dictionary_record"))
+    ids, raw = target.get("marker_ids"), target.get("marker_corners_xyz")
+    if (
+        not isinstance(ids, list)
+        or not 2 <= len(ids) <= maximum_markers
+        or any(type(i) is not int or not 0 <= i < len(dictionary.bytesList) for i in ids)
+        or len(set(ids)) != len(ids)
+        or not isinstance(raw, list)
+        or len(raw) != len(ids)
+    ):
+        raise ValidationError(
+            f"Target requires 2–{maximum_markers} distinct marker IDs and their corner coordinates"
+        )
+    try:
+        corners = np.asarray(raw, dtype=np.float64)
+    except (TypeError, ValueError, OverflowError) as exc:
+        raise ValidationError("Target corner coordinates must be numeric") from exc
+    if (
+        corners.shape != (len(ids), 4, 3)
+        or not np.isfinite(corners).all()
+        or np.max(np.abs(corners)) > 1e6
+        or np.any(corners[:, :, 2] != 0)
+        or len(np.unique(corners.reshape(-1, 3), axis=0)) != corners.size // 3
+        or not all(cv2.isContourConvex(quad[:, :2].astype(np.float32)) for quad in corners)
+    ):
+        raise ValidationError("Target corners must form distinct, convex markers in the XY plane")
+    return dictionary, units, ids, corners
+
+
+def projective_center(corners):
+    a, b, c, d = np.column_stack((corners, np.ones(4)))
+    center = np.cross(np.cross(a, c), np.cross(b, d))
+    if abs(center[2]) < 1e-9:
+        raise ValidationError("Detected marker corners do not define a finite center")
+    return center[:2] / center[2]
 
 
 def detector_parameters(p):

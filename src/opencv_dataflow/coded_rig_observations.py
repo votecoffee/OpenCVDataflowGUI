@@ -7,13 +7,13 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-from .aruco_dictionary import DICTIONARY_CHOICES, select_dictionary
 from .core import Block, Port, Result
 from .fiducial_detection import (
     MARKER_CHOICES,
     MARKER_OPTIONS,
     MARKER_RANGES,
     detector_parameters,
+    planar_board_geometry,
 )
 from .geometry3d_common import image_size
 from .multicamera_calibration import (
@@ -41,38 +41,6 @@ def _load_json(path):
     if not isinstance(record, dict) or record.get("model") != MANIFEST:
         raise ValidationError(f"Choose a {MANIFEST} JSON record", "path")
     return record
-
-
-def _layout(target):
-    if not isinstance(target, dict) or target.get("model") != "fiducial_target_v1":
-        raise ValidationError("Supply a fiducial_target_v1 layout")
-    name, units = target.get("dictionary"), target.get("units")
-    if name not in DICTIONARY_CHOICES or units not in ("m", "mm"):
-        raise ValidationError("Custom target needs an OpenCV dictionary and metric units")
-    dictionary = select_dictionary(name, target.get("dictionary_record"))
-    ids, raw = target.get("marker_ids"), target.get("marker_corners_xyz")
-    if (
-        not isinstance(ids, list)
-        or not 2 <= len(ids) <= _MAX_POINTS // 4
-        or any(type(i) is not int or not 0 <= i < len(dictionary.bytesList) for i in ids)
-        or len(set(ids)) != len(ids)
-        or not isinstance(raw, list)
-        or len(raw) != len(ids)
-    ):
-        raise ValidationError(
-            "Target requires 2–32 distinct marker IDs and their corner coordinates"
-        )
-    corners = np.asarray(raw, dtype=np.float64)
-    if (
-        corners.shape != (len(ids), 4, 3)
-        or not np.isfinite(corners).all()
-        or np.max(np.abs(corners)) > 1e6
-        or np.any(corners[:, :, 2] != 0)
-        or len(np.unique(corners.reshape(-1, 3), axis=0)) != corners.size // 3
-        or not all(cv2.isContourConvex(quad[:, :2].astype(np.float32)) for quad in corners)
-    ):
-        raise ValidationError("Target corners must form distinct, convex markers in the XY plane")
-    return dictionary, units, ids, corners
 
 
 def _capture_table(manifest, frames, captures):
@@ -196,7 +164,7 @@ class LoadCodedRigObservations(Block):
         captures = _names(manifest.get("capture_ids"), "Capture IDs", 1, _MAX_CAPTURES)
         sizes, paths = _capture_table(manifest, frames, captures)
         target = inputs.get("target", manifest.get("target"))
-        dictionary, units, ids, corners = _layout(target)
+        dictionary, units, ids, corners = planar_board_geometry(target, _MAX_POINTS // 4)
         minimum = int(p["minimum_markers"])
         if minimum > len(ids):
             raise ValidationError("Minimum markers exceeds the target size", "minimum_markers")

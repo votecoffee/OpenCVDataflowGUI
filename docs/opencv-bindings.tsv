@@ -158,13 +158,13 @@ P2	method	cv2.aruco.ArucoDetector.getDictionaries	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.getDictionary	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.getRefineParameters	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.read	method name only	-
-P2	method	cv2.aruco.ArucoDetector.refineDetectedMarkers	no static reference	-
+P2	method	cv2.aruco.ArucoDetector.refineDetectedMarkers	method name only	-
 P2	method	cv2.aruco.ArucoDetector.setDetectorParameters	method name only	-
 P2	method	cv2.aruco.ArucoDetector.setDictionaries	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.setDictionary	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.setRefineParameters	no static reference	-
 P2	method	cv2.aruco.ArucoDetector.write	method name only	-
-P2	class	cv2.aruco.Board	no static reference	-
+P2	class	cv2.aruco.Board	literal reference	-
 P2	method	cv2.aruco.Board.generateImage	method name only	-
 P2	method	cv2.aruco.Board.getDictionary	no static reference	-
 P2	method	cv2.aruco.Board.getIds	method name only	-
