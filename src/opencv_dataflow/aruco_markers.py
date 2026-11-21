@@ -5,10 +5,10 @@ from collections import Counter
 import cv2
 import numpy as np
 
+from .aruco_dictionary import ARUCO_DICTIONARY_INPUT, MAX_MARKERS, select_dictionary
 from .core import Block, Port, Result
 from .features import overlay_image
 from .fiducial_detection import (
-    DICTIONARIES,
     MARKER_CHOICES,
     MARKER_OPTIONS,
     MARKER_RANGES,
@@ -35,7 +35,7 @@ def _projective_center(corners):
 class DetectArucoMarkers(Block):
     type_id, title = "inspect.aruco_markers", "Detect ArUco markers"
     category, block_type, subtype = "Inspection", "Inspection", "Fiducials"
-    inputs = SELECTION_INPUTS
+    inputs = (*SELECTION_INPUTS, ARUCO_DICTIONARY_INPUT)
     outputs = (
         Port("markers", "data"),
         Port("points", "data", required=False),
@@ -61,6 +61,7 @@ class DetectArucoMarkers(Block):
         "point": "Use the projected center or a corner in the marker's decoded orientation.",
     }
     input_help = {
+        "dictionary": "Qualified dictionary record. Select Custom in the dictionary setting.",
         "mask": "Keep markers whose projected center lies inside this mask.",
         "region": "Keep markers whose projected center lies inside this region.",
     }
@@ -79,7 +80,15 @@ class DetectArucoMarkers(Block):
                 raise ValidationError(
                     f"{high.replace('_', ' ').capitalize()} must be at least the minimum", high
                 )
-        capacity = len(cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]]).bytesList)
+        capacity = (
+            MAX_MARKERS
+            if p["dictionary"] == "custom"
+            else len(select_dictionary(p["dictionary"]).bytesList)
+        )
+        self._validate_ids(p, capacity)
+
+    @staticmethod
+    def _validate_ids(p, capacity):
         ids = p["required_ids"]
         if (
             not isinstance(ids, list)
@@ -98,7 +107,8 @@ class DetectArucoMarkers(Block):
         gray = gray_image(source, (np.uint8,), auto_depth=True)
         mask = selection_mask(inputs, gray)
         p = self.parameters
-        dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]])
+        dictionary = select_dictionary(p["dictionary"], inputs.get("dictionary"))
+        self._validate_ids(p, len(dictionary.bytesList))
         corners, ids, _ = cv2.aruco.ArucoDetector(dictionary, detector_parameters(p)).detectMarkers(
             gray
         )

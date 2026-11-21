@@ -995,7 +995,7 @@ the configured interpolation and constant border.
 ## Planar fiducial targets
 
 **Generate planar fiducial target** creates a single ArUco marker, an ArUco
-grid or a ChArUco board from a predefined dictionary. Configure the marker
+grid or a ChArUco board from a predefined or connected custom dictionary. Configure the marker
 IDs, border width, physical lengths, DPI and white margin. The raster uses
 integer pixel geometry. At the reported page size it preserves the configured
 ArUco marker edge or the ChArUco square pitch. The report gives the effective
@@ -1006,6 +1006,17 @@ width and height. Use the measured dimensions of the printed board for
 calibration. The runnable example verifies each layout using image detection,
 including custom IDs and legacy ChArUco parity.
 [Target generator example](<../examples/opencv tools/fiducial_targets/README.md>)
+
+**Create custom ArUco dictionary** generates or extends a seeded code
+family and measures minimum Hamming separation between IDs and their
+rotations. Choose a correction budget within the reported safe range.
+**Save ArUco dictionary** stores canonical codewords in stable ID order.
+**Load ArUco dictionary** verifies the checksum and requalifies the
+dictionary. Select Custom in the renderer, marker detector or ChArUco
+detector and connect the dictionary. The 3D marker pose block uses the
+same record. Custom target and ChArUco observation records retain the
+dictionary for downstream geometry.
+[Custom dictionary example](<../examples/opencv tools/custom_aruco_dictionary/README.md>)
 
 ## Planar pose hypotheses
 

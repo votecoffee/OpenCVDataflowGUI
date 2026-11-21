@@ -194,12 +194,12 @@ P2	class	cv2.aruco.CharucoParameters	literal reference	-
 P2	class	cv2.aruco.DetectorParameters	literal reference	-
 P2	method	cv2.aruco.DetectorParameters.readDetectorParameters	no static reference	-
 P2	method	cv2.aruco.DetectorParameters.writeDetectorParameters	no static reference	-
-P2	class	cv2.aruco.Dictionary	no static reference	-
+P2	class	cv2.aruco.Dictionary	literal reference	-
 P2	method	cv2.aruco.Dictionary.generateImageMarker	method name only	-
 P2	method	cv2.aruco.Dictionary.getBitsFromByteList	no static reference	-
-P2	method	cv2.aruco.Dictionary.getByteListFromBits	no static reference	-
+P2	method	cv2.aruco.Dictionary.getByteListFromBits	literal reference	-
 P2	method	cv2.aruco.Dictionary.getDistanceToId	no static reference	-
-P2	method	cv2.aruco.Dictionary.getMarkerBits	no static reference	-
+P2	method	cv2.aruco.Dictionary.getMarkerBits	method name only	-
 P2	method	cv2.aruco.Dictionary.identify	no static reference	-
 P2	method	cv2.aruco.Dictionary.readDictionary	no static reference	-
 P2	method	cv2.aruco.Dictionary.writeDictionary	no static reference	-
@@ -208,7 +208,7 @@ P2	function	cv2.aruco.Dictionary_getByteListFromBits	no static reference	-
 P2	function	cv2.aruco.drawDetectedCornersCharuco	no static reference	-
 P2	function	cv2.aruco.drawDetectedDiamonds	no static reference	-
 P2	function	cv2.aruco.drawDetectedMarkers	literal reference	-
-P2	function	cv2.aruco.extendDictionary	no static reference	-
+P2	function	cv2.aruco.extendDictionary	literal reference	-
 P2	function	cv2.aruco.generateImageMarker	literal reference	-
 P2	function	cv2.aruco.getPredefinedDictionary	literal reference	-
 P2	class	cv2.aruco.GridBoard	literal reference	-

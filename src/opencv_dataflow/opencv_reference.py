@@ -364,6 +364,7 @@ BINDINGS = {
     "inspect.find_quadrilateral": "findContours approxPolyDP isContourConvex",
     "inspect.approximate_convex_contour": "approxPolyN",
     "inspect.aruco_markers": "aruco.ArucoDetector.detectMarkers",
+    "calibration.create_aruco_dictionary": "aruco.extendDictionary aruco.Dictionary.getMarkerBits",
     "inspect.brisque_quality": "quality.QualityBRISQUE_create quality.QualityBRISQUE.compute",
     "inspect.blobs": "connectedComponentsWithStatsWithAlgorithm",
     "inspect.bounding_convex_polygon": "convexHull",

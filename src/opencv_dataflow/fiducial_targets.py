@@ -5,8 +5,9 @@ from dataclasses import dataclass
 import cv2
 import numpy as np
 
+from .aruco_dictionary import ARUCO_DICTIONARY_INPUT, DICTIONARY_CHOICES, select_dictionary
 from .core import Block, Port, Result
-from .fiducial_detection import DICTIONARIES, board_marker_ids
+from .fiducial_detection import board_marker_ids
 from .images import ImageArray
 from .parameter_validation import NumericRange, ValidationError
 
@@ -75,7 +76,7 @@ def _layout(p, dictionary):
             target_size = tuple(n * marker_px + (n - 1) * gap_px for n in (columns, rows))
         else:
             target_size = (marker_px, marker_px)
-    modules = dictionary.markerSize + 2 * int(p["border_bits"])
+    modules = (4 if dictionary is None else dictionary.markerSize) + 2 * int(p["border_bits"])
     if marker_px < modules:
         raise ValidationError(
             f"Each marker needs at least {modules} pixels per side for its code and border",
@@ -99,6 +100,7 @@ class GenerateFiducialTarget(Block):
     type_id, title = "calibration.generate_fiducial_target", "Generate planar fiducial target"
     category = block_type = "Calibration"
     subtype = "Grid and coordinates"
+    inputs = (ARUCO_DICTIONARY_INPUT,)
     outputs = (Port("image"), Port("target", "data"))
     defaults = {
         "layout": "charuco",
@@ -117,7 +119,7 @@ class GenerateFiducialTarget(Block):
     }
     parameter_choices = {
         "layout": _LAYOUTS,
-        "dictionary": tuple(DICTIONARIES),
+        "dictionary": DICTIONARY_CHOICES,
         "units": ("mm", "m"),
     }
     parameter_ranges = {
@@ -132,7 +134,7 @@ class GenerateFiducialTarget(Block):
     }
     parameter_help = {
         "layout": "Single encoded marker, regular marker grid or a ChArUco chessboard.",
-        "dictionary": "Predefined ArUco or AprilTag family. Match it in the detector.",
+        "dictionary": "Predefined ArUco or AprilTag family, or a connected custom dictionary.",
         "marker_ids": "IDs in board order. Leave empty to start at zero.",
         "columns": "Markers across an ArUco grid or squares across a ChArUco board.",
         "rows": "Markers down an ArUco grid or squares down a ChArUco board.",
@@ -145,6 +147,7 @@ class GenerateFiducialTarget(Block):
         "units": "Length units for the target configuration, geometry and print size.",
         "dpi": "Desired render density. The reported effective density accounts for rounding.",
     }
+    input_help = {"dictionary": "Qualified dictionary record. Select Custom in the setting."}
     parallel_safe = True
     process_inputs_readonly = True
 
@@ -153,12 +156,13 @@ class GenerateFiducialTarget(Block):
         p = self.parameters if parameters is None else parameters
         if type(p["legacy_pattern"]) is not bool:
             raise ValidationError("Legacy pattern must be boolean", "legacy_pattern")
-        dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]])
+        dictionary = None if p["dictionary"] == "custom" else select_dictionary(p["dictionary"])
         _layout(p, dictionary)
 
     def process(self, inputs):
         p = self.parameters
-        dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]])
+        record = inputs.get("dictionary")
+        dictionary = select_dictionary(p["dictionary"], record)
         raster, ids = _layout(p, dictionary)
         mode = p["layout"]
         border = int(p["border_bits"])
@@ -201,6 +205,8 @@ class GenerateFiducialTarget(Block):
             "effective_dpi": scale * 25.4 / (1000 if p["units"] == "m" else 1),
             "print_size": [value / scale for value in raster.image_size],
         }
+        if record is not None:
+            report["dictionary_record"] = record
         if mode == "aruco_grid":
             report.update(columns=size[0], rows=size[1], marker_separation=raster.gap / scale)
         if mode == "charuco":

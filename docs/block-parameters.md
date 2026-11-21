@@ -19,11 +19,13 @@ matchers can bind a recipe model. See [recipes](recipes.md) for scope and revisi
 
 3D vision / Fiducials
 
-Inputs: `image` (image), `camera` (data).
+Inputs: `image` (image), `camera` (data), `dictionary` (data, optional).
+
+Input `dictionary` — Qualified dictionary record. Select Custom in the setting.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original`, `custom` |
 | `marker_length` | `0.04` |  |
 | `minimum_markers` | `1` |  |
 | `corner_refinement` | `"subpixel"` | `none`, `subpixel`, `contour`, `apriltag` |
@@ -2488,7 +2490,9 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 
 Calibration / Grid and coordinates
 
-Inputs: `image` (image), `camera` (data, optional).
+Inputs: `image` (image), `camera` (data, optional), `dictionary` (data, optional).
+
+Input `dictionary` — Qualified dictionary record. Select Custom in the setting.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -2497,7 +2501,7 @@ Inputs: `image` (image), `camera` (data, optional).
 | `square_length` | `0.03` | Value must be a finite number between 1e-06 and 1e+06. Physical side length of a square in the chosen units. |
 | `marker_length` | `0.022` | Value must be a finite number between 1e-06 and 1e+06. Physical side length of an ArUco marker in the same units. |
 | `units` | `"m"` | `m`, `mm`, `unitless` |
-| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original`, `custom` |
 | `marker_ids` | `[]` | IDs in board marker order. An empty list uses the dictionary's first IDs. |
 | `legacy_pattern` | `false` | Use the OpenCV pre-4.6 chessboard pattern for older printed boards. |
 | `minimum_corners` | `6` | Value must be a whole number between 4 and 3969. Minimum identified corners required to emit point correspondences. |
@@ -2566,6 +2570,23 @@ Inputs: `image` (image).
 | `red_gain` | `1.0` |  |
 | `green_gain` | `1.0` |  |
 | `blue_gain` | `1.0` |  |
+
+## Create custom ArUco dictionary (`calibration.create_aruco_dictionary`)
+
+Calibration / Grid and coordinates
+
+Inputs: `base_dictionary` (data, optional).
+
+Input `base_dictionary` — Optional custom dictionary prefix in place of Base family.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `marker_size` | `6` | Value must be a whole number between 4 and 8. Data modules per side. The printed black border is separate. |
+| `marker_count` | `24` | Value must be a whole number between 1 and 256. Number of ID rows to retain or generate. |
+| `seed` | `0` | Value must be a whole number between 0 and 2.14748e+09. OpenCV random seed for the new codewords. |
+| `base_family` | `"none"` | `none`, `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` Optional predefined prefix. Retained IDs keep their original bit patterns. |
+| `minimum_hamming_distance` | `0` | Value must be a whole number between 0 and 64. Minimum separation between distinct ID and rotation patterns. |
+| `max_correction_bits` | `-1` | Value must be a whole number between -1 and 31. Maximum corrected modules. Use -1 for the qualified maximum. |
 
 ## Declare capture calibration revision (`calibration.declare_capture`)
 
@@ -2675,10 +2696,14 @@ Input `region` — Optional anchor-grid region intersected with the calibration 
 
 Calibration / Grid and coordinates
 
+Inputs: `dictionary` (data, optional).
+
+Input `dictionary` — Qualified dictionary record. Select Custom in the setting.
+
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `layout` | `"charuco"` | `aruco_marker`, `aruco_grid`, `charuco` Single encoded marker, regular marker grid or a ChArUco chessboard. |
-| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` Predefined ArUco or AprilTag family. Match it in the detector. |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original`, `custom` Predefined ArUco or AprilTag family, or a connected custom dictionary. |
 | `marker_ids` | `[]` | IDs in board order. Leave empty to start at zero. |
 | `columns` | `7` | Value must be a whole number between 1 and 64. Markers across an ArUco grid or squares across a ChArUco board. |
 | `rows` | `5` | Value must be a whole number between 1 and 64. Markers down an ArUco grid or squares down a ChArUco board. |
@@ -7353,6 +7378,18 @@ Ticket mode and fixed value are common inspector controls.
 | `pixel_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
 | `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Maximum total selected pixels before native decoding; not per frame. |
 
+## Load ArUco dictionary (`input.aruco_dictionary`)
+
+Input / Calibration profiles
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Portable ArUco dictionary JSON file. |
+| `path_base` | `"project"` | `project`, `working_directory` Base for relative file paths. |
+
 ## Load calibration profile (`input.calibration`)
 
 Input / Calibration profiles
@@ -8224,7 +8261,9 @@ Input `image` — Optional aligned background for viewing the simplified contour
 
 Inspection / Fiducials
 
-Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `dictionary` (data, optional).
+
+Input `dictionary` — Qualified dictionary record. Select Custom in the dictionary setting.
 
 Input `mask` — Keep markers whose projected center lies inside this mask.
 
@@ -8232,7 +8271,7 @@ Input `region` — Keep markers whose projected center lies inside this region.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original` |
+| `dictionary` | `"4x4_50"` | `4x4_100`, `4x4_1000`, `4x4_250`, `4x4_50`, `5x5_100`, `5x5_1000`, `5x5_250`, `5x5_50`, `6x6_100`, `6x6_1000`, `6x6_250`, `6x6_50`, `7x7_100`, `7x7_1000`, `7x7_250`, `7x7_50`, `apriltag_16h5`, `apriltag_25h9`, `apriltag_36h10`, `apriltag_36h11`, `aruco_mip_36h12`, `aruco_original`, `custom` |
 | `corner_refinement` | `"subpixel"` | `none`, `subpixel`, `contour`, `apriltag` |
 | `adaptive_min` | `3` | Value must be a whole number between 3 and 255. |
 | `adaptive_max` | `23` | Value must be a whole number between 3 and 1000. |
@@ -13338,6 +13377,17 @@ Input `still_image` — APNG poster, separate from timed frames. Use grayscale o
 | `webp_quality` | `90` | Value must be a whole number between 1 and 100. Lossy WebP only, 1..100. |
 | `png_compression` | `-1` | Value must be a whole number between -1 and 9. APNG only; -1 keeps the native compression default, otherwise 0..9. |
 | `png_strategy` | `"native"` | `native`, `default`, `filtered`, `huffman`, `rle`, `fixed` APNG zlib strategy. Native APNG ignores PNG filter and buffer-size flags. |
+
+## Save ArUco dictionary (`output.aruco_dictionary`)
+
+Output / Calibration profiles
+
+Inputs: `dictionary` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `path` | `""` | Portable ArUco dictionary JSON file. |
+| `path_base` | `"project"` | `project`, `working_directory` Base for relative file paths. |
 
 ## Save background reference (`output.background_reference`)
 

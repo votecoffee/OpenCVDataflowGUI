@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Generate and qualify a custom marker family",
+      "description": "Original seeded markers and synthetic bit damage by OpenCVDataflowGUI contributors (MIT). Generate a dictionary, render a six-marker grid, then detect it using the saved dictionary. The separate marker image has two flipped data modules.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "generate",
+      "type": "calibration.create_aruco_dictionary",
+      "name": "Generate the seeded dictionary",
+      "parameters": {
+        "marker_size": 6,
+        "marker_count": 24,
+        "seed": 6240,
+        "base_family": "none",
+        "minimum_hamming_distance": 12,
+        "max_correction_bits": 2
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "base_dictionary"
+      ],
+      "exposed_outputs": [
+        "dictionary",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target",
+      "type": "calibration.generate_fiducial_target",
+      "name": "Render IDs in board order",
+      "parameters": {
+        "layout": "aruco_grid",
+        "dictionary": "custom",
+        "marker_ids": [
+          7,
+          3,
+          18,
+          1,
+          22,
+          12
+        ],
+        "columns": 3,
+        "rows": 2,
+        "marker_length": 22.0,
+        "marker_separation": 8.0,
+        "square_length": 30.0,
+        "legacy_pattern": false,
+        "border_bits": 1,
+        "margin": 6.0,
+        "units": "mm",
+        "dpi": 127
+      },
+      "position": [
+        355,
+        0
+      ],
+      "exposed_inputs": [
+        "dictionary"
+      ],
+      "exposed_outputs": [
+        "image",
+        "target"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "load",
+      "type": "input.aruco_dictionary",
+      "name": "Load the saved codewords",
+      "parameters": {
+        "path": "assets/dictionary.json",
+        "path_base": "project"
+      },
+      "position": [
+        345,
+        260
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "dictionary",
+        "report",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "custom-aruco"
+      }
+    },
+    {
+      "id": "corrupt",
+      "type": "input.file",
+      "name": "Marker with two flipped modules",
+      "parameters": {
+        "path": "assets/damaged_marker.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        345,
+        504
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "custom-aruco"
+      }
+    },
+    {
+      "id": "grid",
+      "type": "inspect.aruco_markers",
+      "name": "Decode all six IDs",
+      "parameters": {
+        "dictionary": "custom",
+        "corner_refinement": "subpixel",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 0,
+        "required_ids": [
+          7,
+          3,
+          18,
+          1,
+          22,
+          12
+        ],
+        "minimum_markers": 6,
+        "point": "center",
+        "draw_overlay": true
+      },
+      "position": [
+        750,
+        50
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "dictionary"
+      ],
+      "exposed_outputs": [
+        "markers",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "correct",
+      "type": "inspect.aruco_markers",
+      "name": "Correct the two damaged bits",
+      "parameters": {
+        "dictionary": "custom",
+        "corner_refinement": "subpixel",
+        "adaptive_min": 3,
+        "adaptive_max": 23,
+        "adaptive_step": 10,
+        "adaptive_constant": 7.0,
+        "min_perimeter_rate": 0.03,
+        "max_perimeter_rate": 4.0,
+        "min_border_distance": 3,
+        "border_bits": 1,
+        "error_correction_rate": 1.0,
+        "required_ids": [
+          7
+        ],
+        "minimum_markers": 1,
+        "point": "center",
+        "draw_overlay": true
+      },
+      "position": [
+        750,
+        510
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "dictionary"
+      ],
+      "exposed_outputs": [
+        "markers",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "generate",
+      "output": "dictionary",
+      "target": "target",
+      "input": "dictionary"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "grid",
+      "input": "image"
+    },
+    {
+      "source": "load",
+      "output": "dictionary",
+      "target": "grid",
+      "input": "dictionary"
+    },
+    {
+      "source": "load",
+      "output": "dictionary",
+      "target": "correct",
+      "input": "dictionary"
+    },
+    {
+      "source": "corrupt",
+      "output": "image",
+      "target": "correct",
+      "input": "image"
+    }
+  ]
+}

@@ -14,6 +14,9 @@ For a first introduction to running and editing graphs, use the
 [Demos guided tour](../demos/README.md). [Custom tools](<../custom tools/README.md>)
 contains project-defined inspection algorithms and other-library integrations.
 
+[Custom ArUco dictionaries](custom_aruco_dictionary/README.md) generates
+and reloads a seeded dictionary and verifies correction of a damaged marker.
+
 [Planar fiducial targets](fiducial_targets/README.md) generates printable
 ArUco markers, ArUco grids and ChArUco boards and checks digital detection.
 

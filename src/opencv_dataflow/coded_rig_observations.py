@@ -7,9 +7,9 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from .aruco_dictionary import DICTIONARY_CHOICES, select_dictionary
 from .core import Block, Port, Result
 from .fiducial_detection import (
-    DICTIONARIES,
     MARKER_CHOICES,
     MARKER_OPTIONS,
     MARKER_RANGES,
@@ -47,9 +47,9 @@ def _layout(target):
     if not isinstance(target, dict) or target.get("model") != "fiducial_target_v1":
         raise ValidationError("Supply a fiducial_target_v1 layout")
     name, units = target.get("dictionary"), target.get("units")
-    if name not in DICTIONARIES or units not in ("m", "mm"):
+    if name not in DICTIONARY_CHOICES or units not in ("m", "mm"):
         raise ValidationError("Custom target needs an OpenCV dictionary and metric units")
-    dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[name])
+    dictionary = select_dictionary(name, target.get("dictionary_record"))
     ids, raw = target.get("marker_ids"), target.get("marker_corners_xyz")
     if (
         not isinstance(ids, list)

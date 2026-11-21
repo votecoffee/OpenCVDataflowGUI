@@ -3,10 +3,11 @@
 import cv2
 import numpy as np
 
+from .aruco_dictionary import ARUCO_DICTIONARY_INPUT, select_dictionary
 from .calibration_revisions import REVISION, applied_payload
 from .core import Port, Result
 from .features import overlay_image
-from .fiducial_detection import DICTIONARIES, MARKER_CHOICES, MARKER_OPTIONS, detector_parameters
+from .fiducial_detection import MARKER_CHOICES, MARKER_OPTIONS, detector_parameters
 from .geometry3d_common import (
     Tool3D,
     camera_for_image,
@@ -102,7 +103,7 @@ class RectifyCamera3D(Tool3D):
 
 class ArucoPose3D(Tool3D):
     type_id, title, subtype = "3d.aruco_pose", "ArUco 3D marker poses", "Fiducials"
-    inputs = (Port("image"), Port("camera", "data"))
+    inputs = (Port("image"), Port("camera", "data"), ARUCO_DICTIONARY_INPUT)
     outputs = (
         Port("poses", "data"),
         Port("pose", "data"),
@@ -118,6 +119,7 @@ class ArucoPose3D(Tool3D):
         "max_reprojection_error": 3.0,
     }
     parameter_choices = MARKER_CHOICES
+    input_help = {"dictionary": "Qualified dictionary record. Select Custom in the setting."}
 
     def process(self, inputs):
         model, p = inputs["camera"], self.parameters
@@ -125,7 +127,7 @@ class ArucoPose3D(Tool3D):
         camera_for_image(model, inputs["image"])
         gray = gray_image(inputs["image"], (np.uint8,))
         parameters = detector_parameters(p)
-        dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]])
+        dictionary = select_dictionary(p["dictionary"], inputs.get("dictionary"))
         corners, ids, _ = cv2.aruco.ArucoDetector(dictionary, parameters).detectMarkers(gray)
         overlay = overlay_image(inputs["image"])
         length = finite(p["marker_length"], "Marker length", 1e-9)

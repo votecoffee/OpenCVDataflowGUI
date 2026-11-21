@@ -3,14 +3,11 @@
 import cv2
 import numpy as np
 
+from .aruco_dictionary import DICTIONARIES as DICTIONARIES
+from .aruco_dictionary import DICTIONARY_CHOICES, MAX_MARKERS
 from .parameter_validation import NumericRange, ValidationError
 from .processing import finite, integer
 
-DICTIONARIES = {
-    name.removeprefix("DICT_").lower(): getattr(cv2.aruco, name)
-    for name in dir(cv2.aruco)
-    if name.startswith("DICT_") and isinstance(getattr(cv2.aruco, name), int)
-}
 _CORNER_REFINEMENT = {
     "none": cv2.aruco.CORNER_REFINE_NONE,
     "subpixel": cv2.aruco.CORNER_REFINE_SUBPIX,
@@ -41,13 +38,13 @@ MARKER_RANGES = {
     "error_correction_rate": NumericRange(0, 1),
 }
 MARKER_CHOICES = {
-    "dictionary": tuple(DICTIONARIES),
+    "dictionary": DICTIONARY_CHOICES,
     "corner_refinement": tuple(_CORNER_REFINEMENT),
 }
 
 
 def board_marker_ids(ids, count, dictionary):
-    capacity = len(dictionary.bytesList)
+    capacity = MAX_MARKERS if dictionary is None else len(dictionary.bytesList)
     if count > capacity:
         raise ValidationError("The dictionary has fewer IDs than board markers", "dictionary")
     if not isinstance(ids, list) or (

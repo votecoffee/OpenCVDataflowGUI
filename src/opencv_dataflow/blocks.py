@@ -621,6 +621,7 @@ def builtin_registry():
     from .animation_blocks import ANIMATION_BLOCKS
     from .annotation import AnnotationLayer
     from .annoy_blocks import ANNOY_BLOCKS
+    from .aruco_dictionary import CreateArucoDictionary, LoadArucoDictionary, SaveArucoDictionary
     from .aruco_markers import DetectArucoMarkers
     from .background_reference import CaptureBackgroundReference, SaveBackgroundReference
     from .basic_processing import BASIC_PROCESSING_BLOCKS
@@ -1070,6 +1071,9 @@ def builtin_registry():
         DetectCascade,
         CalibrationGrid,
         DetectArucoMarkers,
+        CreateArucoDictionary,
+        LoadArucoDictionary,
+        SaveArucoDictionary,
         DetectCharucoBoard,
         DetectMarkedCheckerboard,
         GenerateFiducialTarget,

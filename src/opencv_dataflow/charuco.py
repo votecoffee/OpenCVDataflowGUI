@@ -5,9 +5,9 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from .aruco_dictionary import ARUCO_DICTIONARY_INPUT, select_dictionary
 from .core import Block, Port, Result
 from .fiducial_detection import (
-    DICTIONARIES,
     MARKER_CHOICES,
     MARKER_OPTIONS,
     board_marker_ids,
@@ -22,13 +22,13 @@ from .processing import gray_image
 from .result_graphics import ACCEPTED, REJECTED
 
 
-def _make_board(p):
+def _make_board(p, record=None):
     size = (int(p["columns"]), int(p["rows"]))
     square = float(p["square_length"])
     marker = float(p["marker_length"])
     if marker >= square:
         raise ValidationError("Marker length must be less than square length", "marker_length")
-    dictionary = cv2.aruco.getPredefinedDictionary(DICTIONARIES[p["dictionary"]])
+    dictionary = select_dictionary(p["dictionary"], record)
     ids = board_marker_ids(p["marker_ids"], size[0] * size[1] // 2, dictionary)
     board = cv2.aruco.CharucoBoard(size, square, marker, dictionary, ids)
     board.setLegacyPattern(bool(p["legacy_pattern"]))
@@ -90,6 +90,7 @@ class DetectCharucoBoard(Block):
     inputs = (
         Port("image"),
         Port("camera", "data", required=False, required_when_connected=True),
+        ARUCO_DICTIONARY_INPUT,
     )
     outputs = (
         Port("observation", "data"),
@@ -144,12 +145,14 @@ class DetectCharucoBoard(Block):
         "refine_check_all_orders": "Check all four possible corner orderings during recovery.",
     }
     process_inputs_readonly = True
+    input_help = {"dictionary": "Qualified dictionary record. Select Custom in the setting."}
 
     def process(self, inputs):
         p = self.parameters
         gray = gray_image(inputs["image"], (np.uint8,))
         size = list(gray.shape[::-1])
-        board = _make_board(p)
+        record = inputs.get("dictionary")
+        board = _make_board(p, record)
         total = (int(p["columns"]) - 1) * (int(p["rows"]) - 1)
         minimum = int(p["minimum_corners"])
         if minimum > total:
@@ -211,6 +214,8 @@ class DetectCharucoBoard(Block):
             "visible_marker_ids": sorted({i for _, i in board_markers}),
             "collinear": collinear,
         }
+        if record is not None:
+            observation["board"]["dictionary_record"] = record
         drawings = {}
         if self.generate_graphics:
             drawings = _drawings(board_markers, xy, ids, passed)
@@ -248,7 +253,7 @@ def observation_board(observation):
         or not spec.get("marker_ids")
     ):
         raise ValidationError("Invalid ChArUco board definition")
-    board = _make_board(spec)
+    board = _make_board(spec, spec.get("dictionary_record"))
     board_points = board.getChessboardCorners().reshape(-1, 3)
     return spec, size, board, board_points
 
