@@ -118,6 +118,13 @@ projections on common camera rays. Validate both fits on a separate image
 using **Validate lens calibration** and connect those reports to the audit.
 [Calibration capture audit example](<../examples/opencv tools/calibration_capture_audit/README.md>)
 
+**Measure planar distance uncertainty** uses a pinhole model and a known
+plane-to-camera pose. It propagates declared pixel, pose and lens covariance
+into the two endpoints and their physical distance. Specify a coverage
+probability and an optional interval half-width limit. The first-order
+interval assumes small errors around the supplied calibration and plane.
+[Calibrated uncertainty example](<../examples/opencv tools/measurement_uncertainty/README.md>)
+
 Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
 and reload the lens profile to avoid solving the dataset on every runtime cycle.

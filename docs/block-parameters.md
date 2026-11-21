@@ -3137,6 +3137,31 @@ Inputs: `image` (image).
 | `spacing` | `10.0` | Value must be a finite number between 1e-08 and 1e+06. Physical distance between adjacent corner intersections. |
 | `units` | `"mm"` | `mm`, `m`, `unitless` |
 
+## Measure planar distance uncertainty (`calibration.measure_uncertainty`)
+
+Calibration / Lens distortion
+
+Inputs: `camera` (data), `plane_to_camera` (data), `image_points` (data, optional), `covariance` (data, optional), `image` (image, optional).
+
+Input `camera` — Pinhole camera on the pixel grid of both points.
+
+Input `plane_to_camera` — Rigid pose from the measurement plane (local Z = 0) to the camera.
+
+Input `image_points` — Two [x,y] pixel positions in the calibrated image.
+
+Input `covariance` — Named terms and a joint matrix. Use the port or the parameter field.
+
+Input `image` — Optional calibrated image to display the measurement line.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `image_points` | `[[240.0, 240.0], [400.0, 240.0]]` | Default XY endpoints in the distorted image pixel grid. |
+| `pixel_stddev_px` | `0.0` | Value must be a finite number between 0 and 1000. Independent deviation for pixels omitted from the covariance. |
+| `input_covariance` | `{}` | Named covariance matrix in pixels, radians and camera units. |
+| `coverage_probability` | `0.95` | Value must be a finite number between 0.5 and 0.9999. Central probability for the first-order normal interval. |
+| `minimum_ray_cosine` | `0.05` | Value must be a finite number between 1e-06 and 1. Minimum absolute cosine between each view ray and the plane normal. |
+| `maximum_expanded_uncertainty` | `0.0` | Value must be a finite number at least 0. Largest interval half-width in camera units. Zero skips. |
+
 ## Pixel to physical (`calibration.pixel_to_physical`)
 
 Calibration / Grid and coordinates

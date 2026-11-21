@@ -643,6 +643,7 @@ def builtin_registry():
     )
     from .calibration_revisions import DeclareCalibrationCapture
     from .calibration_capture import AuditCalibrationCapture
+    from .measurement_uncertainty import MeasurePlanarUncertainty
     from .calibration_validation import (
         FitPlanarCalibration,
         InspectPlanarDistance,
@@ -1089,6 +1090,7 @@ def builtin_registry():
         DetectRandomPatternTarget,
         LensCalibration,
         AuditCalibrationCapture,
+        MeasurePlanarUncertainty,
         RegisterCameraPair,
         LoadTargetCalibrationObservations,
         RefineCalibrationTarget,

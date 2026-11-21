@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 127 | 3 | 1 | 131 | 96.9% |
+| 3. 3D imagery and point clouds | 128 | 3 | 0 | 131 | 97.7% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 382 | 7 | 81 | 470 | 81.3% |
+| **Overall** | 383 | 7 | 80 | 470 | 81.5% |
 
 <!-- coverage-summary:end -->
 
@@ -586,7 +586,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S3-127 | Assess calibration capture coverage and parameter stability | calibrateCameraExtended, Rodrigues and projectPoints | Complete | calibration.audit_capture qualifies image and edge coverage, tilt and depth diversity, repeated pinhole fits and held-out validation. The [capture audit examples](<../examples/opencv tools/calibration_capture_audit/README.md>) contrast independent varied captures with a low-residual weak set. |
-| S3-128 | Estimate uncertainty on calibrated image measurements | projectPoints Jacobians and covariance propagation or measured perturbation trials | Planned | Propagate declared pixel, pose and calibration uncertainty into physical dimensions or target positions. Preserve units and parameter correlations, report modeling assumptions, and compare predicted intervals with repeated synthetic and recorded observations. |
+| S3-128 | Estimate uncertainty on calibrated image measurements | projectPoints Jacobian and joint covariance propagation | Complete | calibration.measure_uncertainty estimates planar endpoints and distance with correlated pixel, pose and pinhole lens terms. The [measurement example](<../examples/opencv tools/measurement_uncertainty/README.md>) verifies first-order intervals against repeated synthetic perturbations and compares held-out recorded chessboard observations. |
 | S3-129 | Fit a spatial line or axis to measured 3D points | fitLine on XYZ with a robust distance choice | Partial | Optional Simple3DMeasure 0.1.0.dev2 supplies bounded deterministic consensus/TLS lines, radial residuals, frame/unit-aware angle, separation, probe and observed-span measurements, plus generated controls and recorded section examples with unchanged failure guards. Qualify a native XYZ fitLine adapter with selectable robust distances, retained point IDs, sign ambiguity and coincident/underconstrained rejection. Recorded sections use supplied fixtures and do not establish dimensional accuracy. |
 
 ### Lens-aware object and relative pose

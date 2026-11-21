@@ -379,6 +379,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Lens correction maps](<opencv tools/lens_correction_maps/README.md>) | Load a lens profile, build reusable coordinate maps, and straighten a synthetic distorted grid. |
 | [Lens fit report](<opencv tools/lens_fit_report/README.md>) | Fit six circle-grid views, identify the largest reprojection error, and inspect parameter uncertainty. |
 | [Calibration capture audit](<opencv tools/calibration_capture_audit/README.md>) | Compare capture coverage, repeat-fit stability and held-out errors on a known synthetic lens. |
+| [Calibrated measurement uncertainty](<opencv tools/measurement_uncertainty/README.md>) | Measure a planar distance and propagate correlated pixel, pose and lens uncertainty. |
 | [Lens map displacement](<opencv tools/lens_map_displacement/README.md>) | Measure correction strength and source coverage, and overlay directions on a heatmap. |
 | [Linear channel transform](<opencv tools/channel_transform/README.md>) | Mix BGR channels and derive a grayscale difference image inside a region. |
 | [Local structure tensor and orientation](<opencv tools/structure_tensor/README.md>) | Measure eigenvalues, confidence and unsigned normal/tangent directions on a 16-bit fixture; verify known axes and ambiguous corner/flat/weak probes. |

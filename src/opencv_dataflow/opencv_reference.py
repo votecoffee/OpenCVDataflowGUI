@@ -223,6 +223,7 @@ BINDINGS = {
     "calibration.grid": "findChessboardCorners findChessboardCornersSB findHomography",
     "calibration.lens": "calibrateCameraExtended Rodrigues",
     "calibration.audit_capture": "projectPoints",
+    "calibration.measure_uncertainty": "undistortPoints Rodrigues projectPoints",
     "calibration.validate_lens": (
         "solvePnP projectPoints fisheye.solvePnP fisheye.projectPoints "
         "omnidir.undistortPoints omnidir.projectPoints"

@@ -1,0 +1,334 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Estimate calibrated distance uncertainty",
+      "description": "Original synthetic board by OpenCVDataflowGUI contributors (MIT). Project a known segment to the camera, then recover its length and estimate uncertainty using declared correlated pixel, pose and lens errors.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "camera",
+      "type": "3d.camera",
+      "name": "Distorted pinhole camera",
+      "parameters": {
+        "fx": 724.0,
+        "fy": 710.0,
+        "cx": 319.5,
+        "cy": 239.5,
+        "width": 640,
+        "height": 480,
+        "distortion": [
+          -0.1,
+          0.026,
+          0.001,
+          -0.0007,
+          0.0
+        ],
+        "lens": "pinhole",
+        "xi": 1.0,
+        "units": "mm",
+        "frame": "camera"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plane",
+      "type": "3d.pose",
+      "name": "Tilted board pose",
+      "parameters": {
+        "rvec": [
+          0.23,
+          -0.32,
+          0.14
+        ],
+        "translation": [
+          15.0,
+          -12.0,
+          420.0
+        ],
+        "source_frame": "board",
+        "target_frame": "camera",
+        "units": "mm"
+      },
+      "position": [
+        0,
+        215
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "segment",
+      "type": "3d.points",
+      "name": "Known endpoints",
+      "parameters": {
+        "points": [
+          [
+            -65.0,
+            -22.0,
+            0.0
+          ],
+          [
+            72.0,
+            25.0,
+            0.0
+          ]
+        ],
+        "units": "mm",
+        "frame": "board"
+      },
+      "position": [
+        0,
+        425
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "points",
+        "cloud"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "project",
+      "type": "3d.project",
+      "name": "Generate image coordinates",
+      "parameters": {},
+      "position": [
+        380,
+        290
+      ],
+      "exposed_inputs": [
+        "points",
+        "camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "points",
+        "visible",
+        "projection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Load annotated scene",
+      "parameters": {
+        "path": "assets/tilted_plane.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        370,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "calibration.measure_uncertainty",
+      "name": "Distance with uncertainty",
+      "parameters": {
+        "image_points": [
+          [
+            240.0,
+            240.0
+          ],
+          [
+            400.0,
+            240.0
+          ]
+        ],
+        "pixel_stddev_px": 0.25,
+        "input_covariance": {
+          "terms": [
+            "u0",
+            "u1",
+            "rx",
+            "tz",
+            "fx",
+            "k1",
+            "cx"
+          ],
+          "matrix": [
+            [
+              0.11560000000000002,
+              0.09520000000000002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0408
+            ],
+            [
+              0.09520000000000002,
+              0.11450000000000002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.033600000000000005
+            ],
+            [
+              0.0,
+              0.0,
+              1.6e-05,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.7224999999999999,
+              0.629,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.629,
+              1.0236999999999998,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              3.24e-06,
+              0.0
+            ],
+            [
+              0.0408,
+              0.033600000000000005,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.2169
+            ]
+          ]
+        },
+        "coverage_probability": 0.95,
+        "minimum_ray_cosine": 0.05,
+        "maximum_expanded_uncertainty": 0.0
+      },
+      "position": [
+        800,
+        95
+      ],
+      "exposed_inputs": [
+        "camera",
+        "plane_to_camera",
+        "image_points",
+        "covariance",
+        "image"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "standard_uncertainty",
+        "expanded_uncertainty",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "project",
+      "input": "camera"
+    },
+    {
+      "source": "plane",
+      "output": "transform",
+      "target": "project",
+      "input": "transform"
+    },
+    {
+      "source": "segment",
+      "output": "points",
+      "target": "project",
+      "input": "points"
+    },
+    {
+      "source": "camera",
+      "output": "camera",
+      "target": "measure",
+      "input": "camera"
+    },
+    {
+      "source": "plane",
+      "output": "transform",
+      "target": "measure",
+      "input": "plane_to_camera"
+    },
+    {
+      "source": "project",
+      "output": "points",
+      "target": "measure",
+      "input": "image_points"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "measure",
+      "input": "image"
+    }
+  ]
+}
