@@ -116,6 +116,7 @@ BINDINGS = {
     "3d.aruco_pose": "aruco.ArucoDetector.detectMarkers solvePnP",
     "3d.disparity": "StereoBM.create StereoSGBM.create getValidDisparityROI",
     "3d.binary_disparity": "boxFilter erode",
+    "3d.binary_stereo_costs": "boxFilter",
     "3d.quasi_dense_disparity": (
         "stereo.QuasiDenseStereo.create stereo.QuasiDenseStereo.process "
         "stereo.QuasiDenseStereo.getDenseMatches stereo.QuasiDenseStereo.getSparseMatches"

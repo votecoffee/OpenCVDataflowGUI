@@ -74,6 +74,9 @@ estimate with known truth across the whole field and a selected region.
 [Quasi-dense stereo](quasi_dense_stereo/README.md) checks propagated pairs,
 signed disparity and reconstructed depth in both baseline directions.
 
+[Binary stereo cost diagnostics](binary_stereo_costs/README.md) plots
+candidate costs with the support, tie and minimum for selected stereo pixels.
+
 [Binary Census stereo](binary_stereo/README.md) compares Census/Hamming
 matching and native SGBM on an exposure-shifted pair.
 

@@ -16,16 +16,41 @@ _MAX_PIXELS = 8_388_608
 _MAX_COMPARISONS = 268_435_456
 
 
-def _census(image, size):
+def _census_offsets(size, variant):
+    radius = size // 2
+    offsets = [
+        (y, x)
+        for y in range(-radius, radius + 1)
+        for x in range(-radius, radius + 1)
+        if (y, x) != (0, 0)
+    ]
+    if variant == "symmetric":
+        return offsets[: len(offsets) // 2]
+    if variant == "star":
+        return [(y, x) for y, x in offsets if y == 0 or x == 0 or abs(y) == abs(x)]
+    return offsets
+
+
+def _census(image, size, variant="center"):
     radius = size // 2
     h, w = image.shape
+    yy, xx = h - 2 * radius, w - 2 * radius
     center = image[radius : h - radius, radius : w - radius]
+    if variant == "mean":
+        sums = cv2.boxFilter(image, cv2.CV_32S, (size, size), normalize=False)
+        center = sums[radius : h - radius, radius : w - radius]
+
+    def shifted(y, x):
+        return image[radius + y : radius + y + yy, radius + x : radius + x + xx]
+
     signature = np.zeros(center.shape, np.uint64)
-    for y in range(size):
-        for x in range(size):
-            if (y, x) != (radius, radius):
-                signature <<= 1
-                signature |= image[y : y + center.shape[0], x : x + center.shape[1]] < center
+    for y, x in _census_offsets(size, variant):
+        sample = shifted(y, x)
+        reference = shifted(-y, -x) if variant == "symmetric" else center
+        if variant == "mean":
+            sample = np.multiply(sample, size**2, dtype=np.uint16)
+        signature <<= 1
+        signature |= sample < reference
     result = np.zeros(image.shape, np.uint64)
     result[radius : h - radius, radius : w - radius] = signature
     return result
@@ -113,6 +138,23 @@ def _cross_checked(valid, disparity, reverse, tolerance):
     return checked
 
 
+def _census_pair(inputs, payloads):
+    left, right = (gray_image(inputs[name], (np.uint8,)) for name in ("left", "right"))
+    if left.shape != right.shape:
+        raise ValidationError("Rectified stereo images must have the same dimensions")
+    if left.size > _MAX_PIXELS:
+        raise ValidationError("Binary stereo inputs are limited to 8,388,608 pixels each")
+    check_stereo_grids(inputs, payloads, left.shape[::-1])
+    tickets = [
+        payloads[side].get("ticket")
+        for side in ("left", "right", "left_mask", "right_mask")
+        if side in inputs
+    ]
+    if len({ticket_key(ticket) for ticket in tickets if ticket is not None}) > 1:
+        raise ValidationError("Stereo input images and masks must refer to the same ticket")
+    return left, right
+
+
 class BinaryStereoDisparity(Tool3D):
     type_id, title, subtype = "3d.binary_disparity", "Binary Census stereo disparity", "Stereo"
     inputs = (
@@ -182,19 +224,7 @@ class BinaryStereoDisparity(Tool3D):
             raise ValidationError("Left-right check must be a boolean", "left_right_check")
 
     def process(self, inputs):
-        left, right = (gray_image(inputs[name], (np.uint8,)) for name in ("left", "right"))
-        if left.shape != right.shape:
-            raise ValidationError("Rectified stereo images must have the same dimensions")
-        if left.size > _MAX_PIXELS:
-            raise ValidationError("Binary stereo inputs are limited to 8,388,608 pixels each")
-        check_stereo_grids(inputs, self.input_payloads, left.shape[::-1])
-        tickets = [
-            self.input_payloads[side].get("ticket")
-            for side in ("left", "right", "left_mask", "right_mask")
-            if side in inputs
-        ]
-        if len({ticket_key(ticket) for ticket in tickets if ticket is not None}) > 1:
-            raise ValidationError("Stereo input images and masks must refer to the same ticket")
+        left, right = _census_pair(inputs, self.input_payloads)
         p = self.parameters
         census, aggregation = int(p["census_size"]), int(p["aggregation_size"])
         footprint = census + aggregation - 1

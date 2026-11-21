@@ -628,6 +628,7 @@ def builtin_registry():
     from .basic_processing import BASIC_PROCESSING_BLOCKS
     from .batch_inference import BATCH_INFERENCE_BLOCKS
     from .binary_stereo import BinaryStereoDisparity
+    from .binary_stereo_costs import InspectBinaryStereoCosts
     from .blob_detection import SimpleBlobDetection
     from .blur_estimation import EstimateMotionBlur
     from .calibration import (
@@ -1404,6 +1405,7 @@ def builtin_registry():
         RegisterRGBD,
         WarpRGBDByPose,
         BinaryStereoDisparity,
+        InspectBinaryStereoCosts,
         QuasiDenseDisparity,
         FilterDisparitySpeckles,
         FilterExternalDisparity,

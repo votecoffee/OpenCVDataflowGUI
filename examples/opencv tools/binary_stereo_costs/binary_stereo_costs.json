@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Inspect the evidence behind a stereo match",
+      "description": "Original synthetic rectified pair by OpenCVDataflowGUI contributors (MIT). Probe 1 has texture and a true 8 px match. Probe 2 is flat and ambiguous. Probe 3 lands in a masked right-view occlusion at 8 px.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Left view",
+      "parameters": {
+        "path": "assets/left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "stereo-probe-pair"
+      }
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Right view",
+      "parameters": {
+        "path": "assets/right.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "stereo-probe-pair"
+      }
+    },
+    {
+      "id": "right_valid",
+      "type": "region.shape",
+      "name": "Exclude right occlusion",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          164,
+          30,
+          4,
+          11
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": true
+      },
+      "position": [
+        180,
+        465
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "center",
+      "type": "3d.binary_stereo_costs",
+      "name": "Center Census cost curves",
+      "parameters": {
+        "search_mode": "manual",
+        "min_disparity": 0,
+        "num_disparities": 16,
+        "minimum_depth": 0.1,
+        "maximum_depth": 5.0,
+        "census_size": "5",
+        "aggregation_size": 5,
+        "minimum_confidence": 0.05,
+        "probe_points": [
+          [
+            52,
+            35
+          ],
+          [
+            112,
+            35
+          ],
+          [
+            174,
+            35
+          ]
+        ],
+        "census_variant": "center",
+        "plot_probe": 1
+      },
+      "position": [
+        400,
+        90
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rectification",
+        "left_mask",
+        "right_mask",
+        "points"
+      ],
+      "exposed_outputs": [
+        "curves",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "symmetric",
+      "type": "3d.binary_stereo_costs",
+      "name": "Opposite-pair cost curves",
+      "parameters": {
+        "search_mode": "manual",
+        "min_disparity": 0,
+        "num_disparities": 16,
+        "minimum_depth": 0.1,
+        "maximum_depth": 5.0,
+        "census_size": "5",
+        "aggregation_size": 5,
+        "minimum_confidence": 0.05,
+        "probe_points": [
+          [
+            52,
+            35
+          ],
+          [
+            112,
+            35
+          ],
+          [
+            174,
+            35
+          ]
+        ],
+        "census_variant": "symmetric",
+        "plot_probe": 3
+      },
+      "position": [
+        400,
+        370
+      ],
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rectification",
+        "left_mask",
+        "right_mask",
+        "points"
+      ],
+      "exposed_outputs": [
+        "curves",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "right",
+      "output": "image",
+      "target": "right_valid",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "center",
+      "input": "left"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "center",
+      "input": "right"
+    },
+    {
+      "source": "right_valid",
+      "output": "mask",
+      "target": "center",
+      "input": "right_mask"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "symmetric",
+      "input": "left"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "symmetric",
+      "input": "right"
+    },
+    {
+      "source": "right_valid",
+      "output": "mask",
+      "target": "symmetric",
+      "input": "right_mask"
+    }
+  ]
+}

@@ -128,7 +128,7 @@ IMPLEMENTATION_MODULES = {
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
     "rotating_panorama panorama_points",
     "stereo": (
-        "stereo3d binary_stereo stereo_color disparity_speckles disparity_wls "
+        "stereo3d binary_stereo binary_stereo_costs stereo_color disparity_speckles disparity_wls "
         "disparity_evaluation quasi_dense_stereo collinear_rectification"
     ),
     "ccm": "color_calibration",

@@ -117,16 +117,10 @@ def _footprint_mask(shape, native, minimum, maximum, block_size, rois, masks):
     return support, roi
 
 
-def plan_disparity_search(inputs, parameters, shape, block_size, *, native_matcher=True):
+def disparity_search_interval(rec, parameters, width, *, native_matcher=True):
     step = 16 if native_matcher else 1
     lower_count, upper_count = (16, 4096) if native_matcher else (2, 128)
-    h, w = shape
-    size = (w, h)
-    rec = inputs.get("rectification")
-    calibrated_rois = rectification_rois(rec, size)
-
-    depth_mode = parameters["search_mode"] == "depth"
-    if depth_mode:
+    if parameters["search_mode"] == "depth":
         minimum, count, expected = _depth_range(rec, parameters, step)
     else:
         minimum = integer(parameters["min_disparity"], "Minimum disparity", -4096, 4096)
@@ -135,12 +129,25 @@ def plan_disparity_search(inputs, parameters, shape, block_size, *, native_match
         )
         expected = None
     maximum = minimum + count - 1
-    if native_matcher and (count % step or count >= w):
+    if native_matcher and (count % step or count >= width):
         raise ValidationError("num_disparities must be a multiple of 16 smaller than image width")
-    if not native_matcher and (not lower_count <= count <= upper_count or count >= w):
+    if not native_matcher and (not lower_count <= count <= upper_count or count >= width):
         raise ValidationError("Binary stereo requires 2..128 disparities and a wider image")
     if minimum < -2047 or maximum > 2047:
         raise ValidationError("Disparity search exceeds the signed fixed-point range")
+    return minimum, count, expected
+
+
+def plan_disparity_search(inputs, parameters, shape, block_size, *, native_matcher=True):
+    h, w = shape
+    size = (w, h)
+    rec = inputs.get("rectification")
+    calibrated_rois = rectification_rois(rec, size)
+    minimum, count, expected = disparity_search_interval(
+        rec, parameters, w, native_matcher=native_matcher
+    )
+    maximum = minimum + count - 1
+    depth_mode = parameters["search_mode"] == "depth"
 
     report = {
         "model": "stereo_disparity_search_v1",

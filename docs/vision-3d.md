@@ -255,6 +255,19 @@ reverse check also tests the winning correspondence. Use Valid Mask
 to identify disparities retained after both checks.
 [Known-shift comparison with SGBM](<../examples/opencv tools/binary_stereo/README.md>)
 
+**Inspect binary stereo costs** reports the Hamming cost at each signed
+disparity for up to 64 selected left pixels. The center Census variant uses
+the dense matcher's descriptors and search interval. Mean Census compares
+neighbors to the local mean. Symmetric Census compares opposite pixels.
+Star Census uses center comparisons along the axes and diagonals. All use
+the full square footprint for ROI and mask support.
+
+Each cost row records the candidate's right pixel and whether its footprint
+is measurable. The block reports ties and the best-to-next cost gap. It
+selects a disparity only when the full search is supported and the minimum
+is unique and meets the gap threshold. Select a probe to plot its curve.
+[Binary stereo cost diagnostics example](<../examples/opencv tools/binary_stereo_costs/README.md>)
+
 **Quasi-dense stereo disparity** grows OpenCV corner seeds into matching
 pixel pairs. It reports signed horizontal disparity, vertical offsets,
 eligible left support, and a validity mask in the rectified left grid.

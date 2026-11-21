@@ -193,6 +193,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [External stereo disparity filtering](<opencv tools/external_disparity_wls/README.md>) | Smooth a noisy disparity step and compare paired confidence against known occlusion and holes. |
 | [Disparity speckle removal](<opencv tools/disparity_speckles/README.md>) | Clean equivalent fixed-point and signed float maps and check the exact removed footprint. |
 | [Stereo disparity evaluation](<opencv tools/disparity_reference/README.md>) | Compare a synthetic estimate against fixed-point truth and inspect whole-field and regional error, coverage and confidence. |
+| [Binary stereo cost diagnostics](<opencv tools/binary_stereo_costs/README.md>) | Plot candidate costs for a textured match, a flat tie and a masked right-view occlusion. |
 | [Binary Census stereo](<opencv tools/binary_stereo/README.md>) | Compare integer Census matching and native SGBM on a known shift, an exposure change and a masked patch. |
 | [Scan-to-mesh inspection](<custom tools/scan_mesh_comparison/README.md>) | Inspect exact offsets from a nominal panel, separating dimensional defects, boundary hits and unsupported rows. |
 | [Cloud dimensional comparison](<custom tools/cloud_dimensional_comparison/README.md>) | Inspect known positive and negative scan deviations and distinguish dimensional defects from missing and extra points. |
