@@ -2661,6 +2661,30 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | --- | --- | --- |
 | `model` | `{}` | Stored color correction JSON. A wired model takes precedence. |
 
+## Audit calibration capture set (`calibration.audit_capture`)
+
+Calibration / Lens distortion
+
+Inputs: `fit_report` (data), `repeat_fit_report` (data, optional), `holdout` (data, optional), `repeat_holdout` (data, optional).
+
+Input `fit_report` — Fit report from Calibrate lens.
+
+Input `repeat_fit_report` — Optional second fit from independently acquired views.
+
+Input `holdout` — Optional Validate lens calibration report for the primary fit.
+
+Input `repeat_holdout` — Optional validation of the same held-out view with the repeat fit.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_views` | `6` | Value must be a whole number at least 3. Minimum number of poses in each connected capture set. |
+| `minimum_grid_fraction` | `0.5` | Value must be a finite number between 0 and 1. Minimum occupancy of the 8 × 6 image grid. |
+| `minimum_edge_fraction` | `0.4` | Value must be a finite number between 0 and 1. Minimum occupancy of the outer ring of the image grid. |
+| `minimum_tilt_span_degrees` | `15.0` | Value must be a finite number between 0 and 180. Minimum span in each of the camera X/Y normal tilt angles. |
+| `minimum_depth_span_fraction` | `0.15` | Value must be a finite number at least 0. Board-center depth range divided by its median. |
+| `maximum_repeat_drift_pixels` | `2.0` | Value must be a finite number at least 0. Maximum projection drift over 63 sampled camera rays. |
+| `maximum_holdout_rms_pixels` | `0.5` | Value must be a finite number at least 0. Maximum lens validation RMS on the held-out image. |
+
 ## Detect ChArUco board (`calibration.charuco`)
 
 Calibration / Grid and coordinates

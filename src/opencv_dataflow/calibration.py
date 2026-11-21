@@ -6,6 +6,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from .calibration_capture import capture_geometry
 from .calibration_revisions import (
     REVISION,
     SELECTOR_DEFAULTS,
@@ -539,6 +540,12 @@ class LensCalibration(GridCalibrationBlock):
             pose_sd,
             errors,
         )
+        report["capture_optics"] = {
+            key: calibration[key] for key in ("camera_matrix", "distortion", "image_size")
+        }
+        report["capture_geometry"] = capture_geometry(
+            image_views, object_views, image_size, report["views"]
+        )
         worst = report["worst_view_rms_pixels"]
         view_limit = float(p["max_view_rms_pixels"])
         reasons = []
@@ -560,6 +567,7 @@ class LensCalibration(GridCalibrationBlock):
                     ),
                 }
             )
+        report["passed"] = not reasons
         error_ratio = max(rms / maximum, worst / view_limit if view_limit else 0)
         return Result(
             {

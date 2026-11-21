@@ -642,6 +642,7 @@ def builtin_registry():
         Undistort,
     )
     from .calibration_revisions import DeclareCalibrationCapture
+    from .calibration_capture import AuditCalibrationCapture
     from .calibration_validation import (
         FitPlanarCalibration,
         InspectPlanarDistance,
@@ -1087,6 +1088,7 @@ def builtin_registry():
         GenerateRandomPatternTarget,
         DetectRandomPatternTarget,
         LensCalibration,
+        AuditCalibrationCapture,
         RegisterCameraPair,
         LoadTargetCalibrationObservations,
         RefineCalibrationTarget,

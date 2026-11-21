@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Audit lens calibration captures",
+      "description": "Original synthetic circle grids by OpenCVDataflowGUI contributors (MIT). The near-frontal views have low fit RMS and weak capture geometry.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "calibration.lens",
+      "name": "Fit weak",
+      "parameters": {
+        "detector": "circles_symmetric",
+        "normalize": true,
+        "exhaustive": true,
+        "accuracy": false,
+        "adaptive_threshold": true,
+        "fast_check": false,
+        "subpixel_window": 11,
+        "subpixel_iterations": 30,
+        "subpixel_epsilon": 0.001,
+        "circle_polarity": "dark",
+        "circle_clustering": false,
+        "circle_max_rectified_distance": 0.5,
+        "circle_min_area": 25.0,
+        "circle_max_area": 5000.0,
+        "circle_min_distance": 10.0,
+        "circle_min_threshold": 50.0,
+        "circle_max_threshold": 220.0,
+        "circle_threshold_step": 10.0,
+        "circle_min_repeatability": 2,
+        "circle_min_circularity": 0.0,
+        "circle_min_convexity": 0.95,
+        "circle_min_inertia_ratio": 0.1,
+        "use_intrinsic_guess": false,
+        "fix_principal_point": false,
+        "fix_aspect_ratio": false,
+        "zero_tangent": false,
+        "rational_model": false,
+        "thin_prism_model": false,
+        "tilted_model": false,
+        "fix_k1": false,
+        "fix_k2": false,
+        "fix_k3": true,
+        "fix_k4": false,
+        "fix_k5": false,
+        "fix_k6": false,
+        "solver": "lu",
+        "initial_camera_matrix": [],
+        "initial_distortion": [],
+        "max_iterations": 30,
+        "epsilon": 2.220446049250313e-16,
+        "image_paths": [
+          "assets/weak-01.png",
+          "assets/weak-02.png",
+          "assets/weak-03.png",
+          "assets/weak-04.png",
+          "assets/weak-05.png",
+          "assets/weak-06.png",
+          "assets/weak-07.png"
+        ],
+        "path_base": "project",
+        "columns": 8,
+        "rows": 6,
+        "spacing": 14.0,
+        "units": "mm",
+        "max_rms_pixels": 0.5,
+        "max_view_rms_pixels": 0.0
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "observations"
+      ],
+      "exposed_outputs": [
+        "calibration",
+        "rms",
+        "fit_report",
+        "worst_view_rms"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "audit",
+      "type": "calibration.audit_capture",
+      "name": "Evaluate capture quality",
+      "parameters": {
+        "minimum_views": 6,
+        "minimum_grid_fraction": 0.5,
+        "minimum_edge_fraction": 0.4,
+        "minimum_tilt_span_degrees": 15.0,
+        "minimum_depth_span_fraction": 0.15,
+        "maximum_repeat_drift_pixels": 2.0,
+        "maximum_holdout_rms_pixels": 0.5
+      },
+      "position": [
+        760,
+        0
+      ],
+      "exposed_inputs": [
+        "fit_report",
+        "repeat_fit_report",
+        "holdout",
+        "repeat_holdout"
+      ],
+      "exposed_outputs": [
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "fit",
+      "output": "fit_report",
+      "target": "audit",
+      "input": "fit_report"
+    }
+  ]
+}

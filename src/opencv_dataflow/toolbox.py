@@ -98,7 +98,7 @@ IMPLEMENTATION_MODULES = {
         "tiff_page_access"
     ),
     "calib": (
-        "calibration calibration_validation chessboard_quality hand_eye multicamera_calibration "
+        "calibration calibration_capture calibration_validation chessboard_quality hand_eye multicamera_calibration "
         "random_pattern remap_maps "
         "robot_world workplane"
     ),

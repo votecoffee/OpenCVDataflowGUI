@@ -16,6 +16,7 @@ from .calibration import (
     map_points,
     require_planar_grid,
 )
+from .calibration_capture import observation_id, optics_id
 from .calibration_revisions import REVISION, check_capture
 from .charuco import observation_board, observation_points
 from .core import Block, Port, Result
@@ -257,6 +258,7 @@ class ValidateLensCalibration(GridCalibrationBlock):
         report = {
             "model": report_model,
             "status": "measured",
+            "passed": not reasons,
             "image_size": image_size,
             "pose_method": method,
             "pose_direction": "board_to_camera",
@@ -279,6 +281,9 @@ class ValidateLensCalibration(GridCalibrationBlock):
                 )
             ],
         }
+        if not wide_angle:
+            report["optics_sha256"] = optics_id(camera, distortion, image_size)
+            report["observation_sha256"] = observation_id(observed)
         if board is not None:
             report["board"] = board
             report["worst_corner_id"] = corner_ids[worst]

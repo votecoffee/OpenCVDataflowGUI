@@ -221,7 +221,8 @@ BINDINGS = {
     "calibration.charuco": "aruco.CharucoDetector.detectBoard",
     "calibration.chessboard_quality": "findChessboardCornersSB estimateChessboardSharpness",
     "calibration.grid": "findChessboardCorners findChessboardCornersSB findHomography",
-    "calibration.lens": "calibrateCameraExtended",
+    "calibration.lens": "calibrateCameraExtended Rodrigues",
+    "calibration.audit_capture": "projectPoints",
     "calibration.validate_lens": (
         "solvePnP projectPoints fisheye.solvePnP fisheye.projectPoints "
         "omnidir.undistortPoints omnidir.projectPoints"

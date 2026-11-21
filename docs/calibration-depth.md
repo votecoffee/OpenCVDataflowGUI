@@ -111,6 +111,13 @@ the input order. Set **Max view RMS pixels** to apply a separate limit
 to the worst view. Zero leaves that check off. The overall and worst-view
 checks emit distinct failure reasons. [Lens fit report example](<../examples/opencv tools/lens_fit_report/README.md>)
 
+Connect the fit report to **Audit calibration capture set** to check image and
+edge coverage and whether captures varied in tilt and distance. An optional
+repeat fit quantifies differences in the fitted lens parameters and pixel
+projections on common camera rays. Validate both fits on a separate image
+using **Validate lens calibration** and connect those reports to the audit.
+[Calibration capture audit example](<../examples/opencv tools/calibration_capture_audit/README.md>)
+
 Connect the calibration output to Undistort lens along with the image. The tool
 checks matrix validity, image dimensions and its reprojection-error limit. Save
 and reload the lens profile to avoid solving the dataset on every runtime cycle.
