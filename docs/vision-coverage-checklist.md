@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 21 | 3 | 78 | 102 | 20.6% |
-| **Overall** | 387 | 4 | 79 | 470 | 82.3% |
+| 4. Selected contrib | 22 | 3 | 77 | 102 | 21.6% |
+| **Overall** | 388 | 4 | 78 | 470 | 82.6% |
 
 <!-- coverage-summary:end -->
 
@@ -612,7 +612,7 @@ fixture or result needed to close the item.
 | S4-07 | Structural similarity | quality.QualitySSIM_compute | Complete | inspect.image_quality. Compare aligned images with a similarity map and selected reductions. |
 | S4-08 | Gradient-based image quality | quality.QualityGMSD_compute | Complete | inspect.gmsd_quality. Emits native half-resolution gradient similarity maps with source coordinate transforms. Supports grayscale and per-channel deviation, mask/region reductions and a maximum deviation check. Verified against independent Prewitt calculations and saved identical, blurred and noisy image comparisons. |
 | S4-09 | Binary perceptual hashes | img_hash.AverageHash/PHash/BlockMeanHash/MarrHildrethHash | Complete | cv.image_hash, inspect.compare_image_hashes. Exact and near-duplicate comparison with declared hash type. |
-| S4-10 | Color and radial perceptual hashes | img_hash.ColorMomentHash, RadialVarianceHash | Planned | Preserve native descriptor encoding and verify distance for color moments and similarity for radial variance. Check score direction and thresholds on rotated, resampled and changed fixtures. |
+| S4-10 | Color and radial perceptual hashes | img_hash.ColorMomentHash, RadialVarianceHash | Complete | cv.image_hash and inspect.compare_perceptual_descriptors retain native float64 and uint8 coefficients. Qualify opposing threshold directions, radial settings and degenerate comparisons. Two saved projects test identical, rotated, resampled and changed parts. |
 | S4-11 | Fit a color correction model | ccm.ColorCorrectionModel fit | Complete | calibration.fit_ccm. Fit a correction on declared chart samples and report residuals. |
 | S4-12 | Gray-world white balance | xphoto.createGrayworldWB | Planned | Verify neutral patch recovery and saturation handling. |
 | S4-13 | Fast global edge-preserving smoothing | ximgproc.createFastGlobalSmootherFilter | Planned | Remove small intensity variations while preserving measured edges on a selected image. |

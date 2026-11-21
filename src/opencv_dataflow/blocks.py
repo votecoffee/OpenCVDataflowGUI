@@ -779,7 +779,7 @@ def builtin_registry():
     from .image_codecs import DecodeImage, EncodeImage
     from .image_colorize import ColorizeScalar
     from .image_correlation import CompareAlignedImages
-    from .image_hash import CompareImageHashes, ComputeImageHash
+    from .image_hash import CompareImageHashes, ComparePerceptualDescriptors, ComputeImageHash
     from .image_layout import JoinImages, PasteImagePatch, TileImage
     from .image_mixtures import IMAGE_EM_BLOCKS
     from .image_noise import AddImageNoise, RandomImage
@@ -1264,6 +1264,7 @@ def builtin_registry():
         MeasureSlantedEdge,
         ComputeImageHash,
         CompareImageHashes,
+        ComparePerceptualDescriptors,
         MeasureBRISQUE,
         CompareHistograms,
         *COLOR_MEASUREMENT_BLOCKS,

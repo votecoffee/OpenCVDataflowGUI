@@ -317,9 +317,14 @@ BINDINGS = {
     "cv.image_hash": (
         "img_hash.AverageHash_create img_hash.PHash_create "
         "img_hash.BlockMeanHash_create img_hash.MarrHildrethHash_create "
+        "img_hash.ColorMomentHash_create img_hash.RadialVarianceHash_create "
         "img_hash.ImgHashBase.compute"
     ),
     "inspect.compare_image_hashes": "norm",
+    "inspect.compare_perceptual_descriptors": (
+        "img_hash.ColorMomentHash_create img_hash.RadialVarianceHash_create "
+        "img_hash.ImgHashBase.compare"
+    ),
     "inspect.focus": "Laplacian Sobel meanStdDev mean",
     "cv.image_arithmetic": "add subtract multiply divide min max absdiff",
     "cv.image_pyramid": "pyrDown",

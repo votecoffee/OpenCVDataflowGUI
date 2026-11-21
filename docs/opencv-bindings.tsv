@@ -643,7 +643,7 @@ P2	function	cv2.img_hash.BlockMeanHash_create	literal reference	-
 P2	class	cv2.img_hash.ColorMomentHash	no static reference	-
 P2	function	cv2.img_hash.colorMomentHash	no static reference	-
 P2	method	cv2.img_hash.ColorMomentHash.create	method name only	-
-P2	function	cv2.img_hash.ColorMomentHash_create	no static reference	-
+P2	function	cv2.img_hash.ColorMomentHash_create	literal reference	-
 P2	class	cv2.img_hash.ImgHashBase	no static reference	-
 P2	method	cv2.img_hash.ImgHashBase.compare	method name only	-
 P2	method	cv2.img_hash.ImgHashBase.compute	method name only	-
@@ -665,7 +665,7 @@ P2	method	cv2.img_hash.RadialVarianceHash.getNumOfAngleLine	no static reference	
 P2	method	cv2.img_hash.RadialVarianceHash.getSigma	no static reference	-
 P2	method	cv2.img_hash.RadialVarianceHash.setNumOfAngleLine	no static reference	-
 P2	method	cv2.img_hash.RadialVarianceHash.setSigma	no static reference	-
-P2	function	cv2.img_hash.RadialVarianceHash_create	no static reference	-
+P2	function	cv2.img_hash.RadialVarianceHash_create	literal reference	-
 P2	function	cv2.inpaint	literal reference	-
 P2	class	cv2.ml.ANN_MLP	no static reference	-
 P2	method	cv2.ml.ANN_MLP.create	method name only	-

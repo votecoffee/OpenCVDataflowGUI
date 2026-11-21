@@ -5015,10 +5015,12 @@ Input `image` — 8-bit grayscale or color. Crop upstream to hash a selected win
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
-| `method` | `"perceptual"` | `average`, `perceptual`, `block_mean`, `marr_hildreth` OpenCV binary hash. Compare only hashes made with the same method and settings. |
+| `method` | `"perceptual"` | `average`, `perceptual`, `block_mean`, `marr_hildreth`, `color_moment`, `radial_variance` For Color Moment and Radial Variance use Compare perceptual descriptors. |
 | `block_mode` | `"0"` | `0`, `1` 0 uses disjoint blocks. 1 uses overlapping blocks. |
 | `marr_alpha` | `2.0` | Value must be a finite number between 0.5 and 4. Marr–Hildreth wavelet scale factor. |
 | `marr_scale` | `1.0` | Value must be a finite number between 0 and 2. Marr–Hildreth wavelet scale level. |
+| `radial_sigma` | `1.0` | Value must be a finite number between 1 and 32. Gaussian blur standard deviation in pixels for Radial Variance. |
+| `radial_angle_lines` | `180` | Value must be a whole number between 40 and 1440. Number of projection angles for Radial Variance. |
 
 ## Create image metadata (`cv.image_metadata`)
 
@@ -8900,6 +8902,18 @@ Inputs: `sample` (data), `reference` (data, optional).
 | `lightness_weight` | `1.0` | CIEDE2000 kL divisor. |
 | `chroma_weight` | `1.0` | CIEDE2000 kC divisor. |
 | `hue_weight` | `1.0` | CIEDE2000 kH divisor. |
+
+## Compare perceptual descriptors (`inspect.compare_perceptual_descriptors`)
+
+Inspection / Image hashes
+
+Inputs: `sample` (data), `reference` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `check_threshold` | `false` |  |
+| `maximum_color_distance` | `1.0` | Value must be a finite number at least 0. Pass at or below this native Color Moment distance. |
+| `minimum_radial_similarity` | `0.8` | Value must be a finite number between 0 and 1. Pass at or above this Radial Variance correlation. |
 
 ## Connected components (`inspect.components`)
 

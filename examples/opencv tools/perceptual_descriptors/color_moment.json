@@ -1,0 +1,423 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "comment",
+      "type": "layout.comment",
+      "name": "Color Moment descriptors",
+      "description": "Measure Color Moment scores for identical, rotated, resampled and different parts. The original synthetic part images are covered by this repository's MIT license.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference part",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_hash",
+      "type": "cv.image_hash",
+      "name": "Reference part hash",
+      "parameters": {
+        "method": "color_moment",
+        "block_mode": "0",
+        "marr_alpha": 2.0,
+        "marr_scale": 1.0,
+        "radial_sigma": 1.0,
+        "radial_angle_lines": 180
+      },
+      "position": [
+        270,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "hash"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_compare",
+      "type": "inspect.compare_perceptual_descriptors",
+      "name": "Identical pair",
+      "description": "Measure Color Moment distance or Radial Variance similarity.",
+      "parameters": {
+        "check_threshold": false,
+        "maximum_color_distance": 1.0,
+        "minimum_radial_similarity": 0.8
+      },
+      "position": [
+        575,
+        0
+      ],
+      "exposed_inputs": [
+        "sample",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rotated",
+      "type": "input.file",
+      "name": "Rotated 15 degrees",
+      "parameters": {
+        "path": "assets/rotated.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        185
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rotated_hash",
+      "type": "cv.image_hash",
+      "name": "Rotated 15 degrees hash",
+      "parameters": {
+        "method": "color_moment",
+        "block_mode": "0",
+        "marr_alpha": 2.0,
+        "marr_scale": 1.0,
+        "radial_sigma": 1.0,
+        "radial_angle_lines": 180
+      },
+      "position": [
+        270,
+        185
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "hash"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rotated_compare",
+      "type": "inspect.compare_perceptual_descriptors",
+      "name": "Rotated 15 degrees comparison",
+      "description": "Measure Color Moment distance or Radial Variance similarity.",
+      "parameters": {
+        "check_threshold": false,
+        "maximum_color_distance": 1.0,
+        "minimum_radial_similarity": 0.8
+      },
+      "position": [
+        575,
+        185
+      ],
+      "exposed_inputs": [
+        "sample",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "resampled",
+      "type": "input.file",
+      "name": "Resampled to 173 \u00d7 173",
+      "parameters": {
+        "path": "assets/resampled.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        370
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "resampled_hash",
+      "type": "cv.image_hash",
+      "name": "Resampled to 173 \u00d7 173 hash",
+      "parameters": {
+        "method": "color_moment",
+        "block_mode": "0",
+        "marr_alpha": 2.0,
+        "marr_scale": 1.0,
+        "radial_sigma": 1.0,
+        "radial_angle_lines": 180
+      },
+      "position": [
+        270,
+        370
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "hash"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "resampled_compare",
+      "type": "inspect.compare_perceptual_descriptors",
+      "name": "Resampled to 173 \u00d7 173 comparison",
+      "description": "Measure Color Moment distance or Radial Variance similarity.",
+      "parameters": {
+        "check_threshold": false,
+        "maximum_color_distance": 1.0,
+        "minimum_radial_similarity": 0.8
+      },
+      "position": [
+        575,
+        370
+      ],
+      "exposed_inputs": [
+        "sample",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "changed",
+      "type": "input.file",
+      "name": "Different part",
+      "parameters": {
+        "path": "assets/changed.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        555
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "changed_hash",
+      "type": "cv.image_hash",
+      "name": "Different part hash",
+      "parameters": {
+        "method": "color_moment",
+        "block_mode": "0",
+        "marr_alpha": 2.0,
+        "marr_scale": 1.0,
+        "radial_sigma": 1.0,
+        "radial_angle_lines": 180
+      },
+      "position": [
+        270,
+        555
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "hash"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "changed_compare",
+      "type": "inspect.compare_perceptual_descriptors",
+      "name": "Different part comparison",
+      "description": "Measure Color Moment distance or Radial Variance similarity.",
+      "parameters": {
+        "check_threshold": false,
+        "maximum_color_distance": 1.0,
+        "minimum_radial_similarity": 0.8
+      },
+      "position": [
+        575,
+        555
+      ],
+      "exposed_inputs": [
+        "sample",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_hash",
+      "input": "image"
+    },
+    {
+      "source": "reference_hash",
+      "output": "hash",
+      "target": "reference_compare",
+      "input": "reference"
+    },
+    {
+      "source": "reference_hash",
+      "output": "hash",
+      "target": "reference_compare",
+      "input": "sample"
+    },
+    {
+      "source": "rotated",
+      "output": "image",
+      "target": "rotated_hash",
+      "input": "image"
+    },
+    {
+      "source": "reference_hash",
+      "output": "hash",
+      "target": "rotated_compare",
+      "input": "reference"
+    },
+    {
+      "source": "rotated_hash",
+      "output": "hash",
+      "target": "rotated_compare",
+      "input": "sample"
+    },
+    {
+      "source": "resampled",
+      "output": "image",
+      "target": "resampled_hash",
+      "input": "image"
+    },
+    {
+      "source": "reference_hash",
+      "output": "hash",
+      "target": "resampled_compare",
+      "input": "reference"
+    },
+    {
+      "source": "resampled_hash",
+      "output": "hash",
+      "target": "resampled_compare",
+      "input": "sample"
+    },
+    {
+      "source": "changed",
+      "output": "image",
+      "target": "changed_hash",
+      "input": "image"
+    },
+    {
+      "source": "reference_hash",
+      "output": "hash",
+      "target": "changed_compare",
+      "input": "reference"
+    },
+    {
+      "source": "changed_hash",
+      "output": "hash",
+      "target": "changed_compare",
+      "input": "sample"
+    }
+  ]
+}
