@@ -199,6 +199,9 @@ BINDINGS = {
     "3d.stereo_calibrate": "stereoCalibrateExtended",
     "3d.validate_stereo_calibration": "solvePnP solvePnPRefineLM projectPoints",
     "3d.wide_stereo_calibrate": "fisheye.stereoCalibrate omnidir.stereoCalibrate",
+    "3d.omnidir_stereo_reconstruct": (
+        "omnidir.stereoReconstruct omnidir.initUndistortRectifyMap omnidir.stereoRectify"
+    ),
     "3d.stereo_rectify": (
         "stereoRectify fisheye.stereoRectify omnidir.stereoRectify "
         "initUndistortRectifyMap fisheye.initUndistortRectifyMap "

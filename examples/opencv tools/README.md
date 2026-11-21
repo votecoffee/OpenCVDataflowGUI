@@ -100,6 +100,9 @@ model and checks a separate target near the sensor edge.
 [Calibration revisions](calibration_revisions/README.md) demonstrates named
 rig versions, archived maps and a rejected capture mismatch.
 
+[Omnidirectional stereo reconstruction](omnidir_stereo_reconstruction/README.md)
+compares perspective and angular metric reconstruction of the same scene.
+
 [Wide-angle stereo](wide_angle_stereo/README.md) uses both lens families
 with held-out perspective rectification and metric reconstruction.
 

@@ -117,6 +117,24 @@ def _footprint_mask(shape, native, minimum, maximum, block_size, rois, masks):
     return support, roi
 
 
+def supported_disparity_pixels(disparity, left_allowed, right_allowed, *, band_pixels=262_144):
+    """Find left samples with two valid interpolation taps at the matching right pixel."""
+    width = disparity.shape[1]
+    guides, left = disparity.ravel(), left_allowed.ravel()
+    bands = []
+    for start in range(0, disparity.size, band_pixels):
+        band = slice(start, start + band_pixels)
+        points = np.flatnonzero(left[band] & np.isfinite(guides[band])) + start
+        y, x = np.divmod(points, width)
+        xr = x - guides[points].astype(np.float64)
+        in_bounds = (xr >= 0) & (xr <= width - 1)
+        y, xr, points = y[in_bounds], xr[in_bounds], points[in_bounds]
+        low, high = np.floor(xr).astype(np.intp), np.ceil(xr).astype(np.intp)
+        supported = right_allowed[y, low] & right_allowed[y, high]
+        bands.append(points[supported].astype(np.int32))
+    return np.concatenate(bands)
+
+
 def disparity_search_interval(rec, parameters, width, *, native_matcher=True):
     step = 16 if native_matcher else 1
     lower_count, upper_count = (16, 4096) if native_matcher else (2, 128)

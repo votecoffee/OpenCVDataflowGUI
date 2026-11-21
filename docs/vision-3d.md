@@ -351,6 +351,16 @@ for the existing disparity and cloud blocks. Fisheye exposes balance and FOV
 scale. Omnidirectional rectification exposes the shared output focal length.
 [Input format and examples](<../examples/opencv tools/wide_angle_stereo/README.md>)
 
+**Reconstruct omnidirectional stereo** takes raw 8-bit views and a calibrated
+metric Mei rig. Perspective mode uses a virtual focal length in pixels.
+Longitude/latitude mode uses angular spans and triangulates from the calibrated
+stereo rays. Both modes emit disparity in pixels and rectified camera-Z in
+meters. Raw camera masks are rectified and checked against each matching
+footprint. The metric cloud uses the rectified left frame and keeps its
+pixel-to-color links. The report records the virtual grid, rotations,
+baseline, and pixel counts.
+[Omnidirectional stereo reconstruction example](<../examples/opencv tools/omnidir_stereo_reconstruction/README.md>)
+
 **Reproject depth-backed region** transfers a source selection through a
 rigid source-to-target camera pose. Each camera can be pinhole, fisheye
 or omnidirectional. It lifts selected pixels using positive axial camera

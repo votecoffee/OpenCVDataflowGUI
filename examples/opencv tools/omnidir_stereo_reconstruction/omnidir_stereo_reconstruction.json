@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure two planes with an omnidirectional pair",
+      "description": "Original synthetic Mei stereo pair by OpenCVDataflowGUI contributors (MIT). Both branches measure a foreground plane and a background. The right-view mask excludes a selected patch. Compare the perspective and angular grids.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Raw left camera",
+      "parameters": {
+        "path": "assets/left.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "omnidir-plane-pair"
+      }
+    },
+    {
+      "id": "left_model",
+      "type": "3d.camera",
+      "name": "Left Mei camera",
+      "parameters": {
+        "fx": 199.0,
+        "fy": 192.0,
+        "cx": 191.3,
+        "cy": 121.4,
+        "width": 384,
+        "height": 244,
+        "distortion": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "lens": "omnidir",
+        "xi": 0.71,
+        "units": "m",
+        "frame": "omni_left"
+      },
+      "position": [
+        0,
+        475
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Raw right camera",
+      "parameters": {
+        "path": "assets/right.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        215
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "omnidir-plane-pair"
+      }
+    },
+    {
+      "id": "right_model",
+      "type": "3d.camera",
+      "name": "Right Mei camera",
+      "parameters": {
+        "fx": 194.0,
+        "fy": 198.0,
+        "cx": 193.0,
+        "cy": 120.7,
+        "width": 384,
+        "height": 244,
+        "distortion": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "lens": "omnidir",
+        "xi": 0.64,
+        "units": "m",
+        "frame": "omni_right"
+      },
+      "position": [
+        0,
+        685
+      ],
+      "exposed_inputs": [
+        "calibration"
+      ],
+      "exposed_outputs": [
+        "camera"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "relative_pose",
+      "type": "3d.pose",
+      "name": "Left-to-right camera transform",
+      "parameters": {
+        "rvec": [
+          0.008,
+          0.031,
+          0.012
+        ],
+        "translation": [
+          -0.18989503522591608,
+          -0.0023031135109167033,
+          0.005879733387145549
+        ],
+        "source_frame": "omni_left",
+        "target_frame": "omni_right",
+        "units": "m"
+      },
+      "position": [
+        0,
+        880
+      ],
+      "exposed_inputs": [],
+      "exposed_outputs": [
+        "transform"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rig",
+      "type": "3d.stereo_rig",
+      "name": "Metric Mei stereo rig",
+      "parameters": {},
+      "position": [
+        390,
+        610
+      ],
+      "exposed_inputs": [
+        "left_camera",
+        "right_camera",
+        "transform"
+      ],
+      "exposed_outputs": [
+        "rig"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "exclude",
+      "type": "region.shape",
+      "name": "Exclude a patch from the right view",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          202,
+          98,
+          16,
+          20
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": true
+      },
+      "position": [
+        390,
+        240
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "perspective",
+      "type": "3d.omnidir_stereo_reconstruct",
+      "name": "Perspective reconstruction",
+      "parameters": {
+        "projection": "perspective",
+        "width": 0,
+        "height": 0,
+        "omnidir_focal_length": 180.0,
+        "horizontal_span_degrees": 108.0,
+        "vertical_span_degrees": 76.0,
+        "num_disparities": 48,
+        "block_size": 5,
+        "point_type": "xyzrgb",
+        "minimum_depth_m": 0.001,
+        "maximum_depth_m": 4.0,
+        "sample_step": 3,
+        "max_points": 200000
+      },
+      "position": [
+        800,
+        60
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rig",
+        "left_mask",
+        "right_mask"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "disparity",
+        "valid_mask",
+        "depth",
+        "cloud",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "longitude_latitude",
+      "type": "3d.omnidir_stereo_reconstruct",
+      "name": "Longitude/latitude reconstruction",
+      "parameters": {
+        "projection": "longitude_latitude",
+        "width": 0,
+        "height": 0,
+        "omnidir_focal_length": 180.0,
+        "horizontal_span_degrees": 108.0,
+        "vertical_span_degrees": 76.0,
+        "num_disparities": 48,
+        "block_size": 5,
+        "point_type": "xyzrgb",
+        "minimum_depth_m": 0.001,
+        "maximum_depth_m": 4.0,
+        "sample_step": 3,
+        "max_points": 200000
+      },
+      "position": [
+        800,
+        460
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "left",
+        "right",
+        "rig",
+        "left_mask",
+        "right_mask"
+      ],
+      "exposed_outputs": [
+        "left",
+        "right",
+        "disparity",
+        "valid_mask",
+        "depth",
+        "cloud",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left_model",
+      "output": "camera",
+      "target": "rig",
+      "input": "left_camera"
+    },
+    {
+      "source": "right_model",
+      "output": "camera",
+      "target": "rig",
+      "input": "right_camera"
+    },
+    {
+      "source": "relative_pose",
+      "output": "transform",
+      "target": "rig",
+      "input": "transform"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "exclude",
+      "input": "image"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "perspective",
+      "input": "left"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "perspective",
+      "input": "right"
+    },
+    {
+      "source": "rig",
+      "output": "rig",
+      "target": "perspective",
+      "input": "rig"
+    },
+    {
+      "source": "exclude",
+      "output": "mask",
+      "target": "perspective",
+      "input": "right_mask"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "longitude_latitude",
+      "input": "left"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "longitude_latitude",
+      "input": "right"
+    },
+    {
+      "source": "rig",
+      "output": "rig",
+      "target": "longitude_latitude",
+      "input": "rig"
+    },
+    {
+      "source": "exclude",
+      "output": "mask",
+      "target": "longitude_latitude",
+      "input": "right_mask"
+    }
+  ]
+}

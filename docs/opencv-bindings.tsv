@@ -941,7 +941,7 @@ P2	function	cv2.omnidir.calibrate	literal reference	-
 P2	function	cv2.omnidir.initUndistortRectifyMap	literal reference	-
 P2	function	cv2.omnidir.projectPoints	literal reference	-
 P2	function	cv2.omnidir.stereoCalibrate	literal reference	-
-P2	function	cv2.omnidir.stereoReconstruct	no static reference	-
+P2	function	cv2.omnidir.stereoReconstruct	literal reference	-
 P2	function	cv2.omnidir.stereoRectify	literal reference	-
 P2	function	cv2.omnidir.undistortImage	no static reference	-
 P2	function	cv2.omnidir.undistortPoints	literal reference	-

@@ -968,6 +968,7 @@ def builtin_registry():
     from .stack_blur import StackBlur
     from .sparse_depth import BackprojectDepthPixels
     from .stereo3d import STEREO3D_BLOCKS
+    from .stereo_omnidir_reconstruction import ReconstructOmnidirStereo
     from .stereo_color import MatchStereoColor
     from .stereo_rectified_camera import StereoRectifiedCamera
     from .stereo_validation import ValidateStereoCalibration
@@ -1400,6 +1401,7 @@ def builtin_registry():
         *STEREO3D_BLOCKS,
         BackprojectDepthPixels,
         MatchStereoColor,
+        ReconstructOmnidirStereo,
         StereoRectifiedCamera,
         RectifyCollinearCameras,
         RecordedRGBD,

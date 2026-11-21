@@ -1425,6 +1425,38 @@ Input `observations` — Batch or list of ChArUco observations of one board and 
 | `minimum_views` | `3` | Value must be a whole number between 3 and 64. Smallest accepted number of fitted views, including after exclusions. |
 | `view_policy` | `"require_all"` | `require_all`, `allow_subset` Require every view or accept those that pass initialization. |
 
+## Reconstruct omnidirectional stereo (`3d.omnidir_stereo_reconstruct`)
+
+3D vision / Stereo
+
+Inputs: `left` (image), `right` (image), `rig` (data), `left_mask` (image, optional), `right_mask` (image, optional).
+
+Input `left` — Raw 8-bit capture on the calibrated left omnidirectional camera grid.
+
+Input `right` — Matching 8-bit capture on the calibrated right camera grid.
+
+Input `rig` — Metric stereo rig with two calibrated Mei omnidirectional cameras.
+
+Input `left_mask` — Optional uint8 mask on the raw left camera grid.
+
+Input `right_mask` — Optional uint8 mask on the raw right camera grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `projection` | `"perspective"` | `perspective`, `longitude_latitude` Perspective pixels or a longitude/latitude angular grid. |
+| `width` | `0` | Value must be a whole number between 0 and 4096. Rectified width. Zero uses the input width. |
+| `height` | `0` | Value must be a whole number between 0 and 4096. Rectified height. Zero uses the input height. |
+| `omnidir_focal_length` | `0.0` | Value must be a finite number between 0 and 32768. Perspective focal length in pixels. Zero derives it from the rig. |
+| `horizontal_span_degrees` | `100.0` | Value must be a finite number between 1 and 175. Longitude span for angular rectification. |
+| `vertical_span_degrees` | `75.0` | Value must be a finite number between 1 and 175. Latitude span for angular rectification. |
+| `num_disparities` | `64` | Value must be a whole number between 16 and 512. Native SGBM search width, in positive multiples of 16 pixels. |
+| `block_size` | `5` | Value must be a positive odd integer between 1 and 31. Odd native SGBM matching window and required support footprint. |
+| `point_type` | `"xyzrgb"` | `xyzrgb`, `xyz` Emit XYZ, or XYZ with color sampled from the rectified left view. |
+| `minimum_depth_m` | `0.001` | Value must be a finite number between 1e-06 and 1000. Nearest accepted rectified camera-Z in meters. |
+| `maximum_depth_m` | `100.0` | Value must be a finite number between 1e-06 and 1000. Farthest accepted rectified camera-Z in meters. |
+| `sample_step` | `2` | Value must be a whole number between 1 and 256. Pixel pitch for cloud samples. Depth and disparity use the full grid. |
+| `max_points` | `200000` | Value must be a whole number between 1 and 2e+06. Maximum cloud size. Increase Sample Step for bigger outputs. |
+
 ## Mesh an organized depth grid (`3d.organized_mesh`)
 
 3D vision / Mesh geometry

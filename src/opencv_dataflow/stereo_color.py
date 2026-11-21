@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from .core import Port, Result
-from .disparity_search import rectification_rois
+from .disparity_search import rectification_rois, supported_disparity_pixels
 from .geometry3d_common import Tool3D
 from .images import DepthArray, ImageArray, image_format
 from .parameter_validation import NumericRange, ValidationError
@@ -51,27 +51,12 @@ def _support(image, roi, mask, region=None):
     return result
 
 
-def _matching_points(disparity, left_allowed, right_allowed):
-    width = disparity.shape[1]
-    guides, left = disparity.ravel(), left_allowed.ravel()
-    bands = []
-    for start in range(0, disparity.size, _BAND_PIXELS):
-        band = slice(start, start + _BAND_PIXELS)
-        points = np.flatnonzero(left[band] & np.isfinite(guides[band])) + start
-        y, x = np.divmod(points, width)
-        xr = x - guides[points].astype(np.float64)
-        in_bounds = (xr >= 0) & (xr <= width - 1)
-        y, xr, points = y[in_bounds], xr[in_bounds], points[in_bounds]
-        low, high = np.floor(xr).astype(np.intp), np.ceil(xr).astype(np.intp)
-        supported = right_allowed[y, low] & right_allowed[y, high]
-        bands.append(points[supported].astype(np.int32))
-    return np.concatenate(bands)
-
-
 def _sample_pairs(left, right, disparity, left_allowed, right_allowed, limit, margin):
     a, a_scale = left
     b, b_scale = right
-    points = _matching_points(disparity, left_allowed, right_allowed)
+    points = supported_disparity_pixels(
+        disparity, left_allowed, right_allowed, band_pixels=_BAND_PIXELS
+    )
     geometric_count = len(points)
     if geometric_count > limit:
         points = points[np.linspace(0, geometric_count - 1, limit, dtype=np.intp)]

@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 123 | 4 | 4 | 131 | 93.9% |
+| 3. 3D imagery and point clouds | 124 | 4 | 3 | 131 | 94.7% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 378 | 8 | 84 | 470 | 80.4% |
+| **Overall** | 379 | 8 | 83 | 470 | 80.6% |
 
 <!-- coverage-summary:end -->
 
@@ -577,7 +577,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S3-124 | Reconstruct metric surfaces from wide-angle stereo | omnidir.stereoReconstruct | Planned | Use a calibrated wide-angle pair with known depth. Verify projection mode, disparity scale and invalid support, and compare colored XYZ output and image provenance against the reference. |
+| S3-124 | Reconstruct metric surfaces from wide-angle stereo | omnidir.stereoReconstruct | Complete | 3d.omnidir_stereo_reconstruct uses native rectified views and float pixel disparity, checks both matching footprints and lifts perspective or angular rays into metric XYZ. The [two-plane example](<../examples/opencv tools/omnidir_stereo_reconstruction/README.md>) verifies geometry, color, low disparities and image provenance. |
 | S3-125 | Import an external sparse reconstruction | sfm.importReconstruction or a validated Bundler reader | Planned | Load known camera intrinsics, extrinsics and sparse points together. Verify camera-to-world convention, scale status and held-out reprojection, and reject unsupported formats explicitly. |
 | S3-126 | Generate and detect random-pattern calibration targets | randpattern.RandomPatternGenerator and RandomPatternCornerFinder or a tested equivalent | Planned | Render a repeatable target with known physical size, recover labeled correspondences from a cropped or tilted view, and verify their target coordinates and held-out reprojection. |
 
