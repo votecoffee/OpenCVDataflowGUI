@@ -3,49 +3,16 @@
 import numpy as np
 
 from .core import Port, Result
+from .disparity_inputs import disparity_image, valid_samples
 from .geometry3d_common import Tool3D
 from .images import DepthArray, ImageArray
 from .parameter_validation import NumericRange, ValidationError
 from .raster_evaluation import (
-    MAX_EVALUATION_PIXELS,
     apply_valid_mask,
     comparison_selection,
     error_heatmap,
     error_statistics,
 )
-
-_DISPARITY_DTYPES = (np.uint8, np.int16, np.uint16, np.float32, np.float64)
-
-
-def _disparity_image(image):
-    values = np.asarray(image)
-    if (
-        isinstance(image, DepthArray)
-        or values.ndim != 2
-        or values.dtype not in _DISPARITY_DTYPES
-        or not 0 < values.size <= MAX_EVALUATION_PIXELS
-    ):
-        raise ValidationError(
-            "Disparity needs a monochrome uint8, int16, uint16 or float grid "
-            "of up to 16,777,216 pixels"
-        )
-    return values
-
-
-def _valid_samples(values, invalid_code, field):
-    valid = np.isfinite(values)
-    if invalid_code is not None:
-        if values.dtype.kind == "f":
-            representable = abs(invalid_code) <= float(np.finfo(values.dtype).max)
-        else:
-            limits = np.iinfo(values.dtype)
-            representable = invalid_code.is_integer() and limits.min <= invalid_code <= limits.max
-        if not representable:
-            raise ValidationError(
-                "Invalid disparity code must be representable in the source dtype", field
-            )
-        valid &= values != invalid_code
-    return valid
 
 
 def _metrics(residual, absolute, bad):
@@ -161,7 +128,7 @@ class EvaluateDisparity(Tool3D):
 
     def process(self, inputs):
         p = self.parameters
-        estimate, reference = (_disparity_image(inputs[name]) for name in ("estimate", "reference"))
+        estimate, reference = (disparity_image(inputs[name]) for name in ("estimate", "reference"))
         if estimate.shape != reference.shape:
             raise ValidationError("Estimate and reference must have the same pixel dimensions")
         selection = comparison_selection(inputs, p["alignment"], "Disparity")
@@ -172,7 +139,7 @@ class EvaluateDisparity(Tool3D):
                 if p[f"{name}_invalid_mode"] == "also_use_code"
                 else None
             )
-            valid = _valid_samples(values, invalid, f"{name}_invalid_code")
+            valid = valid_samples(values, invalid, f"{name}_invalid_code")
             validity[name] = apply_valid_mask(valid, inputs.get(f"{name}_valid"), name)
         truth = validity["reference"]
         if selection is not None:

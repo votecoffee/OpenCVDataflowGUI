@@ -290,6 +290,22 @@ integers convert to float pixels. The output uses NaN for invalid disparity
 and exposes valid and newly removed masks on the same grid.
 [Fixed-point and signed float example](<../examples/opencv tools/disparity_speckles/README.md>)
 
+**Filter external stereo disparity** uses an aligned rectified left guide
+to smooth disparity from any matcher that can supply a matching pixel grid.
+Integer inputs have independent samples-per-pixel settings. Float inputs
+are already in pixels. The block uses OpenCV's sixteenth-pixel input
+convention and emits float disparity in pixels with NaN for invalid samples.
+Invalid codes, nonfinite pixels and samples outside the supplied mask or
+region contribute zero smoothing weight.
+
+Connect the optional right disparity to check left-right consistency.
+Choose the right sign convention and attach a right validity mask when
+available. Right Support marks left samples that project to a valid right
+sample. Confidence also accounts for disparity agreement and the configured
+depth-edge radius. With a right map, output disparity requires positive
+confidence and must meet the selected minimum confidence.
+[External disparity filtering example](<../examples/opencv tools/external_disparity_wls/README.md>)
+
 **Evaluate stereo disparity** compares an estimate and a reference on the
 same pixel grid, with optional Region and Mask selection. Float disparities
 are already in pixels. Set independent raw-samples-per-pixel scales for

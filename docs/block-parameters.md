@@ -949,6 +949,40 @@ Input `valid_mask` — Optional nonzero valid pixels on this disparity grid.
 | `invalid_value_enabled` | `false` | Also mask out a specific source sample value. |
 | `invalid_value` | `0.0` | Value must be a finite number. Invalid code in the source's original sample units, before any scaling. |
 
+## Filter external stereo disparity (`3d.filter_disparity_wls`)
+
+3D vision / Stereo
+
+Inputs: `disparity` (image), `guide` (image), `right_disparity` (image, optional), `valid_mask` (image, optional), `right_valid_mask` (image, optional), `region` (data, optional).
+
+Input `disparity` — Rectified left-view map. Each disparity is x_left minus x_right.
+
+Input `guide` — Aligned 8-bit grayscale or color image of the left view.
+
+Input `right_disparity` — Optional rectified right-view map indexed in right coordinates.
+
+Input `valid_mask` — Optional nonzero valid samples on the left grid.
+
+Input `right_valid_mask` — Optional nonzero valid samples on the right grid.
+
+Input `region` — Optional region restricting which left samples contribute and are emitted.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Assert aligned pixel grids, or check known coordinate frames for each view. |
+| `samples_per_pixel` | `16.0` | Value must be a finite number between 1e-06 and 65536. Left integer samples per pixel. Float inputs are in pixels. |
+| `invalid_mode` | `"nonfinite_only"` | `nonfinite_only`, `also_use_code` Exclude nonfinite samples and optionally an exact finite sample code. |
+| `invalid_code` | `0.0` | Value must be a finite number. Missing left sample in original units, before conversion. |
+| `right_samples_per_pixel` | `16.0` | Value must be a finite number between 1e-06 and 65536. Right integer samples per disparity pixel. |
+| `right_invalid_mode` | `"nonfinite_only"` | `nonfinite_only`, `also_use_code` Exclude nonfinite right samples and an optional code. |
+| `right_invalid_code` | `0.0` | Value must be a finite number. Missing right sample in original units, before conversion. |
+| `right_sign` | `"right_minus_left"` | `right_minus_left`, `left_minus_right` Coordinate difference stored by the right-view matcher. |
+| `wls_lambda` | `8000.0` | Value must be a finite number between 0 and 1e+06. Larger values increase guided smoothing. |
+| `sigma_color` | `1.5` | Value must be a finite number between 0.001 and 255. Larger values allow smoothing across stronger color edges. |
+| `left_right_threshold_px` | `1.5` | Value must be a finite number between 0 and 256. Largest consistent difference between left and right matches. |
+| `depth_discontinuity_radius` | `2` | Value must be a whole number between 0 and 255. Confidence penalty radius near disparity discontinuities. |
+| `minimum_confidence` | `0.0` | Value must be a finite number between 0 and 1. Keep supported left samples meeting this normalized confidence. |
+
 ## Calibrate fisheye camera (`3d.fisheye_calibrate`)
 
 3D vision / Calibration

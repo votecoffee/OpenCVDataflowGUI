@@ -714,6 +714,7 @@ def builtin_registry():
     from .disk_features import DISK_BLOCKS
     from .disparity_evaluation import EvaluateDisparity
     from .disparity_speckles import FilterDisparitySpeckles
+    from .disparity_wls import FilterExternalDisparity
     from .distortion_fixture import DistortImageFixture
     from .dnn_blocks import DNN_BLOCKS
     from .dnn_profiling import DNN_PROFILING_BLOCKS
@@ -1405,6 +1406,7 @@ def builtin_registry():
         BinaryStereoDisparity,
         QuasiDenseDisparity,
         FilterDisparitySpeckles,
+        FilterExternalDisparity,
         EvaluateDisparity,
         CalibrateWideStereo,
         *CLOUD_BLOCKS,

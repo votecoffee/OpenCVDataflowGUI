@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Filter an imported disparity pair",
+      "description": "Original synthetic stereo fields by OpenCVDataflowGUI contributors (MIT). Compare masked smoothing with left-right confidence at a known depth step.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "left",
+      "type": "input.file",
+      "name": "Noisy left map \u00b7 32 samples/px",
+      "parameters": {
+        "path": "assets/left_q5.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "disparity-step"
+      }
+    },
+    {
+      "id": "guide",
+      "type": "input.file",
+      "name": "Aligned left guide",
+      "parameters": {
+        "path": "assets/guide.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        235
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "disparity-step"
+      }
+    },
+    {
+      "id": "right",
+      "type": "input.file",
+      "name": "Right map \u00b7 signed pixel disparity",
+      "parameters": {
+        "path": "assets/right.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        470
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "disparity-step"
+      }
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Reference \u00b7 8 and 16 pixels",
+      "parameters": {
+        "path": "assets/truth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        705
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": "",
+      "ticket_settings": {
+        "mode": "fixed",
+        "value": "disparity-step"
+      }
+    },
+    {
+      "id": "guided",
+      "type": "3d.filter_disparity_wls",
+      "name": "Filter left disparity",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "samples_per_pixel": 32,
+        "invalid_mode": "also_use_code",
+        "invalid_code": 65535,
+        "right_samples_per_pixel": 16.0,
+        "right_invalid_mode": "also_use_code",
+        "right_invalid_code": -100.0,
+        "right_sign": "right_minus_left",
+        "wls_lambda": 8000.0,
+        "sigma_color": 1.5,
+        "left_right_threshold_px": 1.5,
+        "depth_discontinuity_radius": 2,
+        "minimum_confidence": 0.0
+      },
+      "position": [
+        415,
+        70
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "guide",
+        "right_disparity",
+        "valid_mask",
+        "right_valid_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "confidence",
+        "right_support",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "check_guided",
+      "type": "3d.evaluate_disparity",
+      "name": "Compare with known disparity",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_samples_per_pixel": 16.0,
+        "reference_samples_per_pixel": 1,
+        "estimate_invalid_mode": "nonfinite_only",
+        "estimate_invalid_code": 0.0,
+        "reference_invalid_mode": "nonfinite_only",
+        "reference_invalid_code": 0.0,
+        "bad_threshold_px": 0.35,
+        "minimum_coverage": 0.0,
+        "maximum_bad_fraction": 1.0,
+        "confidence_cutoff": 0.5,
+        "preview_max_px": 4.0
+      },
+      "position": [
+        840,
+        70
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "confidence",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "absolute_error",
+        "evaluated_mask",
+        "bad_mask",
+        "missing_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "paired",
+      "type": "3d.filter_disparity_wls",
+      "name": "Filter and check right disparity",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "samples_per_pixel": 32,
+        "invalid_mode": "also_use_code",
+        "invalid_code": 65535,
+        "right_samples_per_pixel": 16.0,
+        "right_invalid_mode": "also_use_code",
+        "right_invalid_code": -100.0,
+        "right_sign": "right_minus_left",
+        "wls_lambda": 8000.0,
+        "sigma_color": 1.5,
+        "left_right_threshold_px": 1.5,
+        "depth_discontinuity_radius": 2,
+        "minimum_confidence": 0.2
+      },
+      "position": [
+        415,
+        430
+      ],
+      "exposed_inputs": [
+        "disparity",
+        "guide",
+        "right_disparity",
+        "valid_mask",
+        "right_valid_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "disparity",
+        "valid_mask",
+        "confidence",
+        "right_support",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "check_paired",
+      "type": "3d.evaluate_disparity",
+      "name": "Compare with known disparity",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "estimate_samples_per_pixel": 16.0,
+        "reference_samples_per_pixel": 1,
+        "estimate_invalid_mode": "nonfinite_only",
+        "estimate_invalid_code": 0.0,
+        "reference_invalid_mode": "nonfinite_only",
+        "reference_invalid_code": 0.0,
+        "bad_threshold_px": 0.35,
+        "minimum_coverage": 0.0,
+        "maximum_bad_fraction": 1.0,
+        "confidence_cutoff": 0.5,
+        "preview_max_px": 4.0
+      },
+      "position": [
+        840,
+        430
+      ],
+      "exposed_inputs": [
+        "estimate",
+        "reference",
+        "estimate_valid",
+        "reference_valid",
+        "confidence",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "absolute_error",
+        "evaluated_mask",
+        "bad_mask",
+        "missing_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "left",
+      "output": "image",
+      "target": "guided",
+      "input": "disparity"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "guided",
+      "input": "guide"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "check_guided",
+      "input": "reference"
+    },
+    {
+      "source": "guided",
+      "output": "disparity",
+      "target": "check_guided",
+      "input": "estimate"
+    },
+    {
+      "source": "guided",
+      "output": "valid_mask",
+      "target": "check_guided",
+      "input": "estimate_valid"
+    },
+    {
+      "source": "left",
+      "output": "image",
+      "target": "paired",
+      "input": "disparity"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "paired",
+      "input": "guide"
+    },
+    {
+      "source": "right",
+      "output": "image",
+      "target": "paired",
+      "input": "right_disparity"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "check_paired",
+      "input": "reference"
+    },
+    {
+      "source": "paired",
+      "output": "disparity",
+      "target": "check_paired",
+      "input": "estimate"
+    },
+    {
+      "source": "paired",
+      "output": "valid_mask",
+      "target": "check_paired",
+      "input": "estimate_valid"
+    },
+    {
+      "source": "paired",
+      "output": "confidence",
+      "target": "check_paired",
+      "input": "confidence"
+    }
+  ]
+}

@@ -190,6 +190,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Register cameras with disjoint views](<opencv tools/nonoverlap_camera_registration/README.md>) | Fit fixed pinhole and fisheye pairs from separate target panels and verify held-out reprojection. |
 | [Custom coded rig calibration](<opencv tools/coded_multicamera_rig/README.md>) | Decode synchronized captures of an irregular ArUco target and check a rig fitted with partial views. |
 | [Stereo disparity search](<opencv tools/stereo_disparity_search/README.md>) | Compare manual and depth-based search ranges and check support around masks. |
+| [External stereo disparity filtering](<opencv tools/external_disparity_wls/README.md>) | Smooth a noisy disparity step and compare paired confidence against known occlusion and holes. |
 | [Disparity speckle removal](<opencv tools/disparity_speckles/README.md>) | Clean equivalent fixed-point and signed float maps and check the exact removed footprint. |
 | [Stereo disparity evaluation](<opencv tools/disparity_reference/README.md>) | Compare a synthetic estimate against fixed-point truth and inspect whole-field and regional error, coverage and confidence. |
 | [Binary Census stereo](<opencv tools/binary_stereo/README.md>) | Compare integer Census matching and native SGBM on a known shift, an exposure change and a masked patch. |

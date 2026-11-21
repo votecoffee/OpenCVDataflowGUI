@@ -62,6 +62,9 @@ partially visible marker IDs and checks a fitted rig on independent images.
 [Stereo disparity search](stereo_disparity_search/README.md) derives a
 smaller search from calibrated depth limits and verifies valid support.
 
+[External stereo disparity filtering](external_disparity_wls/README.md)
+compares masked edge-aware smoothing with a paired confidence check.
+
 [Disparity speckle removal](disparity_speckles/README.md) shows how to remove
 small islands from fixed-point and signed float disparity.
 

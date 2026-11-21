@@ -1429,13 +1429,13 @@ P2	function	cv2.ximgproc.covarianceEstimation	no static reference	-
 P2	function	cv2.ximgproc.createAMFilter	no static reference	-
 P2	function	cv2.ximgproc.createContourFitting	no static reference	-
 P2	function	cv2.ximgproc.createDisparityWLSFilter	literal reference	-
-P2	function	cv2.ximgproc.createDisparityWLSFilterGeneric	no static reference	-
+P2	function	cv2.ximgproc.createDisparityWLSFilterGeneric	literal reference	-
 P2	function	cv2.ximgproc.createDTFilter	no static reference	-
 P2	function	cv2.ximgproc.createEdgeAwareInterpolator	no static reference	-
 P2	function	cv2.ximgproc.createEdgeBoxes	no static reference	-
 P2	function	cv2.ximgproc.createEdgeDrawing	no static reference	-
 P2	function	cv2.ximgproc.createFastBilateralSolverFilter	no static reference	-
-P2	function	cv2.ximgproc.createFastGlobalSmootherFilter	no static reference	-
+P2	function	cv2.ximgproc.createFastGlobalSmootherFilter	literal reference	-
 P2	function	cv2.ximgproc.createFastLineDetector	no static reference	-
 P2	function	cv2.ximgproc.createGuidedFilter	no static reference	-
 P2	function	cv2.ximgproc.createQuaternionImage	no static reference	-

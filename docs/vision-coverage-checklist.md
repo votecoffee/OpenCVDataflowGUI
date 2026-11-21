@@ -16,9 +16,9 @@ native calls or graph blocks implement it.
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
-| 3. 3D imagery and point clouds | 120 | 5 | 6 | 131 | 91.6% |
+| 3. 3D imagery and point clouds | 121 | 4 | 6 | 131 | 92.4% |
 | 4. Selected contrib | 20 | 3 | 79 | 102 | 19.6% |
-| **Overall** | 375 | 9 | 86 | 470 | 79.8% |
+| **Overall** | 376 | 8 | 86 | 470 | 80.0% |
 
 <!-- coverage-summary:end -->
 
@@ -569,7 +569,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S3-121 | Filter independently supplied stereo disparity | ximgproc.createDisparityWLSFilterGeneric with optional paired disparity | Partial | 3d.disparity filters the disparity it computes. Accept an external disparity with explicit fixed-point scale and invalid samples. Verify guided edge preservation, occlusion support and confidence where a right disparity is available. |
+| S3-121 | Filter independently supplied stereo disparity | ximgproc.createDisparityWLSFilterGeneric with optional paired disparity | Complete | 3d.filter_disparity_wls accepts independent fixed-point or float maps with invalid codes, validity masks and optional right disparity. The [edge and occlusion example](<../examples/opencv tools/external_disparity_wls/README.md>) verifies edge preservation, projected support and confidence against known geometry. |
 | S3-122 | Diagnose binary stereo correspondence costs | Census variants and Hamming cost or a tested equivalent | Planned | Compare correspondence costs across disparities at known textured, flat and occluded pixels. Report ambiguity and verify the same rectified grid, descriptor window and validity support. The pinned wheel lacks direct Census bindings. |
 | S3-123 | Reconstruct nonrigid surfaces from depth sequences | dynafu.DynaFu or a qualified equivalent | Planned | Recover a known deforming surface from recorded depth, report reconstruction error and tracking loss, and verify reset and cloud provenance. The pinned wheel exposes the class but its constructor rejects this build configuration. |
 
