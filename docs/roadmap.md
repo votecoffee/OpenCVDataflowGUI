@@ -77,6 +77,13 @@ Custom ArUco dictionary qualification (S3-119) advances it to **17/20**.
 Partial ArUco board recovery (S3-120) advances it to **18/20**.
 External stereo disparity filtering (S3-121) advances it to **19/20**.
 Binary stereo cost diagnostics (S3-122) closes the targeted cycle at **20/20**.
+The S3-122 checkpoint ran on committed source 5607832d across 123 geometry,
+runtime and offscreen editor test files. **1,431 of 1,435 tests passed**,
+including all **931 geometry checks**. The four failures reproduced on the
+preceding installed build (504e0578) with matching errors. The classifier
+catalog fixture lacks class settings, and three saved 3D review fixtures
+refer to earlier project paths. Geometry emitted 52 existing scikit-image
+deprecation warnings.
 
 A full-suite checkpoint ran on committed source `9b3f11dc` in four
 offscreen workers. It completed all **10,066 collected tests** in
