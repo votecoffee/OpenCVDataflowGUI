@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 31 | 3 | 68 | 102 | 30.4% |
-| **Overall** | 397 | 4 | 69 | 470 | 84.5% |
+| 4. Selected contrib | 32 | 3 | 67 | 102 | 31.4% |
+| **Overall** | 398 | 4 | 68 | 470 | 84.7% |
 
 <!-- coverage-summary:end -->
 
@@ -624,7 +624,7 @@ fixture or result needed to close the item.
 | S4-19 | Compact binary descriptors | xfeatures2d.BriefDescriptorExtractor, FREAK | Complete | inspect.brief_descriptor and inspect.freak_descriptor use wired keypoints, expose native settings, and retain input row indices and image context after selection and native border rejection. Verified native bytes, custom FREAK pairs, compatibility checks, and Hamming matching against an independently rendered translation. |
 | S4-20 | Dense local descriptors | xfeatures2d.DAISY | Complete | inspect.daisy_descriptor samples bounded grids or wired keypoints with native normalization, orientation, selection, and nearest-only sampling homography. Shared L2 matching recovered all 63 known displacements. Native descriptor parity, image context, and configured bounds were checked. |
 | S4-21 | GSoC adaptive foreground | bgsegm.createBackgroundSubtractorGSOC | Complete | sequence.gsoc_background. Check warmup and detection on an empty-conveyor replay. |
-| S4-22 | Dual TV-L1 flow | optflow.createOptFlow_DualTVL1 | Planned | Report flow and confidence on a known moving patch and compare with the existing flow baseline. |
+| S4-22 | Dual TV-L1 flow | optflow.createOptFlow_DualTVL1 | Complete | sequence.dual_tvl1 exposes native controls and previous-field initialization. Dense previous-to-current flow and round-trip agreement use the shared sequence and selection contracts. Verified native parity and compared Dual TV-L1 and Farneback on a known moving patch. |
 | S4-23 | DeepFlow | optflow.createOptFlow_DeepFlow | Planned | Verify displacement and occlusion behavior on a short recorded or synthetic sequence. |
 | S4-24 | Dense RLOF | optflow.createOptFlow_DenseRLOF | Planned | Verify displacement, support mode and forward/backward validity on a translated texture. |
 | S4-25 | WeChat QR decoding | wechat_qrcode.WeChatQRCode | Planned | Compare small and low-contrast labels with the native path. Verify multiple symbols and pin model assets. |

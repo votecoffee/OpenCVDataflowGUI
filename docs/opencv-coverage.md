@@ -296,6 +296,9 @@ directed segments and sortable geometry from an intensity image or a precomputed
 compute BRIEF and FREAK at wired keypoints and use Hamming distance in the shared radius matcher.
 [DAISY descriptors](<../examples/opencv tools/daisy_descriptors/README.md>) sample
 local gradient histograms on a grid or at wired keypoints for L2 matching.
+[Dual TV-L1 optical flow](<../examples/opencv tools/dual_tvl1_flow/README.md>)
+adds consecutive-frame displacement, previous-field seeding and optional
+forward–backward agreement on the shared dense-flow outputs.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

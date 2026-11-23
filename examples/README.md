@@ -314,6 +314,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Fast line detection](<opencv tools/fast_line_detection/README.md>) | Measure straight edges from intensity or a Canny map and sort the line collection by length. |
 | [Compact binary descriptors](<opencv tools/compact_binary_descriptors/README.md>) | Compute BRIEF and FREAK on shared keypoints and check Hamming matches against a known translation. |
 | [DAISY descriptors](<opencv tools/daisy_descriptors/README.md>) | Sample a gradient descriptor grid and check all L2 matches against a known image shift. |
+| [Dual TV-L1 optical flow](<opencv tools/dual_tvl1_flow/README.md>) | Replay a moving patch and compare displacement and consistency with Farneback. |
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |
 | [Bundler reconstruction import](<opencv tools/bundler_reconstruction/README.md>) | Import cameras and colored points, apply a measured baseline and project a held-out image. |

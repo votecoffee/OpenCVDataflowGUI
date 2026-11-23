@@ -499,6 +499,7 @@ BINDINGS = {
     "output.tiff_file": "imencodemulti",
     "output.video": "VideoWriter.open VideoWriter.write",
     "sequence.dis": "DISOpticalFlow.create DenseOpticalFlow.calc",
+    "sequence.dual_tvl1": "optflow.createOptFlow_DualTVL1 optflow.DualTVL1OpticalFlow_create DenseOpticalFlow.calc",
     "sequence.foreground_debounce": "connectedComponentsWithStats findContours moments",
     "sequence.farneback": "calcOpticalFlowFarneback",
     "sequence.gsoc_background": "bgsegm.createBackgroundSubtractorGSOC BackgroundSubtractor.apply",

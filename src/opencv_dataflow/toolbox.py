@@ -43,6 +43,7 @@ OPENCV_MODULES = {
     "calib": "Camera Calibration",
     "geometry": "Computational Geometry",
     "video": "Video Analysis",
+    "optflow": "Optical Flow Algorithms",
     "bgsegm": "Background and Foreground Segmentation",
     "videoio": "Video I/O",
     "objdetect": "Object Detection",
@@ -143,6 +144,7 @@ IMPLEMENTATION_MODULES = {
     "features": "native_lightglue native_index",
     "ximgproc": "fast_lines local_threshold region_proposals ridge_response superpixels",
     "xfeatures2d": "compact_descriptors daisy_descriptor",
+    "optflow": "dual_tvl1_flow",
 }
 BLOCK_MODULES = {
     "core": (

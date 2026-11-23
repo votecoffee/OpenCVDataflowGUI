@@ -221,8 +221,11 @@ class _DenseFlowSequence(SequenceBlock, ABC):
     def flow_calculator(self, shape):
         """Return a callable that produces dense vectors and an optional support mask."""
 
+    def working_image(self, image):
+        return gray_image(image, (np.uint8,))
+
     def step(self, inputs, state, mask):
-        gray = np.ascontiguousarray(gray_image(inputs["image"], (np.uint8,)))
+        gray = np.ascontiguousarray(self.working_image(inputs["image"]))
         p = self.parameters
         visual = finite(p["visual_max_motion"], "Visual motion scale", 0)
         if visual <= 0:

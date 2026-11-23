@@ -14653,6 +14653,41 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `r
 | `refinement_gamma` | `10.0` | Value must be a finite number between 0 and 1e+06. Variational refinement gradient-constancy weight. |
 | `refinement_epsilon` | `0.01` | Value must be a finite number between 1e-06 and 1e+06. Variational refinement robust penalty offset. |
 
+## Dual TV-L1 optical flow (`sequence.dual_tvl1`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — An 8-bit, 16-bit, or normalized floating-point intensity image.
+
+Input `mask` — Select output pixels on the previous image grid after estimating flow.
+
+Input `region` — Select output pixels on the previous image grid, intersected with any mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Displacement in pixels mapped to full preview brightness. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
+| `tau` | `0.25` | Value must be a finite number between 1e-06 and 1. Time step of the iterative solver. |
+| `lambda_weight` | `0.15` | Value must be a finite number between 1e-06 and 10. Weight of the image data term relative to flow regularization. |
+| `theta` | `0.3` | Value must be a finite number between 1e-06 and 10. Coupling between the flow estimate and the auxiliary variables. |
+| `scales` | `5` | Value must be a whole number between 1 and 12. Maximum pyramid levels. Coarse levels smaller than 16 pixels are omitted. |
+| `warps` | `5` | Value must be a whole number between 1 and 20. Maximum target-image warps at each level. |
+| `epsilon` | `0.01` | Value must be a finite number between 1e-06 and 1. Stopping tolerance for changes in the flow estimate. |
+| `inner_iterations` | `30` | Value must be a whole number between 1 and 100. Maximum solver iterations between median filtering steps. |
+| `outer_iterations` | `10` | Value must be a whole number between 1 and 100. Maximum rounds of inner solver iterations per warp. |
+| `scale_step` | `0.8` | Value must be a finite number between 0.01 and 0.999999. Ratio between successive pyramid levels. |
+| `gamma` | `0.0` | Value must be a finite number between 0 and 10. Weight of the illumination variation term. Zero disables it. |
+| `median_filter` | `"5"` | `1`, `3`, `5` Median window side in pixels. One disables filtering. |
+| `initial_flow` | `"none"` | `none`, `previous` Previous seeds the forward solve with the preceding unmasked field. |
+
 ## Farneback optical flow (`sequence.farneback`)
 
 Sequence / Temporal processing
