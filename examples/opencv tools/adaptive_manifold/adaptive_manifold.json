@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Denoise a registered signal",
+      "description": "Run Once and compare joint bilateral with adaptive manifold. Both use the same guide and noisy 16-bit source. The lower branch replaces pixels only inside the inspection rectangle. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Noisy 16-bit signal",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        45
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guide",
+      "type": "input.file",
+      "name": "Registered color guide",
+      "parameters": {
+        "path": "assets/guide.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          13,
+          8,
+          134,
+          65
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        285,
+        500
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "bilateral",
+      "type": "cv.joint_bilateral_filter",
+      "name": "Joint bilateral baseline",
+      "description": "Smooth a source image using intensity and color edges from an aligned guide.",
+      "parameters": {
+        "diameter": 21,
+        "sigma_color": 0.08,
+        "sigma_space": 5.0,
+        "border": "reflect_101",
+        "guide_alignment": "pixel_grid",
+        "output_depth": "unchanged"
+      },
+      "position": [
+        570,
+        -55
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "manifold",
+      "type": "cv.adaptive_manifold_filter",
+      "name": "Adaptive manifold",
+      "description": "Denoise a source image while preserving edges from an aligned guide.",
+      "parameters": {
+        "sigma_spatial": 8.0,
+        "sigma_color": 0.08,
+        "adjust_outliers": false,
+        "output_depth": "unchanged",
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        570,
+        155
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.adaptive_manifold_filter",
+      "name": "Adaptive manifold in region",
+      "description": "Denoise a source image while preserving edges from an aligned guide.",
+      "parameters": {
+        "sigma_spatial": 8.0,
+        "sigma_color": 0.08,
+        "adjust_outliers": false,
+        "output_depth": "unchanged",
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        570,
+        365
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "bilateral",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "bilateral",
+      "input": "guide"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "manifold",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "manifold",
+      "input": "guide"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "selected",
+      "input": "guide"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

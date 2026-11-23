@@ -204,7 +204,8 @@ BLOCK_MODULES = {
     "linemod": "3d.train_linemod_pose 3d.match_linemod_pose",
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match 3d.register_cloud_features",
     "ximgproc": (
-        "cv.guided_filter cv.domain_transform_filter cv.fast_global_smoother "
+        "cv.guided_filter cv.domain_transform_filter cv.adaptive_manifold_filter "
+        "cv.fast_global_smoother "
         "cv.joint_bilateral_filter cv.rolling_guidance_filter "
         "inspect.thin_mask 3d.smooth_depth"
     ),

@@ -312,6 +312,9 @@ BINDINGS = {
     "cv.gradient": "Sobel Scharr Laplacian",
     "cv.gray": "cvtColor",
     "cv.guided_filter": "ximgproc.guidedFilter",
+    "cv.adaptive_manifold_filter": (
+        "ximgproc.createAMFilter ximgproc.AdaptiveManifoldFilter.filter ximgproc.dtFilter"
+    ),
     "cv.joint_bilateral_filter": "ximgproc.jointBilateralFilter",
     "cv.rolling_guidance_filter": "ximgproc.rollingGuidanceFilter ximgproc.jointBilateralFilter",
     "cv.fast_bilateral_solver": (

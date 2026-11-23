@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 35 | 4 | 63 | 102 | 34.3% |
-| **Overall** | 401 | 5 | 64 | 470 | 85.3% |
+| 4. Selected contrib | 36 | 4 | 62 | 102 | 35.3% |
+| **Overall** | 402 | 5 | 63 | 470 | 85.5% |
 
 <!-- coverage-summary:end -->
 
@@ -644,7 +644,7 @@ fixture or result needed to close the item.
 | S4-34 | Detect color charts in a camera image | mcc.CCheckerDetector | Complete | calibration.detect_color_chart. Detect the target and return its ordered patch locations. |
 | S4-35 | Apply a fitted color correction model | ccm.ColorCorrectionModel inference | Complete | calibration.apply_ccm. Verify source encodings and corrected chart samples with a reusable model. |
 | S4-36 | Fast bilateral solver | ximgproc.createFastBilateralSolverFilter, SciPy sparse CG | Partial | cv.fast_bilateral_solver reconstructs known bands with sparse confidence and preserves an unobserved component on the installed wheel through SciPy. The wheel lacks Eigen and exposes native stubs. OpenCV mode is available on Eigen-enabled builds and still needs native parity qualification. |
-| S4-37 | Adaptive manifold filtering | ximgproc.amFilter | Planned | Compare edge preservation and selected-region behavior with the bilateral baseline. |
+| S4-37 | Adaptive manifold filtering | ximgproc.createAMFilter, ximgproc.AdaptiveManifoldFilter.filter | Complete | cv.adaptive_manifold_filter exposes the Python factory controls and verifies native output, typed alpha, masks and region selection. A registered noisy target preserves the step at 8,262 levels against an 8,200-level truth, with RMSE 113.9 versus 146.4 for the configured bilateral baseline. |
 | S4-38 | Weighted median filtering | ximgproc.weightedMedianFilter | Planned | Remove impulse outliers with an aligned guide and verify edge localization. |
 | S4-39 | Anisotropic diffusion | ximgproc.anisotropicDiffusion | Planned | Preserve an intensity boundary across configured iterations while reducing seeded noise. |
 | S4-40 | L0 image smoothing | ximgproc.l0Smooth | Planned | Reduce low-amplitude texture while retaining larger boundaries, with stable output depth and range. |

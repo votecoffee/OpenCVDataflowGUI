@@ -1,5 +1,6 @@
 """Native denoising and repair operations with image-space selection."""
 
+import math
 from abc import ABC, abstractmethod
 
 import cv2
@@ -479,6 +480,91 @@ class DomainTransformFilter(AlignedGuideFilter):
         )
 
 
+class AdaptiveManifold(AlignedGuideFilter):
+    type_id, title = "cv.adaptive_manifold_filter", "Adaptive manifold filter"
+    description = "Denoise a source image while preserving edges from an aligned guide."
+    inputs = (*SELECTION_INPUTS, Port("guide", required=False, required_when_connected=True))
+    defaults = {
+        "sigma_spatial": 8.0,
+        "sigma_color": 0.2,
+        "adjust_outliers": False,
+        "output_depth": "unchanged",
+        "guide_alignment": "same_frame",
+    }
+    parameter_choices = {
+        **AlignedGuideFilter.parameter_choices,
+        "guide_alignment": ("same_frame", "pixel_grid"),
+    }
+    parameter_ranges = {
+        "sigma_spatial": NumericRange(1, 512),
+        "sigma_color": NumericRange(1e-6, 1),
+    }
+    parameter_help = {
+        "sigma_spatial": "Spatial standard deviation in pixels.",
+        "sigma_color": "Range standard deviation in normalized guide units.",
+        "adjust_outliers": "Blend back the source where the guide is far from a fitted manifold.",
+        "output_depth": "Unchanged keeps the source depth. Integers convert through [0, 1].",
+        "guide_alignment": "Pixel grid accepts independently loaded, preregistered images.",
+    }
+    input_help = {
+        **AlignedGuideFilter.input_help,
+        "image": "Monochrome or RGB/BGR(A), uint8, uint16 or float32. Alpha is preserved.",
+        "guide": "Optional aligned monochrome or color image. Float guides use [0, 1].",
+        "mask": "Select output pixels to replace. Filtering uses the full image.",
+        "region": "Select output pixels to replace, intersected with the mask.",
+    }
+    preview_safe = parallel_safe = process_inputs_readonly = True
+    payload_reference = "image"
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if type(p["adjust_outliers"]) is not bool:
+            raise ValidationError("Use a checkbox boolean", "adjust_outliers")
+
+    def process(self, inputs):
+        height, width = inputs["image"].shape[:2]
+        if max(height, width) > 8192 or height * width > 2_097_152:
+            raise ValidationError(
+                "Adaptive manifold permits up to 2,097,152 pixels and 8,192 per axis"
+            )
+        return super().process(inputs)
+
+    def filter_image(self, reference, signal):
+        p = self.parameters
+        spatial, color = float(p["sigma_spatial"]), float(p["sigma_color"])
+        if reference.min() < 0 or reference.max() > 1:
+            raise ValidationError("Adaptive manifold guide intensities must be within [0, 1]")
+        # OpenCV works on a power-of-two reduced guide with recursive passes on both axes.
+        ratio = max(1, 2 ** math.floor(math.log2(min(spatial / 4, 256 * color))))
+        if round(min(signal.shape[:2]) / ratio) < 2:
+            raise ValidationError(
+                "Spatial and color sigma leave fewer than two samples on a reduced image axis",
+                "sigma_spatial",
+                "sigma_color",
+            )
+        create = getattr(getattr(cv2, "ximgproc", None), "createAMFilter", None)
+        if create is None:
+            raise ValidationError("Adaptive manifold filtering requires OpenCV contrib ximgproc")
+        amplitude = max(1.0, abs(float(signal.min())), abs(float(signal.max())))
+        work = signal / amplitude if amplitude > 1 else signal
+        if np.all(reference == reference[0, 0]):
+            # A constant guide has one manifold. OpenCV's split can divide by zero here.
+            result = cv2.ximgproc.dtFilter(
+                reference, work, spatial, color, mode=cv2.ximgproc.DTF_RF, numIters=1
+            )
+        else:
+            solver = create(spatial, color, p["adjust_outliers"])
+            result = solver.filter(work, joint=reference)
+        if not np.isfinite(result).all():
+            raise ValidationError(
+                "The manifold gave nonfinite samples. Try a smaller spatial or larger color sigma.",
+                "sigma_spatial",
+                "sigma_color",
+            )
+        return result * amplitude if amplitude > 1 else result
+
+
 class _BilateralNeighborhoodFilter(AlignedGuideFilter):
     defaults = {
         "diameter": 9,
@@ -800,6 +886,7 @@ RESTORATION_BLOCKS = (
     Inpaint,
     GuidedFilter,
     DomainTransformFilter,
+    AdaptiveManifold,
     JointBilateralFilter,
     RollingGuidanceFilter,
     FastGlobalSmoother,

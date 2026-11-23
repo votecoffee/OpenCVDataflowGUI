@@ -308,6 +308,8 @@ reader, the model-free WeChat decoder and pinned ONNX models on small and low-co
 [Fast bilateral solver](<../examples/opencv tools/fast_bilateral_solver/README.md>) reconstructs
 sparse confident measurements within guide boundaries. SciPy runs on the standard wheel.
 Native parity depends on an Eigen-enabled OpenCV build.
+[Adaptive manifold filtering](<../examples/opencv tools/adaptive_manifold/README.md>) compares
+registered-guide denoising with the joint bilateral block and preserves original pixels outside selection.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

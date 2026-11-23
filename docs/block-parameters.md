@@ -3600,6 +3600,28 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `min_background` | `0.001` | Value must be a finite number at least 0. Division floor, as integer full-scale fraction or float units. |
 | `output_depth` | `"same"` | `same`, `float32`, `float64` Floating output retains signed differences in raw sample units. |
 
+## Adaptive manifold filter (`cv.adaptive_manifold_filter`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `guide` (image, optional).
+
+Input `guide` — Optional aligned monochrome or color image. Float guides use [0, 1].
+
+Input `image` — Monochrome or RGB/BGR(A), uint8, uint16 or float32. Alpha is preserved.
+
+Input `mask` — Select output pixels to replace. Filtering uses the full image.
+
+Input `region` — Select output pixels to replace, intersected with the mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `sigma_spatial` | `8.0` | Value must be a finite number between 1 and 512. Spatial standard deviation in pixels. |
+| `sigma_color` | `0.2` | Value must be a finite number between 1e-06 and 1. Range standard deviation in normalized guide units. |
+| `adjust_outliers` | `false` | Blend back the source where the guide is far from a fitted manifold. |
+| `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged keeps the source depth. Integers convert through [0, 1]. |
+| `guide_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid accepts independently loaded, preregistered images. |
+
 ## Adaptive threshold (`cv.adaptive_threshold`)
 
 Image processing / Segmentation
