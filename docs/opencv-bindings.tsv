@@ -5275,7 +5275,7 @@ P3	function	cv2.xphoto.dctDenoising	no static reference	-
 P3	class	cv2.xphoto.GrayworldWB	no static reference	-
 P3	method	cv2.xphoto.GrayworldWB.getSaturationThreshold	no static reference	-
 P3	method	cv2.xphoto.GrayworldWB.setSaturationThreshold	method name only	-
-P3	function	cv2.xphoto.inpaint	no static reference	-
+P3	function	cv2.xphoto.inpaint	literal reference	-
 P3	class	cv2.xphoto.LearningBasedWB	no static reference	-
 P3	method	cv2.xphoto.LearningBasedWB.extractSimpleFeatures	no static reference	-
 P3	method	cv2.xphoto.LearningBasedWB.getHistBinNum	no static reference	-

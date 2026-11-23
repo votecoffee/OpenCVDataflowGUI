@@ -4567,6 +4567,22 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | --- | --- | --- |
 | `output_format` | `"source"` | `source`, `gray` Source keeps channel encoding, depth and alpha; gray returns the processed monochrome plane at the working depth. |
 
+## Extended inpainting (`cv.extended_inpaint`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Mono or RGB/BGR(A). Unsigned 8/16-bit or floating point in [0, 1].
+
+Input `mask` — Nonzero pixels are repaired. The rest provide measured context.
+
+Input `region` — Select pixels to repair. With a mask, only their intersection is repaired.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"fsr_fast"` | `fsr_fast`, `fsr_best`, `shift_map` FSR reconstructs frequency content. Shift Map searches for similar patches. |
+
 ## Extract image channel (`cv.extract_channel`)
 
 Image processing / Channels

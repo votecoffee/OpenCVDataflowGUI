@@ -335,6 +335,7 @@ BINDINGS = {
     "cv.image_pyramid": "pyrDown",
     "cv.in_range": "inRange",
     "cv.inpaint": "inpaint",
+    "cv.extended_inpaint": "xphoto.inpaint",
     "cv.insert_channel": "insertChannel",
     "cv.mean_shift_filter": "pyrMeanShiftFiltering",
     "cv.median_blur": "medianBlur",

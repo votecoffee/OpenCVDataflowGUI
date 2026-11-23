@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Repair a known surface defect",
+      "description": "One rectangle marks the damaged samples. Compare two frequency profiles with patch matching. The Repair Mask output identifies the estimated pixels. The synthetic source and clean reference are original MIT-licensed assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "damaged",
+      "type": "input.file",
+      "name": "Damaged surface",
+      "parameters": {
+        "path": "assets/damaged.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        125
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "area",
+      "type": "region.shape",
+      "name": "Known damage rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          30,
+          22,
+          8,
+          7
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        245,
+        305
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fsr_fast",
+      "type": "cv.extended_inpaint",
+      "name": "Frequency reconstruction, Fast",
+      "description": "Fill selected defects using OpenCV frequency or patch reconstruction.",
+      "parameters": {
+        "method": "fsr_fast"
+      },
+      "position": [
+        555,
+        -35
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "repair_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fsr_best",
+      "type": "cv.extended_inpaint",
+      "name": "Frequency reconstruction, Best",
+      "description": "Fill selected defects using OpenCV frequency or patch reconstruction.",
+      "parameters": {
+        "method": "fsr_best"
+      },
+      "position": [
+        555,
+        150
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "repair_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shift_map",
+      "type": "cv.extended_inpaint",
+      "name": "Reconstruct from repeating patches",
+      "description": "Fill selected defects using OpenCV frequency or patch reconstruction.",
+      "parameters": {
+        "method": "shift_map"
+      },
+      "position": [
+        555,
+        335
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "repair_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "area",
+      "input": "image"
+    },
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "fsr_fast",
+      "input": "image"
+    },
+    {
+      "source": "area",
+      "output": "mask",
+      "target": "fsr_fast",
+      "input": "mask"
+    },
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "fsr_best",
+      "input": "image"
+    },
+    {
+      "source": "area",
+      "output": "region",
+      "target": "fsr_best",
+      "input": "region"
+    },
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "shift_map",
+      "input": "image"
+    },
+    {
+      "source": "area",
+      "output": "mask",
+      "target": "shift_map",
+      "input": "mask"
+    }
+  ]
+}
