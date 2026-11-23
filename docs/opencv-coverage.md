@@ -299,6 +299,8 @@ local gradient histograms on a grid or at wired keypoints for L2 matching.
 [Dual TV-L1 optical flow](<../examples/opencv tools/dual_tvl1_flow/README.md>)
 adds consecutive-frame displacement, previous-field seeding and optional
 forward–backward agreement on the shared dense-flow outputs.
+[DeepFlow](<../examples/opencv tools/deepflow/README.md>) adds native
+consecutive-frame estimation with a known-displacement and occlusion fixture.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

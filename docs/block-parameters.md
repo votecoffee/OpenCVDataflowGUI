@@ -14622,6 +14622,29 @@ Input `region` — Current work area; use a separate shape on Seed for the taugh
 | `pose_mode` | `"center_only"` | `center_only`, `principal_axis` Zero-angle center pose, or elongated CamShift principal axis. |
 | `minimum_axis_ratio` | `1.1` | Value must be a finite number between 1 and 100. Minimum axial pose ratio; orientation has 180° ambiguity. |
 
+## DeepFlow optical flow (`sequence.deepflow`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Unsigned 8-bit, unsigned 16-bit, or normalized floating-point intensity image.
+
+Input `mask` — Select published flow pixels on the previous image grid.
+
+Input `region` — Select published pixels on the previous image grid, intersected with any mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Displacement in pixels mapped to full preview brightness. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
+
 ## DIS optical flow (`sequence.dis`)
 
 Sequence / Temporal processing

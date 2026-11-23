@@ -498,6 +498,7 @@ BINDINGS = {
     "output.image": "imencode imwriteWithMetadata",
     "output.tiff_file": "imencodemulti",
     "output.video": "VideoWriter.open VideoWriter.write",
+    "sequence.deepflow": "optflow.createOptFlow_DeepFlow DenseOpticalFlow.calc",
     "sequence.dis": "DISOpticalFlow.create DenseOpticalFlow.calc",
     "sequence.dual_tvl1": "optflow.createOptFlow_DualTVL1 optflow.DualTVL1OpticalFlow_create DenseOpticalFlow.calc",
     "sequence.foreground_debounce": "connectedComponentsWithStats findContours moments",

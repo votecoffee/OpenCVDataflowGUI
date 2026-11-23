@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Track a partly hidden patch",
+      "description": "Run All plays three frames. The patch moves 5 px right and 2 px up between frames. The final image adds an occluding rectangle. Compare the consistency mask to the hidden area described in the README. The synthetic images are original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "input.file",
+      "name": "Three-frame replay",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/00_start.png",
+          "assets/01_shifted.png",
+          "assets/02_occluded.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        50
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flow",
+      "type": "sequence.deepflow",
+      "name": "DeepFlow with consistency",
+      "description": "Estimate dense displacement using the native OpenCV DeepFlow solver.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.05
+      },
+      "position": [
+        340,
+        50
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "visualization",
+        "consistency_mask",
+        "consistency_error",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "flow",
+      "input": "image"
+    }
+  ]
+}

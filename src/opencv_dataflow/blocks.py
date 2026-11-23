@@ -949,6 +949,7 @@ def builtin_registry():
     from .segmentation_fusion import FuseTileSegmentation
     from .selection_remap import RemapSelection, RemapSelectionPacked
     from .semantic_segmentation import DecodeSegmentation
+    from .deepflow import DeepFlowSequence
     from .dual_tvl1_flow import DualTVL1Sequence
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shadow_compensation import CompensateReferenceShadows
@@ -1320,6 +1321,7 @@ def builtin_registry():
         RecipeField,
         *SEQUENCE_BLOCKS,
         DualTVL1Sequence,
+        DeepFlowSequence,
         *SIMPLEITK_BLOCKS,
         ForegroundDebounce,
         StabilizeCameraMotion,
