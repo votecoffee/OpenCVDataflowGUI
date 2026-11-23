@@ -324,6 +324,9 @@ fits in contour clutter and uses the detections as measured objects and fitted r
 edge points into an accumulator and recovers source lines with known angles and offsets.
 [Structured forest edges](<../examples/opencv tools/structured_edges/README.md>) uses a pinned
 OpenCV forest to emit response, orientation and thinned edges verified against marked boundaries.
+[EdgeBoxes proposals](<../examples/opencv tools/edge_boxes/README.md>) ranks
+source-frame rectangles from oriented edge maps and measures their overlap
+with known part bounds.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

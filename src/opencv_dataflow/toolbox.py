@@ -207,6 +207,7 @@ BLOCK_MODULES = {
         "cv.guided_filter cv.domain_transform_filter cv.adaptive_manifold_filter "
         "cv.fast_global_smoother cv.weighted_median_filter cv.anisotropic_diffusion "
         "cv.deriche_gradient inspect.find_ellipses inspect.fast_hough_lines cv.structured_edges "
+        "inspect.edge_boxes "
         "cv.joint_bilateral_filter cv.rolling_guidance_filter "
         "inspect.thin_mask 3d.smooth_depth"
     ),

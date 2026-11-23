@@ -316,6 +316,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Find contour ellipses](<opencv tools/contour_ellipses/README.md>) | Detect rotated ellipses in contour clutter, filter by axis ratio, and create a fitted region. |
 | [Fast Hough lines](<opencv tools/fast_hough_lines/README.md>) | View the accumulator, recover lines with known offsets, and filter by direction. |
 | [Structured forest edges](<opencv tools/structured_edges/README.md>) | Compare thinned edge responses with known boundaries after preparing the pinned OpenCV forest. |
+| [EdgeBoxes object proposals](<opencv tools/edge_boxes/README.md>) | Rank and filter candidate part rectangles using Canny strengths and Sobel angles. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |
 | [Extended inpainting](<opencv tools/extended_inpainting/README.md>) | Compare frequency and patch repairs of a marked defect on a known periodic surface. |
 | [DCT denoising](<opencv tools/dct_denoising/README.md>) | Compare whole-frame and region-limited noise reduction against a clean target. |

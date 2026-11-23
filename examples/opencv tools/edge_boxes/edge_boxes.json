@@ -1,0 +1,405 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Rank object proposals",
+      "description": "Run Once. Canny supplies edge strength, and the two Sobel gradients supply angles through Cartesian to polar fields. EdgeBoxes ranks candidate rectangles. Filter on Strength before drawing the final boxes. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Two parts",
+      "parameters": {
+        "path": "assets/parts.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gray",
+      "type": "cv.convert",
+      "name": "Grayscale",
+      "parameters": {
+        "color_format": "gray",
+        "pixel_depth": "unchanged"
+      },
+      "position": [
+        230,
+        60
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "blur",
+      "type": "cv.gaussian_blur",
+      "name": "Smooth source",
+      "parameters": {
+        "kernel": 5,
+        "sigma": 1.0,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        445,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny",
+      "name": "Canny strengths",
+      "parameters": {
+        "low": 45,
+        "high": 100,
+        "l2_gradient": false,
+        "aperture": "3"
+      },
+      "position": [
+        680,
+        -155
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dx",
+      "type": "cv.gradient",
+      "name": "Horizontal derivative",
+      "parameters": {
+        "operator": "sobel",
+        "dx": 1,
+        "dy": 0,
+        "kernel": 3,
+        "scale": 1.0,
+        "delta": 0.0,
+        "output_depth": "float32",
+        "border": "reflect"
+      },
+      "position": [
+        680,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "gradient",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dy",
+      "type": "cv.gradient",
+      "name": "Vertical derivative",
+      "parameters": {
+        "operator": "sobel",
+        "dx": 0,
+        "dy": 1,
+        "kernel": 3,
+        "scale": 1.0,
+        "delta": 0.0,
+        "output_depth": "float32",
+        "border": "reflect"
+      },
+      "position": [
+        680,
+        275
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "gradient",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "polar",
+      "type": "cv.cart_to_polar",
+      "name": "Gradient angle",
+      "parameters": {
+        "angle_units": "degrees"
+      },
+      "position": [
+        920,
+        175
+      ],
+      "exposed_inputs": [
+        "x",
+        "y"
+      ],
+      "exposed_outputs": [
+        "magnitude",
+        "angle"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "propose",
+      "type": "inspect.edge_boxes",
+      "name": "EdgeBoxes proposals",
+      "description": "Rank candidate object rectangles from aligned edge strengths and orientations.",
+      "parameters": {
+        "alpha": 0.65,
+        "beta": 0.65,
+        "eta": 1.0,
+        "min_score": 0.01,
+        "max_boxes": 12,
+        "edge_min_mag": 0.1,
+        "edge_merge_threshold": 0.5,
+        "cluster_min_mag": 0.5,
+        "max_aspect_ratio": 3.0,
+        "min_box_area": 1100,
+        "gamma": 2.0,
+        "kappa": 1.5,
+        "angle_units": "auto",
+        "preview_count": 2
+      },
+      "position": [
+        1180,
+        35
+      ],
+      "exposed_inputs": [
+        "edge_map",
+        "orientation",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "collection",
+        "proposals",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter",
+      "type": "collection.filter",
+      "name": "Keep high scores",
+      "parameters": {
+        "metric": "strength",
+        "custom_metric": "",
+        "use_minimum": true,
+        "minimum": 0.35,
+        "include_minimum": true,
+        "use_maximum": false,
+        "maximum": 0.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        1420,
+        35
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "draw",
+      "type": "collection.draw",
+      "name": "Review strong proposals",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": false,
+        "draw_centers": false,
+        "labels": "rank"
+      },
+      "position": [
+        1650,
+        35
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "gray",
+      "output": "image",
+      "target": "blur",
+      "input": "image"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "edges",
+      "input": "image"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "dx",
+      "input": "image"
+    },
+    {
+      "source": "blur",
+      "output": "image",
+      "target": "dy",
+      "input": "image"
+    },
+    {
+      "source": "dx",
+      "output": "gradient",
+      "target": "polar",
+      "input": "x"
+    },
+    {
+      "source": "dy",
+      "output": "gradient",
+      "target": "polar",
+      "input": "y"
+    },
+    {
+      "source": "edges",
+      "output": "image",
+      "target": "propose",
+      "input": "edge_map"
+    },
+    {
+      "source": "polar",
+      "output": "angle",
+      "target": "propose",
+      "input": "orientation"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "propose",
+      "input": "image"
+    },
+    {
+      "source": "propose",
+      "output": "collection",
+      "target": "filter",
+      "input": "collection"
+    },
+    {
+      "source": "filter",
+      "output": "collection",
+      "target": "draw",
+      "input": "collection"
+    },
+    {
+      "source": "propose",
+      "output": "image",
+      "target": "draw",
+      "input": "image"
+    }
+  ]
+}

@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 41 | 6 | 55 | 102 | 40.2% |
-| **Overall** | 407 | 7 | 56 | 470 | 86.6% |
+| 4. Selected contrib | 42 | 6 | 54 | 102 | 41.2% |
+| **Overall** | 408 | 7 | 55 | 470 | 86.8% |
 
 <!-- coverage-summary:end -->
 
@@ -652,7 +652,7 @@ fixture or result needed to close the item.
 | S4-42 | Contour ellipse detection | ximgproc.findEllipses | Complete | inspect.find_ellipses finds three rotated ellipses in a cluttered image with centers within 2 pixels, full diameters within 4 pixels and orientations within 2 degrees. Fits retain source geometry and support collection filtering and fitted regions. |
 | S4-43 | Fast Hough line transform | ximgproc.FastHoughTransform, HoughPoint2Line | Complete | inspect.fast_hough_lines matches the native accumulator and recovers known endpoints and offsets in nine angle ranges and both bin layouts. Selected votes, separate bin geometry, and sortable source-frame lines are verified. |
 | S4-44 | Structured edge detection | ximgproc.createStructuredEdgeDetection, detectEdges, computeOrientation, edgesNms | Complete | cv.structured_edges verifies the OpenCV 5.0.0 reference forest and publishes native response, orientation and thinned maps. On the example, 459 of 460 detections are within three pixels per axis of a marked boundary, and every marked boundary pixel has a nearby detection. |
-| S4-45 | EdgeBoxes object proposals | ximgproc.createEdgeBoxes | Planned | Use oriented edge maps to rank region proposals and verify overlap against known objects. |
+| S4-45 | EdgeBoxes object proposals | ximgproc.createEdgeBoxes, EdgeBoxes.getBoundingBoxes | Complete | inspect.edge_boxes preserves ranked native scores and source-frame boxes. Its top two proposals reach 0.919 and 0.859 IoU using Canny/Sobel and 0.836 and 0.810 using the pinned structured forest on the same two targets. |
 | S4-46 | Line feature descriptors and matching | line_descriptor.BinaryDescriptor and BinaryDescriptorMatcher | Planned | Match line features across a known camera motion and retain segment endpoints and native distances. |
 | S4-47 | Grid motion statistics match filtering | xfeatures2d.matchGMS | Planned | Filter outlier image matches before pose fitting and compare against unfiltered geometry. |
 | S4-48 | Additional binary patch descriptors | xfeatures2d LATCH, BEBLID and TEBLID | Planned | Compare repeatability and descriptor distance against a known transformed image pair. |

@@ -940,6 +940,7 @@ def builtin_registry():
     from .contour_ellipses import FindEllipses
     from .fast_hough_lines import FastHoughLines
     from .structured_edges import StructuredEdges
+    from .edge_boxes import EdgeBoxProposals
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
     from .rgbd_warp import WarpRGBDByPose
@@ -1201,6 +1202,7 @@ def builtin_registry():
         FindEllipses,
         FastHoughLines,
         StructuredEdges,
+        EdgeBoxProposals,
         DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,

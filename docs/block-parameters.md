@@ -9456,6 +9456,39 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `background_gap` | `1` | Value must be a whole number between 0 and 255. Number of pixel layers to leave unlabeled outside the foreground. |
 | `connectivity` | `"8"` | `4`, `8` Connectivity used to group adjacent peak pixels into one seed. |
 
+## EdgeBoxes proposals (`inspect.edge_boxes`)
+
+Inspection / Segmentation
+
+Inputs: `edge_map` (image), `orientation` (image), `image` (image, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `edge_map` — Monochrome nonnegative strengths. Integer maps use full-scale conversion to [0,1]. Floating maps keep their native scale.
+
+Input `orientation` — Aligned float map of edge-normal angles. Directed angles are folded modulo half a turn.
+
+Input `image` — Optional aligned image for the overlays. Defaults to the edge map.
+
+Input `mask` — Keep only proposals centered inside this mask.
+
+Input `region` — Keep only proposals centered inside this region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alpha` | `0.65` | Value must be a finite number between 0.05 and 0.95. Sliding-window search density. Higher values try more windows. |
+| `beta` | `0.75` | Value must be a finite number between 0.01 and 1. Initial intersection-over-union suppression threshold. Values above 0.99 disable native suppression while retaining the output limit. |
+| `eta` | `1.0` | Value must be a finite number between 0.1 and 1. Multiply the suppression threshold after accepting boxes while it is above 0.5. |
+| `min_score` | `0.01` | Value must be a finite number between 1e-06 and 1e+09. Native minimum edge-enclosure score. |
+| `max_boxes` | `200` | Value must be a whole number between 1 and 2048. Maximum native candidates retained before the optional center filter. |
+| `edge_min_mag` | `0.1` | Value must be a finite number between 0 and 1e+06. Minimum individual edge strength used in clustering. |
+| `edge_merge_threshold` | `0.5` | Value must be a finite number between 0.001 and 10. Angular difference budget when joining neighboring edge pixels. |
+| `cluster_min_mag` | `0.5` | Value must be a finite number between 0 and 1e+06. Minimum accumulated edge strength for a segment. |
+| `max_aspect_ratio` | `3.0` | Value must be a finite number between 1 and 20. Longest-to-shortest side ratio used in the window search. |
+| `min_box_area` | `1000.0` | Value must be a finite number between 16 and 2.09715e+06. Starting search window area in square pixels. Refinement can shrink it. |
+| `gamma` | `2.0` | Value must be a finite number between 0.01 and 16. Sensitivity of affinity between nearby edge clusters. |
+| `kappa` | `1.5` | Value must be a finite number between 0.01 and 8. Sensitivity of the proposal score to window size. |
+| `angle_units` | `"auto"` | `auto`, `radians`, `degrees` Auto reads the orientation payload, or uses radians for an untagged map. |
+| `preview_count` | `12` | Value must be a whole number between 0 and 100. Draw only this many top-ranked proposals. Zero hides the boxes. |
+
 ## Estimate linear motion blur (`inspect.estimate_motion_blur`)
 
 Image processing / Restoration
