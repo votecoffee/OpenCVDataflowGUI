@@ -1577,7 +1577,7 @@ P2	class	cv2.ximgproc.RidgeDetectionFilter	no static reference	-
 P2	method	cv2.ximgproc.RidgeDetectionFilter.create	method name only	-
 P2	method	cv2.ximgproc.RidgeDetectionFilter.getRidgeFilteredImage	method name only	-
 P2	function	cv2.ximgproc.RidgeDetectionFilter_create	literal reference	-
-P2	function	cv2.ximgproc.rollingGuidanceFilter	no static reference	-
+P2	function	cv2.ximgproc.rollingGuidanceFilter	literal reference	-
 P2	class	cv2.ximgproc.ScanSegment	no static reference	-
 P2	method	cv2.ximgproc.ScanSegment.getLabelContourMask	method name only	-
 P2	method	cv2.ximgproc.ScanSegment.getLabels	method name only	-

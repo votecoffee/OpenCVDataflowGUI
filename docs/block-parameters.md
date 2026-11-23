@@ -5298,11 +5298,11 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `g
 
 Input `image` — Monochrome or RGB/BGR(A), uint8, uint16 or float32. Alpha is preserved.
 
-Input `guide` — Optional aligned monochrome or color guide. Disconnected uses the source.
-
 Input `mask` — Only selected output pixels are replaced. Filtering uses the full image.
 
 Input `region` — Optional output selection. Intersects the mask when both are connected.
+
+Input `guide` — Optional aligned monochrome or color guide. Disconnected uses the source.
 
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
@@ -6269,6 +6269,27 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `scale` | `1.0` | Value must be a finite number. Native scale applied in each Sobel pass. |
 | `delta` | `0.0` | Value must be a finite number. Native bias added in each Sobel pass. |
 | `border` | `"reflect_101"` | `constant`, `replicate`, `reflect_101`, `reflect_edge` Pixel extrapolation at the input image edge. |
+
+## Rolling guidance filter (`cv.rolling_guidance_filter`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Monochrome or RGB/BGR(A), uint8, uint16 or float32. Alpha is preserved.
+
+Input `mask` — Only selected output pixels are replaced. Filtering uses the full image.
+
+Input `region` — Optional output selection. Intersects the mask when both are connected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `diameter` | `0` | Value must be a whole number between 0 and 255. Neighborhood diameter. Zero derives it from spatial sigma. |
+| `sigma_color` | `0.1` | Value must be a finite number at least 1e-06. Color sigma on the current guide. Integer images use normalized units. |
+| `sigma_space` | `3.0` | Value must be a finite number at least 1e-06. Spatial sigma in pixels. |
+| `border` | `"reflect_101"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` Extrapolation at the image edge. Constant uses zero. |
+| `iterations` | `4` | Value must be a whole number between 0 and 32. Use each result as the next guide. Zero skips filtering. |
+| `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged keeps the source depth. Integers convert through [0, 1]. |
 
 ## Rotate arbitrary angle (`cv.rotate`)
 

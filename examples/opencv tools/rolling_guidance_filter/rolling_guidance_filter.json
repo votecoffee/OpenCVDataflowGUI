@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Rolling guidance on a textured part",
+      "description": "Compare one and four passes on a textured plate with a notch and a round cutout. A third branch writes the four-pass result inside a rectangle. The original synthetic assets are covered by this repository's MIT license.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "textured",
+      "type": "input.file",
+      "name": "Textured part",
+      "parameters": {
+        "path": "assets/textured.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        140
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Output rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          20,
+          28,
+          176,
+          84
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        270,
+        330
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "single",
+      "type": "cv.rolling_guidance_filter",
+      "name": "Smooth once",
+      "description": "Reduce fine texture with repeated smoothing guided by the previous pass.",
+      "parameters": {
+        "diameter": 17,
+        "sigma_color": 0.08,
+        "sigma_space": 4,
+        "border": "reflect_101",
+        "iterations": 1,
+        "output_depth": "unchanged"
+      },
+      "position": [
+        530,
+        -35
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "rolling",
+      "type": "cv.rolling_guidance_filter",
+      "name": "Roll the guide four times",
+      "description": "Reduce fine texture with repeated smoothing guided by the previous pass.",
+      "parameters": {
+        "diameter": 17,
+        "sigma_color": 0.08,
+        "sigma_space": 4,
+        "border": "reflect_101",
+        "iterations": 4,
+        "output_depth": "unchanged"
+      },
+      "position": [
+        530,
+        145
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.rolling_guidance_filter",
+      "name": "Four passes inside the rectangle",
+      "description": "Reduce fine texture with repeated smoothing guided by the previous pass.",
+      "parameters": {
+        "diameter": 17,
+        "sigma_color": 0.08,
+        "sigma_space": 4,
+        "border": "reflect_101",
+        "iterations": 4,
+        "output_depth": "unchanged"
+      },
+      "position": [
+        530,
+        330
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "single",
+      "input": "image"
+    },
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "rolling",
+      "input": "image"
+    },
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

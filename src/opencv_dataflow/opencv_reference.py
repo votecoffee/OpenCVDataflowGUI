@@ -313,6 +313,7 @@ BINDINGS = {
     "cv.gray": "cvtColor",
     "cv.guided_filter": "ximgproc.guidedFilter",
     "cv.joint_bilateral_filter": "ximgproc.jointBilateralFilter",
+    "cv.rolling_guidance_filter": "ximgproc.rollingGuidanceFilter ximgproc.jointBilateralFilter",
     "cv.fast_global_smoother": (
         "ximgproc.createFastGlobalSmootherFilter ximgproc.FastGlobalSmootherFilter.filter"
     ),

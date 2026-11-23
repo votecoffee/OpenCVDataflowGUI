@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 25 | 3 | 74 | 102 | 24.5% |
-| **Overall** | 391 | 4 | 75 | 470 | 83.2% |
+| 4. Selected contrib | 26 | 3 | 73 | 102 | 25.5% |
+| **Overall** | 392 | 4 | 74 | 470 | 83.4% |
 
 <!-- coverage-summary:end -->
 
@@ -617,7 +617,7 @@ fixture or result needed to close the item.
 | S4-12 | Gray-world white balance | xphoto.createGrayworldWB, xphoto.applyChannelGains | Complete | cv.gray_world_white_balance preserves 8/16-bit color depth and alpha. Qualifies native threshold quantization, neutral patch recovery, estimation masks and regions, insufficient channel support, and normalized gain application. |
 | S4-13 | Fast global edge-preserving smoothing | ximgproc.createFastGlobalSmootherFilter | Complete | cv.fast_global_smoother supports self-guided or registered-guide smoothing, native solver controls and selected output writes. Checks native parity, source depth/encoding/alpha, and noise and edge recovery against a synthetic clean target. |
 | S4-14 | Joint bilateral filtering | ximgproc.jointBilateralFilter | Complete | cv.joint_bilateral_filter accepts an optional registered guide, mixed uint8/uint16/float32 input, native controls, and masked/region writes. Verified 16-bit detail recovery with an 8-bit guide, typed output and alpha, and constant borders against a circular-kernel reference. |
-| S4-15 | Rolling guidance filtering | ximgproc.rollingGuidanceFilter | Planned | Compare removal of small texture against preservation of larger part boundaries. |
+| S4-15 | Rolling guidance filtering | ximgproc.rollingGuidanceFilter, ximgproc.jointBilateralFilter | Complete | cv.rolling_guidance_filter exposes the native neighborhood, border and pass controls with typed output and selected writes. Four passes suppress fine texture on a synthetic plate and preserve known outline and cutout contrasts. A separate reference checks fixed zero-border iterations. |
 | S4-16 | Extended inpainting for defect cleanup | xphoto.inpaint | Planned | Fill a masked defect using the supported algorithm and verify known background recovery. |
 | S4-17 | DCT denoising | xphoto.dctDenoising | Planned | Quantify noise reduction and edge retention on a seeded color or grayscale fixture. |
 | S4-18 | Fast line detection | ximgproc.createFastLineDetector | Planned | Verify segment positions and orientation on straight edges and retain collection metadata. |

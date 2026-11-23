@@ -479,23 +479,14 @@ class DomainTransformFilter(AlignedGuideFilter):
         )
 
 
-class JointBilateralFilter(AlignedGuideFilter):
-    type_id, title = "cv.joint_bilateral_filter", "Joint bilateral filter"
-    description = "Smooth a source image using intensity and color edges from an aligned guide."
-    inputs = (*SELECTION_INPUTS, Port("guide", required=False, required_when_connected=True))
+class _BilateralNeighborhoodFilter(AlignedGuideFilter):
     defaults = {
         "diameter": 9,
         "sigma_color": 0.1,
         "sigma_space": 4.0,
         "border": "reflect_101",
-        "guide_alignment": "same_frame",
-        "output_depth": "unchanged",
     }
-    parameter_choices = {
-        **AlignedGuideFilter.parameter_choices,
-        "border": tuple(BORDERS),
-        "guide_alignment": ("same_frame", "pixel_grid"),
-    }
+    parameter_choices = {**AlignedGuideFilter.parameter_choices, "border": tuple(BORDERS)}
     parameter_ranges = {
         "diameter": NumericRange(0, 255, whole=True),
         "sigma_color": NumericRange(1e-6),
@@ -506,12 +497,10 @@ class JointBilateralFilter(AlignedGuideFilter):
         "sigma_color": "Guide color sigma. Integer guides are normalized to [0, 1].",
         "sigma_space": "Spatial sigma in pixels.",
         "border": "Extrapolation at the image edge. Constant uses zero.",
-        "guide_alignment": "Pixel grid accepts separately loaded guides registered by index.",
         "output_depth": "Unchanged keeps the source depth. Integers convert through [0, 1].",
     }
     input_help = {
         "image": "Monochrome or RGB/BGR(A), uint8, uint16 or float32. Alpha is preserved.",
-        "guide": "Optional aligned monochrome or color guide. Disconnected uses the source.",
         "mask": "Only selected output pixels are replaced. Filtering uses the full image.",
         "region": "Optional output selection. Intersects the mask when both are connected.",
     }
@@ -528,43 +517,119 @@ class JointBilateralFilter(AlignedGuideFilter):
                 "sigma_space",
             )
 
-    def filter_image(self, reference, signal):
+    def _kernel(self, signal):
         p = self.parameters
-        d = int(p["diameter"])
-        color, space = float(p["sigma_color"]), float(p["sigma_space"])
-        border = BORDERS[p["border"]]
-        radius = max(1, d // 2 if d else round(1.5 * space))
+        diameter = int(p["diameter"])
+        space = float(p["sigma_space"])
+        radius = max(1, diameter // 2 if diameter else round(1.5 * space))
         # OpenCV accumulates an unnormalized float32 sum of at most this many pixels.
-        native_limit = float(np.finfo(np.float32).max)
-        src_min, src_max = float(signal.min()), float(signal.max())
-        if max(abs(src_min), abs(src_max)) > native_limit / (2 * radius + 1) ** 2:
+        max_sample = max(abs(float(signal.min())), abs(float(signal.max())))
+        if max_sample > float(np.finfo(np.float32).max) / (2 * radius + 1) ** 2:
             raise ValidationError(
                 "Source values exceed the native filter range. Rescale the image."
             )
-        self_guided = reference is signal
-        guide_min, guide_max = (
-            (src_min, src_max) if self_guided else (float(reference.min()), float(reference.max()))
+        return diameter, float(p["sigma_color"]), space, BORDERS[p["border"]], radius
+
+
+def _joint_bilateral_pass(reference, signal, diameter, color, space, border, radius):
+    if border != cv2.BORDER_CONSTANT:
+        return cv2.ximgproc.jointBilateralFilter(
+            reference, signal, diameter, color, space, borderType=border
         )
-        padding = 0
-        if border == cv2.BORDER_CONSTANT:
-            # Include the zero border in the native float guide's range lookup.
-            guide_min, guide_max = min(guide_min, 0), max(guide_max, 0)
-            padding = radius
-        channels = reference.shape[2] if reference.ndim == 3 else 1
-        if guide_max - guide_min > native_limit / (2 * channels):
-            raise ValidationError("Guide values exceed the native color range. Rescale the guide.")
-        if padding:
-            if not self_guided:
-                reference = cv2.copyMakeBorder(
-                    reference, padding, padding, padding, padding, border
+
+    # Include the zero border in the native float guide's range lookup.
+    padding = (radius,) * 4
+    padded_signal = cv2.copyMakeBorder(signal, *padding, border)
+    padded_reference = (
+        cv2.copyMakeBorder(reference, *padding, border) if reference is not None else None
+    )
+    result = cv2.ximgproc.jointBilateralFilter(
+        padded_reference, padded_signal, diameter, color, space, borderType=cv2.BORDER_REPLICATE
+    )
+    return result[radius:-radius, radius:-radius].copy()
+
+
+class JointBilateralFilter(_BilateralNeighborhoodFilter):
+    type_id, title = "cv.joint_bilateral_filter", "Joint bilateral filter"
+    description = "Smooth a source image using intensity and color edges from an aligned guide."
+    inputs = (*SELECTION_INPUTS, Port("guide", required=False, required_when_connected=True))
+    defaults = {
+        **_BilateralNeighborhoodFilter.defaults,
+        "guide_alignment": "same_frame",
+        "output_depth": "unchanged",
+    }
+    parameter_choices = {
+        **_BilateralNeighborhoodFilter.parameter_choices,
+        "guide_alignment": ("same_frame", "pixel_grid"),
+    }
+    parameter_help = {
+        **_BilateralNeighborhoodFilter.parameter_help,
+        "guide_alignment": "Pixel grid accepts separately loaded guides registered by index.",
+    }
+    input_help = {
+        **_BilateralNeighborhoodFilter.input_help,
+        "guide": "Optional aligned monochrome or color guide. Disconnected uses the source.",
+    }
+
+    def filter_image(self, reference, signal):
+        diameter, color, space, border, radius = self._kernel(signal)
+        if reference is signal:
+            reference = None
+        else:
+            guide_min, guide_max = float(reference.min()), float(reference.max())
+            if border == cv2.BORDER_CONSTANT:
+                guide_min, guide_max = min(guide_min, 0), max(guide_max, 0)
+            channels = reference.shape[2] if reference.ndim == 3 else 1
+            if guide_max - guide_min > float(np.finfo(np.float32).max) / (2 * channels):
+                raise ValidationError(
+                    "Guide values exceed the native color range. Rescale the guide."
                 )
-            signal = cv2.copyMakeBorder(signal, padding, padding, padding, padding, border)
-            border = cv2.BORDER_REPLICATE
-        guide = None if self_guided else reference
-        output = cv2.ximgproc.jointBilateralFilter(
-            guide, signal, d, color, space, borderType=border
-        )
-        return output[padding:-padding, padding:-padding].copy() if padding else output
+        return _joint_bilateral_pass(reference, signal, diameter, color, space, border, radius)
+
+
+class RollingGuidanceFilter(_BilateralNeighborhoodFilter):
+    type_id, title = "cv.rolling_guidance_filter", "Rolling guidance filter"
+    description = "Reduce fine texture with repeated smoothing guided by the previous pass."
+    inputs = SELECTION_INPUTS
+    defaults = {
+        **_BilateralNeighborhoodFilter.defaults,
+        "diameter": 0,
+        "sigma_space": 3.0,
+        "iterations": 4,
+        "output_depth": "unchanged",
+    }
+    parameter_ranges = {
+        **_BilateralNeighborhoodFilter.parameter_ranges,
+        "iterations": NumericRange(0, 32, whole=True),
+    }
+    parameter_help = {
+        **_BilateralNeighborhoodFilter.parameter_help,
+        "sigma_color": "Color sigma on the current guide. Integer images use normalized units.",
+        "iterations": "Use each result as the next guide. Zero skips filtering.",
+    }
+
+    def filter_image(self, reference, signal):
+        iterations = int(self.parameters["iterations"])
+        if not iterations:
+            return signal.copy()
+        diameter, color, space, border, radius = self._kernel(signal)
+        if border != cv2.BORDER_CONSTANT:
+            return cv2.ximgproc.rollingGuidanceFilter(
+                signal,
+                d=diameter,
+                sigmaColor=color,
+                sigmaSpace=space,
+                numOfIter=iterations,
+                borderType=border,
+            )
+
+        # Each iteration uses the original signal and a fresh zero border on the guide.
+        guidance = signal
+        for _ in range(iterations):
+            guidance = _joint_bilateral_pass(
+                guidance, signal, diameter, color, space, border, radius
+            )
+        return guidance
 
 
 class FastGlobalSmoother(ImageTool):
@@ -736,6 +801,7 @@ RESTORATION_BLOCKS = (
     GuidedFilter,
     DomainTransformFilter,
     JointBilateralFilter,
+    RollingGuidanceFilter,
     FastGlobalSmoother,
     SeamlessClone,
 )
