@@ -647,7 +647,7 @@ a working backend and reproducible graph result.
 
 | API | Graph disposition | Checklist IDs |
 | --- | --- | --- |
-| `cv2.ShapeDistanceExtractor`, `cv2.ShapeContextDistanceExtractor`, `cv2.createShapeContextDistanceExtractor` | Keep geometry-only scoring separate from appearance-assisted ranking with paired source images. | S4-50, S4-95 |
+| `cv2.ShapeDistanceExtractor`, `cv2.ShapeContextDistanceExtractor`, `cv2.createShapeContextDistanceExtractor` | S4-50 verifies geometry-only scoring with three known silhouettes. S4-95 tracks appearance-assisted ranking with paired source images. | S4-50, S4-95 |
 | `cv2.HausdorffDistanceExtractor`, `cv2.createHausdorffDistanceExtractor` | Check the rank and metric settings on controlled contours. | S4-51 |
 | `cv2.ChiHistogramCostExtractor`, `cv2.EMDHistogramCostExtractor`, `cv2.EMDL1HistogramCostExtractor`, `cv2.HistogramCostExtractor`, `cv2.NormHistogramCostExtractor`, `cv2.createChiHistogramCostExtractor`, `cv2.createEMDHistogramCostExtractor`, `cv2.createEMDL1HistogramCostExtractor`, `cv2.createNormHistogramCostExtractor`, `cv::EMDL1` | Use histogram costs inside shape scoring and distribution comparison rather than exposing matrix utilities. | S1-120, S4-50 |
 | `cv2.AffineTransformer`, `cv2.ShapeTransformer`, `cv2.ThinPlateSplineShapeTransformer`, `cv2.createAffineTransformer`, `cv2.createThinPlateSplineShapeTransformer` | Affine choices belong to reference alignment and shape scoring. Thin-plate spline warping owns the nonrigid fixture. | S1-48, S4-50, S4-52, S4-95 |

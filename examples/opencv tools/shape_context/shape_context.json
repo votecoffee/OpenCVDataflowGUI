@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Rank silhouettes against a reference",
+      "description": "Run Once. The comparison blocks score an identical outline, a mildly deformed part, and a circle. Smaller distances indicate closer silhouettes. The supplied silhouettes are original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference part",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_outline",
+      "type": "inspect.contours",
+      "name": "Reference part outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        270,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_distance",
+      "type": "inspect.shape_context_distance",
+      "name": "Score reference part",
+      "description": "Compare closed silhouettes after iterative alignment using OpenCV shape context.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "samples": 64,
+        "angular_bins": 12,
+        "radial_bins": 4,
+        "inner_radius": 0.2,
+        "outer_radius": 2.0,
+        "iterations": 3,
+        "rotation_invariant": false,
+        "histogram_cost": "chi-square",
+        "histogram_norm": "L2",
+        "dummy_count": 12,
+        "dummy_cost": 0.2,
+        "alignment": "thin-plate spline",
+        "shape_weight": 1.0,
+        "bending_weight": 0.3,
+        "check_distance": false,
+        "maximum_distance": 0.05
+      },
+      "position": [
+        630,
+        0
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "distance"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "deformed",
+      "type": "input.file",
+      "name": "Deformed part",
+      "parameters": {
+        "path": "assets/deformed.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        220
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "deformed_outline",
+      "type": "inspect.contours",
+      "name": "Deformed part outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        270,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "deformed_distance",
+      "type": "inspect.shape_context_distance",
+      "name": "Score deformed part",
+      "description": "Compare closed silhouettes after iterative alignment using OpenCV shape context.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "samples": 64,
+        "angular_bins": 12,
+        "radial_bins": 4,
+        "inner_radius": 0.2,
+        "outer_radius": 2.0,
+        "iterations": 3,
+        "rotation_invariant": false,
+        "histogram_cost": "chi-square",
+        "histogram_norm": "L2",
+        "dummy_count": 12,
+        "dummy_cost": 0.2,
+        "alignment": "thin-plate spline",
+        "shape_weight": 1.0,
+        "bending_weight": 0.3,
+        "check_distance": false,
+        "maximum_distance": 0.05
+      },
+      "position": [
+        630,
+        220
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "distance"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "circle",
+      "type": "input.file",
+      "name": "Circle",
+      "parameters": {
+        "path": "assets/circle.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        440
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "circle_outline",
+      "type": "inspect.contours",
+      "name": "Circle outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "simple",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        270,
+        440
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "circle_distance",
+      "type": "inspect.shape_context_distance",
+      "name": "Score circle",
+      "description": "Compare closed silhouettes after iterative alignment using OpenCV shape context.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "samples": 64,
+        "angular_bins": 12,
+        "radial_bins": 4,
+        "inner_radius": 0.2,
+        "outer_radius": 2.0,
+        "iterations": 3,
+        "rotation_invariant": false,
+        "histogram_cost": "chi-square",
+        "histogram_norm": "L2",
+        "dummy_count": 12,
+        "dummy_cost": 0.2,
+        "alignment": "thin-plate spline",
+        "shape_weight": 1.0,
+        "bending_weight": 0.3,
+        "check_distance": false,
+        "maximum_distance": 0.05
+      },
+      "position": [
+        630,
+        440
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "distance"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_outline",
+      "input": "image"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "reference_distance",
+      "input": "reference"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "reference_distance",
+      "input": "sample"
+    },
+    {
+      "source": "deformed",
+      "output": "image",
+      "target": "deformed_outline",
+      "input": "image"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "deformed_distance",
+      "input": "reference"
+    },
+    {
+      "source": "deformed_outline",
+      "output": "collection",
+      "target": "deformed_distance",
+      "input": "sample"
+    },
+    {
+      "source": "circle",
+      "output": "image",
+      "target": "circle_outline",
+      "input": "image"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "circle_distance",
+      "input": "reference"
+    },
+    {
+      "source": "circle_outline",
+      "output": "collection",
+      "target": "circle_distance",
+      "input": "sample"
+    }
+  ]
+}

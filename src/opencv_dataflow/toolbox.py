@@ -40,6 +40,7 @@ OPENCV_MODULES = {
     "imgcodecs": "Image Codecs",
     "features": "Features Framework",
     "xfeatures2d": "Extra 2D Features",
+    "shape": "Shape Distance and Matching",
     "calib": "Camera Calibration",
     "geometry": "Computational Geometry",
     "video": "Video Analysis",
@@ -150,6 +151,7 @@ IMPLEMENTATION_MODULES = {
     ),
     "xfeatures2d": "compact_descriptors daisy_descriptor grid_motion harris_laplace",
     "line_descriptor": "line_descriptors",
+    "shape": "shape_context",
     "optflow": "deepflow dense_rlof dual_tvl1_flow",
 }
 BLOCK_MODULES = {

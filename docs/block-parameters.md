@@ -11282,6 +11282,37 @@ Input `region` — Keep proposals whose centers fall within this optional select
 | `max_proposals` | `200` | Value must be a whole number between 1 and 5000. Maximum number of retained boxes after the selection filter. |
 | `preview_count` | `25` | Value must be a whole number between 0 and 250. Number of retained boxes to draw. Zero disables the overlay. |
 
+## Compare contours (shape context) (`inspect.shape_context_distance`)
+
+Inspection / Contour matching
+
+Inputs: `reference` (data), `sample` (data).
+
+Input `reference` — Closed reference silhouette as ordered [x,y] points or a contour collection.
+
+Input `sample` — Closed sample silhouette as ordered [x,y] points or a contour collection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number at least 0. Zero-based collection item. Ignored for a point list. |
+| `sample_index` | `0` | Value must be a whole number at least 0. Zero-based collection item. Ignored for a point list. |
+| `samples` | `64` | Value must be a whole number between 16 and 128. Number of equally spaced perimeter samples on each closed contour. |
+| `angular_bins` | `12` | Value must be a whole number between 4 and 24. Angular sectors in the log-polar shape descriptor. |
+| `radial_bins` | `4` | Value must be a whole number between 2 and 8. Logarithmic radius bins in the shape descriptor. |
+| `inner_radius` | `0.2` | Value must be a finite number between 0.01 and 2. Smallest descriptor radius in mean point-separation units. |
+| `outer_radius` | `2.0` | Value must be a finite number between 0.1 and 8. Largest descriptor radius in mean point-separation units. |
+| `iterations` | `3` | Value must be a whole number between 1 and 6. Number of rounds of descriptor matching and alignment. |
+| `rotation_invariant` | `false` | Orient each descriptor relative to the contour centroid. |
+| `histogram_cost` | `"chi-square"` | `chi-square`, `norm`, `earth mover`, `earth mover L1` Distance used to compare each pair of local shape histograms. |
+| `histogram_norm` | `"L2"` | `L1`, `L2` Ground distance for the norm and earth mover histogram costs. |
+| `dummy_count` | `12` | Value must be a whole number between 1 and 32. Dummy assignments available for unmatched contour samples. |
+| `dummy_cost` | `0.2` | Value must be a finite number between 0.01 and 10. Cost of assigning a point to a dummy instead of a real match. |
+| `alignment` | `"thin-plate spline"` | `thin-plate spline`, `full affine`, `partial affine` Transform applied between rounds of correspondence matching. |
+| `shape_weight` | `1.0` | Value must be a finite number between 0 and 10. Weight of the final histogram matching cost. |
+| `bending_weight` | `0.3` | Value must be a finite number between 0 and 10. Weight of the accumulated deformation cost for thin-plate spline. |
+| `check_distance` | `false` | Fail an inspection if the measured distance exceeds the maximum. |
+| `maximum_distance` | `0.05` | Value must be a finite number at least 0. Inclusive limit for the chosen settings. Smaller means closer. |
+
 ## SIFT keypoints and descriptors (`inspect.sift`)
 
 Inspection / Features

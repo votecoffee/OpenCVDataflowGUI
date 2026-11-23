@@ -437,6 +437,7 @@ BINDINGS = {
     "inspect.teblid_descriptor": "xfeatures2d.TEBLID_create",
     "inspect.daisy_descriptor": "xfeatures2d.DAISY_create",
     "inspect.compare_contours": "matchShapes",
+    "inspect.shape_context_distance": "createShapeContextDistanceExtractor",
     "inspect.compare_edge_maps": "distanceTransform",
     "inspect.mask_clearance": "distanceTransform",
     "inspect.compare_histograms": "compareHist",

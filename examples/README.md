@@ -321,6 +321,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Grid motion match filtering](<opencv tools/grid_motion/README.md>) | Compare raw and filtered ORB matches and affine fits on an occluded image pair. |
 | [Binary patch descriptors](<opencv tools/binary_patch_descriptors/README.md>) | Compare LATCH, BEBLID and TEBLID on the same transformed ORB keypoints. |
 | [Harris–Laplace interest points](<opencv tools/harris_laplace/README.md>) | Compare detected corner sizes and repeatability on the original and doubled image. |
+| [Shape-context contour comparison](<opencv tools/shape_context/README.md>) | Rank a reference silhouette, a deformed part and a circle by their outline distance. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |
 | [Extended inpainting](<opencv tools/extended_inpainting/README.md>) | Compare frequency and patch repairs of a marked defect on a known periodic surface. |
 | [DCT denoising](<opencv tools/dct_denoising/README.md>) | Compare whole-frame and region-limited noise reduction against a clean target. |
