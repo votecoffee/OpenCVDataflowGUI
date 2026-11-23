@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Joint bilateral filtering",
+      "description": "Compare bilateral filtering with and without a registered color guide. The guide shows the boundaries of the step and faint stripe in a 16-bit image. The original synthetic images are covered by this repository's MIT license.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Noisy 16-bit source",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        90
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guide",
+      "type": "input.file",
+      "name": "Registered 8-bit color guide",
+      "parameters": {
+        "path": "assets/guide.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        330
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Upper inspection area",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          13,
+          8,
+          144,
+          62
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        260,
+        330
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "self_guided",
+      "type": "cv.joint_bilateral_filter",
+      "name": "Bilateral on source",
+      "description": "Smooth a source image using intensity and color edges from an aligned guide.",
+      "parameters": {
+        "diameter": 17,
+        "sigma_color": 0.12,
+        "sigma_space": 4.0,
+        "border": "reflect_101",
+        "guide_alignment": "same_frame",
+        "output_depth": "unchanged"
+      },
+      "position": [
+        545,
+        -40
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guided",
+      "type": "cv.joint_bilateral_filter",
+      "name": "Edges from registered guide",
+      "description": "Smooth a source image using intensity and color edges from an aligned guide.",
+      "parameters": {
+        "diameter": 17,
+        "sigma_color": 0.12,
+        "sigma_space": 4.0,
+        "border": "reflect_101",
+        "guide_alignment": "pixel_grid",
+        "output_depth": "unchanged"
+      },
+      "position": [
+        545,
+        138
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.joint_bilateral_filter",
+      "name": "Update selected output pixels",
+      "description": "Smooth a source image using intensity and color edges from an aligned guide.",
+      "parameters": {
+        "diameter": 17,
+        "sigma_color": 0.12,
+        "sigma_space": 4.0,
+        "border": "reflect_101",
+        "guide_alignment": "pixel_grid",
+        "output_depth": "unchanged"
+      },
+      "position": [
+        545,
+        335
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "self_guided",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "guided",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "guided",
+      "input": "guide"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "selected",
+      "input": "guide"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

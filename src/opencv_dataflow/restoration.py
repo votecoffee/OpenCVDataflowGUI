@@ -9,6 +9,7 @@ from .core import Block, Port, Result
 from .deblur import WienerDeblur
 from .images import ImageArray, convert_depth, format_image, image_format
 from .parameter_validation import NumericRange, ValidationError
+from .parameters import BORDERS
 from .payloads import (
     FlowGroup,
     ValuePacket,
@@ -389,13 +390,14 @@ class AlignedGuideFilter(ImageTool, ABC):
         guide = inputs.get("guide", source)
         image_value(source, (np.uint8, np.uint16, np.float32))
         image_value(guide, (np.uint8, np.uint16, np.float32))
-        _check_aligned_guide(source, guide)
+        check_frame = self.parameters.get("guide_alignment", "same_frame") == "same_frame"
+        _check_aligned_guide(source, guide, check_frame=check_frame)
 
         work = convert_depth(source, "float32")
-        reference = work if guide is source else convert_depth(guide, "float32")
         has_alpha = work.ndim == 3 and work.shape[2] == 4
         signal = work[..., :3] if has_alpha else work
-        if reference.ndim == 3:
+        reference = signal if guide is source else convert_depth(guide, "float32")
+        if reference.ndim == 3 and reference.shape[2] == 4:
             reference = reference[..., :3]
         result = self.filter_image(reference, signal)
         if not np.isfinite(result).all():
@@ -475,6 +477,94 @@ class DomainTransformFilter(AlignedGuideFilter):
             mode=self.modes[p["mode"]],
             numIters=int(p["iterations"]),
         )
+
+
+class JointBilateralFilter(AlignedGuideFilter):
+    type_id, title = "cv.joint_bilateral_filter", "Joint bilateral filter"
+    description = "Smooth a source image using intensity and color edges from an aligned guide."
+    inputs = (*SELECTION_INPUTS, Port("guide", required=False, required_when_connected=True))
+    defaults = {
+        "diameter": 9,
+        "sigma_color": 0.1,
+        "sigma_space": 4.0,
+        "border": "reflect_101",
+        "guide_alignment": "same_frame",
+        "output_depth": "unchanged",
+    }
+    parameter_choices = {
+        **AlignedGuideFilter.parameter_choices,
+        "border": tuple(BORDERS),
+        "guide_alignment": ("same_frame", "pixel_grid"),
+    }
+    parameter_ranges = {
+        "diameter": NumericRange(0, 255, whole=True),
+        "sigma_color": NumericRange(1e-6),
+        "sigma_space": NumericRange(1e-6),
+    }
+    parameter_help = {
+        "diameter": "Neighborhood diameter. Zero derives it from spatial sigma.",
+        "sigma_color": "Guide color sigma. Integer guides are normalized to [0, 1].",
+        "sigma_space": "Spatial sigma in pixels.",
+        "border": "Extrapolation at the image edge. Constant uses zero.",
+        "guide_alignment": "Pixel grid accepts separately loaded guides registered by index.",
+        "output_depth": "Unchanged keeps the source depth. Integers convert through [0, 1].",
+    }
+    input_help = {
+        "image": "Monochrome or RGB/BGR(A), uint8, uint16 or float32. Alpha is preserved.",
+        "guide": "Optional aligned monochrome or color guide. Disconnected uses the source.",
+        "mask": "Only selected output pixels are replaced. Filtering uses the full image.",
+        "region": "Optional output selection. Intersects the mask when both are connected.",
+    }
+    preview_safe = parallel_safe = process_inputs_readonly = True
+    payload_reference = "image"
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["diameter"] == 0 and float(p["sigma_space"]) >= 85:
+            raise ValidationError(
+                "Automatic neighborhood would exceed 255 pixels. Set a diameter or reduce sigma.",
+                "diameter",
+                "sigma_space",
+            )
+
+    def filter_image(self, reference, signal):
+        p = self.parameters
+        d = int(p["diameter"])
+        color, space = float(p["sigma_color"]), float(p["sigma_space"])
+        border = BORDERS[p["border"]]
+        radius = max(1, d // 2 if d else round(1.5 * space))
+        # OpenCV accumulates an unnormalized float32 sum of at most this many pixels.
+        native_limit = float(np.finfo(np.float32).max)
+        src_min, src_max = float(signal.min()), float(signal.max())
+        if max(abs(src_min), abs(src_max)) > native_limit / (2 * radius + 1) ** 2:
+            raise ValidationError(
+                "Source values exceed the native filter range. Rescale the image."
+            )
+        self_guided = reference is signal
+        guide_min, guide_max = (
+            (src_min, src_max) if self_guided else (float(reference.min()), float(reference.max()))
+        )
+        padding = 0
+        if border == cv2.BORDER_CONSTANT:
+            # Include the zero border in the native float guide's range lookup.
+            guide_min, guide_max = min(guide_min, 0), max(guide_max, 0)
+            padding = radius
+        channels = reference.shape[2] if reference.ndim == 3 else 1
+        if guide_max - guide_min > native_limit / (2 * channels):
+            raise ValidationError("Guide values exceed the native color range. Rescale the guide.")
+        if padding:
+            if not self_guided:
+                reference = cv2.copyMakeBorder(
+                    reference, padding, padding, padding, padding, border
+                )
+            signal = cv2.copyMakeBorder(signal, padding, padding, padding, padding, border)
+            border = cv2.BORDER_REPLICATE
+        guide = None if self_guided else reference
+        output = cv2.ximgproc.jointBilateralFilter(
+            guide, signal, d, color, space, borderType=border
+        )
+        return output[padding:-padding, padding:-padding].copy() if padding else output
 
 
 class FastGlobalSmoother(ImageTool):
@@ -645,6 +735,7 @@ RESTORATION_BLOCKS = (
     Inpaint,
     GuidedFilter,
     DomainTransformFilter,
+    JointBilateralFilter,
     FastGlobalSmoother,
     SeamlessClone,
 )

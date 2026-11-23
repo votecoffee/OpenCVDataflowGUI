@@ -5290,6 +5290,29 @@ Input `image_b` — Right or bottom image. When both inputs have tickets, they m
 | `gap` | `0` | Value must be a whole number between 0 and 16384. Number of fill pixels between images along the join. |
 | `fill_value` | `0.0` | Value must be a finite number. Use this value for all channels in the gap and padding, in stored units. |
 
+## Joint bilateral filter (`cv.joint_bilateral_filter`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `guide` (image, optional).
+
+Input `image` — Monochrome or RGB/BGR(A), uint8, uint16 or float32. Alpha is preserved.
+
+Input `guide` — Optional aligned monochrome or color guide. Disconnected uses the source.
+
+Input `mask` — Only selected output pixels are replaced. Filtering uses the full image.
+
+Input `region` — Optional output selection. Intersects the mask when both are connected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `diameter` | `9` | Value must be a whole number between 0 and 255. Neighborhood diameter. Zero derives it from spatial sigma. |
+| `sigma_color` | `0.1` | Value must be a finite number at least 1e-06. Guide color sigma. Integer guides are normalized to [0, 1]. |
+| `sigma_space` | `4.0` | Value must be a finite number at least 1e-06. Spatial sigma in pixels. |
+| `border` | `"reflect_101"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` Extrapolation at the image edge. Constant uses zero. |
+| `guide_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid accepts separately loaded guides registered by index. |
+| `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged keeps the source depth. Integers convert through [0, 1]. |
+
 ## Laplacian image pyramid set (`cv.laplacian_pyramid`)
 
 Image processing / Pyramids
