@@ -305,6 +305,9 @@ consecutive-frame estimation with a known-displacement and occlusion fixture.
 support on a translated color texture and verifies native geodesic, EPIC, RIC and direct-grid paths.
 [WeChat QR](<../examples/opencv tools/wechat_qr/README.md>) compares the standard
 reader, the model-free WeChat decoder and pinned ONNX models on small and low-contrast labels.
+[Fast bilateral solver](<../examples/opencv tools/fast_bilateral_solver/README.md>) reconstructs
+sparse confident measurements within guide boundaries. SciPy runs on the standard wheel.
+Native parity depends on an Eigen-enabled OpenCV build.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

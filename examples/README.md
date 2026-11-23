@@ -308,6 +308,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Guided edge-preserving filter](<opencv tools/guided_filter/README.md>) | Smooth a noisy image while preserving its main intensity edge. |
 | [Fast global smoother](<opencv tools/fast_global_smoother/README.md>) | Compare self-guided and registered-guide smoothing on a noisy edge target, including region-limited output. |
 | [Joint bilateral filter](<opencv tools/joint_bilateral_filter/README.md>) | Use a registered 8-bit color guide to preserve faint features on a noisy 16-bit target. |
+| [Fast bilateral solver](<opencv tools/fast_bilateral_solver/README.md>) | Reconstruct two bands from sparse trusted samples and see which unobserved pixels retain their input. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |
 | [Extended inpainting](<opencv tools/extended_inpainting/README.md>) | Compare frequency and patch repairs of a marked defect on a known periodic surface. |
 | [DCT denoising](<opencv tools/dct_denoising/README.md>) | Compare whole-frame and region-limited noise reduction against a clean target. |

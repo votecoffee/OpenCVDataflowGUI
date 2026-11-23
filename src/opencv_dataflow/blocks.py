@@ -932,6 +932,7 @@ def builtin_registry():
     from .regression import REGRESSION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
     from .restoration import RESTORATION_BLOCKS
+    from .fast_bilateral_solver import FastBilateralSolver
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
     from .rgbd_warp import WarpRGBDByPose
@@ -1184,6 +1185,7 @@ def builtin_registry():
         ReviewFeatureMatches,
         AlignECC,
         *RESTORATION_BLOCKS,
+        FastBilateralSolver,
         DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,

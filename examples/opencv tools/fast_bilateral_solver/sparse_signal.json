@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Recover a sparsely measured signal",
+      "description": "Run Once. Six measured patches supply confidence values in the first two bands. The guide keeps their edges separate. The unobserved third band keeps its input and stays black in the Supported output. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "signal",
+      "type": "input.file",
+      "name": "Sparse measurements",
+      "parameters": {
+        "path": "assets/signal.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        35
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guide",
+      "type": "input.file",
+      "name": "Edge guide",
+      "parameters": {
+        "path": "assets/guide.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        240
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "confidence",
+      "type": "input.file",
+      "name": "Trusted sample pixels",
+      "parameters": {
+        "path": "assets/confidence.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        445
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "solver",
+      "type": "cv.fast_bilateral_solver",
+      "name": "Reconstruct measured bands",
+      "description": "Reconstruct a confidence-weighted signal while preserving edges in a guide.",
+      "parameters": {
+        "backend": "auto",
+        "alignment": "pixel_grid",
+        "sigma_spatial": 8.0,
+        "sigma_luma": 8.0,
+        "sigma_chroma": 8.0,
+        "lambda_weight": 32.0,
+        "iterations": 100,
+        "max_tolerance": 1e-06
+      },
+      "position": [
+        385,
+        235
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide",
+        "confidence"
+      ],
+      "exposed_outputs": [
+        "image",
+        "supported",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "signal",
+      "output": "image",
+      "target": "solver",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "solver",
+      "input": "guide"
+    },
+    {
+      "source": "confidence",
+      "output": "image",
+      "target": "solver",
+      "input": "confidence"
+    }
+  ]
+}

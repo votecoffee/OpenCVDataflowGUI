@@ -144,7 +144,9 @@ IMPLEMENTATION_MODULES = {
     "rgbd": "ptcloud3d rgbd_registration",
     "tracking": "native_trackers",
     "features": "native_lightglue native_index",
-    "ximgproc": "fast_lines local_threshold region_proposals ridge_response superpixels",
+    "ximgproc": (
+        "fast_bilateral_solver fast_lines local_threshold region_proposals ridge_response superpixels"
+    ),
     "xfeatures2d": "compact_descriptors daisy_descriptor",
     "optflow": "deepflow dense_rlof dual_tvl1_flow",
 }

@@ -314,6 +314,9 @@ BINDINGS = {
     "cv.guided_filter": "ximgproc.guidedFilter",
     "cv.joint_bilateral_filter": "ximgproc.jointBilateralFilter",
     "cv.rolling_guidance_filter": "ximgproc.rollingGuidanceFilter ximgproc.jointBilateralFilter",
+    "cv.fast_bilateral_solver": (
+        "ximgproc.createFastBilateralSolverFilter ximgproc.FastBilateralSolverFilter.filter"
+    ),
     "cv.fast_global_smoother": (
         "ximgproc.createFastGlobalSmootherFilter ximgproc.FastGlobalSmootherFilter.filter"
     ),

@@ -4610,6 +4610,33 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `channel` | `"0"` | `0`, `1`, `2`, `3` |
 
+## Fast bilateral solver (`cv.fast_bilateral_solver`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `guide` (image), `confidence` (image, optional).
+
+Input `image` — Signal to reconstruct. Keeps grayscale or color encoding, depth and alpha.
+
+Input `guide` — Aligned intensity or color guide. Converted to 8-bit luma and chroma bins.
+
+Input `confidence` — Mono uint8 [0,255] or float32 [0,1]. Omit for equal weights.
+
+Input `mask` — Select output pixels to replace. The solve uses confidence across the image.
+
+Input `region` — Select output pixels to replace, intersected with the mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `backend` | `"auto"` | `auto`, `scipy`, `opencv` Auto uses OpenCV with Eigen when the guide and confidence permit it. |
+| `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid accepts independently loaded, preregistered images. |
+| `sigma_spatial` | `8.0` | Value must be a finite number between 1 and 8192. Size of a spatial bin in pixels. |
+| `sigma_luma` | `8.0` | Value must be a finite number between 1 and 255. Size of a luma bin in 8-bit guide levels. |
+| `sigma_chroma` | `8.0` | Value must be a finite number between 1 and 255. Size of a chroma bin in 8-bit guide levels. |
+| `lambda_weight` | `128.0` | Value must be a finite number between 0 and 1e+06. Smoothness weight. Zero computes confidence-weighted bin means. |
+| `iterations` | `100` | Value must be a whole number between 1 and 1000. Maximum conjugate-gradient iterations per channel. |
+| `max_tolerance` | `1e-05` | Value must be a finite number between 1e-08 and 1. Relative residual tolerance for conjugate gradients. |
+
 ## Fast global smoother (`cv.fast_global_smoother`)
 
 Image processing / Filters
