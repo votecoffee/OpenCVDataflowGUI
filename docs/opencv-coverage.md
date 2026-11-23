@@ -314,6 +314,8 @@ registered-guide denoising with the joint bilateral block and preserves original
 weighting modes through the native adapter, with a saved impulse-noise and sample-exclusion comparison.
 [Anisotropic diffusion](<../examples/opencv tools/anisotropic_diffusion/README.md>) measures repeated
 edge-aware passes against a known step and verifies replicated borders and higher-depth output.
+[L0 image smoothing](<../examples/custom tools/l0_smoothing/README.md>) compares a verified SciPy
+solver with Gaussian blur on a 16-bit texture target. The OpenCV native path remains open.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

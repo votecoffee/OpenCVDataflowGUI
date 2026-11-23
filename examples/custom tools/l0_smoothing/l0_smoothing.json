@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Remove texture and preserve edges",
+      "description": "Run Once. Compare Gaussian blur and two L0 weights on the same textured 16-bit signal. The weaker L0 setting retains a thin stripe. The rectangle branch keeps source pixels outside the region. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "textured",
+      "type": "input.file",
+      "name": "Textured 16-bit signal",
+      "parameters": {
+        "path": "assets/textured.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          14,
+          7,
+          136,
+          72
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        225,
+        395
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gaussian",
+      "type": "cv.gaussian_blur",
+      "name": "Gaussian baseline",
+      "parameters": {
+        "kernel": 11,
+        "sigma": 2.4,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        495,
+        -55
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "moderate",
+      "type": "cv.l0_smoothing",
+      "name": "L0 with stripe detail",
+      "description": "Suppress small gradients with a global fit that preserves larger boundaries.",
+      "parameters": {
+        "lambda_weight": 0.001,
+        "kappa": 2.0
+      },
+      "position": [
+        495,
+        145
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "strong",
+      "type": "cv.l0_smoothing",
+      "name": "L0 with stronger smoothing",
+      "description": "Suppress small gradients with a global fit that preserves larger boundaries.",
+      "parameters": {
+        "lambda_weight": 0.02,
+        "kappa": 2.0
+      },
+      "position": [
+        495,
+        347
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.l0_smoothing",
+      "name": "L0 within a rectangle",
+      "description": "Suppress small gradients with a global fit that preserves larger boundaries.",
+      "parameters": {
+        "lambda_weight": 0.001,
+        "kappa": 2.0
+      },
+      "position": [
+        495,
+        549
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "gaussian",
+      "input": "image"
+    },
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "moderate",
+      "input": "image"
+    },
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "strong",
+      "input": "image"
+    },
+    {
+      "source": "textured",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

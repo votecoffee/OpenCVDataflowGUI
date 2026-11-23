@@ -5416,6 +5416,26 @@ Input `guide` — Optional aligned monochrome or color guide. Disconnected uses 
 | `guide_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid accepts separately loaded guides registered by index. |
 | `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` Unchanged keeps the source depth. Integers convert through [0, 1]. |
 
+## L0 image smoothing (`cv.l0_smoothing`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Mono or RGB/BGR(A), uint8, uint16 or normalized float. Keeps depth and alpha.
+
+Input `mask` — Select output pixels to replace. Smoothing uses the full source.
+
+Input `region` — Select output pixels to replace, intersected with the mask.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `lambda_weight` | `0.02` | Value must be zero or a finite number between 1e-06 and 1. Penalty for keeping a nonzero gradient. Zero copies the input. |
+| `kappa` | `2.0` | Value must be a finite number between 1.01 and 16. Factor that increases the gradient-fit weight between solver steps. |
+
 ## Laplacian image pyramid set (`cv.laplacian_pyramid`)
 
 Image processing / Pyramids

@@ -935,6 +935,7 @@ def builtin_registry():
     from .fast_bilateral_solver import FastBilateralSolver
     from .weighted_median import WeightedMedianFilter
     from .anisotropic_diffusion import AnisotropicDiffusion
+    from .l0_smoothing import L0Smoothing
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
     from .rgbd_warp import WarpRGBDByPose
@@ -1190,6 +1191,7 @@ def builtin_registry():
         FastBilateralSolver,
         WeightedMedianFilter,
         AnisotropicDiffusion,
+        L0Smoothing,
         DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,

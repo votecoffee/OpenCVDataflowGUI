@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 38 | 4 | 60 | 102 | 37.3% |
-| **Overall** | 404 | 5 | 61 | 470 | 86.0% |
+| 4. Selected contrib | 38 | 5 | 59 | 102 | 37.3% |
+| **Overall** | 404 | 6 | 60 | 470 | 86.0% |
 
 <!-- coverage-summary:end -->
 
@@ -647,7 +647,7 @@ fixture or result needed to close the item.
 | S4-37 | Adaptive manifold filtering | ximgproc.createAMFilter, ximgproc.AdaptiveManifoldFilter.filter | Complete | cv.adaptive_manifold_filter exposes the Python factory controls and verifies native output, typed alpha, masks and region selection. A registered noisy target preserves the step at 8,262 levels against an 8,200-level truth, with RMSE 113.9 versus 146.4 for the configured bilateral baseline. |
 | S4-38 | Weighted median filtering | ximgproc.weightedMedianFilter | Complete | cv.weighted_median_filter exposes six native weighting modes and separates sample exclusion from output selection. The synthetic control retains all known edge pixels with Gaussian weighting and exactly recovers the target when damaged samples are excluded. |
 | S4-39 | Anisotropic diffusion | ximgproc.anisotropicDiffusion | Complete | cv.anisotropic_diffusion verifies one-pass native parity, replicated borders across repeated passes, full-range and higher-depth diffusion, and region selection. Ten passes reduced fixture RMSE from 11.43 to 1.75 and preserved the 121-level step at 120.90. |
-| S4-40 | L0 image smoothing | ximgproc.l0Smooth | Planned | Reduce low-amplitude texture while retaining larger boundaries, with stable output depth and range. |
+| S4-40 | L0 image smoothing | ximgproc.l0Smooth, SciPy DCT | Partial | cv.l0_smoothing verifies L0 minimization against independent dense systems and reduces 16-bit texture while preserving the main step. The installed OpenCV 5.0.0 native filter collapsed a two-level byte target to zero. Native qualification remains open. |
 | S4-41 | Extended gradient operators | ximgproc GradientDeriche and GradientPaillou families | Planned | Verify signed axis response and localization on a step-edge fixture. |
 | S4-42 | Contour ellipse detection | ximgproc.findEllipses | Planned | Detect multiple rotated ellipses in clutter with scores and oriented image geometry. |
 | S4-43 | Fast Hough line transform | ximgproc.FastHoughTransform | Planned | Verify transformed bin geometry and recover lines with known angle and offset. |
