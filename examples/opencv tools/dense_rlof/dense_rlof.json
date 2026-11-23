@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare local support windows",
+      "description": "Run All replays two color images. The second moves 3 px right and 2 px down. Both branches use geodesic interpolation and the same interior region. Select a flow block to inspect motion and round-trip error. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "input.file",
+      "name": "Translated texture",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/00_reference.png",
+          "assets/01_translated.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "interior",
+      "type": "region.shape",
+      "name": "Interior measurement",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          24,
+          24,
+          72,
+          48
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        0,
+        350
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fixed",
+      "type": "sequence.dense_rlof",
+      "name": "Fixed support",
+      "description": "Measure dense motion with robust local flow and optional seed interpolation.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.1,
+        "support": "fixed",
+        "solver": "bilinear",
+        "small_window": 9,
+        "large_window": 21,
+        "cross_threshold": 25,
+        "max_level": 4,
+        "iterations": 30,
+        "min_eigenvalue": 0.0001,
+        "illumination_model": true,
+        "global_motion_prior": true,
+        "global_motion_percentile": 10.0,
+        "m_estimator": false,
+        "norm_sigma0": 3.2,
+        "norm_sigma1": 7.0,
+        "seed_consistency_threshold": 0.75,
+        "grid_x": 6,
+        "grid_y": 6,
+        "interpolation": "geodesic",
+        "epic_neighbors": 128,
+        "epic_sigma": 0.05,
+        "epic_lambda": 100.0,
+        "ric_neighbors": 16,
+        "ric_superpixel_size": 15,
+        "ric_superpixel_mode": "SLIC",
+        "post_smoothing": true,
+        "fgs_lambda": 500.0,
+        "fgs_sigma": 1.5,
+        "variational_refinement": false
+      },
+      "position": [
+        385,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "visualization",
+        "consistency_mask",
+        "consistency_error",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    },
+    {
+      "id": "cross",
+      "type": "sequence.dense_rlof",
+      "name": "Cross support",
+      "description": "Measure dense motion with robust local flow and optional seed interpolation.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.1,
+        "support": "cross",
+        "solver": "bilinear",
+        "small_window": 9,
+        "large_window": 21,
+        "cross_threshold": 25,
+        "max_level": 4,
+        "iterations": 30,
+        "min_eigenvalue": 0.0001,
+        "illumination_model": true,
+        "global_motion_prior": true,
+        "global_motion_percentile": 10.0,
+        "m_estimator": false,
+        "norm_sigma0": 3.2,
+        "norm_sigma1": 7.0,
+        "seed_consistency_threshold": 0.75,
+        "grid_x": 6,
+        "grid_y": 6,
+        "interpolation": "geodesic",
+        "epic_neighbors": 128,
+        "epic_sigma": 0.05,
+        "epic_lambda": 100.0,
+        "ric_neighbors": 16,
+        "ric_superpixel_size": 15,
+        "ric_superpixel_mode": "SLIC",
+        "post_smoothing": true,
+        "fgs_lambda": 500.0,
+        "fgs_sigma": 1.5,
+        "variational_refinement": false
+      },
+      "position": [
+        385,
+        300
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "visualization",
+        "consistency_mask",
+        "consistency_error",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "interior",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "fixed",
+      "input": "image"
+    },
+    {
+      "source": "interior",
+      "output": "region",
+      "target": "fixed",
+      "input": "region"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "cross",
+      "input": "image"
+    },
+    {
+      "source": "interior",
+      "output": "region",
+      "target": "cross",
+      "input": "region"
+    }
+  ]
+}

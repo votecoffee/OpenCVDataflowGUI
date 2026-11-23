@@ -950,6 +950,7 @@ def builtin_registry():
     from .selection_remap import RemapSelection, RemapSelectionPacked
     from .semantic_segmentation import DecodeSegmentation
     from .deepflow import DeepFlowSequence
+    from .dense_rlof import DenseRLOFSequence
     from .dual_tvl1_flow import DualTVL1Sequence
     from .sequence_tools import SEQUENCE_BLOCKS
     from .shadow_compensation import CompensateReferenceShadows
@@ -1322,6 +1323,7 @@ def builtin_registry():
         *SEQUENCE_BLOCKS,
         DualTVL1Sequence,
         DeepFlowSequence,
+        DenseRLOFSequence,
         *SIMPLEITK_BLOCKS,
         ForegroundDebounce,
         StabilizeCameraMotion,

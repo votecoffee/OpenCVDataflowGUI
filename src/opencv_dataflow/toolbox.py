@@ -144,7 +144,7 @@ IMPLEMENTATION_MODULES = {
     "features": "native_lightglue native_index",
     "ximgproc": "fast_lines local_threshold region_proposals ridge_response superpixels",
     "xfeatures2d": "compact_descriptors daisy_descriptor",
-    "optflow": "deepflow dual_tvl1_flow",
+    "optflow": "deepflow dense_rlof dual_tvl1_flow",
 }
 BLOCK_MODULES = {
     "core": (

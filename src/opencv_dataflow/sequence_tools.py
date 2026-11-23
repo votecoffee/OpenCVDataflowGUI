@@ -225,14 +225,15 @@ class _DenseFlowSequence(SequenceBlock, ABC):
         return gray_image(image, (np.uint8,))
 
     def step(self, inputs, state, mask):
-        gray = np.ascontiguousarray(self.working_image(inputs["image"]))
+        current = np.ascontiguousarray(self.working_image(inputs["image"]))
         p = self.parameters
         visual = finite(p["visual_max_motion"], "Visual motion scale", 0)
         if visual <= 0:
             raise ValidationError("Visual motion scale must be positive", "visual_max_motion")
-        calculate = self.flow_calculator(gray.shape)
+        height, width = current.shape[:2]
+        calculate = self.flow_calculator(current.shape)
         previous = state.get("previous")
-        state["previous"] = gray.copy()
+        state["previous"] = current.copy()
         if previous is None:
             return SequenceStep(
                 dict.fromkeys(self.flow_primary, None),
@@ -241,21 +242,21 @@ class _DenseFlowSequence(SequenceBlock, ABC):
                 {"reason": "needs_previous_image"},
             )
         tolerance = float(p["consistency_tolerance"])
-        if tolerance and (max(gray.shape) >= 32767 or gray.size > 16_777_216):
+        if tolerance and (max(height, width) >= 32767 or height * width > 16_777_216):
             raise ValidationError(
                 "Flow consistency is limited to 16,777,216 pixels and 32,766 per axis",
                 "consistency_tolerance",
             )
         warm_start = p.get("initial_flow") == "previous"
         initial = state.get("flow") if warm_start else None
-        flow, support = calculate(previous, gray, None if initial is None else initial.copy())
+        flow, support = calculate(previous, current, None if initial is None else initial.copy())
         if not np.isfinite(flow).all():
             raise ValueError("Optical flow produced nonfinite vectors")
         state["flow"] = flow.copy() if warm_start else None
         consistent, error = NO_VALUE, NO_VALUE
         details = {}
         if tolerance:
-            backward, backward_support = calculate(gray, previous, None)
+            backward, backward_support = calculate(current, previous, None)
             if not np.isfinite(backward).all():
                 raise ValueError("Backward optical flow produced nonfinite vectors")
             consistent, error, details["consistency"] = _flow_consistency(
@@ -269,7 +270,7 @@ class _DenseFlowSequence(SequenceBlock, ABC):
         if mask is not None:
             flow[mask == 0] = 0
         magnitude, angle = cv2.cartToPolar(flow[..., 0], flow[..., 1], angleInDegrees=True)
-        hsv = np.zeros((*gray.shape, 3), np.uint8)
+        hsv = np.zeros((height, width, 3), np.uint8)
         hsv[..., 0] = np.rint(angle / 2).astype(np.uint8) % 180
         hsv[..., 1] = 255
         hsv[..., 2] = np.clip(magnitude * 255 / visual, 0, 255).astype(np.uint8)

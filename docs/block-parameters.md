@@ -14645,6 +14645,57 @@ Input `region` — Select published pixels on the previous image grid, intersect
 | `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Displacement in pixels mapped to full preview brightness. |
 | `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
 
+## Dense RLOF optical flow (`sequence.dense_rlof`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Intensity or color image. Converted to 8-bit BGR for native RLOF.
+
+Input `mask` — Select published flow pixels on the previous image grid.
+
+Input `region` — Select published pixels on the previous image grid, intersected with any mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Displacement in pixels mapped to full preview brightness. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
+| `support` | `"cross"` | `fixed`, `cross` Fixed windows or color-adaptive cross support. |
+| `solver` | `"bilinear"` | `standard`, `bilinear` Standard or bilinear local motion solver. |
+| `small_window` | `9` | Value must be a positive odd integer between 3 and 63. Minimum local support window side in pixels. |
+| `large_window` | `21` | Value must be a positive odd integer between 3 and 63. Maximum local support window side in pixels. |
+| `cross_threshold` | `25` | Value must be a whole number between 0 and 255. Maximum 8-bit channel difference when extending cross support. |
+| `max_level` | `4` | Value must be a whole number between 0 and 8. Maximum zero-based pyramid level. |
+| `iterations` | `30` | Value must be a whole number between 1 and 100. Maximum local iterations per level. |
+| `min_eigenvalue` | `0.0001` | Value must be a finite number between 0 and 1. Reject local solves below this structure tensor eigenvalue. |
+| `illumination_model` | `true` | Use an illumination variation model in local solves. |
+| `global_motion_prior` | `true` | Homography motion prior. Requires 40 × 30 pixels. |
+| `global_motion_percentile` | `10.0` | Value must be a finite number between 0 and 99.99. Motion percentile used for the homography RANSAC threshold. |
+| `m_estimator` | `false` | Enable the robust Hampel estimator. Off uses least squares. |
+| `norm_sigma0` | `3.2` | Value must be a finite number between 1e-06 and 255. First Hampel residual cutoff when the M-estimator is enabled. |
+| `norm_sigma1` | `7.0` | Value must be a finite number between 1e-06 and 255. Second Hampel residual cutoff when the M-estimator is enabled. |
+| `seed_consistency_threshold` | `0.0` | Value must be a finite number between 0 and 100. Geodesic only. Reject seed round trips at this pixel error. |
+| `grid_x` | `6` | Value must be a whole number between 1 and 512. Horizontal seed spacing. A 1 × 1 grid without seed rejection is direct. |
+| `grid_y` | `6` | Value must be a whole number between 1 and 512. Vertical seed spacing in pixels. A 1 × 1 grid without seed rejection is direct. |
+| `interpolation` | `"epic"` | `geodesic`, `epic`, `ric` Geodesic, edge-aware (EPIC), or superpixel-based (RIC) interpolation. |
+| `epic_neighbors` | `128` | Value must be a whole number between 3 and 256. Neighbor count for the EPIC affine fit. Must fit the seed grid. |
+| `epic_sigma` | `0.05` | Value must be a finite number between 1e-06 and 1. Distance falloff for EPIC interpolation weights. |
+| `epic_lambda` | `100.0` | Value must be a finite number between 0 and 10000. Image-edge penalty for EPIC interpolation. |
+| `ric_neighbors` | `16` | Value must be a whole number between 3 and 32. Maximum neighbor count used to connect RIC seeds and superpixels. |
+| `ric_superpixel_size` | `15` | Value must be a whole number between 8 and 128. Approximate square side of a RIC superpixel in pixels. |
+| `ric_superpixel_mode` | `"SLIC"` | `SLIC`, `SLICO`, `MSLIC` SLIC, SLICO, or MSLIC superpixel construction for RIC. |
+| `post_smoothing` | `true` | Apply fast global smoothing after interpolation. |
+| `fgs_lambda` | `500.0` | Value must be a finite number between 0 and 10000. Fast global smoother regularization weight. |
+| `fgs_sigma` | `1.5` | Value must be a finite number between 1e-06 and 255. Fast global smoother color sensitivity. |
+| `variational_refinement` | `false` | Apply grayscale variational refinement after interpolation. |
+
 ## DIS optical flow (`sequence.dis`)
 
 Sequence / Temporal processing
