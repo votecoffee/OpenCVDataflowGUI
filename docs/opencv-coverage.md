@@ -318,6 +318,8 @@ edge-aware passes against a known step and verifies replicated borders and highe
 solver with Gaussian blur on a 16-bit texture target. The OpenCV native path remains open.
 [Recursive gradients](<../examples/opencv tools/recursive_gradients/README.md>) qualify signed Deriche
 and Paillou responses on known edges. Paillou uses SciPy because the Python wheel lacks that binding.
+[Find contour ellipses](<../examples/opencv tools/contour_ellipses/README.md>) verifies rotated
+fits in contour clutter and uses the detections as measured objects and fitted regions.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

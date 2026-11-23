@@ -452,6 +452,7 @@ BINDINGS = {
     "inspect.hog": "HOGDescriptor HOGDescriptor.compute",
     "inspect.homography": "findHomography",
     "inspect.hough_circles": "HoughCircles HoughCirclesWithAccumulator",
+    "inspect.find_ellipses": "ximgproc.findEllipses",
     "inspect.hough_lines": "HoughLinesP",
     "inspect.hough_point_lines": "HoughLinesPointSet",
     "inspect.hough_polar_lines": "HoughLinesWithAccumulator",

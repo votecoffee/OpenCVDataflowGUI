@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Detect and measure rotated ellipses",
+      "description": "Run Once. The target contains three ellipses with known size and angle, plus straight edges and a partial arc. Review the detections, keep elongated ellipses by aspect ratio, or use the highest score as a fitted region. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Ellipse target",
+      "parameters": {
+        "path": "assets/ellipses.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "inspect.find_ellipses",
+      "name": "Find three rotated ellipses",
+      "description": "Find and rank rotated ellipses in an image using OpenCV's contour detector.",
+      "parameters": {
+        "score_threshold": 0.7,
+        "reliability_threshold": 0.5,
+        "center_distance_threshold": 0.05,
+        "minimum_count": 3,
+        "maximum_results": 64
+      },
+      "position": [
+        270,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "ellipses",
+        "collection",
+        "best_fit",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter",
+      "type": "collection.filter",
+      "name": "Keep elongated ellipses",
+      "parameters": {
+        "metric": "rotated_aspect_ratio",
+        "custom_metric": "",
+        "use_minimum": true,
+        "minimum": 1.85,
+        "include_minimum": true,
+        "use_maximum": false,
+        "maximum": 0.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        565,
+        60
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "draw",
+      "type": "collection.draw",
+      "name": "Draw elongated ellipses",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": false,
+        "draw_centers": true,
+        "labels": "none"
+      },
+      "position": [
+        865,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.fitted_shape",
+      "name": "Region from strongest fit",
+      "parameters": {
+        "margin": 2,
+        "invert": false
+      },
+      "position": [
+        565,
+        330
+      ],
+      "exposed_inputs": [
+        "image",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "collection",
+      "target": "filter",
+      "input": "collection"
+    },
+    {
+      "source": "filter",
+      "output": "collection",
+      "target": "draw",
+      "input": "collection"
+    },
+    {
+      "source": "detect",
+      "output": "image",
+      "target": "draw",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "best_fit",
+      "target": "region",
+      "input": "fit"
+    }
+  ]
+}

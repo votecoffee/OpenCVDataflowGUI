@@ -9564,6 +9564,26 @@ Inputs: `value` (any), `passed` (data, optional), `reasons` (data, optional).
 | `fail_reason` | `""` | Stable code assigned when the final decision is FAIL. |
 | `reason_message` | `""` | Human-readable explanation; defaults to the reason code. |
 
+## Find contour ellipses (`inspect.find_ellipses`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Color or monochrome image converted to 8-bit grayscale for detection. The output image retains its original encoding and depth.
+
+Input `mask` — Keep detections whose centers fall inside this mask.
+
+Input `region` — Keep detections whose centers fall inside this region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `score_threshold` | `0.7` | Value must be a finite number between 0 and 1. Native contour score threshold. The reported score also uses reliability, so it can be lower than this threshold. |
+| `reliability_threshold` | `0.5` | Value must be a finite number between 0 and 1. Native threshold on the extent of supporting contour arcs. |
+| `center_distance_threshold` | `0.05` | Value must be a finite number between 0 and 1. Allowed discrepancy between contour-arc center estimates as a fraction of the image diagonal. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 256. Require at least this many retained detections to pass. Zero allows an empty result. |
+| `maximum_results` | `64` | Value must be a whole number between 1 and 256. Keep at most this many detections, ranked by reported score. |
+
 ## Find quadrilateral in mask (`inspect.find_quadrilateral`)
 
 Inspection / Segmentation

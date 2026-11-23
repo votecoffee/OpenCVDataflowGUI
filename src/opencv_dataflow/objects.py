@@ -201,7 +201,7 @@ def validate_collection(value):
     if (
         not isinstance(value, dict)
         or value.get("model") != "vision_collection_v1"
-        or value.get("kind") not in ("blobs", "lines", "contours", "circles", "boxes")
+        or value.get("kind") not in ("blobs", "lines", "contours", "circles", "boxes", "ellipses")
     ):
         raise ValueError("Expected a vision_collection_v1 collection with a supported shape kind")
     items = value.get("items")
