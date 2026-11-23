@@ -221,7 +221,7 @@ class EvaluateImageFeatures(Block):
         "maximum_graphic_matches": "Draw at most this many accepted candidates, best rank first.",
     }
     input_help = {
-        "query": "ORB/BRISK/AKAZE/SIFT/KAZE/BRIEF/FREAK feature data for Query image.",
+        "query": "ORB/BRISK/AKAZE/SIFT/KAZE/BRIEF/FREAK/DAISY feature data for Query image.",
         "train": "Same descriptor family/settings for Train image.",
         "transform": "Independent query-to-train truth. Fitting these matches biases evaluation.",
         "matches": "Indexed paired match record; descriptor distance is used as rank.",

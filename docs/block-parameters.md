@@ -9183,6 +9183,34 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `harris_k` | `0.04` | Value must be a finite number at least 0. |
 | `gradient_size` | `"3"` | `3`, `5`, `7` |
 
+## DAISY descriptors (`inspect.daisy_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Optional feature record, keypoint records, or [x, y] rows. Disconnect to sample a grid.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius` | `15.0` | Value must be a finite number between 1 and 128. Outer sampling radius in pixels. |
+| `radial_divisions` | `3` | Value must be a whole number between 1 and 8. Number of concentric rings around the center. |
+| `angular_divisions` | `8` | Value must be a whole number between 1 and 32. Histogram locations per ring. |
+| `histogram_bins` | `8` | Value must be a whole number between 2 and 32. Gradient directions per local histogram. |
+| `normalization` | `"none"` | `none`, `partial`, `full`, `sift` Choose raw, per-histogram L2, whole-row L2, or SIFT-style clipping. |
+| `interpolation` | `true` | Interpolate samples and gradient directions. Turn off for a homography. |
+| `use_orientation` | `false` | Use wired keypoint angles or the fixed Grid angle. |
+| `sampling_homography` | `[]` | Optional 3 × 3 sampling transform. Keypoint coordinates stay in the source grid. Available with nearest sampling. |
+| `grid_step` | `24` | Value must be a whole number between 1 and 32768. Spacing in pixels when Keypoints is disconnected. |
+| `grid_origin` | `[0, 0]` | First [x, y] point of the lattice before border and selection filtering. |
+| `grid_angle` | `0.0` | Value must be a finite number between 0 and 360. Fixed angle in degrees for grid points when Use orientation is enabled. |
+
 ## Delaunay triangulation (`inspect.delaunay_triangulation`)
 
 Inspection / Measurements
@@ -9297,7 +9325,7 @@ Inspection / Feature evaluation
 
 Inputs: `query_image` (image), `train_image` (image), `query` (data), `train` (data), `transform` (data, optional), `matches` (data, optional), `query_mask` (image, optional), `train_mask` (image, optional), `query_region` (data, optional), `train_region` (data, optional).
 
-Input `query` — ORB/BRISK/AKAZE/SIFT/KAZE/BRIEF/FREAK feature data for Query image.
+Input `query` — ORB/BRISK/AKAZE/SIFT/KAZE/BRIEF/FREAK/DAISY feature data for Query image.
 
 Input `train` — Same descriptor family/settings for Train image.
 

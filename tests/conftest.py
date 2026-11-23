@@ -61,6 +61,15 @@ def catalog_block(tmp_path):
         "input.tiff_page": {"path": str(tmp_path / "catalog-placeholder.tiff")},
         "input.network_video": {"url": "http://127.0.0.1:18764/stream"},
         "input.video_at_time": {"path": str(tmp_path / "catalog-placeholder.avi")},
+        "ml.fit_confidence_calibration": {
+            "classes": ["pass", "fail"],
+            "score_source": "0" * 64,
+        },
+        "ml.apply_confidence_calibration": {"classes": ["pass", "fail"]},
+        "ml.evaluate_confidence_calibration": {
+            "classes": ["pass", "fail"],
+            "score_source": "0" * 64,
+        },
         "sequence.capture_background_reference": {
             "camera_id": "catalog-camera",
             "calibration_id": "catalog-calibration",

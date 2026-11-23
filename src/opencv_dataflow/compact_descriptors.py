@@ -55,7 +55,7 @@ def _native_keypoint(row, index, size):
     )
 
 
-class CompactDescriptor(ImageTool, ABC):
+class KeypointDescriptor(ImageTool, ABC):
     category = block_type = "Inspection"
     subtype = "Features"
     inputs = (
@@ -88,14 +88,7 @@ class CompactDescriptor(ImageTool, ABC):
     def extractor(self):
         """Return a native extractor and the normalized settings identifying its pattern."""
 
-    def process(self, inputs):
-        source = inputs["image"]
-        height, width = source.shape[:2]
-        size = [width, height]
-        if not 0 < width * height <= self.maximum_pixels:
-            raise ValidationError(
-                f"{self.algorithm} requires 1 to {self.maximum_pixels:,} image pixels"
-            )
+    def sample_keypoints(self, inputs, size, selection):
         image_payload = self.input_payloads["image"]
         point_payload = self.input_payloads["keypoints"]
         try:
@@ -108,8 +101,6 @@ class CompactDescriptor(ImageTool, ABC):
             and ticket_key(image_payload["ticket"]) != ticket_key(point_payload["ticket"])
         ):
             raise ValidationError("Keypoints and image have different acquisition tickets")
-        gray = gray_image(source, (np.uint8,), auto_depth=True)
-        selection = selection_mask(inputs, source)
         keypoints = []
         for index, row in enumerate(_keypoint_rows(inputs["keypoints"], size)):
             key = _native_keypoint(row, index, size)
@@ -117,15 +108,31 @@ class CompactDescriptor(ImageTool, ABC):
                 keypoints.append(key)
         if self.parameters.get("use_orientation") and any(key.angle < 0 for key in keypoints):
             raise ValidationError(
-                "Oriented BRIEF needs a measured angle for each selected keypoint"
+                f"Oriented {self.algorithm} needs a measured angle for each selected keypoint"
             )
+        return keypoints
 
+    def compute_descriptors(self, gray, keypoints):
         extractor, settings = self.extractor()
         keys, descriptors = extractor.compute(gray, keypoints) if keypoints else ((), None)
+        return keys, descriptors, extractor.descriptorSize(), settings
+
+    def process(self, inputs):
+        source = inputs["image"]
+        height, width = source.shape[:2]
+        size = [width, height]
+        if not 0 < width * height <= self.maximum_pixels:
+            raise ValidationError(
+                f"{self.algorithm} requires 1 to {self.maximum_pixels:,} image pixels"
+            )
+        selection = selection_mask(inputs, source)
+        keypoints = self.sample_keypoints(inputs, size, selection)
+        gray = gray_image(source, (np.uint8,), auto_depth=True)
+        keys, descriptors, descriptor_size, settings = self.compute_descriptors(gray, keypoints)
         points = [list(key.pt) for key in keys]
         features = {
             "algorithm": self.algorithm,
-            "descriptor_size": extractor.descriptorSize(),
+            "descriptor_size": descriptor_size,
             "descriptor_settings": settings,
             "image_size": size,
             "keypoints": [
@@ -159,7 +166,7 @@ class CompactDescriptor(ImageTool, ABC):
         return factory
 
 
-class BriefDescriptor(CompactDescriptor):
+class BriefDescriptor(KeypointDescriptor):
     type_id, title, algorithm = "inspect.brief_descriptor", "BRIEF descriptors", "BRIEF"
     description = "Compute fixed-length binary intensity descriptors at wired keypoints."
     maximum_pixels = 8_388_608
@@ -178,7 +185,7 @@ class BriefDescriptor(CompactDescriptor):
         ), settings
 
 
-class FreakDescriptor(CompactDescriptor):
+class FreakDescriptor(KeypointDescriptor):
     type_id, title, algorithm = "inspect.freak_descriptor", "FREAK descriptors", "FREAK"
     description = "Compute 64-byte retinal sampling descriptors at wired keypoints."
     maximum_pixels = 16_777_216

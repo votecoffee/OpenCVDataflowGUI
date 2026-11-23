@@ -419,6 +419,7 @@ BINDINGS = {
     "inspect.brisk": "xfeatures2d.BRISK_create",
     "inspect.brief_descriptor": "xfeatures2d.BriefDescriptorExtractor_create",
     "inspect.freak_descriptor": "xfeatures2d.FREAK_create",
+    "inspect.daisy_descriptor": "xfeatures2d.DAISY_create",
     "inspect.compare_contours": "matchShapes",
     "inspect.compare_edge_maps": "distanceTransform",
     "inspect.mask_clearance": "distanceTransform",

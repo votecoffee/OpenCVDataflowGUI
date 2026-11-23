@@ -142,7 +142,7 @@ IMPLEMENTATION_MODULES = {
     "tracking": "native_trackers",
     "features": "native_lightglue native_index",
     "ximgproc": "fast_lines local_threshold region_proposals ridge_response superpixels",
-    "xfeatures2d": "compact_descriptors",
+    "xfeatures2d": "compact_descriptors daisy_descriptor",
 }
 BLOCK_MODULES = {
     "core": (

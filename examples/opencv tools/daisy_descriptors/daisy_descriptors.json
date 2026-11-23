@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure a translated texture",
+      "description": "DAISY measures local gradients on two 16-pixel grids. The train grid is shifted 8 pixels right and 6 down. The matcher pairs rows by L2 distance, and the evaluator checks every match against the known translation. Both images are original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Find nearest DAISY matches",
+      "parameters": {
+        "max_distance": 0.03,
+        "max_neighbors": 1
+      },
+      "position": [
+        560,
+        0
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Verify against translation",
+      "parameters": {
+        "reference_transform": [
+          [
+            1,
+            0,
+            8
+          ],
+          [
+            0,
+            1,
+            6
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "reprojection_tolerance": 0.25,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 0.03,
+        "minimum_correspondences": 60,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.95,
+        "minimum_recall": 0.95,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 200
+      },
+      "position": [
+        850,
+        0
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_image",
+      "type": "input.file",
+      "name": "Query image",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "inspect.daisy_descriptor",
+      "name": "Query DAISY grid",
+      "description": "Measure local gradient histograms on a regular grid or at wired keypoints.",
+      "parameters": {
+        "radius": 8.0,
+        "radial_divisions": 3,
+        "angular_divisions": 8,
+        "histogram_bins": 8,
+        "normalization": "full",
+        "interpolation": true,
+        "use_orientation": false,
+        "sampling_homography": [],
+        "grid_step": 16,
+        "grid_origin": [
+          32,
+          32
+        ],
+        "grid_angle": 0.0
+      },
+      "position": [
+        280,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_image",
+      "type": "input.file",
+      "name": "Train image",
+      "parameters": {
+        "path": "assets/train.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        280
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "inspect.daisy_descriptor",
+      "name": "Train DAISY grid",
+      "description": "Measure local gradient histograms on a regular grid or at wired keypoints.",
+      "parameters": {
+        "radius": 8.0,
+        "radial_divisions": 3,
+        "angular_divisions": 8,
+        "histogram_bins": 8,
+        "normalization": "full",
+        "interpolation": true,
+        "use_orientation": false,
+        "sampling_homography": [],
+        "grid_step": 16,
+        "grid_origin": [
+          40,
+          38
+        ],
+        "grid_angle": 0.0
+      },
+      "position": [
+        280,
+        280
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "query",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "features",
+      "target": "match",
+      "input": "query"
+    },
+    {
+      "source": "query",
+      "output": "features",
+      "target": "evaluate",
+      "input": "query"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "train",
+      "input": "image"
+    },
+    {
+      "source": "train",
+      "output": "features",
+      "target": "match",
+      "input": "train"
+    },
+    {
+      "source": "train",
+      "output": "features",
+      "target": "evaluate",
+      "input": "train"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "match",
+      "output": "matches",
+      "target": "evaluate",
+      "input": "matches"
+    }
+  ]
+}
