@@ -4167,6 +4167,23 @@ Inputs: `image` (image).
 | `mode` | `"2d"` | `2d`, `rows` Transform the entire image or transform each row independently. |
 | `odd_size` | `"pad_even"` | `pad_even`, `reject` Extend odd transformed axes by repeating the last pixel, or reject them. |
 
+## DCT denoising (`cv.dct_denoise`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Mono or RGB/BGR(A), uint8, uint16, or floating point in [0, 1].
+
+Input `mask` — Nonzero pixels may be changed. Neighboring pixels still inform denoising.
+
+Input `region` — Limit writes to this region. With a mask, write only to their intersection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `noise_sigma` | `10.0` | Value must be a finite number between 0 and 255. Expected noise standard deviation on a 0–255 scale at any depth. Zero bypasses filtering. |
+| `patch_size` | `16` | Value must be a whole number between 2 and 32. Even side length of each overlapping patch in pixels. Both image dimensions must be at least this large. |
+
 ## Decode animation from memory (`cv.decode_animation`)
 
 Image processing / Codecs

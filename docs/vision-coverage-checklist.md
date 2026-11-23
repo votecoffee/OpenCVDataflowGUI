@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 27 | 3 | 72 | 102 | 26.5% |
-| **Overall** | 393 | 4 | 73 | 470 | 83.6% |
+| 4. Selected contrib | 28 | 3 | 71 | 102 | 27.5% |
+| **Overall** | 394 | 4 | 72 | 470 | 83.8% |
 
 <!-- coverage-summary:end -->
 
@@ -619,7 +619,7 @@ fixture or result needed to close the item.
 | S4-14 | Joint bilateral filtering | ximgproc.jointBilateralFilter | Complete | cv.joint_bilateral_filter accepts an optional registered guide, mixed uint8/uint16/float32 input, native controls, and masked/region writes. Verified 16-bit detail recovery with an 8-bit guide, typed output and alpha, and constant borders against a circular-kernel reference. |
 | S4-15 | Rolling guidance filtering | ximgproc.rollingGuidanceFilter, ximgproc.jointBilateralFilter | Complete | cv.rolling_guidance_filter exposes the native neighborhood, border and pass controls with typed output and selected writes. Four passes suppress fine texture on a synthetic plate and preserve known outline and cutout contrasts. A separate reference checks fixed zero-border iterations. |
 | S4-16 | Extended inpainting for defect cleanup | xphoto.inpaint | Complete | cv.extended_inpaint exposes FSR Fast, FSR Best and bounded Shift Map. A repair mask identifies estimates and the block preserves measured pixels, source depth and alpha. Verified native parity, mask/region intersection and recovery of a periodic surface against known truth. |
-| S4-17 | DCT denoising | xphoto.dctDenoising | Planned | Quantify noise reduction and edge retention on a seeded color or grayscale fixture. |
+| S4-17 | DCT denoising | xphoto.dctDenoising | Complete | cv.dct_denoise exposes noise sigma and patch size, uses bounded overlapping tiles with full border coverage, and preserves source depth, alpha and unselected samples. Verified tiled native parity, noise reduction and step-edge retention. |
 | S4-18 | Fast line detection | ximgproc.createFastLineDetector | Planned | Verify segment positions and orientation on straight edges and retain collection metadata. |
 | S4-19 | Compact binary descriptors | xfeatures2d.BriefDescriptorExtractor, FREAK | Planned | Compute descriptors at wired image keypoints and check Hamming matching across a registered image pair. |
 | S4-20 | Dense local descriptors | xfeatures2d.DAISY | Planned | Sample image descriptors on a controlled grid and verify matching under known displacement. |

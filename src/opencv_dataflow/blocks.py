@@ -1023,6 +1023,7 @@ def builtin_registry():
     from .wide_stereo import CalibrateWideStereo
     from .white_balance import GrayWorldWhiteBalance
     from .workplane import RectifyWorkplane
+    from .xphoto_denoising import DctDenoise
     from .xphoto_inpainting import ExtendedInpaint
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
@@ -1173,6 +1174,7 @@ def builtin_registry():
         ReviewFeatureMatches,
         AlignECC,
         *RESTORATION_BLOCKS,
+        DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,
         AlignExposures,

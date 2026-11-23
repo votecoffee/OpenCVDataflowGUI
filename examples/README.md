@@ -310,6 +310,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Joint bilateral filter](<opencv tools/joint_bilateral_filter/README.md>) | Use a registered 8-bit color guide to preserve faint features on a noisy 16-bit target. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |
 | [Extended inpainting](<opencv tools/extended_inpainting/README.md>) | Compare frequency and patch repairs of a marked defect on a known periodic surface. |
+| [DCT denoising](<opencv tools/dct_denoising/README.md>) | Compare whole-frame and region-limited noise reduction against a clean target. |
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |
 | [Bundler reconstruction import](<opencv tools/bundler_reconstruction/README.md>) | Import cameras and colored points, apply a measured baseline and project a held-out image. |

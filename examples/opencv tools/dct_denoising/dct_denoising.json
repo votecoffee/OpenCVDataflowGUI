@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Clean up sensor noise",
+      "description": "Compare the noisy target with full-frame and circle-limited DCT denoising. Inspect fine edges and flat patches at full zoom. Both synthetic image assets are original and MIT-licensed.",
+      "parameters": {},
+      "position": [
+        0,
+        -185
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Simulated sensor image",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        135
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "area",
+      "type": "region.shape",
+      "name": "Circular inspection area",
+      "parameters": {
+        "shape": "circle",
+        "rectangle": [
+          0,
+          0,
+          100,
+          100
+        ],
+        "center": [
+          27,
+          56
+        ],
+        "radius": 22,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        280,
+        260
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "full",
+      "type": "cv.dct_denoise",
+      "name": "Whole-frame denoising",
+      "description": "Suppress noise with overlapping discrete cosine transform patches.",
+      "parameters": {
+        "noise_sigma": 12.0,
+        "patch_size": 16
+      },
+      "position": [
+        540,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.dct_denoise",
+      "name": "Denoise the inspection area",
+      "description": "Suppress noise with overlapping discrete cosine transform patches.",
+      "parameters": {
+        "noise_sigma": 12.0,
+        "patch_size": 16
+      },
+      "position": [
+        540,
+        215
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "area",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "full",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "area",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}
