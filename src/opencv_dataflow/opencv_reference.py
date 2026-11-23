@@ -446,6 +446,7 @@ BINDINGS = {
     "inspect.kaze": "xfeatures2d.KAZE_create",
     "inspect.kmeans_image": "kmeans",
     "inspect.line_segments": "createLineSegmentDetector LineSegmentDetector.detect",
+    "inspect.fast_line_segments": "ximgproc.createFastLineDetector ximgproc.FastLineDetector.detect",
     "inspect.match_descriptor_radius": "DescriptorMatcher.radiusMatch",
     "inspect.match_template": "matchTemplate",
     "inspect.mser": "MSER_create MSER.detectRegions",

@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 28 | 3 | 71 | 102 | 27.5% |
-| **Overall** | 394 | 4 | 72 | 470 | 83.8% |
+| 4. Selected contrib | 29 | 3 | 70 | 102 | 28.4% |
+| **Overall** | 395 | 4 | 71 | 470 | 84.0% |
 
 <!-- coverage-summary:end -->
 
@@ -620,7 +620,7 @@ fixture or result needed to close the item.
 | S4-15 | Rolling guidance filtering | ximgproc.rollingGuidanceFilter, ximgproc.jointBilateralFilter | Complete | cv.rolling_guidance_filter exposes the native neighborhood, border and pass controls with typed output and selected writes. Four passes suppress fine texture on a synthetic plate and preserve known outline and cutout contrasts. A separate reference checks fixed zero-border iterations. |
 | S4-16 | Extended inpainting for defect cleanup | xphoto.inpaint | Complete | cv.extended_inpaint exposes FSR Fast, FSR Best and bounded Shift Map. A repair mask identifies estimates and the block preserves measured pixels, source depth and alpha. Verified native parity, mask/region intersection and recovery of a periodic surface against known truth. |
 | S4-17 | DCT denoising | xphoto.dctDenoising | Complete | cv.dct_denoise exposes noise sigma and patch size, uses bounded overlapping tiles with full border coverage, and preserves source depth, alpha and unselected samples. Verified tiled native parity, noise reduction and step-edge retention. |
-| S4-18 | Fast line detection | ximgproc.createFastLineDetector | Planned | Verify segment positions and orientation on straight edges and retain collection metadata. |
+| S4-18 | Fast line detection | ximgproc.createFastLineDetector | Complete | inspect.fast_line_segments exposes all six native settings, processes intensity images or preserved edge maps, and emits directed endpoints, a line collection and result arrows. Verified horizontal, vertical and diagonal geometry, endpoint selection, and source frame, pyramid level and ticket metadata. |
 | S4-19 | Compact binary descriptors | xfeatures2d.BriefDescriptorExtractor, FREAK | Planned | Compute descriptors at wired image keypoints and check Hamming matching across a registered image pair. |
 | S4-20 | Dense local descriptors | xfeatures2d.DAISY | Planned | Sample image descriptors on a controlled grid and verify matching under known displacement. |
 | S4-21 | GSoC adaptive foreground | bgsegm.createBackgroundSubtractorGSOC | Complete | sequence.gsoc_background. Check warmup and detection on an empty-conveyor replay. |

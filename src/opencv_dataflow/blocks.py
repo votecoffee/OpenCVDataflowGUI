@@ -892,6 +892,7 @@ def builtin_registry():
         load_installed_reference_inspect,
         register_simple_providers,
     )
+    from .fast_lines import FastLineSegments
     from .point_set_lines import HoughPointSetLines
     from .polar_image import PolarImageWarp
     from .projection_matrix import InspectProjectionMatrix
@@ -1222,6 +1223,7 @@ def builtin_registry():
         *COLLECTION_BLOCKS,
         SimpleBlobDetection,
         HoughPointSetLines,
+        FastLineSegments,
         HoughPolarLines,
         *CONTOUR_ANALYSIS_BLOCKS,
         RasterizeContours,

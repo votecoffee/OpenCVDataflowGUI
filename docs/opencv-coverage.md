@@ -290,6 +290,8 @@ rectangular patch at a fractional center and preserves coordinate provenance.
 from sparse coordinates and exposes vote counts for collection sorting.
 [Hough polar lines](<../examples/opencv tools/hough_polar_lines/README.md>) supports binary
 and intensity-weighted raster voting with masks and regions.
+[Fast line detection](<../examples/opencv tools/fast_line_detection/README.md>) emits
+directed segments and sortable geometry from an intensity image or a precomputed edge map.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

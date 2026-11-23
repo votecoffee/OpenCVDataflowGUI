@@ -140,7 +140,7 @@ IMPLEMENTATION_MODULES = {
     "rgbd": "ptcloud3d rgbd_registration",
     "tracking": "native_trackers",
     "features": "native_lightglue native_index",
-    "ximgproc": "local_threshold region_proposals ridge_response superpixels",
+    "ximgproc": "fast_lines local_threshold region_proposals ridge_response superpixels",
 }
 BLOCK_MODULES = {
     "core": (

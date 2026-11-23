@@ -9319,6 +9319,27 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `nonmax_suppression` | `true` |  |
 | `pattern` | `"9_16"` | `5_8`, `7_12`, `9_16` |
 
+## Fast line detector (`inspect.fast_line_segments`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Image converted to 8-bit grayscale for Canny. Aperture zero expects a mono 8-bit edge map where nonzero pixels mark edges.
+
+Input `mask` — Keep segments whose two endpoints fall in this mask.
+
+Input `region` — Keep segments whose two endpoints fall in this region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `length_threshold` | `10` | Value must be a whole number between 1 and 32768. Minimum segment length in pixels. |
+| `distance_threshold` | `1.414213562` | Value must be a finite number between 0 and 32768. Positive maximum distance in pixels from a point to a fitted line. |
+| `canny_low` | `50.0` | Value must be a finite number between 0 and 1e+06. Positive lower hysteresis threshold on the converted 8-bit image. |
+| `canny_high` | `50.0` | Value must be a finite number between 0 and 1e+06. Positive upper hysteresis threshold. At least the lower threshold. |
+| `canny_aperture` | `"3"` | `0`, `3`, `5`, `7` Sobel aperture for internal Canny. Zero uses a precomputed edge image. |
+| `merge_segments` | `false` | Use the native incremental merge for nearby aligned segments. |
+
 ## Fill holes in a binary mask (`inspect.fill_mask_holes`)
 
 Inspection / Segmentation
