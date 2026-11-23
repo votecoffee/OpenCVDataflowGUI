@@ -322,6 +322,8 @@ and Paillou responses on known edges. Paillou uses SciPy because the Python whee
 fits in contour clutter and uses the detections as measured objects and fitted regions.
 [Fast Hough lines](<../examples/opencv tools/fast_hough_lines/README.md>) transforms selected
 edge points into an accumulator and recovers source lines with known angles and offsets.
+[Structured forest edges](<../examples/opencv tools/structured_edges/README.md>) uses a pinned
+OpenCV forest to emit response, orientation and thinned edges verified against marked boundaries.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

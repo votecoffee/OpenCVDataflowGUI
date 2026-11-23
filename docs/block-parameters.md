@@ -6843,6 +6843,27 @@ Input `masks` — Optional ordered uint8 masks for feature detection and valid m
 | `max_exposure_gain` | `2.0` | Value must be a finite number between 1 and 8. Limit cumulative gain to this ratio and its reciprocal. |
 | `max_exposure_offset_fraction` | `0.25` | Value must be a finite number between 0 and 1. Limit cumulative offset as a fraction of full scale. |
 
+## Structured forest edges (`cv.structured_edges`)
+
+Image processing / Edges
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or color in 8-bit, 16-bit, or normalized float32. Color is converted to float32 RGB and alpha is ignored by inference.
+
+Input `mask` — Zero returned maps outside this mask after full-image inference.
+
+Input `region` — Zero returned maps outside this region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `model_path` | `""` | Local model.yml.gz from OpenCV's 5.0.0 reference data. Its exact release bytes are verified before native loading. |
+| `suppression_radius` | `2` | Value must be a whole number between 0 and 32. Native non-maximum suppression radius in pixels. Zero skips the directional comparisons. |
+| `boundary_radius` | `0` | Value must be a whole number between 0 and 512. Native fading distance at the image border. Zero disables fading. |
+| `suppression_multiplier` | `1.0` | Value must be a finite number between 0.01 and 100. Multiply the center response before the directional comparison. Higher values preserve more responses. |
+| `parallel_nms` | `true` | Use OpenCV's parallel path for non-maximum suppression. |
+| `edge_threshold` | `0.15` | Value must be a finite number at least 0. Keep positive thinned responses at or above this value in the mask. |
+
 ## Stylize photo (`cv.stylize_photo`)
 
 Image processing / Edge-aware rendering

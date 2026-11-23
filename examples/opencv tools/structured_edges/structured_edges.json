@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Structured forest edge responses",
+      "description": "Prepare the OpenCV 5.0.0 reference model once, then Run Once. Compare detected edges with the independently drawn rectangle and circle boundaries. The images and graph are original MIT assets. The local reference forest comes from opencv_extra for the Structured Forests method by Doll\u00e1r and Zitnick.",
+      "parameters": {},
+      "position": [
+        0,
+        -205
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Color shape target",
+      "parameters": {
+        "path": "assets/color_target.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "rgb",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference boundaries",
+      "parameters": {
+        "path": "assets/reference_boundaries.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        290
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "cv.structured_edges",
+      "name": "Detect and thin edges",
+      "description": "Measure and thin edge responses using the OpenCV structured-forest model.",
+      "parameters": {
+        "model_path": ".local/models/model.yml.gz",
+        "suppression_radius": 2,
+        "boundary_radius": 0,
+        "suppression_multiplier": 1.0,
+        "parallel_nms": true,
+        "edge_threshold": 0.15
+      },
+      "position": [
+        280,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "edges",
+        "response",
+        "orientation",
+        "thinned",
+        "model_info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "view",
+      "type": "cv.normalize",
+      "name": "View continuous thinned response",
+      "parameters": {
+        "minimum": 0.0,
+        "maximum": 255.0,
+        "pixel_depth": "uint8",
+        "norm_type": "minmax",
+        "norm_value": 1.0,
+        "channel_mode": "joint",
+        "outside_selection": "zero",
+        "preserve_alpha": false
+      },
+      "position": [
+        580,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "thinned",
+      "target": "view",
+      "input": "image"
+    }
+  ]
+}
