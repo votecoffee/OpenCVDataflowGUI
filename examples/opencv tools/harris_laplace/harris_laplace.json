@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Track interest points through a size change",
+      "description": "Run Once. Find Harris\u2013Laplace points at the original scale and at 2\u00d7. Each circle shows a detected diameter. BEBLID describes those points before evaluation against the known resize transform. The image is an original MIT asset.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Corner target",
+      "parameters": {
+        "path": "assets/corners.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        80
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "enlarge",
+      "type": "cv.resize",
+      "name": "Double image size",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "interpolation": "linear",
+        "size_mode": "scale",
+        "scale_x": 2,
+        "scale_y": 2,
+        "padding_value": 0.0
+      },
+      "position": [
+        235,
+        310
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Measure 2\u00d7 repeatability",
+      "parameters": {
+        "reference_transform": [
+          [
+            2.0,
+            0.0,
+            0.5
+          ],
+          [
+            0.0,
+            2.0,
+            0.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 2.5,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 20,
+        "minimum_correspondences": 140,
+        "minimum_repeatability": 0.85,
+        "minimum_precision": 0.0,
+        "minimum_recall": 0.0,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 120
+      },
+      "position": [
+        1010,
+        125
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_corners",
+      "type": "inspect.harris_laplace",
+      "name": "Query Harris\u2013Laplace points",
+      "description": "Find Harris corners at local Difference-of-Gaussians scale maxima.",
+      "parameters": {
+        "octaves": 6,
+        "layers": "4",
+        "corner_threshold": 0.01,
+        "dog_threshold": 0.01,
+        "max_corners": 512,
+        "preview_count": 100
+      },
+      "position": [
+        490,
+        40
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "keypoints"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_descriptor",
+      "type": "inspect.beblid_descriptor",
+      "name": "Describe query points",
+      "description": "Compute boosted binary descriptors from local intensity averages.",
+      "parameters": {
+        "descriptor_bits": "256",
+        "scale_factor": 5.0
+      },
+      "position": [
+        750,
+        40
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_corners",
+      "type": "inspect.harris_laplace",
+      "name": "Train Harris\u2013Laplace points",
+      "description": "Find Harris corners at local Difference-of-Gaussians scale maxima.",
+      "parameters": {
+        "octaves": 6,
+        "layers": "4",
+        "corner_threshold": 0.01,
+        "dog_threshold": 0.01,
+        "max_corners": 512,
+        "preview_count": 100
+      },
+      "position": [
+        490,
+        310
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "keypoints"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_descriptor",
+      "type": "inspect.beblid_descriptor",
+      "name": "Describe train points",
+      "description": "Compute boosted binary descriptors from local intensity averages.",
+      "parameters": {
+        "descriptor_bits": "256",
+        "scale_factor": 5.0
+      },
+      "position": [
+        750,
+        310
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "enlarge",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "query_corners",
+      "input": "image"
+    },
+    {
+      "source": "query_corners",
+      "output": "image",
+      "target": "query_descriptor",
+      "input": "image"
+    },
+    {
+      "source": "query_corners",
+      "output": "keypoints",
+      "target": "query_descriptor",
+      "input": "keypoints"
+    },
+    {
+      "source": "query_corners",
+      "output": "image",
+      "target": "evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "query_descriptor",
+      "output": "features",
+      "target": "evaluate",
+      "input": "query"
+    },
+    {
+      "source": "enlarge",
+      "output": "image",
+      "target": "train_corners",
+      "input": "image"
+    },
+    {
+      "source": "train_corners",
+      "output": "image",
+      "target": "train_descriptor",
+      "input": "image"
+    },
+    {
+      "source": "train_corners",
+      "output": "keypoints",
+      "target": "train_descriptor",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_corners",
+      "output": "image",
+      "target": "evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "train_descriptor",
+      "output": "features",
+      "target": "evaluate",
+      "input": "train"
+    }
+  ]
+}

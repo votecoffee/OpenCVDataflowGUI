@@ -466,6 +466,9 @@ BINDINGS = {
     "inspect.fast_hough_lines": "ximgproc.FastHoughTransform ximgproc.HoughPoint2Line",
     "inspect.edge_boxes": "ximgproc.createEdgeBoxes ximgproc.EdgeBoxes.getBoundingBoxes",
     "inspect.filter_matches_gms": "xfeatures2d.matchGMS",
+    "inspect.harris_laplace": (
+        "xfeatures2d.HarrisLaplaceFeatureDetector_create xfeatures2d.HarrisLaplaceFeatureDetector.detect"
+    ),
     "inspect.line_descriptors": (
         "line_descriptor.BinaryDescriptor.createBinaryDescriptor "
         "line_descriptor.BinaryDescriptor.detect line_descriptor.BinaryDescriptor.compute"

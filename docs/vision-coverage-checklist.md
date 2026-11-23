@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 45 | 6 | 51 | 102 | 44.1% |
-| **Overall** | 411 | 7 | 52 | 470 | 87.4% |
+| 4. Selected contrib | 46 | 6 | 50 | 102 | 45.1% |
+| **Overall** | 412 | 7 | 51 | 470 | 87.7% |
 
 <!-- coverage-summary:end -->
 
@@ -656,7 +656,7 @@ fixture or result needed to close the item.
 | S4-46 | Line feature descriptors and matching | line_descriptor.BinaryDescriptor and BinaryDescriptorMatcher | Complete | inspect.line_descriptors and inspect.match_line_descriptors preserve native 32-byte descriptors, Hamming distances and source endpoints. The example matches 22 pairs across a 3-degree rotation and translation with at most 2.80 pixels endpoint error. Extraction runs one native octave per selected image level. |
 | S4-47 | Grid motion statistics match filtering | xfeatures2d.matchGMS | Complete | inspect.filter_matches_gms preserves aligned rows, original distances, and frames. The occluded ORB example improves correct-pair fraction from 7.2% to 80.2% and held-out affine error from 261.13 to 0.48 pixels with the same RANSAC budget. |
 | S4-48 | Additional binary patch descriptors | xfeatures2d LATCH, BEBLID and TEBLID | Complete | The three extractors preserve native binary rows and keypoint indices. The shared ORB fixture measures 70.8% repeatability, with 85, 122 and 172 unique correct matches respectively at the same 48-bit Hamming cutoff. |
-| S4-49 | Scale-aware interest points | xfeatures2d.HarrisLaplaceFeatureDetector | Planned | Locate the same corners through a scale change and preserve size and response. |
+| S4-49 | Scale-aware interest points | xfeatures2d.HarrisLaplaceFeatureDetector | Complete | inspect.harris_laplace preserves native size, response and octave. The doubled-image fixture verifies 165 pairs within 2.5 pixels, 93.2% repeatability and a median 2.00× diameter ratio. |
 | S4-50 | Shape context contour comparison | createShapeContextDistanceExtractor | Planned | Match similar contours despite small deformation and report a distance with known variants. |
 | S4-51 | Hausdorff contour distance | createHausdorffDistanceExtractor | Planned | Verify configured rank, translation sensitivity and comparison against known offsets. |
 | S4-52 | Native shape-based nonrigid registration | createThinPlateSplineShapeTransformer | Planned | Fit paired image contours, warp a reference image and verify interpolated landmark error. |

@@ -9999,6 +9999,27 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `t
 | `pair_angle` | `90.0` | Value must be a finite number between 1 and 359. Target angle difference between the two gradients of a feature pair. |
 | `angle_epsilon` | `4.0` | Value must be a finite number between 0.1 and 30. Angular tolerance in degrees for building and matching pairs. |
 
+## Harris–Laplace interest points (`inspect.harris_laplace`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale or color image converted to 8-bit grayscale for detection. The native doubled pyramid limits the input to 1,048,576 pixels.
+
+Input `mask` — Restrict corner centers to this mask before retaining the strongest keypoints.
+
+Input `region` — Restrict corner centers to this region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `octaves` | `6` | Value must be a whole number between 1 and 8. Requested scale-space octaves. OpenCV bounds this by the input dimensions. |
+| `layers` | `"4"` | `2`, `4` Number of intermediate scales per octave. OpenCV supports 2 or 4. |
+| `corner_threshold` | `0.01` | Value must be a finite number between 0 and 1. Minimum Harris response as a fraction of the strongest response at each scale. |
+| `dog_threshold` | `0.01` | Value must be a finite number between 0 and 1. Minimum Difference-of-Gaussians response on normalized intensity. |
+| `max_corners` | `512` | Value must be a whole number between 1 and 5000. Keep at most this many selected corners, strongest first. |
+| `preview_count` | `100` | Value must be a whole number between 0 and 512. Number of scale circles to draw in response order. Zero hides drawings. |
+
 ## Histogram (`inspect.histogram`)
 
 Image processing / Statistics

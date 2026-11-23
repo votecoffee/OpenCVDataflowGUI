@@ -334,6 +334,8 @@ filters nearest ORB pairs by neighborhood motion and compares a held-out affine 
 against the unfiltered branch.
 [Binary patch descriptors](<../examples/opencv tools/binary_patch_descriptors/README.md>)
 compares LATCH, BEBLID and TEBLID on shared ORB keypoints under known view and brightness changes.
+[Harris–Laplace interest points](<../examples/opencv tools/harris_laplace/README.md>)
+preserves scale and response and measures one-to-one repeatability after doubling the input image.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose
