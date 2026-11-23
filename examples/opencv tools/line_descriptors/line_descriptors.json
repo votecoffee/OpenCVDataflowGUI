@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Match part edges across two views",
+      "description": "Run Once. The second image is rotated 3 degrees and translated by (16, -9) pixels. Review matching segments and their midpoint links side by side. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -210
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Query view",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_lines",
+      "type": "inspect.line_descriptors",
+      "name": "Describe query lines",
+      "description": "Detect line segments and compute one binary Line Band Descriptor per segment.",
+      "parameters": {
+        "band_width": 7,
+        "min_length": 26,
+        "max_features": 96,
+        "preview_count": 80
+      },
+      "position": [
+        265,
+        40
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "collection",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "input.file",
+      "name": "Train view",
+      "parameters": {
+        "path": "assets/train.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        280
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_lines",
+      "type": "inspect.line_descriptors",
+      "name": "Describe train lines",
+      "description": "Detect line segments and compute one binary Line Band Descriptor per segment.",
+      "parameters": {
+        "band_width": 7,
+        "min_length": 26,
+        "max_features": 96,
+        "preview_count": 80
+      },
+      "position": [
+        265,
+        280
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "collection",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "match",
+      "type": "inspect.match_line_descriptors",
+      "name": "Match described lines",
+      "description": "Match binary line descriptors and retain endpoints and native Hamming distances.",
+      "parameters": {
+        "mode": "ratio_cross_check",
+        "ratio": 0.82,
+        "max_distance": 48,
+        "min_matches": 12
+      },
+      "position": [
+        545,
+        125
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "inspect.review_matches",
+      "name": "Review line pairs",
+      "parameters": {
+        "show": "all",
+        "max_pairs": 160,
+        "gap": 16,
+        "line_width": 1,
+        "endpoints": false
+      },
+      "position": [
+        820,
+        125
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "matches",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "canvas",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_lines",
+      "input": "image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "train_lines",
+      "input": "image"
+    },
+    {
+      "source": "query_lines",
+      "output": "features",
+      "target": "match",
+      "input": "query"
+    },
+    {
+      "source": "query_lines",
+      "output": "image",
+      "target": "review",
+      "input": "query_image"
+    },
+    {
+      "source": "train_lines",
+      "output": "features",
+      "target": "match",
+      "input": "train"
+    },
+    {
+      "source": "train_lines",
+      "output": "image",
+      "target": "review",
+      "input": "train_image"
+    },
+    {
+      "source": "match",
+      "output": "matches",
+      "target": "review",
+      "input": "matches"
+    }
+  ]
+}

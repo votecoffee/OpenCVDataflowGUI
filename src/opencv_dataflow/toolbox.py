@@ -67,6 +67,7 @@ OPENCV_MODULES = {
     "linemod": "RGB-D Template Matching",
     "surface_matching": "Surface Matching",
     "tracking": "Tracking",
+    "line_descriptor": "Line Descriptors",
     "ximgproc": "Extended Image Processing",
     "xobjdetect": "Extended Object Detection",
 }
@@ -148,6 +149,7 @@ IMPLEMENTATION_MODULES = {
         "fast_bilateral_solver fast_lines local_threshold region_proposals ridge_response superpixels"
     ),
     "xfeatures2d": "compact_descriptors daisy_descriptor",
+    "line_descriptor": "line_descriptors",
     "optflow": "deepflow dense_rlof dual_tvl1_flow",
 }
 BLOCK_MODULES = {

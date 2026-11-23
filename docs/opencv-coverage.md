@@ -327,6 +327,8 @@ OpenCV forest to emit response, orientation and thinned edges verified against m
 [EdgeBoxes proposals](<../examples/opencv tools/edge_boxes/README.md>) ranks
 source-frame rectangles from oriented edge maps and measures their overlap
 with known part bounds.
+[Binary line descriptors](<../examples/opencv tools/line_descriptors/README.md>)
+match line segments across known view motion and retain endpoints and Hamming distances.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

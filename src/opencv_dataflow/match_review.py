@@ -1,4 +1,4 @@
-"""Side-by-side diagnostics for paired keypoints and geometric inliers."""
+"""Side-by-side diagnostics for paired points, segments, and geometric inliers."""
 
 import numpy as np
 
@@ -6,37 +6,42 @@ from .core import Block, Port, Result
 from .features import overlay_image
 from .graphics_layers import GraphicDrawing, draw_object, graphic_object
 from .parameter_validation import NumericRange, ValidationError
-from .payloads import frame
+from .payloads import ValuePacket, frame, require_same_frame
 from .result_graphics import ACCEPTED, REJECTED
 
 _UNCLASSIFIED = (60, 220, 255)
 
 
-def paired_points(data, query_size, train_size):
+def paired_points(data, query_size, train_size, *, geometry="points"):
     if not isinstance(data, dict):
         raise ValidationError("Connect a paired feature match record")
     points = []
     for role, size in (("query", query_size), ("train", train_size)):
         if data.get(f"{role}_size") is not None and data[f"{role}_size"] != size:
             raise ValidationError(f"{role.title()} image size differs from the match record")
-        raw = data.get(f"{role}_points")
+        raw = data.get(f"{role}_{geometry}")
         if not isinstance(raw, (list, tuple)) or len(raw) > 100_000:
-            raise ValidationError(f"{role.title()} points must be a list of up to 100,000 pairs")
+            raise ValidationError(
+                f"{role.title()} {geometry} must be a list of up to 100,000 pairs"
+            )
         try:
             array = np.asarray(raw, dtype=np.float64)
         except (TypeError, ValueError, OverflowError) as exc:
             raise ValidationError(
-                f"{role.title()} points must contain finite [x, y] pairs"
+                f"{role.title()} {geometry} must contain finite [x, y] pairs"
             ) from exc
+        point_shape = (2,) if geometry == "points" else (2, 2)
         if len(raw) == 0:
-            array = array.reshape(0, 2)
+            array = array.reshape(0, *point_shape)
         if (
-            array.shape != (len(raw), 2)
+            array.shape != (len(raw), *point_shape)
             or not np.isfinite(array).all()
             or np.any(array < 0)
             or np.any(array >= size)
         ):
-            raise ValidationError(f"{role.title()} points must be finite and inside their image")
+            raise ValidationError(
+                f"{role.title()} {geometry} must be finite and inside their image"
+            )
         points.append(array)
     if len(points[0]) != len(points[1]):
         raise ValidationError("Query and train point counts must match")
@@ -82,7 +87,7 @@ class ReviewFeatureMatches(Block):
     input_help = {
         "query_image": "Image used by the query feature detector, displayed on the left.",
         "train_image": "Image used by the train feature detector, displayed on the right.",
-        "matches": "Paired Query and Train points in image pixels.",
+        "matches": "Paired Query and Train points in image pixels, with optional line endpoints.",
         "fit": "Optional geometric fit made from this same ordered match list.",
     }
     composes_result_image = True
@@ -104,8 +109,20 @@ class ReviewFeatureMatches(Block):
             raise ValidationError(
                 "Match review canvas exceeds 16 million pixels or 16,384 per axis"
             )
-        query_points, train_points = paired_points(inputs["matches"], query_size, train_size)
+        matches = inputs["matches"]
+        query_points, train_points = paired_points(matches, query_size, train_size)
         count = len(query_points)
+        segments = None
+        if "query_segments" in matches or "train_segments" in matches:
+            segments = paired_points(matches, query_size, train_size, geometry="segments")
+            if len(segments[0]) != count:
+                raise ValidationError("Line match endpoints must align with the matched midpoints")
+            for role, image in (("query", query), ("train", train)):
+                source_context = matches.get(f"{role}_context", {})
+                require_same_frame(
+                    (image, ValuePacket(None, source_context)),
+                    message=f"{role.title()} line segments belong to another image frame",
+                )
         mask = None
         if "fit" in inputs:
             mask = fit_inliers(inputs["fit"], count, query_size, train_size)
@@ -132,6 +149,14 @@ class ReviewFeatureMatches(Block):
             end = train_points[index] + (offset, 0)
             objects = layers.setdefault(label, [])
             objects.append(graphic_object("polyline", (start, end), color, thickness=line_width))
+            if segments is not None:
+                objects.extend((
+                    graphic_object("polyline", segments[0][index], color, thickness=line_width + 1),
+                    graphic_object(
+                        "polyline", segments[1][index] + (offset, 0),
+                        color, thickness=line_width + 1,
+                    ),
+                ))
             if p["endpoints"]:
                 objects.extend(graphic_object("marker", (point,), color) for point in (start, end))
         overlay = canvas.copy()

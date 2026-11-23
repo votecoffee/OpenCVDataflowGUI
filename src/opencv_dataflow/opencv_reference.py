@@ -462,6 +462,13 @@ BINDINGS = {
     "inspect.hough_polar_lines": "HoughLinesWithAccumulator",
     "inspect.fast_hough_lines": "ximgproc.FastHoughTransform ximgproc.HoughPoint2Line",
     "inspect.edge_boxes": "ximgproc.createEdgeBoxes ximgproc.EdgeBoxes.getBoundingBoxes",
+    "inspect.line_descriptors": (
+        "line_descriptor.BinaryDescriptor.createBinaryDescriptor "
+        "line_descriptor.BinaryDescriptor.detect line_descriptor.BinaryDescriptor.compute"
+    ),
+    "inspect.match_line_descriptors": (
+        "line_descriptor.BinaryDescriptorMatcher.match line_descriptor.BinaryDescriptorMatcher.knnMatch"
+    ),
     "inspect.kaze": "xfeatures2d.KAZE_create",
     "inspect.kmeans_image": "kmeans",
     "inspect.line_segments": "createLineSegmentDetector LineSegmentDetector.detect",

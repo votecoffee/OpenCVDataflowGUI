@@ -10272,6 +10272,25 @@ Input `initial_labels` — Optional single-channel integer label image for the f
 | `max_iterations` | `50` | Value must be a whole number between 2 and 100. Used by the both and iterations modes. |
 | `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
 
+## Binary line descriptors (`inspect.line_descriptors`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or color source converted to 8-bit grayscale. Describes the selected application pyramid level at one native octave.
+
+Input `mask` — Retain segments whose two endpoints lie inside the mask.
+
+Input `region` — Retain segments whose two endpoints lie inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `band_width` | `7` | Value must be a positive odd integer between 3 and 31. Pixel width of each native descriptor band. Match sets with the same width. |
+| `min_length` | `16.0` | Value must be a finite number between 1 and 4096. Minimum detected segment length in pixels at the selected level. |
+| `max_features` | `256` | Value must be a whole number between 1 and 1024. Describe at most this many selected segments, longest first. |
+| `preview_count` | `80` | Value must be a whole number between 0 and 256. Draw at most this many described segments. Zero hides the drawings. |
+
 ## Measure line pair (`inspect.line_pair`)
 
 Inspection / Measurements
@@ -10555,6 +10574,19 @@ Inputs: `query` (data), `train` (data).
 | `max_distance` | `250.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
 | `trees` | `5` | Value must be a whole number between 1 and 32. Number of randomized KD-trees in the search index. |
 | `checks` | `50` | Value must be a whole number between 1 and 10000. Search budget. Higher values can improve recall at greater cost. |
+
+## Match binary line descriptors (`inspect.match_line_descriptors`)
+
+Inspection / Matching
+
+Inputs: `query` (data), `train` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"ratio_cross_check"` | `ratio`, `cross_check`, `ratio_cross_check` Use the two-neighbor distance ratio, reciprocal nearest matches, or both. |
+| `ratio` | `0.82` | Value must be a finite number between 0.01 and 0.99. Best distance must be strictly below this fraction of the second-best distance. |
+| `max_distance` | `48` | Value must be a whole number between 0 and 256. Largest accepted Hamming distance, in differing bits. |
+| `min_matches` | `0` | Value must be a whole number between 0 and 1024. Fewest accepted matches needed to pass. Zero permits empty results. |
 
 ## Match ORB descriptors (`inspect.match_orb`)
 
@@ -11029,7 +11061,7 @@ Input `query_image` — Image used by the query feature detector, displayed on t
 
 Input `train_image` — Image used by the train feature detector, displayed on the right.
 
-Input `matches` — Paired Query and Train points in image pixels.
+Input `matches` — Paired Query and Train points in image pixels, with optional line endpoints.
 
 Input `fit` — Optional geometric fit made from this same ordered match list.
 
