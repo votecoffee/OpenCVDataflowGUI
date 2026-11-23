@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 39 | 6 | 57 | 102 | 38.2% |
-| **Overall** | 405 | 7 | 58 | 470 | 86.2% |
+| 4. Selected contrib | 40 | 6 | 56 | 102 | 39.2% |
+| **Overall** | 406 | 7 | 57 | 470 | 86.4% |
 
 <!-- coverage-summary:end -->
 
@@ -650,7 +650,7 @@ fixture or result needed to close the item.
 | S4-40 | L0 image smoothing | ximgproc.l0Smooth, SciPy DCT | Partial | cv.l0_smoothing verifies L0 minimization against independent dense systems and reduces 16-bit texture while preserving the main step. The installed OpenCV 5.0.0 native filter collapsed a two-level byte target to zero. Native qualification remains open. |
 | S4-41 | Extended gradient operators | ximgproc.GradientDericheX/Y, SciPy Paillou recurrence | Partial | Native Deriche and a separately qualified Paillou recurrence locate rising and falling steps on both axes within 0.5 pixels. The OpenCV 5.0.0 wheel lacks Paillou Python bindings. Native Paillou qualification remains open. |
 | S4-42 | Contour ellipse detection | ximgproc.findEllipses | Complete | inspect.find_ellipses finds three rotated ellipses in a cluttered image with centers within 2 pixels, full diameters within 4 pixels and orientations within 2 degrees. Fits retain source geometry and support collection filtering and fitted regions. |
-| S4-43 | Fast Hough line transform | ximgproc.FastHoughTransform | Planned | Verify transformed bin geometry and recover lines with known angle and offset. |
+| S4-43 | Fast Hough line transform | ximgproc.FastHoughTransform, HoughPoint2Line | Complete | inspect.fast_hough_lines matches the native accumulator and recovers known endpoints and offsets in nine angle ranges and both bin layouts. Selected votes, separate bin geometry, and sortable source-frame lines are verified. |
 | S4-44 | Structured edge detection | ximgproc.createStructuredEdgeDetection | Planned | Use a revisioned local model and compare detected boundaries with marked reference edges. |
 | S4-45 | EdgeBoxes object proposals | ximgproc.createEdgeBoxes | Planned | Use oriented edge maps to rank region proposals and verify overlap against known objects. |
 | S4-46 | Line feature descriptors and matching | line_descriptor.BinaryDescriptor and BinaryDescriptorMatcher | Planned | Match line features across a known camera motion and retain segment endpoints and native distances. |

@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Inspect Fast Hough lines and peaks",
+      "description": "Run Once. Three known lines cross this edge map. See their overlays in the Fast Hough block. View the bin grid in the Normalize block. A filter and overlay retain the vertical line. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Known edge lines",
+      "parameters": {
+        "path": "assets/edge_lines.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "inspect.fast_hough_lines",
+      "name": "Find three line peaks",
+      "description": "Transform an edge map into a Fast Hough accumulator and recover its peak lines.",
+      "parameters": {
+        "angle_range": "full",
+        "operation": "sum",
+        "layout": "deskewed",
+        "accumulator_depth": "float32",
+        "minimum_response": 0.0,
+        "minimum_peak_fraction": 0.6,
+        "suppression_bins": 7,
+        "maximum_lines": 24,
+        "minimum_lines": 3
+      },
+      "position": [
+        280,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "accumulator",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "display",
+      "type": "cv.normalize",
+      "name": "Scale accumulator for display",
+      "parameters": {
+        "minimum": 0.0,
+        "maximum": 255.0,
+        "pixel_depth": "uint8",
+        "norm_type": "minmax",
+        "norm_value": 1.0,
+        "channel_mode": "joint",
+        "outside_selection": "zero",
+        "preserve_alpha": false
+      },
+      "position": [
+        590,
+        -120
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vertical",
+      "type": "collection.filter",
+      "name": "Keep near-vertical lines",
+      "parameters": {
+        "metric": "angle",
+        "custom_metric": "",
+        "use_minimum": true,
+        "minimum": 85,
+        "include_minimum": true,
+        "use_maximum": true,
+        "maximum": 95,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        590,
+        115
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "draw",
+      "type": "collection.draw",
+      "name": "Review vertical line",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": false,
+        "draw_centers": true,
+        "labels": "none"
+      },
+      "position": [
+        895,
+        115
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "accumulator",
+      "target": "display",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "collection",
+      "target": "vertical",
+      "input": "collection"
+    },
+    {
+      "source": "vertical",
+      "output": "collection",
+      "target": "draw",
+      "input": "collection"
+    },
+    {
+      "source": "detect",
+      "output": "image",
+      "target": "draw",
+      "input": "image"
+    }
+  ]
+}

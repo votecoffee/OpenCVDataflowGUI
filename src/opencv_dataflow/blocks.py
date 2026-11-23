@@ -938,6 +938,7 @@ def builtin_registry():
     from .l0_smoothing import L0Smoothing
     from .recursive_gradients import DericheGradient, PaillouGradient
     from .contour_ellipses import FindEllipses
+    from .fast_hough_lines import FastHoughLines
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
     from .rgbd_warp import WarpRGBDByPose
@@ -1197,6 +1198,7 @@ def builtin_registry():
         DericheGradient,
         PaillouGradient,
         FindEllipses,
+        FastHoughLines,
         DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,

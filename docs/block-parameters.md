@@ -9519,6 +9519,30 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `nonmax_suppression` | `true` |  |
 | `pattern` | `"9_16"` | `5_8`, `7_12`, `9_16` |
 
+## Fast Hough lines (`inspect.fast_hough_lines`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit monochrome edge map. Higher pixel values have more weight in Sum mode.
+
+Input `mask` — Zero votes outside this mask before the transform.
+
+Input `region` — Zero votes outside this region and any wired mask before the transform.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `angle_range` | `"full"` | `full`, `vertical`, `horizontal`, `near_vertical`, `near_horizontal`, `vertical_down_right`, `vertical_down_left`, `horizontal_up_right`, `horizontal_down_right` Search all slopes, one direction family, one quadrant, or within about 26.6 degrees of an axis. Direction names use image coordinates. |
+| `operation` | `"sum"` | `sum`, `average`, `minimum`, `maximum` Native intensity reduction along digital lines. Average combines pairs recursively, and integer depth rounds the intermediate results. |
+| `layout` | `"deskewed"` | `deskewed`, `raw` Deskewed shifts rows to reduce wraparound. Raw keeps the cyclic grid. |
+| `accumulator_depth` | `"float32"` | `float32`, `float64`, `int32` Native accumulator precision. Float32 represents 8-bit sums exactly within this block's image limits. |
+| `minimum_response` | `0.0` | Value must be a finite number between 0 and 1.04448e+06. Inclusive minimum in native accumulator units. Zero still requires a positive response. |
+| `minimum_peak_fraction` | `0.6` | Value must be a finite number between 0 and 1. Require this fraction of the strongest accumulator response. |
+| `suppression_bins` | `7` | Value must be a whole number between 0 and 128. Ignore this many bins in each direction around each examined peak. |
+| `maximum_lines` | `24` | Value must be a whole number between 1 and 64. Keep at most this many visible lines, strongest first. |
+| `minimum_lines` | `1` | Value must be a whole number between 0 and 64. Fewest retained lines needed to pass. Zero allows no detections. |
+
 ## Fast line detector (`inspect.fast_line_segments`)
 
 Inspection / Features

@@ -456,6 +456,7 @@ BINDINGS = {
     "inspect.hough_lines": "HoughLinesP",
     "inspect.hough_point_lines": "HoughLinesPointSet",
     "inspect.hough_polar_lines": "HoughLinesWithAccumulator",
+    "inspect.fast_hough_lines": "ximgproc.FastHoughTransform ximgproc.HoughPoint2Line",
     "inspect.kaze": "xfeatures2d.KAZE_create",
     "inspect.kmeans_image": "kmeans",
     "inspect.line_segments": "createLineSegmentDetector LineSegmentDetector.detect",
