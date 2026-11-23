@@ -310,6 +310,8 @@ sparse confident measurements within guide boundaries. SciPy runs on the standar
 Native parity depends on an Eigen-enabled OpenCV build.
 [Adaptive manifold filtering](<../examples/opencv tools/adaptive_manifold/README.md>) compares
 registered-guide denoising with the joint bilateral block and preserves original pixels outside selection.
+[Weighted median filtering](<../examples/opencv tools/weighted_median/README.md>) compares six available
+weighting modes through the native adapter, with a saved impulse-noise and sample-exclusion comparison.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

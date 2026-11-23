@@ -1,0 +1,343 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Remove impulse noise",
+      "description": "Run Once to compare an unweighted median, the same window with a color guide, and a sample mask that excludes the injected damage. The region branch limits where filtered pixels are written. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Signal with impulse noise",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "guide",
+      "type": "input.file",
+      "name": "Aligned edge guide",
+      "parameters": {
+        "path": "assets/guide.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample_mask",
+      "type": "input.file",
+      "name": "Trusted sample pixels",
+      "parameters": {
+        "path": "assets/sample_mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        430
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          19,
+          6,
+          114,
+          77
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        275,
+        505
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "unweighted",
+      "type": "cv.weighted_median_filter",
+      "name": "Unweighted median",
+      "description": "Remove impulse noise using a weighted median guided by an aligned image.",
+      "parameters": {
+        "radius": 2,
+        "sigma_color": 25.5,
+        "weight": "unweighted",
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        560,
+        -65
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide",
+        "sample_mask"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "weighted",
+      "type": "cv.weighted_median_filter",
+      "name": "Gaussian guide weights",
+      "description": "Remove impulse noise using a weighted median guided by an aligned image.",
+      "parameters": {
+        "radius": 2,
+        "sigma_color": 25.5,
+        "weight": "gaussian",
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        560,
+        140
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide",
+        "sample_mask"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "samples",
+      "type": "cv.weighted_median_filter",
+      "name": "Exclude damaged samples",
+      "description": "Remove impulse noise using a weighted median guided by an aligned image.",
+      "parameters": {
+        "radius": 2,
+        "sigma_color": 25.5,
+        "weight": "gaussian",
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        560,
+        345
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide",
+        "sample_mask"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.weighted_median_filter",
+      "name": "Filter within a rectangle",
+      "description": "Remove impulse noise using a weighted median guided by an aligned image.",
+      "parameters": {
+        "radius": 2,
+        "sigma_color": 25.5,
+        "weight": "gaussian",
+        "guide_alignment": "pixel_grid"
+      },
+      "position": [
+        560,
+        550
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "guide",
+        "sample_mask"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "unweighted",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "unweighted",
+      "input": "guide"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "weighted",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "weighted",
+      "input": "guide"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "samples",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "samples",
+      "input": "guide"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "guide",
+      "output": "image",
+      "target": "selected",
+      "input": "guide"
+    },
+    {
+      "source": "sample_mask",
+      "output": "image",
+      "target": "samples",
+      "input": "sample_mask"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

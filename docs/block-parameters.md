@@ -7054,6 +7054,29 @@ Input `region` — Optional input-grid region. Filters the validity output.
 | `center_y` | `0.0` | Value must be a finite number between -32764 and 32764. Custom Cartesian Y coordinate. A wired value takes precedence. |
 | `radius` | `0.0` | Value must be a finite number between 0 and 32764. Cartesian radial extent. Zero fits the largest circle around the chosen center. |
 
+## Weighted median filter (`cv.weighted_median_filter`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `guide` (image, optional), `sample_mask` (image, optional).
+
+Input `image` — Mono or RGB/BGR(A), uint8, int16, uint16 or float32. Preserves alpha.
+
+Input `guide` — Optional aligned guide. Uses the source when disconnected. Converted to 8-bit.
+
+Input `sample_mask` — Only nonzero pixels contribute samples to the neighborhood median.
+
+Input `mask` — Only selected output pixels are replaced.
+
+Input `region` — Select output pixels to replace, intersected with the output mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius` | `3` | Value must be a whole number between 1 and 63. Half-width of the square neighborhood in pixels. |
+| `sigma_color` | `25.5` | Value must be a finite number between 0.001 and 4096. Range scale in 8-bit guide levels for Gaussian and inverse weights. |
+| `weight` | `"gaussian"` | `gaussian`, `inverse_linear`, `inverse_squared`, `cosine`, `jaccard`, `unweighted` Guide weighting mode. Cosine gives equal weights for a monochrome guide. |
+| `guide_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid accepts preregistered guides and sample masks. |
+
 ## Wiener deblur (`cv.wiener_deblur`)
 
 Image processing / Filters

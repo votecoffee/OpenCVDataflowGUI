@@ -316,6 +316,7 @@ BINDINGS = {
         "ximgproc.createAMFilter ximgproc.AdaptiveManifoldFilter.filter ximgproc.dtFilter"
     ),
     "cv.joint_bilateral_filter": "ximgproc.jointBilateralFilter",
+    "cv.weighted_median_filter": "ximgproc.weightedMedianFilter",
     "cv.rolling_guidance_filter": "ximgproc.rollingGuidanceFilter ximgproc.jointBilateralFilter",
     "cv.fast_bilateral_solver": (
         "ximgproc.createFastBilateralSolverFilter ximgproc.FastBilateralSolverFilter.filter"
