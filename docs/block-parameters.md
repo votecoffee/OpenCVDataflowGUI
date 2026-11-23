@@ -9629,6 +9629,21 @@ Inputs: `image` (image).
 | `background_connectivity` | `"4"` | `4`, `8` Connectivity of background paths to the image edge. |
 | `maximum_area` | `0` | Largest hole to fill, in pixels. Zero fills all enclosed holes. |
 
+## Grid motion match filter (`inspect.filter_matches_gms`)
+
+Inspection / Matching
+
+Inputs: `matches` (data).
+
+Input `matches` — Paired feature matches with both image sizes in pixels and one candidate per query feature. Dense ORB nearest matches are a good starting point.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `with_rotation` | `false` | Test additional grid neighborhood orientations. |
+| `with_scale` | `false` | Test additional grid size ratios. |
+| `threshold_factor` | `6.0` | Value must be a finite number between 0.1 and 100. Require more neighboring support as this factor increases. |
+| `min_matches` | `0` | Value must be a whole number between 0 and 10000. Fewest retained pairs required to pass. Zero allows an empty result. |
+
 ## Final ticket judgment (`inspect.final_judgment`)
 
 Inspection / Ticket results
@@ -10598,7 +10613,7 @@ Inputs: `query` (data), `train` (data).
 | --- | --- | --- |
 | `ratio` | `0.75` |  |
 | `max_distance` | `64.0` |  |
-| `mode` | `"ratio"` | `ratio`, `cross_check` |
+| `mode` | `"ratio"` | `ratio`, `cross_check`, `nearest` Nearest returns up to one candidate per query for spatial verification such as GMS. |
 | `norm` | `"auto"` | `auto`, `hamming`, `hamming2` |
 
 ## Match SIFT descriptors (`inspect.match_sift`)

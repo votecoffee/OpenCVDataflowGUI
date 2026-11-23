@@ -774,7 +774,13 @@ class MatchORB(Block):
     inputs = (Port("query", "data"), Port("train", "data"))
     outputs = (Port("matches", "data"), Port("count", "number"))
     defaults = {"ratio": 0.75, "max_distance": 64.0, "mode": "ratio", "norm": "auto"}
-    parameter_choices = {"mode": ("ratio", "cross_check"), "norm": ("auto", "hamming", "hamming2")}
+    parameter_choices = {
+        "mode": ("ratio", "cross_check", "nearest"),
+        "norm": ("auto", "hamming", "hamming2"),
+    }
+    parameter_help = {
+        "mode": "Nearest returns up to one candidate per query for spatial verification such as GMS.",
+    }
 
     def process(self, inputs):
         query, qpoints = orb_data(inputs["query"])
@@ -798,10 +804,10 @@ class MatchORB(Block):
 
 def descriptor_match_result(inputs, query, train, qpoints, tpoints, norm, mode, ratio, maximum):
     selected = []
-    if mode == "cross_check" and len(query) and len(train):
+    if mode in ("nearest", "cross_check") and len(query) and len(train):
         selected = [
             m
-            for m in cv2.BFMatcher(norm, crossCheck=True).match(query, train)
+            for m in cv2.BFMatcher(norm, crossCheck=mode == "cross_check").match(query, train)
             if m.distance <= maximum
         ]
     elif len(query) and len(train) >= 2:

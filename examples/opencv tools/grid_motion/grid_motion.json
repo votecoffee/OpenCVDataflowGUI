@@ -1,0 +1,410 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Filter outliers before fitting motion",
+      "description": "Run Once. The train view has a known rotation, scale, translation and two occluders. Compare the raw and filtered pairs and their affine fits. Both fits use the same 160-iteration budget. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -235
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Query view",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        35
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_orb",
+      "type": "inspect.orb",
+      "name": "Find query features",
+      "parameters": {
+        "max_features": 4200,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 0,
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        265,
+        35
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "input.file",
+      "name": "Train view",
+      "parameters": {
+        "path": "assets/train.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        290
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_orb",
+      "type": "inspect.orb",
+      "name": "Find train features",
+      "parameters": {
+        "max_features": 4200,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 0,
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        265,
+        290
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features",
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "raw",
+      "type": "inspect.match_orb",
+      "name": "Nearest ORB candidates",
+      "parameters": {
+        "ratio": 0.75,
+        "max_distance": 256,
+        "mode": "nearest",
+        "norm": "auto"
+      },
+      "position": [
+        535,
+        125
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filter",
+      "type": "inspect.filter_matches_gms",
+      "name": "Keep consistent grid motion",
+      "description": "Retain feature pairs with consistent local image motion before geometry fitting.",
+      "parameters": {
+        "with_rotation": true,
+        "with_scale": true,
+        "threshold_factor": 6.0,
+        "min_matches": 50
+      },
+      "position": [
+        810,
+        280
+      ],
+      "exposed_inputs": [
+        "matches"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "rejected",
+        "kept_mask",
+        "count",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "raw_fit",
+      "type": "inspect.affine",
+      "name": "Fit raw pairs",
+      "parameters": {
+        "model": "partial",
+        "method": "ransac",
+        "reprojection_pixels": 3.0,
+        "max_iterations": 160,
+        "confidence": 0.99,
+        "refine_iterations": 10,
+        "min_inliers": 3,
+        "min_inlier_ratio": 0.0
+      },
+      "position": [
+        1085,
+        35
+      ],
+      "exposed_inputs": [
+        "matches"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "raw_review",
+      "type": "inspect.review_matches",
+      "name": "Review raw pairs",
+      "parameters": {
+        "show": "all",
+        "max_pairs": 80,
+        "gap": 16,
+        "line_width": 1,
+        "endpoints": false
+      },
+      "position": [
+        1360,
+        35
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "matches",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "canvas",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filtered_fit",
+      "type": "inspect.affine",
+      "name": "Fit filtered pairs",
+      "parameters": {
+        "model": "partial",
+        "method": "ransac",
+        "reprojection_pixels": 3.0,
+        "max_iterations": 160,
+        "confidence": 0.99,
+        "refine_iterations": 10,
+        "min_inliers": 3,
+        "min_inlier_ratio": 0.0
+      },
+      "position": [
+        1085,
+        300
+      ],
+      "exposed_inputs": [
+        "matches"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "inliers"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filtered_review",
+      "type": "inspect.review_matches",
+      "name": "Review filtered pairs",
+      "parameters": {
+        "show": "all",
+        "max_pairs": 80,
+        "gap": 16,
+        "line_width": 1,
+        "endpoints": false
+      },
+      "position": [
+        1360,
+        300
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "matches",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "canvas",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query",
+      "output": "image",
+      "target": "query_orb",
+      "input": "image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "train_orb",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "raw",
+      "input": "query"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "raw",
+      "input": "train"
+    },
+    {
+      "source": "raw",
+      "output": "matches",
+      "target": "filter",
+      "input": "matches"
+    },
+    {
+      "source": "raw",
+      "output": "matches",
+      "target": "raw_fit",
+      "input": "matches"
+    },
+    {
+      "source": "raw",
+      "output": "matches",
+      "target": "raw_review",
+      "input": "matches"
+    },
+    {
+      "source": "raw_fit",
+      "output": "transform",
+      "target": "raw_review",
+      "input": "fit"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "raw_review",
+      "input": "query_image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "raw_review",
+      "input": "train_image"
+    },
+    {
+      "source": "filter",
+      "output": "matches",
+      "target": "filtered_fit",
+      "input": "matches"
+    },
+    {
+      "source": "filter",
+      "output": "matches",
+      "target": "filtered_review",
+      "input": "matches"
+    },
+    {
+      "source": "filtered_fit",
+      "output": "transform",
+      "target": "filtered_review",
+      "input": "fit"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "filtered_review",
+      "input": "query_image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "filtered_review",
+      "input": "train_image"
+    }
+  ]
+}

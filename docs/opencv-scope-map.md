@@ -547,7 +547,7 @@ binding presence. For example, the wheel exposes DynaFu but rejects construction
 | `cv::xfeatures2d::AGAST`, `cv2.xfeatures2d.AgastFeatureDetector`, `cv::xfeatures2d::FASTForPointSet` | Share the feature detection and selected-point workflow. | S1-42 |
 | `cv2.xfeatures2d.AKAZE`, `cv2.xfeatures2d.KAZE`, `cv2.xfeatures2d.BRISK` | These descriptor classes are under xfeatures2d on the pinned wheel. | S1-43 |
 | `cv2.xfeatures2d.PCTSignatures`, `cv2.xfeatures2d.PCTSignaturesSQFD` | Qualify reusable patch signatures and distribution-distance scoring together. | S4-91 |
-| `cv2.xfeatures2d.matchGMS`, `cv2.xfeatures2d.matchLOGOS`, `cv2.xfeatures2d.BOWTrainer`, `cv2.xfeatures2d.BOWKMeansTrainer`, `cv2.xfeatures2d.BOWImgDescriptorExtractor` | Map vocabulary training and distinct geometric verification modes. | S2-44, S4-47, S4-92 |
+| `cv2.xfeatures2d.matchGMS`, `cv2.xfeatures2d.matchLOGOS`, `cv2.xfeatures2d.BOWTrainer`, `cv2.xfeatures2d.BOWKMeansTrainer`, `cv2.xfeatures2d.BOWImgDescriptorExtractor` | S4-47 verifies GMS before pose fitting on an occluded pair with known motion. Related entries track other verification and vocabulary methods. | S2-44, S4-47, S4-92 |
 | `cv2.xfeatures2d.SURF` | Defer restricted SURF execution until an explicitly qualified build and inspection fixture justify it. | — |
 
 #### Contrib motion, restoration and image quality

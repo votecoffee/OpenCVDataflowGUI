@@ -148,7 +148,7 @@ IMPLEMENTATION_MODULES = {
     "ximgproc": (
         "fast_bilateral_solver fast_lines local_threshold region_proposals ridge_response superpixels"
     ),
-    "xfeatures2d": "compact_descriptors daisy_descriptor",
+    "xfeatures2d": "compact_descriptors daisy_descriptor grid_motion",
     "line_descriptor": "line_descriptors",
     "optflow": "deepflow dense_rlof dual_tvl1_flow",
 }
