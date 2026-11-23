@@ -3702,6 +3702,27 @@ Input `region` — Optional circle, rectangle or polygon intersected with the se
 | `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Same frame validates identity; pixel grid explicitly pairs equal-size image grids. |
 | `ticket_policy` | `"same_ticket"` | `same_ticket`, `background` Require matching known tickets, or explicitly use background ownership across sources. |
 
+## Anisotropic diffusion (`cv.anisotropic_diffusion`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Mono or RGB/BGR(A), uint8, uint16 or normalized float32. Preserves alpha.
+
+Input `mask` — Select output pixels to replace. Neighbor calculations use the full source.
+
+Input `region` — Select output pixels to replace, intersected with the mask.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `time_step` | `0.1` | Value must be a finite number between 1e-06 and 0.125. Step size per pass. At most 1/8 for stability with eight neighbors. |
+| `edge_sensitivity` | `0.12` | Value must be a finite number between 1e-06 and 16. OpenCV K in normalized intensity units. Smaller values retain edges. |
+| `iterations` | `8` | Value must be a whole number between 0 and 128. Number of diffusion passes. Zero copies the source. |
+
 ## Add annotation layer (`cv.annotation_layer`)
 
 Image processing / Drawing

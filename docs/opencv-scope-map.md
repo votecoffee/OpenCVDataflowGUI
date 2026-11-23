@@ -522,7 +522,7 @@ binding presence. For example, the wheel exposes DynaFu but rejects construction
 
 | API | Graph disposition | Checklist IDs |
 | --- | --- | --- |
-| `cv2.ximgproc.anisotropicDiffusion`, `cv2.ximgproc.niBlackThreshold`, `cv2.ximgproc.thinning` | Preserve threshold formula, skeleton and diffusion-specific image checks. | S4-02, S4-06, S4-39 |
+| `cv2.ximgproc.anisotropicDiffusion`, `cv2.ximgproc.niBlackThreshold`, `cv2.ximgproc.thinning` | Anisotropic diffusion qualifies stable time steps, replicated native borders and a measured step edge. Thresholding and thinning retain their formula and skeleton checks. | S4-02, S4-06, S4-39 |
 | `cv::ximgproc::BrightEdges` | Compare local-contrast edges with known reference geometry using a qualified build or fallback. | S4-86 |
 | `cv2.ximgproc.colorMatchTemplate`, `cv2.ximgproc.createQuaternionImage`, `cv2.ximgproc.qconj`, `cv2.ximgproc.qdft`, `cv2.ximgproc.qmultiply`, `cv2.ximgproc.qunitary` | Quaternion helpers stay inside the color-template workflow. | S4-85 |
 | `cv2.ximgproc.GradientDericheX`, `cv2.ximgproc.GradientDericheY`, `cv::ximgproc::GradientPaillouX`, `cv::ximgproc::GradientPaillouY` | Both gradient families use the signed-axis and localization fixture. | S4-41 |

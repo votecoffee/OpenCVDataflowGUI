@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Preserve a known boundary",
+      "description": "Run Once to compare one and ten passes. The higher-sensitivity branch shows how larger K smooths across the step. The region branch retains the input outside the rectangle. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Noisy step target",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          19,
+          10,
+          122,
+          67
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        235,
+        430
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "early",
+      "type": "cv.anisotropic_diffusion",
+      "name": "One diffusion pass",
+      "description": "Reduce within-surface noise while limiting diffusion across intensity edges.",
+      "parameters": {
+        "time_step": 0.1,
+        "edge_sensitivity": 0.12,
+        "iterations": 1
+      },
+      "position": [
+        505,
+        -55
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "refined",
+      "type": "cv.anisotropic_diffusion",
+      "name": "Ten edge-preserving passes",
+      "description": "Reduce within-surface noise while limiting diffusion across intensity edges.",
+      "parameters": {
+        "time_step": 0.1,
+        "edge_sensitivity": 0.12,
+        "iterations": 10
+      },
+      "position": [
+        505,
+        145
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "permissive",
+      "type": "cv.anisotropic_diffusion",
+      "name": "Ten passes with larger K",
+      "description": "Reduce within-surface noise while limiting diffusion across intensity edges.",
+      "parameters": {
+        "time_step": 0.1,
+        "edge_sensitivity": 0.3,
+        "iterations": 10
+      },
+      "position": [
+        505,
+        345
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.anisotropic_diffusion",
+      "name": "Ten passes in region",
+      "description": "Reduce within-surface noise while limiting diffusion across intensity edges.",
+      "parameters": {
+        "time_step": 0.1,
+        "edge_sensitivity": 0.12,
+        "iterations": 10
+      },
+      "position": [
+        505,
+        545
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "early",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "refined",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "permissive",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}
