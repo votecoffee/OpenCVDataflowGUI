@@ -8982,6 +8982,25 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `p
 | `maximum_gap` | `-1` | Maximum consecutive scans with missing measurements. -1 disables. |
 | `draw_overlay` | `true` |  |
 
+## BEBLID descriptors (`inspect.beblid_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Feature record, keypoint records, or [x, y] rows. Bare points use size 7 and unknown orientation.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `descriptor_bits` | `"512"` | `256`, `512` Select the native 256-bit or 512-bit pattern. |
+| `scale_factor` | `1.0` | Value must be a finite number between 0.01 and 32. Scale the patch relative to the keypoint's size. Use 1 for ORB, 6.75 for SIFT, 6.25 for KAZE, or 5 for FAST and BRISK. |
+
 ## Find blobs (`inspect.blobs`)
 
 Inspection / Shapes
@@ -9532,7 +9551,7 @@ Inspection / Feature evaluation
 
 Inputs: `query_image` (image), `train_image` (image), `query` (data), `train` (data), `transform` (data, optional), `matches` (data, optional), `query_mask` (image, optional), `train_mask` (image, optional), `query_region` (data, optional), `train_region` (data, optional).
 
-Input `query` — ORB/BRISK/AKAZE/SIFT/KAZE/BRIEF/FREAK/DAISY feature data for Query image.
+Input `query` — Built-in binary or float descriptor feature data for Query image.
 
 Input `train` — Same descriptor family/settings for Train image.
 
@@ -10286,6 +10305,27 @@ Input `initial_labels` — Optional single-channel integer label image for the f
 | `termination` | `"both"` | `both`, `iterations`, `epsilon` |
 | `max_iterations` | `50` | Value must be a whole number between 2 and 100. Used by the both and iterations modes. |
 | `epsilon` | `0.01` | Value must be a finite number at least 0. Center movement tolerance in feature units, used by both and epsilon modes. |
+
+## LATCH descriptors (`inspect.latch_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Feature record, keypoint records, or [x, y] rows. Bare points use size 7 and unknown orientation.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `descriptor_bytes` | `"32"` | `1`, `2`, `4`, `8`, `16`, `32`, `64` Number of bytes in the native binary descriptor. |
+| `use_orientation` | `true` | Rotate the patch triplets by the measured keypoint angle. |
+| `half_ssd_size` | `3` | Value must be a whole number between 0 and 32. Radius of each square patch used for squared intensity differences. |
+| `sigma` | `2.0` | Value must be a finite number between 0 and 32. Gaussian smoothing sigma. Zero skips smoothing. |
 
 ## Binary line descriptors (`inspect.line_descriptors`)
 
@@ -11385,6 +11425,25 @@ Input `region` — Optional circle, rectangle or polygon intersected with the ma
 | `glyph_step` | `16` | Value must be a whole number between 1 and 256. Spacing of direction marks in input pixels; graphics only. |
 | `glyph_length` | `12.0` | Value must be a finite number between 1 and 256. Full length of each unsigned direction mark in input pixels. |
 | `max_glyphs` | `1000` | Value must be a whole number between 1 and 2000. Bounded, evenly subsampled marks across the selected sampling grid. |
+
+## TEBLID descriptors (`inspect.teblid_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Feature record, keypoint records, or [x, y] rows. Bare points use size 7 and unknown orientation.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `descriptor_bits` | `"256"` | `256`, `512` Select the native 256-bit or 512-bit pattern. |
+| `scale_factor` | `1.0` | Value must be a finite number between 0.01 and 32. Scale the patch relative to the keypoint's size. Use 1 for ORB, 6.75 for SIFT, 6.25 for KAZE, or 5 for FAST and BRISK. |
 
 ## Find template instances (`inspect.template_instances`)
 

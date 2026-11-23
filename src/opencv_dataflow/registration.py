@@ -1291,6 +1291,16 @@ class MatchBRISK(Block):
         )
 
 
+_PATCH_DESCRIPTOR_WIDTHS = {
+    "BRIEF": (16, 32, 64),
+    "FREAK": (64,),
+    "LATCH": (1, 2, 4, 8, 16, 32, 64),
+    "BEBLID": (32, 64),
+    "TEBLID": (32, 64),
+    "DAISY": range(1, 513),
+}
+
+
 def radius_data(data):
     family = data.get("algorithm") if isinstance(data, dict) else None
     if family == "ORB":
@@ -1311,17 +1321,21 @@ def radius_data(data):
     if family == "KAZE":
         descriptors, points, layout = kaze_data(data)
         return descriptors, points, layout, cv2.NORM_L2
-    if family in ("BRIEF", "FREAK", "DAISY"):
+    if family in _PATCH_DESCRIPTOR_WIDTHS:
         width, settings = data.get("descriptor_size"), data.get("descriptor_settings")
-        valid_widths = {"BRIEF": (16, 32, 64), "FREAK": (64,), "DAISY": range(1, 513)}[family]
-        if type(width) is not int or width not in valid_widths or not isinstance(settings, dict):
+        if (
+            type(width) is not int or width not in _PATCH_DESCRIPTOR_WIDTHS[family]
+            or not isinstance(settings, dict)
+        ):
             raise ValidationError(f"Invalid {family} descriptor width or settings")
         if family == "DAISY":
             descriptors, points = descriptor_arrays(data, width, 0, 1_000_000, False)
             return descriptors.astype(np.float32), points, (family, width, settings), cv2.NORM_L2
         descriptors, points = descriptor_arrays(data, width, 0, 255, True)
         return descriptors.astype(np.uint8), points, (family, width, settings), cv2.NORM_HAMMING
-    raise ValidationError("Connect ORB, BRISK, AKAZE, SIFT, KAZE, BRIEF, FREAK, or DAISY descriptors")
+    raise ValidationError(
+        "Connect ORB, BRISK, AKAZE, SIFT, KAZE, BRIEF, FREAK, LATCH, BEBLID, TEBLID, or DAISY descriptors"
+    )
 
 
 class MatchDescriptorRadius(Block):

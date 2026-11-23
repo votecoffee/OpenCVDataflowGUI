@@ -926,7 +926,9 @@ def builtin_registry():
     from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
     from .registered_replay import ReplayRegisteredViews
-    from .compact_descriptors import BriefDescriptor, FreakDescriptor
+    from .compact_descriptors import (
+        BeblidDescriptor, BriefDescriptor, FreakDescriptor, LatchDescriptor, TeblidDescriptor,
+    )
     from .daisy_descriptor import DaisyDescriptor
     from .registration import REGISTRATION_BLOCKS
     from .regression import REGRESSION_BLOCKS
@@ -1190,6 +1192,9 @@ def builtin_registry():
         *REGISTRATION_BLOCKS,
         BriefDescriptor,
         FreakDescriptor,
+        LatchDescriptor,
+        BeblidDescriptor,
+        TeblidDescriptor,
         DaisyDescriptor,
         AffineFeatures,
         ReviewFeatureMatches,

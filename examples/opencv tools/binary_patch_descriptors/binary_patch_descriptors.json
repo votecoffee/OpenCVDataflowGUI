@@ -1,0 +1,790 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare binary patch descriptors",
+      "description": "Run Once. All three extractors share the ORB detections and use 256-bit descriptors. Evaluate their Hamming matches against a 7-degree rotation, 4% enlargement and shift. Both images are original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -238
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_image",
+      "type": "input.file",
+      "name": "Query view",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_orb",
+      "type": "inspect.orb",
+      "name": "Query keypoints",
+      "parameters": {
+        "max_features": 420,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 8,
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        245,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "latch_query",
+      "type": "inspect.latch_descriptor",
+      "name": "Query LATCH",
+      "description": "Compare learned triplets of intensity patches at wired keypoints.",
+      "parameters": {
+        "descriptor_bytes": "32",
+        "use_orientation": true,
+        "half_ssd_size": 3,
+        "sigma": 2.0
+      },
+      "position": [
+        492,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "beblid_query",
+      "type": "inspect.beblid_descriptor",
+      "name": "Query BEBLID",
+      "description": "Compute boosted binary descriptors from local intensity averages.",
+      "parameters": {
+        "descriptor_bits": "256",
+        "scale_factor": 1.0
+      },
+      "position": [
+        492,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "teblid_query",
+      "type": "inspect.teblid_descriptor",
+      "name": "Query TEBLID",
+      "description": "Compute triplet-trained binary descriptors from local intensity averages.",
+      "parameters": {
+        "descriptor_bits": "256",
+        "scale_factor": 1.0
+      },
+      "position": [
+        492,
+        410
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_image",
+      "type": "input.file",
+      "name": "Train view",
+      "parameters": {
+        "path": "assets/train.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        665
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_orb",
+      "type": "inspect.orb",
+      "name": "Train keypoints",
+      "parameters": {
+        "max_features": 420,
+        "scale_factor": 1.2,
+        "levels": 8,
+        "fast_threshold": 8,
+        "edge_threshold": 31,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        245,
+        665
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "latch_train",
+      "type": "inspect.latch_descriptor",
+      "name": "Train LATCH",
+      "description": "Compare learned triplets of intensity patches at wired keypoints.",
+      "parameters": {
+        "descriptor_bytes": "32",
+        "use_orientation": true,
+        "half_ssd_size": 3,
+        "sigma": 2.0
+      },
+      "position": [
+        492,
+        665
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "beblid_train",
+      "type": "inspect.beblid_descriptor",
+      "name": "Train BEBLID",
+      "description": "Compute boosted binary descriptors from local intensity averages.",
+      "parameters": {
+        "descriptor_bits": "256",
+        "scale_factor": 1.0
+      },
+      "position": [
+        492,
+        855
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "teblid_train",
+      "type": "inspect.teblid_descriptor",
+      "name": "Train TEBLID",
+      "description": "Compute triplet-trained binary descriptors from local intensity averages.",
+      "parameters": {
+        "descriptor_bits": "256",
+        "scale_factor": 1.0
+      },
+      "position": [
+        492,
+        1045
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "latch_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match LATCH",
+      "parameters": {
+        "max_distance": 48,
+        "max_neighbors": 1
+      },
+      "position": [
+        790,
+        90
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "latch_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Evaluate LATCH",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.032247997706975,
+            0.1267441171413534,
+            -10.640910608865028
+          ],
+          [
+            -0.1267441171413534,
+            1.032247997706975,
+            8.165267973254576
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 2.5,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 48,
+        "minimum_correspondences": 70,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.8,
+        "minimum_recall": 0.0,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 100
+      },
+      "position": [
+        1120,
+        90
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "beblid_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match BEBLID",
+      "parameters": {
+        "max_distance": 48,
+        "max_neighbors": 1
+      },
+      "position": [
+        790,
+        355
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "beblid_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Evaluate BEBLID",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.032247997706975,
+            0.1267441171413534,
+            -10.640910608865028
+          ],
+          [
+            -0.1267441171413534,
+            1.032247997706975,
+            8.165267973254576
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 2.5,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 48,
+        "minimum_correspondences": 70,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.8,
+        "minimum_recall": 0.0,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 100
+      },
+      "position": [
+        1120,
+        355
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "teblid_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match TEBLID",
+      "parameters": {
+        "max_distance": 48,
+        "max_neighbors": 1
+      },
+      "position": [
+        790,
+        620
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "teblid_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Evaluate TEBLID",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.032247997706975,
+            0.1267441171413534,
+            -10.640910608865028
+          ],
+          [
+            -0.1267441171413534,
+            1.032247997706975,
+            8.165267973254576
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 2.5,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 48,
+        "minimum_correspondences": 70,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.8,
+        "minimum_recall": 0.0,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 100
+      },
+      "position": [
+        1120,
+        620
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "query_orb",
+      "input": "image"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "latch_query",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "latch_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "beblid_query",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "beblid_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "teblid_query",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "teblid_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "train_orb",
+      "input": "image"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "latch_train",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "latch_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "beblid_train",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "beblid_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "teblid_train",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "teblid_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "latch_query",
+      "output": "features",
+      "target": "latch_match",
+      "input": "query"
+    },
+    {
+      "source": "latch_query",
+      "output": "features",
+      "target": "latch_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "latch_query",
+      "output": "image",
+      "target": "latch_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "latch_train",
+      "output": "features",
+      "target": "latch_match",
+      "input": "train"
+    },
+    {
+      "source": "latch_train",
+      "output": "features",
+      "target": "latch_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "latch_train",
+      "output": "image",
+      "target": "latch_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "latch_match",
+      "output": "matches",
+      "target": "latch_evaluate",
+      "input": "matches"
+    },
+    {
+      "source": "beblid_query",
+      "output": "features",
+      "target": "beblid_match",
+      "input": "query"
+    },
+    {
+      "source": "beblid_query",
+      "output": "features",
+      "target": "beblid_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "beblid_query",
+      "output": "image",
+      "target": "beblid_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "beblid_train",
+      "output": "features",
+      "target": "beblid_match",
+      "input": "train"
+    },
+    {
+      "source": "beblid_train",
+      "output": "features",
+      "target": "beblid_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "beblid_train",
+      "output": "image",
+      "target": "beblid_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "beblid_match",
+      "output": "matches",
+      "target": "beblid_evaluate",
+      "input": "matches"
+    },
+    {
+      "source": "teblid_query",
+      "output": "features",
+      "target": "teblid_match",
+      "input": "query"
+    },
+    {
+      "source": "teblid_query",
+      "output": "features",
+      "target": "teblid_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "teblid_query",
+      "output": "image",
+      "target": "teblid_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "teblid_train",
+      "output": "features",
+      "target": "teblid_match",
+      "input": "train"
+    },
+    {
+      "source": "teblid_train",
+      "output": "features",
+      "target": "teblid_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "teblid_train",
+      "output": "image",
+      "target": "teblid_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "teblid_match",
+      "output": "matches",
+      "target": "teblid_evaluate",
+      "input": "matches"
+    }
+  ]
+}

@@ -332,6 +332,8 @@ match line segments across known view motion and retain endpoints and Hamming di
 [Grid motion match filtering](<../examples/opencv tools/grid_motion/README.md>)
 filters nearest ORB pairs by neighborhood motion and compares a held-out affine fit
 against the unfiltered branch.
+[Binary patch descriptors](<../examples/opencv tools/binary_patch_descriptors/README.md>)
+compares LATCH, BEBLID and TEBLID on shared ORB keypoints under known view and brightness changes.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

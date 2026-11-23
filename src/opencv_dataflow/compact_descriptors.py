@@ -1,4 +1,4 @@
-"""Compute native BRIEF and FREAK descriptors at externally supplied keypoints."""
+"""Compute native binary patch descriptors at externally supplied keypoints."""
 
 from abc import ABC, abstractmethod
 
@@ -238,3 +238,77 @@ class FreakDescriptor(KeypointDescriptor):
             nOctaves=settings["octaves"],
             selectedPairs=settings["selected_pairs"],
         ), settings
+
+
+class LatchDescriptor(KeypointDescriptor):
+    type_id, title, algorithm = "inspect.latch_descriptor", "LATCH descriptors", "LATCH"
+    description = "Compare learned triplets of intensity patches at wired keypoints."
+    maximum_pixels = 8_388_608
+    defaults = {
+        "descriptor_bytes": "32",
+        "use_orientation": True,
+        "half_ssd_size": 3,
+        "sigma": 2.0,
+    }
+    parameter_choices = {"descriptor_bytes": ("1", "2", "4", "8", "16", "32", "64")}
+    parameter_ranges = {
+        "half_ssd_size": NumericRange(0, 32, whole=True),
+        "sigma": NumericRange(0, 32),
+    }
+    parameter_help = {
+        "descriptor_bytes": "Number of bytes in the native binary descriptor.",
+        "use_orientation": "Rotate the patch triplets by the measured keypoint angle.",
+        "half_ssd_size": "Radius of each square patch used for squared intensity differences.",
+        "sigma": "Gaussian smoothing sigma. Zero skips smoothing.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if type(p["use_orientation"]) is not bool:
+            raise ValidationError("Use orientation must be on or off", "use_orientation")
+
+    def extractor(self):
+        p = self.parameters
+        settings = {
+            "use_orientation": p["use_orientation"],
+            "half_ssd_size": int(p["half_ssd_size"]),
+            "sigma": float(p["sigma"]),
+        }
+        return self.factory("LATCH_create")(
+            int(p["descriptor_bytes"]),
+            settings["use_orientation"],
+            settings["half_ssd_size"],
+            settings["sigma"],
+        ), settings
+
+
+class _LearnedPatchDescriptor(KeypointDescriptor):
+    # The native integral-image implementation uses signed 32-bit sums and differences.
+    maximum_pixels = 4_194_304
+    parameter_choices = {"descriptor_bits": ("256", "512")}
+    parameter_ranges = {"scale_factor": NumericRange(0.01, 32)}
+    parameter_help = {
+        "descriptor_bits": "Select the native 256-bit or 512-bit pattern.",
+        "scale_factor": "Scale the patch relative to the keypoint's size. Use 1 for ORB, "
+        "6.75 for SIFT, 6.25 for KAZE, or 5 for FAST and BRISK.",
+    }
+
+    def extractor(self):
+        p = self.parameters
+        scale = float(np.float32(p["scale_factor"]))
+        factory = self.factory(f"{self.algorithm}_create")
+        bits = getattr(cv2.xfeatures2d, f"{self.algorithm}_SIZE_{p['descriptor_bits']}_BITS")
+        return factory(scale, bits), {"scale_factor": scale}
+
+
+class BeblidDescriptor(_LearnedPatchDescriptor):
+    type_id, title, algorithm = "inspect.beblid_descriptor", "BEBLID descriptors", "BEBLID"
+    description = "Compute boosted binary descriptors from local intensity averages."
+    defaults = {"descriptor_bits": "512", "scale_factor": 1.0}
+
+
+class TeblidDescriptor(_LearnedPatchDescriptor):
+    type_id, title, algorithm = "inspect.teblid_descriptor", "TEBLID descriptors", "TEBLID"
+    description = "Compute triplet-trained binary descriptors from local intensity averages."
+    defaults = {"descriptor_bits": "256", "scale_factor": 1.0}

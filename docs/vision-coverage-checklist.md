@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 44 | 6 | 52 | 102 | 43.1% |
-| **Overall** | 410 | 7 | 53 | 470 | 87.2% |
+| 4. Selected contrib | 45 | 6 | 51 | 102 | 44.1% |
+| **Overall** | 411 | 7 | 52 | 470 | 87.4% |
 
 <!-- coverage-summary:end -->
 
@@ -655,7 +655,7 @@ fixture or result needed to close the item.
 | S4-45 | EdgeBoxes object proposals | ximgproc.createEdgeBoxes, EdgeBoxes.getBoundingBoxes | Complete | inspect.edge_boxes preserves ranked native scores and source-frame boxes. Its top two proposals reach 0.919 and 0.859 IoU using Canny/Sobel and 0.836 and 0.810 using the pinned structured forest on the same two targets. |
 | S4-46 | Line feature descriptors and matching | line_descriptor.BinaryDescriptor and BinaryDescriptorMatcher | Complete | inspect.line_descriptors and inspect.match_line_descriptors preserve native 32-byte descriptors, Hamming distances and source endpoints. The example matches 22 pairs across a 3-degree rotation and translation with at most 2.80 pixels endpoint error. Extraction runs one native octave per selected image level. |
 | S4-47 | Grid motion statistics match filtering | xfeatures2d.matchGMS | Complete | inspect.filter_matches_gms preserves aligned rows, original distances, and frames. The occluded ORB example improves correct-pair fraction from 7.2% to 80.2% and held-out affine error from 261.13 to 0.48 pixels with the same RANSAC budget. |
-| S4-48 | Additional binary patch descriptors | xfeatures2d LATCH, BEBLID and TEBLID | Planned | Compare repeatability and descriptor distance against a known transformed image pair. |
+| S4-48 | Additional binary patch descriptors | xfeatures2d LATCH, BEBLID and TEBLID | Complete | The three extractors preserve native binary rows and keypoint indices. The shared ORB fixture measures 70.8% repeatability, with 85, 122 and 172 unique correct matches respectively at the same 48-bit Hamming cutoff. |
 | S4-49 | Scale-aware interest points | xfeatures2d.HarrisLaplaceFeatureDetector | Planned | Locate the same corners through a scale change and preserve size and response. |
 | S4-50 | Shape context contour comparison | createShapeContextDistanceExtractor | Planned | Match similar contours despite small deformation and report a distance with known variants. |
 | S4-51 | Hausdorff contour distance | createHausdorffDistanceExtractor | Planned | Verify configured rank, translation sensitivity and comparison against known offsets. |
