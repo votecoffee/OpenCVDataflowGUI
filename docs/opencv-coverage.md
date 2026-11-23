@@ -316,6 +316,8 @@ weighting modes through the native adapter, with a saved impulse-noise and sampl
 edge-aware passes against a known step and verifies replicated borders and higher-depth output.
 [L0 image smoothing](<../examples/custom tools/l0_smoothing/README.md>) compares a verified SciPy
 solver with Gaussian blur on a 16-bit texture target. The OpenCV native path remains open.
+[Recursive gradients](<../examples/opencv tools/recursive_gradients/README.md>) qualify signed Deriche
+and Paillou responses on known edges. Paillou uses SciPy because the Python wheel lacks that binding.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

@@ -1,0 +1,212 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare signed gradient responses",
+      "description": "Run Once. Both filters expose signed dx and dy and a magnitude preview. Rising edges are positive and falling edges are negative. The lower branch publishes Deriche results inside the inspection rectangle. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "steps",
+      "type": "input.file",
+      "name": "Known step edges",
+      "parameters": {
+        "path": "assets/steps.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          21,
+          19,
+          70,
+          39
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        220,
+        390
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "deriche",
+      "type": "cv.deriche_gradient",
+      "name": "OpenCV Deriche",
+      "description": "Compute signed derivatives using OpenCV's recursive Deriche filters.",
+      "parameters": {
+        "alpha": 1.2,
+        "omega": 0.6
+      },
+      "position": [
+        485,
+        -45
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "dx",
+        "dy",
+        "magnitude",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "paillou",
+      "type": "cv.paillou_gradient",
+      "name": "Paillou recurrence",
+      "description": "Compute signed derivatives using the separable Paillou recurrence.",
+      "parameters": {
+        "alpha": 1.2,
+        "omega": 0.6
+      },
+      "position": [
+        485,
+        160
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "dx",
+        "dy",
+        "magnitude",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    },
+    {
+      "id": "selected",
+      "type": "cv.deriche_gradient",
+      "name": "Deriche in region",
+      "description": "Compute signed derivatives using OpenCV's recursive Deriche filters.",
+      "parameters": {
+        "alpha": 1.2,
+        "omega": 0.6
+      },
+      "position": [
+        485,
+        365
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "dx",
+        "dy",
+        "magnitude",
+        "preview"
+      ],
+      "thumbnail": true,
+      "preview_output": "preview"
+    }
+  ],
+  "connections": [
+    {
+      "source": "steps",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "steps",
+      "output": "image",
+      "target": "deriche",
+      "input": "image"
+    },
+    {
+      "source": "steps",
+      "output": "image",
+      "target": "paillou",
+      "input": "image"
+    },
+    {
+      "source": "steps",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    }
+  ]
+}

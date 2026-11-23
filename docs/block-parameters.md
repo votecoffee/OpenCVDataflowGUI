@@ -4389,6 +4389,26 @@ Input `observations` — Ordered batch of aligned 8-bit monochrome views of the 
 | `lambda_weight` | `1.0` | Value must be a finite number between 1e-06 and 1e+06. Weight of the L1 observation error relative to total variation. |
 | `iterations` | `30` | Value must be a whole number between 1 and 200. Number of primal-dual solver iterations. |
 
+## Deriche gradients (`cv.deriche_gradient`)
+
+Image processing / Edges
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Mono or RGB/BGR(A), uint8, int8, uint16, int16 or float32. Alpha is ignored.
+
+Input `mask` — Select where to publish gradients. Neighborhoods use the full source.
+
+Input `region` — Select published pixels, intersected with the output mask.
+
+Selection writes: `dx`, `dy`, `magnitude`, `preview`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alpha` | `1.2` | Value must be a finite number between 0.05 and 16. Decay parameter in inverse pixels. Smaller values increase spatial support. |
+| `omega` | `0.6` | Value must be a finite number between 0.01 and 3.13. Frequency parameter of the recursive filter in inverse pixels. |
+
 ## Enhance photo detail (`cv.detail_enhance`)
 
 Image processing / Edge-aware rendering
@@ -5826,6 +5846,26 @@ Inputs: `map_x` (image), `map_y` (image).
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `sampling` | `"subpixel"` | `subpixel`, `nearest` Subpixel retains fractional indices. Nearest stores rounded coordinates only. |
+
+## Paillou gradients (`cv.paillou_gradient`)
+
+Image processing / Edges
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Mono or RGB/BGR(A), uint8, int8, uint16, int16 or float32. Alpha is ignored.
+
+Input `mask` — Select where to publish gradients. Neighborhoods use the full source.
+
+Input `region` — Select published pixels, intersected with the output mask.
+
+Selection writes: `dx`, `dy`, `magnitude`, `preview`; outside policy: `zero` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `alpha` | `1.2` | Value must be a finite number between 0.05 and 16. Decay parameter in inverse pixels. Smaller values increase spatial support. |
+| `omega` | `0.6` | Value must be a finite number between 0.01 and 15.999. Separates the real poles. Values closer to alpha extend the response. |
 
 ## Map source points into panorama (`cv.panorama_points`)
 

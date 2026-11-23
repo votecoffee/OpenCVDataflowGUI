@@ -316,6 +316,7 @@ BINDINGS = {
         "ximgproc.createAMFilter ximgproc.AdaptiveManifoldFilter.filter ximgproc.dtFilter"
     ),
     "cv.joint_bilateral_filter": "ximgproc.jointBilateralFilter",
+    "cv.deriche_gradient": "ximgproc.GradientDericheX ximgproc.GradientDericheY",
     "cv.anisotropic_diffusion": "ximgproc.anisotropicDiffusion",
     "cv.weighted_median_filter": "ximgproc.weightedMedianFilter",
     "cv.rolling_guidance_filter": "ximgproc.rollingGuidanceFilter ximgproc.jointBilateralFilter",
