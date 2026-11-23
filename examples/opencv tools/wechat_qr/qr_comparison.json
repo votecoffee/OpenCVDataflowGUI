@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare QR readers",
+      "description": "Run All replays a one-pixel label followed by two low-contrast labels. Compare each branch's count, decoded text and outline. Original MIT fixtures.",
+      "parameters": {},
+      "position": [
+        0,
+        -265
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Small QR labels",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/01_tiny.png",
+          "assets/02_low_contrast.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "standard",
+      "type": "inspect.read_qr",
+      "name": "Standard QR multi",
+      "parameters": {
+        "minimum_reads": 0,
+        "draw_overlay": true,
+        "backend": "standard",
+        "qr_min_module_size": 4.0,
+        "qr_max_rotation_degrees": 15.0,
+        "qr_max_module_size_mismatch": 1.75,
+        "qr_max_timing_pattern_mismatch": 2.0,
+        "qr_max_penalties": 0.4,
+        "qr_max_colors_mismatch": 0.2,
+        "qr_scale_timing_pattern_score": 0.9,
+        "aruco_adaptive_min": 3,
+        "aruco_adaptive_max": 23,
+        "aruco_adaptive_step": 10,
+        "aruco_adaptive_constant": 7.0,
+        "aruco_min_perimeter_rate": 0.02,
+        "aruco_max_perimeter_rate": 4.0,
+        "aruco_polygon_accuracy": 0.03,
+        "aruco_min_corner_distance": 0.05,
+        "aruco_min_border_distance": 3,
+        "aruco_min_marker_distance": 0.125,
+        "aruco_min_group_distance": 0.21,
+        "aruco_refinement_window": 5,
+        "aruco_relative_refinement_window": 0.3,
+        "aruco_refinement_iterations": 30,
+        "aruco_refinement_accuracy": 0.1,
+        "aruco_border_bits": 1,
+        "aruco_pixels_per_cell": 4,
+        "aruco_cell_margin": 0.13,
+        "aruco_max_border_error": 0.35,
+        "aruco_min_otsu_stddev": 5.0,
+        "aruco_error_correction": 0.6,
+        "aruco_valid_bit_threshold": 0.49,
+        "aruco_apriltag_decimate": 0.0,
+        "aruco_apriltag_sigma": 0.0,
+        "aruco_apriltag_min_cluster": 5,
+        "aruco_apriltag_max_maxima": 10,
+        "aruco_apriltag_critical_degrees": 10.0,
+        "aruco_apriltag_max_line_error": 10.0,
+        "aruco_apriltag_min_contrast": 5,
+        "aruco_min_canonical_side": 32,
+        "aruco_min_length_ratio": 0.0,
+        "aruco_corner_refinement": "none",
+        "aruco_detect_inverted": false,
+        "aruco_use_aruco3": false,
+        "aruco_apriltag_deglitch": false,
+        "maximum_pixels": 16777216,
+        "mode": "multi",
+        "eps_x": 0.2,
+        "eps_y": 0.1,
+        "use_alignment_markers": true
+      },
+      "position": [
+        400,
+        -125
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "codes",
+        "count",
+        "overlay",
+        "rectified"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "without_models",
+      "type": "inspect.read_wechat_qr",
+      "name": "WeChat QR without models",
+      "description": "Decode QR codes with optional ONNX detection and super-resolution models.",
+      "parameters": {
+        "minimum_reads": 0,
+        "draw_overlay": true,
+        "detector_model_path": "",
+        "detector_sha256": "",
+        "super_resolution_model_path": "",
+        "super_resolution_sha256": "",
+        "scale_factor": 0.0,
+        "maximum_pixels": 4194304
+      },
+      "position": [
+        400,
+        100
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "codes",
+        "count",
+        "overlay",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "standard",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "without_models",
+      "input": "image"
+    }
+  ]
+}

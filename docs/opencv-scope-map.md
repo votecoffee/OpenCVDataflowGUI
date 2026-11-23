@@ -716,7 +716,7 @@ their owning graph workflows. Generic tabular learning remains outside scope.
 | `cv2.groupRectangles`, `cv::groupRectangles_meanshift`, `cv::SimilarRects` | Preserve vote counts and output geometry. Alternative clustering remains a backend choice. | S2-62 |
 | `cv::createFaceDetectionMaskGenerator`, `cv::xobjdetect::WBDetector`, `cv2.dpm.DPMDetector`, `cv::dnn_objdetect::InferBbox` | Domain-specific, legacy and unbound detector helpers remain deferred. Reuse the standard detector adapter when a pinned inspection model needs equivalent behavior. | — |
 | `cv2.line_descriptor.BinaryDescriptor`, `cv2.line_descriptor.BinaryDescriptorMatcher`, `cv2.line_descriptor.DrawLinesMatchesFlags`, `cv::line_descriptor::EDLineDetector`, `cv::line_descriptor::EDLineParam`, `cv2.line_descriptor.KeyLine`, `cv2.line_descriptor.LSDDetector`, `cv2.line_descriptor.LSDParam`, `cv2.line_descriptor.drawKeylines`, `cv2.line_descriptor.drawLineMatches` | Group line extraction and descriptors with matched geometry. Line-based registration needs a separate alignment fixture. | S4-46, S4-99 |
-| `cv2.wechat_qrcode.WeChatQRCode` | Qualify local models and known small or low-contrast symbols through the existing code result contract. | S4-25 |
+| `cv2.wechat_qrcode.WeChatQRCode` | WeChat QR block decodes with or without pinned ONNX assets and retains the shared code, outline and ticket contract. The public example compares both paths against standard multi-read on original fixtures. | S4-25 |
 
 #### Restoration and segmentation
 

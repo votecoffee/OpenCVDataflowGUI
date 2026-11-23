@@ -460,6 +460,10 @@ BINDINGS = {
         "QRCodeDetector QRCodeDetectorAruco GraphicalCodeDetector.detectAndDecode "
         "GraphicalCodeDetector.detectAndDecodeMulti QRCodeDetector.detectAndDecodeCurved"
     ),
+    "inspect.read_wechat_qr": (
+        "wechat_qrcode.WeChatQRCode wechat_qrcode.WeChatQRCode.detectAndDecode "
+        "wechat_qrcode.WeChatQRCode.setScaleFactor"
+    ),
     "inspect.refine_corners": "cornerSubPix",
     "inspect.sift": "SIFT_create Feature2D.detectAndCompute",
     "inspect.selective_search": "ximgproc.segmentation.createSelectiveSearchSegmentation",

@@ -47,6 +47,7 @@ OPENCV_MODULES = {
     "bgsegm": "Background and Foreground Segmentation",
     "videoio": "Video I/O",
     "objdetect": "Object Detection",
+    "wechat_qrcode": "WeChat QR Code Detection",
     "dnn": "Deep Neural Networks",
     "flann": "Clustering and Search",
     "photo": "Computational Photography",
@@ -121,6 +122,7 @@ IMPLEMENTATION_MODULES = {
     ),
     "objdetect": "aruco_board_recovery aruco_dictionary aruco_markers charuco code_readers fiducial_targets qr_encoding qr_append",
     "xobjdetect": "hog hog_detection cascade_detection",
+    "wechat_qrcode": "wechat_qr",
     "dnn": "batch_inference detection_decode detection_fusion dnn_blocks dnn_profiling soft_nms "
     "tensor_comparison multiscale_super_resolution "
     "instance_segmentation instance_tracking landmarks multi_inference ocr rotated_detection "

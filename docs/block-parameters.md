@@ -10682,6 +10682,23 @@ Input `region` — Single-image region only; intersect with mask in original coo
 | `maximum_total_pixels` | `33554432` | Value must be a whole number between 441 and 6.71089e+07. Combined image-group budget checked before any native detection. |
 | `maximum_payload_bytes` | `65536` | Value must be a whole number between 1 and 65536. Total decoded fragment bytes, including rejected duplicates. |
 
+## Read WeChat QR codes (`inspect.read_wechat_qr`)
+
+Inspection / Code reading
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `minimum_reads` | `1` | Value must be a whole number between 0 and 4095. |
+| `draw_overlay` | `true` |  |
+| `detector_model_path` | `""` | Local or project-relative ONNX detector. Empty searches the image. |
+| `detector_sha256` | `""` | Required SHA-256 pin when the detector model is selected. |
+| `super_resolution_model_path` | `""` | Local or project-relative ONNX upscaler. Empty uses cubic. |
+| `super_resolution_sha256` | `""` | Required SHA-256 pin when the upscaler is selected. |
+| `scale_factor` | `0.0` | Value must be zero or a finite number between 0.01 and 1. CNN detector input scale. Zero selects OpenCV's automatic scale. |
+| `maximum_pixels` | `4194304` | Value must be a whole number between 441 and 1.67772e+07. Reject larger images before decoding. |
+
 ## Read barcodes (ZXing) (`inspect.read_zxing`)
 
 Inspection / Code reading

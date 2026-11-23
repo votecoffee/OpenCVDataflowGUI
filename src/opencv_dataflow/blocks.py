@@ -685,6 +685,7 @@ def builtin_registry():
     from .cluster_models import CLUSTER_MODEL_BLOCKS
     from .clustering import KMeansImage, KMeansSamples
     from .code_readers import CODE_READER_BLOCKS
+    from .wechat_qr import ReadWeChatQR
     from .codec_probe import ProbeImageFile
     from .coded_rig_observations import LoadCodedRigObservations
     from .collection_tools import COLLECTION_BLOCKS
@@ -1238,6 +1239,7 @@ def builtin_registry():
         FitCircleArc,
         CompareEdgeMaps,
         *CODE_READER_BLOCKS,
+        ReadWeChatQR,
         EncodeQRCode,
         ReadQRAppend,
         ReadZXingBarcode,
