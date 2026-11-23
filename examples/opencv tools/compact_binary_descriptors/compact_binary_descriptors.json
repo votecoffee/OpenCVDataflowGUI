@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare binary descriptors",
+      "description": "ORB supplies keypoints to BRIEF and FREAK. Hamming matching pairs the retained features. The evaluator scores the matches against the known 9 px right and 7 px down translation. Both synthetic images are original MIT-licensed assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -285
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_image",
+      "type": "input.file",
+      "name": "Query image",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_orb",
+      "type": "inspect.orb",
+      "name": "Query ORB keypoints",
+      "parameters": {
+        "max_features": 240,
+        "scale_factor": 1.2,
+        "levels": 1,
+        "fast_threshold": 10,
+        "edge_threshold": 18,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        255,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "brief_query",
+      "type": "inspect.brief_descriptor",
+      "name": "Query BRIEF",
+      "description": "Compute fixed-length binary intensity descriptors at wired keypoints.",
+      "parameters": {
+        "descriptor_bytes": "32",
+        "use_orientation": false
+      },
+      "position": [
+        520,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "freak_query",
+      "type": "inspect.freak_descriptor",
+      "name": "Query FREAK",
+      "description": "Compute 64-byte retinal sampling descriptors at wired keypoints.",
+      "parameters": {
+        "orientation_normalized": true,
+        "scale_normalized": true,
+        "pattern_scale": 9.0,
+        "octaves": 4,
+        "selected_pairs": []
+      },
+      "position": [
+        520,
+        200
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_image",
+      "type": "input.file",
+      "name": "Train image",
+      "parameters": {
+        "path": "assets/train.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        490
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_orb",
+      "type": "inspect.orb",
+      "name": "Train ORB keypoints",
+      "parameters": {
+        "max_features": 240,
+        "scale_factor": 1.2,
+        "levels": 1,
+        "fast_threshold": 10,
+        "edge_threshold": 18,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        255,
+        490
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "brief_train",
+      "type": "inspect.brief_descriptor",
+      "name": "Train BRIEF",
+      "description": "Compute fixed-length binary intensity descriptors at wired keypoints.",
+      "parameters": {
+        "descriptor_bytes": "32",
+        "use_orientation": false
+      },
+      "position": [
+        520,
+        490
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "freak_train",
+      "type": "inspect.freak_descriptor",
+      "name": "Train FREAK",
+      "description": "Compute 64-byte retinal sampling descriptors at wired keypoints.",
+      "parameters": {
+        "orientation_normalized": true,
+        "scale_normalized": true,
+        "pattern_scale": 9.0,
+        "octaves": 4,
+        "selected_pairs": []
+      },
+      "position": [
+        520,
+        690
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "brief_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match BRIEF",
+      "parameters": {
+        "max_distance": 36.0,
+        "max_neighbors": 1
+      },
+      "position": [
+        805,
+        0
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "brief_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Verify BRIEF",
+      "parameters": {
+        "reference_transform": [
+          [
+            1,
+            0,
+            9
+          ],
+          [
+            0,
+            1,
+            7
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "reprojection_tolerance": 1.0,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 36,
+        "minimum_correspondences": 25,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.9,
+        "minimum_recall": 0.8,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 200
+      },
+      "position": [
+        1100,
+        0
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "freak_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match FREAK",
+      "parameters": {
+        "max_distance": 36.0,
+        "max_neighbors": 1
+      },
+      "position": [
+        805,
+        450
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "freak_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Verify FREAK",
+      "parameters": {
+        "reference_transform": [
+          [
+            1,
+            0,
+            9
+          ],
+          [
+            0,
+            1,
+            7
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "reprojection_tolerance": 1.0,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 36,
+        "minimum_correspondences": 25,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.9,
+        "minimum_recall": 0.8,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 200
+      },
+      "position": [
+        1100,
+        450
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "query_orb",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "brief_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "brief_query",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "freak_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "freak_query",
+      "input": "image"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "train_orb",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "brief_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "brief_train",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "freak_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "freak_train",
+      "input": "image"
+    },
+    {
+      "source": "brief_query",
+      "output": "features",
+      "target": "brief_match",
+      "input": "query"
+    },
+    {
+      "source": "brief_query",
+      "output": "features",
+      "target": "brief_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "brief_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "brief_train",
+      "output": "features",
+      "target": "brief_match",
+      "input": "train"
+    },
+    {
+      "source": "brief_train",
+      "output": "features",
+      "target": "brief_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "brief_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "brief_match",
+      "output": "matches",
+      "target": "brief_evaluate",
+      "input": "matches"
+    },
+    {
+      "source": "freak_query",
+      "output": "features",
+      "target": "freak_match",
+      "input": "query"
+    },
+    {
+      "source": "freak_query",
+      "output": "features",
+      "target": "freak_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "freak_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "freak_train",
+      "output": "features",
+      "target": "freak_match",
+      "input": "train"
+    },
+    {
+      "source": "freak_train",
+      "output": "features",
+      "target": "freak_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "freak_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "freak_match",
+      "output": "matches",
+      "target": "freak_evaluate",
+      "input": "matches"
+    }
+  ]
+}

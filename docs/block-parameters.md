@@ -8845,6 +8845,25 @@ Inputs: `points` (data, optional), `collection` (data, optional).
 | --- | --- | --- |
 | `item_index` | `0` | Value must be a whole number at least 0. Zero-based position in the collection, after filtering or sorting. |
 
+## BRIEF descriptors (`inspect.brief_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Feature record, keypoint records, or [x, y] rows. Bare points use size 7 and unknown orientation.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `descriptor_bytes` | `"32"` | `16`, `32`, `64` Number of bytes per Hamming descriptor. |
+| `use_orientation` | `false` | Rotate the sampling pattern using the wired keypoint angles. |
+
 ## BRISK keypoints and descriptors (`inspect.brisk`)
 
 Inspection / Features
@@ -9278,7 +9297,7 @@ Inspection / Feature evaluation
 
 Inputs: `query_image` (image), `train_image` (image), `query` (data), `train` (data), `transform` (data, optional), `matches` (data, optional), `query_mask` (image, optional), `train_mask` (image, optional), `query_region` (data, optional), `train_region` (data, optional).
 
-Input `query` — ORB/BRISK/AKAZE/SIFT/KAZE feature data for Query image.
+Input `query` — ORB/BRISK/AKAZE/SIFT/KAZE/BRIEF/FREAK feature data for Query image.
 
 Input `train` — Same descriptor family/settings for Train image.
 
@@ -9489,6 +9508,28 @@ Input `reference_mask` — Optional uint8 selection in the reference image frame
 | `boundary` | `"linear"` | `linear`, `circular` Linear zero-pads to avoid wrapping. Circular compares equal-size images. |
 | `normalization` | `"energy"` | `energy`, `none` Energy scales each whole signal to unit L2 norm before correlation. |
 | `subtract_mean` | `false` | Remove each input's mean over its selected samples before correlation. |
+
+## FREAK descriptors (`inspect.freak_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Feature record, keypoint records, or [x, y] rows. Bare points use size 7 and unknown orientation.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `orientation_normalized` | `true` | Estimate a local angle and rotate the sampling pattern. |
+| `scale_normalized` | `true` | Scale the pattern using the wired keypoint diameter. |
+| `pattern_scale` | `22.0` | Value must be a finite number between 1 and 128. Base size of the retinal sampling pattern. |
+| `octaves` | `4` | Value must be a whole number between 1 and 8. Number of octaves covered by the descriptor scales. |
+| `selected_pairs` | `[]` | Empty uses OpenCV's defaults. Otherwise supply 512 ordered pair indices from 0 to 902. Query and train must use the same list. |
 
 ## Image frequency response (`inspect.frequency_response`)
 

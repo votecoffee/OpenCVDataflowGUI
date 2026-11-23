@@ -1305,7 +1305,14 @@ def radius_data(data):
     if family == "KAZE":
         descriptors, points, layout = kaze_data(data)
         return descriptors, points, layout, cv2.NORM_L2
-    raise ValidationError("Connect ORB, BRISK, AKAZE, SIFT, or KAZE feature descriptors")
+    if family in ("BRIEF", "FREAK"):
+        width, settings = data.get("descriptor_size"), data.get("descriptor_settings")
+        valid_widths = (16, 32, 64) if family == "BRIEF" else (64,)
+        if type(width) is not int or width not in valid_widths or not isinstance(settings, dict):
+            raise ValidationError(f"Invalid {family} descriptor width or settings")
+        descriptors, points = descriptor_arrays(data, width, 0, 255, True)
+        return descriptors.astype(np.uint8), points, (family, width, settings), cv2.NORM_HAMMING
+    raise ValidationError("Connect ORB, BRISK, AKAZE, SIFT, KAZE, BRIEF, or FREAK feature descriptors")
 
 
 class MatchDescriptorRadius(Block):

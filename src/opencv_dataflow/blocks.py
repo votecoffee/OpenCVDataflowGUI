@@ -925,6 +925,7 @@ def builtin_registry():
     from .region_proposals import GraphSegments, SelectiveSearchProposals
     from .regions import REGION_BLOCKS
     from .registered_replay import ReplayRegisteredViews
+    from .compact_descriptors import BriefDescriptor, FreakDescriptor
     from .registration import REGISTRATION_BLOCKS
     from .regression import REGRESSION_BLOCKS
     from .remap_maps import BuildLensMaps, LensMapDisplacement, UndistortLensPoints
@@ -1171,6 +1172,8 @@ def builtin_registry():
         TileImage,
         *FEATURE_BLOCKS,
         *REGISTRATION_BLOCKS,
+        BriefDescriptor,
+        FreakDescriptor,
         AffineFeatures,
         ReviewFeatureMatches,
         AlignECC,

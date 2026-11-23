@@ -1,0 +1,233 @@
+"""Compute native BRIEF and FREAK descriptors at externally supplied keypoints."""
+
+from abc import ABC, abstractmethod
+
+import cv2
+import numpy as np
+
+from .core import Port, Result
+from .graphics_layers import GraphicDrawing, graphic_object
+from .parameter_validation import NumericRange, ValidationError
+from .payloads import ValuePacket, require_same_frame
+from .processing import ImageTool, gray_image
+from .result_graphics import ACCEPTED
+from .selection import contains, selection_mask
+from .tickets import ticket_key
+
+
+def _keypoint_rows(value, size):
+    if isinstance(value, dict):
+        if value.get("image_size") != size:
+            raise ValidationError("Keypoint image_size must match the descriptor image")
+        value = value.get("keypoints")
+    if not isinstance(value, list) or len(value) > 10_000:
+        raise ValidationError("Supply a list of up to 10,000 keypoints or a feature record")
+    return value
+
+
+def _native_keypoint(row, index, size):
+    record = row if isinstance(row, dict) else {"point": row}
+    try:
+        xy = np.asarray(record["point"], dtype=float)
+        diameter = float(record.get("size", 7))
+        angle = float(record.get("angle", -1))
+        response = float(record.get("response", 0))
+        octave = record.get("octave", 0)
+        if (
+            xy.shape != (2,)
+            or not np.isfinite(xy).all()
+            or (xy < 0).any()
+            or (xy >= size).any()
+            or not 0.001 <= diameter <= 1_000_000
+            or not (angle == -1 or 0 <= angle <= 360)
+            or not -3e38 <= response <= 3e38
+            or type(octave) is not int
+            or not -(2**31) <= octave < 2**31
+        ):
+            raise ValueError
+    except KeyError, TypeError, ValueError, OverflowError:
+        raise ValidationError(
+            f"Keypoint {index} needs an in-image [x, y] point and valid size, angle, "
+            "response and octave"
+        ) from None
+    return cv2.KeyPoint(
+        *xy, diameter, angle % 360 if angle >= 0 else angle, response, octave, index
+    )
+
+
+class CompactDescriptor(ImageTool, ABC):
+    category = block_type = "Inspection"
+    subtype = "Features"
+    inputs = (
+        Port("image"),
+        Port("keypoints", "data"),
+        Port("mask", required=False, required_when_connected=True),
+        Port("region", "data", required=False, required_when_connected=True),
+    )
+    outputs = (
+        Port("image"),
+        Port("features", "data"),
+        Port("points", "data"),
+        Port("count", "number"),
+    )
+    input_help = {
+        "image": "Source intensity image. Descriptor computation uses 8-bit grayscale.",
+        "keypoints": "Feature record, keypoint records, or [x, y] rows. Bare points use size 7 "
+        "and unknown orientation.",
+        "mask": "Describe keypoints whose centers are inside the mask.",
+        "region": "Describe keypoints whose centers are inside the region and any wired mask.",
+    }
+    output_help = {
+        "image": "Original image for overlaying drawable keypoint markers.",
+        "features": "Aligned keypoints and descriptor rows, with original row indices.",
+    }
+    preview_safe = parallel_safe = process_inputs_readonly = True
+    payload_reference = "image"
+
+    @abstractmethod
+    def extractor(self):
+        """Return a native extractor and the normalized settings identifying its pattern."""
+
+    def process(self, inputs):
+        source = inputs["image"]
+        height, width = source.shape[:2]
+        size = [width, height]
+        if not 0 < width * height <= self.maximum_pixels:
+            raise ValidationError(
+                f"{self.algorithm} requires 1 to {self.maximum_pixels:,} image pixels"
+            )
+        image_payload = self.input_payloads["image"]
+        point_payload = self.input_payloads["keypoints"]
+        try:
+            require_same_frame([ValuePacket(None, image_payload), ValuePacket(None, point_payload)])
+        except ValueError as exc:
+            raise ValidationError("Keypoints and image must use the same coordinate frame") from exc
+        if (
+            "ticket" in image_payload
+            and "ticket" in point_payload
+            and ticket_key(image_payload["ticket"]) != ticket_key(point_payload["ticket"])
+        ):
+            raise ValidationError("Keypoints and image have different acquisition tickets")
+        gray = gray_image(source, (np.uint8,), auto_depth=True)
+        selection = selection_mask(inputs, source)
+        keypoints = []
+        for index, row in enumerate(_keypoint_rows(inputs["keypoints"], size)):
+            key = _native_keypoint(row, index, size)
+            if contains(selection, key.pt):
+                keypoints.append(key)
+        if self.parameters.get("use_orientation") and any(key.angle < 0 for key in keypoints):
+            raise ValidationError(
+                "Oriented BRIEF needs a measured angle for each selected keypoint"
+            )
+
+        extractor, settings = self.extractor()
+        keys, descriptors = extractor.compute(gray, keypoints) if keypoints else ((), None)
+        points = [list(key.pt) for key in keys]
+        features = {
+            "algorithm": self.algorithm,
+            "descriptor_size": extractor.descriptorSize(),
+            "descriptor_settings": settings,
+            "image_size": size,
+            "keypoints": [
+                {
+                    "point": point,
+                    "size": key.size,
+                    "response": key.response,
+                    "octave": key.octave,
+                    "angle": key.angle % 360 if self.algorithm == "FREAK" else key.angle,
+                    "source_index": key.class_id,
+                }
+                for key, point in zip(keys, points, strict=True)
+            ],
+            "descriptors": descriptors.tolist() if descriptors is not None else [],
+        }
+        result = Result(
+            {"image": source, "features": features, "points": points, "count": len(points)},
+            message=f"{len(points)} {self.algorithm} descriptors from "
+            f"{len(keypoints)} selected keypoints",
+        )
+        if self.generate_graphics and points:
+            result.drawings[self.algorithm] = GraphicDrawing(
+                tuple(graphic_object("marker", [point], ACCEPTED, thickness=1) for point in points)
+            )
+        return result
+
+    def factory(self, name):
+        factory = getattr(getattr(cv2, "xfeatures2d", None), name, None)
+        if factory is None:
+            raise ValidationError(f"{self.algorithm} requires OpenCV contrib xfeatures2d")
+        return factory
+
+
+class BriefDescriptor(CompactDescriptor):
+    type_id, title, algorithm = "inspect.brief_descriptor", "BRIEF descriptors", "BRIEF"
+    description = "Compute fixed-length binary intensity descriptors at wired keypoints."
+    maximum_pixels = 8_388_608
+    defaults = {"descriptor_bytes": "32", "use_orientation": False}
+    parameter_choices = {"descriptor_bytes": ("16", "32", "64")}
+    parameter_help = {
+        "descriptor_bytes": "Number of bytes per Hamming descriptor.",
+        "use_orientation": "Rotate the sampling pattern using the wired keypoint angles.",
+    }
+
+    def extractor(self):
+        settings = {"use_orientation": self.parameters["use_orientation"]}
+        factory = self.factory("BriefDescriptorExtractor_create")
+        return factory(
+            int(self.parameters["descriptor_bytes"]), settings["use_orientation"]
+        ), settings
+
+
+class FreakDescriptor(CompactDescriptor):
+    type_id, title, algorithm = "inspect.freak_descriptor", "FREAK descriptors", "FREAK"
+    description = "Compute 64-byte retinal sampling descriptors at wired keypoints."
+    maximum_pixels = 16_777_216
+    defaults = {
+        "orientation_normalized": True,
+        "scale_normalized": True,
+        "pattern_scale": 22.0,
+        "octaves": 4,
+        "selected_pairs": [],
+    }
+    parameter_ranges = {
+        "pattern_scale": NumericRange(1, 128),
+        "octaves": NumericRange(1, 8, whole=True),
+    }
+    parameter_help = {
+        "orientation_normalized": "Estimate a local angle and rotate the sampling pattern.",
+        "scale_normalized": "Scale the pattern using the wired keypoint diameter.",
+        "pattern_scale": "Base size of the retinal sampling pattern.",
+        "octaves": "Number of octaves covered by the descriptor scales.",
+        "selected_pairs": "Empty uses OpenCV's defaults. Otherwise supply 512 ordered pair indices "
+        "from 0 to 902. Query and train must use the same list.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        pairs = p["selected_pairs"]
+        if not isinstance(pairs, list) or (
+            pairs
+            and (len(pairs) != 512 or any(type(i) is not int or not 0 <= i <= 902 for i in pairs))
+        ):
+            raise ValidationError(
+                "Selected pairs must be empty or 512 integer indices in 0..902", "selected_pairs"
+            )
+
+    def extractor(self):
+        p = self.parameters
+        settings = {
+            "orientation_normalized": p["orientation_normalized"],
+            "scale_normalized": p["scale_normalized"],
+            "pattern_scale": float(np.float32(p["pattern_scale"])),
+            "octaves": int(p["octaves"]),
+            "selected_pairs": p["selected_pairs"],
+        }
+        factory = self.factory("FREAK_create")
+        return factory(
+            orientationNormalized=settings["orientation_normalized"],
+            scaleNormalized=settings["scale_normalized"],
+            patternScale=settings["pattern_scale"],
+            nOctaves=settings["octaves"],
+            selectedPairs=settings["selected_pairs"],
+        ), settings

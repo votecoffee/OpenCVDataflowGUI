@@ -312,6 +312,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Extended inpainting](<opencv tools/extended_inpainting/README.md>) | Compare frequency and patch repairs of a marked defect on a known periodic surface. |
 | [DCT denoising](<opencv tools/dct_denoising/README.md>) | Compare whole-frame and region-limited noise reduction against a clean target. |
 | [Fast line detection](<opencv tools/fast_line_detection/README.md>) | Measure straight edges from intensity or a Canny map and sort the line collection by length. |
+| [Compact binary descriptors](<opencv tools/compact_binary_descriptors/README.md>) | Compute BRIEF and FREAK on shared keypoints and check Hamming matches against a known translation. |
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |
 | [Bundler reconstruction import](<opencv tools/bundler_reconstruction/README.md>) | Import cameras and colored points, apply a measured baseline and project a held-out image. |

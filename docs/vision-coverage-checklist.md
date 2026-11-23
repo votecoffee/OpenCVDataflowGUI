@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 29 | 3 | 70 | 102 | 28.4% |
-| **Overall** | 395 | 4 | 71 | 470 | 84.0% |
+| 4. Selected contrib | 30 | 3 | 69 | 102 | 29.4% |
+| **Overall** | 396 | 4 | 70 | 470 | 84.3% |
 
 <!-- coverage-summary:end -->
 
@@ -621,7 +621,7 @@ fixture or result needed to close the item.
 | S4-16 | Extended inpainting for defect cleanup | xphoto.inpaint | Complete | cv.extended_inpaint exposes FSR Fast, FSR Best and bounded Shift Map. A repair mask identifies estimates and the block preserves measured pixels, source depth and alpha. Verified native parity, mask/region intersection and recovery of a periodic surface against known truth. |
 | S4-17 | DCT denoising | xphoto.dctDenoising | Complete | cv.dct_denoise exposes noise sigma and patch size, uses bounded overlapping tiles with full border coverage, and preserves source depth, alpha and unselected samples. Verified tiled native parity, noise reduction and step-edge retention. |
 | S4-18 | Fast line detection | ximgproc.createFastLineDetector | Complete | inspect.fast_line_segments exposes all six native settings, processes intensity images or preserved edge maps, and emits directed endpoints, a line collection and result arrows. Verified horizontal, vertical and diagonal geometry, endpoint selection, and source frame, pyramid level and ticket metadata. |
-| S4-19 | Compact binary descriptors | xfeatures2d.BriefDescriptorExtractor, FREAK | Planned | Compute descriptors at wired image keypoints and check Hamming matching across a registered image pair. |
+| S4-19 | Compact binary descriptors | xfeatures2d.BriefDescriptorExtractor, FREAK | Complete | inspect.brief_descriptor and inspect.freak_descriptor use wired keypoints, expose native settings, and retain input row indices and image context after selection and native border rejection. Verified native bytes, custom FREAK pairs, compatibility checks, and Hamming matching against an independently rendered translation. |
 | S4-20 | Dense local descriptors | xfeatures2d.DAISY | Planned | Sample image descriptors on a controlled grid and verify matching under known displacement. |
 | S4-21 | GSoC adaptive foreground | bgsegm.createBackgroundSubtractorGSOC | Complete | sequence.gsoc_background. Check warmup and detection on an empty-conveyor replay. |
 | S4-22 | Dual TV-L1 flow | optflow.createOptFlow_DualTVL1 | Planned | Report flow and confidence on a known moving patch and compare with the existing flow baseline. |

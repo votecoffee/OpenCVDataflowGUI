@@ -39,6 +39,7 @@ OPENCV_MODULES = {
     "core": "Core",
     "imgcodecs": "Image Codecs",
     "features": "Features Framework",
+    "xfeatures2d": "Extra 2D Features",
     "calib": "Camera Calibration",
     "geometry": "Computational Geometry",
     "video": "Video Analysis",
@@ -141,6 +142,7 @@ IMPLEMENTATION_MODULES = {
     "tracking": "native_trackers",
     "features": "native_lightglue native_index",
     "ximgproc": "fast_lines local_threshold region_proposals ridge_response superpixels",
+    "xfeatures2d": "compact_descriptors",
 }
 BLOCK_MODULES = {
     "core": (
