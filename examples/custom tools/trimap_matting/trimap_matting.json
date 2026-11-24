@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Estimate the gasket's soft edge",
+      "description": "Run Once. Black and white trimap pixels fix the background and foreground. The gray band is solved. Compare the matte with the supplied 16-bit truth image. The fixture is original MIT-licensed artwork.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "image",
+      "type": "input.file",
+      "name": "Composite gasket",
+      "parameters": {
+        "path": "assets/composite.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "trimap",
+      "type": "input.file",
+      "name": "Background / unknown / foreground",
+      "parameters": {
+        "path": "assets/trimap.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        230
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "matte",
+      "type": "cv.trimap_matting",
+      "name": "Estimate soft alpha",
+      "description": "Estimate soft foreground opacity from a trimap with closed-form image matting.",
+      "parameters": {
+        "trimap_alignment": "pixel_grid",
+        "window_radius": 1,
+        "color_regularization": 1e-07,
+        "solver_tolerance": 1e-07,
+        "max_iterations": 1000
+      },
+      "position": [
+        320,
+        85
+      ],
+      "exposed_inputs": [
+        "image",
+        "trimap"
+      ],
+      "exposed_outputs": [
+        "alpha",
+        "cutout",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": "alpha"
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review estimated alpha",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        650,
+        85
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "image",
+      "output": "image",
+      "target": "matte",
+      "input": "image"
+    },
+    {
+      "source": "trimap",
+      "output": "image",
+      "target": "matte",
+      "input": "trimap"
+    },
+    {
+      "source": "matte",
+      "output": "alpha",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

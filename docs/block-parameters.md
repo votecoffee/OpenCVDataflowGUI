@@ -7105,6 +7105,28 @@ Inputs: `image` (image).
 | --- | --- | --- |
 | `diagonal` | `"main"` | `main`, `anti` Main swaps X and Y. Anti swaps axes and reverses both output directions. |
 
+## Trimap alpha matting (`cv.trimap_matting`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `trimap` (image).
+
+Input `image` — Gray or RGB/BGR composite, including alpha-tagged images.
+
+Input `trimap` — Matching uint8 gray raster. 0 is background, 255 is foreground, others unknown.
+
+Input `mask` — Limit published alpha; the solve retains all trimap constraints.
+
+Input `region` — Intersect a source-grid region with the optional output mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `trimap_alignment` | `"pixel_grid"` | `pixel_grid`, `same_frame` Use matching rasters or also check known spatial frame identities. |
+| `window_radius` | `1` | Value must be a whole number between 1 and 3. Radius of each local color model. Default gives 3 × 3 windows. |
+| `color_regularization` | `1e-07` | Value must be a finite number between 1e-10 and 0.1. Diagonal regularization of the normalized color scatter matrix. |
+| `solver_tolerance` | `1e-07` | Value must be a finite number between 1e-10 and 0.001. Relative residual tolerance for the conjugate-gradient solve. |
+| `max_iterations` | `1000` | Value must be a whole number between 1 and 5000. Maximum iterations before the block reports lack of convergence. |
+
 ## Unsharp mask (`cv.unsharp`)
 
 Image processing / Filtering

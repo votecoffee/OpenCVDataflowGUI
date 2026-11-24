@@ -617,6 +617,7 @@ def builtin_registry():
     from .affine_features import AffineFeatures
     from .aliked_features import ALIKED_BLOCKS
     from .alpha_composition import AlphaOver
+    from .trimap_matting import TrimapMatting
     from .analysis_tools import ANALYSIS_BLOCKS
     from .animation_blocks import ANIMATION_BLOCKS
     from .annotation import AnnotationLayer
@@ -1250,6 +1251,7 @@ def builtin_registry():
         *ANALYSIS_BLOCKS,
         BlendWeightMaps,
         AlphaOver,
+        TrimapMatting,
         InterpolateFrames,
         RefineDenseFlow,
         LoadFlowFile,

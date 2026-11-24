@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 56 | 6 | 40 | 102 | 54.9% |
-| **Overall** | 422 | 7 | 41 | 470 | 89.8% |
+| 4. Selected contrib | 57 | 6 | 39 | 102 | 55.9% |
+| **Overall** | 423 | 7 | 40 | 470 | 90.0% |
 
 <!-- coverage-summary:end -->
 
@@ -672,7 +672,7 @@ fixture or result needed to close the item.
 | S4-57 | Sparse-to-dense flow interpolation | optflow.calcOpticalFlowSparseToDense | Complete | sequence.sparse_to_dense uses native PyrLK and edge-aware interpolation with checked match support. Verified against the combined OpenCV function and measured opposing motion at a known boundary. |
 | S4-58 | PCAFlow and SimpleFlow | optflow.createOptFlow_PCAFlow, optflow.createOptFlow_SimpleFlow, optflow.calcOpticalFlowSF | Complete | sequence.pcaflow uses native factory defaults and sequence.simpleflow exposes the full native parameter list. Both match native flow on the previous-frame grid and verify pixel units against known translation. |
 | S4-59 | Edge-aware interpolation of image matches | ximgproc.EdgeAwareInterpolator | Complete | cv.edge_aware_flow consumes ordered point pairs or query/train match records, optionally with a source-grid edge cost map. Native parity and an analytic motion seam verify displacement and edge preservation. |
-| S4-60 | Image matting from a trimap | alphamat.infoFlow or equivalent | Planned | The pinned Python wheel has no direct binding. Qualify another backend or tested equivalent and recover a soft alpha channel with known opaque, transparent and mixed regions. |
+| S4-60 | Image matting from a trimap | alphamat.infoFlow or equivalent | Complete | cv.trimap_matting qualifies a closed-form SciPy alternative with exact seed opacity and analytic mixed-edge truth. Native information-flow matting remains unavailable in the pinned wheel. |
 | S4-61 | Retina-inspired contrast and motion preprocessing | bioinspired.Retina | Planned | Verify image enhancement and motion output on a short exposure-change sequence with reset. |
 | S4-62 | Block-matching 3D denoising of images | xphoto.bm3dDenoising | Planned | Measure denoising and edge retention on seeded noise. Verify that the target build enables the algorithm. |
 | S4-63 | Additional HDR tone mapping | xphoto.createTonemapDurand | Planned | Compare local contrast against baseline tone mapping. Verify that the target build enables the algorithm. |
