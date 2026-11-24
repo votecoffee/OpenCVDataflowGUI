@@ -857,6 +857,7 @@ def builtin_registry():
     from .neighbor_restoration import RestoreFromNeighbors
     from .network_video import NetworkVideo
     from .ocr import OCR_BLOCKS
+    from .tesseract_ocr import TesseractOCR
     from .text_er import TextExtremalRegions
     from .ocr_batch import RecognizeTextBatch
     from .ocr_constraints import RecognizeConstrainedText
@@ -1456,6 +1457,7 @@ def builtin_registry():
         *IMAGE_EM_BLOCKS,
         *OCR_BLOCKS,
         TextExtremalRegions,
+        TesseractOCR,
         RecognizeTextBatch,
         RecognizeConstrainedText,
         SuperResolution,

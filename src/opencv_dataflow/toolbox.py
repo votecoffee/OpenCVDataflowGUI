@@ -136,7 +136,7 @@ IMPLEMENTATION_MODULES = {
     "input_shifts",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
     "xphoto": "white_balance xphoto_denoising xphoto_inpainting bm3d_denoising durand_tonemap oil_painting percentile_white_balance learned_white_balance",
-    "text": "text_er",
+    "text": "text_er tesseract_ocr",
     "ml": "svm_blocks image_mixtures visual_words",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
     "rotating_panorama panorama_points",

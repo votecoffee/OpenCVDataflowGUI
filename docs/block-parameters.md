@@ -7043,6 +7043,32 @@ Input `frames` — Ordered batch of aligned frames of the same scene.
 | `target_index` | `-1` | Value must be a whole number between -1 and 63. Zero-based frame to denoise. −1 chooses the earlier middle frame. |
 | `temporal_window` | `3` | Value must be a positive odd integer between 1 and 31. Odd number of frames centered on the target. |
 
+## Recognize text (Tesseract) (`cv.tesseract_ocr`)
+
+Inspection / Text inspection
+
+Inputs: `image` (image), `regions` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or color, converted to 8-bit gray for recognition.
+
+Input `regions` — Optional same-ticket OCR quadrilaterals. Each enclosing rectangle is cropped.
+
+Input `mask` — Paint excluded source pixels white and select OCR crop centers.
+
+Input `region` — Restrict recognition to a source region or its intersection with the mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `language` | `"eng"` | Tesseract language code or language codes joined with +. |
+| `tessdata_path` | `""` | Traineddata folder. Relative paths are based on the saved project. |
+| `language_sha256` | `{}` | Optional map from language code to exact traineddata SHA-256. |
+| `layout` | `"block"` | `automatic`, `column`, `block`, `line`, `word`, `character`, `sparse`, `raw_line` Tesseract page segmentation mode for each crop. |
+| `engine` | `"lstm"` | `lstm`, `legacy`, `combined`, `automatic` Tesseract recognition engine. Fast traineddata uses LSTM. |
+| `whitelist` | `""` | Optional literal characters allowed by the recognizer. |
+| `minimum_confidence` | `30` | Value must be a whole number between 0 and 100. Retain words with confidence above this percentage. |
+| `padding` | `8` | Value must be a whole number between 0 and 128. White pixels around each crop before recognition. |
+| `timeout_seconds` | `12.0` | Value must be a finite number between 0.1 and 120. Total time allowed for all recognition subprocesses in one activation. |
+
 ## Detect extremal text regions (`cv.text_extremal_regions`)
 
 Inspection / Text inspection

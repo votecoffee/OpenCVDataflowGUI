@@ -368,6 +368,8 @@ exact ranks and native histogram fitting on gray steps with bright and dark outl
 native uint8 and uint16 inference, palette support and a pinned forest on three independent casts.
 [Native text regions](<../examples/opencv tools/native_text_regions/README.md>) compares
 extremal components with horizontal native grouping on contrast-varied printed labels.
+[Tesseract OCR](<../examples/opencv tools/tesseract_ocr/README.md>) reads detected label crops
+with pinned language data and compares word geometry and confidence against the native OpenCV adapter.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

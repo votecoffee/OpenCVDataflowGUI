@@ -1,0 +1,64 @@
+{
+  "words": [
+    {
+      "text": "PUMP",
+      "bounds": [
+        33,
+        31,
+        123,
+        31
+      ],
+      "crop_index": 0
+    },
+    {
+      "text": "7",
+      "bounds": [
+        170,
+        31,
+        23,
+        31
+      ],
+      "crop_index": 0
+    },
+    {
+      "text": "VALVE",
+      "bounds": [
+        53,
+        116,
+        142,
+        31
+      ],
+      "crop_index": 1
+    },
+    {
+      "text": "24",
+      "bounds": [
+        210,
+        115,
+        55,
+        32
+      ],
+      "crop_index": 1
+    },
+    {
+      "text": "LOT",
+      "bounds": [
+        113,
+        200,
+        81,
+        32
+      ],
+      "crop_index": 2
+    },
+    {
+      "text": "305",
+      "bounds": [
+        207,
+        200,
+        83,
+        33
+      ],
+      "crop_index": 2
+    }
+  ]
+}

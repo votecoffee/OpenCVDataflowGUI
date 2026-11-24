@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Read three printed equipment labels",
+      "description": "Run Once. The text detector finds three lines. Tesseract reads six words and numbers, then draws their boxes on the source image. Original MIT-licensed chart. English language data comes from tessdata_fast under Apache 2.0.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Label chart",
+      "parameters": {
+        "path": "assets/labels.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        120
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "detect",
+      "type": "cv.text_extremal_regions",
+      "name": "Find label lines",
+      "description": "Find character candidates or horizontal text regions for a separate OCR block.",
+      "parameters": {
+        "mode": "horizontal_groups",
+        "component_channels": "gray",
+        "polarity": "both",
+        "nm1_model_path": "",
+        "nm2_model_path": "",
+        "threshold_delta": 8,
+        "minimum_area_fraction": 0.00025,
+        "maximum_area_fraction": 0.13,
+        "nm1_probability": 0.4,
+        "nm1_nonmax": true,
+        "nm1_probability_difference": 0.1,
+        "nm2_probability": 0.3,
+        "minimum_count": 3,
+        "maximum_regions": 256
+      },
+      "position": [
+        280,
+        120
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "regions",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "ocr",
+      "type": "cv.tesseract_ocr",
+      "name": "Read words and numbers",
+      "description": "Recognize words and return normalized confidences and source-grid boxes.",
+      "parameters": {
+        "language": "eng",
+        "tessdata_path": "assets/tessdata",
+        "language_sha256": {
+          "eng": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+        },
+        "layout": "line",
+        "engine": "lstm",
+        "whitelist": "",
+        "minimum_confidence": 30,
+        "padding": 8,
+        "timeout_seconds": 12.0
+      },
+      "position": [
+        575,
+        120
+      ],
+      "exposed_inputs": [
+        "image",
+        "regions",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "text",
+        "words",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review source-grid word boxes",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        885,
+        120
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "detect",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "ocr",
+      "input": "image"
+    },
+    {
+      "source": "detect",
+      "output": "regions",
+      "target": "ocr",
+      "input": "regions"
+    },
+    {
+      "source": "ocr",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
