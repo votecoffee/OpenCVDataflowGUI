@@ -3840,6 +3840,35 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Pixel grid pairs equal-size images and weights by index across frame IDs. |
 | `zero_weight` | `"keep_a"` | `keep_a`, `zero` When both weights are zero, keep Image A or write zero. |
 
+## BM3D denoising (`cv.bm3d_denoise`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `basic` (image, optional).
+
+Input `image` — Grayscale source. Portable supports uint8, uint16, or float in [0, 1].
+
+Input `basic` — Same-depth grayscale estimate required for the Wiener-only stage.
+
+Input `mask` — Limit writes while patch matching uses the full image.
+
+Input `region` — Intersect the source-grid region with the optional write mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `backend` | `"portable"` | `portable`, `opencv` Portable orthonormal DCT or native Haar on an enabled OpenCV build. |
+| `stage` | `"both"` | `both`, `hard_threshold`, `wiener` Run both stages, the hard-threshold estimate, or Wiener with a basic image. |
+| `noise_sigma` | `10.0` | Value must be a finite number between 0 and 255. Noise sigma in 8-bit-equivalent levels. Zero bypasses filtering. |
+| `patch_size` | `8` | Value must be a whole number between 2 and 64. Power-of-two square patch width in pixels. |
+| `search_window` | `19` | Value must be a whole number between 3 and 127. Side of the candidate window in patch positions. |
+| `hard_match` | `2500` | Value must be a whole number between 0 and 65025. First-stage match limit in squared 8-bit-equivalent pixel levels. |
+| `wiener_match` | `400` | Value must be a whole number between 0 and 65025. Second-stage match limit in squared 8-bit-equivalent pixel levels. |
+| `group_size` | `16` | Value must be a whole number between 1 and 64. Maximum similar patches in one group. |
+| `sliding_step` | `3` | Value must be a whole number between 1 and 63. Reference stride in pixels, smaller than the patch. |
+| `beta` | `2.0` | Value must be a finite number between 0 and 16. Kaiser aggregation window parameter. Zero uses uniform patch weights. |
+| `norm` | `"l2"` | `l2`, `l1` L2 is mean squared difference. L1 compares squared mean absolute difference. |
+| `basic_alignment` | `"same_frame"` | `same_frame`, `pixel_grid` Check known coordinate frames or explicitly pair equal pixel grids. |
+
 ## Box blur (`cv.box_blur`)
 
 Image processing / Filtering

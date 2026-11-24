@@ -134,7 +134,7 @@ IMPLEMENTATION_MODULES = {
     "semantic_segmentation prompt_segmentation prompt_mask_decode regression local_anomaly "
     "input_shifts",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
-    "xphoto": "white_balance xphoto_denoising xphoto_inpainting",
+    "xphoto": "white_balance xphoto_denoising xphoto_inpainting bm3d_denoising",
     "ml": "svm_blocks image_mixtures visual_words",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
     "rotating_panorama panorama_points",

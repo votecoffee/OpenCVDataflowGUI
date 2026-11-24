@@ -356,6 +356,8 @@ foreground ranking and percentile masks with known part geometry.
 and retina transient masks through warmup, motion and part exit on a timestamped clip.
 [Retina contrast and motion](<../examples/opencv tools/retina_preprocessing/README.md>)
 reports native detail and temporal response during an exposure step and part movement.
+[BM3D denoising](<../examples/opencv tools/bm3d_denoising/README.md>) measures
+seeded-noise reduction and step retention for the portable and enabled native backends.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

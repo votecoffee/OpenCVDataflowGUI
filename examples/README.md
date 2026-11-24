@@ -327,6 +327,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Static saliency maps](<opencv tools/static_saliency/README.md>) | Compare spectral residual and fine-grained response masks with a known part silhouette. |
 | [Motion saliency](<opencv tools/motion_saliency/README.md>) | Compare Bin Wang and retina transient masks on timestamped frames with known part motion. |
 | [Retina contrast and motion](<opencv tools/retina_preprocessing/README.md>) | Compare native detail and motion responses during an exposure step and a moving-part interval. |
+| [BM3D denoising](<opencv tools/bm3d_denoising/README.md>) | Compare a noisy step edge, the hard-threshold estimate, and the Wiener result. |
 | [Motion history and direction](<opencv tools/motion_history/README.md>) | Verify fading trails, pixel ages, and rightward and downward motion from a timed clip. |
 | [Adaptive foreground models](<opencv tools/adaptive_foreground_models/README.md>) | Compare MOG, GMG, and CNT on the same empty-conveyor replay. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |

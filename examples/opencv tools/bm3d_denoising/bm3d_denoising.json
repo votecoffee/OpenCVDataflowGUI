@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Denoise a known step edge",
+      "description": "Run Once. The first stage groups similar patches and hard-thresholds their coefficients. The Wiener stage refines the estimate. Compare Basic and Image with assets/clean.png. Original MIT-licensed synthetic fixture.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Noisy grayscale",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        85
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "denoise",
+      "type": "cv.bm3d_denoise",
+      "name": "Two-stage BM3D",
+      "description": "Reduce Gaussian noise by collaborative filtering of similar image patches.",
+      "parameters": {
+        "backend": "portable",
+        "stage": "both",
+        "noise_sigma": 13.0,
+        "patch_size": 8,
+        "search_window": 19,
+        "hard_match": 2500,
+        "wiener_match": 400,
+        "group_size": 16,
+        "sliding_step": 3,
+        "beta": 2.0,
+        "norm": "l2",
+        "basic_alignment": "same_frame"
+      },
+      "position": [
+        315,
+        85
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "basic"
+      ],
+      "exposed_outputs": [
+        "image",
+        "basic",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review the denoised image",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        625,
+        85
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "denoise",
+      "input": "image"
+    },
+    {
+      "source": "denoise",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 58 | 6 | 38 | 102 | 56.9% |
-| **Overall** | 424 | 7 | 39 | 470 | 90.2% |
+| 4. Selected contrib | 59 | 6 | 37 | 102 | 57.8% |
+| **Overall** | 425 | 7 | 38 | 470 | 90.4% |
 
 <!-- coverage-summary:end -->
 
@@ -674,7 +674,7 @@ fixture or result needed to close the item.
 | S4-59 | Edge-aware interpolation of image matches | ximgproc.EdgeAwareInterpolator | Complete | cv.edge_aware_flow consumes ordered point pairs or query/train match records, optionally with a source-grid edge cost map. Native parity and an analytic motion seam verify displacement and edge preservation. |
 | S4-60 | Image matting from a trimap | alphamat.infoFlow or equivalent | Complete | cv.trimap_matting qualifies a closed-form SciPy alternative with exact seed opacity and analytic mixed-edge truth. Native information-flow matting remains unavailable in the pinned wheel. |
 | S4-61 | Retina-inspired contrast and motion preprocessing | bioinspired.Retina | Complete | sequence.retina exposes Parvo detail and Magno motion with native filter settings, per-stream warmup and reset. A lossless replay verifies exposure adaptation, localized motion and source-grid payloads. |
-| S4-62 | Block-matching 3D denoising of images | xphoto.bm3dDenoising | Planned | Measure denoising and edge retention on seeded noise. Verify that the target build enables the algorithm. |
+| S4-62 | Block-matching 3D denoising of images | xphoto.bm3dDenoising | Complete | cv.bm3d_denoise runs portable two-stage collaborative DCT filtering on the stock wheel. An isolated enabled OpenCV 5.0.0 build verifies all native stages with uint8 L2 and uint16 L1. Both backends reduce seeded noise and retain the measured step edge. |
 | S4-63 | Additional HDR tone mapping | xphoto.createTonemapDurand | Planned | Compare local contrast against baseline tone mapping. Verify that the target build enables the algorithm. |
 | S4-64 | Frequency-selective detail smoothing | xphoto.oilPainting | Planned | Verify supported encodings and degree of texture suppression on a segmented surface fixture. |
 | S4-65 | Percentile white balance | xphoto.createSimpleWB | Planned | Verify independent channel stretch and clipping behavior with known channel extrema. |

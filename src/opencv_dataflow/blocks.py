@@ -1056,6 +1056,7 @@ def builtin_registry():
     from .wide_stereo import CalibrateWideStereo
     from .white_balance import GrayWorldWhiteBalance
     from .workplane import RectifyWorkplane
+    from .bm3d_denoising import Bm3dDenoise
     from .xphoto_denoising import DctDenoise
     from .xphoto_inpainting import ExtendedInpaint
     from .yuv_formats import DecodePackedYuv, RawYuvFile
@@ -1235,6 +1236,7 @@ def builtin_registry():
         RetinaPreprocessing,
         MotionHistory,
         DctDenoise,
+        Bm3dDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,
         AlignExposures,
