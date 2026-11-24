@@ -25,6 +25,10 @@ of exposure ratios between one and seven, so automatic settings may differ
 between backends. The portable path preserves uint16 and normalized float32
 precision. Both paths preserve the source encoding and straight alpha. Masks
 and regions select pixels to update. The enhancement uses full-image context.
+With an isolated Eigen-enabled OpenCV 5.0.0 build, both block modes matched
+their direct OpenCV calls pixel for pixel. On this chart, the native results
+averaged 0.99 and 0.76 8-bit levels per channel away from SciPy in automatic
+and explicit modes respectively.
 
 `assets/shadow_chart.png` is an original synthetic fixture under the
 repository's MIT license. Rebuild the example and asset with

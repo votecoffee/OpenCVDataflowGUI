@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 69 | 7 | 26 | 102 | 67.6% |
-| **Overall** | 435 | 8 | 27 | 470 | 92.6% |
+| 4. Selected contrib | 70 | 6 | 26 | 102 | 68.6% |
+| **Overall** | 436 | 7 | 27 | 470 | 92.8% |
 
 <!-- coverage-summary:end -->
 
@@ -690,7 +690,7 @@ fixture or result needed to close the item.
 | --- | --- | --- | --- | --- |
 | S4-71 | Hierarchical feature-selection segmentation | hfs.HfsSegment | Complete | cv.hfs_segments qualifies CPU labels, boundaries and mean colors against native output and labeled ground truth. The label plane feeds region measurements. |
 | S4-72 | Mapper-based multiscale image registration | reg MapperGrad variants, MapperPyramid and Map | Complete | cv.align_mapper recovers all five declared motion models, qualifies seeded composition and inverse round trips, and reports coverage and normalized residual in the reference grid. |
-| S4-73 | Low-light enhancement | intensity_transform.BIMEF and BIMEF2, SciPy sparse CG | Partial | cv.bimef ships automatic and explicit exposure fusion on the standard wheel through SciPy, with measured contrast, noise and saturation. Native parity requires an Eigen-enabled build. |
+| S4-73 | Low-light enhancement | intensity_transform.BIMEF and BIMEF2, SciPy sparse CG | Complete | cv.bimef verifies automatic and explicit native exposure pixel-for-pixel on an isolated Eigen build. The standard wheel uses the measured SciPy path with contrast, noise and saturation comparison against gamma. |
 | S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Planned | Compare matching under illumination or viewpoint changes on a known registered pair. |
 | S4-75 | Contrib surface texture descriptors | xfeatures2d VGG or other supported local descriptors | Planned | Verify texture correspondence on pinned local descriptor assets and a known view pair. |
 | S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator | Planned | Emit synthetic moving-object frames with the native foreground reference masks and reproducible ticket order. |

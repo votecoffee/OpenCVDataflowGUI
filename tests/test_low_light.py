@@ -6,12 +6,10 @@ import cv2
 import numpy as np
 import pytest
 
-from opencv_dataflow.blocks import builtin_registry
 from opencv_dataflow.core import Graph
 from opencv_dataflow.images import ImageArray
 from opencv_dataflow.low_light import EnhanceLowLight, _native_function, illumination_system
 from opencv_dataflow.payloads import ValuePacket, frame
-from opencv_dataflow.toolbox import block_entry
 
 EXAMPLE = Path(__file__).parents[1] / "examples/opencv tools/low_light_enhancement"
 
@@ -32,6 +30,9 @@ def chart_measurements(image):
 
 @pytest.mark.parametrize(("profile", "workers"), [("debug", 1), ("lean", 3)])
 def test_saved_example_improves_shadow_contrast_and_tracks_noise(profile, workers, chart):
+    from opencv_dataflow.blocks import builtin_registry
+    from opencv_dataflow.toolbox import block_entry
+
     graph = Graph.load(EXAMPLE / "low_light_enhancement.json", builtin_registry())
     try:
         graph.set_run_profile(profile)
