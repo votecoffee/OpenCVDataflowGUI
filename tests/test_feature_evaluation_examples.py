@@ -143,7 +143,10 @@ def test_regeneration_matches_all_original_assets_and_saved_graphs(tmp_path):
     builder.HERE = tmp_path
     builder.build()
     for source in HERE.glob("*.json"):
-        assert (tmp_path / source.name).read_bytes() == source.read_bytes(), source
+        # Git checkout settings can change JSON line endings on Windows.
+        regenerated = (tmp_path / source.name).read_bytes().replace(b"\r\n", b"\n")
+        checked_in = source.read_bytes().replace(b"\r\n", b"\n")
+        assert regenerated == checked_in, source
     for name, sha in TRUTH["asset_sha256"].items():
         assert hashlib.sha256((HERE / "assets" / name).read_bytes()).hexdigest() == sha
         assert hashlib.sha256((tmp_path / "assets" / name).read_bytes()).hexdigest() == sha
