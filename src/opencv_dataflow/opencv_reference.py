@@ -433,6 +433,11 @@ BINDINGS = {
     "inspect.aruco_markers": "aruco.ArucoDetector.detectMarkers",
     "calibration.create_aruco_dictionary": "aruco.extendDictionary aruco.Dictionary.getMarkerBits",
     "inspect.gmsd_quality": "quality.QualityGMSD_compute",
+    "cv.percentile_white_balance": (
+        "xphoto.createSimpleWB xphoto.SimpleWB.setP xphoto.SimpleWB.setInputMin "
+        "xphoto.SimpleWB.setInputMax xphoto.SimpleWB.setOutputMin xphoto.SimpleWB.setOutputMax "
+        "xphoto.WhiteBalancer.balanceWhite"
+    ),
     "cv.gray_world_white_balance": (
         "xphoto.createGrayworldWB xphoto.GrayworldWB.setSaturationThreshold "
         "xphoto.WhiteBalancer.balanceWhite xphoto.applyChannelGains"

@@ -1055,6 +1055,7 @@ def builtin_registry():
     from .relative_pose import IndependentRelativePose
     from .wide_pose import SolveWideAnglePose
     from .wide_stereo import CalibrateWideStereo
+    from .percentile_white_balance import PercentileWhiteBalance
     from .white_balance import GrayWorldWhiteBalance
     from .workplane import RectifyWorkplane
     from .bm3d_denoising import Bm3dDenoise
@@ -1149,6 +1150,7 @@ def builtin_registry():
         Undistort,
         ColorBalance,
         GrayWorldWhiteBalance,
+        PercentileWhiteBalance,
         *COLOR_CALIBRATION_BLOCKS,
         PixelToPhysical,
         InspectPlanarDistance,

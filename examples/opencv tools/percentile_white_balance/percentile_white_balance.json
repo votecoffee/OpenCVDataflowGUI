@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Balance four gray steps with outliers",
+      "description": "Run Once. The first and last rows are outliers. Compare the branch that uses every sample with the two branches that trim 2% from each tail. The filmstrip shows the exact percentile result. Original MIT-licensed fixture.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Gray steps with a color cast",
+      "parameters": {
+        "path": "assets/cast_chart.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        180
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "untrimmed",
+      "type": "cv.percentile_white_balance",
+      "name": "Exact without tail trim",
+      "description": "Fit independent B/G/R stretches after excluding bright and dark tails.",
+      "parameters": {
+        "method": "exact_percentiles",
+        "tail_percent": 0,
+        "range_mode": "explicit",
+        "input_min": 0.0,
+        "input_max": 255.0,
+        "output_min": 16,
+        "output_max": 235
+      },
+      "position": [
+        365,
+        -45
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "trimmed",
+      "type": "cv.percentile_white_balance",
+      "name": "Exact with 2% tail trim",
+      "description": "Fit independent B/G/R stretches after excluding bright and dark tails.",
+      "parameters": {
+        "method": "exact_percentiles",
+        "tail_percent": 2,
+        "range_mode": "explicit",
+        "input_min": 0.0,
+        "input_max": 255.0,
+        "output_min": 16,
+        "output_max": 235
+      },
+      "position": [
+        365,
+        180
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "native",
+      "type": "cv.percentile_white_balance",
+      "name": "OpenCV histogram with 2% trim",
+      "description": "Fit independent B/G/R stretches after excluding bright and dark tails.",
+      "parameters": {
+        "method": "opencv_histogram",
+        "tail_percent": 2,
+        "range_mode": "explicit",
+        "input_min": 0.0,
+        "input_max": 255.0,
+        "output_min": 16,
+        "output_max": 235
+      },
+      "position": [
+        365,
+        405
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review the trimmed result",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        745,
+        180
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "untrimmed",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "trimmed",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "native",
+      "input": "image"
+    },
+    {
+      "source": "trimmed",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

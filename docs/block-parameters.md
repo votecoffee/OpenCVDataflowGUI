@@ -6026,6 +6026,28 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `sigma_r` | `0.07` | Value must be a finite number between 0.0001 and 1. Relative color tolerance. Larger values smooth across stronger edges. |
 | `shade_factor` | `0.02` | Value must be a finite number between 0 and 0.1. Sketch brightness scaling. |
 
+## Percentile white balance (`cv.percentile_white_balance`)
+
+Calibration / Color balance
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8, uint16 or float32 RGB/BGR. Straight alpha is preserved.
+
+Input `mask` — Select pixels used to fit exact percentiles. The stretch applies to the whole image.
+
+Input `region` — Optional exact-percentile fit region, intersected with the mask if connected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"exact_percentiles"` | `exact_percentiles`, `opencv_histogram` Exact ranks with optional sample selection, or OpenCV SimpleWB histogram fitting on the whole uint8 or float32 image. |
+| `tail_percent` | `2.0` | Value must be a finite number between 0 and 49.99. Percent of samples trimmed independently from each end of each channel. |
+| `range_mode` | `"image_depth"` | `image_depth`, `explicit` Image depth uses 0–255, 0–65535 or 0–1. Choose explicit to use the limits below. |
+| `input_min` | `0.0` | Value must be a finite number between -1e+09 and 1e+09. Minimum sample value used in explicit mode. Lower samples are clipped. |
+| `input_max` | `255.0` | Value must be a finite number between -1e+09 and 1e+09. Maximum sample value used in explicit mode. Higher samples are clipped. |
+| `output_min` | `0.0` | Value must be a finite number between -1e+09 and 1e+09. Lower output limit in explicit mode, in source sample units. |
+| `output_max` | `255.0` | Value must be a finite number between -1e+09 and 1e+09. Upper output limit in explicit mode, in source sample units. |
+
 ## Polar to Cartesian fields (`cv.polar_to_cart`)
 
 Image processing / Image math
