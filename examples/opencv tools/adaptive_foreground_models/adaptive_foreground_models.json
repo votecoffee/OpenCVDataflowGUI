@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare three adaptive models",
+      "description": "Run All. The original MIT fixture starts with an empty conveyor, shows a part in two positions, then returns to an empty scene. Compare readiness and masks. The filmstrip shows GMG's foreground mask.",
+      "parameters": {},
+      "position": [
+        0,
+        -260
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "video",
+      "type": "input.video_file",
+      "name": "Conveyor replay",
+      "parameters": {
+        "path": "assets/conveyor.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 0,
+        "end_frame": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        0,
+        100
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mog",
+      "type": "sequence.mog_background",
+      "name": "MOG mixtures",
+      "description": "Model a clean scene with per-pixel mixtures of Gaussian color distributions.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "history": 200,
+        "mixtures": 5,
+        "background_ratio": 0.7,
+        "noise_sigma": 0.0,
+        "learning_rate": -1.0
+      },
+      "position": [
+        300,
+        5
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "foreground",
+        "ready"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gmg",
+      "type": "sequence.gmg_background",
+      "name": "GMG color histograms",
+      "description": "Estimate foreground probability from a per-pixel history of quantized colors.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "initialization_frames": 12,
+        "decision_threshold": 0.8,
+        "max_features": 64,
+        "learning_rate": 0.025,
+        "quantization_levels": 16,
+        "background_prior": 0.8,
+        "smoothing_size": 7,
+        "update_background": true,
+        "intensity_range": "native",
+        "minimum_intensity": 0.0,
+        "maximum_intensity": 1.0
+      },
+      "position": [
+        300,
+        243
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "foreground",
+        "ready"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "cnt",
+      "type": "sequence.cnt_background",
+      "name": "CNT stability counts",
+      "description": "Find foreground by counting consecutive stable grayscale pixel values.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "min_stability": 10,
+        "max_stability": 900,
+        "use_history": true,
+        "history_scale": 1.0,
+        "parallel": true
+      },
+      "position": [
+        300,
+        481
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "foreground",
+        "ready"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review GMG masks",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        615,
+        243
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "video",
+      "output": "image",
+      "target": "mog",
+      "input": "image"
+    },
+    {
+      "source": "video",
+      "output": "image",
+      "target": "gmg",
+      "input": "image"
+    },
+    {
+      "source": "video",
+      "output": "image",
+      "target": "cnt",
+      "input": "image"
+    },
+    {
+      "source": "gmg",
+      "output": "mask",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

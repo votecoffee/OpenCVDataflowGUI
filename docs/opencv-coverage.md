@@ -348,6 +348,8 @@ foreground ranking and percentile masks with known part geometry.
 and retina transient masks through warmup, motion and part exit on a timestamped clip.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
+[Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)
+compares MOG, GMG, and CNT warmup and moving-part masks on the same conveyor replay.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose
@@ -394,7 +396,7 @@ region selection.
 | --- | --- |
 | Photo and exposure | Decolorization, motion deblur, `xphoto` white-balance variants and learning-based super-resolution. Exposure stacks support MTB alignment, Mertens fusion, Debevec and Robertson response calibration and HDR merge, and four tone-mapping operators. Seamless clone and edge-aware photo filters have blocks. |
 | Recognition | QR encoding, multiple-code layout, cascade and HOG detector workflows, saliency, line descriptors, image retrieval/vocabulary and OpenCV-specific OCR variants. Face-specific models are outside the inspection baseline. |
-| Sequence | Additional tracker families, background subtractors in `bgsegm`, motion history and advanced video stabilization. |
+| Sequence | Additional tracker families, controlled native background sequence generation, and advanced video stabilization. |
 | Geometric utilities | Expanded robust estimators, graph matching, rectification variants, affine-invariant feature variants, panorama detail steps and coordinate-space diagnostics. |
 | Diagnostics and visualization | Display overlays as reusable blocks, density maps, 3D axes and camera frusta, disparity confidence views and inspection measurement plots. Review feature matches draws inlier and outlier layers on a comparison canvas. [Colorize scalar image](<../examples/opencv tools/colorize_scalar/README.md>) provides built-in or custom palettes, fixed and automatic ranges, and invalid-pixel masking. |
 | Contrib and domain tools | Fuzzy and bioinspired processing, structured-light modes beyond Gray code, saliency, radial-variance and color-moment hashing, and optional SfM, mesh/visualization and hardware-specific modules where the Python build supplies them. |

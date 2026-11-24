@@ -193,7 +193,10 @@ BLOCK_MODULES = {
         "inspect.match_descriptor_radius"
     ),
     "flann": "inspect.match_flann",
-    "bgsegm": "sequence.gsoc_background sequence.lsbp_background",
+    "bgsegm": (
+        "sequence.gsoc_background sequence.lsbp_background sequence.mog_background "
+        "sequence.gmg_background sequence.cnt_background"
+    ),
     "videoio": "input.camera",
     "objdetect": "3d.aruco_pose input.coded_rig_observations",
     "ptcloud": (

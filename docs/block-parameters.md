@@ -15069,6 +15069,36 @@ Input `transforms` — Matching stabilization transforms, or valid=false/reason 
 | `frame_period_ms` | `40.0` | Value must be a finite number between 0.001 and 1e+06. Nominal indexed frame period; does not assert exposure timing. |
 | `interpolation` | `"linear"` | `nearest`, `linear` Saved sampling policy; match the original stabilization interpolation. |
 
+## CNT background subtraction (`sequence.cnt_background`)
+
+Sequence / Foreground segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Consecutive frames on one camera grid, starting with a clean scene.
+
+Input `mask` — Limit the published foreground; learning still uses the full image.
+
+Input `region` — Intersect this region with the optional mask on the source grid.
+
+Input `reset` — Clear this stream's model before processing the current frame.
+
+Input `stream` — Optional key to keep independent camera models.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Value must be a whole number between 1 and 10000. Minimum frames before publishing a mask. Use a clean scene during startup. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.01 and 4096. Estimated retained model budget across streams, in MiB. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `min_stability` | `15` | Value must be a whole number between 1 and 9999. Consecutive stable frames before classifying a pixel as background. |
+| `max_stability` | `900` | Value must be a whole number between 2 and 1e+06. Maximum stability count of a pixel's historical background value. |
+| `use_history` | `true` | Use accumulated pixel history as well as adjacent-frame stability. |
+| `history_scale` | `1.0` | Value must be a finite number between 1e-06 and 1. Fraction of maximum stability used in history mode. |
+| `parallel` | `true` | Process image rows in parallel within OpenCV. |
+
 ## Track region by color (`sequence.color_tracker`)
 
 Sequence / Object tracking
@@ -15343,6 +15373,42 @@ Input `image` — Single-channel foreground image; numeric samples are threshold
 | `minimum_iou` | `0.0` | Value must be a finite number between 0 and 1. Minimum bounding-box intersection over union. Zero disables overlap gating and allows disjoint moving masks. |
 | `maximum_components` | `256` | Value must be a whole number between 1 and 512. Eligible components per frame. Exceeding the bound fails and clears sequence memory. |
 
+## GMG background subtraction (`sequence.gmg_background`)
+
+Sequence / Foreground segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Consecutive frames on one camera grid, starting with a clean scene.
+
+Input `mask` — Limit the published foreground; learning still uses the full image.
+
+Input `region` — Intersect this region with the optional mask on the source grid.
+
+Input `reset` — Clear this stream's model before processing the current frame.
+
+Input `stream` — Optional key to keep independent camera models.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Value must be a whole number between 1 and 10000. Minimum frames before publishing a mask. Use a clean scene during startup. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.01 and 4096. Estimated retained model budget across streams, in MiB. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `initialization_frames` | `120` | Value must be a whole number between 1 and 9998. Native training frames, followed by a clean priming frame. |
+| `decision_threshold` | `0.8` | Value must be a finite number between 0 and 1. Foreground probability threshold. |
+| `max_features` | `64` | Value must be a whole number between 1 and 256. Maximum quantized colors per pixel. Higher values use more memory. |
+| `learning_rate` | `0.025` | Value must be a finite number between 1e-08 and 1. Weight of a new sample during live histogram updates. |
+| `quantization_levels` | `16` | Value must be a whole number between 1 and 255. Number of levels per channel over the selected intensity range. |
+| `background_prior` | `0.8` | Value must be a finite number between 1e-06 and 0.999999. Prior probability that a pixel belongs to the background. |
+| `smoothing_size` | `7` | Value must be a whole number between 0 and 31. Odd median kernel width. Zero disables smoothing. |
+| `update_background` | `true` | Keep adapting after warmup. Disable to hold the learned scene. |
+| `intensity_range` | `"native"` | `native`, `custom` Native uses the full unsigned range or [0, 1] for float images. |
+| `minimum_intensity` | `0.0` | Lower bound of the custom range in canonical image units. |
+| `maximum_intensity` | `1.0` | Upper bound of the custom range in canonical image units. |
+
 ## GSoC background subtraction (`sequence.gsoc_background`)
 
 Sequence / Foreground segmentation
@@ -15533,6 +15599,36 @@ Input `known_foreground` — Current-grid uint8 object mask. With a restored ref
 | `minimum_variance` | `4.0` |  |
 | `maximum_variance` | `75.0` |  |
 | `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
+
+## MOG background subtraction (`sequence.mog_background`)
+
+Sequence / Foreground segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Consecutive frames on one camera grid, starting with a clean scene.
+
+Input `mask` — Limit the published foreground; learning still uses the full image.
+
+Input `region` — Intersect this region with the optional mask on the source grid.
+
+Input `reset` — Clear this stream's model before processing the current frame.
+
+Input `stream` — Optional key to keep independent camera models.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Value must be a whole number between 1 and 10000. Minimum frames before publishing a mask. Use a clean scene during startup. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.01 and 4096. Estimated retained model budget across streams, in MiB. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `history` | `200` | Value must be a whole number between 1 and 1e+06. Frame history for automatic learning. |
+| `mixtures` | `5` | Value must be a whole number between 1 and 8. Maximum Gaussian components per pixel. |
+| `background_ratio` | `0.7` | Value must be a finite number between 1e-06 and 1. Minimum cumulative weight of the background components. |
+| `noise_sigma` | `0.0` | Value must be a finite number between 0 and 255. Background noise standard deviation. Zero selects the native default. |
+| `learning_rate` | `-1.0` | Value must be a finite number between -1 and 0.999999. Use -1 for automatic learning or 0 to freeze after the first frame. |
 
 ## Motion history and direction (`sequence.motion_history`)
 

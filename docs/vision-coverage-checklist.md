@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 52 | 6 | 44 | 102 | 51.0% |
-| **Overall** | 418 | 7 | 45 | 470 | 88.9% |
+| 4. Selected contrib | 53 | 6 | 43 | 102 | 52.0% |
+| **Overall** | 419 | 7 | 44 | 470 | 89.1% |
 
 <!-- coverage-summary:end -->
 
@@ -668,7 +668,7 @@ fixture or result needed to close the item.
 | S4-53 | Static saliency image maps | saliency.StaticSaliencySpectralResidual and StaticSaliencyFineGrained | Complete | cv.static_saliency emits both native responses and deterministic thresholded masks. Known foreground ranks ahead of background at 0.986/0.993 AUC, with 0.543/0.597 mask IoU at the same percentile. |
 | S4-54 | Motion saliency maps | saliency.MotionSaliencyBinWangApr2014 and bioinspired transient-area segmentation | Complete | sequence.motion_saliency qualifies both native backends on timestamped frames. Bin Wang exactly selects the part across 15 frames. Retina detects local changes and the part exit. Focused checks cover warmup, reset, grid, selection and bounded native state. |
 | S4-55 | Motion history and time surfaces | motempl.updateMotionHistory, calcMotionGradient, calcGlobalOrientation, segmentMotion | Complete | sequence.motion_history publishes pixel age, recency, global direction and native region labels. The timestamped replay verifies 0° rightward, 90° downward and history expiration after the inclusive 250 ms window. |
-| S4-56 | Additional adaptive foreground models | bgsegm MOG, GMG and CNT | Planned | Compare warmup and foreground response using the existing empty-conveyor fixture. |
+| S4-56 | Additional adaptive foreground models | bgsegm MOG, GMG and CNT | Complete | Three bounded sequence blocks compare warmup, part masks, and recovery on a lossless empty-conveyor replay. MOG and CNT recover all 480 part pixels and GMG recovers 460 with native median smoothing. |
 | S4-57 | Sparse-to-dense flow interpolation | optflow.calcOpticalFlowSparseToDense | Planned | Verify displacement, sparse sampling controls and behavior at motion boundaries. |
 | S4-58 | PCAFlow and SimpleFlow | optflow.createOptFlow_PCAFlow and createOptFlow_SimpleFlow | Planned | Compare each estimator on a known displacement and preserve vector units. |
 | S4-59 | Edge-aware interpolation of image matches | ximgproc.EdgeAwareInterpolator | Planned | Turn sparse matches into a dense field and verify preservation of known motion edges. |

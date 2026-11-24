@@ -846,6 +846,7 @@ def builtin_registry():
     from .multipage_blocks import MULTIPAGE_BLOCKS
     from .multiscale_ridges import MultiscaleRidges
     from .multiscale_super_resolution import MultiScaleSuperResolution
+    from .adaptive_foreground import ADAPTIVE_FOREGROUND_BLOCKS
     from .native_background import NATIVE_BACKGROUND_BLOCKS
     from .native_index import NATIVE_INDEX_BLOCKS
     from .native_lightglue import NATIVE_LIGHTGLUE_BLOCKS
@@ -1375,6 +1376,7 @@ def builtin_registry():
         StabilizeRecordedSequence,
         StabilizeStream,
         *NATIVE_BACKGROUND_BLOCKS,
+        *ADAPTIVE_FOREGROUND_BLOCKS,
         *NATIVE_TRACKER_BLOCKS,
         MILSequence,
         ColorDistributionTracker,
