@@ -31,4 +31,4 @@ license. `assets/truth.json` records the known reference-to-moving matrix.
 Rebuild the graph and assets with
 `python build_example.py --output <new-directory>`.
 
-[OpenCV image registration](https://docs.opencv.org/5.0/extra_modules/group__reg.html)
+[OpenCV multiscale mapper reference](https://docs.opencv.org/5.0/extra_modules/mapperpyramid_8hpp.html)
