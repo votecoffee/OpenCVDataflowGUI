@@ -390,6 +390,7 @@ BINDINGS = {
     "cv.transpose_image": "transpose",
     "cv.unsharp": "GaussianBlur addWeighted",
     "cv.warp_affine": "warpAffine",
+    "cv.peilin_normalization": "ximgproc.PeiLinNormalization moments warpAffine",
     "cv.static_saliency": (
         "saliency.StaticSaliencySpectralResidual_create saliency.StaticSaliencyFineGrained_create "
         "saliency.StaticSaliencySpectralResidual.computeSaliency "

@@ -370,6 +370,8 @@ native uint8 and uint16 inference, palette support and a pinned forest on three 
 extremal components with horizontal native grouping on contrast-varied printed labels.
 [Tesseract OCR](<../examples/opencv tools/tesseract_ocr/README.md>) reads detected label crops
 with pinned language data and compares word geometry and confidence against the native OpenCV adapter.
+[Pei–Lin normalization](<../examples/opencv tools/peilin_normalization/README.md>) returns reusable
+source-to-normalized transforms and aligns independently drawn affine-equivalent silhouettes.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

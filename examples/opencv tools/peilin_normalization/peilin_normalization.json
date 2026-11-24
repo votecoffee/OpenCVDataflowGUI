@@ -1,0 +1,307 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Normalize equivalent silhouettes",
+      "description": "Run Once and compare the original and normalized mask measurements. Both shapes come from the same polygon. The second is rasterized after translation, shear and anisotropic scale. Original MIT-licensed images.",
+      "parameters": {},
+      "position": [
+        0,
+        -270
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        70
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "normalize_reference",
+      "type": "cv.peilin_normalization",
+      "name": "Normalize reference",
+      "description": "Normalize a shape's position, spread and orientation from its spatial moments.",
+      "parameters": {
+        "weight_source": "intensity",
+        "threshold": 0.5,
+        "polarity": "bright",
+        "width": 200,
+        "height": 200,
+        "interpolation": "nearest",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        350,
+        70
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "transform",
+        "geometry",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "distorted",
+      "type": "input.file",
+      "name": "Distorted",
+      "parameters": {
+        "path": "assets/distorted.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        310
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "normalize_distorted",
+      "type": "cv.peilin_normalization",
+      "name": "Normalize distorted",
+      "description": "Normalize a shape's position, spread and orientation from its spatial moments.",
+      "parameters": {
+        "weight_source": "intensity",
+        "threshold": 0.5,
+        "polarity": "bright",
+        "width": 200,
+        "height": 200,
+        "interpolation": "nearest",
+        "border": "constant",
+        "border_value": 0.0
+      },
+      "position": [
+        350,
+        310
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "transform",
+        "geometry",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "before",
+      "type": "inspect.mask_boundary",
+      "name": "Compare originals",
+      "documentation": "<p>Measure directed inner-boundary pixel-center distances and selected missing/extra foreground area. Holes and disconnected components participate. Selection restricts queries and area counts, while distance targets retain the full uncut boundaries. Distance maps are zero outside their companion boundary masks; missing targets withhold distance maps and statistics rather than inventing finite distances.</p><p>Both combines the two directed sample sets, so mean/RMS/percentile are weighted by boundary pixel counts. Tolerance is inclusive. Beyond-tolerance area excludes differences within that distance of the opposite boundary. Image borders are an explicit exterior assumption. All measurements use current-grid pixels, not physical or automatically rescaled pyramid units. Float32 distances use a four-epsilon relative roundoff guard (at least four float32 epsilons) for all tolerance tests; tolerances of one million pixels or more need no guard. No registration is performed.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_misc.html\">OpenCV distance transform reference</a>.</p>",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "tickets": "sample",
+        "foreground": "nonzero",
+        "connectivity": "8",
+        "image_border": "background",
+        "distance_type": "euclidean",
+        "l2_mask": "precise",
+        "direction": "both",
+        "statistic": "maximum",
+        "percentile": 95.0,
+        "tolerance": 2.0,
+        "check_boundary": false,
+        "check_area": false,
+        "area_basis": "beyond_tolerance",
+        "maximum_missing_pixels": 0,
+        "maximum_extra_pixels": 0,
+        "empty_policy": "fail",
+        "graphics_points": 4096
+      },
+      "position": [
+        350,
+        -175
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "measurements",
+        "missing",
+        "extra"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "after",
+      "type": "inspect.mask_boundary",
+      "name": "Compare normalized shapes",
+      "documentation": "<p>Measure directed inner-boundary pixel-center distances and selected missing/extra foreground area. Holes and disconnected components participate. Selection restricts queries and area counts, while distance targets retain the full uncut boundaries. Distance maps are zero outside their companion boundary masks; missing targets withhold distance maps and statistics rather than inventing finite distances.</p><p>Both combines the two directed sample sets, so mean/RMS/percentile are weighted by boundary pixel counts. Tolerance is inclusive. Beyond-tolerance area excludes differences within that distance of the opposite boundary. Image borders are an explicit exterior assumption. All measurements use current-grid pixels, not physical or automatically rescaled pyramid units. Float32 distances use a four-epsilon relative roundoff guard (at least four float32 epsilons) for all tolerance tests; tolerances of one million pixels or more need no guard. No registration is performed.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_misc.html\">OpenCV distance transform reference</a>.</p>",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "tickets": "sample",
+        "foreground": "nonzero",
+        "connectivity": "8",
+        "image_border": "background",
+        "distance_type": "euclidean",
+        "l2_mask": "precise",
+        "direction": "both",
+        "statistic": "maximum",
+        "percentile": 95.0,
+        "tolerance": 2.0,
+        "check_boundary": false,
+        "check_area": false,
+        "area_basis": "beyond_tolerance",
+        "maximum_missing_pixels": 0,
+        "maximum_extra_pixels": 0,
+        "empty_policy": "fail",
+        "graphics_points": 4096
+      },
+      "position": [
+        730,
+        175
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "measurements",
+        "missing",
+        "extra"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review normalized shape",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1070,
+        175
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "normalize_reference",
+      "input": "image"
+    },
+    {
+      "source": "distorted",
+      "output": "image",
+      "target": "normalize_distorted",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "before",
+      "input": "reference"
+    },
+    {
+      "source": "normalize_reference",
+      "output": "image",
+      "target": "after",
+      "input": "reference"
+    },
+    {
+      "source": "distorted",
+      "output": "image",
+      "target": "before",
+      "input": "sample"
+    },
+    {
+      "source": "normalize_distorted",
+      "output": "image",
+      "target": "after",
+      "input": "sample"
+    },
+    {
+      "source": "after",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

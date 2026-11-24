@@ -1058,6 +1058,7 @@ def builtin_registry():
     from .wide_pose import SolveWideAnglePose
     from .wide_stereo import CalibrateWideStereo
     from .learned_white_balance import LearnedWhiteBalance
+    from .peilin_normalization import PeiLinNormalization
     from .percentile_white_balance import PercentileWhiteBalance
     from .white_balance import GrayWorldWhiteBalance
     from .workplane import RectifyWorkplane
@@ -1336,6 +1337,7 @@ def builtin_registry():
         CompareGradientQuality,
         CompareImageQuality,
         CompareMaskBoundary,
+        PeiLinNormalization,
         CompareAlignedImages,
         DifferentialExposure,
         CameraHealth,

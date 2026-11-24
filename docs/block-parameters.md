@@ -6029,6 +6029,29 @@ Input `path` — Ordered [x, y] point list in the image's pixel coordinate frame
 | `interpolation` | `"linear"` | `nearest`, `linear` |
 | `include_alpha` | `false` | Include alpha as its own profile on four-channel images. |
 
+## Normalize shape (Pei–Lin) (`cv.peilin_normalization`)
+
+Image processing / Geometry
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Warp the original encoding and depth. Intensity fitting uses grayscale.
+
+Input `mask` — Restrict the moment estimate. Selection mode fits the mask as the silhouette.
+
+Input `region` — Restrict the moment estimate and intersect with any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `weight_source` | `"intensity"` | `intensity`, `threshold`, `selection` Fit from nonnegative grayscale intensity, a binary threshold, or the wired mask and region treated as a binary silhouette. |
+| `threshold` | `0.5` | Value must be a finite number between 0 and 1. Threshold relative to full uint8/uint16 scale or in float [0, 1] units. |
+| `polarity` | `"bright"` | `bright`, `dark` Threshold mode selects samples at or above the cutoff for bright foreground or below it for dark foreground. |
+| `width` | `0` | Value must be zero or a whole number between 8 and 16384. Output canvas width. Zero uses the source width. |
+| `height` | `0` | Value must be zero or a whole number between 8 and 16384. Output canvas height. Zero uses the source height. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` Sampling method when warping the image. |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` Sampling rule outside the source grid. |
+| `border_value` | `0.0` | Exterior sample value for constant borders, in source units. |
+
 ## Pencil sketch (`cv.pencil_sketch`)
 
 Image processing / Edge-aware rendering
