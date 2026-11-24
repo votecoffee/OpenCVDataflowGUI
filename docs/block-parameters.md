@@ -6659,6 +6659,49 @@ Inputs: `image` (image).
 | `scale_y` | `1.0` |  |
 | `padding_value` | `0.0` | Letterbox padding in image units, applied to every channel. |
 
+## Interpolate motion with RIC (`cv.ric_flow`)
+
+Image processing / Video processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `target` (image), `matches` (data, optional), `source_points` (data, optional), `target_points` (data, optional), `cost_map` (image, optional).
+
+Input `image` — Query/source image. Its edges guide interpolation onto its own pixel grid.
+
+Input `target` — Train/target image on an equal-size grid.
+
+Input `matches` — Descriptor match record with query and train points in corresponding order.
+
+Input `source_points` — An ordered list of source pixel coordinates.
+
+Input `target_points` — The matching list of target pixel coordinates.
+
+Input `cost_map` — Optional source-grid float32 edge costs in [0, 1].
+
+Input `mask` — Limit the published vectors and support on the source grid.
+
+Input `region` — Intersect this source-grid region with the optional mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `neighbors` | `32` | Value must be a whole number between 4 and 256. Native neighbor limit for the match and superpixel graphs. |
+| `alpha` | `0.7` | Value must be a finite number between 0.0001 and 10. Controls how quickly the weight of geodesically distant matches falls off. |
+| `superpixel_mode` | `"slic"` | `slic`, `slico`, `mslic` SLIC variant used to partition the source image. |
+| `superpixel_size` | `15` | Value must be a whole number between 6 and 512. Nominal source superpixel size in pixels. |
+| `superpixel_neighbors` | `150` | Value must be a whole number between 4 and 512. Distinct matches requested per superpixel for model estimation. |
+| `superpixel_ruler` | `15.0` | Value must be a finite number between 0.0001 and 255. Native compactness or smoothness factor for superpixels. |
+| `model_iterations` | `4` | Value must be a whole number between 1 and 12. Number of native model propagation passes. |
+| `refine_models` | `true` | Refit affine models with enough inliers. |
+| `max_flow` | `250.0` | Value must be a finite number between 0.0001 and 8192. If a predicted component exceeds this limit, RIC uses a local translation. |
+| `variational_refinement` | `false` | Refine the field using the source and target images. |
+| `post_smoothing` | `true` | Apply the native fast global smoother to the flow. |
+| `fgs_lambda` | `500.0` | Value must be a finite number between 0 and 100000. Regularization weight for post-smoothing. |
+| `fgs_sigma` | `1.5` | Value must be a finite number between 1e-06 and 255. Sensitivity to guide intensity during post-smoothing. |
+| `support_radius` | `0.0` | Value must be a finite number between 0 and 8192. Limit support to this distance from a source seed in pixels. Zero disables. |
+| `timeout_seconds` | `30.0` | Value must be a finite number between 0.1 and 120. Time budget for the isolated OpenCV worker. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Motion in pixels mapped to full brightness in the flow view. |
+| `source_points` | `[]` | Optional ordered [x,y] source coordinates for offline or fixed pairs. |
+| `target_points` | `[]` | Target coordinates in the same order as the configured source points. |
+
 ## Ridge response (`cv.ridge_response`)
 
 Image processing / Filtering

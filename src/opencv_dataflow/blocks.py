@@ -980,6 +980,7 @@ def builtin_registry():
     from .deepflow import DeepFlowSequence
     from .dense_rlof import DenseRLOFSequence
     from .edge_aware_flow import EdgeAwareFlow
+    from .ric_flow import RobustCorrespondenceFlow
     from .sparse_to_dense_flow import SparseToDenseSequence
     from .pca_simple_flow import PCAFlowSequence, SimpleFlowSequence
     from .dual_tvl1_flow import DualTVL1Sequence
@@ -1409,6 +1410,7 @@ def builtin_registry():
         DenseRLOFSequence,
         SparseToDenseSequence,
         EdgeAwareFlow,
+        RobustCorrespondenceFlow,
         PCAFlowSequence,
         SimpleFlowSequence,
         *SIMPLEITK_BLOCKS,

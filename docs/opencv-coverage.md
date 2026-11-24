@@ -307,6 +307,8 @@ shows how grid spacing and post-smoothing affect a boundary between opposing mot
 native dense motion estimators on the same known pixel translation.
 [Edge-aware interpolation](<../examples/opencv tools/edge_aware_matches/README.md>)
 uses supplied match pairs to estimate a dense field across a known motion seam.
+[Robust correspondence interpolation](<../examples/opencv tools/ric_correspondences/README.md>)
+verifies native RIC across a known motion seam with outliers and seed-limited warp support.
 [Trimap alpha matting](<../examples/custom tools/trimap_matting/README.md>) qualifies a
 closed-form SciPy backend with analytic opacity and hard foreground/background seeds.
 [Dense RLOF](<../examples/opencv tools/dense_rlof/README.md>) compares fixed and cross

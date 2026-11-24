@@ -51,10 +51,14 @@ def configure_interpolator(solver, p):
     solver.setFGSSigma(float(p["fgs_sigma"]))
 
 
-def unique_seeds(source, target, size):
+def unique_seeds(source, target, size, offset=0.5):
     source, target = (np.ascontiguousarray(points, dtype=np.float32) for points in (source, target))
-    # OpenCV assigns each control to the nearest source pixel and clamps at the far edge.
-    seeds = np.minimum(np.floor(source + np.float32(0.5)).astype(np.int32), np.array(size) - 1)
+    seeds = np.floor(source + np.float32(offset)).astype(np.int32)
+    if offset == 0.5:
+        # EdgeAwareInterpolator rounds and clamps. RIC truncates without a clamp.
+        seeds = np.minimum(seeds, np.array(size) - 1)
+    elif np.any(seeds >= size):
+        raise ValidationError("Source seed rounds outside the float32 image grid", "matches")
     _, first, inverse = np.unique(seeds, axis=0, return_index=True, return_inverse=True)
     if len(first) != len(source):
         representatives = first[inverse]
@@ -80,11 +84,11 @@ def validate_match_context(supplied, expected, size, label):
             raise ValidationError(f"{label} points belong to a different ticket", "matches")
 
 
-class EdgeAwareFlow(Block):
-    type_id, title = "cv.edge_aware_flow", "Interpolate matched image motion"
+class MatchedPointFlow(Block):
+    """Shared correspondence inputs, spatial validation and dense flow outputs."""
+
     category = block_type = "Image processing"
     subtype = "Video processing"
-    description = "Use paired image points and an edge guide to estimate dense pixel motion."
     inputs = (
         *SELECTION_INPUTS,
         Port("target"),
@@ -103,32 +107,16 @@ class EdgeAwareFlow(Block):
     )
     payload_reference = "image"
     process_inputs_readonly = preview_safe = True
+    seed_offset = 0.5
     defaults = {
-        "neighbors": 128,
-        "sigma": 0.05,
-        "geodesic_lambda": 999.0,
-        "post_smoothing": True,
-        "fgs_lambda": 500.0,
-        "fgs_sigma": 1.5,
         "visual_max_motion": 10.0,
         "source_points": [],
         "target_points": [],
     }
     parameter_ranges = {
-        "neighbors": NumericRange(4, 512, whole=True),
-        "sigma": NumericRange(1e-6, 1),
-        "geodesic_lambda": NumericRange(0, 1000),
-        "fgs_lambda": NumericRange(0, 100000),
-        "fgs_sigma": NumericRange(1e-6, 255),
         "visual_max_motion": NumericRange(1e-6),
     }
     parameter_help = {
-        "neighbors": "Number of distinct source seed pixels in each local affine fit.",
-        "sigma": "Distance weight falloff for the local affine fits.",
-        "geodesic_lambda": "Edge weight in geodesic distance. Zero ignores edges during fitting.",
-        "post_smoothing": "Apply the native fast global smoother after interpolation.",
-        "fgs_lambda": "Regularization weight for post-smoothing.",
-        "fgs_sigma": "Sensitivity to guide color or intensity during post-smoothing.",
         "visual_max_motion": "Motion in pixels mapped to full brightness in the flow view.",
         "source_points": "Optional ordered [x,y] source coordinates for offline or fixed pairs.",
         "target_points": "Target coordinates in the same order as the configured source points.",
@@ -154,12 +142,6 @@ class EdgeAwareFlow(Block):
         self.exposed_inputs = ["image", "target", "matches"]
         self.exposed_outputs = ["flow", "support", "report", "visualization"]
         self.preview_output = "visualization"
-
-    def validate_parameters(self, parameters=None):
-        super().validate_parameters(parameters)
-        p = self.parameters if parameters is None else parameters
-        if type(p["post_smoothing"]) is not bool:
-            raise ValidationError("Post smoothing must be boolean", "post_smoothing")
 
     def points(self, inputs, size, source_context, target_context):
         role_contexts = (source_context, target_context)
@@ -189,30 +171,31 @@ class EdgeAwareFlow(Block):
             raise ValidationError(f"Use up to {_MAX_MATCHES:,} matches", "matches")
         return source, target
 
+    def validate_workload(self, size, count):
+        raise NotImplementedError
+
+    def interpolate(self, guide, source_points, target_guide, target_points, cost):
+        raise NotImplementedError
+
+    def limit_support(self, valid, source_points):
+        """Optionally narrow geometric support on the source grid in place."""
+
     def process(self, inputs):
         p = self.parameters
         source, target = inputs["image"], inputs["target"]
         height, width = source.shape[:2]
         size = [width, height]
         if min(size) < 2 or max(size) > 8192:
-            raise ValidationError("Edge-aware interpolation requires 2–8192 pixels per axis")
+            raise ValidationError("Match interpolation requires 2–8192 pixels per axis")
         if target.shape[:2] != source.shape[:2]:
             raise ValidationError("Source and target raster sizes must match", "target")
         source_context, target_context = (self.input_payloads[name] for name in ("image", "target"))
         for context in (source_context, target_context):
             check_spatial(context, size)
         raw_source, raw_target = self.points(inputs, size, source_context, target_context)
-        source_points, target_points = unique_seeds(raw_source, raw_target, size)
-        count, neighbors = len(source_points), int(p["neighbors"])
-        if count < neighbors:
-            raise ValidationError(
-                f"Only {count} distinct source seeds for {neighbors} neighbors", "neighbors"
-            )
-        if height * width * 112 + count * (64 + 8 * neighbors) > _MAX_WORKSPACE_BYTES:
-            raise ValidationError(
-                "Edge-aware workspace exceeds 512 MiB. Crop or reduce matches or neighbors.",
-                "neighbors",
-            )
+        source_points, target_points = unique_seeds(raw_source, raw_target, size, self.seed_offset)
+        count = len(source_points)
+        self.validate_workload(size, count)
         guide, target_guide = flow_guide(source), flow_guide(target)
         selection = selection_mask(inputs, source)
 
@@ -231,19 +214,7 @@ class EdgeAwareFlow(Block):
                 raise ValidationError("Cost map must be source-grid float32 in [0, 1]", "cost_map")
 
         shift = target_points - source_points
-        if np.all(shift == shift[0]):
-            # The native robust fit uses a zero inlier radius on exact translations.
-            flow = np.empty((height, width, 2), np.float32)
-            flow[:] = shift[0]
-            method = "uniform_translation"
-        else:
-            solver = edge_aware_factory()()
-            configure_interpolator(solver, p)
-            solver.setLambda(float(p["geodesic_lambda"]))
-            if cost is not None:
-                solver.setCostMap(cost)
-            flow = solver.interpolate(guide, source_points, target_guide, target_points)
-            method = "edge_aware"
+        flow, method = self.interpolate(guide, source_points, target_guide, target_points, cost)
         if (
             flow is None
             or flow.shape != (height, width, 2)
@@ -263,6 +234,7 @@ class EdgeAwareFlow(Block):
         x = np.arange(width, dtype=np.float32) + flow[..., 0]
         y = np.arange(height, dtype=np.float32)[:, None] + flow[..., 1]
         valid = inside(x, y, (height, width))
+        self.limit_support(valid, source_points)
         if selection is not None:
             valid &= selection != 0
             flow[selection == 0] = 0
@@ -317,3 +289,70 @@ class EdgeAwareFlow(Block):
             drawings=drawings,
             message=f"{count} source seeds · {int(valid.sum())} supported pixels",
         )
+
+
+class EdgeAwareFlow(MatchedPointFlow):
+    type_id, title = "cv.edge_aware_flow", "Interpolate matched image motion"
+    description = "Use paired image points and an edge guide to estimate dense pixel motion."
+    process_inputs_readonly = True
+    defaults = {
+        "neighbors": 128,
+        "sigma": 0.05,
+        "geodesic_lambda": 999.0,
+        "post_smoothing": True,
+        "fgs_lambda": 500.0,
+        "fgs_sigma": 1.5,
+        **MatchedPointFlow.defaults,
+    }
+    parameter_ranges = {
+        "neighbors": NumericRange(4, 512, whole=True),
+        "sigma": NumericRange(1e-6, 1),
+        "geodesic_lambda": NumericRange(0, 1000),
+        "fgs_lambda": NumericRange(0, 100000),
+        "fgs_sigma": NumericRange(1e-6, 255),
+        **MatchedPointFlow.parameter_ranges,
+    }
+    parameter_help = {
+        "neighbors": "Number of distinct source seed pixels in each local affine fit.",
+        "sigma": "Distance weight falloff for the local affine fits.",
+        "geodesic_lambda": "Edge weight in geodesic distance. Zero ignores edges during fitting.",
+        "post_smoothing": "Apply the native fast global smoother after interpolation.",
+        "fgs_lambda": "Regularization weight for post-smoothing.",
+        "fgs_sigma": "Sensitivity to guide color or intensity during post-smoothing.",
+        **MatchedPointFlow.parameter_help,
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if type(p["post_smoothing"]) is not bool:
+            raise ValidationError("Post smoothing must be boolean", "post_smoothing")
+
+    def validate_workload(self, size, count):
+        width, height = size
+        neighbors = int(self.parameters["neighbors"])
+        if count < neighbors:
+            raise ValidationError(
+                f"Only {count} distinct source seeds for {neighbors} neighbors", "neighbors"
+            )
+        if height * width * 112 + count * (64 + 8 * neighbors) > _MAX_WORKSPACE_BYTES:
+            raise ValidationError(
+                "Edge-aware workspace exceeds 512 MiB. Crop or reduce matches or neighbors.",
+                "neighbors",
+            )
+
+    def interpolate(self, guide, source_points, target_guide, target_points, cost):
+        p = self.parameters
+        shift = target_points - source_points
+        if np.all(shift == shift[0]):
+            # The native robust fit uses a zero inlier radius on exact translations.
+            flow = np.empty((*guide.shape[:2], 2), np.float32)
+            flow[:] = shift[0]
+            return flow, "uniform_translation"
+
+        solver = edge_aware_factory()()
+        configure_interpolator(solver, p)
+        solver.setLambda(float(p["geodesic_lambda"]))
+        if cost is not None:
+            solver.setCostMap(cost)
+        return solver.interpolate(guide, source_points, target_guide, target_points), "edge_aware"

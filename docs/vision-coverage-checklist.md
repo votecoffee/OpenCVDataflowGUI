@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 73 | 6 | 23 | 102 | 71.6% |
-| **Overall** | 439 | 7 | 24 | 470 | 93.4% |
+| 4. Selected contrib | 74 | 6 | 22 | 102 | 72.5% |
+| **Overall** | 440 | 7 | 23 | 470 | 93.6% |
 
 <!-- coverage-summary:end -->
 
@@ -694,7 +694,7 @@ fixture or result needed to close the item.
 | S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Complete | inspect.boost_descriptor verifies all seven variants against native rows. Hamming and L2 matching verify correspondence on a rotated, scaled and relit reference pair. |
 | S4-75 | Contrib surface texture descriptors | xfeatures2d.VGG and xfeatures2d.LUCID | Complete | inspect.vgg_descriptor verifies all four compiled models in float and byte modes using L2. inspect.lucid_descriptor qualifies color rows and Hamming matching. Three saved branches evaluate a known shifted and locally relit pair. |
 | S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator, SyntheticSequenceGenerator.getNextFrame | Complete | input.synthetic_background_sequence emits ticketed BGR frames, native foreground masks and pixel bounds. Cursor restore and loops reproduce native frames. The saved graph checks exact masks over 24 tickets. |
-| S4-77 | Contrib optical flow interpolation with robust correspondence | ximgproc.RICInterpolator | Planned | Interpolate a known sparse field and validate deformation boundaries and unsupported regions. |
+| S4-77 | Contrib optical flow interpolation with robust correspondence | ximgproc.RICInterpolator | Complete | cv.ric_flow fits native piecewise affine motion in an isolated worker. The saved outlier fixture verifies the motion seam, proximity-limited support and downstream warping. |
 | S4-78 | Variance-adaptive edge-preserving smoothing | ximgproc.edgePreservingFilter | Planned | Reduce noise while preserving the position and strength of a measured image edge. |
 | S4-79 | Edge Drawing segments and primitives | ximgproc.createEdgeDrawing | Planned | Verify ordered edge segments and fitted line or ellipse outputs against known geometry. |
 | S4-80 | Tree-based image regions | xfeatures2d.TBMR | Planned | Verify keypoint location and scale through a known image transform and compare repeatability with MSER. |

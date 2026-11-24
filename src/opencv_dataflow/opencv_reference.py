@@ -576,6 +576,7 @@ BINDINGS = {
     "sequence.pcaflow": "optflow.createOptFlow_PCAFlow DenseOpticalFlow.calc",
     "sequence.simpleflow": "optflow.createOptFlow_SimpleFlow optflow.calcOpticalFlowSF",
     "cv.edge_aware_flow": "ximgproc.createEdgeAwareInterpolator EdgeAwareInterpolator.interpolate",
+    "cv.ric_flow": "ximgproc.createRICInterpolator ximgproc.RICInterpolator.interpolate",
     "sequence.sparse_to_dense": "optflow.calcOpticalFlowSparseToDense calcOpticalFlowPyrLK",
     "sequence.dense_rlof": "optflow.calcOpticalFlowDenseRLOF optflow.RLOFOpticalFlowParameter",
     "sequence.dis": "DISOpticalFlow.create DenseOpticalFlow.calc",
