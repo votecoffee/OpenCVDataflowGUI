@@ -111,6 +111,15 @@ additional binary patch descriptors (S4-48) to **17/20**, scale-aware
 interest points (S4-49) to **18/20**, shape-context contour comparison
 (S4-50) to **19/20**, and Hausdorff contour distance (S4-51) to **20/20**.
 
+The S4-51 offscreen checkpoint on `6f9fb990` covered 93 modules and
+1,290 tests across recent vision blocks, project persistence, scheduling,
+plugins and the editor. It finished in 444.65 seconds with **1,284 passes**
+and **5 skips**. The one failure reproduced on the previous commit and
+came from Windows checkout line endings in a generated JSON fixture.
+The comparison now normalizes line endings and still checks exact image
+hashes. The corrected replay passed **26 tests** across the fixture and
+Hausdorff test modules. The next targeted cycle starts at **0/20**.
+
 A full-suite checkpoint ran on committed source `9b3f11dc` in four
 offscreen workers. It completed all **10,066 collected tests** in
 **997.17 seconds** with **9,965 passes, 36 skips, 65 failures, and 64
