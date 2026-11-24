@@ -90,7 +90,7 @@ IMPLEMENTATION_MODULES = {
     "imgproc": (
         "analysis_tools annotation basic_processing blocks collection_tools contour_raster "
         "features focus_stacking generalized_hough hit_miss "
-        "histogram histogram_comparison image_blend image_colorize path_strip "
+        "histogram histogram_comparison image_blend image_colorize local_contrast_edges path_strip "
         "logpolar_registration mask_boundary mask_resampling point_set_lines polar_image "
         "laplacian_pyramids processing differential_exposure "
         "pixel_moments pyramids raster_hough_lines registration run_contours segmentation "
@@ -259,6 +259,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "cv.local_contrast_edges": ("BrightEdges equivalent", "local contrast", "uneven lighting", "multiscale edges"),
     "inspect.match_color_template": ("colorMatchTemplate", "quaternion phase correlation", "color template"),
     "cv.sparse_rlof": ("calcOpticalFlowSparseRLOF", "robust local optical flow", "point correspondence"),
     "mask.encode_runs": ("RLE", "sparse mask", "run-length threshold"),

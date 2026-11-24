@@ -278,6 +278,7 @@ BINDINGS = {
     "cv.box_filter": "boxFilter",
     "cv.canny": "Canny",
     "cv.canny_derivatives": "Canny",
+    "cv.local_contrast_edges": "GaussianBlur blur Sobel magnitude Canny",
     "cv.clahe": "createCLAHE CLAHE.apply",
     "cv.colorize_scalar": "applyColorMap",
     "cv.color_change": "colorChange",

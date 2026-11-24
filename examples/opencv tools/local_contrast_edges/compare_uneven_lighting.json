@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Trace faint boundaries under uneven lighting",
+      "description": "Run Once. Compare local-contrast edges with ordinary Canny after the same fine smoothing and at comparable intensity thresholds. Both maps are evaluated inside the same rectangle against the two known part outlines. Original synthetic fixture.",
+      "parameters": {},
+      "position": [
+        40,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Faint plates under uneven lighting",
+      "parameters": {
+        "path": "assets/uneven-light.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        25,
+        20
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Known boundary pixels",
+      "parameters": {
+        "path": "assets/boundary-truth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        690,
+        -135
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selection",
+      "type": "region.shape",
+      "name": "Shared inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          17,
+          17,
+          222,
+          158
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        345,
+        -125
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "local",
+      "type": "cv.local_contrast_edges",
+      "name": "Subtract local lighting and trace edges",
+      "description": "Subtract broad illumination before tracing weak edges at a finer spatial scale.",
+      "parameters": {
+        "short_range": 3,
+        "long_range": 25,
+        "background": "box",
+        "low": 0.5,
+        "high": 0.9,
+        "border": "reflect_101"
+      },
+      "position": [
+        690,
+        55
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "contrast",
+        "strength",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fine",
+      "type": "cv.gaussian_blur",
+      "name": "Same fine smoothing",
+      "parameters": {
+        "kernel": 3,
+        "sigma": 0,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect_101",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        345,
+        365
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "baseline",
+      "type": "cv.canny",
+      "name": "Ordinary Canny",
+      "parameters": {
+        "low": 4.0,
+        "high": 7.2,
+        "l2_gradient": true,
+        "aperture": "3"
+      },
+      "position": [
+        690,
+        365
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "local_check",
+      "type": "inspect.compare_edge_maps",
+      "name": "Check local-contrast boundary map",
+      "parameters": {
+        "tolerance_pixels": 1.5,
+        "minimum_precision": 0.95,
+        "minimum_recall": 0.98,
+        "alignment": "pixel_grid",
+        "draw_map": true
+      },
+      "position": [
+        1040,
+        55
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "precision",
+        "recall",
+        "f1",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "baseline_check",
+      "type": "inspect.compare_edge_maps",
+      "name": "Measure ordinary Canny",
+      "parameters": {
+        "tolerance_pixels": 1.5,
+        "minimum_precision": 0.0,
+        "minimum_recall": 0.0,
+        "alignment": "pixel_grid",
+        "draw_map": true
+      },
+      "position": [
+        1040,
+        365
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reference"
+      ],
+      "exposed_outputs": [
+        "precision",
+        "recall",
+        "f1",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "selection",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "local",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "fine",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "local",
+      "input": "region"
+    },
+    {
+      "source": "fine",
+      "output": "image",
+      "target": "baseline",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "mask",
+      "target": "baseline",
+      "input": "mask"
+    },
+    {
+      "source": "local",
+      "output": "image",
+      "target": "local_check",
+      "input": "image"
+    },
+    {
+      "source": "baseline",
+      "output": "image",
+      "target": "baseline_check",
+      "input": "image"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "local_check",
+      "input": "reference"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "baseline_check",
+      "input": "reference"
+    },
+    {
+      "source": "selection",
+      "output": "mask",
+      "target": "local_check",
+      "input": "mask"
+    },
+    {
+      "source": "selection",
+      "output": "mask",
+      "target": "baseline_check",
+      "input": "mask"
+    }
+  ]
+}

@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 82 | 6 | 14 | 102 | 80.4% |
-| **Overall** | 448 | 7 | 15 | 470 | 95.3% |
+| 4. Selected contrib | 83 | 6 | 13 | 102 | 81.4% |
+| **Overall** | 449 | 7 | 14 | 470 | 95.5% |
 
 <!-- coverage-summary:end -->
 
@@ -718,7 +718,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S4-85 | Joint color template correlation | ximgproc.colorMatchTemplate | Complete | inspect.match_color_template maps wrapped native phase peaks to legal source positions and publishes a float64 response, eligible center and gated pose. Typed color, source-grid selection and native score parity are verified. Saved projects distinguish equal-luminance inserts and reject the wrong color against the grayscale baseline. |
-| S4-86 | Multiscale local-contrast edge maps | ximgproc.BrightEdges or a tested equivalent | Planned | Measure edge localization and continuity on low-contrast parts over an uneven background. Verify range and threshold controls and preserve the selected region. The pinned wheel lacks a direct binding. |
+| S4-86 | Multiscale local-contrast edge maps | OpenCV GaussianBlur, blur, Sobel and derivative Canny | Complete | cv.local_contrast_edges subtracts broad illumination, thresholds fine gradients and publishes the selected source-grid response. The saved faint plate example checks two continuous boundaries and scores localization against known edges. The supported wheel lacks the native BrightEdges binding. |
 | S4-87 | Angular projection profiles for inspection | ximgproc.RadonTransform | Planned | Verify angle and distance axes on synthetic stripes and tilted edges, retain projection precision for scoring, and map the strongest directions back to the inspected region. |
 | S4-88 | Smooth texture while retaining structural edges | ximgproc.bilateralTextureFilter | Planned | Use a known textured surface with a measured boundary. Verify texture attenuation, edge displacement, selected-region writes and parameter limits. |
 | S4-89 | Scan-based superpixel segmentation | ximgproc.createScanSegment | Planned | Measure target region count, boundary recall and runtime on a representative image. Verify integer labels, stable image coordinates and label-mask output. |

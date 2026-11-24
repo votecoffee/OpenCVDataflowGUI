@@ -341,6 +341,8 @@ OpenCV forest to emit response, orientation and thinned edges verified against m
 [EdgeBoxes proposals](<../examples/opencv tools/edge_boxes/README.md>) ranks
 source-frame rectangles from oriented edge maps and measures their overlap
 with known part bounds.
+[Local-contrast edges](<../examples/opencv tools/local_contrast_edges/README.md>)
+trace faint boundaries under broad illumination changes and compare localization with known outlines.
 [Edge Drawing](<../examples/opencv tools/edge_drawing/README.md>) traces ordered paths and
 qualifies linked lines and round primitives on a geometry plate.
 [Binary line descriptors](<../examples/opencv tools/line_descriptors/README.md>)

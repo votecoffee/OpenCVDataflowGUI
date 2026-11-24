@@ -5686,6 +5686,27 @@ Image processing / Statistics
 | --- | --- | --- |
 | `path` | `""` |  |
 
+## Local-contrast edges (`cv.local_contrast_edges`)
+
+Image processing / Edges
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Monochrome or color intensity. Float 0–1 and uint16 full scale map to the byte range.
+
+Input `mask` — Publish detections only within this source-grid mask. Neighborhoods use the full image.
+
+Input `region` — Intersect this region with the mask to select published pixels.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `short_range` | `3` | Value must be a positive odd integer between 1 and 63. Fine Gaussian window side in pixels. A size of 1 skips fine smoothing. |
+| `long_range` | `25` | Value must be a positive odd integer between 3 and 255. Background window side in pixels. Choose a scale wider than the edge transition. |
+| `background` | `"box"` | `box`, `gaussian` Use a box mean or a broader Gaussian to estimate local illumination. |
+| `low` | `0.6` | Value must be a finite number between 0 and 1023.97. Lower hysteresis threshold in 8-bit-equivalent intensity units per pixel. |
+| `high` | `1.2` | Value must be a finite number between 0 and 1023.97. Upper seed threshold in the same units as Low. |
+| `border` | `"reflect_101"` | `reflect_101`, `reflect_edge`, `replicate` Pixel extension at the image boundary for smoothing and gradient estimation. |
+
 ## Local window statistics (`cv.local_statistics`)
 
 Image processing / Intensity

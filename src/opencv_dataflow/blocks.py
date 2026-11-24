@@ -730,6 +730,7 @@ def builtin_registry():
     from .dnn_profiling import DNN_PROFILING_BLOCKS
     from .ecc_registration import AlignECC
     from .edge_agreement import CompareEdgeMaps
+    from .local_contrast_edges import LocalContrastEdges
     from .epipolar import CheckEpipolarCorrespondences
     from .epipolar_refinement import RefineEpipolarCorrespondences
     from .example_plugins import invert as invert_example
@@ -1334,6 +1335,7 @@ def builtin_registry():
         DecodeBinaryMaskRuns,
         FitCircleArc,
         CompareEdgeMaps,
+        LocalContrastEdges,
         *CODE_READER_BLOCKS,
         ReadWeChatQR,
         EncodeQRCode,
