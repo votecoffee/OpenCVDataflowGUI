@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Recover a known plate translation",
+      "description": "Run Once. Move the textured plate 5 pixels right and 3 up. Track detected source corners and reject inconsistent round trips. The occluded version should fail the minimum track count. Synthetic fixture by the project.",
+      "parameters": {},
+      "position": [
+        40,
+        -166
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original textured plate",
+      "parameters": {
+        "path": "assets/source.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        30,
+        75
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target",
+      "type": "input.file",
+      "name": "Recover a known plate translation",
+      "parameters": {
+        "path": "assets/translated.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        330,
+        280
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "corners",
+      "type": "inspect.corners",
+      "name": "Find 36 source corners",
+      "parameters": {
+        "max_corners": 36,
+        "quality": 0.01,
+        "min_distance": 10.0,
+        "block_size": 3,
+        "use_harris": false,
+        "harris_k": 0.04,
+        "gradient_size": "3"
+      },
+      "position": [
+        330,
+        65
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "points",
+        "count",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "track",
+      "type": "cv.sparse_rlof",
+      "name": "Track source corners",
+      "description": "Track supplied points from a source image to a target image with robust local flow.",
+      "parameters": {
+        "support": "fixed",
+        "solver": "bilinear",
+        "small_window": 9,
+        "large_window": 21,
+        "cross_threshold": 25,
+        "max_level": 4,
+        "iterations": 30,
+        "min_eigenvalue": 0.0001,
+        "illumination_model": true,
+        "global_motion_prior": true,
+        "global_motion_percentile": 10.0,
+        "m_estimator": false,
+        "norm_sigma0": 3.2,
+        "norm_sigma1": 7.0,
+        "fb_tolerance": 0.8,
+        "max_displacement": 12.0,
+        "minimum_tracks": 28,
+        "max_graphics": 250
+      },
+      "position": [
+        650,
+        130
+      ],
+      "exposed_inputs": [
+        "image",
+        "target",
+        "points"
+      ],
+      "exposed_outputs": [
+        "target_points",
+        "matches",
+        "tracks",
+        "report",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "review",
+      "type": "inspect.review_matches",
+      "name": "View accepted correspondences",
+      "parameters": {
+        "show": "all",
+        "max_pairs": 160,
+        "gap": 16,
+        "line_width": 1,
+        "endpoints": true
+      },
+      "position": [
+        970,
+        130
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "matches",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "canvas",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "track",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "corners",
+      "input": "image"
+    },
+    {
+      "source": "corners",
+      "output": "points",
+      "target": "track",
+      "input": "points"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "track",
+      "input": "target"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "review",
+      "input": "query_image"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "review",
+      "input": "train_image"
+    },
+    {
+      "source": "track",
+      "output": "matches",
+      "target": "review",
+      "input": "matches"
+    }
+  ]
+}

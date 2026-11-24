@@ -6962,6 +6962,45 @@ Inputs: `table` (data, optional).
 | `order` | `"ascending"` | `ascending`, `descending` |
 | `key_index` | `0` | Value must be a whole number between 0 and 99999. Zero-based column for Rows by column or row for Columns by row. |
 
+## Track wired points (Sparse RLOF) (`cv.sparse_rlof`)
+
+Image processing / Video processing
+
+Inputs: `image` (image), `target` (image), `points` (data), `initial_points` (data, optional), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source image where the supplied points were found.
+
+Input `target` — Target image with the same raster dimensions. May have another ticket and frame.
+
+Input `points` — Ordered [x,y] coordinates on the source image, such as the corners block output.
+
+Input `initial_points` — Optional target-grid guesses in the same order as the source points.
+
+Input `mask` — Select source points before tracking using a mask on the source grid.
+
+Input `region` — Select source points inside a region on the source grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `support` | `"cross"` | `fixed`, `cross` Fixed windows or color-adaptive cross support. |
+| `solver` | `"bilinear"` | `standard`, `bilinear` Standard or bilinear local motion solver. |
+| `small_window` | `9` | Value must be a positive odd integer between 3 and 63. Minimum local support window side in pixels. |
+| `large_window` | `21` | Value must be a positive odd integer between 3 and 63. Maximum local support window side in pixels. |
+| `cross_threshold` | `25` | Value must be a whole number between 0 and 255. Maximum 8-bit channel difference when extending cross support. |
+| `max_level` | `4` | Value must be a whole number between 0 and 8. Maximum zero-based pyramid level. |
+| `iterations` | `30` | Value must be a whole number between 1 and 100. Maximum local iterations per level. |
+| `min_eigenvalue` | `0.0001` | Value must be a finite number between 0 and 1. Reject local solves below this structure tensor eigenvalue. |
+| `illumination_model` | `true` | Use an illumination variation model in local solves. |
+| `global_motion_prior` | `false` | Homography initialization for images at least 40 × 30. Choose this or the initial point input. |
+| `global_motion_percentile` | `10.0` | Value must be a finite number between 0 and 99.99. Motion percentile used for the homography RANSAC threshold. |
+| `m_estimator` | `false` | Enable the robust Hampel estimator. Off uses least squares. |
+| `norm_sigma0` | `3.2` | Value must be a finite number between 1e-06 and 255. First Hampel residual cutoff when the M-estimator is enabled. |
+| `norm_sigma1` | `7.0` | Value must be a finite number between 1e-06 and 255. Second Hampel residual cutoff when the M-estimator is enabled. |
+| `fb_tolerance` | `1.5` | Value must be a finite number between 0 and 100. Maximum forward/backward round-trip error in source pixels. Zero disables it. |
+| `max_displacement` | `0.0` | Value must be a finite number at least 0. Maximum source-to-target displacement in pixels. Zero disables it. |
+| `minimum_tracks` | `1` | Value must be a whole number between 0 and 10000. Minimum number of accepted correspondences for a pass. |
+| `max_graphics` | `250` | Value must be a whole number between 0 and 1000. Maximum number of candidate tracks drawn on the source image. |
+
 ## Paired Sobel derivatives (`cv.spatial_gradient`)
 
 Image processing / Edges

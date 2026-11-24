@@ -985,6 +985,7 @@ def builtin_registry():
     from .semantic_segmentation import DecodeSegmentation
     from .deepflow import DeepFlowSequence
     from .dense_rlof import DenseRLOFSequence
+    from .sparse_rlof import SparseRLOF
     from .edge_aware_flow import EdgeAwareFlow
     from .ric_flow import RobustCorrespondenceFlow
     from .sparse_to_dense_flow import SparseToDenseSequence
@@ -1423,6 +1424,7 @@ def builtin_registry():
         DualTVL1Sequence,
         DeepFlowSequence,
         DenseRLOFSequence,
+        SparseRLOF,
         SparseToDenseSequence,
         EdgeAwareFlow,
         RobustCorrespondenceFlow,

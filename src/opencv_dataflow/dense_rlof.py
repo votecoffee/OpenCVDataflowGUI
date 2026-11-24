@@ -6,13 +6,14 @@ import numpy as np
 from .images import ImageArray, convert_depth, image_format
 from .parameter_validation import NumericRange, ValidationError
 from .processing import image_value
+from .rlof_parameters import (
+    RLOF_CHOICES, RLOF_DEFAULTS, RLOF_HELP, RLOF_RANGES, rlof_settings, validate_rlof,
+)
 from .segmentation import bgr8
 from .sequence import SEQUENCE_CHOICES
 from .sequence_tools import _DenseFlowSequence
 
 _DEPTHS = (np.uint8, np.uint16, np.float32, np.float64)
-_SUPPORT = {"fixed": "SR_FIXED", "cross": "SR_CROSS"}
-_SOLVER = {"standard": "ST_STANDART", "bilinear": "ST_BILINEAR"}
 _INTERPOLATION = {"geodesic": "INTERP_GEO", "epic": "INTERP_EPIC", "ric": "INTERP_RIC"}
 
 
@@ -21,20 +22,7 @@ class DenseRLOFSequence(_DenseFlowSequence):
     description = "Measure dense motion with robust local flow and optional seed interpolation."
     defaults = {
         **_DenseFlowSequence.defaults,
-        "support": "cross",
-        "solver": "bilinear",
-        "small_window": 9,
-        "large_window": 21,
-        "cross_threshold": 25,
-        "max_level": 4,
-        "iterations": 30,
-        "min_eigenvalue": 0.0001,
-        "illumination_model": True,
-        "global_motion_prior": True,
-        "global_motion_percentile": 10.0,
-        "m_estimator": False,
-        "norm_sigma0": 3.2,
-        "norm_sigma1": 7.0,
+        **RLOF_DEFAULTS,
         "seed_consistency_threshold": 0.0,
         "grid_x": 6,
         "grid_y": 6,
@@ -52,8 +40,7 @@ class DenseRLOFSequence(_DenseFlowSequence):
     }
     parameter_choices = {
         **SEQUENCE_CHOICES,
-        "support": tuple(_SUPPORT),
-        "solver": tuple(_SOLVER),
+        **RLOF_CHOICES,
         "interpolation": tuple(_INTERPOLATION),
         "ric_superpixel_mode": ("SLIC", "SLICO", "MSLIC"),
     }
@@ -61,15 +48,7 @@ class DenseRLOFSequence(_DenseFlowSequence):
         **_DenseFlowSequence.parameter_ranges,
         "max_gap_ms": NumericRange(0),
         "visual_max_motion": NumericRange(1e-6),
-        "small_window": NumericRange(3, 63, whole=True, odd=True),
-        "large_window": NumericRange(3, 63, whole=True, odd=True),
-        "cross_threshold": NumericRange(0, 255, whole=True),
-        "max_level": NumericRange(0, 8, whole=True),
-        "iterations": NumericRange(1, 100, whole=True),
-        "min_eigenvalue": NumericRange(0, 1),
-        "global_motion_percentile": NumericRange(0, 99.99),
-        "norm_sigma0": NumericRange(1e-6, 255),
-        "norm_sigma1": NumericRange(1e-6, 255),
+        **RLOF_RANGES,
         "seed_consistency_threshold": NumericRange(0, 100),
         "grid_x": NumericRange(1, 512, whole=True),
         "grid_y": NumericRange(1, 512, whole=True),
@@ -83,20 +62,7 @@ class DenseRLOFSequence(_DenseFlowSequence):
     }
     parameter_help = {
         **_DenseFlowSequence.parameter_help,
-        "support": "Fixed windows or color-adaptive cross support.",
-        "solver": "Standard or bilinear local motion solver.",
-        "small_window": "Minimum local support window side in pixels.",
-        "large_window": "Maximum local support window side in pixels.",
-        "cross_threshold": "Maximum 8-bit channel difference when extending cross support.",
-        "max_level": "Maximum zero-based pyramid level.",
-        "iterations": "Maximum local iterations per level.",
-        "min_eigenvalue": "Reject local solves below this structure tensor eigenvalue.",
-        "illumination_model": "Use an illumination variation model in local solves.",
-        "global_motion_prior": "Homography motion prior. Requires 40 × 30 pixels.",
-        "global_motion_percentile": "Motion percentile used for the homography RANSAC threshold.",
-        "m_estimator": "Enable the robust Hampel estimator. Off uses least squares.",
-        "norm_sigma0": "First Hampel residual cutoff when the M-estimator is enabled.",
-        "norm_sigma1": "Second Hampel residual cutoff when the M-estimator is enabled.",
+        **RLOF_HELP,
         "seed_consistency_threshold": "Geodesic only. Reject seed round trips at this pixel error.",
         "grid_x": "Horizontal seed spacing. A 1 × 1 grid without seed rejection is direct.",
         "grid_y": "Vertical seed spacing in pixels. A 1 × 1 grid without seed rejection is direct.",
@@ -127,18 +93,7 @@ class DenseRLOFSequence(_DenseFlowSequence):
     def validate_parameters(self, parameters=None):
         super().validate_parameters(parameters)
         p = self.parameters if parameters is None else parameters
-        if p["small_window"] > p["large_window"]:
-            raise ValidationError(
-                "Small window must be no larger than the large window",
-                "small_window",
-                "large_window",
-            )
-        if p["m_estimator"] and float(p["norm_sigma0"]) >= float(p["norm_sigma1"]):
-            raise ValidationError(
-                "The first Hampel cutoff must be smaller than the second",
-                "norm_sigma0",
-                "norm_sigma1",
-            )
+        validate_rlof(p)
         if float(p["seed_consistency_threshold"]) and p["interpolation"] != "geodesic":
             raise ValidationError(
                 "Seed rejection requires geodesic interpolation. EPIC and RIC require a full grid.",
@@ -189,22 +144,7 @@ class DenseRLOFSequence(_DenseFlowSequence):
         create = getattr(optflow, "RLOFOpticalFlowParameter_create", None)
         if calc is None or create is None:
             raise ValidationError("Dense RLOF requires OpenCV contrib optflow")
-        local = create()
-        local.setSupportRegionType(getattr(optflow, _SUPPORT[p["support"]]))
-        local.setSolverType(getattr(optflow, _SOLVER[p["solver"]]))
-        local.setSmallWinSize(int(p["small_window"]))
-        local.setLargeWinSize(int(p["large_window"]))
-        local.setCrossSegmentationThreshold(int(p["cross_threshold"]))
-        local.setMaxLevel(int(p["max_level"]))
-        local.setMaxIteration(int(p["iterations"]))
-        local.setMinEigenValue(float(p["min_eigenvalue"]))
-        local.setUseIlluminationModel(p["illumination_model"])
-        local.setUseGlobalMotionPrior(p["global_motion_prior"])
-        local.setGlobalMotionRansacThreshold(float(p["global_motion_percentile"]))
-        local.setUseMEstimator(p["m_estimator"])
-        if p["m_estimator"]:
-            local.setNormSigma0(float(p["norm_sigma0"]))
-            local.setNormSigma1(float(p["norm_sigma1"]))
+        local = rlof_settings(optflow, create, p)
         interpolation = getattr(optflow, _INTERPOLATION[mode])
         slic = getattr(cv2.ximgproc, p["ric_superpixel_mode"])
 

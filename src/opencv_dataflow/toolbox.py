@@ -169,7 +169,7 @@ IMPLEMENTATION_MODULES = {
     "saliency": "static_saliency motion_saliency",
     "bioinspired": "retina_preprocessing",
     "motempl": "motion_history",
-    "optflow": "deepflow dense_rlof dual_tvl1_flow sparse_to_dense_flow pca_simple_flow",
+    "optflow": "deepflow dense_rlof dual_tvl1_flow sparse_rlof sparse_to_dense_flow pca_simple_flow",
 }
 BLOCK_MODULES = {
     "core": (
@@ -258,6 +258,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "cv.sparse_rlof": ("calcOpticalFlowSparseRLOF", "robust local optical flow", "point correspondence"),
     "mask.encode_runs": ("RLE", "sparse mask", "run-length threshold"),
     "mask.morphology_runs": ("RLE", "sparse mask", "run-length erosion", "run-length dilation"),
     "mask.decode_runs": ("RLE", "sparse mask", "paint runs"),

@@ -594,6 +594,7 @@ BINDINGS = {
     "cv.ric_flow": "ximgproc.createRICInterpolator ximgproc.RICInterpolator.interpolate",
     "sequence.sparse_to_dense": "optflow.calcOpticalFlowSparseToDense calcOpticalFlowPyrLK",
     "sequence.dense_rlof": "optflow.calcOpticalFlowDenseRLOF optflow.RLOFOpticalFlowParameter",
+    "cv.sparse_rlof": "optflow.calcOpticalFlowSparseRLOF optflow.RLOFOpticalFlowParameter",
     "sequence.dis": "DISOpticalFlow.create DenseOpticalFlow.calc",
     "sequence.dual_tvl1": "optflow.createOptFlow_DualTVL1 optflow.DualTVL1OpticalFlow_create DenseOpticalFlow.calc",
     "sequence.foreground_debounce": "connectedComponentsWithStats findContours moments",

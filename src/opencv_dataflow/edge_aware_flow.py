@@ -74,14 +74,14 @@ def unique_seeds(source, target, size, offset=0.5):
     return source, target
 
 
-def validate_match_context(supplied, expected, size, label):
+def validate_match_context(supplied, expected, size, label, field="matches"):
     if not isinstance(supplied, dict):
-        raise ValidationError(f"{label} match context must be an object", "matches")
+        raise ValidationError(f"{label} match context must be an object", field)
     check_spatial(supplied, size)
     same_grid(supplied, expected, label)
     if supplied.get("ticket") is not None and expected.get("ticket") is not None:
         if ticket_key(supplied["ticket"]) != ticket_key(expected["ticket"]):
-            raise ValidationError(f"{label} points belong to a different ticket", "matches")
+            raise ValidationError(f"{label} points belong to a different ticket", field)
 
 
 class MatchedPointFlow(Block):

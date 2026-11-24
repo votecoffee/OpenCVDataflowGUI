@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 80 | 6 | 16 | 102 | 78.4% |
-| **Overall** | 446 | 7 | 17 | 470 | 94.9% |
+| 4. Selected contrib | 81 | 6 | 15 | 102 | 79.4% |
+| **Overall** | 447 | 7 | 16 | 470 | 95.1% |
 
 <!-- coverage-summary:end -->
 
@@ -711,7 +711,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S4-84 | Sparse RLOF correspondence | optflow.calcOpticalFlowSparseRLOF | Planned | Track wired image points with configurable rejection and compare displacement, status and error on known motion. |
+| S4-84 | Sparse RLOF correspondence | optflow.calcOpticalFlowSparseRLOF | Complete | cv.sparse_rlof tracks wired source points with fixed or cross support, initial guesses or global initialization, selection, and motion and round-trip gating. Native estimates, status and errors match on valid points. Saved translation and occlusion graphs verify displacement, rejected tracks and separate source and target contexts. |
 
 ### Color templates, texture and spatial verification
 
