@@ -339,6 +339,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Dense RLOF optical flow](<opencv tools/dense_rlof/README.md>) | Compare fixed and cross support on a translated color texture with round-trip diagnostics. |
 | [Sparse-to-dense optical flow](<opencv tools/sparse_to_dense_flow/README.md>) | Compare grid spacing and smoothing at a known boundary between opposing motions. |
 | [PCAFlow and SimpleFlow](<opencv tools/pca_simple_flow/README.md>) | Compare pixel displacement and round-trip agreement on a known image translation. |
+| [Edge-aware interpolation](<opencv tools/edge_aware_matches/README.md>) | Turn supplied point pairs into a dense motion field across a known seam. |
 | [WeChat QR comparison](<opencv tools/wechat_qr/README.md>) | Compare tiny and low-contrast labels with standard QR, WeChat QR and optional pinned ONNX models. |
 | [Hand–eye calibration](<opencv tools/hand_eye_calibration/README.md>) | Fit a robot-mounted camera from paired poses and compose its pose in the robot base frame. |
 | [Robot-world and hand–eye](<opencv tools/robot_world/README.md>) | Jointly recover the mount and station poses for fixed and robot-mounted cameras, then verify on held-out target images. |

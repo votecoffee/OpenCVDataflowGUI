@@ -3,12 +3,10 @@
 import cv2
 import numpy as np
 
-from .images import ImageArray, convert_depth, image_format
+from .edge_aware_flow import configure_interpolator, edge_aware_factory, flow_guide
 from .parameter_validation import NumericRange, ValidationError
-from .processing import image_value
 from .sequence_tools import _DenseFlowSequence
 
-_DEPTHS = (np.uint8, np.uint16, np.float32, np.float64)
 _MAX_WORKSPACE_BYTES = 512 * 1024**2
 
 
@@ -57,12 +55,7 @@ class SparseToDenseSequence(_DenseFlowSequence):
     }
 
     def working_image(self, image):
-        if image.dtype == np.float64 and image_format(image) in ("hsv", "lab"):
-            image = ImageArray(image.astype(np.float32), image_format(image))
-        native = image_value(image, _DEPTHS, canonical=True)
-        if native.ndim == 3:
-            native = native[..., :3]
-        return native if native.dtype == np.uint8 else convert_depth(native, "uint8")
+        return flow_guide(image)
 
     def estimate_state_bytes(self, image):
         channels = 1 if image.ndim == 2 else 3
@@ -89,9 +82,7 @@ class SparseToDenseSequence(_DenseFlowSequence):
                 "grid_step",
                 "neighbors",
             )
-        create = getattr(getattr(cv2, "ximgproc", None), "createEdgeAwareInterpolator", None)
-        if create is None:
-            raise ValidationError("Sparse-to-dense flow requires OpenCV contrib ximgproc")
+        create = edge_aware_factory()
 
         def calculate(previous, current, _initial):
             # Mirror calcOpticalFlowSparseToDense with a check between PyrLK
@@ -121,11 +112,7 @@ class SparseToDenseSequence(_DenseFlowSequence):
                 raise ValidationError("Sparse motion produced nonfinite matches")
 
             solver = create()
-            solver.setK(neighbors)
-            solver.setSigma(float(p["sigma"]))
-            solver.setUsePostProcessing(p["post_smoothing"])
-            solver.setFGSLambda(float(p["fgs_lambda"]))
-            solver.setFGSSigma(float(p["fgs_sigma"]))
+            configure_interpolator(solver, p)
             return solver.interpolate(previous, points[valid], current, matched), None
 
         return calculate

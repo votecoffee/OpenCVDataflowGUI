@@ -4515,6 +4515,40 @@ Input `guide` — Optional aligned guide. Otherwise the block guides with the so
 | `iterations` | `3` | Value must be a whole number between 1 and 16. Number of horizontal and vertical filtering passes. |
 | `output_depth` | `"unchanged"` | `unchanged`, `uint8`, `uint16`, `float32` |
 
+## Interpolate matched image motion (`cv.edge_aware_flow`)
+
+Image processing / Video processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `target` (image), `matches` (data, optional), `source_points` (data, optional), `target_points` (data, optional), `cost_map` (image, optional).
+
+Input `image` — Query/source image. Its edges guide interpolation onto its own pixel grid.
+
+Input `target` — Train/target image on an equal-size grid.
+
+Input `matches` — Descriptor match record with query and train points in corresponding order.
+
+Input `source_points` — An ordered list of source pixel coordinates.
+
+Input `target_points` — The matching list of target pixel coordinates.
+
+Input `cost_map` — Optional source-grid float32 edge costs in [0, 1].
+
+Input `mask` — Limit the published vectors and support on the source grid.
+
+Input `region` — Intersect this source-grid region with the optional mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `neighbors` | `128` | Value must be a whole number between 4 and 512. Number of distinct source seed pixels in each local affine fit. |
+| `sigma` | `0.05` | Value must be a finite number between 1e-06 and 1. Distance weight falloff for the local affine fits. |
+| `geodesic_lambda` | `999.0` | Value must be a finite number between 0 and 1000. Edge weight in geodesic distance. Zero ignores edges during fitting. |
+| `post_smoothing` | `true` | Apply the native fast global smoother after interpolation. |
+| `fgs_lambda` | `500.0` | Value must be a finite number between 0 and 100000. Regularization weight for post-smoothing. |
+| `fgs_sigma` | `1.5` | Value must be a finite number between 1e-06 and 255. Sensitivity to guide color or intensity during post-smoothing. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Motion in pixels mapped to full brightness in the flow view. |
+| `source_points` | `[]` | Optional ordered [x,y] source coordinates for offline or fixed pairs. |
+| `target_points` | `[]` | Target coordinates in the same order as the configured source points. |
+
 ## Edge-preserving photo filter (`cv.edge_preserving_photo`)
 
 Image processing / Edge-aware rendering

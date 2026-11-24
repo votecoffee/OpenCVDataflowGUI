@@ -305,6 +305,8 @@ consecutive-frame estimation with a known-displacement and occlusion fixture.
 shows how grid spacing and post-smoothing affect a boundary between opposing motions.
 [PCAFlow and SimpleFlow](<../examples/opencv tools/pca_simple_flow/README.md>) compare
 native dense motion estimators on the same known pixel translation.
+[Edge-aware interpolation](<../examples/opencv tools/edge_aware_matches/README.md>)
+uses supplied match pairs to estimate a dense field across a known motion seam.
 [Dense RLOF](<../examples/opencv tools/dense_rlof/README.md>) compares fixed and cross
 support on a translated color texture and verifies native geodesic, EPIC, RIC and direct-grid paths.
 [WeChat QR](<../examples/opencv tools/wechat_qr/README.md>) compares the standard
