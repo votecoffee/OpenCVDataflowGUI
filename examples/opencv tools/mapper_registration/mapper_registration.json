@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Refine coarse alignment",
+      "description": "Run Once. A coarse map from three approximate points initializes the similarity fit. The registration block reports overlap and the residual before and after refinement. Both texture images were generated for this MIT-licensed example.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "moving",
+      "type": "input.file",
+      "name": "Moving texture",
+      "parameters": {
+        "path": "assets/moving.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference texture",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        235
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "coarse",
+      "type": "cv.control_point_transform",
+      "name": "Approximate moving-to-reference map",
+      "parameters": {
+        "model": "affine",
+        "source_points": [
+          [
+            24.51862364635476,
+            27.814182969738887
+          ],
+          [
+            147.98560562688994,
+            18.744529689805923
+          ],
+          [
+            72.31636024714221,
+            125.15115179886227
+          ]
+        ],
+        "target_points": [
+          [
+            26.0,
+            27.0
+          ],
+          [
+            143.0,
+            36.0
+          ],
+          [
+            57.0,
+            125.0
+          ]
+        ],
+        "solver": "lu"
+      },
+      "position": [
+        0,
+        440
+      ],
+      "exposed_inputs": [
+        "source_points",
+        "target_points"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "rms_pixels"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "register",
+      "type": "cv.align_mapper",
+      "name": "Refine rotation, scale and shift",
+      "parameters": {
+        "motion": "similarity",
+        "pyramid_levels": 3,
+        "iterations_per_level": 8,
+        "minimum_coverage": 0.5,
+        "maximum_normalized_rmse": 0.12
+      },
+      "position": [
+        340,
+        128
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reference",
+        "reference_mask",
+        "reference_region",
+        "initial_transform"
+      ],
+      "exposed_outputs": [
+        "image",
+        "transform",
+        "geometry",
+        "coverage",
+        "residual",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review the aligned texture",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        685,
+        128
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "moving",
+      "output": "image",
+      "target": "register",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "register",
+      "input": "reference"
+    },
+    {
+      "source": "coarse",
+      "output": "transform",
+      "target": "register",
+      "input": "initial_transform"
+    },
+    {
+      "source": "register",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

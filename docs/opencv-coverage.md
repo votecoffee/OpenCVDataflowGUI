@@ -376,6 +376,8 @@ source-to-normalized transforms and aligns independently drawn affine-equivalent
 suppression and selected repairs by native one-step and bounded adaptive transforms.
 [Hierarchical feature-selection segmentation](<../examples/opencv tools/hfs_segmentation/README.md>)
 qualifies CPU region IDs and boundaries and feeds them to label measurements.
+[Multiscale image registration](<../examples/opencv tools/mapper_registration/README.md>)
+qualifies five gradient motion models with reusable maps, seeded refinement and valid-coverage checks.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

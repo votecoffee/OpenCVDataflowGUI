@@ -310,6 +310,11 @@ BINDINGS = {
     "cv.gaussian_blur": "GaussianBlur",
     "cv.graph_segments": "ximgproc.segmentation.createGraphSegmentation",
     "cv.hfs_segments": "hfs.HfsSegment.create hfs.HfsSegment.performSegmentCpu",
+    "cv.align_mapper": (
+        "reg.MapperGradShift reg.MapperGradEuclid reg.MapperGradSimilar reg.MapperGradAffine "
+        "reg.MapperGradProj reg.MapperPyramid.calculate reg.MapTypeCaster.toShift "
+        "reg.MapTypeCaster.toAffine reg.MapTypeCaster.toProjec warpPerspective"
+    ),
     "cv.gradient": "Sobel Scharr Laplacian",
     "cv.gray": "cvtColor",
     "cv.guided_filter": "ximgproc.guidedFilter",

@@ -3674,6 +3674,34 @@ Input `exposures` — Ordered batch of 2–16 uint8 gray, BGR or RGB exposures.
 | `exclude_range` | `4` | Value must be a whole number between 0 and 127. Ignore brightness values this close to the median when matching. |
 | `border_mode` | `"crop"` | `crop`, `zero_pad` Crop to the area shared by all exposures, or zero-pad the original canvas. |
 
+## Align images (multiscale mapper) (`cv.align_mapper`)
+
+Image processing / Registration
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reference` (image), `reference_mask` (image, optional), `reference_region` (data, optional), `initial_transform` (data, optional).
+
+Input `image` — Moving image. Use matching dimensions and sample depth for both images.
+
+Input `mask` — Optional moving-image donor mask for measuring quality and coverage.
+
+Input `region` — Optional moving-image donor region, intersected with mask.
+
+Input `reference` — Fixed reference image and output coordinate grid.
+
+Input `reference_mask` — Optional quality measurement selection in the reference grid.
+
+Input `reference_region` — Optional reference region, intersected with reference_mask.
+
+Input `initial_transform` — Optional moving-to-reference matrix or transform record.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `motion` | `"affine"` | `translation`, `euclidean`, `similarity`, `affine`, `projective` Select the least flexible motion model that fits the scene. |
+| `pyramid_levels` | `3` | Value must be a whole number between 1 and 8. Total levels including full resolution. One uses only full resolution. |
+| `iterations_per_level` | `6` | Value must be a whole number between 1 and 25. Native gradient refinements per level. |
+| `minimum_coverage` | `0.5` | Value must be a finite number between 0 and 1. Minimum fraction of selected reference pixels with valid donors. |
+| `maximum_normalized_rmse` | `0.12` | Value must be a finite number between 0 and 1. Gray RMSE limit relative to the reference intensity range. |
+
 ## Source-over alpha composition (`cv.alpha_over`)
 
 Image processing / Image math
