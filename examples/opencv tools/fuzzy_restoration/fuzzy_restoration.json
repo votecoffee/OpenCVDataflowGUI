@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare fuzzy smoothing and three repair methods",
+      "description": "Run Once. Smoothing reduces noise on the upper ramp. Three fill algorithms repair the lower ramp inside the marked rectangle. Compare their images with assets/clean.png. The filmstrip shows the iterative result. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -265
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Noisy ramp",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "damaged",
+      "type": "input.file",
+      "name": "Damaged ramp",
+      "parameters": {
+        "path": "assets/damaged.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        300
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "smooth",
+      "type": "cv.fuzzy_filter",
+      "name": "Smooth the noisy ramp",
+      "description": "Smooth intensity using the OpenCV F-transform and a separable membership kernel.",
+      "parameters": {
+        "kernel": "linear",
+        "radius": 3,
+        "horizontal_weights": [
+          0.0,
+          0.5,
+          1.0,
+          0.5,
+          0.0
+        ],
+        "vertical_weights": [
+          0.0,
+          0.5,
+          1.0,
+          0.5,
+          0.0
+        ]
+      },
+      "position": [
+        360,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "area",
+      "type": "region.shape",
+      "name": "Known hole",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          36,
+          25,
+          7,
+          7
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        365,
+        435
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "one_step",
+      "type": "cv.fuzzy_inpaint",
+      "name": "Repair at radius 4",
+      "description": "Repair selected pixels with fuzzy transforms and a bounded radius search.",
+      "parameters": {
+        "algorithm": "one_step",
+        "radius": 4,
+        "maximum_radius": 8
+      },
+      "position": [
+        710,
+        235
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "repair_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "multi_step",
+      "type": "cv.fuzzy_inpaint",
+      "name": "Find a supported radius",
+      "description": "Repair selected pixels with fuzzy transforms and a bounded radius search.",
+      "parameters": {
+        "algorithm": "multi_step",
+        "radius": 2,
+        "maximum_radius": 8
+      },
+      "position": [
+        710,
+        430
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "repair_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "iterative",
+      "type": "cv.fuzzy_inpaint",
+      "name": "Reuse completed estimates",
+      "description": "Repair selected pixels with fuzzy transforms and a bounded radius search.",
+      "parameters": {
+        "algorithm": "iterative",
+        "radius": 2,
+        "maximum_radius": 8
+      },
+      "position": [
+        710,
+        625
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "repair_mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review iterative repair",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        1030,
+        625
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "smooth",
+      "input": "image"
+    },
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "area",
+      "input": "image"
+    },
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "one_step",
+      "input": "image"
+    },
+    {
+      "source": "area",
+      "output": "region",
+      "target": "one_step",
+      "input": "region"
+    },
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "multi_step",
+      "input": "image"
+    },
+    {
+      "source": "area",
+      "output": "region",
+      "target": "multi_step",
+      "input": "region"
+    },
+    {
+      "source": "damaged",
+      "output": "image",
+      "target": "iterative",
+      "input": "image"
+    },
+    {
+      "source": "area",
+      "output": "region",
+      "target": "iterative",
+      "input": "region"
+    },
+    {
+      "source": "iterative",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

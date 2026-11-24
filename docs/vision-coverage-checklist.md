@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 66 | 6 | 30 | 102 | 64.7% |
-| **Overall** | 432 | 7 | 31 | 470 | 91.9% |
+| 4. Selected contrib | 67 | 6 | 29 | 102 | 65.7% |
+| **Overall** | 433 | 7 | 30 | 470 | 92.1% |
 
 <!-- coverage-summary:end -->
 
@@ -682,7 +682,7 @@ fixture or result needed to close the item.
 | S4-67 | Native text component detection | text.detectRegions and supported extremal-region grouping | Complete | cv.text_extremal_regions qualifies native components and horizontal grouping with pinned NM1/NM2 classifiers. Three contrast-varied labels match independent glyph boxes at over 0.90 IoU. Arbitrary-angle grouping is unavailable on the pinned OpenCV build. |
 | S4-68 | OCR through the contrib Tesseract adapter | text.OCRTesseract, standalone Tesseract TSV | Complete | OpenCV 5.0.0 compiled with Tesseract 5.5.1 and pinned English data verifies text, confidence and boxes on three crops. cv.tesseract_ocr uses TSV with the stock wheel and matches all six native words and boxes. |
 | S4-69 | Affine shape normalization | ximgproc.PeiLinNormalization | Complete | cv.peilin_normalization returns both transform directions and preserves source geometry, with mask-based estimation and a stable moment path for singular native eigenvectors. Independently sampled silhouettes improve from 38.9% to 97.7% IoU. |
-| S4-70 | Fuzzy image smoothing and inpainting | ft.filter and ft.inpaint | Planned | Verify local smoothing or fill quality on an image fixture, with bounded controls. |
+| S4-70 | Fuzzy image smoothing and inpainting | ft.filter and ft.inpaint | Complete | cv.fuzzy_filter and cv.fuzzy_inpaint qualify native smoothing, native one-step repair and bounded adaptive iterations. Known-ramp tests verify noise reduction, selected writes, border behavior and parity with all three native repair methods. |
 
 ### Additional upstream image and video families
 

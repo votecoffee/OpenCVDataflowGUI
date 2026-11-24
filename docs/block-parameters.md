@@ -4961,6 +4961,43 @@ Input `region` — Optional output selection on the reference grid.
 | `exposure_weight` | `0.0` | Value must be a finite number between 0 and 10. Favor pixels near midrange intensity. |
 | `output_depth` | `"uint8"` | `uint8`, `float32` Clip and scale to uint8, or preserve the native float32 samples. |
 
+## Fuzzy image smoothing (`cv.fuzzy_filter`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8, uint16 or float32 intensity or color. Straight alpha is preserved.
+
+Input `mask` — Replace nonzero output pixels. Nearby unselected samples still contribute.
+
+Input `region` — Limit output writes to this region and any connected mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `kernel` | `"linear"` | `linear`, `custom` Native triangular kernel or separate horizontal and vertical weight profiles. |
+| `radius` | `3` | Value must be a whole number between 1 and 64. Linear half-width in pixels. One is an identity operation. |
+| `horizontal_weights` | `[0.0, 0.5, 1.0, 0.5, 0.0]` | Custom horizontal membership weights. Zero ends and a unit center. |
+| `vertical_weights` | `[0.0, 0.5, 1.0, 0.5, 0.0]` | Custom vertical weights. Overlapping weights must sum to one. |
+
+## Fuzzy inpainting (`cv.fuzzy_inpaint`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — uint8, uint16 or float32 intensity or color. Straight alpha is preserved.
+
+Input `mask` — Nonzero pixels are missing. The rest are measured context.
+
+Input `region` — Select a repair area. With a mask, their intersection is repaired.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `algorithm` | `"iterative"` | `one_step`, `multi_step`, `iterative` One step uses one linear radius. Multi-step searches for full support. Iterative also reuses completed estimates. |
+| `radius` | `2` | Value must be a whole number between 1 and 64. Starting radius of the triangular membership kernel in pixels. |
+| `maximum_radius` | `16` | Value must be a whole number between 1 and 64. Inclusive upper radius for the adaptive methods. |
+
 ## Gabor orientation bank (`cv.gabor_bank`)
 
 Image processing / Filtering

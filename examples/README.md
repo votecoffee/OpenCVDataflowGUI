@@ -335,6 +335,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Native text regions](<opencv tools/native_text_regions/README.md>) | Compare extremal components and horizontal groups on three independently labeled words. |
 | [Tesseract OCR](<opencv tools/tesseract_ocr/README.md>) | Read six words across three detected label lines and verify confidence and source-grid boxes. |
 | [Pei–Lin shape normalization](<opencv tools/peilin_normalization/README.md>) | Align two independently rasterized affine-equivalent silhouettes and compare their overlap. |
+| [Fuzzy image restoration](<opencv tools/fuzzy_restoration/README.md>) | Compare smoothing and three bounded repair methods on a ramp with known noise and missing pixels. |
 | [Motion history and direction](<opencv tools/motion_history/README.md>) | Verify fading trails, pixel ages, and rightward and downward motion from a timed clip. |
 | [Adaptive foreground models](<opencv tools/adaptive_foreground_models/README.md>) | Compare MOG, GMG, and CNT on the same empty-conveyor replay. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |

@@ -1066,6 +1066,7 @@ def builtin_registry():
     from .oil_painting import OilPaintingFilter
     from .xphoto_denoising import DctDenoise
     from .xphoto_inpainting import ExtendedInpaint
+    from .fuzzy_restoration import FuzzyFilter, FuzzyInpaint
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
 
@@ -1248,6 +1249,8 @@ def builtin_registry():
         Bm3dDenoise,
         OilPaintingFilter,
         ExtendedInpaint,
+        FuzzyFilter,
+        FuzzyInpaint,
         *PHOTO_FILTER_BLOCKS,
         AlignExposures,
         FuseExposures,

@@ -56,6 +56,7 @@ OPENCV_MODULES = {
     "text": "Scene Text Detection",
     "flann": "Clustering and Search",
     "photo": "Computational Photography",
+    "fuzzy": "Fuzzy Image Processing",
     "xphoto": "Extended Computational Photography",
     "stitching": "Image Stitching",
     "stereo": "Stereo Correspondence",
@@ -135,6 +136,7 @@ IMPLEMENTATION_MODULES = {
     "semantic_segmentation prompt_segmentation prompt_mask_decode regression local_anomaly "
     "input_shifts",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
+    "fuzzy": "fuzzy_restoration",
     "xphoto": "white_balance xphoto_denoising xphoto_inpainting bm3d_denoising durand_tonemap oil_painting percentile_white_balance learned_white_balance",
     "text": "text_er tesseract_ocr",
     "ml": "svm_blocks image_mixtures visual_words",

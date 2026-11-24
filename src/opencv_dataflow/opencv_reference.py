@@ -349,6 +349,8 @@ BINDINGS = {
     "cv.in_range": "inRange",
     "cv.inpaint": "inpaint",
     "cv.extended_inpaint": "xphoto.inpaint",
+    "cv.fuzzy_filter": "ft.filter ft.createKernel ft.createKernel1",
+    "cv.fuzzy_inpaint": "ft.inpaint ft.FT02D_iteration ft.createKernel",
     "cv.bm3d_denoise": "xphoto.bm3dDenoising",
     "cv.oil_painting": "xphoto.oilPainting",
     "cv.tonemap_durand": "xphoto.createTonemapDurand xphoto.TonemapDurand",

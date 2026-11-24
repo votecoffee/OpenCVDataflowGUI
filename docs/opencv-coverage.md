@@ -372,6 +372,8 @@ extremal components with horizontal native grouping on contrast-varied printed l
 with pinned language data and compares word geometry and confidence against the native OpenCV adapter.
 [Pei–Lin normalization](<../examples/opencv tools/peilin_normalization/README.md>) returns reusable
 source-to-normalized transforms and aligns independently drawn affine-equivalent silhouettes.
+[Fuzzy restoration](<../examples/opencv tools/fuzzy_restoration/README.md>) measures noise
+suppression and selected repairs by native one-step and bounded adaptive transforms.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)
