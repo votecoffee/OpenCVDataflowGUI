@@ -53,6 +53,7 @@ OPENCV_MODULES = {
     "objdetect": "Object Detection",
     "wechat_qrcode": "WeChat QR Code Detection",
     "dnn": "Deep Neural Networks",
+    "text": "Scene Text Detection",
     "flann": "Clustering and Search",
     "photo": "Computational Photography",
     "xphoto": "Extended Computational Photography",
@@ -135,6 +136,7 @@ IMPLEMENTATION_MODULES = {
     "input_shifts",
     "photo": "chromatic_aberration exposure hdr hdr_motion photo_filters restoration",
     "xphoto": "white_balance xphoto_denoising xphoto_inpainting bm3d_denoising durand_tonemap oil_painting percentile_white_balance learned_white_balance",
+    "text": "text_er",
     "ml": "svm_blocks image_mixtures visual_words",
     "stitching": "image_stitching scan_stitching tiled_mosaic mosaic_layout_io registered_replay "
     "rotating_panorama panorama_points",

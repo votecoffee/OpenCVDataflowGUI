@@ -506,6 +506,10 @@ BINDINGS = {
     "inspect.match_descriptor_radius": "DescriptorMatcher.radiusMatch",
     "inspect.match_template": "matchTemplate",
     "inspect.mser": "MSER_create MSER.detectRegions",
+    "cv.text_extremal_regions": (
+        "text.createERFilterNM1 text.createERFilterNM2 text.detectRegions text.erGrouping "
+        "text.computeNMChannels"
+    ),
     "inspect.orb": "ORB_create Feature2D.detectAndCompute",
     "inspect.phase_correlation": "phaseCorrelate",
     "inspect.read_barcode": "barcode.BarcodeDetector.detectAndDecodeWithType",

@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Find words before OCR",
+      "description": "Choose Run Once. Inspect the group boxes for three labels at different contrasts. The component branch shows individual candidates. Original MIT-licensed chart. Detection uses OpenCV's bundled Apache-2.0 NM1/NM2 classifiers.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Contrast chart",
+      "parameters": {
+        "path": "assets/text_chart.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        140
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "groups",
+      "type": "cv.text_extremal_regions",
+      "name": "Group horizontal text",
+      "description": "Find character candidates or horizontal text regions for a separate OCR block.",
+      "parameters": {
+        "mode": "horizontal_groups",
+        "component_channels": "gray",
+        "polarity": "both",
+        "nm1_model_path": "",
+        "nm2_model_path": "",
+        "threshold_delta": 8,
+        "minimum_area_fraction": 0.00025,
+        "maximum_area_fraction": 0.13,
+        "nm1_probability": 0.4,
+        "nm1_nonmax": true,
+        "nm1_probability_difference": 0.1,
+        "nm2_probability": 0.3,
+        "minimum_count": 3,
+        "maximum_regions": 256
+      },
+      "position": [
+        350,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "regions",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "parts",
+      "type": "cv.text_extremal_regions",
+      "name": "Detect components",
+      "description": "Find character candidates or horizontal text regions for a separate OCR block.",
+      "parameters": {
+        "mode": "components",
+        "component_channels": "gray",
+        "polarity": "both",
+        "nm1_model_path": "",
+        "nm2_model_path": "",
+        "threshold_delta": 8,
+        "minimum_area_fraction": 0.00025,
+        "maximum_area_fraction": 0.13,
+        "nm1_probability": 0.4,
+        "nm1_nonmax": true,
+        "nm1_probability_difference": 0.1,
+        "nm2_probability": 0.3,
+        "minimum_count": 1,
+        "maximum_regions": 256
+      },
+      "position": [
+        350,
+        255
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "regions",
+        "count",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review grouped words",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        715,
+        30
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "groups",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "parts",
+      "input": "image"
+    },
+    {
+      "source": "groups",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

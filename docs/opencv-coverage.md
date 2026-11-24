@@ -366,6 +366,8 @@ texture suppression and boundary shift against Gaussian blur on a known part.
 exact ranks and native histogram fitting on gray steps with bright and dark outliers.
 [Learned white balance](<../examples/opencv tools/learned_white_balance/README.md>) verifies
 native uint8 and uint16 inference, palette support and a pinned forest on three independent casts.
+[Native text regions](<../examples/opencv tools/native_text_regions/README.md>) compares
+extremal components with horizontal native grouping on contrast-varied printed labels.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

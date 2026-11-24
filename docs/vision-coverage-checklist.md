@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 63 | 6 | 33 | 102 | 61.8% |
-| **Overall** | 429 | 7 | 34 | 470 | 91.3% |
+| 4. Selected contrib | 64 | 6 | 32 | 102 | 62.7% |
+| **Overall** | 430 | 7 | 33 | 470 | 91.5% |
 
 <!-- coverage-summary:end -->
 
@@ -679,7 +679,7 @@ fixture or result needed to close the item.
 | S4-64 | Local histogram texture smoothing | xphoto.oilPainting | Complete | cv.oil_painting uses native gray-intensity grouping, with separately computed Lab lightness and HSV hue modes checked against an independent reference. A segmented color fixture verifies texture suppression, edge shift, and selected writes. |
 | S4-65 | Percentile white balance | xphoto.createSimpleWB | Complete | cv.percentile_white_balance qualifies native uint8/float32 histogram fitting and exact uint8/uint16/float32 percentile stretching with mask/region support. A known chart verifies neutral steps and clipped outlier tails. |
 | S4-66 | Learned white balance | xphoto.createLearningBasedWB | Complete | cv.learned_white_balance qualifies native uint8/uint16 inference, optional external forest digest, and guarded palette support. Three independent cast charts record two improvements and one regression with the pinned embedded-model revision. |
-| S4-67 | Native text component detection | text.detectRegions and supported extremal-region grouping | Planned | Extract candidate regions from contrast-varied printed text and verify grouping against marked words. |
+| S4-67 | Native text component detection | text.detectRegions and supported extremal-region grouping | Complete | cv.text_extremal_regions qualifies native components and horizontal grouping with pinned NM1/NM2 classifiers. Three contrast-varied labels match independent glyph boxes at over 0.90 IoU. Arbitrary-angle grouping is unavailable on the pinned OpenCV build. |
 | S4-68 | OCR through the contrib Tesseract adapter | text.OCRTesseract | Planned | Qualify a Tesseract-enabled backend and pinned language data. Verify recognition, confidence and source boxes on labeled crops. The pinned wheel reported Tesseract unavailable and returned empty text on a known label. |
 | S4-69 | Color-independent global image normalization | ximgproc.PeiLinNormalization | Planned | Return the normalization transform and verify alignment of equivalent shape images. |
 | S4-70 | Fuzzy image smoothing and inpainting | ft.filter and ft.inpaint | Planned | Verify local smoothing or fill quality on an image fixture, with bounded controls. |

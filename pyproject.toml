@@ -35,7 +35,8 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 opencv_dataflow = ["fonts/*.ttf", "fonts/*.txt", "fonts/*.md", "simple_plugin_wheels/*.whl",
-                   "simple_plugin_wheels/*.md"]
+                   "simple_plugin_wheels/*.md",
+                   "models/text_er/*.xml", "models/text_er/*.txt", "models/text_er/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

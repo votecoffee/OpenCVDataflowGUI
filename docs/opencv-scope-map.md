@@ -636,7 +636,7 @@ a working backend and reproducible graph result.
 
 | API | Graph disposition | Checklist IDs |
 | --- | --- | --- |
-| `cv2.text.ERFilter`, `cv2.text.ERFilter.Callback`, `cv::text::ERStat`, `cv::text::MSERsToERStats`, `cv2.text.computeNMChannels`, `cv2.text.createERFilterNM1`, `cv2.text.createERFilterNM2`, `cv2.text.detectRegions`, `cv2.text.erGrouping`, `cv2.text.loadClassifierNM1`, `cv2.text.loadClassifierNM2` | Keep extremal-region extraction, classifier loading and grouping in the same text-region contract. | S4-67 |
+| `cv2.text.ERFilter`, `cv2.text.ERFilter.Callback`, `cv::text::ERStat`, `cv::text::MSERsToERStats`, `cv2.text.computeNMChannels`, `cv2.text.createERFilterNM1`, `cv2.text.createERFilterNM2`, `cv2.text.detectRegions`, `cv2.text.erGrouping`, `cv2.text.loadClassifierNM1`, `cv2.text.loadClassifierNM2` | S4-67 qualifies the bundled NM1/NM2 cascade, native channel extraction and horizontal grouping through detectRegions. Arbitrary-angle grouping raises an unsupported-operation error on the pinned build. | S4-67 |
 | `cv2.text.detectTextSWT` | Qualify stroke-width detection and its grouped boxes without trained detector assets. | S4-93 |
 | `cv2.text.TextDetector`, `cv2.text.TextDetectorCNN` | Use an image-to-text-region model contract and a pinned detection fixture. | S2-32 |
 | `cv2.text.BaseOCR`, `cv2.text.OCRTesseract` | Validate the linked backend and language data. The audited wheel reports Tesseract unavailable and returns empty text on a known label. | S4-68 |

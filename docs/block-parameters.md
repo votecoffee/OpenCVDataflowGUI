@@ -7043,6 +7043,35 @@ Input `frames` — Ordered batch of aligned frames of the same scene.
 | `target_index` | `-1` | Value must be a whole number between -1 and 63. Zero-based frame to denoise. −1 chooses the earlier middle frame. |
 | `temporal_window` | `3` | Value must be a positive odd integer between 1 and 31. Odd number of frames centered on the target. |
 
+## Detect extremal text regions (`cv.text_extremal_regions`)
+
+Inspection / Text inspection
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or color. Converted to 8-bit RGB for the native detector.
+
+Input `mask` — Retain boxes whose centers lie within the mask.
+
+Input `region` — Retain boxes whose centers lie inside this region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `mode` | `"horizontal_groups"` | `horizontal_groups`, `components` Group horizontal text in both gray polarities, or return individual components. |
+| `component_channels` | `"gray"` | `gray`, `rgb_lightness_gradient`, `hsv_gradient` Channels used only in components mode. |
+| `polarity` | `"both"` | `both`, `dark`, `bright` Contrast polarity used only in components mode. |
+| `nm1_model_path` | `""` | Local first-stage Boost XML/YAML. Empty uses the shipped model. |
+| `nm2_model_path` | `""` | Local second-stage Boost XML/YAML. Empty uses the shipped model. |
+| `threshold_delta` | `8` | Value must be a whole number between 1 and 128. Intensity step used when extracting the first-stage component tree. |
+| `minimum_area_fraction` | `0.00025` | Value must be a finite number between 0 and 1. Minimum component area as a fraction of image area. |
+| `maximum_area_fraction` | `0.13` | Value must be a finite number between 0 and 1. Maximum component area as a fraction of image area. |
+| `nm1_probability` | `0.4` | Value must be a finite number between 0 and 1. Minimum first-stage estimated character probability. |
+| `nm1_nonmax` | `true` | Suppress branch probabilities that are not local maxima. |
+| `nm1_probability_difference` | `0.1` | Value must be a finite number between 0 and 1. Minimum difference between branch probability extrema. |
+| `nm2_probability` | `0.3` | Value must be a finite number between 0 and 1. Minimum second-stage estimated character probability. |
+| `minimum_count` | `1` | Value must be a whole number between 0 and 256. Fail when fewer OCR regions remain after selection. Zero allows none. |
+| `maximum_regions` | `256` | Value must be a whole number between 1 and 256. Keep up to this many regions. Truncation marks the result as failed. |
+
 ## Flatten selected texture (`cv.texture_flattening`)
 
 Image processing / Illumination and texture

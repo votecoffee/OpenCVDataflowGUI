@@ -3,3 +3,5 @@
 *.raw12 binary
 *.flo binary
 *.icc binary
+src/opencv_dataflow/models/text_er/*.xml -text
+src/opencv_dataflow/models/text_er/LICENSE-APACHE-2.0.txt -text
