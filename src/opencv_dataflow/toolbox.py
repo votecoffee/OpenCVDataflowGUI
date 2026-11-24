@@ -46,6 +46,7 @@ OPENCV_MODULES = {
     "geometry": "Computational Geometry",
     "video": "Video Analysis",
     "optflow": "Optical Flow Algorithms",
+    "motempl": "Motion Templates",
     "bgsegm": "Background and Foreground Segmentation",
     "videoio": "Video I/O",
     "objdetect": "Object Detection",
@@ -154,6 +155,7 @@ IMPLEMENTATION_MODULES = {
     "line_descriptor": "line_descriptors",
     "shape": "shape_context hausdorff_distance thin_plate_spline",
     "saliency": "static_saliency motion_saliency",
+    "motempl": "motion_history",
     "optflow": "deepflow dense_rlof dual_tvl1_flow",
 }
 BLOCK_MODULES = {

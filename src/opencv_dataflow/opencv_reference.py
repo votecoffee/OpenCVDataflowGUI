@@ -553,6 +553,10 @@ BINDINGS = {
     "sequence.knn_background": "createBackgroundSubtractorKNN BackgroundSubtractor.apply",
     "sequence.lk_grid_flow": "calcOpticalFlowPyrLK remap",
     "sequence.mog2": "createBackgroundSubtractorMOG2 BackgroundSubtractor.apply",
+    "sequence.motion_history": (
+        "motempl.updateMotionHistory motempl.calcMotionGradient "
+        "motempl.calcGlobalOrientation motempl.segmentMotion"
+    ),
     "sequence.motion_saliency": (
         "saliency.MotionSaliencyBinWangApr2014_create "
         "saliency.MotionSaliencyBinWangApr2014.computeSaliency "

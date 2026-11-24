@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Read motion direction from a fading trail",
+      "description": "Run All. The original MIT clip shows a bright part moving right, then down. The filmstrip displays 250 ms of motion history. Bright pixels moved most recently. Review the history block for direction, age and region labels.",
+      "parameters": {},
+      "position": [
+        0,
+        -195
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "video",
+      "type": "input.video_file",
+      "name": "Two-direction test clip",
+      "parameters": {
+        "path": "assets/two_directions.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 0,
+        "end_frame": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        0,
+        45
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Make the moving part silhouette",
+      "parameters": {
+        "value": 150,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        260,
+        45
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "history",
+      "type": "sequence.motion_history",
+      "name": "Measure motion history",
+      "description": "Track when pixels moved and estimate the direction of recent motion.",
+      "parameters": {
+        "warmup": 1,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "duration_ms": 250.0,
+        "minimum_delta_ms": 1.0,
+        "maximum_delta_ms": 0.0,
+        "aperture": "3",
+        "segment_regions": true,
+        "segment_tolerance_ms": 60.0,
+        "maximum_regions": 64
+      },
+      "position": [
+        550,
+        45
+      ],
+      "exposed_inputs": [
+        "image",
+        "timestamp_ms"
+      ],
+      "exposed_outputs": [
+        "recency",
+        "active",
+        "direction_deg",
+        "segments",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review the fading trail",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        850,
+        45
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "video",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "history",
+      "input": "image"
+    },
+    {
+      "source": "history",
+      "output": "recency",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

@@ -15534,6 +15534,38 @@ Input `known_foreground` — Current-grid uint8 object mask. With a restored ref
 | `maximum_variance` | `75.0` |  |
 | `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
 
+## Motion history and direction (`sequence.motion_history`)
+
+Sequence / Motion
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional), `timestamp_ms` (number, optional).
+
+Input `image` — Uint8 silhouette. Nonzero input pixels indicate motion at this frame time.
+
+Input `timestamp_ms` — Capture time in milliseconds, or the time from video metadata.
+
+Input `mask` — Restrict motion updates and reported history to the selected pixels.
+
+Input `region` — Limit updates and outputs, intersected with the optional mask.
+
+Input `reset` — Clear this stream's history before updating with the current silhouette.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `1` | Value must be a whole number between 1 and 10000. Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `duration_ms` | `250.0` | Value must be a finite number between 1 and 600000. Keep pixels up to this age in milliseconds. |
+| `minimum_delta_ms` | `1.0` | Value must be a finite number between 0.01 and 600000. Smallest valid neighborhood time change for the motion gradient. |
+| `maximum_delta_ms` | `0.0` | Value must be a finite number between 0 and 600000. Largest valid local time change. Zero uses the history duration. |
+| `aperture` | `"3"` | `3`, `5`, `7` Sobel aperture for local motion direction, in pixels. |
+| `segment_regions` | `true` | Group adjacent motion history around the current silhouette. |
+| `segment_tolerance_ms` | `60.0` | Value must be a finite number between 0 and 600000. Maximum time difference between neighboring region pixels. |
+| `maximum_regions` | `64` | Value must be a whole number between 1 and 256. Maximum number of region records. The label raster keeps all regions. |
+
 ## Motion saliency (`sequence.motion_saliency`)
 
 Sequence / Motion saliency

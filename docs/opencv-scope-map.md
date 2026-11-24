@@ -110,7 +110,7 @@ callability and a representative fixture for each build-dependent commitment.
 | `ft` | Python namespace for fuzzy image transforms. | S4-70 |
 | `legacy` | Compatibility wrappers for older interfaces and trackers. Cover new work under the current graph APIs. | — |
 | `linemod` | Train RGB-D views and select a rotation with LINEMOD. Verify metric translation and reprojection from registered depth. | S3-69 |
-| `motempl` | Motion history images and motion direction. | S4-55 |
+| `motempl` | S4-55 verifies timed age and recency, local and global direction, and motion regions grown from current silhouette pixels. | S4-55 |
 | `ogl` | Native OpenGL display interop. The application viewer owns display. | — |
 | `ppf_match_3d` | Python namespace for point-pair surface matching. | S3-22, S3-58 |
 | `segmentation` | Segmentation utilities. Keep implementations in their graph segmentation family. | S1-28, S1-97–S1-98, S4-04 |

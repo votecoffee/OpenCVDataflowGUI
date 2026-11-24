@@ -346,6 +346,8 @@ warps a plate onto an analytic target and verifies residuals at held-out landmar
 foreground ranking and percentile masks with known part geometry.
 [Motion saliency](<../examples/opencv tools/motion_saliency/README.md>) compares native Bin Wang
 and retina transient masks through warmup, motion and part exit on a timestamped clip.
+[Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
+pixel age, timed decay and dominant motion direction on two known trajectories.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose
