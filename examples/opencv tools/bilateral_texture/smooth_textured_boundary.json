@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Smooth texture around a measured edge",
+      "description": "Run Once. Smooth the textured plate within the write rectangle. Compare green-channel surface deviation and the fitted slanted edge before and after filtering. Original synthetic fixture.",
+      "parameters": {},
+      "position": [
+        35,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Textured slanted step",
+      "parameters": {
+        "path": "assets/textured-step.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        25,
+        25
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "write_region",
+      "type": "region.shape",
+      "name": "Limit writes to the part",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          15,
+          13,
+          162,
+          119
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        325,
+        -110
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "texture_sample",
+      "type": "region.shape",
+      "name": "Sample the upper plateau",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          123,
+          36,
+          33,
+          62
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        325,
+        140
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edge_sample",
+      "type": "region.shape",
+      "name": "Sample both sides of the boundary",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          62,
+          17,
+          69,
+          110
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        325,
+        385
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "smooth",
+      "type": "cv.bilateral_texture",
+      "name": "Preserve the edge while smoothing texture",
+      "description": "Reduce surface texture while preserving structural edges with OpenCV's native filter.",
+      "parameters": {
+        "radius": 3,
+        "iterations": 1,
+        "sigma_alpha": -1.0,
+        "sigma_avg": -1.0
+      },
+      "position": [
+        640,
+        10
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_texture",
+      "type": "cv.image_statistics",
+      "name": "Surface deviation before",
+      "parameters": {
+        "channel": "G",
+        "statistic": "standard_deviation",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        640,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "summary",
+        "selected_count",
+        "value",
+        "minimum_location",
+        "maximum_location"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "result_texture",
+      "type": "cv.image_statistics",
+      "name": "Surface deviation after",
+      "parameters": {
+        "channel": "G",
+        "statistic": "standard_deviation",
+        "percentiles": [],
+        "value_percentile": 50.0,
+        "percentile_method": "linear",
+        "include_alpha": false
+      },
+      "position": [
+        980,
+        220
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "summary",
+        "selected_count",
+        "value",
+        "minimum_location",
+        "maximum_location"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source_edge",
+      "type": "inspect.slanted_edge",
+      "name": "Edge geometry before",
+      "parameters": {
+        "orientation": "auto",
+        "half_width": 12,
+        "oversampling": "4",
+        "fit_method": "huber",
+        "minimum_rows": 32,
+        "minimum_coverage": 0.8,
+        "minimum_contrast": 0.1,
+        "minimum_slant": 1.0,
+        "maximum_slant": 15.0,
+        "maximum_fit_rms": 1.5,
+        "plateau_samples": 4,
+        "maximum_plateau_drift": 0.2,
+        "window": "hann",
+        "derivative_correction": true,
+        "gamma": 1.0,
+        "reject_clipping": true,
+        "maximum_clipped_fraction": 0.01,
+        "sample_pitch": 1.0,
+        "length_unit": "pixel",
+        "check_threshold": false,
+        "minimum_mtf50": 0.15
+      },
+      "position": [
+        640,
+        455
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mtf50",
+        "mtf10",
+        "measurements",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "result_edge",
+      "type": "inspect.slanted_edge",
+      "name": "Edge geometry after",
+      "parameters": {
+        "orientation": "auto",
+        "half_width": 12,
+        "oversampling": "4",
+        "fit_method": "huber",
+        "minimum_rows": 32,
+        "minimum_coverage": 0.8,
+        "minimum_contrast": 0.1,
+        "minimum_slant": 1.0,
+        "maximum_slant": 15.0,
+        "maximum_fit_rms": 1.5,
+        "plateau_samples": 4,
+        "maximum_plateau_drift": 0.2,
+        "window": "hann",
+        "derivative_correction": true,
+        "gamma": 1.0,
+        "reject_clipping": true,
+        "maximum_clipped_fraction": 0.01,
+        "sample_pitch": 1.0,
+        "length_unit": "pixel",
+        "check_threshold": false,
+        "minimum_mtf50": 0.15
+      },
+      "position": [
+        980,
+        455
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "mtf50",
+        "mtf10",
+        "measurements",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "write_region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "texture_sample",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "edge_sample",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "smooth",
+      "input": "image"
+    },
+    {
+      "source": "write_region",
+      "output": "region",
+      "target": "smooth",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "source_texture",
+      "input": "image"
+    },
+    {
+      "source": "texture_sample",
+      "output": "region",
+      "target": "source_texture",
+      "input": "region"
+    },
+    {
+      "source": "smooth",
+      "output": "image",
+      "target": "result_texture",
+      "input": "image"
+    },
+    {
+      "source": "texture_sample",
+      "output": "region",
+      "target": "result_texture",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "source_edge",
+      "input": "image"
+    },
+    {
+      "source": "edge_sample",
+      "output": "region",
+      "target": "source_edge",
+      "input": "region"
+    },
+    {
+      "source": "smooth",
+      "output": "image",
+      "target": "result_edge",
+      "input": "image"
+    },
+    {
+      "source": "edge_sample",
+      "output": "region",
+      "target": "result_edge",
+      "input": "region"
+    }
+  ]
+}

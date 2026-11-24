@@ -337,6 +337,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [BM3D denoising](<opencv tools/bm3d_denoising/README.md>) | Compare a noisy step edge, the hard-threshold estimate, and the Wiener result. |
 | [Durand HDR tone mapping](<opencv tools/durand_tonemap/README.md>) | Compare local and global display mapping on three textured bands with known radiance. |
 | [Oil painting texture filter](<opencv tools/oil_painting/README.md>) | Compare modal and Gaussian smoothing at a known part edge and verify selected writes. |
+| [Bilateral texture smoothing](<opencv tools/bilateral_texture/README.md>) | Measure texture reduction and boundary location before and after native bilateral texture filtering. |
 | [Percentile white balance](<opencv tools/percentile_white_balance/README.md>) | Compare native and exact tail trimming on cast gray steps with bright and dark outliers. |
 | [Learned white balance](<opencv tools/learned_white_balance/README.md>) | Replay three illuminants and measure where the embedded OpenCV forest improves or worsens neutral color. |
 | [Native text regions](<opencv tools/native_text_regions/README.md>) | Compare extremal components and horizontal groups on three independently labeled words. |

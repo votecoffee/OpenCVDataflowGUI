@@ -949,6 +949,7 @@ def builtin_registry():
     from .fast_bilateral_solver import FastBilateralSolver
     from .weighted_median import WeightedMedianFilter
     from .variance_smoothing import VarianceAdaptiveSmoothing
+    from .bilateral_texture import BilateralTextureFilter
     from .anisotropic_diffusion import AnisotropicDiffusion
     from .l0_smoothing import L0Smoothing
     from .recursive_gradients import DericheGradient, PaillouGradient
@@ -1249,6 +1250,7 @@ def builtin_registry():
         FastBilateralSolver,
         WeightedMedianFilter,
         VarianceAdaptiveSmoothing,
+        BilateralTextureFilter,
         AnisotropicDiffusion,
         L0Smoothing,
         DericheGradient,

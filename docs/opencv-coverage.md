@@ -382,6 +382,8 @@ seeded-noise reduction and step retention for the portable and enabled native ba
 local detail with global linear mapping on lossless HDR and verifies native parity on an enabled build.
 [Oil painting texture filtering](<../examples/opencv tools/oil_painting/README.md>) measures
 texture suppression and boundary shift against Gaussian blur on a known part.
+[Bilateral texture smoothing](<../examples/opencv tools/bilateral_texture/README.md>)
+fits a known slanted boundary and measures surface variation before and after selected smoothing.
 [Percentile white balance](<../examples/opencv tools/percentile_white_balance/README.md>) compares
 exact ranks and native histogram fitting on gray steps with bright and dark outliers.
 [Learned white balance](<../examples/opencv tools/learned_white_balance/README.md>) verifies

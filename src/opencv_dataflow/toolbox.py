@@ -228,6 +228,7 @@ BLOCK_MODULES = {
     "linemod": "3d.train_linemod_pose 3d.match_linemod_pose",
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match 3d.register_cloud_features",
     "ximgproc": (
+        "cv.bilateral_texture "
         "inspect.radon_projection "
         "inspect.match_color_template "
         "cv.guided_filter cv.domain_transform_filter cv.adaptive_manifold_filter "
@@ -260,6 +261,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "cv.bilateral_texture": ("bilateralTextureFilter", "texture attenuation", "structure preserving"),
     "inspect.radon_projection": ("RadonTransform", "sinogram", "angular projection profiles"),
     "cv.local_contrast_edges": ("BrightEdges equivalent", "local contrast", "uneven lighting", "multiscale edges"),
     "inspect.match_color_template": ("colorMatchTemplate", "quaternion phase correlation", "color template"),

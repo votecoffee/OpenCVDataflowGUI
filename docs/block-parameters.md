@@ -3820,6 +3820,25 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `sigma_space` | `5.0` | Value must be a finite number at least 0. |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Bilateral texture smoothing (`cv.bilateral_texture`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray or RGB/BGR(A), uint8, uint16 or float in [0,1]. Straight alpha is preserved.
+
+Input `mask` — Only selected pixels are replaced. Surrounding source pixels still contribute.
+
+Input `region` — Intersect this source-grid region with the write mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius` | `3` | Value must be a whole number between 1 and 63. Native fine-window radius. The final bilateral window uses twice this radius. |
+| `iterations` | `1` | Value must be a whole number between 1 and 50. Number of complete filtering passes. |
+| `sigma_alpha` | `-1.0` | Value must be a finite number at most 3.40282e+38. Edge-to-texture transition sharpness. Negative uses automatic 5 × radius. |
+| `sigma_avg` | `-1.0` | Value must be a finite number. Range sigma in unit intensity. Larger values admit greater color differences. Negative uses the native automatic value. |
+
 ## Enhance low light (BIMEF) (`cv.bimef`)
 
 Image processing / Contrast
