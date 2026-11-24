@@ -5534,6 +5534,26 @@ Input `image` — Gray/RGB/BGR/RGBA/BGRA uint8, uint16, int16 or float32/64. Con
 | `working_depth` | `"float64"` | `float64`, `float32` Floating coefficient depth; raw sample units are retained. Native detail always uses int16. |
 | `border` | `"reflect_101"` | `reflect_101`, `reflect_edge`, `replicate` Downsampling border. Upsampling uses OpenCV's required reflect_101. Native detail requires reflect_101 for both. |
 
+## Learned white balance (`cv.learned_white_balance`)
+
+Calibration / Color balance
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8- or 16-bit BGR/RGB. Straight alpha is preserved.
+
+Input `mask` — Restrict corrected pixels. The illuminant is estimated from the whole image.
+
+Input `region` — Restrict corrected pixels, intersected with the mask when connected.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `saturation_threshold` | `0.98` | Value must be a finite number between 0 and 1. Reject pixels at or above this fraction of the sensor range. |
+| `range_max` | `0` | Value must be a whole number between 0 and 65535. Largest sensor code. Zero uses 255 or 65535 based on image depth. |
+| `histogram_bins` | `64` | Value must be a whole number between 7 and 256. Number of bins per axis of the three-dimensional color histogram. |
+| `model_path` | `""` | Optional local OpenCV trained YAML model. Empty uses the embedded forest. |
+| `model_sha256` | `""` | Optional SHA-256 pin for the external model. The actual digest is reported. |
+
 ## Load feature covariance (`cv.load_feature_covariance`)
 
 ML / Image feature models

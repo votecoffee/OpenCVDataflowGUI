@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 62 | 6 | 34 | 102 | 60.8% |
-| **Overall** | 428 | 7 | 35 | 470 | 91.1% |
+| 4. Selected contrib | 63 | 6 | 33 | 102 | 61.8% |
+| **Overall** | 429 | 7 | 34 | 470 | 91.3% |
 
 <!-- coverage-summary:end -->
 
@@ -678,7 +678,7 @@ fixture or result needed to close the item.
 | S4-63 | Additional HDR tone mapping | xphoto.createTonemapDurand | Complete | cv.tonemap_durand compares shadow, midtone and highlight texture against global linear mapping. The portable backend runs on the stock wheel. An isolated enabled OpenCV 5.0.0 build matches direct native output after clipping. |
 | S4-64 | Local histogram texture smoothing | xphoto.oilPainting | Complete | cv.oil_painting uses native gray-intensity grouping, with separately computed Lab lightness and HSV hue modes checked against an independent reference. A segmented color fixture verifies texture suppression, edge shift, and selected writes. |
 | S4-65 | Percentile white balance | xphoto.createSimpleWB | Complete | cv.percentile_white_balance qualifies native uint8/float32 histogram fitting and exact uint8/uint16/float32 percentile stretching with mask/region support. A known chart verifies neutral steps and clipped outlier tails. |
-| S4-66 | Learned white balance | xphoto.createLearningBasedWB | Planned | Verify color correction on independent illuminant fixtures and record the model revision. |
+| S4-66 | Learned white balance | xphoto.createLearningBasedWB | Complete | cv.learned_white_balance qualifies native uint8/uint16 inference, optional external forest digest, and guarded palette support. Three independent cast charts record two improvements and one regression with the pinned embedded-model revision. |
 | S4-67 | Native text component detection | text.detectRegions and supported extremal-region grouping | Planned | Extract candidate regions from contrast-varied printed text and verify grouping against marked words. |
 | S4-68 | OCR through the contrib Tesseract adapter | text.OCRTesseract | Planned | Qualify a Tesseract-enabled backend and pinned language data. Verify recognition, confidence and source boxes on labeled crops. The pinned wheel reported Tesseract unavailable and returned empty text on a known label. |
 | S4-69 | Color-independent global image normalization | ximgproc.PeiLinNormalization | Planned | Return the normalization transform and verify alignment of equivalent shape images. |

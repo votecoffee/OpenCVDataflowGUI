@@ -1055,6 +1055,7 @@ def builtin_registry():
     from .relative_pose import IndependentRelativePose
     from .wide_pose import SolveWideAnglePose
     from .wide_stereo import CalibrateWideStereo
+    from .learned_white_balance import LearnedWhiteBalance
     from .percentile_white_balance import PercentileWhiteBalance
     from .white_balance import GrayWorldWhiteBalance
     from .workplane import RectifyWorkplane
@@ -1151,6 +1152,7 @@ def builtin_registry():
         ColorBalance,
         GrayWorldWhiteBalance,
         PercentileWhiteBalance,
+        LearnedWhiteBalance,
         *COLOR_CALIBRATION_BLOCKS,
         PixelToPhysical,
         InspectPlanarDistance,

@@ -364,6 +364,8 @@ local detail with global linear mapping on lossless HDR and verifies native pari
 texture suppression and boundary shift against Gaussian blur on a known part.
 [Percentile white balance](<../examples/opencv tools/percentile_white_balance/README.md>) compares
 exact ranks and native histogram fitting on gray steps with bright and dark outliers.
+[Learned white balance](<../examples/opencv tools/learned_white_balance/README.md>) verifies
+native uint8 and uint16 inference, palette support and a pinned forest on three independent casts.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

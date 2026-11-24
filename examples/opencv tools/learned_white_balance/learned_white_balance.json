@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Check a learned illuminant estimate",
+      "description": "Choose Run All to process three different synthetic illuminants. Compare the gray ramp in Source and Learned White Balance. The warm and cool ramps improve, while the green-deficit ramp gets worse. Original MIT-licensed charts.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Three illuminated charts",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/warm.png",
+          "assets/cool.png",
+          "assets/green_deficit.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        125
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "learned",
+      "type": "cv.learned_white_balance",
+      "name": "Learned white balance",
+      "description": "Use OpenCV's learned illuminant estimator and apply its channel gains.",
+      "parameters": {
+        "saturation_threshold": 0.98,
+        "range_max": 0,
+        "histogram_bins": 64,
+        "model_path": "",
+        "model_sha256": ""
+      },
+      "position": [
+        315,
+        125
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review corrected charts",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        650,
+        125
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "learned",
+      "input": "image"
+    },
+    {
+      "source": "learned",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
