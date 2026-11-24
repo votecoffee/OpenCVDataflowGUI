@@ -953,6 +953,7 @@ def builtin_registry():
     from .thin_plate_spline import RegisterThinPlateSpline
     from .static_saliency import StaticSaliencyMap
     from .motion_saliency import MotionSaliency
+    from .retina_preprocessing import RetinaPreprocessing
     from .motion_history import MotionHistory
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
@@ -1231,6 +1232,7 @@ def builtin_registry():
         RegisterThinPlateSpline,
         StaticSaliencyMap,
         MotionSaliency,
+        RetinaPreprocessing,
         MotionHistory,
         DctDenoise,
         ExtendedInpaint,

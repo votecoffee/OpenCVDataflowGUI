@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Exposure step and moving part",
+      "description": "Run All. Frame 12 brightens the entire scene. A part then crosses the right side in frames 30 through 37. The filmstrip shows the Magno motion response. The source is an original MIT-licensed synthetic replay.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "video",
+      "type": "input.video_file",
+      "name": "Exposure and part replay",
+      "parameters": {
+        "path": "assets/exposure_and_motion.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 0,
+        "end_frame": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "gray",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        0,
+        90
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "retina",
+      "type": "sequence.retina",
+      "name": "Adapt contrast and detect motion",
+      "description": "Adapt to luminance and reveal detail and temporal motion in consecutive frames.",
+      "parameters": {
+        "warmup": 6,
+        "max_streams": 4,
+        "max_bytes_mb": 256.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "channels": "both",
+        "color_mode": "auto",
+        "color_sampling": "bayer",
+        "normalize_detail": true,
+        "normalize_motion": false,
+        "saturate_colors": false,
+        "color_saturation": 4.0,
+        "photoreceptor_sensitivity": 0.75,
+        "photoreceptor_time": 0.9,
+        "photoreceptor_space": 0.53,
+        "horizontal_gain": 0.01,
+        "horizontal_time": 0.5,
+        "horizontal_space": 7.0,
+        "detail_sensitivity": 0.75,
+        "parasol_gain": 0.0,
+        "parasol_time": 0.0,
+        "parasol_space": 7.0,
+        "amacrine_time": 2.0,
+        "motion_sensitivity": 0.95,
+        "motion_integration_time": 0.0,
+        "motion_integration_space": 7.0
+      },
+      "position": [
+        320,
+        90
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "detail",
+        "motion",
+        "ready",
+        "status",
+        "motion_raw"
+      ],
+      "thumbnail": true,
+      "preview_output": "detail"
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review motion response",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        645,
+        90
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "video",
+      "output": "image",
+      "target": "retina",
+      "input": "image"
+    },
+    {
+      "source": "retina",
+      "output": "motion",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

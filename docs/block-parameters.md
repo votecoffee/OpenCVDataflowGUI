@@ -15863,6 +15863,52 @@ Input `region` — Optional target-grid region intersected with mask.
 | `minimum_restored_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required restored fraction of selected, originally supported target pixels. |
 | `no_neighbor` | `"pass_through"` | `pass_through`, `fail` Pass through unchanged when no pixels qualify, or report an inspection failure. |
 
+## Retina contrast and motion (`sequence.retina`)
+
+Sequence / Temporal preprocessing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Consecutive color or grayscale frames on one camera grid.
+
+Input `mask` — Limit published pixels while the model adapts to the full frame.
+
+Input `region` — Intersect the source-grid region with the optional mask.
+
+Input `reset` — Recreate the native model for the current stream.
+
+Input `stream` — Optional stream ID for independent temporal models.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `6` | Value must be a whole number between 1 and 10000. Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `256.0` | Value must be a finite number between 0.01 and 4096. Budget for estimated retained Retina models across streams. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `channels` | `"both"` | `both`, `detail`, `motion` Publish detail (Parvo), motion (Magno), or both. |
+| `color_mode` | `"auto"` | `auto`, `gray`, `color` Follow the source layout or force grayscale or color detail. |
+| `color_sampling` | `"bayer"` | `bayer`, `diagonal`, `random` Native color mosaic. A random mosaic varies between model instances. |
+| `normalize_detail` | `true` | Apply native per-frame scaling to the detail response. |
+| `normalize_motion` | `false` | Apply per-frame scaling. Turn off to compare magnitudes over time. |
+| `saturate_colors` | `false` | Enable the native color saturation adjustment. |
+| `color_saturation` | `4.0` | Value must be a finite number between 0.01 and 32. Strength of the optional native color saturation. |
+| `photoreceptor_sensitivity` | `0.75` | Value must be a finite number between 0 and 1. Compression strength for local light adaptation. |
+| `photoreceptor_time` | `0.9` | Value must be a finite number between 0 and 128. Photoreceptor temporal smoothing, in frames. |
+| `photoreceptor_space` | `0.53` | Value must be a finite number between 0.01 and 256. Photoreceptor spatial smoothing, in pixels. |
+| `horizontal_gain` | `0.01` | Value must be a finite number between 0 and 1. Amount of broad luminance retained in the detail channel. |
+| `horizontal_time` | `0.5` | Value must be a finite number between 0 and 128. Horizontal-cell temporal smoothing, in frames. |
+| `horizontal_space` | `7.0` | Value must be a finite number between 0.01 and 256. Horizontal-cell spatial smoothing, in pixels. |
+| `detail_sensitivity` | `0.75` | Value must be a finite number between 0 and 1. Local contrast compression in the detail channel. |
+| `parasol_gain` | `0.0` | Value must be a finite number between 0 and 1. Gain of the parasol-cell local adaptation filter. |
+| `parasol_time` | `0.0` | Value must be a finite number between 0 and 128. Parasol-cell temporal smoothing, in frames. |
+| `parasol_space` | `7.0` | Value must be a finite number between 0.01 and 256. Parasol-cell spatial smoothing, in pixels. |
+| `amacrine_time` | `2.0` | Value must be a finite number between 0.01 and 128. Motion high-pass time constant, in frames. |
+| `motion_sensitivity` | `0.95` | Value must be a finite number between 0 and 1. Local contrast compression in the motion channel. |
+| `motion_integration_time` | `0.0` | Value must be a finite number between 0 and 128. Local motion averaging time, in frames. |
+| `motion_integration_space` | `7.0` | Value must be a finite number between 0.01 and 256. Local motion averaging radius, in pixels. |
+
 ## SimpleFlow optical flow (`sequence.simpleflow`)
 
 Sequence / Temporal processing

@@ -42,6 +42,7 @@ OPENCV_MODULES = {
     "xfeatures2d": "Extra 2D Features",
     "shape": "Shape Distance and Matching",
     "saliency": "Saliency",
+    "bioinspired": "Bioinspired Vision",
     "calib": "Camera Calibration",
     "geometry": "Computational Geometry",
     "video": "Video Analysis",
@@ -155,6 +156,7 @@ IMPLEMENTATION_MODULES = {
     "line_descriptor": "line_descriptors",
     "shape": "shape_context hausdorff_distance thin_plate_spline",
     "saliency": "static_saliency motion_saliency",
+    "bioinspired": "retina_preprocessing",
     "motempl": "motion_history",
     "optflow": "deepflow dense_rlof dual_tvl1_flow sparse_to_dense_flow pca_simple_flow",
 }

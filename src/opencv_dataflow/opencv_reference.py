@@ -564,6 +564,10 @@ BINDINGS = {
         "motempl.updateMotionHistory motempl.calcMotionGradient "
         "motempl.calcGlobalOrientation motempl.segmentMotion"
     ),
+    "sequence.retina": (
+        "bioinspired.Retina_create Retina.setupOPLandIPLParvoChannel "
+        "Retina.setupIPLMagnoChannel Retina.getParvoRAW Retina.getMagnoRAW"
+    ),
     "sequence.motion_saliency": (
         "saliency.MotionSaliencyBinWangApr2014_create "
         "saliency.MotionSaliencyBinWangApr2014.computeSaliency "
