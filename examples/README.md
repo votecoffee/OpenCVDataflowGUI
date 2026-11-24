@@ -162,6 +162,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Visible support before picking](<opencv tools/visible_support/README.md>) | Native candidate detection, exact appearance/coverage counts, touching/covered parts and separate clearance/downstream selection. |
 | [Whole nonlinear selections](<opencv tools/selection_remap/README.md>) | Correct RGB16 images and selections together; exact holes, coverage, border validity, packed-map precision and masked measurements. |
 | [25 template instances](<opencv tools/template_instances/README.md>) | Find a repeated fixed-scale template in a 25-part synthetic scene and emit a pose for each match. |
+| [Joint color template matching](<opencv tools/color_template/README.md>) | Find a keyed insert and reject an equal-luminance wrong-color part that matches in grayscale. |
 | [3D pose and triangulation](<opencv tools/pose_3d/README.md>) | Project synthetic 3D points into two cameras, recover a pose with PnP, and triangulate points. |
 | [Absolute image error](<opencv tools/absolute_image_error/README.md>) | Compare mean, RMS, and maximum absolute error on two known deviations. |
 | [Gradient-based image quality](<opencv tools/gradient_quality/README.md>) | Compare clean, blurred and noisy copies of a synthetic chart using GMSD scores and local similarity maps. |

@@ -568,7 +568,12 @@ pixels can affect a selected pixel's similarity. SSIM and MSE return full
 maps. The score uses equal weighting across selected pixels and channels.
 
 
-## Available repeated template matching
+## Available template matching
+
+[Joint color template matching](<../examples/opencv tools/color_template/README.md>)
+locates a fixed-size insert using native quaternion phase correlation. The
+saved positive and negative projects distinguish color when the grayscale
+patches match pixel for pixel.
 
 **Find template instances** searches for fixed-scale, fixed-orientation
 copies with a normalized matching method, minimum score, result limit,

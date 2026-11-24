@@ -810,6 +810,49 @@ class ConnectedComponents(ImageTool):
         )
 
 
+def refine_template_peak(response, allowed, x, y, *, minimize=False):
+    """Return a local quadratic peak if its neighborhood supports one."""
+    if not (0 < x < response.shape[1] - 1 and 0 < y < response.shape[0] - 1):
+        return None
+    window = np.s_[y - 1:y + 2, x - 1:x + 2]
+    if allowed is not None and not allowed[window].all():
+        return None
+    peak = response[window].astype(np.float64)
+    if minimize:
+        peak = -peak
+    center = peak[1, 1]
+    neighbors = np.delete(peak.ravel(), 4)
+    if center <= neighbors.max():
+        return None
+    left, right, above, below = peak[1, 0], peak[1, 2], peak[0, 1], peak[2, 1]
+    xx, yy = left + right - 2 * center, above + below - 2 * center
+    xy = (peak[2, 2] - peak[2, 0] - peak[0, 2] + peak[0, 0]) / 4
+    if xx >= 0 or yy >= 0 or xx * yy <= xy * xy:
+        return None
+    dx, dy = np.linalg.solve([[xx, xy], [xy, yy]], [(left - right) / 2, (above - below) / 2])
+    if abs(dx) > 1 or abs(dy) > 1:
+        return None
+    return [x + float(dx), y + float(dy)]
+
+def template_candidate_mask(inputs, image, template_shape, response_shape):
+    selection = selection_mask(
+        {
+            "image": inputs["image"],
+            "mask": inputs.get("search_mask"),
+            "region": inputs.get("region"),
+        },
+        image,
+    )
+    if selection is None:
+        return None
+    # Match positions are top-left coordinates; selection tests the template center.
+    cy, cx = np.rint([(template_shape[0] - 1) / 2, (template_shape[1] - 1) / 2]).astype(int)
+    candidates = selection[cy : cy + response_shape[0], cx : cx + response_shape[1]]
+    if not candidates.any():
+        raise ValueError("Search region contains no legal template centers")
+    return candidates
+
+
 class MatchTemplate(Block):
     type_id, title, category = "inspect.match_template", "Match template", "Inspection"
     block_type, subtype = "Inspection", "Matching"
@@ -838,29 +881,8 @@ class MatchTemplate(Block):
     }
 
     def refined_top_left(self, response, allowed, method, x, y):
-        if not self.parameters["subpixel"]:
-            return None
-        if not (0 < x < response.shape[1] - 1 and 0 < y < response.shape[0] - 1):
-            return None
-        window = np.s_[y - 1:y + 2, x - 1:x + 2]
-        if allowed is not None and not allowed[window].all():
-            return None
-        peak = response[window].astype(np.float64)
-        if method.startswith("sqdiff"):
-            peak = -peak
-        center = peak[1, 1]
-        neighbors = np.delete(peak.ravel(), 4)
-        if center <= neighbors.max():
-            return None
-        left, right, above, below = peak[1, 0], peak[1, 2], peak[0, 1], peak[2, 1]
-        xx, yy = left + right - 2 * center, above + below - 2 * center
-        xy = (peak[2, 2] - peak[2, 0] - peak[0, 2] + peak[0, 0]) / 4
-        if xx >= 0 or yy >= 0 or xx * yy <= xy * xy:
-            return None
-        dx, dy = np.linalg.solve([[xx, xy], [xy, yy]], [(left - right) / 2, (above - below) / 2])
-        if abs(dx) > 1 or abs(dy) > 1:
-            return None
-        return [x + float(dx), y + float(dy)]
+        if self.parameters["subpixel"]:
+            return refine_template_peak(response, allowed, x, y, minimize=method.startswith("sqdiff"))
 
     def response_maps(self, inputs):
         image = gray_image(inputs["image"], (np.uint8, np.float32))
@@ -900,21 +922,7 @@ class MatchTemplate(Block):
         response = cv2.matchTemplate(image, template, code, mask=mask)
         if not np.isfinite(response).all():
             raise ValueError("Template matching produced a nonfinite response")
-        selection = selection_mask(
-            {
-                "image": inputs["image"],
-                "mask": inputs.get("search_mask"),
-                "region": inputs.get("region"),
-            },
-            image,
-        )
-        candidate_mask = None
-        if selection is not None:
-            # Match positions are top-left coordinates; selection tests the template center.
-            cy, cx = np.rint([(template.shape[0] - 1) / 2, (template.shape[1] - 1) / 2]).astype(int)
-            candidate_mask = selection[cy : cy + response.shape[0], cx : cx + response.shape[1]]
-            if not candidate_mask.any():
-                raise ValueError("Search region contains no legal template centers")
+        candidate_mask = template_candidate_mask(inputs, image, template.shape, response.shape)
         quality_code = {
             "sqdiff": cv2.TM_SQDIFF_NORMED,
             "ccorr": cv2.TM_CCORR_NORMED,

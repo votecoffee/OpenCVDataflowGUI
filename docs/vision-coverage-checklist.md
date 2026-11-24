@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 81 | 6 | 15 | 102 | 79.4% |
-| **Overall** | 447 | 7 | 16 | 470 | 95.1% |
+| 4. Selected contrib | 82 | 6 | 14 | 102 | 80.4% |
+| **Overall** | 448 | 7 | 15 | 470 | 95.3% |
 
 <!-- coverage-summary:end -->
 
@@ -717,7 +717,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S4-85 | Joint color template correlation | ximgproc.colorMatchTemplate | Planned | Use a color template with equal-luminance distractors. Verify score peaks, source coordinates and typed color handling, and compare localization with the existing template matcher. |
+| S4-85 | Joint color template correlation | ximgproc.colorMatchTemplate | Complete | inspect.match_color_template maps wrapped native phase peaks to legal source positions and publishes a float64 response, eligible center and gated pose. Typed color, source-grid selection and native score parity are verified. Saved projects distinguish equal-luminance inserts and reject the wrong color against the grayscale baseline. |
 | S4-86 | Multiscale local-contrast edge maps | ximgproc.BrightEdges or a tested equivalent | Planned | Measure edge localization and continuity on low-contrast parts over an uneven background. Verify range and threshold controls and preserve the selected region. The pinned wheel lacks a direct binding. |
 | S4-87 | Angular projection profiles for inspection | ximgproc.RadonTransform | Planned | Verify angle and distance axes on synthetic stripes and tilted edges, retain projection precision for scoring, and map the strongest directions back to the inspected region. |
 | S4-88 | Smooth texture while retaining structural edges | ximgproc.bilateralTextureFilter | Planned | Use a known textured surface with a measured boundary. Verify texture attenuation, edge displacement, selected-region writes and parameter limits. |

@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Distinguish keyed inserts by color",
+      "description": "Run Once. The two inserts have identical grayscale pixels. Compare the grayscale and color responses. Color should locate the warm insert at the lower right. Original synthetic fixture.",
+      "parameters": {},
+      "position": [
+        35,
+        -185
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Inspection image",
+      "parameters": {
+        "path": "assets/scene.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        30,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference color insert",
+      "parameters": {
+        "path": "assets/template.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        30,
+        295
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "color",
+      "type": "inspect.match_color_template",
+      "name": "Match joint color template",
+      "description": "Locate a fixed-size color template with joint quaternion phase correlation.",
+      "parameters": {
+        "min_score": 0.35,
+        "subpixel": false,
+        "pose_offset_x": 0.0,
+        "pose_offset_y": 0.0,
+        "pose_offset_angle": 0.0
+      },
+      "position": [
+        365,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "template"
+      ],
+      "exposed_outputs": [
+        "image",
+        "score",
+        "location",
+        "center",
+        "pose",
+        "response"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "gray",
+      "type": "inspect.match_template",
+      "name": "Match grayscale template",
+      "parameters": {
+        "method": "ccoeff_normed",
+        "min_score": 0.96,
+        "subpixel": false
+      },
+      "position": [
+        365,
+        295
+      ],
+      "exposed_inputs": [
+        "image",
+        "template",
+        "mask",
+        "search_mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "score",
+        "location",
+        "center",
+        "raw_score",
+        "response"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "color",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "color",
+      "input": "template"
+    },
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "gray",
+      "input": "image"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "gray",
+      "input": "template"
+    }
+  ]
+}

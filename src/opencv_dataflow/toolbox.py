@@ -228,6 +228,7 @@ BLOCK_MODULES = {
     "linemod": "3d.train_linemod_pose 3d.match_linemod_pose",
     "surface_matching": "3d.icp 3d.ppf_train 3d.ppf_match 3d.register_cloud_features",
     "ximgproc": (
+        "inspect.match_color_template "
         "cv.guided_filter cv.domain_transform_filter cv.adaptive_manifold_filter "
         "cv.fast_global_smoother cv.weighted_median_filter cv.anisotropic_diffusion "
         "cv.variance_adaptive_smoothing "
@@ -258,6 +259,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "inspect.match_color_template": ("colorMatchTemplate", "quaternion phase correlation", "color template"),
     "cv.sparse_rlof": ("calcOpticalFlowSparseRLOF", "robust local optical flow", "point correspondence"),
     "mask.encode_runs": ("RLE", "sparse mask", "run-length threshold"),
     "mask.morphology_runs": ("RLE", "sparse mask", "run-length erosion", "run-length dilation"),

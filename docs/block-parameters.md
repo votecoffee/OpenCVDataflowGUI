@@ -11289,6 +11289,28 @@ Inputs: `query` (data), `train` (data).
 | `max_distance` | `100.0` | Value must be a finite number at least 0. Maximum descriptor distance using the selected norm. |
 | `mode` | `"ratio"` | `ratio`, `cross_check` |
 
+## Match color template (`inspect.match_color_template`)
+
+Inspection / Matching
+
+Inputs: `image` (image), `template` (image), `search_mask` (image, optional), `region` (data, optional).
+
+Input `image` — Color search image at the same scale as the template.
+
+Input `template` — Tightly cropped color patch. RGB, BGR, HSV and Lab are converted to BGR working pixels.
+
+Input `search_mask` — Accept peaks whose template center lies on a nonzero search-image mask pixel.
+
+Input `region` — Restrict eligible template centers to this region in the source grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `min_score` | `0.25` | Value must be a finite number between 0 and 1. Minimum native phase-correlation peak. Tune for the actual scene and template. |
+| `subpixel` | `false` | Refine an interior peak by a local quadratic fit when its neighbors are eligible. |
+| `pose_offset_x` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Local x offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_y` | `0.0` | Value must be a finite number between -1e+06 and 1e+06. Local y offset in feature/model pixels; follows rotation and scale. |
+| `pose_offset_angle` | `0.0` | Value must be a finite number. Local counterclockwise rotation in degrees (OpenCV convention). |
+
 ## Match descriptors within radius (`inspect.match_descriptor_radius`)
 
 Inspection / Matching

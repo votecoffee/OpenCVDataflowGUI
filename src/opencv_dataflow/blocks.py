@@ -699,6 +699,7 @@ def builtin_registry():
     from .connection_health import CONNECTION_HEALTH_BLOCKS
     from .contour_analysis import CONTOUR_ANALYSIS_BLOCKS
     from .contour_raster import RasterizeContours
+    from .color_template import MatchColorTemplate
     from .run_length_masks import DecodeBinaryMaskRuns, EncodeBinaryMaskRuns, MorphologyMaskRuns
     from .control_flow import CONTROL_BLOCKS
     from .convex_overlap import ConvexPolygonOverlap
@@ -1327,6 +1328,7 @@ def builtin_registry():
         HoughPolarLines,
         *CONTOUR_ANALYSIS_BLOCKS,
         RasterizeContours,
+        MatchColorTemplate,
         EncodeBinaryMaskRuns,
         MorphologyMaskRuns,
         DecodeBinaryMaskRuns,
