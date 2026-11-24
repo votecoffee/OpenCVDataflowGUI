@@ -580,6 +580,7 @@ Project-defined inspection algorithms, region/metrology tools and integrations w
 | [Adaptive background correction](<custom tools/adaptive_background/README.md>) | Flatten a lighting gradient so a fixed threshold finds a dark defect. |
 | [L0 image smoothing](<custom tools/l0_smoothing/README.md>) | Compare two smoothing weights with Gaussian blur on a 16-bit step and narrow stripe. |
 | [Classical multi-frame super-resolution](<custom tools/multi_frame_super_resolution/README.md>) | Reconstruct a 2× image from five shifted observations and measure detail recovery against bicubic and known truth. |
+| [Run-length binary morphology](<custom tools/run_length_morphology/README.md>) | Open sparse plate masks by processing foreground runs and verify exact agreement with dense OpenCV. |
 | [Trimap alpha matting](<custom tools/trimap_matting/README.md>) | Recover soft opacity from a grayscale trimap and compare against analytic ground truth. |
 | [Annoy nearest neighbors](<custom tools/annoy_search/README.md>) | Turn synthetic image colors into an ONNX embedding and rank three labeled reference vectors with an Annoy index. |
 | [Build flat-field references](<custom tools/flat_field_reference/README.md>) | Estimate bright/dark maps from repeated captures, compare mean/median handling and verify a held-out color image. |

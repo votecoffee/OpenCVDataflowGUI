@@ -12378,6 +12378,46 @@ Annotations / Layout
 
 No configurable algorithm parameters.
 
+## Decode binary mask runs (`mask.decode_runs`)
+
+Image processing / Morphology
+
+Inputs: `runs` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `foreground` | `255` | Value must be a whole number between 1 and 255. |
+| `max_pixels` | `64000000` | Value must be a whole number between 1 and 6.4e+07. Maximum number of pixels to allocate for the dense uint8 output. |
+
+## Encode binary mask runs (`mask.encode_runs`)
+
+Image processing / Morphology
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `threshold` | `0.0` | Value must be a finite number. Bright selects samples above this value. Dark includes equality. |
+| `polarity` | `"bright"` | `bright`, `dark` |
+
+## Run-length binary morphology (`mask.morphology_runs`)
+
+Image processing / Morphology
+
+Inputs: `runs` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `operation` | `"open"` | `erode`, `dilate`, `open`, `close`, `gradient`, `tophat`, `blackhat` |
+| `shape` | `"ellipse"` | `rect`, `ellipse`, `cross`, `diamond`, `custom` |
+| `kernel` | `3` | Value must be a whole number between 1 and 255. |
+| `iterations` | `1` | Value must be a whole number between 1 and 100. |
+| `kernel_y` | `0` | Value must be a whole number between 0 and 255. |
+| `custom_kernel` | `[]` | Rectangular grid of 0s and 1s used when Shape is custom. |
+| `anchor` | `[-1, -1]` |  |
+| `shape_anchor` | `[-1, -1]` | Kernel construction anchor (cross shape); operation anchor is separate. |
+| `erosion_border` | `"foreground"` | `foreground`, `background` Foreground matches the neutral OpenCV border. Dilation always uses background. |
+
 ## Shape mask (`mask.shape`)
 
 Image processing / Masks

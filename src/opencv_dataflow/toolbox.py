@@ -258,6 +258,9 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "mask.encode_runs": ("RLE", "sparse mask", "run-length threshold"),
+    "mask.morphology_runs": ("RLE", "sparse mask", "run-length erosion", "run-length dilation"),
+    "mask.decode_runs": ("RLE", "sparse mask", "paint runs"),
     "inspect.fourier_contour": ("fourierDescriptor", "contourSampling"),
     "inspect.fit_fourier_contours": ("createContourFitting", "similarity registration", "transformFD"),
     "sequence.multi_frame_super_resolution": ("burst reconstruction", "subpixel alignment", "classical super resolution"),

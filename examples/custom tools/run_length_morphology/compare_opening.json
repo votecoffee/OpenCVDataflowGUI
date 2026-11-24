@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Open sparse binary masks",
+      "description": "Run Once. Open the three sparse silhouettes with a 9 \u00d7 9 rectangle and compare the decoded result with dense OpenCV. Expect zero pixel error. The source is an original synthetic image.",
+      "parameters": {},
+      "position": [
+        40,
+        -165
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "plate",
+      "type": "input.file",
+      "name": "Binary plate fixture",
+      "parameters": {
+        "path": "assets/plate_mask.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        30,
+        125
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "encode",
+      "type": "mask.encode_runs",
+      "name": "Encode foreground runs",
+      "parameters": {
+        "threshold": 0.0,
+        "polarity": "bright"
+      },
+      "position": [
+        340,
+        10
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "runs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "opening",
+      "type": "mask.morphology_runs",
+      "name": "Open the run-length mask",
+      "parameters": {
+        "operation": "open",
+        "shape": "rect",
+        "kernel": 9,
+        "iterations": 1,
+        "kernel_y": 0,
+        "custom_kernel": [],
+        "anchor": [
+          -1,
+          -1
+        ],
+        "shape_anchor": [
+          -1,
+          -1
+        ],
+        "erosion_border": "foreground"
+      },
+      "position": [
+        650,
+        10
+      ],
+      "exposed_inputs": [
+        "runs"
+      ],
+      "exposed_outputs": [
+        "runs",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "decode",
+      "type": "mask.decode_runs",
+      "name": "Decode for display",
+      "parameters": {
+        "foreground": 255,
+        "max_pixels": 64000000
+      },
+      "position": [
+        960,
+        10
+      ],
+      "exposed_inputs": [
+        "runs"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "dense",
+      "type": "cv.morphology",
+      "name": "Open the dense OpenCV mask",
+      "parameters": {
+        "operation": "open",
+        "shape": "rect",
+        "kernel": 9,
+        "iterations": 1,
+        "kernel_y": 0,
+        "custom_kernel": [],
+        "anchor": [
+          -1,
+          -1
+        ],
+        "shape_anchor": [
+          -1,
+          -1
+        ],
+        "border": "constant",
+        "border_value": []
+      },
+      "position": [
+        650,
+        265
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "inspect.image_quality",
+      "name": "Require exact pixel agreement",
+      "parameters": {
+        "metric": "max_absolute_error",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 0,
+        "peak_value": 255.0
+      },
+      "position": [
+        1270,
+        125
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "plate",
+      "output": "image",
+      "target": "encode",
+      "input": "image"
+    },
+    {
+      "source": "encode",
+      "output": "runs",
+      "target": "opening",
+      "input": "runs"
+    },
+    {
+      "source": "opening",
+      "output": "runs",
+      "target": "decode",
+      "input": "runs"
+    },
+    {
+      "source": "plate",
+      "output": "image",
+      "target": "dense",
+      "input": "image"
+    },
+    {
+      "source": "decode",
+      "output": "image",
+      "target": "compare",
+      "input": "image_a"
+    },
+    {
+      "source": "dense",
+      "output": "image",
+      "target": "compare",
+      "input": "image_b"
+    }
+  ]
+}

@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 79 | 6 | 17 | 102 | 77.5% |
-| **Overall** | 445 | 7 | 18 | 470 | 94.7% |
+| 4. Selected contrib | 80 | 6 | 16 | 102 | 78.4% |
+| **Overall** | 446 | 7 | 17 | 470 | 94.9% |
 
 <!-- coverage-summary:end -->
 
@@ -705,7 +705,7 @@ fixture or result needed to close the item.
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
 | S4-82 | Fourier contour descriptors and alignment | ximgproc.contourSampling, fourierDescriptor, createContourFitting and transformFD | Complete | Periodic sampling and full or compact descriptors feed similarity alignment with a bounded spectral phase check. The saved projects verify transform recovery and withhold a transform for the altered outline. |
-| S4-83 | Run-length encoded binary morphology | ximgproc run-length mask encoding and morphology | Planned | Verify erosion and dilation parity with dense masks and measure memory on sparse large tiles. Check Python support or qualify an equivalent implementation. |
+| S4-83 | Run-length encoded binary morphology | Python interval morphology and OpenCV structuring elements | Complete | mask.encode_runs, mask.morphology_runs and mask.decode_runs preserve ticket and geometry. All seven operations match dense OpenCV in the qualified tests for neutral and zero borders. The large-tile probe measures bounded sparse execution outside the dense decode limit. The native ximgproc run-length functions are C++ only in the supported build. |
 
 ### Additional sparse motion
 
