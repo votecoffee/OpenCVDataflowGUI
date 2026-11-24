@@ -322,6 +322,8 @@ Native parity depends on an Eigen-enabled OpenCV build.
 registered-guide denoising with the joint bilateral block and preserves original pixels outside selection.
 [Weighted median filtering](<../examples/opencv tools/weighted_median/README.md>) compares six available
 weighting modes through the native adapter, with a saved impulse-noise and sample-exclusion comparison.
+[Variance-adaptive smoothing](<../examples/opencv tools/variance_smoothing/README.md>) measures
+flat-area noise, edge position and contrast against Gaussian blur on a known color step.
 [Anisotropic diffusion](<../examples/opencv tools/anisotropic_diffusion/README.md>) measures repeated
 edge-aware passes against a known step and verifies replicated borders and higher-depth output.
 [L0 image smoothing](<../examples/custom tools/l0_smoothing/README.md>) compares a verified SciPy

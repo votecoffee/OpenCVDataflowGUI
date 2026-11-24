@@ -1,0 +1,525 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure noise and edge strength",
+      "description": "Run Once. Compare flat-area RMSE against the clean target and inspect mean column profiles across x=79.5. Both filters use a 7-by-7 neighborhood. The variance-adaptive branch checks RMSE <= 2 on the shaded patch. Original MIT fixtures.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy",
+      "type": "input.file",
+      "name": "Noisy color step",
+      "parameters": {
+        "path": "assets/noisy.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "clean",
+      "type": "input.file",
+      "name": "Clean color step",
+      "parameters": {
+        "path": "assets/clean.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        490
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "adaptive",
+      "type": "cv.variance_adaptive_smoothing",
+      "name": "Variance-adaptive smoother",
+      "description": "Smooth low-variation neighborhoods to suppress noise around sharp edges.",
+      "parameters": {
+        "diameter": 7,
+        "threshold": 30.0
+      },
+      "position": [
+        300,
+        45
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gaussian",
+      "type": "cv.gaussian_blur",
+      "name": "7 \u00d7 7 Gaussian",
+      "parameters": {
+        "kernel": 7,
+        "sigma": 0.0,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        300,
+        260
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "flat",
+      "type": "region.shape",
+      "name": "Noise measurement patch",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          12,
+          10,
+          56,
+          92
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        485
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "strip",
+      "type": "region.shape",
+      "name": "Central profile strip",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          0,
+          10,
+          160,
+          92
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        300,
+        700
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "adaptive_rmse",
+      "type": "inspect.image_quality",
+      "name": "Adaptive flat-area RMSE",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "same_frame",
+        "check_threshold": true,
+        "threshold": 2.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        625,
+        30
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "adaptive_profile",
+      "type": "cv.intensity_profile",
+      "name": "Adaptive edge profile",
+      "parameters": {
+        "axis": "columns",
+        "statistic": "mean",
+        "include_alpha": false,
+        "extrema_tie": "first",
+        "points_channel": "auto"
+      },
+      "position": [
+        905,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "selected_count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gaussian_rmse",
+      "type": "inspect.image_quality",
+      "name": "Gaussian flat-area RMSE",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 2.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        625,
+        260
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gaussian_profile",
+      "type": "cv.intensity_profile",
+      "name": "Gaussian edge profile",
+      "parameters": {
+        "axis": "columns",
+        "statistic": "mean",
+        "include_alpha": false,
+        "extrema_tie": "first",
+        "points_channel": "auto"
+      },
+      "position": [
+        905,
+        260
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "selected_count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy_rmse",
+      "type": "inspect.image_quality",
+      "name": "Unfiltered flat-area RMSE",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "same_frame",
+        "check_threshold": false,
+        "threshold": 2.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        625,
+        490
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "noisy_profile",
+      "type": "cv.intensity_profile",
+      "name": "Unfiltered edge profile",
+      "parameters": {
+        "axis": "columns",
+        "statistic": "mean",
+        "include_alpha": false,
+        "extrema_tie": "first",
+        "points_channel": "auto"
+      },
+      "position": [
+        905,
+        490
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "profile",
+        "selected_count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "flat",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "strip",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "adaptive",
+      "input": "image"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "gaussian",
+      "input": "image"
+    },
+    {
+      "source": "adaptive",
+      "output": "image",
+      "target": "adaptive_rmse",
+      "input": "image_a"
+    },
+    {
+      "source": "clean",
+      "output": "image",
+      "target": "adaptive_rmse",
+      "input": "image_b"
+    },
+    {
+      "source": "flat",
+      "output": "mask",
+      "target": "adaptive_rmse",
+      "input": "mask"
+    },
+    {
+      "source": "adaptive",
+      "output": "image",
+      "target": "adaptive_profile",
+      "input": "image"
+    },
+    {
+      "source": "strip",
+      "output": "mask",
+      "target": "adaptive_profile",
+      "input": "mask"
+    },
+    {
+      "source": "gaussian",
+      "output": "image",
+      "target": "gaussian_rmse",
+      "input": "image_a"
+    },
+    {
+      "source": "clean",
+      "output": "image",
+      "target": "gaussian_rmse",
+      "input": "image_b"
+    },
+    {
+      "source": "flat",
+      "output": "mask",
+      "target": "gaussian_rmse",
+      "input": "mask"
+    },
+    {
+      "source": "gaussian",
+      "output": "image",
+      "target": "gaussian_profile",
+      "input": "image"
+    },
+    {
+      "source": "strip",
+      "output": "mask",
+      "target": "gaussian_profile",
+      "input": "mask"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "noisy_rmse",
+      "input": "image_a"
+    },
+    {
+      "source": "clean",
+      "output": "image",
+      "target": "noisy_rmse",
+      "input": "image_b"
+    },
+    {
+      "source": "flat",
+      "output": "mask",
+      "target": "noisy_rmse",
+      "input": "mask"
+    },
+    {
+      "source": "noisy",
+      "output": "image",
+      "target": "noisy_profile",
+      "input": "image"
+    },
+    {
+      "source": "strip",
+      "output": "mask",
+      "target": "noisy_profile",
+      "input": "mask"
+    }
+  ]
+}

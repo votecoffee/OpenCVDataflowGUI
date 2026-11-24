@@ -230,6 +230,7 @@ BLOCK_MODULES = {
     "ximgproc": (
         "cv.guided_filter cv.domain_transform_filter cv.adaptive_manifold_filter "
         "cv.fast_global_smoother cv.weighted_median_filter cv.anisotropic_diffusion "
+        "cv.variance_adaptive_smoothing "
         "cv.deriche_gradient inspect.find_ellipses inspect.fast_hough_lines cv.structured_edges "
         "inspect.edge_boxes cv.edge_aware_flow cv.ric_flow "
         "cv.joint_bilateral_filter cv.rolling_guidance_filter "
@@ -256,6 +257,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "cv.variance_adaptive_smoothing": ("ximgproc.edgePreservingFilter", "low-variation denoising"),
     "cv.ric_flow": ("RICInterpolator", "createRICInterpolator", "robust interpolation of correspondences"),
     "input.synthetic_background_sequence": (
         "createSyntheticSequenceGenerator", "bgsegm", "foreground ground truth",

@@ -330,6 +330,7 @@ BINDINGS = {
     ),
     "cv.anisotropic_diffusion": "ximgproc.anisotropicDiffusion",
     "cv.weighted_median_filter": "ximgproc.weightedMedianFilter",
+    "cv.variance_adaptive_smoothing": "ximgproc.edgePreservingFilter",
     "cv.rolling_guidance_filter": "ximgproc.rollingGuidanceFilter ximgproc.jointBilateralFilter",
     "cv.fast_bilateral_solver": (
         "ximgproc.createFastBilateralSolverFilter ximgproc.FastBilateralSolverFilter.filter"

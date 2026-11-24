@@ -7504,6 +7504,26 @@ Input `scale` — Optional Rectify workplane scale for this same input grid. The
 | `tangent_radius` | `2.0` | Value must be a finite number between 0.25 and 512. Arc-length window radius for estimating the local path direction. For closed paths, use less than half the total length. |
 | `interpolation` | `"linear"` | `nearest`, `linear` Nearest preserves labels and masks. Linear interpolates intensities. |
 
+## Variance-adaptive edge smoothing (`cv.variance_adaptive_smoothing`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit grayscale or RGB/BGR(A). Straight alpha and the input encoding are preserved.
+
+Input `mask` — Select output pixels to replace. Neighborhood estimates use the full source.
+
+Input `region` — Select output pixels to replace, intersected with the mask.
+
+Selection writes: `image`; outside policy: `preserve` (preserve requires matching channels).
+Neighborhood operations retain full-image context. See [regions](regions.md).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `diameter` | `7` | Value must be a whole number between 3 and 31. Side of the native square neighborhood in pixels. Both raster axes must be larger. |
+| `threshold` | `30.0` | Value must be a finite number between 0 and 442. Maximum mean Euclidean color distance from the window mean, in 8-bit units. Zero copies the input. Raising it admits more varied windows and can blur across an edge. |
+
 ## Warp affine (`cv.warp_affine`)
 
 Image processing / Geometry

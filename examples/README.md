@@ -311,6 +311,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Fast bilateral solver](<opencv tools/fast_bilateral_solver/README.md>) | Reconstruct two bands from sparse trusted samples and see which unobserved pixels retain their input. |
 | [Adaptive manifold filtering](<opencv tools/adaptive_manifold/README.md>) | Compare manifold and bilateral filtering on a known edge and apply the result within a region. |
 | [Weighted median filtering](<opencv tools/weighted_median/README.md>) | Compare impulse-noise removal with guide weighting, sample exclusion and a region-limited output. |
+| [Variance-adaptive smoothing](<opencv tools/variance_smoothing/README.md>) | Compare flat-area noise and edge contrast with Gaussian blur on a known noisy color step. |
 | [Anisotropic diffusion](<opencv tools/anisotropic_diffusion/README.md>) | Compare pass counts and edge sensitivity on a noisy step target, including a region-limited result. |
 | [Recursive gradients](<opencv tools/recursive_gradients/README.md>) | Compare signed Deriche and Paillou responses on known rising and falling edges. |
 | [Find contour ellipses](<opencv tools/contour_ellipses/README.md>) | Detect rotated ellipses in contour clutter, filter by axis ratio, and create a fitted region. |
