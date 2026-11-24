@@ -338,6 +338,8 @@ compares LATCH, BEBLID and TEBLID on shared ORB keypoints under known view and b
 preserves scale and response and measures one-to-one repeatability after doubling the input image.
 [Shape-context contour comparison](<../examples/opencv tools/shape_context/README.md>)
 ranks silhouettes by their geometry and checks a known deformation against a separate shape.
+[Hausdorff contour distance](<../examples/opencv tools/hausdorff_distance/README.md>)
+measures a known shift with L1/L2 and demonstrates full and partial rank on a local tab.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

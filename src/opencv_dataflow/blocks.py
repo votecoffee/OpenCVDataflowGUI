@@ -946,6 +946,7 @@ def builtin_registry():
     from .line_descriptors import LineDescriptors, MatchLineDescriptors
     from .grid_motion import GridMotionFilter
     from .harris_laplace import HarrisLaplaceInterestPoints
+    from .hausdorff_distance import HausdorffContourDistance
     from .shape_context import ShapeContextDistance
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
@@ -1217,6 +1218,7 @@ def builtin_registry():
         GridMotionFilter,
         HarrisLaplaceInterestPoints,
         ShapeContextDistance,
+        HausdorffContourDistance,
         DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,

@@ -1,0 +1,391 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure shifts and local outline defects",
+      "description": "Run Once. The (3, 4)-pixel shift measures 5 px with L2 or 7 px with L1. The 10-pixel tab is detected at full rank and excluded at rank 0.90. The three silhouettes are original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference part",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        0
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_outline",
+      "type": "inspect.contours",
+      "name": "Reference part outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "none",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        270,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shifted",
+      "type": "input.file",
+      "name": "Shifted part",
+      "parameters": {
+        "path": "assets/shifted.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        245
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shifted_outline",
+      "type": "inspect.contours",
+      "name": "Shifted part outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "none",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        270,
+        245
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "defect",
+      "type": "input.file",
+      "name": "10-pixel tab",
+      "parameters": {
+        "path": "assets/defect.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        490
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "defect_outline",
+      "type": "inspect.contours",
+      "name": "10-pixel tab outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "none",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        270,
+        490
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shift_l2",
+      "type": "inspect.hausdorff_distance",
+      "name": "Shift \u00b7 Euclidean",
+      "description": "Measure symmetric ranked nearest-point distances between contours.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "metric": "L2",
+        "rank_proportion": 1.0,
+        "check_distance": false,
+        "maximum_distance": 5
+      },
+      "position": [
+        660,
+        95
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "reference_to_sample",
+        "sample_to_reference"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "shift_l1",
+      "type": "inspect.hausdorff_distance",
+      "name": "Shift \u00b7 Manhattan",
+      "description": "Measure symmetric ranked nearest-point distances between contours.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "metric": "L1",
+        "rank_proportion": 1.0,
+        "check_distance": false,
+        "maximum_distance": 5
+      },
+      "position": [
+        660,
+        260
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "reference_to_sample",
+        "sample_to_reference"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tab_full",
+      "type": "inspect.hausdorff_distance",
+      "name": "Tab \u00b7 full rank",
+      "description": "Measure symmetric ranked nearest-point distances between contours.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "metric": "L2",
+        "rank_proportion": 1.0,
+        "check_distance": false,
+        "maximum_distance": 5
+      },
+      "position": [
+        660,
+        425
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "reference_to_sample",
+        "sample_to_reference"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tab_partial",
+      "type": "inspect.hausdorff_distance",
+      "name": "Tab \u00b7 90% rank",
+      "description": "Measure symmetric ranked nearest-point distances between contours.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "metric": "L2",
+        "rank_proportion": 0.9,
+        "check_distance": false,
+        "maximum_distance": 5
+      },
+      "position": [
+        660,
+        590
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample"
+      ],
+      "exposed_outputs": [
+        "distance",
+        "reference_to_sample",
+        "sample_to_reference"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_outline",
+      "input": "image"
+    },
+    {
+      "source": "shifted",
+      "output": "image",
+      "target": "shifted_outline",
+      "input": "image"
+    },
+    {
+      "source": "defect",
+      "output": "image",
+      "target": "defect_outline",
+      "input": "image"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "shift_l2",
+      "input": "reference"
+    },
+    {
+      "source": "shifted_outline",
+      "output": "collection",
+      "target": "shift_l2",
+      "input": "sample"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "shift_l1",
+      "input": "reference"
+    },
+    {
+      "source": "shifted_outline",
+      "output": "collection",
+      "target": "shift_l1",
+      "input": "sample"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "tab_full",
+      "input": "reference"
+    },
+    {
+      "source": "defect_outline",
+      "output": "collection",
+      "target": "tab_full",
+      "input": "sample"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "tab_partial",
+      "input": "reference"
+    },
+    {
+      "source": "defect_outline",
+      "output": "collection",
+      "target": "tab_partial",
+      "input": "sample"
+    }
+  ]
+}

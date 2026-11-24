@@ -10020,6 +10020,25 @@ Input `region` — Restrict corner centers to this region and any wired mask.
 | `max_corners` | `512` | Value must be a whole number between 1 and 5000. Keep at most this many selected corners, strongest first. |
 | `preview_count` | `100` | Value must be a whole number between 0 and 512. Number of scale circles to draw in response order. Zero hides drawings. |
 
+## Compare contours (Hausdorff) (`inspect.hausdorff_distance`)
+
+Inspection / Contour matching
+
+Inputs: `reference` (data), `sample` (data).
+
+Input `reference` — Contour collection or [x,y] point list in the comparison grid.
+
+Input `sample` — Contour collection or [x,y] point list in the reference grid.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number at least 0. Zero-based contour collection item. Ignored for a point list. |
+| `sample_index` | `0` | Value must be a whole number at least 0. Zero-based contour collection item. Ignored for a point list. |
+| `metric` | `"L2"` | `L2`, `L1` L2 is Euclidean distance. L1 sums the absolute X and Y displacements. |
+| `rank_proportion` | `1.0` | Value must be a finite number between 0 and 1. Select floor(rank × (count − 1)) in each ascending distance list. 1 uses the farthest nearest neighbor. Lower ranks ignore larger distances. |
+| `check_distance` | `false` | Fail when the symmetric distance exceeds the maximum. |
+| `maximum_distance` | `1.0` | Value must be a finite number at least 0. Inclusive distance limit in the supplied coordinate units. |
+
 ## Histogram (`inspect.histogram`)
 
 Image processing / Statistics

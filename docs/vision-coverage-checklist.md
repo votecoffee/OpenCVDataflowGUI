@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 47 | 6 | 49 | 102 | 46.1% |
-| **Overall** | 413 | 7 | 50 | 470 | 87.9% |
+| 4. Selected contrib | 48 | 6 | 48 | 102 | 47.1% |
+| **Overall** | 414 | 7 | 49 | 470 | 88.1% |
 
 <!-- coverage-summary:end -->
 
@@ -658,7 +658,7 @@ fixture or result needed to close the item.
 | S4-48 | Additional binary patch descriptors | xfeatures2d LATCH, BEBLID and TEBLID | Complete | The three extractors preserve native binary rows and keypoint indices. The shared ORB fixture measures 70.8% repeatability, with 85, 122 and 172 unique correct matches respectively at the same 48-bit Hamming cutoff. |
 | S4-49 | Scale-aware interest points | xfeatures2d.HarrisLaplaceFeatureDetector | Complete | inspect.harris_laplace preserves native size, response and octave. The doubled-image fixture verifies 165 pairs within 2.5 pixels, 93.2% repeatability and a median 2.00× diameter ratio. |
 | S4-50 | Shape context contour comparison | createShapeContextDistanceExtractor | Complete | inspect.shape_context_distance compares evenly sampled contours with configurable histogram costs and alignment. The fixture scores identical and mildly deformed outlines at 0.0148 and 0.0281 and rejects a circle at 0.0650 with a 0.05 limit. |
-| S4-51 | Hausdorff contour distance | createHausdorffDistanceExtractor | Planned | Verify configured rank, translation sensitivity and comparison against known offsets. |
+| S4-51 | Hausdorff contour distance | createHausdorffDistanceExtractor | Complete | inspect.hausdorff_distance verifies order-independent L1/L2 and ranked distances with exact nearest-point queries. A (3,4) shift measures 5 px L2 and 7 px L1, and a 10 px tab is visible at full rank and excluded at rank 0.90. |
 | S4-52 | Native shape-based nonrigid registration | createThinPlateSplineShapeTransformer | Planned | Fit paired image contours, warp a reference image and verify interpolated landmark error. |
 
 ### Saliency, motion, photo and text extensions

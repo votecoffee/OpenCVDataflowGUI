@@ -151,7 +151,7 @@ IMPLEMENTATION_MODULES = {
     ),
     "xfeatures2d": "compact_descriptors daisy_descriptor grid_motion harris_laplace",
     "line_descriptor": "line_descriptors",
-    "shape": "shape_context",
+    "shape": "shape_context hausdorff_distance",
     "optflow": "deepflow dense_rlof dual_tvl1_flow",
 }
 BLOCK_MODULES = {
