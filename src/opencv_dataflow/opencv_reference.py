@@ -517,6 +517,12 @@ BINDINGS = {
     "inspect.kmeans_image": "kmeans",
     "inspect.line_segments": "createLineSegmentDetector LineSegmentDetector.detect",
     "inspect.fast_line_segments": "ximgproc.createFastLineDetector ximgproc.FastLineDetector.detect",
+    "inspect.edge_drawing": (
+        "ximgproc.createEdgeDrawing ximgproc.EdgeDrawing.detectEdges "
+        "ximgproc.EdgeDrawing.getSegments ximgproc.EdgeDrawing.getSegmentIndicesOfLines "
+        "ximgproc.EdgeDrawing.getEdgeImage ximgproc.EdgeDrawing.getGradientImage "
+        "ximgproc.EdgeDrawing.detectLines ximgproc.EdgeDrawing.detectEllipses"
+    ),
     "inspect.match_descriptor_radius": "DescriptorMatcher.radiusMatch",
     "inspect.match_template": "matchTemplate",
     "inspect.mser": "MSER_create MSER.detectRegions",

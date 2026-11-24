@@ -10008,6 +10008,38 @@ Input `region` — Keep only proposals centered inside this region and any wired
 | `angle_units` | `"auto"` | `auto`, `radians`, `degrees` Auto reads the orientation payload, or uses radians for an untagged map. |
 | `preview_count` | `12` | Value must be a whole number between 0 and 100. Draw only this many top-ranked proposals. Zero hides the boxes. |
 
+## Edge Drawing (`inspect.edge_drawing`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale mode converts to 8-bit. Color mode accepts an 8-bit color image.
+
+Input `mask` — Restrict output maps by pixel, paths by overlap, lines by both endpoints and round fits by center.
+
+Input `region` — Intersect the output selection with the optional mask. Native fitting uses the full source.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `input_mode` | `"grayscale"` | `grayscale`, `color` Grayscale ED or native color ED. Color uses a Di Zenzo gradient on color channels. |
+| `gradient` | `"prewitt"` | `prewitt`, `sobel`, `scharr`, `lsd` Native derivative operator for grayscale ED. |
+| `gradient_threshold` | `20` | Value must be a whole number between 1 and 4095. Minimum gradient to follow when computing edge paths. |
+| `anchor_threshold` | `0` | Value must be a whole number between 0 and 4095. Required gradient difference between an anchor and nearby pixels. |
+| `scan_interval` | `1` | Value must be a whole number between 1 and 128. Spacing of candidate anchor scans in pixels. |
+| `minimum_path_length` | `10` | Value must be a whole number between 3 and 8192. Shortest candidate path admitted before native validation. |
+| `sigma` | `1.0` | Value must be a finite number between 0 and 12. Native smoothing sigma. In grayscale mode, values below 1 skip initial smoothing. |
+| `sum_gradient` | `true` | Grayscale gradient sums absolute derivatives when enabled. |
+| `parameter_free` | `false` | Run the grayscale native parameter-free segment validation stage. |
+| `validate_nfa` | `true` | Use native false-alarm validation for grayscale lines and fitted round shapes. |
+| `minimum_line_length` | `-1` | -1 uses native automatic length. Otherwise enter 9..8192 pixels. |
+| `line_join_distance` | `6.0` | Value must be a finite number between 0 and 128. Maximum endpoint gap when joining candidate straight lines. |
+| `line_fit_error` | `1.0` | Value must be a finite number between 0.0001 and 32. Maximum native error in an initial line fit in pixels. |
+| `maximum_line_error` | `1.3` | Value must be a finite number between 0.0001 and 32. Maximum error when merging collinear candidates in pixels. |
+| `fit_lines` | `true` | Fit lines and link them to native edge segment IDs. |
+| `fit_round` | `true` | Fit circles and ellipses using the native edge paths. |
+| `timeout_seconds` | `30.0` | Value must be a finite number between 0.1 and 120. Maximum wait for the isolated native worker. |
+
 ## Estimate linear motion blur (`inspect.estimate_motion_blur`)
 
 Image processing / Restoration

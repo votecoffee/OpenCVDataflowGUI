@@ -183,6 +183,42 @@ def circle_item(circle, votes, index):
     }
 
 
+def ellipse_item(fit, index):
+    """Record a normalized ellipse with full axes and sampled outline geometry."""
+    x, y = fit["center"]
+    major, minor = fit["axis_lengths"]
+    angle = math.radians(fit["angle_degrees"])
+    u = np.array([math.cos(angle), math.sin(angle)])
+    v = np.array([-u[1], u[0]])
+    half_width = math.hypot(major * u[0], minor * v[0]) / 2
+    half_height = math.hypot(major * u[1], minor * v[1]) / 2
+    phases = np.linspace(0, 2 * np.pi, 64, endpoint=False)
+    points = (
+        np.array([x, y])
+        + np.outer(np.cos(phases) * major / 2, u)
+        + np.outer(np.sin(phases) * minor / 2, v)
+    )
+    return {
+        "id": index,
+        "geometry": {**fit, "points": points.tolist()},
+        "metrics": {
+            "x": x - half_width,
+            "y": y - half_height,
+            "center_x": x,
+            "center_y": y,
+            "width": 2 * half_width,
+            "height": 2 * half_height,
+            "aspect_ratio": half_width / half_height,
+            "major_size": major,
+            "minor_size": minor,
+            "rotated_aspect_ratio": major / minor,
+            "angle": fit["angle_degrees"],
+            "area": math.pi * major * minor / 4,
+            "strength": fit.get("score"),
+        },
+    }
+
+
 def collection(kind, items, image, payload, origin=(0, 0)):
     return {
         "model": "vision_collection_v1",

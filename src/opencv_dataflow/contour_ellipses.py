@@ -7,7 +7,7 @@ import numpy as np
 
 from .core import Port, Result
 from .graphics_layers import GraphicDrawing, graphic_object
-from .objects import collection
+from .objects import collection, ellipse_item
 from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE
 from .processing import ImageTool, gray_image
@@ -116,48 +116,17 @@ class FindEllipses(ImageTool):
         ellipses.sort(key=lambda fit: -fit["score"])
         ellipses = ellipses[: int(p["maximum_results"])]
         items, graphics = [], []
-        phases = np.linspace(0, 2 * np.pi, 64, endpoint=False)
         for index, fit in enumerate(ellipses):
-            x, y = fit["center"]
-            major, minor = fit["axis_lengths"]
-            angle = math.radians(fit["angle_degrees"])
-            u = np.array([math.cos(angle), math.sin(angle)])
-            v = np.array([-u[1], u[0]])
-            half_width = math.hypot(major * u[0], minor * v[0]) / 2
-            half_height = math.hypot(major * u[1], minor * v[1]) / 2
-            center = np.array([x, y])
-            points = (
-                center
-                + np.outer(np.cos(phases) * major / 2, u)
-                + np.outer(np.sin(phases) * minor / 2, v)
-            )
-            items.append(
-                {
-                    "id": index,
-                    "geometry": {**fit, "points": points.tolist()},
-                    "metrics": {
-                        "x": x - half_width,
-                        "y": y - half_height,
-                        "center_x": x,
-                        "center_y": y,
-                        "width": 2 * half_width,
-                        "height": 2 * half_height,
-                        "aspect_ratio": half_width / half_height,
-                        "major_size": major,
-                        "minor_size": minor,
-                        "rotated_aspect_ratio": major / minor,
-                        "angle": fit["angle_degrees"],
-                        "area": math.pi * major * minor / 4,
-                        "strength": fit["score"],
-                    },
-                }
-            )
+            item = ellipse_item(fit, index)
+            items.append(item)
             if self.generate_graphics:
                 color = (0, 220, 120)
-                axis = major / 2 * u
+                center = np.array(fit["center"])
+                angle = math.radians(fit["angle_degrees"])
+                axis = fit["axis_lengths"][0] / 2 * np.array([math.cos(angle), math.sin(angle)])
                 graphics.extend(
                     (
-                        graphic_object("polyline", points, color, closed=True),
+                        graphic_object("polyline", item["geometry"]["points"], color, closed=True),
                         graphic_object(
                             "polyline", (center - axis, center + axis), color, thickness=1
                         ),

@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Trace paths and fit their geometry",
+      "description": "Run Once. The original MIT shape plate has a rectangle, a circle of radius 34, and an ellipse with 106 \u00d7 60 pixel axes rotated 27\u00b0. Edge Drawing returns ordered paths and fitted shapes. Filter for lines at least 80 pixels long.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "image",
+      "type": "input.file",
+      "name": "Known geometry plate",
+      "parameters": {
+        "path": "assets/plate.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        60
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "edge",
+      "type": "inspect.edge_drawing",
+      "name": "Paths, lines and round fits",
+      "description": "Trace ordered edge paths, then fit straight lines, circles and rotated ellipses.",
+      "parameters": {
+        "input_mode": "grayscale",
+        "gradient": "prewitt",
+        "gradient_threshold": 20,
+        "anchor_threshold": 0,
+        "scan_interval": 1,
+        "minimum_path_length": 10,
+        "sigma": 1.0,
+        "sum_gradient": true,
+        "parameter_free": false,
+        "validate_nfa": true,
+        "minimum_line_length": -1,
+        "line_join_distance": 6.0,
+        "line_fit_error": 1.0,
+        "maximum_line_error": 1.3,
+        "fit_lines": true,
+        "fit_round": true,
+        "timeout_seconds": 30.0
+      },
+      "position": [
+        290,
+        65
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "edges",
+        "segments",
+        "lines",
+        "circles",
+        "ellipses",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "long",
+      "type": "collection.filter",
+      "name": "Keep lines \u2265 80 px",
+      "parameters": {
+        "metric": "length",
+        "custom_metric": "",
+        "use_minimum": true,
+        "minimum": 80.0,
+        "include_minimum": true,
+        "use_maximum": false,
+        "maximum": 0.0,
+        "include_maximum": true,
+        "invert_range": false,
+        "missing": "reject",
+        "reference_point": [
+          0.0,
+          0.0
+        ]
+      },
+      "position": [
+        600,
+        50
+      ],
+      "exposed_inputs": [
+        "collection",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points",
+        "rejected",
+        "rejected_count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "review",
+      "type": "collection.draw",
+      "name": "Review the long sides",
+      "parameters": {
+        "color": [
+          80,
+          230,
+          140
+        ],
+        "thickness": 2,
+        "draw_bounds": true,
+        "draw_centers": true,
+        "labels": "none"
+      },
+      "position": [
+        890,
+        135
+      ],
+      "exposed_inputs": [
+        "image",
+        "collection"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "mask",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "image",
+      "output": "image",
+      "target": "edge",
+      "input": "image"
+    },
+    {
+      "source": "edge",
+      "output": "lines",
+      "target": "long",
+      "input": "collection"
+    },
+    {
+      "source": "long",
+      "output": "collection",
+      "target": "review",
+      "input": "collection"
+    },
+    {
+      "source": "image",
+      "output": "image",
+      "target": "review",
+      "input": "image"
+    }
+  ]
+}

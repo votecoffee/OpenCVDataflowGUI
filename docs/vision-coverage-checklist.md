@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 75 | 6 | 21 | 102 | 73.5% |
-| **Overall** | 441 | 7 | 22 | 470 | 93.8% |
+| 4. Selected contrib | 76 | 6 | 20 | 102 | 74.5% |
+| **Overall** | 442 | 7 | 21 | 470 | 94.0% |
 
 <!-- coverage-summary:end -->
 
@@ -696,7 +696,7 @@ fixture or result needed to close the item.
 | S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator, SyntheticSequenceGenerator.getNextFrame | Complete | input.synthetic_background_sequence emits ticketed BGR frames, native foreground masks and pixel bounds. Cursor restore and loops reproduce native frames. The saved graph checks exact masks over 24 tickets. |
 | S4-77 | Contrib optical flow interpolation with robust correspondence | ximgproc.RICInterpolator | Complete | cv.ric_flow fits native piecewise affine motion in an isolated worker. The saved outlier fixture verifies the motion seam, proximity-limited support and downstream warping. |
 | S4-78 | Variance-adaptive edge-preserving smoothing | ximgproc.edgePreservingFilter | Complete | cv.variance_adaptive_smoothing wraps native window size and threshold with selected writes and gray/color/straight-alpha support. The saved fixture checks flat-area RMSE, edge position and adjacent-column contrast. |
-| S4-79 | Edge Drawing segments and primitives | ximgproc.createEdgeDrawing | Planned | Verify ordered edge segments and fitted line or ellipse outputs against known geometry. |
+| S4-79 | Edge Drawing segments and primitives | ximgproc.createEdgeDrawing | Complete | inspect.edge_drawing emits ordered edge paths, native maps and typed line, circle and ellipse collections with source path IDs for lines. The saved plate checks known geometry and downstream line filtering. |
 | S4-80 | Tree-based image regions | xfeatures2d.TBMR | Planned | Verify keypoint location and scale through a known image transform and compare repeatability with MSER. |
 | S4-81 | Classical multi-frame video super-resolution | superres BTV-L1 or equivalent reconstruction | Planned | Qualify a native build or equivalent because the pinned wheel has no direct superres bindings. Verify temporal window, alignment, moving-detail recovery and artifacts against per-frame interpolation. |
 

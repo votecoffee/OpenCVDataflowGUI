@@ -318,6 +318,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Fast Hough lines](<opencv tools/fast_hough_lines/README.md>) | View the accumulator, recover lines with known offsets, and filter by direction. |
 | [Structured forest edges](<opencv tools/structured_edges/README.md>) | Compare thinned edge responses with known boundaries after preparing the pinned OpenCV forest. |
 | [EdgeBoxes object proposals](<opencv tools/edge_boxes/README.md>) | Rank and filter candidate part rectangles using Canny strengths and Sobel angles. |
+| [Edge Drawing paths and primitives](<opencv tools/edge_drawing/README.md>) | Trace ordered paths, filter linked lines and inspect circle and ellipse fits on a known plate. |
 | [Binary line descriptors](<opencv tools/line_descriptors/README.md>) | Match part edges across a known image rotation and translation and review both segments. |
 | [Grid motion match filtering](<opencv tools/grid_motion/README.md>) | Compare raw and filtered ORB matches and affine fits on an occluded image pair. |
 | [Binary patch descriptors](<opencv tools/binary_patch_descriptors/README.md>) | Compare LATCH, BEBLID and TEBLID on the same transformed ORB keypoints. |
