@@ -380,6 +380,8 @@ qualifies CPU region IDs and boundaries and feeds them to label measurements.
 qualifies five gradient motion models with reusable maps, seeded refinement and valid-coverage checks.
 [Low-light enhancement](<../examples/opencv tools/low_light_enhancement/README.md>)
 compares automatic and fixed-exposure BIMEF with gamma for contrast, noise and upper saturation.
+[BoostDesc matching](<../examples/opencv tools/boost_descriptors/README.md>)
+qualifies native descriptor rows and measures binary and floating-point matches against a known map.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

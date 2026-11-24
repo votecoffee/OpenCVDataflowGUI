@@ -5,6 +5,7 @@ from itertools import combinations
 import cv2
 import numpy as np
 
+from .compact_descriptors import BOOST_DESC_MAX_SCALE, BOOST_DESC_MIN_SCALE, BOOST_DESC_VARIANTS
 from .core import Block, Port, Result
 from .features import overlay_image
 from .graphics_layers import GraphicDrawing, graphic_object
@@ -1321,6 +1322,24 @@ def radius_data(data):
     if family == "KAZE":
         descriptors, points, layout = kaze_data(data)
         return descriptors, points, layout, cv2.NORM_L2
+    if family == "BoostDesc":
+        width, settings = data.get("descriptor_size"), data.get("descriptor_settings")
+        settings = settings if isinstance(settings, dict) else {}
+        variant, scale = settings.get("variant"), settings.get("scale_factor")
+        spec = BOOST_DESC_VARIANTS.get(variant) if isinstance(variant, str) else None
+        if (
+            spec is None or type(width) is not int or width != spec[1]
+            or type(settings.get("use_orientation")) is not bool
+            or type(scale) not in (int, float)
+            or not BOOST_DESC_MIN_SCALE <= scale <= BOOST_DESC_MAX_SCALE
+        ):
+            raise ValidationError("Invalid BoostDesc variant, width or sampling settings")
+        layout = (family, width, settings)
+        if spec[2] == cv2.NORM_L2:
+            descriptors, points = descriptor_arrays(data, width, -1_000_000, 1_000_000, False)
+            return descriptors.astype(np.float32), points, layout, cv2.NORM_L2
+        descriptors, points = descriptor_arrays(data, width, 0, 255, True)
+        return descriptors.astype(np.uint8), points, layout, cv2.NORM_HAMMING
     if family in _PATCH_DESCRIPTOR_WIDTHS:
         width, settings = data.get("descriptor_size"), data.get("descriptor_settings")
         if (
@@ -1334,7 +1353,8 @@ def radius_data(data):
         descriptors, points = descriptor_arrays(data, width, 0, 255, True)
         return descriptors.astype(np.uint8), points, (family, width, settings), cv2.NORM_HAMMING
     raise ValidationError(
-        "Connect ORB, BRISK, AKAZE, SIFT, KAZE, BRIEF, FREAK, LATCH, BEBLID, TEBLID, or DAISY descriptors"
+        "Connect ORB, BRISK, AKAZE, SIFT, KAZE, BRIEF, FREAK, LATCH, BEBLID, TEBLID, "
+        "DAISY, or BoostDesc descriptors"
     )
 
 

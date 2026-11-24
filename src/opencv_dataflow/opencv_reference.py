@@ -466,6 +466,7 @@ BINDINGS = {
     "inspect.freak_descriptor": "xfeatures2d.FREAK_create",
     "inspect.latch_descriptor": "xfeatures2d.LATCH_create",
     "inspect.beblid_descriptor": "xfeatures2d.BEBLID_create",
+    "inspect.boost_descriptor": "xfeatures2d.BoostDesc.create Feature2D.compute",
     "inspect.teblid_descriptor": "xfeatures2d.TEBLID_create",
     "inspect.daisy_descriptor": "xfeatures2d.DAISY_create",
     "inspect.compare_contours": "matchShapes",

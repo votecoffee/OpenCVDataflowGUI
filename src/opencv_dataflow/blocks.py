@@ -932,7 +932,8 @@ def builtin_registry():
     from .regions import REGION_BLOCKS
     from .registered_replay import ReplayRegisteredViews
     from .compact_descriptors import (
-        BeblidDescriptor, BriefDescriptor, FreakDescriptor, LatchDescriptor, TeblidDescriptor,
+        BeblidDescriptor, BoostDescriptor, BriefDescriptor, FreakDescriptor,
+        LatchDescriptor, TeblidDescriptor,
     )
     from .daisy_descriptor import DaisyDescriptor
     from .registration import REGISTRATION_BLOCKS
@@ -1221,6 +1222,7 @@ def builtin_registry():
         FreakDescriptor,
         LatchDescriptor,
         BeblidDescriptor,
+        BoostDescriptor,
         TeblidDescriptor,
         DaisyDescriptor,
         AffineFeatures,

@@ -9415,6 +9415,26 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `region_mode` | `"center"` | `center`, `clip` Center keeps whole objects; clip measures only their selected pixels. |
 | `check_count` | `false` |  |
 
+## BoostDesc descriptors (`inspect.boost_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Feature record, keypoint records, or [x, y] rows. Bare points use size 7 and unknown orientation.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `variant` | `"BINBOOST_256"` | `BGM`, `BGM_HARD`, `BGM_BILINEAR`, `LBGM`, `BINBOOST_64`, `BINBOOST_128`, `BINBOOST_256` BGM and BINBOOST use Hamming distance. LBGM uses L2. |
+| `use_orientation` | `true` | Rotate the sampling window by each measured keypoint angle. |
+| `scale_factor` | `6.25` | Value must be a finite number between 0.01 and 32. Sampling diameter multiplier. Use 0.75 for ORB, 6.75 for SIFT, 6.25 for KAZE, or 5 for AKAZE and BRISK. |
+
 ## Enclosing convex polygon (`inspect.bounding_convex_polygon`)
 
 Inspection / Measurements

@@ -1,4 +1,4 @@
-"""Compute native binary patch descriptors at externally supplied keypoints."""
+"""Compute native patch descriptors at externally supplied keypoints."""
 
 from abc import ABC, abstractmethod
 
@@ -312,3 +312,72 @@ class TeblidDescriptor(_LearnedPatchDescriptor):
     type_id, title, algorithm = "inspect.teblid_descriptor", "TEBLID descriptors", "TEBLID"
     description = "Compute triplet-trained binary descriptors from local intensity averages."
     defaults = {"descriptor_bits": "256", "scale_factor": 1.0}
+
+
+# OpenCV's Python BoostDesc factory takes the public C++ enum values, but the
+# current binding does not export their names.
+BOOST_DESC_VARIANTS = {
+    "BGM": (100, 32, cv2.NORM_HAMMING),
+    "BGM_HARD": (101, 16, cv2.NORM_HAMMING),
+    "BGM_BILINEAR": (102, 32, cv2.NORM_HAMMING),
+    "LBGM": (200, 64, cv2.NORM_L2),
+    "BINBOOST_64": (300, 8, cv2.NORM_HAMMING),
+    "BINBOOST_128": (301, 16, cv2.NORM_HAMMING),
+    "BINBOOST_256": (302, 32, cv2.NORM_HAMMING),
+}
+BOOST_DESC_MIN_SCALE = float(np.float32(0.01))
+BOOST_DESC_MAX_SCALE = 32.0
+
+
+class BoostDescriptor(KeypointDescriptor):
+    type_id, title, algorithm = "inspect.boost_descriptor", "BoostDesc descriptors", "BoostDesc"
+    description = "Compute learned gradient descriptors for Hamming or L2 matching."
+    maximum_pixels = 16_777_216
+    defaults = {"variant": "BINBOOST_256", "use_orientation": True, "scale_factor": 6.25}
+    parameter_choices = {"variant": tuple(BOOST_DESC_VARIANTS)}
+    parameter_ranges = {"scale_factor": NumericRange(0.01, BOOST_DESC_MAX_SCALE)}
+    parameter_help = {
+        "variant": "BGM and BINBOOST use Hamming distance. LBGM uses L2.",
+        "use_orientation": "Rotate the sampling window by each measured keypoint angle.",
+        "scale_factor": "Sampling diameter multiplier. Use 0.75 for ORB, 6.75 for SIFT, "
+        "6.25 for KAZE, or 5 for AKAZE and BRISK.",
+    }
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if type(p["use_orientation"]) is not bool:
+            raise ValidationError("Use orientation must be on or off", "use_orientation")
+
+    def extractor(self):
+        p = self.parameters
+        scale = float(np.float32(p["scale_factor"]))
+        variant = p["variant"]
+        number, width, norm = BOOST_DESC_VARIANTS[variant]
+        api = getattr(cv2, "xfeatures2d", None)
+        factory = getattr(getattr(api, "BoostDesc", None), "create", None)
+        if factory is None:
+            factory = self.factory("BoostDesc_create")
+        try:
+            extractor = factory(number, p["use_orientation"], scale)
+        except cv2.error as exc:
+            if exc.code == cv2.Error.StsNotImplemented:
+                raise ValidationError(
+                    "BoostDesc needs OpenCV contrib with BoostDesc model data"
+                ) from exc
+            raise
+        if extractor.descriptorSize() != width or extractor.defaultNorm() != norm:
+            raise ValidationError("OpenCV returned an unexpected BoostDesc layout")
+        return extractor, {
+            "variant": variant, "scale_factor": scale, "use_orientation": p["use_orientation"],
+        }
+
+    def compute_descriptors(self, gray, keypoints):
+        if max(gray.shape) >= 32767:
+            raise ValidationError("BoostDesc requires image axes below 32,767 pixels")
+        scale = self.parameters["scale_factor"]
+        if any(key.size * scale > 16384 for key in keypoints):
+            raise ValidationError(
+                "BoostDesc sampling diameter must be at most 16,384 pixels", "scale_factor"
+            )
+        return super().compute_descriptors(gray, keypoints)
