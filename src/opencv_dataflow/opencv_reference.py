@@ -543,6 +543,8 @@ BINDINGS = {
     "output.tiff_file": "imencodemulti",
     "output.video": "VideoWriter.open VideoWriter.write",
     "sequence.deepflow": "optflow.createOptFlow_DeepFlow DenseOpticalFlow.calc",
+    "sequence.pcaflow": "optflow.createOptFlow_PCAFlow DenseOpticalFlow.calc",
+    "sequence.simpleflow": "optflow.createOptFlow_SimpleFlow optflow.calcOpticalFlowSF",
     "sequence.sparse_to_dense": "optflow.calcOpticalFlowSparseToDense calcOpticalFlowPyrLK",
     "sequence.dense_rlof": "optflow.calcOpticalFlowDenseRLOF optflow.RLOFOpticalFlowParameter",
     "sequence.dis": "DISOpticalFlow.create DenseOpticalFlow.calc",

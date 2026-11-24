@@ -15695,6 +15695,29 @@ Input `stream` — Optional stream ID to maintain separate models for different 
 | `context_temporal` | `1.0` | Value must be a finite number between 0.01 and 32. Wide-area context temporal constant in Retina transient mode. |
 | `context_spatial` | `75.0` | Value must be a finite number between 1 and 256. Wide-area context spatial constant in Retina transient mode. |
 
+## PCAFlow optical flow (`sequence.pcaflow`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Consecutive textured frames. Converted to 8-bit grayscale for the native solver.
+
+Input `mask` — Select published displacement on the previous image grid.
+
+Input `region` — Intersect an optional region with the output mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Displacement in pixels mapped to full preview brightness. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
+
 ## Temporal pixel statistics (`sequence.pixel_moments`)
 
 Sequence / Temporal statistics
@@ -15783,6 +15806,42 @@ Input `region` — Optional target-grid region intersected with mask.
 | `mix` | `1.0` | Value must be a finite number between 0.001 and 1. Convex mix of restored detail and original target; one uses the accepted donor result. |
 | `minimum_restored_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required restored fraction of selected, originally supported target pixels. |
 | `no_neighbor` | `"pass_through"` | `pass_through`, `fail` Pass through unchanged when no pixels qualify, or report an inspection failure. |
+
+## SimpleFlow optical flow (`sequence.simpleflow`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Consecutive textured images, converted to 8-bit BGR for SimpleFlow.
+
+Input `mask` — Select published displacement on the previous image grid.
+
+Input `region` — Intersect an optional region with the output mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Displacement in pixels mapped to full preview brightness. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
+| `layers` | `3` | Value must be a whole number between 1 and 6. Number of levels in the image pyramid, including full resolution. |
+| `averaging_radius` | `2` | Value must be a whole number between 0 and 32. Radius of the local color-matching neighborhood, in level pixels. |
+| `search_radius` | `4` | Value must be a whole number between 1 and 32. Maximum candidate shift along each axis at each pyramid level. |
+| `spatial_sigma` | `4.1` | Value must be a finite number between 0.001 and 255. Spatial weighting sigma for the matching neighborhood. |
+| `color_sigma` | `25.5` | Value must be a finite number between 0.001 and 255. Color weighting sigma for the matching neighborhood. |
+| `postprocess_radius` | `18` | Value must be a whole number between 0 and 64. Final cross-bilateral radius. Zero derives it from spatial sigma. |
+| `postprocess_spatial_sigma` | `55.0` | Value must be a finite number between 0.001 and 255. Spatial sigma of the final cross-bilateral filter. |
+| `postprocess_color_sigma` | `25.5` | Value must be a finite number between 0.001 and 255. Color sigma of the final cross-bilateral filter. |
+| `occlusion_threshold` | `0.35` | Value must be a finite number between 0 and 100. Native occlusion threshold in squared level pixels. |
+| `upscale_radius` | `18` | Value must be a whole number between 0 and 64. Cross-bilateral radius during upscaling. Zero derives it from sigma. |
+| `upscale_spatial_sigma` | `55.0` | Value must be a finite number between 0.001 and 255. Spatial sigma of the upscaling filter. |
+| `upscale_color_sigma` | `25.5` | Value must be a finite number between 0.001 and 255. Color sigma of the upscaling filter. |
+| `speed_up_threshold` | `10.0` | Value must be a finite number between 0 and 100. Local flow variation below which finer levels reuse estimates. |
 
 ## Sparse-to-dense optical flow (`sequence.sparse_to_dense`)
 

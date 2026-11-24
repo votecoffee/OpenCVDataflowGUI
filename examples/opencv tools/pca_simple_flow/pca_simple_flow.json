@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure a known image translation",
+      "description": "Run All. The second image moves 3 px right and 2 px up. Compare each optical flow preview and consistency mask. The synthetic texture is an original MIT asset.",
+      "parameters": {},
+      "position": [
+        0,
+        -255
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "input.file",
+      "name": "Reference and shifted view",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/00_reference.png",
+          "assets/01_shifted.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        115
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "pcaflow",
+      "type": "sequence.pcaflow",
+      "name": "PCAFlow",
+      "description": "Fit a smooth dense displacement field to sparse motion using OpenCV's PCAFlow.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.25
+      },
+      "position": [
+        305,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "visualization",
+        "consistency_mask",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    },
+    {
+      "id": "simpleflow",
+      "type": "sequence.simpleflow",
+      "name": "SimpleFlow",
+      "description": "Estimate dense motion using local color matching and multiscale interpolation.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.25,
+        "layers": 3,
+        "averaging_radius": 2,
+        "search_radius": 4,
+        "spatial_sigma": 4.1,
+        "color_sigma": 25.5,
+        "postprocess_radius": 18,
+        "postprocess_spatial_sigma": 55.0,
+        "postprocess_color_sigma": 25.5,
+        "occlusion_threshold": 0.35,
+        "upscale_radius": 18,
+        "upscale_spatial_sigma": 55.0,
+        "upscale_color_sigma": 25.5,
+        "speed_up_threshold": 10.0
+      },
+      "position": [
+        305,
+        240
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "visualization",
+        "consistency_mask",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review SimpleFlow",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        620,
+        240
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "pcaflow",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "simpleflow",
+      "input": "image"
+    },
+    {
+      "source": "simpleflow",
+      "output": "visualization",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

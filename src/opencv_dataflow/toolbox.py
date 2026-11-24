@@ -156,7 +156,7 @@ IMPLEMENTATION_MODULES = {
     "shape": "shape_context hausdorff_distance thin_plate_spline",
     "saliency": "static_saliency motion_saliency",
     "motempl": "motion_history",
-    "optflow": "deepflow dense_rlof dual_tvl1_flow sparse_to_dense_flow",
+    "optflow": "deepflow dense_rlof dual_tvl1_flow sparse_to_dense_flow pca_simple_flow",
 }
 BLOCK_MODULES = {
     "core": (
