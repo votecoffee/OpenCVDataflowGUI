@@ -301,6 +301,8 @@ adds consecutive-frame displacement, previous-field seeding and optional
 forward–backward agreement on the shared dense-flow outputs.
 [DeepFlow](<../examples/opencv tools/deepflow/README.md>) adds native
 consecutive-frame estimation with a known-displacement and occlusion fixture.
+[Sparse-to-dense optical flow](<../examples/opencv tools/sparse_to_dense_flow/README.md>)
+shows how grid spacing and post-smoothing affect a boundary between opposing motions.
 [Dense RLOF](<../examples/opencv tools/dense_rlof/README.md>) compares fixed and cross
 support on a translated color texture and verifies native geodesic, EPIC, RIC and direct-grid paths.
 [WeChat QR](<../examples/opencv tools/wechat_qr/README.md>) compares the standard

@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 53 | 6 | 43 | 102 | 52.0% |
-| **Overall** | 419 | 7 | 44 | 470 | 89.1% |
+| 4. Selected contrib | 54 | 6 | 42 | 102 | 52.9% |
+| **Overall** | 420 | 7 | 43 | 470 | 89.4% |
 
 <!-- coverage-summary:end -->
 
@@ -669,7 +669,7 @@ fixture or result needed to close the item.
 | S4-54 | Motion saliency maps | saliency.MotionSaliencyBinWangApr2014 and bioinspired transient-area segmentation | Complete | sequence.motion_saliency qualifies both native backends on timestamped frames. Bin Wang exactly selects the part across 15 frames. Retina detects local changes and the part exit. Focused checks cover warmup, reset, grid, selection and bounded native state. |
 | S4-55 | Motion history and time surfaces | motempl.updateMotionHistory, calcMotionGradient, calcGlobalOrientation, segmentMotion | Complete | sequence.motion_history publishes pixel age, recency, global direction and native region labels. The timestamped replay verifies 0° rightward, 90° downward and history expiration after the inclusive 250 ms window. |
 | S4-56 | Additional adaptive foreground models | bgsegm MOG, GMG and CNT | Complete | Three bounded sequence blocks compare warmup, part masks, and recovery on a lossless empty-conveyor replay. MOG and CNT recover all 480 part pixels and GMG recovers 460 with native median smoothing. |
-| S4-57 | Sparse-to-dense flow interpolation | optflow.calcOpticalFlowSparseToDense | Planned | Verify displacement, sparse sampling controls and behavior at motion boundaries. |
+| S4-57 | Sparse-to-dense flow interpolation | optflow.calcOpticalFlowSparseToDense | Complete | sequence.sparse_to_dense uses native PyrLK and edge-aware interpolation with checked match support. Verified against the combined OpenCV function and measured opposing motion at a known boundary. |
 | S4-58 | PCAFlow and SimpleFlow | optflow.createOptFlow_PCAFlow and createOptFlow_SimpleFlow | Planned | Compare each estimator on a known displacement and preserve vector units. |
 | S4-59 | Edge-aware interpolation of image matches | ximgproc.EdgeAwareInterpolator | Planned | Turn sparse matches into a dense field and verify preservation of known motion edges. |
 | S4-60 | Image matting from a trimap | alphamat.infoFlow or equivalent | Planned | The pinned Python wheel has no direct binding. Qualify another backend or tested equivalent and recover a soft alpha channel with known opaque, transparent and mixed regions. |

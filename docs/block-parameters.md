@@ -15784,6 +15784,35 @@ Input `region` — Optional target-grid region intersected with mask.
 | `minimum_restored_fraction` | `0.0` | Value must be a finite number between 0 and 1. Required restored fraction of selected, originally supported target pixels. |
 | `no_neighbor` | `"pass_through"` | `pass_through`, `fail` Pass through unchanged when no pixels qualify, or report an inspection failure. |
 
+## Sparse-to-dense optical flow (`sequence.sparse_to_dense`)
+
+Sequence / Temporal processing
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Images converted to uint8. Color also guides the edge-aware interpolation.
+
+Input `mask` — Select published flow pixels on the previous image grid.
+
+Input `region` — Intersect this region with the optional output mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `2` | Minimum eligible activations before primary data outputs are emitted. |
+| `max_streams` | `4` |  |
+| `max_bytes_mb` | `128.0` | Stored array/metadata budget; intermediates and GUI copies use extra memory. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `1000.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `visual_max_motion` | `10.0` | Value must be a finite number at least 1e-06. Motion in pixels mapped to full preview brightness. |
+| `consistency_tolerance` | `0.0` | Value must be a finite number at least 0. Maximum round-trip error in pixels. Zero disables the check. |
+| `grid_step` | `8` | Value must be a whole number between 2 and 512. Pixel spacing of the candidate points along both axes. |
+| `neighbors` | `128` | Value must be a whole number between 4 and 512. Number of valid sparse matches in each local affine fit. |
+| `sigma` | `0.05` | Value must be a finite number between 0.000101 and 1. Distance weight falloff for the edge-aware affine fits. |
+| `post_smoothing` | `true` | Apply the native fast global smoother after interpolation. |
+| `fgs_lambda` | `500.0` | Value must be a finite number between 1 and 100000. Regularization weight for post-smoothing. |
+| `fgs_sigma` | `1.5` | Value must be a finite number between 0.010001 and 255. Sensitivity to guides' color or intensity changes during smoothing. |
+
 ## Stabilize recorded sequence (`sequence.stabilize_batch`)
 
 Sequence / Temporal processing

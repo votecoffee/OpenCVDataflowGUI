@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Two motions, one image pair",
+      "description": "Run All plays an original MIT two-panel texture. Left moves 4 px down. Right moves 3 px up. Compare the change in direction at the center of each preview.",
+      "parameters": {},
+      "position": [
+        0,
+        -245
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "frames",
+      "type": "input.file",
+      "name": "Two-panel replay",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/00_reference.png",
+          "assets/01_shifted.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        120
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "default",
+      "type": "sequence.sparse_to_dense",
+      "name": "Default grid and smoothing",
+      "description": "Interpolate sparse Lucas\u2013Kanade matches into an edge-aware dense motion field.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.25,
+        "grid_step": 8,
+        "neighbors": 128,
+        "sigma": 0.05,
+        "post_smoothing": true,
+        "fgs_lambda": 500.0,
+        "fgs_sigma": 1.5
+      },
+      "position": [
+        305,
+        0
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "visualization",
+        "consistency_mask",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    },
+    {
+      "id": "coarse",
+      "type": "sequence.sparse_to_dense",
+      "name": "Coarse grid without smoothing",
+      "description": "Interpolate sparse Lucas\u2013Kanade matches into an edge-aware dense motion field.",
+      "parameters": {
+        "warmup": 2,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0,
+        "visual_max_motion": 10.0,
+        "consistency_tolerance": 0.25,
+        "grid_step": 12,
+        "neighbors": 32,
+        "sigma": 0.07,
+        "post_smoothing": false,
+        "fgs_lambda": 500.0,
+        "fgs_sigma": 1.5
+      },
+      "position": [
+        305,
+        245
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region",
+        "reset",
+        "stream"
+      ],
+      "exposed_outputs": [
+        "flow",
+        "visualization",
+        "consistency_mask",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": "visualization"
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review default flow",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        620,
+        0
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "default",
+      "input": "image"
+    },
+    {
+      "source": "frames",
+      "output": "image",
+      "target": "coarse",
+      "input": "image"
+    },
+    {
+      "source": "default",
+      "output": "visualization",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
