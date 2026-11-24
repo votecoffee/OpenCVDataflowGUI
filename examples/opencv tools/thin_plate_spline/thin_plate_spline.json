@@ -1,0 +1,455 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Register a bent inspection plate",
+      "description": "Run Once. Fit the warp using 30 control pairs. On the registered image, green rings mark controls and larger yellow rings mark the six held-out probes. Compare the warp with the analytically deformed target. Both images are original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -190
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Original plate",
+      "parameters": {
+        "path": "assets/source.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        35
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "target",
+      "type": "input.file",
+      "name": "Known warped target",
+      "parameters": {
+        "path": "assets/target.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        275
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "spline",
+      "type": "cv.thin_plate_spline",
+      "name": "Register plate",
+      "description": "Warp a source image to a target grid from ordered control point pairs.",
+      "parameters": {
+        "source_points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            48.0,
+            0.0
+          ],
+          [
+            96.0,
+            0.0
+          ],
+          [
+            144.0,
+            0.0
+          ],
+          [
+            192.0,
+            0.0
+          ],
+          [
+            240.0,
+            0.0
+          ],
+          [
+            0.0,
+            48.0
+          ],
+          [
+            53.8776537490693,
+            54.07732338767785
+          ],
+          [
+            105.51024354009738,
+            51.755992414209565
+          ],
+          [
+            153.51024354009738,
+            44.244007585790435
+          ],
+          [
+            197.8776537490693,
+            41.92267661232215
+          ],
+          [
+            240.0,
+            47.99999999999999
+          ],
+          [
+            0.0,
+            96.0
+          ],
+          [
+            47.903324682253945,
+            104.55921918608765
+          ],
+          [
+            95.8435760500137,
+            101.28988837416237
+          ],
+          [
+            143.8435760500137,
+            90.71011162583763
+          ],
+          [
+            191.90332468225395,
+            87.44078081391235
+          ],
+          [
+            240.0,
+            95.99999999999999
+          ],
+          [
+            0.0,
+            144.0
+          ],
+          [
+            42.12393636111076,
+            149.9773639149644
+          ],
+          [
+            86.49232931221982,
+            147.69421406257513
+          ],
+          [
+            134.49232931221982,
+            140.30578593742487
+          ],
+          [
+            186.12393636111076,
+            138.0226360850356
+          ],
+          [
+            240.0,
+            144.0
+          ],
+          [
+            0.0,
+            191.0
+          ],
+          [
+            48.0,
+            191.0
+          ],
+          [
+            96.0,
+            191.0
+          ],
+          [
+            144.0,
+            191.0
+          ],
+          [
+            192.0,
+            191.0
+          ],
+          [
+            240.0,
+            191.0
+          ]
+        ],
+        "target_points": [
+          [
+            0,
+            0
+          ],
+          [
+            48,
+            0
+          ],
+          [
+            96,
+            0
+          ],
+          [
+            144,
+            0
+          ],
+          [
+            192,
+            0
+          ],
+          [
+            240,
+            0
+          ],
+          [
+            0,
+            48
+          ],
+          [
+            48,
+            48
+          ],
+          [
+            96,
+            48
+          ],
+          [
+            144,
+            48
+          ],
+          [
+            192,
+            48
+          ],
+          [
+            240,
+            48
+          ],
+          [
+            0,
+            96
+          ],
+          [
+            48,
+            96
+          ],
+          [
+            96,
+            96
+          ],
+          [
+            144,
+            96
+          ],
+          [
+            192,
+            96
+          ],
+          [
+            240,
+            96
+          ],
+          [
+            0,
+            144
+          ],
+          [
+            48,
+            144
+          ],
+          [
+            96,
+            144
+          ],
+          [
+            144,
+            144
+          ],
+          [
+            192,
+            144
+          ],
+          [
+            240,
+            144
+          ],
+          [
+            0,
+            191
+          ],
+          [
+            48,
+            191
+          ],
+          [
+            96,
+            191
+          ],
+          [
+            144,
+            191
+          ],
+          [
+            192,
+            191
+          ],
+          [
+            240,
+            191
+          ]
+        ],
+        "probe_points": [
+          [
+            27,
+            29
+          ],
+          [
+            75,
+            63
+          ],
+          [
+            115,
+            115
+          ],
+          [
+            179,
+            40
+          ],
+          [
+            205,
+            155
+          ],
+          [
+            162,
+            133
+          ]
+        ],
+        "expected_source_points": [
+          [
+            29.823383435651333,
+            31.683526490125423
+          ],
+          [
+            82.29017331879295,
+            70.15490803391039
+          ],
+          [
+            109.02901664277006,
+            116.11482755162994
+          ],
+          [
+            185.93148855077598,
+            34.4985979840248
+          ],
+          [
+            200.90342328587673,
+            151.01483802596272
+          ],
+          [
+            153.95372727547834,
+            126.45860682387946
+          ]
+        ],
+        "regularization": 0.0,
+        "interpolation": "linear",
+        "border": "constant",
+        "border_value": 0
+      },
+      "position": [
+        305,
+        75
+      ],
+      "exposed_inputs": [
+        "image",
+        "target"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mapped_points",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "difference",
+      "type": "cv.absdiff",
+      "name": "Residual to known warp",
+      "parameters": {},
+      "position": [
+        645,
+        75
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "spline",
+      "input": "image"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "spline",
+      "input": "target"
+    },
+    {
+      "source": "spline",
+      "output": "image",
+      "target": "difference",
+      "input": "image_a"
+    },
+    {
+      "source": "target",
+      "output": "image",
+      "target": "difference",
+      "input": "image_b"
+    }
+  ]
+}

@@ -6917,6 +6917,35 @@ Input `region` — Optional region on the same grid. No mask/region means the fu
 | `high_threshold` | `45.0` | Value must be a finite number between 0 and 65535. Canny high threshold; retain strong edges and suppress weaker texture. |
 | `kernel_size` | `3` | `3`, `5`, `7` Native Sobel/Canny aperture. Threshold sensitivity changes with aperture. |
 
+## Register image (thin-plate spline) (`cv.thin_plate_spline`)
+
+Image processing / Registration
+
+Inputs: `image` (image), `target` (image, optional), `source_points` (data, optional), `target_points` (data, optional), `probe_points` (data, optional), `expected_source_points` (data, optional).
+
+Input `image` — Source grayscale or color image to warp.
+
+Input `target` — Optional target image. Its size and spatial frame define the output grid.
+
+Input `source_points` — 4–64 ordered [x,y] control points in source pixels.
+
+Input `target_points` — Same control pairs in target pixels.
+
+Input `probe_points` — Optional [x,y] locations in target pixels to map with the image sampler.
+
+Input `expected_source_points` — Optional exact source positions of the target probe points.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `source_points` | `[]` | 4–64 ordered points in source pixels. A wired list takes precedence. |
+| `target_points` | `[]` | Corresponding points in target pixels, in the same order as the source. |
+| `probe_points` | `[]` | Up to 256 held-out target locations to map to source pixels. |
+| `expected_source_points` | `[]` | Optional known source locations for measuring probe error. |
+| `regularization` | `0.0` | Value must be a finite number between 0 and 1. Smoothing in normalized coordinates. Zero interpolates controls. |
+| `interpolation` | `"linear"` | `nearest`, `linear`, `cubic`, `lanczos4` |
+| `border` | `"constant"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge`, `wrap` |
+| `border_value` | `0` | Constant fill as a scalar or stored-channel values. |
+
 ## Threshold (`cv.threshold`)
 
 Image processing / Segmentation

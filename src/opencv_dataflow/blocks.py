@@ -948,6 +948,7 @@ def builtin_registry():
     from .harris_laplace import HarrisLaplaceInterestPoints
     from .hausdorff_distance import HausdorffContourDistance
     from .shape_context import ShapeContextDistance
+    from .thin_plate_spline import RegisterThinPlateSpline
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
     from .rgbd_warp import WarpRGBDByPose
@@ -1219,6 +1220,7 @@ def builtin_registry():
         HarrisLaplaceInterestPoints,
         ShapeContextDistance,
         HausdorffContourDistance,
+        RegisterThinPlateSpline,
         DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,

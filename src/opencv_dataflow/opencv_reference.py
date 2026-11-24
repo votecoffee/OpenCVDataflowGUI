@@ -387,6 +387,10 @@ BINDINGS = {
     "cv.transpose_image": "transpose",
     "cv.unsharp": "GaussianBlur addWeighted",
     "cv.warp_affine": "warpAffine",
+    "cv.thin_plate_spline": (
+        "createThinPlateSplineShapeTransformer ShapeTransformer.estimateTransformation "
+        "ShapeTransformer.applyTransformation remap"
+    ),
     "cv.rectify_quadrilateral": "getPerspectiveTransform warpPerspective",
     "cv.warp_perspective": "warpPerspective",
     "cv.warp_polar": "warpPolar",
