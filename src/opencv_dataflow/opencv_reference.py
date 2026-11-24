@@ -86,6 +86,7 @@ BINDINGS = {
     ),
     "inspect.evaluate_features": "perspectiveTransform BFMatcher.knnMatch",
     "inspect.evaluate_keypoints": "perspectiveTransform",
+    "sequence.multi_frame_super_resolution": "phaseCorrelate findTransformECC resize",
     "inspect.read_qr_append": (
         "QRCodeDetector QRCodeDetectorAruco GraphicalCodeDetector.detectMulti "
         "GraphicalCodeDetector.decodeBytes"

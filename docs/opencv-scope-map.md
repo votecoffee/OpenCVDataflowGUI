@@ -78,7 +78,7 @@ they can count as complete.
 | `shape` | Shape context, appearance-assisted ranking, Hausdorff distance and spline registration. | S4-50–S4-52, S4-95 |
 | `signal` | Resample measured image profiles with explicit pitch and verified alias rejection. General signal utilities stay internal. | S1-173 |
 | `structured_light` | Gray code, phase shift and calibrated projector/camera reconstruction. | S3-28–S3-30, S3-67 |
-| `superres` | Classical multi-frame super-resolution. Qualify usable Python access before using the contrib backend. | S4-81 |
+| `superres` | Classical multi-frame super-resolution. The shipped CPU reconstruction covers translated bursts. Native BTV-L1 needs a supported Python binding. | S4-81 |
 | `surface_matching` | Image-derived surface registration and alignment diagnostics, including ICP and point-pair features. | S3-22, S3-58 |
 | `text` | Native text regions and OCR adapters. Learned text models live in Stage 2. | S2-13, S2-31–S2-34, S4-67–S4-68, S4-93–S4-94 |
 | `tracking` | Seeded and learned image tracking. Legacy trackers without a distinct target workflow are deferred. | S1-53–S1-54, S2-28, S2-40, S2-52, S1-171 |

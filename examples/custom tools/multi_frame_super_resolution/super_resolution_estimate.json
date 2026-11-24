@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Recover fine marks from a short burst",
+      "description": "Choose Run all for five translated frames. Reconstruct 2\u00d7 around frame 03 and compare to single-frame bicubic upscaling, using the original high-resolution target. The measurements exclude the outer eight pixels. Original MIT fixture.",
+      "parameters": {},
+      "position": [
+        0,
+        -223
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Replay five translated observations",
+      "parameters": {
+        "path": "",
+        "source_mode": "files",
+        "paths": [
+          "assets/frame_01.png",
+          "assets/frame_02.png",
+          "assets/frame_03.png",
+          "assets/frame_04.png",
+          "assets/frame_05.png"
+        ],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        45
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "batch",
+      "type": "flow.batch",
+      "name": "Collect five frames",
+      "parameters": {
+        "size": 5,
+        "stride": 0,
+        "distinct_sources": false,
+        "max_pending": 64,
+        "max_bytes_mb": 128.0
+      },
+      "position": [
+        260,
+        60
+      ],
+      "exposed_inputs": [
+        "item_1"
+      ],
+      "exposed_outputs": [
+        "group",
+        "queued"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reconstruct",
+      "type": "sequence.multi_frame_super_resolution",
+      "name": "Reconstruct around frame 03",
+      "description": "Reconstruct a higher-resolution reference from subpixel-shifted observations.",
+      "parameters": {
+        "scale": 2,
+        "target_index": -1,
+        "temporal_window": 5,
+        "alignment": "estimate",
+        "shifts": [],
+        "maximum_shift": 4.0,
+        "minimum_phase_response": 0.2,
+        "minimum_ecc": 0.8,
+        "minimum_frames": 4,
+        "minimum_phase_bins": 4,
+        "iterations": 90,
+        "residual_limit": 0.12,
+        "regularization": 0.003,
+        "edge_threshold": 0.06,
+        "baseline_interpolation": "cubic"
+      },
+      "position": [
+        540,
+        65
+      ],
+      "exposed_inputs": [
+        "frames",
+        "mask",
+        "region",
+        "shifts"
+      ],
+      "exposed_outputs": [
+        "image",
+        "baseline",
+        "coverage",
+        "processed_mask",
+        "geometry",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Known high-resolution target",
+      "parameters": {
+        "path": "assets/truth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        310
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "area",
+      "type": "region.shape",
+      "name": "Common interior measurement",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          8,
+          8,
+          176,
+          128
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        265,
+        310
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "image_rmse",
+      "type": "inspect.image_quality",
+      "name": "Burst error against truth",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "pixel_grid",
+        "check_threshold": true,
+        "threshold": 6.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        850,
+        80
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "baseline_rmse",
+      "type": "inspect.image_quality",
+      "name": "Bicubic error against truth",
+      "parameters": {
+        "metric": "rmse",
+        "mask_alignment": "pixel_grid",
+        "check_threshold": false,
+        "threshold": 6.0,
+        "peak_value": 255.0
+      },
+      "position": [
+        850,
+        315
+      ],
+      "exposed_inputs": [
+        "image_a",
+        "image_b",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "value",
+        "measurements",
+        "map"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "batch",
+      "input": "item_1"
+    },
+    {
+      "source": "batch",
+      "output": "group",
+      "target": "reconstruct",
+      "input": "frames"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "area",
+      "input": "image"
+    },
+    {
+      "source": "reconstruct",
+      "output": "image",
+      "target": "image_rmse",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "image_rmse",
+      "input": "image_b"
+    },
+    {
+      "source": "area",
+      "output": "mask",
+      "target": "image_rmse",
+      "input": "mask"
+    },
+    {
+      "source": "reconstruct",
+      "output": "baseline",
+      "target": "baseline_rmse",
+      "input": "image_a"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "baseline_rmse",
+      "input": "image_b"
+    },
+    {
+      "source": "area",
+      "output": "mask",
+      "target": "baseline_rmse",
+      "input": "mask"
+    }
+  ]
+}

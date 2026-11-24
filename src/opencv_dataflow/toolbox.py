@@ -258,6 +258,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "sequence.multi_frame_super_resolution": ("burst reconstruction", "subpixel alignment", "classical super resolution"),
     "inspect.tbmr": ("TBMR_create", "component tree", "Morse regions"),
     "inspect.edge_drawing": ("createEdgeDrawing", "EDLines", "EDCircles", "EDPF", "ColorED"),
     "cv.variance_adaptive_smoothing": ("ximgproc.edgePreservingFilter", "low-variation denoising"),

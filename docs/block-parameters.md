@@ -7675,6 +7675,7 @@ Inputs: `item_1` (any, optional), `item_2` (any, optional), `item_3` (any, optio
 | Parameter | Default | Enum choices / help |
 | --- | --- | --- |
 | `size` | `3` |  |
+| `stride` | `0` | Value must be a whole number between 0 and 64. Entries removed after emitting a batch. Zero removes the full batch. One produces a rolling window from a serial input. |
 | `distinct_sources` | `false` |  |
 | `max_pending` | `64` |  |
 | `max_bytes_mb` | `128.0` |  |
@@ -16258,6 +16259,38 @@ Input `stream` — Optional stream ID to maintain separate models for different 
 | `neighborhood_spatial` | `15.0` | Value must be a finite number between 1 and 256. Neighborhood spatial constant in Retina transient mode. |
 | `context_temporal` | `1.0` | Value must be a finite number between 0.01 and 32. Wide-area context temporal constant in Retina transient mode. |
 | `context_spatial` | `75.0` | Value must be a finite number between 1 and 256. Wide-area context spatial constant in Retina transient mode. |
+
+## Multi-frame super-resolution (`sequence.multi_frame_super_resolution`)
+
+Sequence / Temporal processing
+
+Inputs: `frames` (any), `mask` (image, optional), `region` (data, optional), `shifts` (data, optional).
+
+Input `frames` — Ordered batch of raw same-grid observations. Frame motion is modeled as translation.
+
+Input `mask` — Limit reconstructed writes in the anchor raster. Full observations supply the estimate.
+
+Input `region` — Intersect the write mask with a region on the anchor raster.
+
+Input `shifts` — Override configured offsets in Provided mode. One pair per batch item.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `scale` | `2` | Value must be a whole number between 2 and 4. Integer high-resolution samples per source pixel. |
+| `target_index` | `-1` | Value must be a whole number between -1 and 63. Zero-based reference frame. −1 selects the earlier middle. |
+| `temporal_window` | `5` | Value must be a positive odd integer between 3 and 15. Odd number of observations centered on the target. |
+| `alignment` | `"estimate"` | `estimate`, `provided` Estimate translations with phase correlation and ECC, or use known offsets. |
+| `shifts` | `[]` | For provided alignment, ordered [dx, dy] offsets from anchor to each raw frame, in source pixels. |
+| `maximum_shift` | `4.0` | Value must be a finite number between 0.01 and 64. Reject observations with a translation component above this limit in source pixels. |
+| `minimum_phase_response` | `0.2` | Value must be a finite number between 0 and 1. Reject weak phase correlation before refinement. |
+| `minimum_ecc` | `0.8` | Value must be a finite number between 0 and 1. Reject low correlation after translation refinement. |
+| `minimum_frames` | `3` | Value must be a whole number between 2 and 15. Required accepted frames overall and required per reconstructed pixel. |
+| `minimum_phase_bins` | `2` | Value must be a whole number between 2 and 16. Require distinct rounded subpixel phases on the output sampling grid. |
+| `iterations` | `90` | Value must be a whole number between 1 and 240. Number of projected backprojection steps. |
+| `residual_limit` | `0.12` | Value must be a finite number between 0.001 and 1. Huber transition for observation residuals, in normalized intensity units. |
+| `regularization` | `0.003` | Value must be a finite number between 0 and 0.1. Strength of the neighboring-pixel Huber penalty. Zero disables it. |
+| `edge_threshold` | `0.06` | Value must be a finite number between 0.001 and 1. Huber transition for neighboring-pixel differences. |
+| `baseline_interpolation` | `"cubic"` | `linear`, `cubic`, `lanczos4` Resize the anchor for initialization and pixels outside reconstruction support. |
 
 ## PCAFlow optical flow (`sequence.pcaflow`)
 

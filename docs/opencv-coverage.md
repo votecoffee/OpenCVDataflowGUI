@@ -352,6 +352,8 @@ compares LATCH, BEBLID and TEBLID on shared ORB keypoints under known view and b
 preserves scale and response and measures one-to-one repeatability after doubling the input image.
 [Tree-based Morse regions](<../examples/opencv tools/tbmr_repeatability/README.md>) compares
 TBMR and MSER against a known 1.5× resize and checks center error and size ratios.
+[Classical multi-frame super-resolution](<../examples/custom tools/multi_frame_super_resolution/README.md>)
+combines subpixel-translated samples and measures reconstruction against single-frame bicubic and the known target.
 [Shape-context contour comparison](<../examples/opencv tools/shape_context/README.md>)
 ranks silhouettes by their geometry and checks a known deformation against a separate shape.
 [Hausdorff contour distance](<../examples/opencv tools/hausdorff_distance/README.md>)

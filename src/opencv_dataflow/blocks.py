@@ -1026,6 +1026,7 @@ def builtin_registry():
     from .structure_tensor import StructureTensor
     from .subpixel_crop import CropSubpixel
     from .super_resolution import SuperResolution
+    from .multi_frame_super_resolution import MultiFrameSuperResolution
     from .superpixels import SuperpixelsLSC, SuperpixelsSEEDS, SuperpixelsSLIC
     from .superpoint_features import SuperPointONNXFeatures
     from .svm_blocks import SVM_BLOCKS
@@ -1489,6 +1490,7 @@ def builtin_registry():
         RecognizeTextBatch,
         RecognizeConstrainedText,
         SuperResolution,
+        MultiFrameSuperResolution,
         MultiScaleSuperResolution,
         RestoreImage,
         MonocularDepth,

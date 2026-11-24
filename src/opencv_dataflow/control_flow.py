@@ -7,6 +7,7 @@ import numpy as np
 
 from .core import Block, Port, Result
 from .meshes import TriangleMesh
+from .parameter_validation import NumericRange, ValidationError
 from .payloads import NO_VALUE, FlowGroup, ValuePacket
 from .pointclouds import PointCloud
 from .processing import finite, integer
@@ -172,8 +173,19 @@ class Batch(BufferedFlow):
     type_id, title, subtype = "flow.batch", "Batch serial entries", "Groups"
     inputs = tuple(Port(f"item_{i}", "any", required=False) for i in range(1, 5))
     outputs = (Port("group", "any"), Port("queued", "number"))
-    defaults = {"size": 3, "distinct_sources": False, **LIMITS}
+    defaults = {"size": 3, "stride": 0, "distinct_sources": False, **LIMITS}
+    parameter_ranges = {"stride": NumericRange(0, 64, whole=True)}
+    parameter_help = {
+        "stride": "Entries removed after emitting a batch. Zero removes the full batch. "
+        "One produces a rolling window from a serial input.",
+    }
     flow_primary = ("group",)
+
+    def validate_parameters(self, parameters=None):
+        super().validate_parameters(parameters)
+        p = self.parameters if parameters is None else parameters
+        if p["stride"] > integer(p["size"], "Group size", 1, 64):
+            raise ValidationError("Batch stride must be at most the group size", "stride")
 
     def reset_runtime(self):
         super().reset_runtime()
@@ -181,6 +193,9 @@ class Batch(BufferedFlow):
 
     def process(self, inputs):
         size = integer(self.parameters["size"], "Group size", 1, 64)
+        stride = int(self.parameters["stride"]) or size
+        if stride < size and len(inputs) > 1:
+            raise ValidationError("Overlapping batches require one serial entry per invocation", "stride")
         queue = self.runtime["pending"]
         for name in inputs:
             value = packet(self, name, inputs)
@@ -195,7 +210,7 @@ class Batch(BufferedFlow):
                 and len({p.payload["ticket"]["source"] for p in entries}) != size
             ):
                 raise ValueError("Batch requires distinct ticket sources")
-            del queue[:size]
+            del queue[:stride]
             group = FlowGroup(entries, tuple(p.payload["ticket"]["source"] for p in entries))
             ticket = getattr(self, "_clock", DIRECT_CLOCK).issue(self.id)
             context = {"group": {"ticket": ticket}}

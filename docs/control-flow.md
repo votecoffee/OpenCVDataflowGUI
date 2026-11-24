@@ -71,7 +71,7 @@ These operators appear under **Custom > Control flow** in the toolbox.
 | Assign ticket | Auto, timestamp, external or fixed identification on any primary value |
 | Split parallel branches | Duplicate a ticketed value into 2–4 isolated branches |
 | Join parallel branches | Match 2–4 branch results by typed ticket identity, independent of arrival position |
-| Batch serial entries | Collect 1–64 successive entries, optionally from distinct acquisition sources |
+| Batch serial entries | Collect 1–64 successive entries, optionally from distinct sources. Use stride 1 for an overlapping window or zero to advance by the full batch size. |
 | Unbatch serial entries | Emit every group member as a separate serial event with its original ticket/payload |
 | Select group entry | Extract a zero-based group entry without serial expansion |
 | Case select | Route to the first matching case output, or default; unselected outputs emit nothing |
