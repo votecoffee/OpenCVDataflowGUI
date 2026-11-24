@@ -1046,6 +1046,7 @@ def builtin_registry():
     from .tsdf_mesh import TSDF_MESH_BLOCKS
     from .uncalibrated_stereo import RectifyUncalibratedStereo
     from .video_buffer import DecodeVideo
+    from .synthetic_background_sequence import SyntheticBackgroundSequence
     from .video_files import VideoFile, WriteVideo
     from .video_time import VideoAtTime
     from .video_timing import VideoTiming
@@ -1091,6 +1092,7 @@ def builtin_registry():
         *ROS2_BLOCKS,
         ImageFile,
         VideoFile,
+        SyntheticBackgroundSequence,
         RecordedCapture,
         PacedVideoFile,
         NetworkVideo,

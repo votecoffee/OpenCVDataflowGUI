@@ -583,6 +583,7 @@ BINDINGS = {
     "sequence.foreground_debounce": "connectedComponentsWithStats findContours moments",
     "sequence.farneback": "calcOpticalFlowFarneback",
     "sequence.mog_background": "bgsegm.createBackgroundSubtractorMOG BackgroundSubtractor.apply",
+    "input.synthetic_background_sequence": "bgsegm.createSyntheticSequenceGenerator bgsegm.SyntheticSequenceGenerator.getNextFrame",
     "sequence.gmg_background": "bgsegm.createBackgroundSubtractorGMG BackgroundSubtractor.apply",
     "sequence.cnt_background": "bgsegm.createBackgroundSubtractorCNT BackgroundSubtractor.apply",
     "sequence.gsoc_background": "bgsegm.createBackgroundSubtractorGSOC BackgroundSubtractor.apply",

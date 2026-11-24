@@ -341,6 +341,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Low-light enhancement](<opencv tools/low_light_enhancement/README.md>) | Compare automatic and explicit BIMEF with gamma on a noisy chart with dark and bright patches. |
 | [BoostDesc matching](<opencv tools/boost_descriptors/README.md>) | Compare BGM Bilinear, BinBoost 256, and LBGM on a relit image pair with a known transform. |
 | [Local texture descriptors](<opencv tools/texture_descriptors/README.md>) | Compare float VGG, byte VGG, and LUCID color descriptors on a shifted texture with a local lighting change. |
+| [Synthetic background sequence](<opencv tools/synthetic_background_sequence/README.md>) | Validate foreground segmentation across 24 ticketed frames with exact native masks and bounds. |
 | [Motion history and direction](<opencv tools/motion_history/README.md>) | Verify fading trails, pixel ages, and rightward and downward motion from a timed clip. |
 | [Adaptive foreground models](<opencv tools/adaptive_foreground_models/README.md>) | Compare MOG, GMG, and CNT on the same empty-conveyor replay. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |

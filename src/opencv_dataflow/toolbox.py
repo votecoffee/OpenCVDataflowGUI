@@ -208,7 +208,7 @@ BLOCK_MODULES = {
     "flann": "inspect.match_flann",
     "bgsegm": (
         "sequence.gsoc_background sequence.lsbp_background sequence.mog_background "
-        "sequence.gmg_background sequence.cnt_background"
+        "sequence.gmg_background sequence.cnt_background input.synthetic_background_sequence"
     ),
     "videoio": "input.camera",
     "objdetect": "3d.aruco_pose input.coded_rig_observations",
@@ -256,6 +256,9 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "input.synthetic_background_sequence": (
+        "createSyntheticSequenceGenerator", "bgsegm", "foreground ground truth",
+    ),
     "3d.tsdf_mesh": ("TSDF", "marching cubes", "surface reconstruction"),
     "3d.organized_mesh": ("depth grid", "triangulation", "discontinuity", "organized cloud"),
     "3d.organized_planes": ("findPlanes", "plane coefficients", "depth labels", "foreground"),

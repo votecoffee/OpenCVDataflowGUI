@@ -589,7 +589,10 @@ class Inspector(QWidget):
                 field.hide()
                 button.clicked.connect(self.choose_result_graphics)
                 self.form.addRow("Graphic layers", button)
-            elif key in ("path", "model_path", "range_path", "weights_path", "vocabulary_path"):
+            elif key in (
+                "path", "model_path", "range_path", "weights_path", "vocabulary_path",
+                "background_path", "object_path",
+            ):
                 row = QWidget()
                 row_layout = QHBoxLayout(row)
                 row_layout.setContentsMargins(0, 0, 0, 0)

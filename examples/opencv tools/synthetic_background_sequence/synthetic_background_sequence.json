@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Check foreground across moving frames",
+      "description": "Choose Run all for 24 frames. OpenCV moves an opaque rectangle across a rippling background and supplies its exact mask. Compare the bright-pixel threshold with that mask. The expected IoU is 1.0 for every ticket. Original MIT fixtures.",
+      "parameters": {},
+      "position": [
+        0,
+        -205
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.synthetic_background_sequence",
+      "name": "Generate frame and reference mask",
+      "parameters": {
+        "background_path": "assets/background.png",
+        "object_path": "assets/target.png",
+        "amplitude": 1.6,
+        "wavelength": 25.0,
+        "wave_speed": 0.25,
+        "object_speed": 5.0,
+        "frame_count": 24,
+        "fps": 12.0,
+        "repeat": "stop"
+      },
+      "position": [
+        0,
+        25
+      ],
+      "node_size": "large",
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "foreground_mask",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "threshold",
+      "type": "cv.threshold",
+      "name": "Segment bright pixels",
+      "parameters": {
+        "value": 130.0,
+        "invert": false,
+        "max_value": 255.0,
+        "mode": "binary"
+      },
+      "position": [
+        310,
+        -15
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "threshold"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "compare",
+      "type": "inspect.mask_boundary",
+      "name": "Check exact mask and boundary",
+      "documentation": "<p>Measure directed inner-boundary pixel-center distances and selected missing/extra foreground area. Holes and disconnected components participate. Selection restricts queries and area counts, while distance targets retain the full uncut boundaries. Distance maps are zero outside their companion boundary masks; missing targets withhold distance maps and statistics rather than inventing finite distances.</p><p>Both combines the two directed sample sets, so mean/RMS/percentile are weighted by boundary pixel counts. Tolerance is inclusive. Beyond-tolerance area excludes differences within that distance of the opposite boundary. Image borders are an explicit exterior assumption. All measurements use current-grid pixels, not physical or automatically rescaled pyramid units. Float32 distances use a four-epsilon relative roundoff guard (at least four float32 epsilons) for all tolerance tests; tolerances of one million pixels or more need no guard. No registration is performed.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_misc.html\">OpenCV distance transform reference</a>.</p>",
+      "parameters": {
+        "alignment": "same_frame",
+        "tickets": "require_match",
+        "foreground": "nonzero",
+        "connectivity": "8",
+        "image_border": "background",
+        "distance_type": "euclidean",
+        "l2_mask": "precise",
+        "direction": "both",
+        "statistic": "maximum",
+        "percentile": 95.0,
+        "tolerance": 0.0,
+        "check_boundary": true,
+        "check_area": true,
+        "area_basis": "raw",
+        "maximum_missing_pixels": 0,
+        "maximum_extra_pixels": 0,
+        "empty_policy": "fail",
+        "graphics_points": 4096
+      },
+      "position": [
+        580,
+        120
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample",
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "distance",
+        "measurements",
+        "missing",
+        "extra"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review source frames",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        880,
+        125
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "threshold",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "compare",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "foreground_mask",
+      "target": "compare",
+      "input": "reference"
+    },
+    {
+      "source": "threshold",
+      "output": "image",
+      "target": "compare",
+      "input": "sample"
+    },
+    {
+      "source": "compare",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

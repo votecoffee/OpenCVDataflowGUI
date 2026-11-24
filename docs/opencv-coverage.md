@@ -384,6 +384,8 @@ compares automatic and fixed-exposure BIMEF with gamma for contrast, noise and u
 qualifies native descriptor rows and measures binary and floating-point matches against a known map.
 [Local texture descriptors](<../examples/opencv tools/texture_descriptors/README.md>)
 qualifies float and byte VGG and color LUCID against a known shifted pair.
+[Synthetic background sequence](<../examples/opencv tools/synthetic_background_sequence/README.md>)
+replays a moving rectangle with exact native masks, bounding boxes and ticketed timestamps.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

@@ -9094,6 +9094,25 @@ Ticket mode and fixed value are common inspector controls.
 | `baseline_m` | `0.12` |  |
 | `seed` | `3` |  |
 
+## Synthetic background sequence (`input.synthetic_background_sequence`)
+
+Input / Video
+
+Ticket terminals: optional `ticket` data input and `ticket` data output.
+Ticket mode and fixed value are common inspector controls.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `background_path` | `""` | 8-bit grayscale or BGR PNG, JPEG or BMP. Relative to the project. |
+| `object_path` | `""` | Opaque rectangular foreground image. Same formats as the background. |
+| `amplitude` | `2.0` | Value must be a finite number between 0 and 4096. Native background distortion amplitude in pixels. |
+| `wavelength` | `20.0` | Value must be a finite number between 0.01 and 1e+06. Native background distortion wavelength in pixels. |
+| `wave_speed` | `0.2` | Value must be a finite number between -4096 and 4096. Native wave phase increment per frame. Negative reverses the phase advance. |
+| `object_speed` | `3.0` | Value must be a finite number between 0 and 1024. Foreground motion in pixels per frame. Limited by its available clearance. |
+| `frame_count` | `24` | Value must be a whole number between 1 and 4096. Frames per clip. Total decoded background pixels per clip cannot exceed 128 million. |
+| `fps` | `30.0` | Value must be a finite number between 0.01 and 1000. Nominal rate used for timestamps. Frame production is driven by the program. |
+| `repeat` | `"stop"` | `stop`, `loop` Stop at the end or replay the same native trajectory with new tickets. |
+
 ## Load calibration target observations (`input.target_calibration_observations`)
 
 Input / Calibration

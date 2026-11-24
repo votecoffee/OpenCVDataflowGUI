@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 72 | 6 | 24 | 102 | 70.6% |
-| **Overall** | 438 | 7 | 25 | 470 | 93.2% |
+| 4. Selected contrib | 73 | 6 | 23 | 102 | 71.6% |
+| **Overall** | 439 | 7 | 24 | 470 | 93.4% |
 
 <!-- coverage-summary:end -->
 
@@ -693,7 +693,7 @@ fixture or result needed to close the item.
 | S4-73 | Low-light enhancement | intensity_transform.BIMEF and BIMEF2, SciPy sparse CG | Complete | cv.bimef verifies automatic and explicit native exposure pixel-for-pixel on an isolated Eigen build. The standard wheel uses the measured SciPy path with contrast, noise and saturation comparison against gamma. |
 | S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Complete | inspect.boost_descriptor verifies all seven variants against native rows. Hamming and L2 matching verify correspondence on a rotated, scaled and relit reference pair. |
 | S4-75 | Contrib surface texture descriptors | xfeatures2d.VGG and xfeatures2d.LUCID | Complete | inspect.vgg_descriptor verifies all four compiled models in float and byte modes using L2. inspect.lucid_descriptor qualifies color rows and Hamming matching. Three saved branches evaluate a known shifted and locally relit pair. |
-| S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator | Planned | Emit synthetic moving-object frames with the native foreground reference masks and reproducible ticket order. |
+| S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator, SyntheticSequenceGenerator.getNextFrame | Complete | input.synthetic_background_sequence emits ticketed BGR frames, native foreground masks and pixel bounds. Cursor restore and loops reproduce native frames. The saved graph checks exact masks over 24 tickets. |
 | S4-77 | Contrib optical flow interpolation with robust correspondence | ximgproc.RICInterpolator | Planned | Interpolate a known sparse field and validate deformation boundaries and unsupported regions. |
 | S4-78 | Variance-adaptive edge-preserving smoothing | ximgproc.edgePreservingFilter | Planned | Reduce noise while preserving the position and strength of a measured image edge. |
 | S4-79 | Edge Drawing segments and primitives | ximgproc.createEdgeDrawing | Planned | Verify ordered edge segments and fitted line or ellipse outputs against known geometry. |
