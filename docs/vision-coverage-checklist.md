@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 78 | 6 | 18 | 102 | 76.5% |
-| **Overall** | 444 | 7 | 19 | 470 | 94.5% |
+| 4. Selected contrib | 79 | 6 | 17 | 102 | 77.5% |
+| **Overall** | 445 | 7 | 18 | 470 | 94.7% |
 
 <!-- coverage-summary:end -->
 
@@ -704,7 +704,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S4-82 | Fourier contour descriptors and alignment | ximgproc.contourSampling, fourierDescriptor and createContourFitting | Planned | Verify periodic contour sampling, transform recovery, and shape matching under known rotation and scale. |
+| S4-82 | Fourier contour descriptors and alignment | ximgproc.contourSampling, fourierDescriptor, createContourFitting and transformFD | Complete | Periodic sampling and full or compact descriptors feed similarity alignment with a bounded spectral phase check. The saved projects verify transform recovery and withhold a transform for the altered outline. |
 | S4-83 | Run-length encoded binary morphology | ximgproc run-length mask encoding and morphology | Planned | Verify erosion and dilation parity with dense masks and measure memory on sparse large tiles. Check Python support or qualify an equivalent implementation. |
 
 ### Additional sparse motion

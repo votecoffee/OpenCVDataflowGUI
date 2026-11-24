@@ -358,6 +358,8 @@ combines subpixel-translated samples and measures reconstruction against single-
 ranks silhouettes by their geometry and checks a known deformation against a separate shape.
 [Hausdorff contour distance](<../examples/opencv tools/hausdorff_distance/README.md>)
 measures a known shift with L1/L2 and demonstrates full and partial rank on a local tab.
+[Fourier contour alignment](<../examples/opencv tools/fourier_contours/README.md>) recovers
+a similarity transform from sampled outlines and rejects a changed notch.
 [Thin-plate spline registration](<../examples/opencv tools/thin_plate_spline/README.md>)
 warps a plate onto an analytic target and verifies residuals at held-out landmarks.
 [Static saliency maps](<../examples/opencv tools/static_saliency/README.md>) compare native

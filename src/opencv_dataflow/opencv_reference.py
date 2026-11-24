@@ -476,6 +476,11 @@ BINDINGS = {
     "inspect.daisy_descriptor": "xfeatures2d.DAISY_create",
     "inspect.compare_contours": "matchShapes",
     "inspect.shape_context_distance": "createShapeContextDistanceExtractor",
+    "inspect.fourier_contour": "ximgproc.contourSampling ximgproc.fourierDescriptor",
+    "inspect.fit_fourier_contours": (
+        "ximgproc.contourSampling ximgproc.fourierDescriptor ximgproc.createContourFitting "
+        "ximgproc.ContourFitting.estimateTransformation ximgproc.transformFD"
+    ),
     "inspect.compare_edge_maps": "distanceTransform",
     "inspect.mask_clearance": "distanceTransform",
     "inspect.compare_histograms": "compareHist",

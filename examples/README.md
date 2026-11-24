@@ -326,6 +326,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Tree-based Morse region repeatability](<opencv tools/tbmr_repeatability/README.md>) | Compare TBMR and MSER centers and size ratios on a nested region target resized by 1.5×. |
 | [Shape-context contour comparison](<opencv tools/shape_context/README.md>) | Rank a reference silhouette, a deformed part and a circle by their outline distance. |
 | [Hausdorff contour distance](<opencv tools/hausdorff_distance/README.md>) | Measure a known translation and compare full and partial ranks on a localized tab. |
+| [Fourier contour descriptors and alignment](<opencv tools/fourier_contours/README.md>) | Align a rotated and scaled silhouette and detect an altered notch. |
 | [Thin-plate spline registration](<opencv tools/thin_plate_spline/README.md>) | Warp an inspection plate from paired landmarks and check the independent target and probe error. |
 | [Static saliency maps](<opencv tools/static_saliency/README.md>) | Compare spectral residual and fine-grained response masks with a known part silhouette. |
 | [Motion saliency](<opencv tools/motion_saliency/README.md>) | Compare Bin Wang and retina transient masks on timestamped frames with known part motion. |

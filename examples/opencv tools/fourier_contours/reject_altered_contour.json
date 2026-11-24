@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Align an asymmetric silhouette",
+      "description": "Run Once. The plate moved, rotated by 23\u00b0 and scaled by 1.24\u00d7. Fourier alignment registers the ordered outline and gives a sample-to-reference matrix. This sample has an altered notch and should fail shape acceptance. Original MIT silhouette.",
+      "parameters": {},
+      "position": [
+        0,
+        -220
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fit",
+      "type": "inspect.fit_fourier_contours",
+      "name": "Align sample to reference",
+      "description": "Estimate the similarity transform that aligns an ordered sample outline to a reference.",
+      "parameters": {
+        "reference_index": 0,
+        "sample_index": 0,
+        "samples": 128,
+        "harmonics": 16,
+        "maximum_normalized_rms": 0.045,
+        "minimum_scale": 0.05,
+        "maximum_scale": 20.0
+      },
+      "position": [
+        850,
+        80
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample",
+        "reference_image"
+      ],
+      "exposed_outputs": [
+        "transform",
+        "report",
+        "aligned",
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference",
+      "type": "input.file",
+      "name": "Reference silhouette",
+      "parameters": {
+        "path": "assets/reference.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        10
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_outline",
+      "type": "inspect.contours",
+      "name": "Reference outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "none",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        260,
+        10
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "reference_spectrum",
+      "type": "inspect.fourier_contour",
+      "name": "Reference spectrum",
+      "description": "Sample a closed contour by arc length and describe its normalized Fourier spectrum.",
+      "parameters": {
+        "contour_index": 0,
+        "samples": 128,
+        "coefficients": 0
+      },
+      "position": [
+        560,
+        10
+      ],
+      "exposed_inputs": [
+        "contour"
+      ],
+      "exposed_outputs": [
+        "samples",
+        "descriptor"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample",
+      "type": "input.file",
+      "name": "Sample silhouette",
+      "parameters": {
+        "path": "assets/defect.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        260
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample_outline",
+      "type": "inspect.contours",
+      "name": "Sample outline",
+      "parameters": {
+        "min_area": 100.0,
+        "expected_count": 1,
+        "retrieval": "external",
+        "approximation": "none",
+        "offset": [
+          0,
+          0
+        ],
+        "region_mode": "center"
+      },
+      "position": [
+        260,
+        260
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "sample_spectrum",
+      "type": "inspect.fourier_contour",
+      "name": "Sample spectrum",
+      "description": "Sample a closed contour by arc length and describe its normalized Fourier spectrum.",
+      "parameters": {
+        "contour_index": 0,
+        "samples": 128,
+        "coefficients": 0
+      },
+      "position": [
+        560,
+        260
+      ],
+      "exposed_inputs": [
+        "contour"
+      ],
+      "exposed_outputs": [
+        "samples",
+        "descriptor"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "reference_outline",
+      "input": "image"
+    },
+    {
+      "source": "reference_outline",
+      "output": "collection",
+      "target": "reference_spectrum",
+      "input": "contour"
+    },
+    {
+      "source": "reference_spectrum",
+      "output": "descriptor",
+      "target": "fit",
+      "input": "reference"
+    },
+    {
+      "source": "sample",
+      "output": "image",
+      "target": "sample_outline",
+      "input": "image"
+    },
+    {
+      "source": "sample_outline",
+      "output": "collection",
+      "target": "sample_spectrum",
+      "input": "contour"
+    },
+    {
+      "source": "sample_spectrum",
+      "output": "descriptor",
+      "target": "fit",
+      "input": "sample"
+    },
+    {
+      "source": "reference",
+      "output": "image",
+      "target": "fit",
+      "input": "reference_image"
+    }
+  ]
+}

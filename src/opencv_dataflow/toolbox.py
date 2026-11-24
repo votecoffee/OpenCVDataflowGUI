@@ -232,7 +232,7 @@ BLOCK_MODULES = {
         "cv.fast_global_smoother cv.weighted_median_filter cv.anisotropic_diffusion "
         "cv.variance_adaptive_smoothing "
         "cv.deriche_gradient inspect.find_ellipses inspect.fast_hough_lines cv.structured_edges "
-        "inspect.edge_drawing "
+        "inspect.edge_drawing inspect.fourier_contour inspect.fit_fourier_contours "
         "inspect.edge_boxes cv.edge_aware_flow cv.ric_flow "
         "cv.joint_bilateral_filter cv.rolling_guidance_filter "
         "inspect.thin_mask 3d.smooth_depth"
@@ -258,6 +258,8 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "inspect.fourier_contour": ("fourierDescriptor", "contourSampling"),
+    "inspect.fit_fourier_contours": ("createContourFitting", "similarity registration", "transformFD"),
     "sequence.multi_frame_super_resolution": ("burst reconstruction", "subpixel alignment", "classical super resolution"),
     "inspect.tbmr": ("TBMR_create", "component tree", "Morse regions"),
     "inspect.edge_drawing": ("createEdgeDrawing", "EDLines", "EDCircles", "EDPF", "ColorED"),

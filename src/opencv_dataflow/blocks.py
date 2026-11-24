@@ -957,6 +957,7 @@ def builtin_registry():
     from .harris_laplace import HarrisLaplaceInterestPoints
     from .tbmr import TreeMorseRegions
     from .hausdorff_distance import HausdorffContourDistance
+    from .fourier_contours import DescribeFourierContour, FitFourierContours
     from .shape_context import ShapeContextDistance
     from .thin_plate_spline import RegisterThinPlateSpline
     from .static_saliency import StaticSaliencyMap
@@ -1258,6 +1259,8 @@ def builtin_registry():
         TreeMorseRegions,
         ShapeContextDistance,
         HausdorffContourDistance,
+        DescribeFourierContour,
+        FitFourierContours,
         RegisterThinPlateSpline,
         StaticSaliencyMap,
         MotionSaliency,

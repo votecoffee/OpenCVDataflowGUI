@@ -10302,6 +10302,28 @@ Input `region` — Optional region intersected with the mask. Selection does not
 | `maximum_rmse` | `1.0` | Value must be a finite number between 0 and 1e+07. Inclusive fitting-support RMSE limit in output pixels. |
 | `sample_limit` | `2000` | Value must be a whole number between 0 and 100000. Maximum residual rows; zero skips the table without changing the fit. |
 
+## Align contours (Fourier) (`inspect.fit_fourier_contours`)
+
+Inspection / Contour matching
+
+Inputs: `reference` (data), `sample` (data), `reference_image` (image, optional).
+
+Input `reference` — Reference outline as ordered points, a collection, or a full contour spectrum.
+
+Input `sample` — Outline to align as ordered points, a collection, or a full contour spectrum.
+
+Input `reference_image` — Optional image in the reference grid for the overlay.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_index` | `0` | Value must be a whole number between 0 and 99999. Zero-based item when Reference is a collection. |
+| `sample_index` | `0` | Value must be a whole number between 0 and 99999. Zero-based item when Sample is a collection. |
+| `samples` | `128` | Value must be a whole number between 16 and 1024. Number of periodic samples or full Fourier coefficients on both contours. |
+| `harmonics` | `16` | Value must be a whole number between 1 and 128. Positive and matching negative harmonics used to find phase. At most floor(samples/2) minus one. |
+| `maximum_normalized_rms` | `0.07` | Value must be a finite number between 0 and 10. Maximum pointwise RMS residual divided by the reference RMS radius. |
+| `minimum_scale` | `0.05` | Value must be a finite number between 0.0001 and 1000. Smallest accepted sample-to-reference scale. |
+| `maximum_scale` | `20.0` | Value must be a finite number between 0.0001 and 1000. Largest accepted sample-to-reference scale. |
+
 ## Fit line, ellipse or enclosing circle (`inspect.fit_shape`)
 
 Inspection / Measurements
@@ -10355,6 +10377,18 @@ Input `region` — Optional scoring region, intersected with the mask when both 
 | `check_threshold` | `false` |  |
 | `minimum_sharpness` | `0.0` | Value must be a finite number at least 0. Inclusive lower limit when threshold checking is enabled. |
 | `emit_response` | `false` | Output absolute Laplacian or squared gradient; zero outside selection. |
+
+## Describe contour spectrum (`inspect.fourier_contour`)
+
+Inspection / Contour matching
+
+Inputs: `contour` (data).
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `contour_index` | `0` | Value must be a whole number between 0 and 99999. Zero-based item in a contour or shape collection. |
+| `samples` | `128` | Value must be a whole number between 16 and 1024. Periodic arc-length samples around the full perimeter. |
+| `coefficients` | `0` | Value must be a whole number between 0 and 512. Zero keeps the full spectrum. Otherwise use an even count up to half the samples. |
 
 ## Fourier correlation (`inspect.fourier_correlation`)
 
