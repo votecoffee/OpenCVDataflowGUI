@@ -135,6 +135,12 @@ learned white balance (S4-66) to **15/20**. Native text component detection
 restoration (S4-70) to **19/20**. Hierarchical feature-selection segmentation
 (S4-71) closes the cycle at **20/20**.
 
+The offscreen checkpoint on `f0684948` covered **72 test files** across the
+recent vision blocks, runtime, persistence, plugins, and editor. **989 passed**
+and **2 skipped**. Both skips require a native BM3D-enabled OpenCV build.
+The published HFS example passed in the installed package in Debug and Lean.
+The next targeted cycle starts at **0/20**.
+
 A full-suite checkpoint ran on committed source `9b3f11dc` in four
 offscreen workers. It completed all **10,066 collected tests** in
 **997.17 seconds** with **9,965 passes, 36 skips, 65 failures, and 64
