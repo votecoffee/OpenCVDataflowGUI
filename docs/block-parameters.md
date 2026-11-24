@@ -11599,6 +11599,30 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `max_passes` | `4` | Value must be a whole number between 1 and 32. Recompute branches after each pass. Stops early when no spurs qualify. |
 | `connectivity` | `"8"` | `4`, `8` Eight includes diagonals that have no equivalent cardinal path. |
 
+## Radon angular projection (`inspect.radon_projection`)
+
+Inspection / Measurements
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Intensity image or color converted to grayscale. Higher depths retain signed or fractional sums.
+
+Input `mask` — Only selected source pixels contribute to the projections.
+
+Input `region` — Intersect this source-grid region with the optional mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `start_angle` | `0.0` | Value must be a finite number between -360 and 360. First line-normal angle. Zero gives vertical lines. |
+| `end_angle` | `180.0` | Value must be a finite number between -360 and 360. Sweep boundary. OpenCV rounds the span divided by the angle step to get the bin count. |
+| `angle_step` | `1.0` | Value must be a finite number between 0.01 and 360. Angle spacing in degrees. A descending interval sweeps in reverse. |
+| `circle_crop` | `false` | Use the native centered circle cut from the largest inscribed square. |
+| `peak_polarity` | `"positive"` | `positive`, `negative`, `absolute` Rank positive sums, negative sums by magnitude, or absolute sums. |
+| `maximum_peaks` | `1` | Value must be a whole number between 0 and 64. Maximum reported peaks after suppression. Zero publishes profiles only. |
+| `minimum_strength` | `0.0` | Value must be a finite number at least 0. Minimum absolute or polarity-selected projection sum for a reported peak. |
+| `angle_separation` | `5.0` | Value must be a finite number between 0 and 90. Suppress nearby line directions within this many degrees of a selected peak. |
+| `distance_separation` | `4` | Value must be a whole number between 0 and 4096. Suppress nearby peak distances in pixels within the angle window. |
+
 ## Read linear barcodes (`inspect.read_barcode`)
 
 Inspection / Code reading

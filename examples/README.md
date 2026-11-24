@@ -317,6 +317,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Recursive gradients](<opencv tools/recursive_gradients/README.md>) | Compare signed Deriche and Paillou responses on known rising and falling edges. |
 | [Find contour ellipses](<opencv tools/contour_ellipses/README.md>) | Detect rotated ellipses in contour clutter, filter by axis ratio, and create a fitted region. |
 | [Fast Hough lines](<opencv tools/fast_hough_lines/README.md>) | View the accumulator, recover lines with known offsets, and filter by direction. |
+| [Radon angular projection profiles](<opencv tools/radon_projection/README.md>) | Recover stripe angles and signed offsets and map a tilted edge back to source pixels. |
 | [Structured forest edges](<opencv tools/structured_edges/README.md>) | Compare thinned edge responses with known boundaries after preparing the pinned OpenCV forest. |
 | [EdgeBoxes object proposals](<opencv tools/edge_boxes/README.md>) | Rank and filter candidate part rectangles using Canny strengths and Sobel angles. |
 | [Edge Drawing paths and primitives](<opencv tools/edge_drawing/README.md>) | Trace ordered paths, filter linked lines and inspect circle and ellipse fits on a known plate. |

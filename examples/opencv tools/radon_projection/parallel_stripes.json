@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Measure three parallel stripes",
+      "description": "Run Once. Project three parallel stripes inside the inspection rectangle. The bright vertical mark at the left stays outside the selection. The stripe lines should trace a common direction at 52 degrees. Original synthetic fixture.",
+      "parameters": {},
+      "position": [
+        35,
+        -200
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Reference intensity image",
+      "parameters": {
+        "path": "assets/stripes.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        30,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selection",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          29,
+          16,
+          159,
+          147
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        345,
+        -80
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "radon",
+      "type": "inspect.radon_projection",
+      "name": "Measure orientation and offsets",
+      "description": "Sum intensity along angled lines and map strong projection peaks to the source image.",
+      "parameters": {
+        "start_angle": 0.0,
+        "end_angle": 180.0,
+        "angle_step": 1.0,
+        "circle_crop": false,
+        "peak_polarity": "positive",
+        "maximum_peaks": 3,
+        "minimum_strength": 0.0,
+        "angle_separation": 6.0,
+        "distance_separation": 4
+      },
+      "position": [
+        695,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "projection",
+        "preview",
+        "axes",
+        "peaks",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "selection",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "radon",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "radon",
+      "input": "image"
+    }
+  ]
+}

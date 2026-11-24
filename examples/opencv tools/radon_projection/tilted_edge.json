@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Trace the normal of a tilted edge",
+      "description": "Run Once. Canny extracts the narrow boundary of a tilted intensity step. A descending angular sweep and centered circle recover its 123 degree normal and a 9 pixel offset. Original synthetic fixture.",
+      "parameters": {},
+      "position": [
+        35,
+        -200
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Reference intensity image",
+      "parameters": {
+        "path": "assets/tilted-step.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        30,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selection",
+      "type": "region.shape",
+      "name": "Inspection rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          29,
+          16,
+          159,
+          147
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        345,
+        -80
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "mask",
+        "region",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "radon",
+      "type": "inspect.radon_projection",
+      "name": "Measure orientation and offsets",
+      "description": "Sum intensity along angled lines and map strong projection peaks to the source image.",
+      "parameters": {
+        "start_angle": 150,
+        "end_angle": 90,
+        "angle_step": 0.5,
+        "circle_crop": true,
+        "peak_polarity": "positive",
+        "maximum_peaks": 1,
+        "minimum_strength": 0.0,
+        "angle_separation": 5.0,
+        "distance_separation": 4
+      },
+      "position": [
+        695,
+        60
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "projection",
+        "preview",
+        "axes",
+        "peaks",
+        "collection"
+      ],
+      "thumbnail": true,
+      "preview_output": "image"
+    },
+    {
+      "id": "edges",
+      "type": "cv.canny",
+      "name": "Find the intensity step",
+      "parameters": {
+        "low": 40.0,
+        "high": 100.0,
+        "l2_gradient": false,
+        "aperture": "3"
+      },
+      "position": [
+        345,
+        170
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "selection",
+      "input": "image"
+    },
+    {
+      "source": "selection",
+      "output": "region",
+      "target": "radon",
+      "input": "region"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "edges",
+      "input": "image"
+    },
+    {
+      "source": "edges",
+      "output": "image",
+      "target": "radon",
+      "input": "image"
+    }
+  ]
+}

@@ -535,6 +535,7 @@ BINDINGS = {
     "inspect.match_descriptor_radius": "DescriptorMatcher.radiusMatch",
     "inspect.match_template": "matchTemplate",
     "inspect.match_color_template": "ximgproc.colorMatchTemplate",
+    "inspect.radon_projection": "ximgproc.RadonTransform",
     "inspect.mser": "MSER_create MSER.detectRegions",
     "cv.text_extremal_regions": (
         "text.createERFilterNM1 text.createERFilterNM2 text.detectRegions text.erGrouping "

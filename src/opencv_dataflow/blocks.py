@@ -731,6 +731,7 @@ def builtin_registry():
     from .ecc_registration import AlignECC
     from .edge_agreement import CompareEdgeMaps
     from .local_contrast_edges import LocalContrastEdges
+    from .radon_projection import RadonProjection
     from .epipolar import CheckEpipolarCorrespondences
     from .epipolar_refinement import RefineEpipolarCorrespondences
     from .example_plugins import invert as invert_example
@@ -1336,6 +1337,7 @@ def builtin_registry():
         FitCircleArc,
         CompareEdgeMaps,
         LocalContrastEdges,
+        RadonProjection,
         *CODE_READER_BLOCKS,
         ReadWeChatQR,
         EncodeQRCode,

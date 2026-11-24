@@ -334,6 +334,8 @@ solver with Gaussian blur on a 16-bit texture target. The OpenCV native path rem
 and Paillou responses on known edges. Paillou uses SciPy because the Python wheel lacks that binding.
 [Find contour ellipses](<../examples/opencv tools/contour_ellipses/README.md>) verifies rotated
 fits in contour clutter and uses the detections as measured objects and fitted regions.
+[Radon angular projections](<../examples/opencv tools/radon_projection/README.md>)
+retain native projection sums and recover stripe directions and offsets inside a selected region.
 [Fast Hough lines](<../examples/opencv tools/fast_hough_lines/README.md>) transforms selected
 edge points into an accumulator and recovers source lines with known angles and offsets.
 [Structured forest edges](<../examples/opencv tools/structured_edges/README.md>) uses a pinned
