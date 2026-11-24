@@ -163,7 +163,7 @@ IMPLEMENTATION_MODULES = {
         "fast_bilateral_solver fast_lines local_threshold peilin_normalization "
         "region_proposals ridge_response superpixels"
     ),
-    "xfeatures2d": "compact_descriptors daisy_descriptor grid_motion harris_laplace",
+    "xfeatures2d": "compact_descriptors daisy_descriptor grid_motion harris_laplace texture_descriptors",
     "line_descriptor": "line_descriptors",
     "shape": "shape_context hausdorff_distance thin_plate_spline",
     "saliency": "static_saliency motion_saliency",

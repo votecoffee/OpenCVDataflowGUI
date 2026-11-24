@@ -10926,6 +10926,25 @@ Input `moving_mask` — Optional captured support on the moving grid for spatial
 | `border` | `"constant"` | `constant`, `replicate`, `reflect_101` Final image extrapolation; the validity mask excludes extrapolated pixels. |
 | `border_value` | `0.0` | Value must be a finite number. Final constant border sample value; ignored by other border modes. |
 
+## LUCID color texture descriptors (`inspect.lucid_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — RGB or BGR image. LUCID uses 8-bit color samples and ignores alpha.
+
+Input `keypoints` — Feature record or x/y centers. LUCID uses position only.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `patch_radius` | `1` | Value must be a whole number between 0 and 6. Half-width in pixels of the color patch. Radius 6 produces 507 bytes. |
+| `blur_radius` | `2` | Value must be a whole number between 0 and 32. Half-width of the box blur. Zero samples the original color. |
+
 ## Mahalanobis distance (`inspect.mahalanobis_distance`)
 
 Inspection / Measurements
@@ -12000,6 +12019,29 @@ Inputs: `text` (data).
 | `character_set` | `"any"` | `any`, `ascii_digits`, `ascii_letters`, `ascii_alphanumeric`, `custom` |
 | `custom_characters` | `""` | Literal allowed characters for the custom character set. |
 | `aggregate` | `"all"` | `all`, `any` Require every input string or at least one. An empty list always fails. |
+
+## VGG texture descriptors (`inspect.vgg_descriptor`)
+
+Inspection / Features
+
+Inputs: `image` (image), `keypoints` (data), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Source intensity image. Descriptor computation uses 8-bit grayscale.
+
+Input `keypoints` — Feature record, keypoint records, or [x, y] rows. Bare points use size 7 and unknown orientation.
+
+Input `mask` — Describe keypoints whose centers are inside the mask.
+
+Input `region` — Describe keypoints whose centers are inside the region and any wired mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `variant` | `"VGG_120"` | `VGG_120`, `VGG_80`, `VGG_64`, `VGG_48` Number of values in the learned descriptor. |
+| `sigma` | `1.4` | Value must be a finite number between 0.01 and 16. Standard deviation of the native Gaussian prefilter. |
+| `normalize_image` | `true` | Normalize the intensities inside each sampled patch. |
+| `use_orientation` | `true` | Rotate by measured keypoint angles. |
+| `scale_factor` | `6.25` | Value must be a finite number between 0.01 and 32. Multiply the keypoint diameter to set the patch diameter. Use 6.75 for SIFT or 0.75 for ORB. |
+| `normalize_descriptor` | `false` | Scale the entire descriptor table to 0–255 and emit bytes. Distance remains L2. |
 
 ## Filter candidates by visible support (`inspect.visible_support`)
 

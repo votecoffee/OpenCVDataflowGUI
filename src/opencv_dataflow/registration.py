@@ -28,6 +28,7 @@ from .processing import (
     integer,
 )
 from .selection import SELECTION_INPUTS, RegionalOperation, contains
+from .texture_descriptors import texture_descriptor_layout
 
 BORDERS = {
     **FILTER_BORDERS,
@@ -1322,6 +1323,11 @@ def radius_data(data):
     if family == "KAZE":
         descriptors, points, layout = kaze_data(data)
         return descriptors, points, layout, cv2.NORM_L2
+    if family in ("VGG", "LUCID"):
+        minimum, maximum, integer_only, dtype, norm = texture_descriptor_layout(data)
+        width = data["descriptor_size"]
+        descriptors, points = descriptor_arrays(data, width, minimum, maximum, integer_only)
+        return descriptors.astype(dtype), points, (family, width, data["descriptor_settings"]), norm
     if family == "BoostDesc":
         width, settings = data.get("descriptor_size"), data.get("descriptor_settings")
         settings = settings if isinstance(settings, dict) else {}
@@ -1354,7 +1360,7 @@ def radius_data(data):
         return descriptors.astype(np.uint8), points, (family, width, settings), cv2.NORM_HAMMING
     raise ValidationError(
         "Connect ORB, BRISK, AKAZE, SIFT, KAZE, BRIEF, FREAK, LATCH, BEBLID, TEBLID, "
-        "DAISY, or BoostDesc descriptors"
+        "DAISY, BoostDesc, VGG, or LUCID descriptors"
     )
 
 

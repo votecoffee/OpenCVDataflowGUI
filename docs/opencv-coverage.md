@@ -382,6 +382,8 @@ qualifies five gradient motion models with reusable maps, seeded refinement and 
 compares automatic and fixed-exposure BIMEF with gamma for contrast, noise and upper saturation.
 [BoostDesc matching](<../examples/opencv tools/boost_descriptors/README.md>)
 qualifies native descriptor rows and measures binary and floating-point matches against a known map.
+[Local texture descriptors](<../examples/opencv tools/texture_descriptors/README.md>)
+qualifies float and byte VGG and color LUCID against a known shifted pair.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

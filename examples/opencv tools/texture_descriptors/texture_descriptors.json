@@ -1,0 +1,802 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare intensity and color texture",
+      "description": "Run Once. Each branch uses the same single-level ORB detections. The second view shifts the texture and relights one area. VGG uses L2 in both formats. LUCID uses Hamming on color samples. Review each overlay against the known shift. Original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -225
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_image",
+      "type": "input.file",
+      "name": "Query color texture",
+      "parameters": {
+        "path": "assets/query.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query_orb",
+      "type": "inspect.orb",
+      "name": "Query ORB",
+      "parameters": {
+        "max_features": 280,
+        "scale_factor": 1.2,
+        "levels": 1,
+        "fast_threshold": 8,
+        "edge_threshold": 18,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        230,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_float_query",
+      "type": "inspect.vgg_descriptor",
+      "name": "Query VGG 120",
+      "description": "Compute learned local intensity descriptors for L2 matching.",
+      "parameters": {
+        "variant": "VGG_120",
+        "sigma": 1.4,
+        "normalize_image": true,
+        "use_orientation": true,
+        "scale_factor": 0.75,
+        "normalize_descriptor": false
+      },
+      "position": [
+        470,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_byte_query",
+      "type": "inspect.vgg_descriptor",
+      "name": "Query VGG 48 bytes",
+      "description": "Compute learned local intensity descriptors for L2 matching.",
+      "parameters": {
+        "variant": "VGG_48",
+        "sigma": 1.4,
+        "normalize_image": true,
+        "use_orientation": true,
+        "scale_factor": 0.75,
+        "normalize_descriptor": true
+      },
+      "position": [
+        470,
+        215
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lucid_query",
+      "type": "inspect.lucid_descriptor",
+      "name": "Query LUCID color",
+      "description": "Compute sorted local color intensities for Hamming matching.",
+      "parameters": {
+        "patch_radius": 4,
+        "blur_radius": 1
+      },
+      "position": [
+        470,
+        400
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_image",
+      "type": "input.file",
+      "name": "Train color texture",
+      "parameters": {
+        "path": "assets/train.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        680
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train_orb",
+      "type": "inspect.orb",
+      "name": "Train ORB",
+      "parameters": {
+        "max_features": 280,
+        "scale_factor": 1.2,
+        "levels": 1,
+        "fast_threshold": 8,
+        "edge_threshold": 18,
+        "first_level": 0,
+        "wta_k": "2",
+        "score_type": "harris",
+        "patch_size": 31
+      },
+      "position": [
+        230,
+        680
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "features"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_float_train",
+      "type": "inspect.vgg_descriptor",
+      "name": "Train VGG 120",
+      "description": "Compute learned local intensity descriptors for L2 matching.",
+      "parameters": {
+        "variant": "VGG_120",
+        "sigma": 1.4,
+        "normalize_image": true,
+        "use_orientation": true,
+        "scale_factor": 0.75,
+        "normalize_descriptor": false
+      },
+      "position": [
+        470,
+        680
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_byte_train",
+      "type": "inspect.vgg_descriptor",
+      "name": "Train VGG 48 bytes",
+      "description": "Compute learned local intensity descriptors for L2 matching.",
+      "parameters": {
+        "variant": "VGG_48",
+        "sigma": 1.4,
+        "normalize_image": true,
+        "use_orientation": true,
+        "scale_factor": 0.75,
+        "normalize_descriptor": true
+      },
+      "position": [
+        470,
+        865
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lucid_train",
+      "type": "inspect.lucid_descriptor",
+      "name": "Train LUCID color",
+      "description": "Compute sorted local color intensities for Hamming matching.",
+      "parameters": {
+        "patch_radius": 4,
+        "blur_radius": 1
+      },
+      "position": [
+        470,
+        1050
+      ],
+      "exposed_inputs": [
+        "image",
+        "keypoints",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "features",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_float_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match VGG 120",
+      "parameters": {
+        "max_distance": 1.0,
+        "max_neighbors": 1
+      },
+      "position": [
+        780,
+        80
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_float_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Review VGG 120",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.0,
+            0.0,
+            12.0
+          ],
+          [
+            0.0,
+            1.0,
+            -8.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 2.5,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 1.0,
+        "minimum_correspondences": 150,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.95,
+        "minimum_recall": 0.0,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 120
+      },
+      "position": [
+        1090,
+        80
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_byte_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match VGG 48 bytes",
+      "parameters": {
+        "max_distance": 40.0,
+        "max_neighbors": 1
+      },
+      "position": [
+        780,
+        370
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "vgg_byte_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Review VGG 48 bytes",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.0,
+            0.0,
+            12.0
+          ],
+          [
+            0.0,
+            1.0,
+            -8.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 2.5,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 40.0,
+        "minimum_correspondences": 150,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.95,
+        "minimum_recall": 0.0,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 120
+      },
+      "position": [
+        1090,
+        370
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lucid_match",
+      "type": "inspect.match_descriptor_radius",
+      "name": "Match LUCID color",
+      "parameters": {
+        "max_distance": 128.0,
+        "max_neighbors": 1
+      },
+      "position": [
+        780,
+        660
+      ],
+      "exposed_inputs": [
+        "query",
+        "train"
+      ],
+      "exposed_outputs": [
+        "matches",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "lucid_evaluate",
+      "type": "inspect.evaluate_features",
+      "name": "Review LUCID color",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.0,
+            0.0,
+            12.0
+          ],
+          [
+            0.0,
+            1.0,
+            -8.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "reprojection_tolerance": 2.5,
+        "border_margin": 0.0,
+        "ranking": "distance",
+        "match_threshold": 128.0,
+        "minimum_correspondences": 150,
+        "minimum_repeatability": 0.0,
+        "minimum_precision": 0.95,
+        "minimum_recall": 0.0,
+        "maximum_features": 2000,
+        "maximum_pairs": 4000000,
+        "maximum_geometry_edges": 100000,
+        "maximum_matches": 10000,
+        "maximum_curve_points": 64,
+        "maximum_image_pixels": 8388608,
+        "preview_width": 1200,
+        "preview_height": 600,
+        "maximum_graphic_matches": 120
+      },
+      "position": [
+        1090,
+        660
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "matches",
+        "query_mask",
+        "train_mask",
+        "query_region",
+        "train_region"
+      ],
+      "exposed_outputs": [
+        "metrics",
+        "repeatability",
+        "precision",
+        "recall",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "query_orb",
+      "input": "image"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "vgg_float_query",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "vgg_float_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "vgg_byte_query",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "vgg_byte_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "query_image",
+      "output": "image",
+      "target": "lucid_query",
+      "input": "image"
+    },
+    {
+      "source": "query_orb",
+      "output": "features",
+      "target": "lucid_query",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "train_orb",
+      "input": "image"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "vgg_float_train",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "vgg_float_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "vgg_byte_train",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "vgg_byte_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "train_image",
+      "output": "image",
+      "target": "lucid_train",
+      "input": "image"
+    },
+    {
+      "source": "train_orb",
+      "output": "features",
+      "target": "lucid_train",
+      "input": "keypoints"
+    },
+    {
+      "source": "vgg_float_query",
+      "output": "features",
+      "target": "vgg_float_match",
+      "input": "query"
+    },
+    {
+      "source": "vgg_float_query",
+      "output": "features",
+      "target": "vgg_float_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "vgg_float_query",
+      "output": "image",
+      "target": "vgg_float_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "vgg_float_train",
+      "output": "features",
+      "target": "vgg_float_match",
+      "input": "train"
+    },
+    {
+      "source": "vgg_float_train",
+      "output": "features",
+      "target": "vgg_float_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "vgg_float_train",
+      "output": "image",
+      "target": "vgg_float_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "vgg_float_match",
+      "output": "matches",
+      "target": "vgg_float_evaluate",
+      "input": "matches"
+    },
+    {
+      "source": "vgg_byte_query",
+      "output": "features",
+      "target": "vgg_byte_match",
+      "input": "query"
+    },
+    {
+      "source": "vgg_byte_query",
+      "output": "features",
+      "target": "vgg_byte_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "vgg_byte_query",
+      "output": "image",
+      "target": "vgg_byte_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "vgg_byte_train",
+      "output": "features",
+      "target": "vgg_byte_match",
+      "input": "train"
+    },
+    {
+      "source": "vgg_byte_train",
+      "output": "features",
+      "target": "vgg_byte_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "vgg_byte_train",
+      "output": "image",
+      "target": "vgg_byte_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "vgg_byte_match",
+      "output": "matches",
+      "target": "vgg_byte_evaluate",
+      "input": "matches"
+    },
+    {
+      "source": "lucid_query",
+      "output": "features",
+      "target": "lucid_match",
+      "input": "query"
+    },
+    {
+      "source": "lucid_query",
+      "output": "features",
+      "target": "lucid_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "lucid_query",
+      "output": "image",
+      "target": "lucid_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "lucid_train",
+      "output": "features",
+      "target": "lucid_match",
+      "input": "train"
+    },
+    {
+      "source": "lucid_train",
+      "output": "features",
+      "target": "lucid_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "lucid_train",
+      "output": "image",
+      "target": "lucid_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "lucid_match",
+      "output": "matches",
+      "target": "lucid_evaluate",
+      "input": "matches"
+    }
+  ]
+}

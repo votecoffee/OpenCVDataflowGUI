@@ -117,6 +117,9 @@ class KeypointDescriptor(ImageTool, ABC):
         keys, descriptors = extractor.compute(gray, keypoints) if keypoints else ((), None)
         return keys, descriptors, extractor.descriptorSize(), settings
 
+    def descriptor_image(self, source):
+        return gray_image(source, (np.uint8,), auto_depth=True)
+
     def process(self, inputs):
         source = inputs["image"]
         height, width = source.shape[:2]
@@ -127,8 +130,10 @@ class KeypointDescriptor(ImageTool, ABC):
             )
         selection = selection_mask(inputs, source)
         keypoints = self.sample_keypoints(inputs, size, selection)
-        gray = gray_image(source, (np.uint8,), auto_depth=True)
-        keys, descriptors, descriptor_size, settings = self.compute_descriptors(gray, keypoints)
+        working_image = self.descriptor_image(source)
+        keys, descriptors, descriptor_size, settings = self.compute_descriptors(
+            working_image, keypoints
+        )
         points = [list(key.pt) for key in keys]
         features = {
             "algorithm": self.algorithm,
@@ -329,6 +334,15 @@ BOOST_DESC_MIN_SCALE = float(np.float32(0.01))
 BOOST_DESC_MAX_SCALE = 32.0
 
 
+def check_scaled_patch_support(image, keypoints, scale, algorithm):
+    if max(image.shape[:2]) >= 32767:
+        raise ValidationError(f"{algorithm} requires image axes below 32,767 pixels")
+    if any(key.size * scale > 16384 for key in keypoints):
+        raise ValidationError(
+            f"{algorithm} sampling diameter must be at most 16,384 pixels", "scale_factor"
+        )
+
+
 class BoostDescriptor(KeypointDescriptor):
     type_id, title, algorithm = "inspect.boost_descriptor", "BoostDesc descriptors", "BoostDesc"
     description = "Compute learned gradient descriptors for Hamming or L2 matching."
@@ -373,11 +387,5 @@ class BoostDescriptor(KeypointDescriptor):
         }
 
     def compute_descriptors(self, gray, keypoints):
-        if max(gray.shape) >= 32767:
-            raise ValidationError("BoostDesc requires image axes below 32,767 pixels")
-        scale = self.parameters["scale_factor"]
-        if any(key.size * scale > 16384 for key in keypoints):
-            raise ValidationError(
-                "BoostDesc sampling diameter must be at most 16,384 pixels", "scale_factor"
-            )
+        check_scaled_patch_support(gray, keypoints, self.parameters["scale_factor"], self.algorithm)
         return super().compute_descriptors(gray, keypoints)

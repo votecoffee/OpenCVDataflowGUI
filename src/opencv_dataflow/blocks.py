@@ -1071,6 +1071,7 @@ def builtin_registry():
     from .hfs_segmentation import HfsSegments
     from .mapper_registration import AlignMapper
     from .low_light import EnhanceLowLight
+    from .texture_descriptors import LucidDescriptor, VggDescriptor
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
 
@@ -1223,6 +1224,8 @@ def builtin_registry():
         LatchDescriptor,
         BeblidDescriptor,
         BoostDescriptor,
+        VggDescriptor,
+        LucidDescriptor,
         TeblidDescriptor,
         DaisyDescriptor,
         AffineFeatures,

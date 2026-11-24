@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 71 | 6 | 25 | 102 | 69.6% |
-| **Overall** | 437 | 7 | 26 | 470 | 93.0% |
+| 4. Selected contrib | 72 | 6 | 24 | 102 | 70.6% |
+| **Overall** | 438 | 7 | 25 | 470 | 93.2% |
 
 <!-- coverage-summary:end -->
 
@@ -692,7 +692,7 @@ fixture or result needed to close the item.
 | S4-72 | Mapper-based multiscale image registration | reg MapperGrad variants, MapperPyramid and Map | Complete | cv.align_mapper recovers all five declared motion models, qualifies seeded composition and inverse round trips, and reports coverage and normalized residual in the reference grid. |
 | S4-73 | Low-light enhancement | intensity_transform.BIMEF and BIMEF2, SciPy sparse CG | Complete | cv.bimef verifies automatic and explicit native exposure pixel-for-pixel on an isolated Eigen build. The standard wheel uses the measured SciPy path with contrast, noise and saturation comparison against gamma. |
 | S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Complete | inspect.boost_descriptor verifies all seven variants against native rows. Hamming and L2 matching verify correspondence on a rotated, scaled and relit reference pair. |
-| S4-75 | Contrib surface texture descriptors | xfeatures2d VGG or other supported local descriptors | Planned | Verify texture correspondence on pinned local descriptor assets and a known view pair. |
+| S4-75 | Contrib surface texture descriptors | xfeatures2d.VGG and xfeatures2d.LUCID | Complete | inspect.vgg_descriptor verifies all four compiled models in float and byte modes using L2. inspect.lucid_descriptor qualifies color rows and Hamming matching. Three saved branches evaluate a known shifted and locally relit pair. |
 | S4-76 | Background sequences for controlled tracking validation | bgsegm.createSyntheticSequenceGenerator | Planned | Emit synthetic moving-object frames with the native foreground reference masks and reproducible ticket order. |
 | S4-77 | Contrib optical flow interpolation with robust correspondence | ximgproc.RICInterpolator | Planned | Interpolate a known sparse field and validate deformation boundaries and unsupported regions. |
 | S4-78 | Variance-adaptive edge-preserving smoothing | ximgproc.edgePreservingFilter | Planned | Reduce noise while preserving the position and strength of a measured image edge. |
