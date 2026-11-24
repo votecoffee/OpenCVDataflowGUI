@@ -949,6 +949,7 @@ def builtin_registry():
     from .hausdorff_distance import HausdorffContourDistance
     from .shape_context import ShapeContextDistance
     from .thin_plate_spline import RegisterThinPlateSpline
+    from .static_saliency import StaticSaliencyMap
     from .rgbd_recording import RecordedRGBD
     from .rgbd_registration import RegisterRGBD
     from .rgbd_warp import WarpRGBDByPose
@@ -1221,6 +1222,7 @@ def builtin_registry():
         ShapeContextDistance,
         HausdorffContourDistance,
         RegisterThinPlateSpline,
+        StaticSaliencyMap,
         DctDenoise,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,

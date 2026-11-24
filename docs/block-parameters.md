@@ -6714,6 +6714,27 @@ Input `image` — uint8, uint16, int16 or float32 gray/RGB/BGR/RGBA/BGRA. A mask
 | `alpha_mode` | `"preserve"` | `preserve`, `filter` Preserve keeps alpha exactly; filter smooths all channels independently. No alpha association conversion is performed. |
 | `maximum_pixels` | `16777216` | Value must be a whole number between 1 and 1.67772e+07. Whole-image work limit, including when only a region is written. Native scratch storage also has a fixed 128 MiB limit. |
 
+## Static saliency map (`cv.static_saliency`)
+
+Image processing / Static saliency
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Color or grayscale converted to uint8 luminance for comparison.
+
+Input `mask` — Restrict published scores and threshold statistics after full-image analysis.
+
+Input `region` — Output selection on the original image grid, intersected with any mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `method` | `"spectral residual"` | `spectral residual`, `fine-grained` Spectral residual uses frequency contrast. Fine-grained uses local contrast. |
+| `spectral_width` | `64` | Value must be a whole number between 8 and 512. Working DFT grid width in pixels for spectral residual. |
+| `spectral_height` | `64` | Value must be a whole number between 8 and 512. Working DFT grid height in pixels for spectral residual. |
+| `threshold_mode` | `"otsu"` | `otsu`, `fixed`, `percentile` Otsu uses selected 8-bit scores. Fixed and percentile use float scores. |
+| `threshold` | `0.5` | Value must be a finite number between 0 and 1. Inclusive positive-score cutoff in [0,1] for fixed mode. |
+| `percentile` | `95.0` | Value must be a finite number between 0 and 100. Cutoff percentile among selected pixels. Positive ties at the cutoff count. |
+
 ## Stitch image pair (`cv.stitch_image_pair`)
 
 Image processing / Geometry

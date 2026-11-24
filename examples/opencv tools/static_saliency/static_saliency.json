@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare visually prominent regions",
+      "description": "Run Once. Compare the two saliency responses and their masks at the same 94th-percentile cutoff. The results show the selected outlines and the peak. The scene and reference silhouette are original MIT assets.",
+      "parameters": {},
+      "position": [
+        0,
+        -215
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Inspection scene",
+      "parameters": {
+        "path": "assets/scene.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "bgr",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        40
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "truth",
+      "type": "input.file",
+      "name": "Known part silhouette",
+      "parameters": {
+        "path": "assets/truth.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        355
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "spectral",
+      "type": "cv.static_saliency",
+      "name": "Spectral residual",
+      "description": "Find visually prominent regions with spectral residual or fine-grained saliency.",
+      "parameters": {
+        "method": "spectral residual",
+        "spectral_width": 64,
+        "spectral_height": 64,
+        "threshold_mode": "percentile",
+        "threshold": 0.5,
+        "percentile": 94
+      },
+      "position": [
+        300,
+        45
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "saliency",
+        "mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "spectral_overlap",
+      "type": "inspect.mask_boundary",
+      "name": "Spectral residual overlap",
+      "documentation": "<p>Measure directed inner-boundary pixel-center distances and selected missing/extra foreground area. Holes and disconnected components participate. Selection restricts queries and area counts, while distance targets retain the full uncut boundaries. Distance maps are zero outside their companion boundary masks; missing targets withhold distance maps and statistics rather than inventing finite distances.</p><p>Both combines the two directed sample sets, so mean/RMS/percentile are weighted by boundary pixel counts. Tolerance is inclusive. Beyond-tolerance area excludes differences within that distance of the opposite boundary. Image borders are an explicit exterior assumption. All measurements use current-grid pixels, not physical or automatically rescaled pyramid units. Float32 distances use a four-epsilon relative roundoff guard (at least four float32 epsilons) for all tolerance tests; tolerances of one million pixels or more need no guard. No registration is performed.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_misc.html\">OpenCV distance transform reference</a>.</p>",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "tickets": "sample",
+        "foreground": "nonzero",
+        "connectivity": "8",
+        "image_border": "background",
+        "distance_type": "euclidean",
+        "l2_mask": "precise",
+        "direction": "both",
+        "statistic": "maximum",
+        "percentile": 95.0,
+        "tolerance": 2.0,
+        "check_boundary": false,
+        "check_area": false,
+        "area_basis": "beyond_tolerance",
+        "maximum_missing_pixels": 0,
+        "maximum_extra_pixels": 0,
+        "empty_policy": "fail",
+        "graphics_points": 4096
+      },
+      "position": [
+        620,
+        45
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample",
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fine",
+      "type": "cv.static_saliency",
+      "name": "Fine-grained",
+      "description": "Find visually prominent regions with spectral residual or fine-grained saliency.",
+      "parameters": {
+        "method": "fine-grained",
+        "spectral_width": 64,
+        "spectral_height": 64,
+        "threshold_mode": "percentile",
+        "threshold": 0.5,
+        "percentile": 94
+      },
+      "position": [
+        300,
+        290
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "saliency",
+        "mask",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "fine_overlap",
+      "type": "inspect.mask_boundary",
+      "name": "Fine-grained overlap",
+      "documentation": "<p>Measure directed inner-boundary pixel-center distances and selected missing/extra foreground area. Holes and disconnected components participate. Selection restricts queries and area counts, while distance targets retain the full uncut boundaries. Distance maps are zero outside their companion boundary masks; missing targets withhold distance maps and statistics rather than inventing finite distances.</p><p>Both combines the two directed sample sets, so mean/RMS/percentile are weighted by boundary pixel counts. Tolerance is inclusive. Beyond-tolerance area excludes differences within that distance of the opposite boundary. Image borders are an explicit exterior assumption. All measurements use current-grid pixels, not physical or automatically rescaled pyramid units. Float32 distances use a four-epsilon relative roundoff guard (at least four float32 epsilons) for all tolerance tests; tolerances of one million pixels or more need no guard. No registration is performed.</p><p><a href=\"https://docs.opencv.org/5.0/main_modules/imgproc_misc.html\">OpenCV distance transform reference</a>.</p>",
+      "parameters": {
+        "alignment": "pixel_grid",
+        "tickets": "sample",
+        "foreground": "nonzero",
+        "connectivity": "8",
+        "image_border": "background",
+        "distance_type": "euclidean",
+        "l2_mask": "precise",
+        "direction": "both",
+        "statistic": "maximum",
+        "percentile": 95.0,
+        "tolerance": 2.0,
+        "check_boundary": false,
+        "check_area": false,
+        "area_basis": "beyond_tolerance",
+        "maximum_missing_pixels": 0,
+        "maximum_extra_pixels": 0,
+        "empty_policy": "fail",
+        "graphics_points": 4096
+      },
+      "position": [
+        620,
+        290
+      ],
+      "exposed_inputs": [
+        "reference",
+        "sample",
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "measurements"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "spectral",
+      "input": "image"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "spectral_overlap",
+      "input": "reference"
+    },
+    {
+      "source": "spectral",
+      "output": "mask",
+      "target": "spectral_overlap",
+      "input": "sample"
+    },
+    {
+      "source": "spectral",
+      "output": "image",
+      "target": "spectral_overlap",
+      "input": "image"
+    },
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "fine",
+      "input": "image"
+    },
+    {
+      "source": "truth",
+      "output": "image",
+      "target": "fine_overlap",
+      "input": "reference"
+    },
+    {
+      "source": "fine",
+      "output": "mask",
+      "target": "fine_overlap",
+      "input": "sample"
+    },
+    {
+      "source": "fine",
+      "output": "image",
+      "target": "fine_overlap",
+      "input": "image"
+    }
+  ]
+}

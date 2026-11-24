@@ -662,7 +662,7 @@ a working backend and reproducible graph result.
 | `cv2.bgsegm.BackgroundSubtractorLSBP`, `cv2.bgsegm.BackgroundSubtractorLSBPDesc`, `cv2.bgsegm.createBackgroundSubtractorLSBP` | Keep local descriptors internal to the LSBP foreground path. | S4-33 |
 | `cv2.bgsegm.BackgroundSubtractorCNT`, `cv2.bgsegm.BackgroundSubtractorGMG`, `cv2.bgsegm.BackgroundSubtractorMOG`, `cv2.bgsegm.createBackgroundSubtractorCNT`, `cv2.bgsegm.createBackgroundSubtractorGMG`, `cv2.bgsegm.createBackgroundSubtractorMOG` | Qualify alternative adaptive models on shared replay. Treat warm-start images and replay as graph data. | S1-170, S4-56 |
 | `cv2.bgsegm.SyntheticSequenceGenerator`, `cv2.bgsegm.createSyntheticSequenceGenerator` | Use seeded clips with reference masks for replay fixtures. | S4-76 |
-| `cv2.saliency.Saliency`, `cv2.saliency.StaticSaliency`, `cv2.saliency.StaticSaliencyFineGrained`, `cv2.saliency.StaticSaliencySpectralResidual` | Use typed saliency maps and a repeatable mask conversion. | S4-53 |
+| `cv2.saliency.Saliency`, `cv2.saliency.StaticSaliency`, `cv2.saliency.StaticSaliencyFineGrained`, `cv2.saliency.StaticSaliencySpectralResidual` | S4-53 verifies both native maps and repeatable fixed, Otsu and percentile masks on a known silhouette. | S4-53 |
 | `cv2.saliency.MotionSaliency`, `cv2.saliency.MotionSaliencyBinWangApr2014` | Verify image size, warmup and reset on timestamped frames. | S4-54 |
 | `cv2.saliency.Objectness`, `cv2.saliency.ObjectnessBING` | Qualify ranked proposals and their training assets separately from saliency maps. | S4-97 |
 

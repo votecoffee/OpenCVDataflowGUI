@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 49 | 6 | 47 | 102 | 48.0% |
-| **Overall** | 415 | 7 | 48 | 470 | 88.3% |
+| 4. Selected contrib | 50 | 6 | 46 | 102 | 49.0% |
+| **Overall** | 416 | 7 | 47 | 470 | 88.5% |
 
 <!-- coverage-summary:end -->
 
@@ -665,7 +665,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S4-53 | Static saliency image maps | saliency.StaticSaliencySpectralResidual and StaticSaliencyFineGrained | Planned | Compare ranked foreground prominence on controlled images and emit a selected mask. |
+| S4-53 | Static saliency image maps | saliency.StaticSaliencySpectralResidual and StaticSaliencyFineGrained | Complete | cv.static_saliency emits both native responses and deterministic thresholded masks. Known foreground ranks ahead of background at 0.986/0.993 AUC, with 0.543/0.597 mask IoU at the same percentile. |
 | S4-54 | Motion saliency maps | saliency.MotionSaliencyBinWangApr2014 and bioinspired transient-area segmentation | Planned | Verify warmup, reset and localization on moving parts and transient changes in a short clip. |
 | S4-55 | Motion history and time surfaces | motempl.updateMotionHistory, calcMotionGradient, segmentMotion | Planned | Recover motion age and dominant direction with explicit frame timestamps and reset behavior. |
 | S4-56 | Additional adaptive foreground models | bgsegm MOG, GMG and CNT | Planned | Compare warmup and foreground response using the existing empty-conveyor fixture. |

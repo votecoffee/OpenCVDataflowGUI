@@ -387,6 +387,11 @@ BINDINGS = {
     "cv.transpose_image": "transpose",
     "cv.unsharp": "GaussianBlur addWeighted",
     "cv.warp_affine": "warpAffine",
+    "cv.static_saliency": (
+        "saliency.StaticSaliencySpectralResidual_create saliency.StaticSaliencyFineGrained_create "
+        "saliency.StaticSaliencySpectralResidual.computeSaliency "
+        "saliency.StaticSaliencyFineGrained.computeSaliency"
+    ),
     "cv.thin_plate_spline": (
         "createThinPlateSplineShapeTransformer ShapeTransformer.estimateTransformation "
         "ShapeTransformer.applyTransformation remap"
