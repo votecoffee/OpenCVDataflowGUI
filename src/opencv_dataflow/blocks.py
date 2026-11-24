@@ -744,6 +744,7 @@ def builtin_registry():
     from .feature_evaluation import EvaluateImageFeatures
     from .features import FEATURE_BLOCKS
     from .fiducial_targets import GenerateFiducialTarget
+    from .durand_tonemap import ToneMapDurand
     from .fisheye_calibration import FisheyeCalibration
     from .flat_field_reference import BuildFlatFieldReference
     from .flow_files import SaveFlowFile
@@ -1247,6 +1248,7 @@ def builtin_registry():
         MergeRobertson,
         MergeMotionHDR,
         ToneMapHDR,
+        ToneMapDurand,
         *SPECTRAL_BLOCKS,
         FourierComponents,
         ReconstructFourierImage,

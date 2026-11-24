@@ -350,6 +350,7 @@ BINDINGS = {
     "cv.inpaint": "inpaint",
     "cv.extended_inpaint": "xphoto.inpaint",
     "cv.bm3d_denoise": "xphoto.bm3dDenoising",
+    "cv.tonemap_durand": "xphoto.createTonemapDurand xphoto.TonemapDurand",
     "cv.dct_denoise": "xphoto.dctDenoising",
     "cv.insert_channel": "insertChannel",
     "cv.mean_shift_filter": "pyrMeanShiftFiltering",

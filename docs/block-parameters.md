@@ -7072,6 +7072,24 @@ Input `windows` — Optional list of tilted windows that replaces the configured
 | `windows` | `[[32, 0, 16, 16]]` | Each [x, y, width, height] starts at the top integral-grid vertex. Width extends down-right and height extends down-left at 45 degrees. |
 | `include_alpha` | `false` | Measure alpha as its own channel on four-channel input. |
 
+## Tone map HDR (Durand) (`cv.tonemap_durand`)
+
+Image processing / Exposure stacks
+
+Inputs: `image` (image).
+
+Input `image` — Nonnegative float32 gray, BGR or RGB radiance for the whole frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `backend` | `"portable"` | `portable`, `opencv` Portable log-bilateral mapping, or Durand from an enabled OpenCV contrib build. |
+| `contrast` | `4.0` | Value must be a finite number between 0.1 and 20. Base contrast limit in stops for portable. Target natural-log span for OpenCV. |
+| `saturation` | `1.0` | Value must be a finite number between 0.01 and 5. Exponent applied to channel-to-luminance ratios. One preserves the ratios. |
+| `sigma_color` | `2.0` | Value must be a finite number between 0.01 and 16. Bilateral range sigma. Stops for portable, natural-log units for OpenCV. |
+| `sigma_space` | `2.0` | Value must be a finite number between 0.1 and 16. Bilateral spatial sigma in pixels. |
+| `gamma` | `1.0` | Value must be a finite number between 0.1 and 8. Display gamma. Values above one brighten midtones. |
+| `output_depth` | `"uint8"` | `uint8`, `float32` 8-bit display image or float32 display samples in [0, 1]. |
+
 ## Tone map HDR (`cv.tonemap_hdr`)
 
 Image processing / Exposure stacks

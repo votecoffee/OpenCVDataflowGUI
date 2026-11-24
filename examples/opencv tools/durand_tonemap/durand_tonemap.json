@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare shadow detail",
+      "description": "Run Once and compare both tone-mapped images. Inspect the fine horizontal texture in the dark band on the left. The filmstrip shows the Durand result. Original MIT-licensed synthetic float32 radiance.",
+      "parameters": {},
+      "position": [
+        0,
+        -240
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Three HDR bands",
+      "parameters": {
+        "path": "assets/textured_bands.tiff",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "unchanged",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        130
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "linear",
+      "type": "cv.tonemap_hdr",
+      "name": "Global linear mapping",
+      "parameters": {
+        "method": "linear",
+        "gamma": 1.0,
+        "output_depth": "float32",
+        "saturation": 1.0,
+        "bias": 0.85,
+        "intensity": 0.0,
+        "light_adaptation": 1.0,
+        "color_adaptation": 0.0,
+        "contrast_scale": 0.7
+      },
+      "position": [
+        310,
+        20
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "local",
+      "type": "cv.tonemap_durand",
+      "name": "Durand local mapping",
+      "parameters": {
+        "backend": "portable",
+        "contrast": 4.0,
+        "saturation": 1.0,
+        "sigma_color": 2.0,
+        "sigma_space": 2.0,
+        "gamma": 1.0,
+        "output_depth": "float32"
+      },
+      "position": [
+        310,
+        265
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review the local result",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        620,
+        265
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "linear",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "local",
+      "input": "image"
+    },
+    {
+      "source": "local",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
