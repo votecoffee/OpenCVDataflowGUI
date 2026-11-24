@@ -10112,6 +10112,25 @@ Input `matches` — Indexed paired match record; descriptor distance is used as 
 | `preview_height` | `600` | Value must be a whole number between 128 and 1024. Maximum diagnostic height; images scale together. |
 | `maximum_graphic_matches` | `200` | Value must be a whole number between 0 and 2000. Draw at most this many accepted candidates, best rank first. |
 
+## Evaluate keypoint repeatability (`inspect.evaluate_keypoints`)
+
+Inspection / Feature evaluation
+
+Inputs: `query_image` (image), `train_image` (image), `query` (data), `train` (data), `transform` (data, optional), `query_mask` (image, optional), `train_mask` (image, optional).
+
+Input `query` — Built-in keypoint list record or MSER region record for the query image.
+
+Input `train` — Corresponding detector record from the train image.
+
+Input `transform` — Independent query-to-train transform used as ground truth.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `reference_transform` | `[[1, 0, 0], [0, 1, 0], [0, 0, 1]]` | Known query-to-train homography. A wired transform overrides it. |
+| `tolerance` | `2.0` | Value must be a finite number between 1e-06 and 1024. Maximum center error in target pixels for one-to-one geometry matches. |
+| `minimum_pairs` | `1` | Value must be a whole number between 1 and 4096. Minimum one-to-one correspondence count to pass. |
+| `minimum_repeatability` | `0.0` | Value must be a finite number between 0 and 1. Minimum pairs divided by the smaller eligible population. |
+
 ## FAST corners (`inspect.fast`)
 
 Inspection / Features
@@ -12047,6 +12066,27 @@ Input `region` — Optional circle, rectangle or polygon intersected with the ma
 | `glyph_step` | `16` | Value must be a whole number between 1 and 256. Spacing of direction marks in input pixels; graphics only. |
 | `glyph_length` | `12.0` | Value must be a finite number between 1 and 256. Full length of each unsigned direction mark in input pixels. |
 | `max_glyphs` | `1000` | Value must be a whole number between 1 and 2000. Bounded, evenly subsampled marks across the selected sampling grid. |
+
+## Tree-based Morse regions (TBMR) (`inspect.tbmr`)
+
+Inspection / Features
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale or color converted to 8-bit monochrome for detection.
+
+Input `mask` — Select mapped keypoint centers on the source pixel grid.
+
+Input `region` — Intersect the mask with this source-grid region.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `min_area` | `60` | Value must be a whole number between 0 and 1.04858e+06. Native component-tree minimum area in each detector raster's pixels. |
+| `max_area_relative` | `0.01` | Value must be a finite number between 1e-06 and 1. Native maximum area as a fraction of each detector raster. |
+| `scale_factor` | `1.25` | Value must be a finite number between 1.01 and 4. Factor between successive pyramid levels. |
+| `n_scales` | `-1` | -1 selects the native default of one level. Request 1–8 independent levels. |
+| `max_keypoints` | `2000` | Value must be a whole number between 1 and 4096. Retain up to this many selected keypoints, in level then native order. |
+| `preview_count` | `100` | Value must be a whole number between 0 and 512. Draw this many measured major-axis vectors. Zero hides drawings. |
 
 ## TEBLID descriptors (`inspect.teblid_descriptor`)
 

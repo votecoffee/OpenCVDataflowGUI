@@ -1,0 +1,485 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare regions after a scale change",
+      "description": "Run Once. Both detectors see the same original MIT region target and its 1.5\u00d7 resize. Compare one-to-one center matches within 2 target pixels and measured size ratios. TBMR uses its major axis. MSER uses its area-equivalent diameter.",
+      "parameters": {},
+      "position": [
+        0,
+        -200
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "query",
+      "type": "input.file",
+      "name": "Nested bright and dark regions",
+      "parameters": {
+        "path": "assets/regions.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "gray",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        65
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "train",
+      "type": "cv.resize",
+      "name": "Resize by 1.5\u00d7",
+      "parameters": {
+        "width": 640,
+        "height": 480,
+        "interpolation": "linear",
+        "size_mode": "scale",
+        "scale_x": 1.5,
+        "scale_y": 1.5,
+        "padding_value": 0.0
+      },
+      "position": [
+        245,
+        280
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "geometry",
+        "valid_mask"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tbmr_evaluate",
+      "type": "inspect.evaluate_keypoints",
+      "name": "TBMR geometry and scale",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.5,
+            0,
+            0.25
+          ],
+          [
+            0,
+            1.5,
+            0.25
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "tolerance": 2.0,
+        "minimum_pairs": 20,
+        "minimum_repeatability": 0.9
+      },
+      "position": [
+        825,
+        90
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "query_mask",
+        "train_mask"
+      ],
+      "exposed_outputs": [
+        "report",
+        "repeatability",
+        "matches"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tbmr_review",
+      "type": "inspect.review_matches",
+      "name": "Review TBMR pairs",
+      "parameters": {
+        "show": "all",
+        "max_pairs": 160,
+        "gap": 16,
+        "line_width": 1,
+        "endpoints": true
+      },
+      "position": [
+        1110,
+        90
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "matches",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "canvas",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tbmr_query",
+      "type": "inspect.tbmr",
+      "name": "Query TBMR",
+      "description": "Detect component-tree interest points with measured center and major-axis scale.",
+      "parameters": {
+        "min_area": 32,
+        "max_area_relative": 0.025,
+        "scale_factor": 1.25,
+        "n_scales": -1,
+        "max_keypoints": 2000,
+        "preview_count": 100
+      },
+      "position": [
+        530,
+        20
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "keypoints",
+        "points",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "tbmr_train",
+      "type": "inspect.tbmr",
+      "name": "Train TBMR",
+      "description": "Detect component-tree interest points with measured center and major-axis scale.",
+      "parameters": {
+        "min_area": 72,
+        "max_area_relative": 0.025,
+        "scale_factor": 1.25,
+        "n_scales": -1,
+        "max_keypoints": 2000,
+        "preview_count": 100
+      },
+      "position": [
+        530,
+        235
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "keypoints",
+        "points",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mser_evaluate",
+      "type": "inspect.evaluate_keypoints",
+      "name": "MSER geometry and scale",
+      "parameters": {
+        "reference_transform": [
+          [
+            1.5,
+            0,
+            0.25
+          ],
+          [
+            0,
+            1.5,
+            0.25
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "tolerance": 2.0,
+        "minimum_pairs": 1,
+        "minimum_repeatability": 0.0
+      },
+      "position": [
+        825,
+        540
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "query",
+        "train",
+        "transform",
+        "query_mask",
+        "train_mask"
+      ],
+      "exposed_outputs": [
+        "report",
+        "repeatability",
+        "matches"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mser_review",
+      "type": "inspect.review_matches",
+      "name": "Review MSER pairs",
+      "parameters": {
+        "show": "all",
+        "max_pairs": 160,
+        "gap": 16,
+        "line_width": 1,
+        "endpoints": true
+      },
+      "position": [
+        1110,
+        540
+      ],
+      "exposed_inputs": [
+        "query_image",
+        "train_image",
+        "matches",
+        "fit"
+      ],
+      "exposed_outputs": [
+        "overlay",
+        "canvas",
+        "info"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mser_query",
+      "type": "inspect.mser",
+      "name": "Query MSER",
+      "parameters": {
+        "mode": "grayscale",
+        "polarity": "both",
+        "delta": 5,
+        "min_area": 32,
+        "max_area": 1056,
+        "max_variation": 0.35,
+        "min_diversity": 0.2,
+        "max_evolution": 200,
+        "area_threshold": 1.01,
+        "min_margin": 0.003,
+        "edge_blur_size": 5,
+        "max_regions": 1000,
+        "draw_overlay": true
+      },
+      "position": [
+        530,
+        470
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "regions",
+        "count",
+        "mask",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "mser_train",
+      "type": "inspect.mser",
+      "name": "Train MSER",
+      "parameters": {
+        "mode": "grayscale",
+        "polarity": "both",
+        "delta": 5,
+        "min_area": 72,
+        "max_area": 2376,
+        "max_variation": 0.35,
+        "min_diversity": 0.2,
+        "max_evolution": 200,
+        "area_threshold": 1.01,
+        "min_margin": 0.003,
+        "edge_blur_size": 5,
+        "max_regions": 1000,
+        "draw_overlay": true
+      },
+      "position": [
+        530,
+        685
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "regions",
+        "count",
+        "mask",
+        "overlay"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "query",
+      "output": "image",
+      "target": "train",
+      "input": "image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "tbmr_query",
+      "input": "image"
+    },
+    {
+      "source": "tbmr_query",
+      "output": "keypoints",
+      "target": "tbmr_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "tbmr_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "tbmr_review",
+      "input": "query_image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "tbmr_train",
+      "input": "image"
+    },
+    {
+      "source": "tbmr_train",
+      "output": "keypoints",
+      "target": "tbmr_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "tbmr_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "tbmr_review",
+      "input": "train_image"
+    },
+    {
+      "source": "tbmr_evaluate",
+      "output": "matches",
+      "target": "tbmr_review",
+      "input": "matches"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "mser_query",
+      "input": "image"
+    },
+    {
+      "source": "mser_query",
+      "output": "regions",
+      "target": "mser_evaluate",
+      "input": "query"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "mser_evaluate",
+      "input": "query_image"
+    },
+    {
+      "source": "query",
+      "output": "image",
+      "target": "mser_review",
+      "input": "query_image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "mser_train",
+      "input": "image"
+    },
+    {
+      "source": "mser_train",
+      "output": "regions",
+      "target": "mser_evaluate",
+      "input": "train"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "mser_evaluate",
+      "input": "train_image"
+    },
+    {
+      "source": "train",
+      "output": "image",
+      "target": "mser_review",
+      "input": "train_image"
+    },
+    {
+      "source": "mser_evaluate",
+      "output": "matches",
+      "target": "mser_review",
+      "input": "matches"
+    }
+  ]
+}

@@ -163,7 +163,7 @@ IMPLEMENTATION_MODULES = {
         "fast_bilateral_solver fast_lines local_threshold peilin_normalization "
         "region_proposals ridge_response superpixels"
     ),
-    "xfeatures2d": "compact_descriptors daisy_descriptor grid_motion harris_laplace texture_descriptors",
+    "xfeatures2d": "compact_descriptors daisy_descriptor grid_motion harris_laplace tbmr texture_descriptors",
     "line_descriptor": "line_descriptors",
     "shape": "shape_context hausdorff_distance thin_plate_spline",
     "saliency": "static_saliency motion_saliency",
@@ -258,6 +258,7 @@ _MODULE_BY_BLOCK = {
     type_id: module for module, types in BLOCK_MODULES.items() for type_id in types.split()
 }
 _NATIVE_NAMES = {
+    "inspect.tbmr": ("TBMR_create", "component tree", "Morse regions"),
     "inspect.edge_drawing": ("createEdgeDrawing", "EDLines", "EDCircles", "EDPF", "ColorED"),
     "cv.variance_adaptive_smoothing": ("ximgproc.edgePreservingFilter", "low-variation denoising"),
     "cv.ric_flow": ("RICInterpolator", "createRICInterpolator", "robust interpolation of correspondences"),

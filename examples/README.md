@@ -323,6 +323,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Grid motion match filtering](<opencv tools/grid_motion/README.md>) | Compare raw and filtered ORB matches and affine fits on an occluded image pair. |
 | [Binary patch descriptors](<opencv tools/binary_patch_descriptors/README.md>) | Compare LATCH, BEBLID and TEBLID on the same transformed ORB keypoints. |
 | [Harris–Laplace interest points](<opencv tools/harris_laplace/README.md>) | Compare detected corner sizes and repeatability on the original and doubled image. |
+| [Tree-based Morse region repeatability](<opencv tools/tbmr_repeatability/README.md>) | Compare TBMR and MSER centers and size ratios on a nested region target resized by 1.5×. |
 | [Shape-context contour comparison](<opencv tools/shape_context/README.md>) | Rank a reference silhouette, a deformed part and a circle by their outline distance. |
 | [Hausdorff contour distance](<opencv tools/hausdorff_distance/README.md>) | Measure a known translation and compare full and partial ranks on a localized tab. |
 | [Thin-plate spline registration](<opencv tools/thin_plate_spline/README.md>) | Warp an inspection plate from paired landmarks and check the independent target and probe error. |

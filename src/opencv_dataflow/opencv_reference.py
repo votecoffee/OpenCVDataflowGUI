@@ -85,6 +85,7 @@ BINDINGS = {
         "detail.Timelapser.initialize detail.Timelapser.process detail.Timelapser.getDst"
     ),
     "inspect.evaluate_features": "perspectiveTransform BFMatcher.knnMatch",
+    "inspect.evaluate_keypoints": "perspectiveTransform",
     "inspect.read_qr_append": (
         "QRCodeDetector QRCodeDetectorAruco GraphicalCodeDetector.detectMulti "
         "GraphicalCodeDetector.decodeBytes"
@@ -497,6 +498,7 @@ BINDINGS = {
     "inspect.homography": "findHomography",
     "inspect.hough_circles": "HoughCircles HoughCirclesWithAccumulator",
     "inspect.find_ellipses": "ximgproc.findEllipses",
+    "inspect.tbmr": "xfeatures2d.TBMR_create xfeatures2d.TBMR.detect",
     "inspect.hough_lines": "HoughLinesP",
     "inspect.hough_point_lines": "HoughLinesPointSet",
     "inspect.hough_polar_lines": "HoughLinesWithAccumulator",

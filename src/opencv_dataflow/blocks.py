@@ -742,6 +742,7 @@ def builtin_registry():
         SaveFeatureCovariance,
     )
     from .feature_evaluation import EvaluateImageFeatures
+    from .keypoint_evaluation import EvaluateKeypointRepeatability
     from .features import FEATURE_BLOCKS
     from .fiducial_targets import GenerateFiducialTarget
     from .durand_tonemap import ToneMapDurand
@@ -954,6 +955,7 @@ def builtin_registry():
     from .line_descriptors import LineDescriptors, MatchLineDescriptors
     from .grid_motion import GridMotionFilter
     from .harris_laplace import HarrisLaplaceInterestPoints
+    from .tbmr import TreeMorseRegions
     from .hausdorff_distance import HausdorffContourDistance
     from .shape_context import ShapeContextDistance
     from .thin_plate_spline import RegisterThinPlateSpline
@@ -1252,6 +1254,7 @@ def builtin_registry():
         MatchLineDescriptors,
         GridMotionFilter,
         HarrisLaplaceInterestPoints,
+        TreeMorseRegions,
         ShapeContextDistance,
         HausdorffContourDistance,
         RegisterThinPlateSpline,
@@ -1456,6 +1459,7 @@ def builtin_registry():
         LoadFeatureCovariance,
         SaveFeatureCovariance,
         EvaluateImageFeatures,
+        EvaluateKeypointRepeatability,
         SolveLinearSystem,
         SolveLinearProgram,
         SolvePolynomialRoots,
