@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare two motion detectors on a timed clip",
+      "description": "Run All. The original MIT clip starts with a stationary scene, then the bright part moves across the frame. Inspect the masks and readiness from both branches. The filmstrip shows the Bin Wang mask.",
+      "parameters": {},
+      "position": [
+        0,
+        -225
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "video",
+      "type": "input.video_file",
+      "name": "Stationary scene and moving part",
+      "parameters": {
+        "path": "assets/moving_part.avi",
+        "path_base": "project",
+        "backend": "ffmpeg",
+        "start_frame": 0,
+        "end_frame": -1,
+        "stride": 1,
+        "repeat": "stop",
+        "frame_ticket": true,
+        "color_format": "bgr",
+        "pixel_depth": "uint8"
+      },
+      "position": [
+        0,
+        65
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "wang",
+      "type": "sequence.motion_saliency",
+      "name": "Bin Wang motion mask",
+      "description": "Find moving foreground or transient areas across consecutive image frames.",
+      "parameters": {
+        "warmup": 60,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "method": "bin wang",
+        "transient_threshold": 100.0,
+        "local_temporal": 0.5,
+        "local_spatial": 5.0,
+        "neighborhood_temporal": 1.0,
+        "neighborhood_spatial": 15.0,
+        "context_temporal": 1.0,
+        "context_spatial": 75.0
+      },
+      "position": [
+        295,
+        30
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "ready",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "retina",
+      "type": "sequence.motion_saliency",
+      "name": "Retina transient areas",
+      "description": "Find moving foreground or transient areas across consecutive image frames.",
+      "parameters": {
+        "warmup": 60,
+        "max_streams": 4,
+        "max_bytes_mb": 128.0,
+        "overflow": "error",
+        "context_change": "reset",
+        "max_gap_ms": 0.0,
+        "method": "retina transient",
+        "transient_threshold": 100.0,
+        "local_temporal": 0.5,
+        "local_spatial": 5.0,
+        "neighborhood_temporal": 1.0,
+        "neighborhood_spatial": 15.0,
+        "context_temporal": 1.0,
+        "context_spatial": 75.0
+      },
+      "position": [
+        295,
+        260
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image",
+        "mask",
+        "ready",
+        "status"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review Bin Wang motion",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        605,
+        45
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "video",
+      "output": "image",
+      "target": "wang",
+      "input": "image"
+    },
+    {
+      "source": "video",
+      "output": "image",
+      "target": "retina",
+      "input": "image"
+    },
+    {
+      "source": "wang",
+      "output": "mask",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

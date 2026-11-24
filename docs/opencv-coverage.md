@@ -344,6 +344,8 @@ measures a known shift with L1/L2 and demonstrates full and partial rank on a lo
 warps a plate onto an analytic target and verifies residuals at held-out landmarks.
 [Static saliency maps](<../examples/opencv tools/static_saliency/README.md>) compare native
 foreground ranking and percentile masks with known part geometry.
+[Motion saliency](<../examples/opencv tools/motion_saliency/README.md>) compares native Bin Wang
+and retina transient masks through warmup, motion and part exit on a timestamped clip.
 [Clip line segments](<../examples/custom tools/clip_line_segments/README.md>) trims measured
 lines to image or rectangular region bounds and measures the visible span.
 [Hough circle collections](<../examples/opencv tools/hough_circle_collections/README.md>) expose

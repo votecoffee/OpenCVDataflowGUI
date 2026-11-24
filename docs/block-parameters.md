@@ -15534,6 +15534,39 @@ Input `known_foreground` — Current-grid uint8 object mask. With a restored ref
 | `maximum_variance` | `75.0` |  |
 | `complexity_reduction` | `0.05` | Evidence threshold for retaining a mixture. Zero disables it. |
 
+## Motion saliency (`sequence.motion_saliency`)
+
+Sequence / Motion saliency
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional), `reset` (data, optional), `stream` (data, optional).
+
+Input `image` — Consecutive color or grayscale frames from the same camera and pixel grid.
+
+Input `mask` — Limit the published motion mask while the model processes the full image.
+
+Input `region` — Limit motion to this region, intersected with the optional mask.
+
+Input `reset` — Clear this stream's model before processing the current frame.
+
+Input `stream` — Optional stream ID to maintain separate models for different cameras.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `warmup` | `60` | Value must be a whole number between 1 and 10000. Minimum frames before publishing. Bin Wang also waits to establish background. |
+| `max_streams` | `4` | Value must be a whole number between 1 and 64. |
+| `max_bytes_mb` | `128.0` | Value must be a finite number between 0.01 and 4096. Budget for estimated retained native models across streams. |
+| `overflow` | `"error"` | `error`, `evict_oldest` |
+| `context_change` | `"reset"` | `reset`, `separate` Reset a source on recipe/grid/settings change, or cache separate contexts. |
+| `max_gap_ms` | `0.0` | Value must be a finite number at least 0. Reset after this ingress gap; zero keeps state across pauses. |
+| `method` | `"bin wang"` | `bin wang`, `retina transient` Bin Wang learns a background. Retina transient finds local changes over time. |
+| `transient_threshold` | `100.0` | Value must be a finite number between 0.1 and 100000. Local motion energy threshold in Retina transient mode. |
+| `local_temporal` | `0.5` | Value must be a finite number between 0.01 and 32. Local motion filter temporal constant in Retina transient mode. |
+| `local_spatial` | `5.0` | Value must be a finite number between 1 and 256. Local motion filter spatial constant in Retina transient mode. |
+| `neighborhood_temporal` | `1.0` | Value must be a finite number between 0.01 and 32. Neighborhood temporal constant in Retina transient mode. |
+| `neighborhood_spatial` | `15.0` | Value must be a finite number between 1 and 256. Neighborhood spatial constant in Retina transient mode. |
+| `context_temporal` | `1.0` | Value must be a finite number between 0.01 and 32. Wide-area context temporal constant in Retina transient mode. |
+| `context_spatial` | `75.0` | Value must be a finite number between 1 and 256. Wide-area context spatial constant in Retina transient mode. |
+
 ## Temporal pixel statistics (`sequence.pixel_moments`)
 
 Sequence / Temporal statistics

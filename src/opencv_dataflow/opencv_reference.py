@@ -553,6 +553,11 @@ BINDINGS = {
     "sequence.knn_background": "createBackgroundSubtractorKNN BackgroundSubtractor.apply",
     "sequence.lk_grid_flow": "calcOpticalFlowPyrLK remap",
     "sequence.mog2": "createBackgroundSubtractorMOG2 BackgroundSubtractor.apply",
+    "sequence.motion_saliency": (
+        "saliency.MotionSaliencyBinWangApr2014_create "
+        "saliency.MotionSaliencyBinWangApr2014.computeSaliency "
+        "bioinspired.Retina.getMagnoRAW bioinspired.TransientAreasSegmentationModule.run"
+    ),
     "sequence.track_points": "calcOpticalFlowPyrLK",
     "sequence.track_mil": "TrackerMIL.create TrackerMIL.init TrackerMIL.update",
     "sequence.pixel_moments": "accumulate accumulateSquare accumulateProduct accumulateWeighted",

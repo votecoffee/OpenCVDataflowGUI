@@ -663,7 +663,7 @@ a working backend and reproducible graph result.
 | `cv2.bgsegm.BackgroundSubtractorCNT`, `cv2.bgsegm.BackgroundSubtractorGMG`, `cv2.bgsegm.BackgroundSubtractorMOG`, `cv2.bgsegm.createBackgroundSubtractorCNT`, `cv2.bgsegm.createBackgroundSubtractorGMG`, `cv2.bgsegm.createBackgroundSubtractorMOG` | Qualify alternative adaptive models on shared replay. Treat warm-start images and replay as graph data. | S1-170, S4-56 |
 | `cv2.bgsegm.SyntheticSequenceGenerator`, `cv2.bgsegm.createSyntheticSequenceGenerator` | Use seeded clips with reference masks for replay fixtures. | S4-76 |
 | `cv2.saliency.Saliency`, `cv2.saliency.StaticSaliency`, `cv2.saliency.StaticSaliencyFineGrained`, `cv2.saliency.StaticSaliencySpectralResidual` | S4-53 verifies both native maps and repeatable fixed, Otsu and percentile masks on a known silhouette. | S4-53 |
-| `cv2.saliency.MotionSaliency`, `cv2.saliency.MotionSaliencyBinWangApr2014` | Verify image size, warmup and reset on timestamped frames. | S4-54 |
+| `cv2.saliency.MotionSaliency`, `cv2.saliency.MotionSaliencyBinWangApr2014` | S4-54 verifies warmup, reset and source-grid motion masks on timestamped footage. It bounds prolonged foreground promotion work. | S4-54 |
 | `cv2.saliency.Objectness`, `cv2.saliency.ObjectnessBING` | Qualify ranked proposals and their training assets separately from saliency maps. | S4-97 |
 
 #### Super-resolution
@@ -723,7 +723,7 @@ their owning graph workflows. Generic tabular learning remains outside scope.
 | API | Graph disposition | Checklist IDs |
 | --- | --- | --- |
 | `cv::alphamat::infoFlow` | Trimap matting needs a qualified backend. The installed wheel has no direct binding. | S4-60 |
-| `cv2.bioinspired.Retina`, `cv2.bioinspired.TransientAreasSegmentationModule` | Group transient-area and retina motion output with warmup, reset and exposure-change checks. | S4-54, S4-61 |
+| `cv2.bioinspired.Retina`, `cv2.bioinspired.TransientAreasSegmentationModule` | S4-54 uses the raw Retina Magno signal for transient-area segmentation and verifies warmup and exposure response. S4-61 tracks broader retina image processing. | S4-54, S4-61 |
 | `cv2.bioinspired.RetinaFastToneMapping` | Verify tone mapping on mixed illumination separately from stateful video processing. | S4-98 |
 | `cv2.ft.createKernel`, `cv2.ft.createKernel1`, `cv2.ft.filter`, `cv2.ft.inpaint`, `cv2.ft.FT02D_FL_process`, `cv2.ft.FT02D_FL_process_float`, `cv2.ft.FT02D_components`, `cv2.ft.FT02D_inverseFT`, `cv2.ft.FT02D_iteration`, `cv2.ft.FT02D_process`, `cv2.ft.FT12D_components`, `cv2.ft.FT12D_createPolynomMatrixHorizontal`, `cv2.ft.FT12D_createPolynomMatrixVertical`, `cv2.ft.FT12D_inverseFT`, `cv2.ft.FT12D_polynomial`, `cv2.ft.FT12D_process` | Keep transforms and kernels internal to restoration. Qualify support-mask propagation separately from image-only fill. | S4-70, S4-100 |
 | `cv2.intensity_transform.autoscaling`, `cv2.intensity_transform.contrastStretching`, `cv2.intensity_transform.gammaCorrection`, `cv2.intensity_transform.logTransform` | These variants follow the typed intensity transform contract. | S1-17 |

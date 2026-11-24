@@ -325,6 +325,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Hausdorff contour distance](<opencv tools/hausdorff_distance/README.md>) | Measure a known translation and compare full and partial ranks on a localized tab. |
 | [Thin-plate spline registration](<opencv tools/thin_plate_spline/README.md>) | Warp an inspection plate from paired landmarks and check the independent target and probe error. |
 | [Static saliency maps](<opencv tools/static_saliency/README.md>) | Compare spectral residual and fine-grained response masks with a known part silhouette. |
+| [Motion saliency](<opencv tools/motion_saliency/README.md>) | Compare Bin Wang and retina transient masks on timestamped frames with known part motion. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |
 | [Extended inpainting](<opencv tools/extended_inpainting/README.md>) | Compare frequency and patch repairs of a marked defect on a known periodic surface. |
 | [DCT denoising](<opencv tools/dct_denoising/README.md>) | Compare whole-frame and region-limited noise reduction against a clean target. |
