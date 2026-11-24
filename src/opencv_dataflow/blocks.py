@@ -1067,6 +1067,7 @@ def builtin_registry():
     from .xphoto_denoising import DctDenoise
     from .xphoto_inpainting import ExtendedInpaint
     from .fuzzy_restoration import FuzzyFilter, FuzzyInpaint
+    from .hfs_segmentation import HfsSegments
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
 
@@ -1322,6 +1323,7 @@ def builtin_registry():
         SkimageLocalThreshold,
         MaskFromLabelCollection,
         GraphSegments,
+        HfsSegments,
         RidgeResponse,
         StructureTensor,
         MultiscaleRidges,

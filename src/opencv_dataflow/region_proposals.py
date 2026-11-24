@@ -18,6 +18,19 @@ def segmentation_image(source):
     return image_value(source, (np.uint8,), canonical=True)
 
 
+def label_boundary_image(labels):
+    """Mark both sides of a 4-neighbor ID transition, omitting background pixels."""
+    boundaries = np.zeros(labels.shape, np.uint8)
+    horizontal = labels[:, :-1] != labels[:, 1:]
+    vertical = labels[:-1, :] != labels[1:, :]
+    boundaries[:, :-1][horizontal] = 255
+    boundaries[:, 1:][horizontal] = 255
+    boundaries[:-1, :][vertical] = 255
+    boundaries[1:, :][vertical] = 255
+    boundaries[labels == 0] = 0
+    return boundaries
+
+
 class GraphSegments(ImageTool):
     type_id, title, subtype = "cv.graph_segments", "Graph-based segmentation", "Segmentation"
     inputs = SELECTION_INPUTS
@@ -57,18 +70,10 @@ class GraphSegments(ImageTool):
         labels += 1  # Native region zero is valid. Reserve zero for unselected pixels.
         if selection is not None:
             labels[selection == 0] = 0
-        boundaries = np.zeros((height, width), np.uint8)
-        horizontal = labels[:, :-1] != labels[:, 1:]
-        vertical = labels[:-1, :] != labels[1:, :]
-        boundaries[:, :-1][horizontal] = 255
-        boundaries[:, 1:][horizontal] = 255
-        boundaries[:-1, :][vertical] = 255
-        boundaries[1:, :][vertical] = 255
-        boundaries[labels == 0] = 0
         unique = np.unique(labels)
         count = int(unique.size - int(unique[0] == 0))
         return Result(
-            {"labels": labels, "boundaries": boundaries, "count": count},
+            {"labels": labels, "boundaries": label_boundary_image(labels), "count": count},
             message=f"{count} graph segments in the output selection",
         )
 

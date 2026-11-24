@@ -728,7 +728,7 @@ their owning graph workflows. Generic tabular learning remains outside scope.
 | `cv2.ft.createKernel`, `cv2.ft.createKernel1`, `cv2.ft.filter`, `cv2.ft.inpaint`, `cv2.ft.FT02D_FL_process`, `cv2.ft.FT02D_FL_process_float`, `cv2.ft.FT02D_components`, `cv2.ft.FT02D_inverseFT`, `cv2.ft.FT02D_iteration`, `cv2.ft.FT02D_process`, `cv2.ft.FT12D_components`, `cv2.ft.FT12D_createPolynomMatrixHorizontal`, `cv2.ft.FT12D_createPolynomMatrixVertical`, `cv2.ft.FT12D_inverseFT`, `cv2.ft.FT12D_polynomial`, `cv2.ft.FT12D_process` | S4-70 qualifies fuzzy filtering and three repair methods with bounded radius and selected writes. Partial support-mask propagation remains in S4-100. | S4-70, S4-100 |
 | `cv2.intensity_transform.autoscaling`, `cv2.intensity_transform.contrastStretching`, `cv2.intensity_transform.gammaCorrection`, `cv2.intensity_transform.logTransform` | These variants follow the typed intensity transform contract. | S1-17 |
 | `cv2.intensity_transform.BIMEF`, `cv2.intensity_transform.BIMEF2` | Qualify automatic and explicit exposure settings with the low-light fixture. | S4-73 |
-| `cv2.hfs.HfsSegment` | Keep CPU and accelerator choices under the same image segmentation contract. | S4-71 |
+| `cv2.hfs.HfsSegment` | S4-71 qualifies the CPU path with integer labels, boundaries and measured regions. CUDA still needs a compatible build and parity checks. | S4-71 |
 
 Pinned sources are [classical ML](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/ml/include/opencv2),
 [tracking](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/tracking/include/opencv2), [silhouette tracking](https://github.com/opencv/opencv_contrib/tree/5.0.0/modules/rapid/include/opencv2),

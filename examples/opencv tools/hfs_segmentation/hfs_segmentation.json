@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Hierarchical segmentation",
+      "description": "Run Once. The HFS block segments two colored panels and their background. Inspect mean colors, label IDs and boundaries. Measure label regions lists each segment's size and position. Original generated images under MIT.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "scene",
+      "type": "input.file",
+      "name": "Two colored panels",
+      "parameters": {
+        "path": "assets/scene.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        30
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "segments",
+      "type": "cv.hfs_segments",
+      "name": "Separate the panels and background",
+      "parameters": {
+        "stage1_threshold": 0.08,
+        "stage1_min_size": 100,
+        "stage2_threshold": 0.28,
+        "stage2_min_size": 200,
+        "spatial_weight": 0.6,
+        "superpixel_size": 8
+      },
+      "position": [
+        320,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "labels",
+        "boundaries",
+        "count"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "measure",
+      "type": "inspect.measure_label_regions",
+      "name": "Measure each region",
+      "parameters": {
+        "ignored_labels": [
+          -1,
+          0
+        ],
+        "preview_count": 25
+      },
+      "position": [
+        655,
+        245
+      ],
+      "exposed_inputs": [
+        "labels",
+        "intensity_image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "collection",
+        "count",
+        "points"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review region colors",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        655,
+        30
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "scene",
+      "output": "image",
+      "target": "segments",
+      "input": "image"
+    },
+    {
+      "source": "segments",
+      "output": "labels",
+      "target": "measure",
+      "input": "labels"
+    },
+    {
+      "source": "segments",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

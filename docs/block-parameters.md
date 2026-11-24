@@ -5183,6 +5183,27 @@ Inputs: `image` (image).
 | `window` | `"hann"` | `hann`, `sqrt_hann` Square-root Hann matches OpenCV's phase-correlation coefficients. |
 | `precision` | `"auto"` | `auto`, `float32`, `float64` Auto uses float64 for float64 input and float32 otherwise. |
 
+## Hierarchical feature-selection segmentation (`cv.hfs_segments`)
+
+Image processing / Segmentation
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Grayscale, BGR or RGB uint8 image. The CPU runs full-frame with up to 2.1 MP.
+
+Input `mask` — Optional output selection, intersected with the supplied region.
+
+Input `region` — Optional output selection in the image coordinate frame.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `stage1_threshold` | `0.08` | Value must be a finite number between 0 and 1000. First graph merge threshold, applied to the SLIC superpixels. |
+| `stage1_min_size` | `100` | Value must be a whole number between 1 and 2.1e+06. First graph pass merges adjacent regions smaller than this pixel area. |
+| `stage2_threshold` | `0.28` | Value must be a finite number between 0 and 1000. Second graph merge threshold, applied to the first pass regions. |
+| `stage2_min_size` | `200` | Value must be a whole number between 1 and 2.1e+06. Second graph pass merges adjacent regions smaller than this area. |
+| `spatial_weight` | `0.6` | Value must be a finite number between 0 and 1000. SLIC proximity weight. Larger weights favor compact regions. |
+| `superpixel_size` | `8` | Value must be a whole number between 8 and 4096. Initial SLIC grid spacing in pixels. Increase it for larger frames. |
+
 ## Hit-or-miss binary pattern (`cv.hit_or_miss`)
 
 Image processing / Morphology

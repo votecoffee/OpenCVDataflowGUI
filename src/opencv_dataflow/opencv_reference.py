@@ -309,6 +309,7 @@ BINDINGS = {
     "cv.gabor_response": "getGaborKernel filter2D",
     "cv.gaussian_blur": "GaussianBlur",
     "cv.graph_segments": "ximgproc.segmentation.createGraphSegmentation",
+    "cv.hfs_segments": "hfs.HfsSegment.create hfs.HfsSegment.performSegmentCpu",
     "cv.gradient": "Sobel Scharr Laplacian",
     "cv.gray": "cvtColor",
     "cv.guided_filter": "ximgproc.guidedFilter",

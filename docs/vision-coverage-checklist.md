@@ -17,8 +17,8 @@ native calls or graph blocks implement it.
 | 1. Core and baseline 2D | 173 | 1 | 1 | 175 | 98.9% |
 | 2. ML and DNN | 62 | 0 | 0 | 62 | 100.0% |
 | 3. 3D imagery and point clouds | 131 | 0 | 0 | 131 | 100.0% |
-| 4. Selected contrib | 67 | 6 | 29 | 102 | 65.7% |
-| **Overall** | 433 | 7 | 30 | 470 | 92.1% |
+| 4. Selected contrib | 68 | 6 | 28 | 102 | 66.7% |
+| **Overall** | 434 | 7 | 29 | 470 | 92.3% |
 
 <!-- coverage-summary:end -->
 
@@ -688,7 +688,7 @@ fixture or result needed to close the item.
 
 | ID | Capability | Functions or implementation | State | Shipped evidence or completion check |
 | --- | --- | --- | --- | --- |
-| S4-71 | Hierarchical feature-selection segmentation | hfs.HfsSegment | Planned | Compare boundaries and region IDs against a known segmented image with CPU execution. |
+| S4-71 | Hierarchical feature-selection segmentation | hfs.HfsSegment | Complete | cv.hfs_segments qualifies CPU labels, boundaries and mean colors against native output and labeled ground truth. The label plane feeds region measurements. |
 | S4-72 | Mapper-based multiscale image registration | reg MapperGrad variants, MapperPyramid and Map | Planned | Recover a declared shift, Euclidean, similarity, affine or projective mapping from paired images. Verify seeded refinement, source-frame maps and inverse round trips on valid coverage. |
 | S4-73 | Low-light enhancement | intensity_transform.BIMEF and BIMEF2 | Planned | Recover known shadow contrast with automatic and explicit exposure settings. Quantify noise and clipping against the baseline. |
 | S4-74 | Boosted binary image descriptors | xfeatures2d.BoostDesc | Planned | Compare matching under illumination or viewpoint changes on a known registered pair. |
