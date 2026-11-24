@@ -360,6 +360,8 @@ reports native detail and temporal response during an exposure step and part mov
 seeded-noise reduction and step retention for the portable and enabled native backends.
 [Durand HDR tone mapping](<../examples/opencv tools/durand_tonemap/README.md>) compares
 local detail with global linear mapping on lossless HDR and verifies native parity on an enabled build.
+[Oil painting texture filtering](<../examples/opencv tools/oil_painting/README.md>) measures
+texture suppression and boundary shift against Gaussian blur on a known part.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

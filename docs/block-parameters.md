@@ -5890,6 +5890,24 @@ Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
 | `outside_selection` | `"zero"` | `zero`, `preserve` Zero unselected samples or retain their raw values. |
 | `preserve_alpha` | `false` | Keep opacity separate and scale it for the output depth. |
 
+## Oil painting texture filter (`cv.oil_painting`)
+
+Image processing / Filters
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — 8-bit gray, RGB or BGR. Straight alpha, when present, is preserved.
+
+Input `mask` — Only nonzero pixels may change. Neighbors outside the mask still contribute.
+
+Input `region` — Limit writes to a region. With a mask, write only to their intersection.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `radius` | `4` | Value must be a whole number between 1 and 127. Neighborhood half-width in pixels. Radius 4 gives a 9 × 9 interior window. |
+| `dynamic_ratio` | `12` | Value must be a whole number between 1 and 127. OpenCV histogram bin divisor. Larger values group more intensities. |
+| `histogram_plane` | `"grayscale"` | `grayscale`, `lab_lightness`, `hsv_hue` Color grouping uses gray intensity, Lab lightness or linear HSV hue. Monochrome always uses intensity. |
+
 ## Overlay result graphics (`cv.overlay_result_graphics`)
 
 Image processing / Compositing

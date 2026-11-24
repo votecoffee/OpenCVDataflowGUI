@@ -1058,6 +1058,7 @@ def builtin_registry():
     from .white_balance import GrayWorldWhiteBalance
     from .workplane import RectifyWorkplane
     from .bm3d_denoising import Bm3dDenoise
+    from .oil_painting import OilPaintingFilter
     from .xphoto_denoising import DctDenoise
     from .xphoto_inpainting import ExtendedInpaint
     from .yuv_formats import DecodePackedYuv, RawYuvFile
@@ -1238,6 +1239,7 @@ def builtin_registry():
         MotionHistory,
         DctDenoise,
         Bm3dDenoise,
+        OilPaintingFilter,
         ExtendedInpaint,
         *PHOTO_FILTER_BLOCKS,
         AlignExposures,

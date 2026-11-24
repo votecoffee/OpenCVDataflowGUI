@@ -329,6 +329,7 @@ Examples of OpenCV image/video processing, calibration, ML and 3D operations, in
 | [Retina contrast and motion](<opencv tools/retina_preprocessing/README.md>) | Compare native detail and motion responses during an exposure step and a moving-part interval. |
 | [BM3D denoising](<opencv tools/bm3d_denoising/README.md>) | Compare a noisy step edge, the hard-threshold estimate, and the Wiener result. |
 | [Durand HDR tone mapping](<opencv tools/durand_tonemap/README.md>) | Compare local and global display mapping on three textured bands with known radiance. |
+| [Oil painting texture filter](<opencv tools/oil_painting/README.md>) | Compare modal and Gaussian smoothing at a known part edge and verify selected writes. |
 | [Motion history and direction](<opencv tools/motion_history/README.md>) | Verify fading trails, pixel ages, and rightward and downward motion from a timed clip. |
 | [Adaptive foreground models](<opencv tools/adaptive_foreground_models/README.md>) | Compare MOG, GMG, and CNT on the same empty-conveyor replay. |
 | [Rolling guidance filter](<opencv tools/rolling_guidance_filter/README.md>) | Compare successive passes that suppress fine texture while preserving the plate outline and cutout. |

@@ -350,6 +350,7 @@ BINDINGS = {
     "cv.inpaint": "inpaint",
     "cv.extended_inpaint": "xphoto.inpaint",
     "cv.bm3d_denoise": "xphoto.bm3dDenoising",
+    "cv.oil_painting": "xphoto.oilPainting",
     "cv.tonemap_durand": "xphoto.createTonemapDurand xphoto.TonemapDurand",
     "cv.dct_denoise": "xphoto.dctDenoising",
     "cv.insert_channel": "insertChannel",

@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Smooth texture and inspect the part edge",
+      "description": "Run Once. Compare the straight left edge of the part in the local-histogram and Gaussian outputs. The region branch writes only inside the rectangle. Original synthetic assets are MIT-licensed.",
+      "parameters": {},
+      "position": [
+        0,
+        -250
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Textured part",
+      "parameters": {
+        "path": "assets/textured.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        135
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "region",
+      "type": "region.shape",
+      "name": "Selected rectangle",
+      "parameters": {
+        "shape": "rectangle",
+        "rectangle": [
+          23,
+          24,
+          95,
+          69
+        ],
+        "center": [
+          100,
+          100
+        ],
+        "radius": 50,
+        "vertices": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ],
+          [
+            50,
+            100
+          ]
+        ],
+        "invert": false
+      },
+      "position": [
+        260,
+        390
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "region"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gaussian",
+      "type": "cv.gaussian_blur",
+      "name": "Gaussian 9 \u00d7 9",
+      "parameters": {
+        "kernel": 9,
+        "sigma": 2,
+        "kernel_y": 0,
+        "sigma_y": 0.0,
+        "border": "reflect",
+        "border_value": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "algorithm_hint": "default"
+      },
+      "position": [
+        555,
+        -45
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "smooth",
+      "type": "cv.oil_painting",
+      "name": "Oil painting 9 \u00d7 9",
+      "description": "Reduce local texture by averaging pixels in the most common histogram bin.",
+      "parameters": {
+        "radius": 4,
+        "dynamic_ratio": 12,
+        "histogram_plane": "grayscale"
+      },
+      "position": [
+        555,
+        145
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "selected",
+      "type": "cv.oil_painting",
+      "name": "Oil painting inside rectangle",
+      "description": "Reduce local texture by averaging pixels in the most common histogram bin.",
+      "parameters": {
+        "radius": 4,
+        "dynamic_ratio": 12,
+        "histogram_plane": "grayscale"
+      },
+      "position": [
+        555,
+        390
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review the full result",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        860,
+        145
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "region",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "gaussian",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "smooth",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "selected",
+      "input": "image"
+    },
+    {
+      "source": "region",
+      "output": "region",
+      "target": "selected",
+      "input": "region"
+    },
+    {
+      "source": "smooth",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}
