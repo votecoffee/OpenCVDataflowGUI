@@ -378,6 +378,8 @@ suppression and selected repairs by native one-step and bounded adaptive transfo
 qualifies CPU region IDs and boundaries and feeds them to label measurements.
 [Multiscale image registration](<../examples/opencv tools/mapper_registration/README.md>)
 qualifies five gradient motion models with reusable maps, seeded refinement and valid-coverage checks.
+[Low-light enhancement](<../examples/opencv tools/low_light_enhancement/README.md>)
+compares automatic and fixed-exposure BIMEF with gamma for contrast, noise and upper saturation.
 [Motion history and direction](<../examples/opencv tools/motion_history/README.md>) verifies
 pixel age, timed decay and dominant motion direction on two known trajectories.
 [Adaptive foreground models](<../examples/opencv tools/adaptive_foreground_models/README.md>)

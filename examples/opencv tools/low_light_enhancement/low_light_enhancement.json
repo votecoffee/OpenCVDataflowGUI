@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "blocks": [
+    {
+      "id": "note",
+      "type": "layout.comment",
+      "name": "Compare three shadow enhancements",
+      "description": "Run Once. Compare automatic and explicit BIMEF with ordinary gamma correction. Inspect the paired dark patches on the left and the bright patches on the right. The filmstrip shows the automatic result. Original MIT-licensed chart.",
+      "parameters": {},
+      "position": [
+        0,
+        -230
+      ],
+      "node_size": "large",
+      "exposed_inputs": [],
+      "exposed_outputs": [],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "source",
+      "type": "input.file",
+      "name": "Noisy shadow chart",
+      "parameters": {
+        "path": "assets/shadow_chart.png",
+        "source_mode": "single",
+        "paths": [],
+        "directory": "",
+        "recursive": false,
+        "repeat": "stop",
+        "filename_ticket": true,
+        "metadata_mode": "off",
+        "color_format": "unchanged",
+        "pixel_depth": "uint8",
+        "path_base": "project"
+      },
+      "position": [
+        0,
+        180
+      ],
+      "exposed_inputs": [
+        "ticket"
+      ],
+      "exposed_outputs": [
+        "image",
+        "info",
+        "ticket"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "automatic",
+      "type": "cv.bimef",
+      "name": "Automatic exposure",
+      "parameters": {
+        "backend": "auto",
+        "exposure_mode": "automatic",
+        "exposure_ratio": 4.0,
+        "enhancement_ratio": 0.5,
+        "response_a": -0.3293,
+        "response_b": 1.1258
+      },
+      "position": [
+        350,
+        30
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "explicit",
+      "type": "cv.bimef",
+      "name": "Fourfold exposure",
+      "parameters": {
+        "backend": "auto",
+        "exposure_mode": "explicit",
+        "exposure_ratio": 4.0,
+        "enhancement_ratio": 0.5,
+        "response_a": -0.3293,
+        "response_b": 1.1258
+      },
+      "position": [
+        350,
+        215
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image",
+        "report"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "gamma",
+      "type": "cv.gamma",
+      "name": "Global gamma baseline",
+      "parameters": {
+        "gamma": 1.8
+      },
+      "position": [
+        350,
+        400
+      ],
+      "exposed_inputs": [
+        "image",
+        "mask",
+        "region"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    },
+    {
+      "id": "filmstrip",
+      "type": "output.filmstrip_image",
+      "name": "Review automatic enhancement",
+      "parameters": {
+        "priority": 0
+      },
+      "position": [
+        685,
+        30
+      ],
+      "exposed_inputs": [
+        "image"
+      ],
+      "exposed_outputs": [
+        "image"
+      ],
+      "thumbnail": true,
+      "preview_output": ""
+    }
+  ],
+  "connections": [
+    {
+      "source": "source",
+      "output": "image",
+      "target": "automatic",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "explicit",
+      "input": "image"
+    },
+    {
+      "source": "source",
+      "output": "image",
+      "target": "gamma",
+      "input": "image"
+    },
+    {
+      "source": "automatic",
+      "output": "image",
+      "target": "filmstrip",
+      "input": "image"
+    }
+  ]
+}

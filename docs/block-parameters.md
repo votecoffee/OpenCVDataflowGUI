@@ -3820,6 +3820,27 @@ Neighborhood operations retain full-image context. See [regions](regions.md).
 | `sigma_space` | `5.0` | Value must be a finite number at least 0. |
 | `border` | `"reflect"` | `constant`, `replicate`, `reflect`, `reflect_101`, `reflect_edge` |
 
+## Enhance low light (BIMEF) (`cv.bimef`)
+
+Image processing / Contrast
+
+Inputs: `image` (image), `mask` (image, optional), `region` (data, optional).
+
+Input `image` — Gray, RGB or BGR. Use uint8, uint16 or float32 in [0, 1], with optional alpha.
+
+Input `mask` — Only selected pixels are updated. Exposure estimation uses the full input.
+
+Input `region` — Optional image-space write selection, intersected with mask.
+
+| Parameter | Default | Enum choices / help |
+| --- | --- | --- |
+| `backend` | `"auto"` | `auto`, `opencv`, `scipy` Auto uses native OpenCV for uint8 with Eigen, or SciPy otherwise. |
+| `exposure_mode` | `"automatic"` | `automatic`, `explicit` Estimate exposure from shadows or use the specified exposure ratio. |
+| `exposure_ratio` | `4.0` | Value must be a finite number between 1 and 16. Simulated second exposure ratio. Used in explicit mode. |
+| `enhancement_ratio` | `0.5` | Value must be a finite number between 0 and 4. Illumination exponent mu. Zero keeps the input. |
+| `response_a` | `-0.3293` | Value must be a finite number between -1 and 0. Camera response exponent coefficient a. |
+| `response_b` | `1.1258` | Value must be a finite number between 0 and 4. Camera response gain coefficient b. |
+
 ## Bitwise image operation (`cv.bitwise`)
 
 Image processing / Image math

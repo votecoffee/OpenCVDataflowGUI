@@ -310,6 +310,7 @@ BINDINGS = {
     "cv.gaussian_blur": "GaussianBlur",
     "cv.graph_segments": "ximgproc.segmentation.createGraphSegmentation",
     "cv.hfs_segments": "hfs.HfsSegment.create hfs.HfsSegment.performSegmentCpu",
+    "cv.bimef": "intensity_transform.BIMEF intensity_transform.BIMEF2",
     "cv.align_mapper": (
         "reg.MapperGradShift reg.MapperGradEuclid reg.MapperGradSimilar reg.MapperGradAffine "
         "reg.MapperGradProj reg.MapperPyramid.calculate reg.MapTypeCaster.toShift "

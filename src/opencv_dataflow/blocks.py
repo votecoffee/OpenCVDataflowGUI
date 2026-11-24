@@ -1069,6 +1069,7 @@ def builtin_registry():
     from .fuzzy_restoration import FuzzyFilter, FuzzyInpaint
     from .hfs_segmentation import HfsSegments
     from .mapper_registration import AlignMapper
+    from .low_light import EnhanceLowLight
     from .yuv_formats import DecodePackedYuv, RawYuvFile
     from .zxing_reader import ReadZXingBarcode
 
@@ -1326,6 +1327,7 @@ def builtin_registry():
         GraphSegments,
         HfsSegments,
         AlignMapper,
+        EnhanceLowLight,
         RidgeResponse,
         StructureTensor,
         MultiscaleRidges,

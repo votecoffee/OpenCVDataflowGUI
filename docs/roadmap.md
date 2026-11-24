@@ -140,7 +140,8 @@ recent vision blocks, runtime, persistence, plugins, and editor. **989 passed**
 and **2 skipped**. Both skips require a native BM3D-enabled OpenCV build.
 The published HFS example passed in the installed package in Debug and Lean.
 The next targeted cycle starts at **0/20**. Multiscale image registration
-(S4-72) advances it to **1/20**.
+(S4-72) advances it to **1/20**. Low-light enhancement (S4-73) advances it
+to **2/20**.
 
 A full-suite checkpoint ran on committed source `9b3f11dc` in four
 offscreen workers. It completed all **10,066 collected tests** in
@@ -1735,6 +1736,14 @@ Aligned images, coverage, and residuals use the reference grid with the
 moving image's ticket. Selected contrib coverage is **69/102 (67.6%)** and
 overall coverage is **435/470 (92.6%)**. Next is low-light enhancement (S4-73).
 [Example](<../examples/opencv tools/mapper_registration/README.md>)
+
+**Low-light enhancement (S4-73)** adds automatic and explicit BIMEF exposure
+with native dispatch on 8-bit Eigen builds and a portable SciPy backend.
+On the noisy chart, explicit exposure raises shadow contrast from 8.09 to
+15.12 levels and keeps upper saturation at 5.91%. Automatic exposure reaches
+16.53 levels with 9.63% saturation. Both amplify noise in the dark patch.
+The installed wheel lacks Eigen and runs the portable backend.
+[Example](<../examples/opencv tools/low_light_enhancement/README.md>)
 
 **Quantized image inference (S2-57)** qualifies pinned Q/DQ and QOperator exports
 through existing image/multi-input/batch inference contracts. Selected raw int8/
